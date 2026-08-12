@@ -53,3 +53,4 @@ def test_sports_market_and_content_are_in_scope():
     assert assess_trend_fit("야구 직관", category="sports_attendance")["main_eligible"]
     assert assess_trend_fit("오징어 게임", category="screen_content")["main_eligible"]
     assert assess_trend_fit("삼성전자 주식", category="investment_market")["main_eligible"]
+    assert assess_trend_fit("관리종목", category="investment_market")["main_eligible"]

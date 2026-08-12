@@ -288,7 +288,9 @@ def test_investment_terms_do_not_receive_unrelated_generic_companies(tmp_path):
     generic = next(item for item in result["unified_ranking"] if item["resolved_entity_name"] == "관리종목")
     samsung = next(item for item in result["unified_ranking"] if item["resolved_entity_name"] == "삼성전자")
 
-    assert generic["company_eligible"] is False
+    # A stock-market phenomenon remains a valid main trend. It still receives
+    # no companies until the evidence ontology has five complete paths.
+    assert generic["company_eligible"] is True
     assert generic["companies"] == []
     assert samsung["companies"] == []
     assert [
