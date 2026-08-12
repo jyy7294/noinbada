@@ -54,3 +54,21 @@ def test_sports_market_and_content_are_in_scope():
     assert assess_trend_fit("오징어 게임", category="screen_content")["main_eligible"]
     assert assess_trend_fit("삼성전자 주식", category="investment_market")["main_eligible"]
     assert assess_trend_fit("관리종목", category="investment_market")["main_eligible"]
+
+
+def test_provider_title_can_demote_legal_event_but_never_promote_a_term():
+    legal = assess_trend_fit(
+        "삼성증권",
+        category="investment_market",
+        issue_context_terms=["대법원 유령주식 사건 18억 원 배상 판결"],
+    )
+    ordinary = assess_trend_fit(
+        "삼성증권",
+        category="investment_market",
+        issue_context_terms=["삼성증권 투자 설명회"],
+    )
+
+    assert legal["selection"] == "issue"
+    assert legal["issue_context_used"] is True
+    assert ordinary["selection"] == "main"
+    assert ordinary["rank_effect"] == "none"

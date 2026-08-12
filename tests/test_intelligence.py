@@ -2,7 +2,12 @@ from datetime import UTC, datetime, timedelta
 
 from trzip.company_adapters import integration_status, opendart_company, pykrx_stock
 from trzip.hourly_store import HourlyObservation, upsert
-from trzip.intelligence import _path_relation_tier, build_intelligence, canonical_topic
+from trzip.intelligence import (
+    _path_relation_tier,
+    _provider_issue_context_titles,
+    build_intelligence,
+    canonical_topic,
+)
 
 
 def test_aliases_are_normalized_to_events():
@@ -22,6 +27,23 @@ def test_listing_edge_alone_never_promotes_a_company_to_direct_relation():
         },
         {"relation_type": "listed_as"},
     ]) == "value_chain"
+
+
+def test_provider_issue_titles_require_specific_exact_term_match():
+    providers = {
+        "youtube": {
+            "matched": True,
+            "evidence": [
+                {"title": "삼성증권 유령주식 18억 배상 판결"},
+                {"title": "다른 증권사 투자 설명회"},
+            ],
+        }
+    }
+
+    assert _provider_issue_context_titles(providers, "삼성증권") == [
+        "삼성증권 유령주식 18억 배상 판결"
+    ]
+    assert _provider_issue_context_titles(providers, "음식") == []
 
 
 def test_cpi_release_variant_is_one_event_without_double_counting_source(tmp_path):

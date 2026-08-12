@@ -56,6 +56,29 @@ def canonical_topic(raw: str) -> str:
     return resolve_event(legacy, set())["canonical"]
 
 
+def _provider_issue_context_titles(providers: dict, representative: str) -> list[str]:
+    """Keep only verification titles that explicitly name a specific trend.
+
+    Verification search results are contextual evidence, not ranking input.
+    Short generic terms are excluded because substring matches in third-party
+    titles are too ambiguous to justify an issue label.
+    """
+
+    representative_compact = "".join(str(representative or "").casefold().split())
+    if len(representative_compact) < 3:
+        return []
+    titles = []
+    for provider in providers.values():
+        if not provider.get("matched"):
+            continue
+        for evidence in provider.get("evidence") or []:
+            title = str(evidence.get("title") or "").strip()
+            title_compact = "".join(title.casefold().split())
+            if title and representative_compact in title_compact:
+                titles.append(title)
+    return list(dict.fromkeys(titles))
+
+
 def _category(topic: str) -> str:
     if topic == "말복":
         return "seasonal_food_ritual"
@@ -946,10 +969,17 @@ def build_intelligence(
             for claim_type in record.get("claim_types", [])
             if claim_type
         })
+        verification_record = verification_by_trend.get(event_key, {})
+        providers = verification_record.get("providers", {})
+        provider_issue_context = _provider_issue_context_titles(
+            providers,
+            representative_term,
+        )
         fit_assessment = assess_trend_fit(
             representative_term,
             category=detected_category,
             context_terms=[item["text"] for item in keyword_items],
+            issue_context_terms=provider_issue_context,
             news_claim_types=news_claim_types,
         )
         lane = fit_assessment["selection"]
@@ -1004,8 +1034,6 @@ def build_intelligence(
                                "window_observed_hours": eligible_hour_count,
                                "history_maturity": round(history_maturity, 4),
                                "ranking_status": "provisional"}
-        verification_record = verification_by_trend.get(event_key, {})
-        providers = verification_record.get("providers", {})
         verification_layer = {
             **verification_record,
             "status": (

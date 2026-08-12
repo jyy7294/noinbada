@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T18:29:49.1767935+00:00",
+    "updated_at":  "2026-08-12T18:36:19.9247302+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,28 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "475e423a92a73c506a5667d87dc5c7ec44312393",
+                       "base_remote_main_sha":  "82a8a057f2c79fe0e282bc9269dba696c1714a18",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
-                                             "config/company_review_overrides.json",
                                              "CURRENT_STATE.json",
-                                             "src/trzip/event_resolution.py"
+                                             "src/trzip/intelligence.py",
+                                             "src/trzip/trend_fit.py",
+                                             "tests/test_intelligence.py",
+                                             "tests/test_trend_fit.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "config/company_review_overrides.json":  "deleted",
-                                                    "src/trzip/event_resolution.py":  "1f48d82e3dd8363abbb64d4f204081cb33c927a01b75ef482058b5b83e41c69a"
+                                                    "src/trzip/intelligence.py":  "82d083b14744e61a7f0894b7b768350f994c450a52e7c9341d5b93c6e068149e",
+                                                    "src/trzip/trend_fit.py":  "7b8e536d1eee97274352e9107fd93b4575b2efb8b0f7cc69934f68da502698c8",
+                                                    "tests/test_intelligence.py":  "f202750c9765c6843569ec27183333b4a26c1066ef384c66a4eb9252fc73dfa7",
+                                                    "tests/test_trend_fit.py":  "9e86cd6e341188a9667df77a7c1b851553ae7c1cd51735d0d22eae863d7c0553"
                                                 },
-                       "commit_message":  "refactor: remove superseded company review helpers",
+                       "commit_message":  "fix: separate verified legal issues from main trends",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  168
+                                      "count":  170
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,15 +51,16 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Keep the backend production path singular by removing unused legacy company-review code and its empty configuration.",
+                    "objective":  "Use exact provider-title context only to demote strong legal or controversy events from the main subset while preserving the source-derived rank.",
                     "completed":  [
-                                      "Removed unreachable company review loader and evidence classifier",
-                                      "Removed the empty legacy override file",
-                                      "Verified 169 tests and compile/diff checks"
+                                      "Added exact-term provider issue context filter",
+                                      "Separated Samsung Securities legal-event context from ordinary stock trends",
+                                      "Prevented short generic terms from provider-title false matches",
+                                      "Verified actual SQLite ranking and 171 tests"
                                   ],
                     "next_actions":  [
-                                         "Continue backend contract and scheduler audit",
-                                         "Complete X current-session extension manual approval then run combined-source acceptance"
+                                         "Republish laptop live-data and verify rank stability plus home subset change",
+                                         "Complete X extension manual approval and combined-source acceptance"
                                      ],
                     "blockers":  [
                                      "Chrome security policy requires manual unpacked-extension approval"

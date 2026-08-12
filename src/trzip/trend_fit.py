@@ -12,6 +12,7 @@ HARD_ISSUE_MARKERS = {
     "전쟁", "미사일", "테러", "사망", "살인", "폭행", "범죄", "구속",
     "혐의", "고소", "경찰서", "재난", "지진", "산불", "태풍", "폭염경보",
     "사생활", "불륜", "스토커", "논란", "친일", "장학금",
+    "배상", "판결", "소송", "재판", "기소", "유죄", "대법원", "법원",
 }
 
 HARD_ISSUE_CATEGORIES = {
@@ -79,6 +80,7 @@ def assess_trend_fit(
     *,
     category: str = "unclassified",
     context_terms: Iterable[str] = (),
+    issue_context_terms: Iterable[str] = (),
     news_claim_types: Iterable[str] = (),
 ) -> dict:
     """Classify presentation fit without changing an observed item's score.
@@ -91,10 +93,19 @@ def assess_trend_fit(
     context = " ".join(
         [normalized_term, *(" ".join(str(value).strip().split()) for value in context_terms)]
     )
+    issue_context_values = [
+        " ".join(str(value).strip().split())
+        for value in issue_context_terms
+        if str(value).strip()
+    ]
+    issue_context = " ".join([normalized_term, *issue_context_values])
     claim_types = {str(value).strip() for value in news_claim_types if str(value).strip()}
     labels: list[str] = []
 
-    hard_issue = category in HARD_ISSUE_CATEGORIES or _contains_any(context, HARD_ISSUE_MARKERS)
+    hard_issue = (
+        category in HARD_ISSUE_CATEGORIES
+        or _contains_any(issue_context, HARD_ISSUE_MARKERS)
+    )
     generic_category_word = normalized_term.casefold() in {
         value.casefold() for value in GENERIC_CATEGORY_WORDS
     }
@@ -146,5 +157,6 @@ def assess_trend_fit(
         "labels": labels,
         "reason": reason,
         "news_context_used": bool(claim_types),
+        "issue_context_used": bool(issue_context_values),
         "rank_effect": "none",
     }
