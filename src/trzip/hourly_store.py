@@ -42,7 +42,7 @@ def _postgres_url(path: Path | None) -> str | None:
 
 
 class DatabaseConnection:
-    """Small compatibility layer for SQLite locally and PostgreSQL on Render."""
+    """Compatibility layer for SQLite and an optional future PostgreSQL migration."""
 
     def __init__(self, raw: Any, dialect: str):
         self.raw = raw

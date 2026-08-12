@@ -2,45 +2,41 @@
 
 ## 연결 원칙
 
-프론트는 GitHub의 생성 JSON이나 Vercel 함수가 아니라 **Render FastAPI**를 조회합니다.
+비용 0원 운영에서는 프론트가 `live-data` 브랜치의 최신 JSON을 조회합니다.
 
 ```env
-NEXT_PUBLIC_TRZIP_API_URL=https://<render-service>.onrender.com
+NEXT_PUBLIC_TRZIP_DATA_URL=https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest
 ```
 
 Vite를 사용하면 변수명만 다음과 같이 바꿉니다.
 
 ```env
-VITE_TRZIP_API_URL=https://<render-service>.onrender.com
+VITE_TRZIP_DATA_URL=https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest
 ```
 
-백엔드의 `TRZIP_CORS_ORIGINS`에는 실제 Vercel 프론트 주소를 등록합니다.
+공개 저장소의 JSON이므로 프론트에 GitHub 토큰을 넣지 않습니다.
 
 ## 기본 호출
 
 ```ts
-const API = process.env.NEXT_PUBLIC_TRZIP_API_URL!;
+const DATA = process.env.NEXT_PUBLIC_TRZIP_DATA_URL!;
 
 export async function getLiveTrends(hours = 24) {
-  const response = await fetch(`${API}/api/v1/intelligence?hours=${hours}`, {
+  const response = await fetch(`${DATA}/intelligence.json?t=${Date.now()}`, {
     cache: "no-store",
   });
-  if (!response.ok) throw new Error(`TRZIP API ${response.status}`);
+  if (!response.ok) throw new Error(`TRZIP data ${response.status}`);
   return response.json();
 }
 ```
 
-## API
+## 데이터 파일
 
-| 경로 | 프론트 사용처 |
+| 파일 | 프론트 사용처 |
 |---|---|
-| `GET /health` | 백엔드·PostgreSQL 상태 확인 |
-| `GET /api/v1/intelligence?hours=24` | 전체 통합 순위와 상세 데이터 |
-| `GET /api/v1/korea/curated-feed` | 최근 24시간 실측 피드 |
-| `GET /api/v1/hourly/coverage` | 누적 관찰기간·행 수 |
-| `GET /api/v1/hourly/snapshot?at=...` | 특정 시간 원천 데이터 |
-| `GET /api/v1/keywords/x-related` | 관련 표현 보강 |
-| `GET /api/v1/companies/profile` | 기업 공식·시장 참고정보 |
+| `latest/intelligence.json` | 전체 통합 순위와 상세 데이터 |
+| `latest/coverage.json` | 누적 관찰기간·행 수 |
+| `latest/metadata.json` | 마지막 실행·수집 성공·오류 상태 |
 
 ## 반드시 분리할 필드
 
@@ -73,8 +69,8 @@ phenomenon_summary 왜 관심이 증가했는지에 대한 설명
 
 ## 프론트 완료 조건
 
-1. API 주소를 코드에 하드코딩하지 않고 환경변수로 관리
-2. Render 장애·초기 기동 중 오류 화면 제공
+1. 데이터 주소를 코드에 하드코딩하지 않고 환경변수로 관리
+2. GitHub 데이터 갱신 지연·실패 상태 표시
 3. 통합 순위·지속기간순·급상승순 전환
 4. 대표명·원천 표현·현상 설명 분리
 5. 기업 관계의 근거 상태와 투자 유의사항 표시

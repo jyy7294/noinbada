@@ -5,10 +5,11 @@ TRZIP은 대한민국의 X 실시간 트렌드와 Google Trends 신호를 시간
 > 주식도 트렌드가 된 시대, 내가 아는 유행에서 기업을 찾다.
 
 - 프로덕트 저장소: <https://github.com/jyy7294/noinbada>
-- 백엔드 배포 대상: Render FastAPI + Render PostgreSQL + Render Cron Job
-- 프론트 배포 대상: Vercel
+- 정시 백엔드 작업: GitHub Actions
+- 운영 데이터 원장: GitHub `live-data` 브랜치의 날짜별 JSON
+- 프론트 배포: Vercel
 
-> 저장소 운영 정책: `backend` 역할의 Python 코드는 Render에서, Claude Design이 만드는 프론트는 Vercel에서 각각 배포합니다. PostgreSQL이 운영 데이터의 단일 원장이고 GitHub에는 실측 DB나 비밀키를 커밋하지 않습니다.
+> 비용 0원 운영 정책: GitHub Actions가 매시간 수집·분석하고 `live-data` 브랜치에 결과를 저장합니다. Claude Design 프론트는 Vercel에서 배포하며 최신 JSON을 읽습니다. API 키·쿠키·SQLite DB는 커밋하지 않습니다.
 - 데이터 소스: X 대한민국, Google Trends `geo=KR`
 - 자동 수집에서 Trends MCP 사용: 비활성화
 
@@ -142,7 +143,7 @@ GET /api/v1/intelligence?at=2026-08-12T11:00:00%2B09:00&hours=168
 ## 8. 프로젝트 구조
 
 ```text
-render.yaml                   Render Web·Cron·PostgreSQL Blueprint
+.github/workflows/            매시간 GitHub Actions 수집
 api/index.py                  호스팅 환경 호환용 Python API 진입점
 src/trzip/api.py              FastAPI 라우트
 src/trzip/hourly_store.py     시간별 수집·저장·데모 재생성
@@ -176,7 +177,7 @@ Copy-Item .env.example .env
 X_BEARER_TOKEN=
 X_KOREA_WOEID=23424868
 OPENDART_API_KEY=
-DATABASE_URL=postgresql://...
+DATABASE_URL= # 향후 PostgreSQL 이전 시에만 사용
 TRZIP_CORS_ORIGINS=https://<frontend>.vercel.app
 TRZIP_DB_PATH=data/trzip-hourly.sqlite3
 ```
@@ -194,15 +195,15 @@ TRZIP_DB_PATH=data/trzip-hourly.sqlite3
 powershell -ExecutionPolicy Bypass -File scripts\install-hourly-task.ps1
 ```
 
-프로덕션에서는 `render.yaml`의 Render Cron Job이 매시 정각 실행하고 `DATABASE_URL`로 연결된 PostgreSQL에 저장합니다. 상세 설정은 [Render 운영 명세](docs/RENDER_PRODUCTION.md)를 따릅니다.
+프로덕션에서는 GitHub Actions가 매시 정각 실행하고 `live-data` 브랜치에 날짜별 원본과 최신 결과를 저장합니다. 상세 설정은 [비용 0원 운영 명세](docs/FREE_PRODUCTION.md)를 따릅니다.
 
 ## 12. 현재 검증 상태
 
-- Python 테스트: 38개 통과
+- Python 테스트: 39개 통과
 - JavaScript 구문검사: 통과
 - PostgreSQL 스키마 생성·upsert·coverage·FastAPI 조회: E2E 통과
 - 실제 현재 회차 수집: X 한국 50건 + Google Trends KR 10건 저장 확인
-- Render Blueprint: Web Service·시간별 Cron Job·PostgreSQL 정의
+- GitHub Actions 시간별 워크플로와 `live-data` 계약 검증
 - 8월 데모에서 오징어 게임 잔존: 0건
 - 실측과 생성 데이터의 동일 시각 공존: 검증
 - 논란·미분류 항목의 기업 오연결 차단: 검증
