@@ -23,6 +23,8 @@ def test_windows_task_runs_full_local_publication_pipeline():
     assert "trzip.local_pipeline" in runner
     assert "live-data" in runner
     assert "Global\\TRZIP-NOINBADA-HOURLY-V1" in runner
+    assert "Get-RelativeChildPath" in runner
+    assert "[IO.Path]::GetRelativePath" not in runner
     assert "New-TimeSpan -Hours 1" in installer
     assert "-WorkingDirectory $ProjectRoot" in installer
     assert "+refs/heads/live-data:refs/remotes/origin/live-data" in installer

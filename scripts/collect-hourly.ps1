@@ -42,6 +42,16 @@ function Assert-ChildPath {
     }
 }
 
+function Get-RelativeChildPath {
+    param([string]$Parent, [string]$Child)
+    $resolvedParent = [IO.Path]::GetFullPath($Parent).TrimEnd('\') + '\'
+    $resolvedChild = [IO.Path]::GetFullPath($Child)
+    if (-not $resolvedChild.StartsWith($resolvedParent, [StringComparison]::OrdinalIgnoreCase)) {
+        throw "Unsafe child path outside parent: $resolvedChild"
+    }
+    return $resolvedChild.Substring($resolvedParent.Length)
+}
+
 function Sync-PublicDirectory {
     param([string]$Name)
     $Source = Join-Path $PublicationRoot $Name
@@ -50,14 +60,14 @@ function Sync-PublicDirectory {
     New-Item -ItemType Directory -Force -Path $Destination | Out-Null
     $sourceRelative = @{}
     foreach ($item in Get-ChildItem -LiteralPath $Source -Recurse -File) {
-        $relative = [IO.Path]::GetRelativePath($Source, $item.FullName)
+        $relative = Get-RelativeChildPath -Parent $Source -Child $item.FullName
         $sourceRelative[$relative] = $true
         $target = Join-Path $Destination $relative
         New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
         Copy-Item -LiteralPath $item.FullName -Destination $target -Force
     }
     foreach ($item in Get-ChildItem -LiteralPath $Destination -Recurse -File) {
-        $relative = [IO.Path]::GetRelativePath($Destination, $item.FullName)
+        $relative = Get-RelativeChildPath -Parent $Destination -Child $item.FullName
         if (-not $sourceRelative.ContainsKey($relative)) {
             Remove-Item -LiteralPath $item.FullName -Force
         }
