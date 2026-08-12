@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-302cad498b0a42f2990475cd04da4be1",
-  "generated_at": "2026-08-12T17:44:01.596790+00:00",
+  "publication_id": "pub-e4dcd122e6f34a9f837ed7901891c239",
+  "generated_at": "2026-08-12T17:51:59.919203+00:00",
   "observed_at": "2026-08-12T17:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -11,7 +11,7 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-12.json",
   "collection": {
-    "observed": 197,
+    "observed": 198,
     "errors": {
       "x": "extension_not_ready"
     },
@@ -27,9 +27,9 @@
       },
       "google_geo_kr": {
         "status": "observed",
-        "row_count": 197,
+        "row_count": 198,
         "detail": "verified_current_hour_snapshot",
-        "declared_total": 197,
+        "declared_total": 198,
         "page_count": 8,
         "completion_verified": true
       }
@@ -40,8 +40,8 @@
     "first_hour": "2026-08-12T13:00:00+00:00",
     "last_hour": "2026-08-12T17:00:00+00:00",
     "hours": 5,
-    "rows": 967,
-    "observed_rows": 967,
+    "rows": 968,
+    "observed_rows": 968,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
@@ -90,8 +90,8 @@
       "google_trends": false
     },
     "on_time_within_15m_rate": 0.0,
-    "latest_delay_seconds": 2635,
-    "latest_duration_seconds": 6.91,
+    "latest_delay_seconds": 3113,
+    "latest_duration_seconds": 7.19,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 69,
     "remaining_runs_for_7d": 165,
