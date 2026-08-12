@@ -1,64 +1,32 @@
 [
   {
-    "scheduled_at": "2026-08-12T08:00:00+00:00",
-    "started_at": "2026-08-12T08:34:26.199749+00:00",
-    "finished_at": "2026-08-12T08:34:37.790526+00:00",
-    "delay_seconds": 2066,
-    "duration_seconds": 11.59,
+    "scheduled_at": "2026-08-12T11:00:00+00:00",
+    "started_at": "2026-08-12T11:59:03.937794+00:00",
+    "finished_at": "2026-08-12T11:59:05.872184+00:00",
+    "delay_seconds": 3544,
+    "duration_seconds": 1.93,
     "success": true,
     "source_success": {
       "x": true,
       "google_trends": true
     },
-    "observed_rows": 60,
-    "errors": {}
+    "observed_rows": 37,
+    "errors": {},
+    "source_failures": {}
   },
   {
-    "scheduled_at": "2026-08-12T09:00:00+00:00",
-    "started_at": "2026-08-12T09:16:46.800933+00:00",
-    "finished_at": "2026-08-12T09:16:47.269372+00:00",
-    "delay_seconds": 1007,
-    "duration_seconds": 0.47,
-    "success": false,
+    "scheduled_at": "2026-08-12T12:00:00+00:00",
+    "started_at": "2026-08-12T12:01:14.373546+00:00",
+    "finished_at": "2026-08-12T12:01:15.432529+00:00",
+    "delay_seconds": 74,
+    "duration_seconds": 1.06,
+    "success": true,
     "source_success": {
-      "x": false,
+      "x": true,
       "google_trends": true
     },
-    "observed_rows": 10,
-    "errors": {
-      "x": "HTTPError: HTTP Error 402: Payment Required"
-    }
-  },
-  {
-    "scheduled_at": "2026-08-12T10:00:00+00:00",
-    "started_at": "2026-08-12T10:06:06.401095+00:00",
-    "finished_at": "2026-08-12T10:06:06.898099+00:00",
-    "delay_seconds": 366,
-    "duration_seconds": 0.5,
-    "success": false,
-    "source_success": {
-      "x": false,
-      "google_trends": true
-    },
-    "observed_rows": 10,
-    "errors": {
-      "x": "HTTPError: HTTP Error 402: Payment Required"
-    }
-  },
-  {
-    "scheduled_at": "2026-08-12T11:00:00+00:00",
-    "started_at": "2026-08-12T11:45:59.873333+00:00",
-    "finished_at": "2026-08-12T11:46:00.383691+00:00",
-    "delay_seconds": 2760,
-    "duration_seconds": 0.51,
-    "success": false,
-    "source_success": {
-      "x": false,
-      "google_trends": true
-    },
-    "observed_rows": 10,
-    "errors": {
-      "x": "HTTPError: HTTP Error 402: Payment Required"
-    }
+    "observed_rows": 37,
+    "errors": {},
+    "source_failures": {}
   }
 ]

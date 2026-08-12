@@ -1,0 +1,19 @@
+{
+  "schema_version": "trzip-normalization-regression-report-v1",
+  "regression_set_schema_version": "trzip-normalization-regression-v1",
+  "regression_set_frozen_at": "2026-08-12",
+  "scope": "규칙 회귀 방지용 실제 관측 24건; 신규 사건 일반화 성능 평가셋이 아님",
+  "evaluated_count": 24,
+  "name_accuracy": 1.0,
+  "category_accuracy": 1.0,
+  "ambiguity_hold_accuracy": 1.0,
+  "dangerous_false_links": 0,
+  "targets": {
+    "name_accuracy": 0.85,
+    "category_accuracy": 0.9,
+    "dangerous_false_links": 0
+  },
+  "targets_met": true,
+  "errors": [],
+  "warning": "2026-08-12 실제 관측 24건의 고정 평가 결과이며 미관측 신규 사건 전체에 대한 일반화 성능은 아닙니다."
+}
