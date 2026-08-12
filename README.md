@@ -14,6 +14,7 @@ TRZIP은 대한민국의 X 실시간 트렌드와 Google Trends 신호를 시간
 관련기업에는 pykrx 일별 종가·등락률·거래량을 백엔드 파이프라인이 함께 저장합니다. Z4·Z5 밈트폴리오 피드와 수익률은 발표용 목업이며 실제 투자성과와 분리합니다.
 
 - 최종 디자인 데이터 연결: [Trend App Zip v2 데이터 계약](docs/DESIGN_DATA_CONTRACT.md)
+- 현재 제품·실측·과거 프로토타입 비교: [2026-08-12 제품·데이터·디자인 감사](docs/PRODUCT_DATA_DESIGN_AUDIT_20260812.md)
 - 프로덕션 화면: https://trzip-x-google.vercel.app
 - 데이터 소스: X 대한민국, Google Trends `geo=KR`
 - 자동 수집에서 Trends MCP 사용: 비활성화
@@ -206,17 +207,21 @@ powershell -ExecutionPolicy Bypass -File scripts\install-hourly-task.ps1
 
 ## 12. 현재 검증 상태
 
-- Python 테스트: 39개 통과
+- Python 테스트: 53개 통과
 - JavaScript 구문검사: 통과
 - PostgreSQL 스키마 생성·upsert·coverage·FastAPI 조회: E2E 통과
-- 실제 현재 회차 수집: X 한국 50건 + Google Trends KR 10건 저장 확인
+- 최신 회차(2026-08-12 09:00 UTC): Google Trends KR 10건 정상, X는 HTTP 402로 실패해 `부분 수집` 상태
 - GitHub Actions 시간별 워크플로와 `live-data` 계약 검증
 - Vercel 프로덕션에서 라이브 트렌드·관련기업·로컬 저장·JSON/CSV 내보내기 검증
 - 8월 데모에서 오징어 게임 잔존: 0건
 - 실측과 생성 데이터의 동일 시각 공존: 검증
 - 논란·미분류 항목의 기업 오연결 차단: 검증
 - 트렌드 대표명과 현상 설명 분리: 검증
+- 전체 92개 관측 항목과 공개 품질 통과 8개를 분리하고, 홈의 빈 자리를 미해결 검색어로 채우지 않음
+- 공개 관련 키워드: 최신 회차 0개. 운영자 후보어를 실측 키워드처럼 표시하지 않음
 
 ## 13. 해석 한계
 
 TRZIP은 종목 추천이나 수익률 예측 서비스가 아닙니다. 관련기업은 공식 관계와 산업 구조를 탐색하기 위한 후보이며, 기업 실적·시장 기대·밸류에이션·매수 시점에 따라 주가 반응은 달라질 수 있습니다.
+
+현재 누적 이력은 4시간뿐이며 3~7일 자동수집 안정성은 아직 검증되지 않았습니다. 최신 원장에는 과거 X 관측값이 포함되지만 최신 회차 X 수집은 실패했으므로 `X+Google 정상 실시간`으로 표현하지 않습니다.
