@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T18:50:15.1388342+00:00",
+    "updated_at":  "2026-08-12T18:52:58.1084456+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,30 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "b87d1358817063bfef0e9c5fb28c0520a541c00c",
+                       "base_remote_main_sha":  "599de724d66bc250cc3c03f43608d190ebeb9b78",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "docs/CODEX_CONTINUITY.md",
-                                             "README.md",
-                                             "scripts/audit-runtime.py",
                                              "src/trzip/runtime_audit.py",
                                              "tests/test_runtime_audit.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/CODEX_CONTINUITY.md":  "3d47b94acc2fe6b74c1e973a02c88ef45a63a3a443e49964cfc57ef664d92da3",
-                                                    "README.md":  "2f7c92b19a8362c161a15f19bf5234defbb0b1e3b34a4c6b9745220fb3e65893",
-                                                    "scripts/audit-runtime.py":  "9590d61d32aaca60cae11471a54054db76ee6e51308bee0185a19e21ca837b2e",
-                                                    "src/trzip/runtime_audit.py":  "3aa04825098d18e734b72bf9d99913c6ac87d915c5bb479ddb32b5f2d7e243eb",
-                                                    "tests/test_runtime_audit.py":  "6397d05036f510de1180b914db6e1ca2ad92490cbca0034095a561491c3b6268"
+                                                    "src/trzip/runtime_audit.py":  "286f5c38339f1bc32d16d5db0f3c9dada9299f197160b2ad3084ea3cd75cd34f",
+                                                    "tests/test_runtime_audit.py":  "75320418463d0e534cdfcb28b01e0006903846b71a7719473f5b3ce156eb23ee"
                                                 },
-                       "commit_message":  "feat: audit actual laptop runtime quality",
+                       "commit_message":  "fix: audit verification ledger integrity",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  173
+                                      "count":  174
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -53,26 +47,25 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "노트북 정각 수집과 공개 데이터의 실제 품질을 한 명령으로 검증",
+                    "objective":  "정시 재실행이 보조 검증 원장을 중복·오염시키지 않는지 자동 판정",
                     "completed":  [
-                                      "세 발행문서 원자성 검사",
-                                      "순위 점수 및 출처 검사",
-                                      "홈 키워드·기업·온톨로지·OpenDART 검사",
-                                      "SQLite 원천 완전성 및 96시간 성숙도 검사",
-                                      "공개 비밀정보·로컬경로 검사"
+                                      "보조 플랫폼 순위 영향 0 검사",
+                                      "최신 시간 중복 검출",
+                                      "참조 무결성 및 시도 횟수 검사",
+                                      "YouTube KST 일일 검색 예산 검사",
+                                      "과거 중복은 경고로 분리"
                                   ],
                     "next_actions":  [
-                                         "찬희 Chrome에 X 현재세션 확장 수동 등록",
-                                         "X 30개와 Google 전체 통합 발행 검증",
-                                         "96시간 및 3~7일 연속 성공률 누적 확인"
+                                         "04시 정각 신규 실행 실제 검증",
+                                         "찬희 Chrome X 확장 수동 등록",
+                                         "통합 X Google E2E 재검증"
                                      ],
                     "blockers":  [
-                                     "X 확장 미등록으로 단일출처 잠정 순위",
-                                     "깨끗한 v3 누적 96시간 미만"
+                                     "X 확장 미등록",
+                                     "v3 누적 96시간 미만"
                                  ],
                     "known_limitations":  [
-                                              "NAVER 보조 검증 키 인증 실패 024",
-                                              "Instagram 보조 검증 미구현"
+                                              "14시 이전 개발 재실행에서 생긴 과거 보조검증 중복 30그룹은 감사 이력으로 보존"
                                           ]
                 },
     "runtime_contract":  {

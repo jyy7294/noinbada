@@ -6,7 +6,7 @@ import os
 import re
 import sqlite3
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -317,10 +317,96 @@ def _audit_database(db_path: Path, report: AuditReport) -> None:
             report.block("x_v3_history_missing")
         if report.metrics["clean_history_hours"] < 96:
             report.block("clean_history_under_96_hours")
+        _audit_provider_ledger(connection, report)
     except sqlite3.Error:
         report.fail("sqlite_audit_query_failed")
     finally:
         connection.close()
+
+
+def _audit_provider_ledger(connection: sqlite3.Connection, report: AuditReport) -> None:
+    if not _table_exists(connection, "provider_verification_runs"):
+        report.warn("provider_verification_ledger_missing")
+        return
+    run_count = connection.execute(
+        "SELECT COUNT(*) FROM provider_verification_runs"
+    ).fetchone()[0]
+    invalid_effect = connection.execute(
+        "SELECT COUNT(*) FROM provider_verification_runs WHERE ranking_effect != 'none'"
+    ).fetchone()[0]
+    invalid_provider = connection.execute(
+        """SELECT COUNT(*) FROM provider_verification_runs
+           WHERE provider NOT IN ('naver','youtube','instagram')"""
+    ).fetchone()[0]
+    duplicate_groups = connection.execute(
+        """SELECT COUNT(*) FROM (
+             SELECT observed_at,trend_key,provider,COUNT(*) AS row_count
+             FROM provider_verification_runs GROUP BY observed_at,trend_key,provider
+             HAVING row_count > 1
+           )"""
+    ).fetchone()[0]
+    latest_observed_at = connection.execute(
+        "SELECT MAX(observed_at) FROM provider_verification_runs"
+    ).fetchone()[0]
+    latest_duplicate_groups = 0
+    if latest_observed_at:
+        latest_duplicate_groups = connection.execute(
+            """SELECT COUNT(*) FROM (
+                 SELECT trend_key,provider,COUNT(*) AS row_count
+                 FROM provider_verification_runs WHERE observed_at=?
+                 GROUP BY trend_key,provider HAVING row_count > 1
+               )""",
+            (latest_observed_at,),
+        ).fetchone()[0]
+    orphan_attempts = 0
+    attempt_count_mismatch = 0
+    youtube_search_cost_today = 0
+    if _table_exists(connection, "provider_verification_attempts"):
+        orphan_attempts = connection.execute(
+            """SELECT COUNT(*) FROM provider_verification_attempts AS attempts
+               LEFT JOIN provider_verification_runs AS runs ON runs.id=attempts.run_id
+               WHERE runs.id IS NULL"""
+        ).fetchone()[0]
+        attempt_count_mismatch = connection.execute(
+            """SELECT COUNT(*) FROM provider_verification_runs AS runs
+               WHERE runs.attempt_count != (
+                 SELECT COUNT(*) FROM provider_verification_attempts AS attempts
+                 WHERE attempts.run_id=runs.id
+               )"""
+        ).fetchone()[0]
+        kst_date = datetime.now(timezone.utc).astimezone(
+            timezone(timedelta(hours=9))
+        ).date().isoformat()
+        youtube_search_cost_today = connection.execute(
+            """SELECT COALESCE(SUM(quota_cost),0)
+               FROM provider_verification_attempts
+               WHERE quota_bucket='youtube_search_queries'
+                 AND date(started_at, '+9 hours')=?""",
+            (kst_date,),
+        ).fetchone()[0]
+    report.metrics["provider_verification"] = {
+        "run_count": run_count,
+        "duplicate_groups": duplicate_groups,
+        "latest_duplicate_groups": latest_duplicate_groups,
+        "invalid_ranking_effect_count": invalid_effect,
+        "invalid_provider_count": invalid_provider,
+        "orphan_attempt_count": orphan_attempts,
+        "attempt_count_mismatch": attempt_count_mismatch,
+        "youtube_search_cost_today": youtube_search_cost_today,
+        "youtube_daily_search_budget": 96,
+    }
+    if invalid_effect:
+        report.fail("provider_verification_affects_ranking")
+    if invalid_provider:
+        report.fail("provider_verification_unknown_provider")
+    if orphan_attempts or attempt_count_mismatch:
+        report.fail("provider_verification_ledger_referential_error")
+    if latest_duplicate_groups:
+        report.fail("provider_verification_latest_hour_duplicate")
+    elif duplicate_groups:
+        report.warn("provider_verification_historical_duplicates")
+    if youtube_search_cost_today > 96:
+        report.fail("youtube_daily_search_budget_exceeded")
 
 
 def audit_runtime(runtime_root: Path) -> dict[str, Any]:

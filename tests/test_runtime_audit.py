@@ -161,3 +161,36 @@ def test_runtime_audit_rejects_score_and_company_evidence_breakage(tmp_path: Pat
     assert result["status"] == "fail"
     assert "score_component_mismatch" in result["failures"]
     assert "home_quality_gate_failed" in result["failures"]
+
+
+def test_runtime_audit_rejects_latest_provider_duplicate(tmp_path: Path) -> None:
+    _write_runtime(tmp_path)
+    connection = sqlite3.connect(tmp_path / "data" / "trzip-hourly.sqlite3")
+    connection.executescript(
+        """
+        CREATE TABLE provider_verification_runs (
+            id INTEGER PRIMARY KEY,
+            observed_at TEXT,
+            trend_key TEXT,
+            provider TEXT,
+            attempt_count INTEGER,
+            ranking_effect TEXT
+        );
+        CREATE TABLE provider_verification_attempts (
+            run_id INTEGER,
+            quota_bucket TEXT,
+            quota_cost INTEGER,
+            started_at TEXT
+        );
+        INSERT INTO provider_verification_runs VALUES
+          (1,'2026-08-12T18:00:00+00:00','event:test','youtube',0,'none'),
+          (2,'2026-08-12T18:00:00+00:00','event:test','youtube',0,'none');
+        """
+    )
+    connection.commit()
+    connection.close()
+
+    result = audit_runtime(tmp_path)
+
+    assert result["status"] == "fail"
+    assert "provider_verification_latest_hour_duplicate" in result["failures"]
