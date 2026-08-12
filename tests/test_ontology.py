@@ -537,3 +537,23 @@ def test_reviewed_005930_peer_ontology_has_five_distinct_listed_companies():
             edge = next(edge for edge in graph.edges if edge["id"] == edge_id)
             assert edge["review_status"] in {"observed", "approved"}
             assert edge["evidence_ids"]
+
+
+def test_reviewed_samsung_securities_peer_ontology_has_five_listed_brokers():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    resolution = graph.resolve_term("삼성증권", min_companies=5, max_hops=7)
+
+    assert resolution["status"] == "published"
+    assert resolution["publishable"] is True
+    paths = graph.trace_paths(
+        resolution["match"]["target_node_id"],
+        target_types=("stock",),
+        max_hops=7,
+        allowed_review_statuses={"observed", "approved"},
+    )
+    tickers = {
+        graph.node(path.node_ids[-1])["metadata"]["ticker"]
+        for path in paths
+    }
+    assert {"003540", "005940", "006800", "016360", "039490"} <= tickers

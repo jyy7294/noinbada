@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T17:12:43.6659987+00:00",
+    "updated_at":  "2026-08-12T17:21:27.7627423+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,34 +8,26 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "d2266af459e74edfa8170270a5b8634f53d243a5",
+                       "base_remote_main_sha":  "7aa00fc50fe7ac940f34a021a84a103ec5f8bcaf",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "data/ontology_enrichment.json",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "README.md",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "src/trzip/intelligence.py",
                                              "tests/test_intelligence.py",
                                              "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "data/ontology_enrichment.json":  "544727bb257c48ea5795e9c37dcffd89062d26bedba48922f5fb225cd1140e2e",
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "6cd4268e1dbff31f5330121035dfec7995abc3aceaca34099162552539b1dc6d",
-                                                    "README.md":  "73238670f869efc91591555a52c9fcd3179bd1d8e6821233c2d77215ea57c36f",
-                                                    "schemas/intelligence-v3.schema.json":  "508c87427af15284ffc91e9f5ad7b2b02bd80b4f1d863d2cc9315681a46a8a50",
-                                                    "src/trzip/intelligence.py":  "9b9157edae084c6092ddc9d7947c10becbe47591ac09f5d9dba3e0e457042ce7",
-                                                    "tests/test_intelligence.py":  "843b2dd80360850af37cb1e8c793586f2b1f3c2b81d69a44f05bc446845cc481",
-                                                    "tests/test_ontology.py":  "4c013652da847438b26710a96836fa1e47afb5bea388ef7fffeece0546731d0a"
+                                                    "data/ontology_enrichment.json":  "dd5e13e01a675a20fc27dc23d1d29afe990b03ed6f3bc2e9fe227719e14cc83e",
+                                                    "tests/test_intelligence.py":  "28c983cfa6748f4e240b6c6e18735013d03f9fd652537281443a7102b3ca9d64",
+                                                    "tests/test_ontology.py":  "0ae2e1a5bcfcfbdf09a17f88adbe767fd1c06ccb905b9b7c42a2ffa688fe8dd1"
                                                 },
-                       "commit_message":  "feat: require five-company ontology for home trends",
+                       "commit_message":  "feat: add reviewed securities peer ontology",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  153
+                                      "count":  154
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -57,21 +49,21 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "홈 트렌드는 근거가 이어진 국내 상장기업 5개 이상일 때만 공개하고 전체 순위는 보존",
+                    "objective":  "기업명이 트렌드인 경우 본체와 검토된 동종 상장사를 직접 관계와 구분해 5개 공개",
                     "completed":  [
-                                      "홈 품질 게이트에 기업 5개 최소조건 추가",
-                                      "005930 본체와 검토된 전기전자 산업 관찰기업 4개 온톨로지 연결",
-                                      "전체 회귀 154개 통과 및 운영 DB 읽기 검증"
+                                      "삼성증권 본체와 증권업 관찰기업 4개 공식 근거 연결",
+                                      "직접 기업 core와 동종사 adjacent 분리",
+                                      "전체 회귀 155개 통과"
                                   ],
                     "next_actions":  [
-                                         "현재 Google 상위 관측어의 온톨로지 보강 큐를 근거 기반으로 순차 처리",
-                                         "X 확장 설치 후 X 30개와 Google 전체의 이중출처 운영 검증"
+                                         "현재 관측되는 소비·콘텐츠·스포츠 트렌드의 5개 기업 온톨로지 순차 보강",
+                                         "X 확장 설치 뒤 X 30개 실제 이중출처 수집 검증"
                                      ],
                     "blockers":  [
                                      "찬희님 Chrome에서 X 현재세션 확장 프로그램 1회 수동 등록 필요"
                                  ],
                     "known_limitations":  [
-                                              "기업 5개 온톨로지 완료 전 트렌드는 홈에서 보류되며 전체 순위에는 남음"
+                                              "온톨로지 미완성 트렌드는 전체 순위에 남지만 홈에서는 보류"
                                           ]
                 },
     "runtime_contract":  {

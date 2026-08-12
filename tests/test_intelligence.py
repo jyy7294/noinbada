@@ -743,7 +743,7 @@ def test_stock_code_has_reviewed_company_and_four_labelled_industry_peers(tmp_pa
     )
 
 
-def test_listed_company_name_has_one_verified_stock_without_industry_filler(tmp_path):
+def test_listed_securities_company_has_self_and_four_reviewed_sector_peers(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 
     target = tmp_path / "listed-company-name-enrichment.sqlite3"
@@ -757,10 +757,20 @@ def test_listed_company_name_has_one_verified_stock_without_industry_filler(tmp_
     item = result["unified_ranking"][0]
 
     assert item["display_name"] == "삼성증권"
-    assert [company["stock_code"] for company in item["company_candidates"]] == ["016360"]
-    assert item["companies"] == []
-    assert item["company_resolution"]["publish_status"] == "ontology_incomplete"
-    assert result["ontology_enrichment_queue"][0]["missing_company_paths"] == 4
+    assert {company["stock_code"] for company in item["company_candidates"]} == {
+        "003540", "005940", "006800", "016360", "039490"
+    }
+    assert item["companies"] == item["company_candidates"]
+    assert item["company_resolution"]["publish_status"] == "published"
+    assert item["company_resolution"]["published_count"] == 5
+    assert next(
+        company for company in item["companies"] if company["stock_code"] == "016360"
+    )["relation_tier"] == "core"
+    assert {
+        company["relation_tier"]
+        for company in item["companies"]
+        if company["stock_code"] != "016360"
+    } == {"adjacent"}
 
 
 def test_unresearched_person_expression_stays_zero_candidate_and_enters_queue(tmp_path):

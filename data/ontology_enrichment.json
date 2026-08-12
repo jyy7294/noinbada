@@ -427,6 +427,111 @@
       "label": "한국거래소 삼성SDI 상장회사 코드 확인",
       "normalized_label": "한국거래소 삼성SDI 상장회사 코드 확인",
       "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "company:kr:kospi:005940",
+      "type": "company",
+      "label": "NH투자증권",
+      "normalized_label": "nh투자증권",
+      "metadata": {"market": "KOSPI", "ticker": "005940"}
+    },
+    {
+      "id": "stock:kr:kospi:005940",
+      "type": "stock",
+      "label": "005940 (KOSPI)",
+      "normalized_label": "005940 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "005940"}
+    },
+    {
+      "id": "company:kr:kospi:039490",
+      "type": "company",
+      "label": "키움증권",
+      "normalized_label": "키움증권",
+      "metadata": {"market": "KOSPI", "ticker": "039490"}
+    },
+    {
+      "id": "stock:kr:kospi:039490",
+      "type": "stock",
+      "label": "039490 (KOSPI)",
+      "normalized_label": "039490 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "039490"}
+    },
+    {
+      "id": "company:kr:kospi:003540",
+      "type": "company",
+      "label": "대신증권",
+      "normalized_label": "대신증권",
+      "metadata": {"market": "KOSPI", "ticker": "003540"}
+    },
+    {
+      "id": "stock:kr:kospi:003540",
+      "type": "stock",
+      "label": "003540 (KOSPI)",
+      "normalized_label": "003540 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "003540"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-securities-k21",
+      "type": "evidence",
+      "label": "삼성증권 증권·자산관리 서비스 확인",
+      "normalized_label": "삼성증권 증권 자산관리 서비스 확인",
+      "metadata": {"publisher": "삼성증권"}
+    },
+    {
+      "id": "evidence:reviewed:mirae-securities-k21",
+      "type": "evidence",
+      "label": "미래에셋증권 증권 사업영역 확인",
+      "normalized_label": "미래에셋증권 증권 사업영역 확인",
+      "metadata": {"publisher": "미래에셋증권"}
+    },
+    {
+      "id": "evidence:reviewed:krx-mirae-006800",
+      "type": "evidence",
+      "label": "한국거래소 미래에셋증권 상장회사 코드 확인",
+      "normalized_label": "한국거래소 미래에셋증권 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:nh-securities-k21",
+      "type": "evidence",
+      "label": "NH투자증권 금융투자 사업 확인",
+      "normalized_label": "nh투자증권 금융투자 사업 확인",
+      "metadata": {"publisher": "NH투자증권"}
+    },
+    {
+      "id": "evidence:reviewed:krx-nh-005940",
+      "type": "evidence",
+      "label": "한국거래소 NH투자증권 상장회사 코드 확인",
+      "normalized_label": "한국거래소 nh투자증권 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:kiwoom-securities-k21",
+      "type": "evidence",
+      "label": "키움증권 증권 사업·상장 개요 확인",
+      "normalized_label": "키움증권 증권 사업 상장 개요 확인",
+      "metadata": {"publisher": "키움증권"}
+    },
+    {
+      "id": "evidence:reviewed:krx-kiwoom-039490",
+      "type": "evidence",
+      "label": "한국거래소 키움증권 상장회사 코드 확인",
+      "normalized_label": "한국거래소 키움증권 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:daishin-securities-k21",
+      "type": "evidence",
+      "label": "대신증권 금융투자업 사업목적 확인",
+      "normalized_label": "대신증권 금융투자업 사업목적 확인",
+      "metadata": {"publisher": "대신증권"}
+    },
+    {
+      "id": "evidence:reviewed:krx-daishin-003540",
+      "type": "evidence",
+      "label": "한국거래소 대신증권 상장회사 코드 확인",
+      "normalized_label": "한국거래소 대신증권 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
     }
   ],
   "evidence": [
@@ -867,6 +972,105 @@
       "evidence_type": "official_listing_record",
       "summary": "삼성SDI의 유가증권상장법인 회사코드가 006400임을 확인한다.",
       "published_at": "2025-07-02",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-securities-k21",
+      "title": "삼성증권 트레이딩·금융상품·자산관리 서비스",
+      "publisher": "삼성증권",
+      "url": "https://www.samsungpop.com/mbw/main/main.do?cmd=main",
+      "evidence_type": "official_company_business_page",
+      "summary": "삼성증권이 트레이딩·금융상품·자산관리 서비스를 제공하는 증권사임을 확인한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "term_to_industry"}
+    },
+    {
+      "id": "evidence:reviewed:mirae-securities-k21",
+      "title": "미래에셋증권 OUR BUSINESS",
+      "publisher": "미래에셋증권",
+      "url": "https://securities.miraeasset.com/newir/view/pc/kr/main.jsp",
+      "evidence_type": "official_company_business_page",
+      "summary": "미래에셋증권이 IB·트레이딩·자산관리 등 증권 사업을 영위함을 확인한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "industry_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-mirae-006800",
+      "title": "미래에셋증권 유가증권상장법인 회사코드 006800",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/05/04/000350/20260504000654/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "미래에셋증권의 유가증권상장법인 회사코드가 006800임을 확인한다.",
+      "published_at": "2026-05-04",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:nh-securities-k21",
+      "title": "NH투자증권 2024 지속가능통합보고서",
+      "publisher": "NH투자증권",
+      "url": "https://kind.krx.co.kr/external/2024/07/29/000157/20240726001454/2024%20NH%ED%88%AC%EC%9E%90%EC%A6%9D%EA%B6%8C%20%ED%86%B5%ED%95%A9%EB%B3%B4%EA%B3%A0%EC%84%9C.pdf",
+      "evidence_type": "official_company_report",
+      "summary": "NH투자증권의 본사·영업점과 금융투자 사업 범위를 확인한다.",
+      "published_at": "2024-07-26",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "industry_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-nh-005940",
+      "title": "NH투자증권 유가증권상장법인 회사코드 005940",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/01/22/000645/20260122000639/99602.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "NH투자증권의 회사코드가 005940임을 확인한다.",
+      "published_at": "2026-01-22",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:kiwoom-securities-k21",
+      "title": "키움증권 개요·주주현황",
+      "publisher": "키움증권",
+      "url": "https://www3.kiwoom.com/h/ir/introduce/VOutlineView",
+      "evidence_type": "official_company_business_page",
+      "summary": "키움증권의 증권사 개요와 유가증권시장 상장코드 A039490을 확인한다.",
+      "published_at": "2025-12-31",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "industry_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-kiwoom-039490",
+      "title": "키움증권 유가증권상장법인 회사코드 039490",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2024/10/08/000165/20241008000328/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "키움증권의 유가증권상장법인 회사코드가 039490임을 확인한다.",
+      "published_at": "2024-10-08",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:daishin-securities-k21",
+      "title": "대신증권 정관상 금융투자업 사업목적",
+      "publisher": "대신증권",
+      "url": "https://money2.daishin.com/group/company/intro/corporate_governance2.html",
+      "evidence_type": "official_company_governance_page",
+      "summary": "대신증권이 투자매매·중개·집합투자·자문·일임·신탁업을 영위함을 확인한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "industry_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-daishin-003540",
+      "title": "대신증권 유가증권상장법인 회사코드 003540",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/02/20/000802/20260220002209/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "대신증권의 유가증권상장법인 회사코드가 003540임을 확인한다.",
+      "published_at": "2026-02-20",
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
     }
@@ -1424,6 +1628,92 @@
       "to_node": "stock:kr:kospi:006400",
       "relation_type": "listed_as",
       "evidence_ids": ["evidence:reviewed:krx-samsung-sdi-006400"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:samsung-securities-to-k21",
+      "from_node": "term:reviewed:samsung-securities",
+      "to_node": "industry:k21",
+      "relation_type": "reviewed_company_sector_context",
+      "evidence_ids": ["evidence:reviewed:samsung-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "삼성증권의 증권업 사업영역 확인", "temporal_scope": "현재 공개 서비스", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:k21-mirae",
+      "from_node": "industry:k21",
+      "to_node": "company:kr:kospi:006800",
+      "relation_type": "industry_has_listed_participant",
+      "evidence_ids": ["evidence:reviewed:mirae-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "동일 증권업의 검토된 상장사; 직접 수혜 관계 아님", "temporal_scope": "현재 공개 사업영역", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-mirae-006800",
+      "from_node": "company:kr:kospi:006800",
+      "to_node": "stock:kr:kospi:006800",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-mirae-006800"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:k21-nh",
+      "from_node": "industry:k21",
+      "to_node": "company:kr:kospi:005940",
+      "relation_type": "industry_has_listed_participant",
+      "evidence_ids": ["evidence:reviewed:nh-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "동일 증권업의 검토된 상장사; 직접 수혜 관계 아님", "temporal_scope": "검토된 공식 보고서 범위", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-nh-005940",
+      "from_node": "company:kr:kospi:005940",
+      "to_node": "stock:kr:kospi:005940",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-nh-005940"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:k21-kiwoom",
+      "from_node": "industry:k21",
+      "to_node": "company:kr:kospi:039490",
+      "relation_type": "industry_has_listed_participant",
+      "evidence_ids": ["evidence:reviewed:kiwoom-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "동일 증권업의 검토된 상장사; 직접 수혜 관계 아님", "temporal_scope": "현재 공개 회사개요", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-kiwoom-039490",
+      "from_node": "company:kr:kospi:039490",
+      "to_node": "stock:kr:kospi:039490",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-kiwoom-039490"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:k21-daishin",
+      "from_node": "industry:k21",
+      "to_node": "company:kr:kospi:003540",
+      "relation_type": "industry_has_listed_participant",
+      "evidence_ids": ["evidence:reviewed:daishin-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "동일 증권업의 검토된 상장사; 직접 수혜 관계 아님", "temporal_scope": "현재 공개 정관", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-daishin-003540",
+      "from_node": "company:kr:kospi:003540",
+      "to_node": "stock:kr:kospi:003540",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-daishin-003540"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     }
