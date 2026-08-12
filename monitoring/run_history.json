@@ -28,5 +28,27 @@
     "observed_rows": 37,
     "errors": {},
     "source_failures": {}
+  },
+  {
+    "scheduled_at": "2026-08-12T13:00:00+00:00",
+    "started_at": "2026-08-12T13:58:34.621015+00:00",
+    "finished_at": "2026-08-12T13:58:49.126983+00:00",
+    "delay_seconds": 3515,
+    "duration_seconds": 14.51,
+    "success": false,
+    "source_success": {
+      "x": false,
+      "google_trends": true
+    },
+    "observed_rows": 185,
+    "errors": {
+      "x": "XCollectionError: extension_not_ready: X inbox does not exist; complete the one-time Chrome extension setup: C:\\Users\\lch68\\Desktop\\Downloads\\TRZIP\\x-current-session.json"
+    },
+    "source_failures": {
+      "x": {
+        "class": "unknown",
+        "detail": "XCollectionError: extension_not_ready: X inbox does not exist; complete the one-time Chrome extension setup: C:\\Users\\lch68\\Desktop\\Downloads\\TRZIP\\x-current-session.json"
+      }
+    }
   }
 ]
