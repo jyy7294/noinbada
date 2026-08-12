@@ -1,6 +1,6 @@
 # TRZIP X 한국 실시간 수집기
 
-이 확장 프로그램은 **찬희님의 `ChanHee` Chrome 프로필 로그인 상태를 Chrome 안에서만 사용**합니다.
+이 확장 프로그램은 **설치 시점에 실제로 사용 중인 찬희님의 Chrome 프로필 로그인 상태를 Chrome 안에서만 사용**합니다.
 
 - 접속 페이지: `https://x.com/explore/tabs/trending`
 - 매시 정각에 별도 비활성 탭을 열어 1위부터 30위까지 누적 관측
@@ -10,7 +10,7 @@
 - 기존 사용자의 X 탭은 재사용하거나 닫지 않고, 확장이 만든 탭만 닫음
 
 Chrome 보안 정책상 사용자 승인 없이 설치할 수 없습니다. 저장소의
-`scripts/setup-x-chrome.ps1`을 실행하면 `ChanHee` 프로필의 `chrome://extensions`가 열립니다. 개발자 모드를
+`scripts/setup-x-chrome.ps1`을 실행하면 Chrome이 마지막으로 사용한 로그인 프로필의 `chrome://extensions`가 열립니다. 다른 프로필을 명시하려면 `-ProfileName`을 사용합니다. 개발자 모드를
 켜고 이 폴더를 **압축해제된 확장 프로그램**으로 한 번만 선택합니다.
 
 확장 아이콘을 누르면 즉시 다시 수집할 수 있습니다. `30` 배지는 성공,

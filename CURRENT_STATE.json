@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T17:21:27.7627423+00:00",
+    "updated_at":  "2026-08-12T17:24:19.5120348+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,20 +8,18 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "7aa00fc50fe7ac940f34a021a84a103ec5f8bcaf",
+                       "base_remote_main_sha":  "f4ae4a93c361fef0bbba5123bc0e00cdd9f3c60f",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
+                                             "chrome-extension/trzip-x-current-session/README.md",
                                              "CURRENT_STATE.json",
-                                             "data/ontology_enrichment.json",
-                                             "tests/test_intelligence.py",
-                                             "tests/test_ontology.py"
+                                             "docs/CODEX_CONTINUITY.md"
                                          ],
                        "changed_file_digests":  {
-                                                    "data/ontology_enrichment.json":  "dd5e13e01a675a20fc27dc23d1d29afe990b03ed6f3bc2e9fe227719e14cc83e",
-                                                    "tests/test_intelligence.py":  "28c983cfa6748f4e240b6c6e18735013d03f9fd652537281443a7102b3ca9d64",
-                                                    "tests/test_ontology.py":  "0ae2e1a5bcfcfbdf09a17f88adbe767fd1c06ccb905b9b7c42a2ffa688fe8dd1"
+                                                    "chrome-extension/trzip-x-current-session/README.md":  "707be56965e835e24923fcd9853f5d0e9f921503ced63388f1e072621b4dfab5",
+                                                    "docs/CODEX_CONTINUITY.md":  "0cb219b7350bbee2a0970258a2a7663995f5cf727ce695c80c791c5559801d26"
                                                 },
-                       "commit_message":  "feat: add reviewed securities peer ontology",
+                       "commit_message":  "docs: target current logged-in Chrome profile",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -49,21 +47,19 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "기업명이 트렌드인 경우 본체와 검토된 동종 상장사를 직접 관계와 구분해 5개 공개",
+                    "objective":  "X 확장 설치 대상이 하드코딩된 이름이 아니라 실제 마지막 사용 로그인 프로필임을 정확히 인계",
                     "completed":  [
-                                      "삼성증권 본체와 증권업 관찰기업 4개 공식 근거 연결",
-                                      "직접 기업 core와 동종사 adjacent 분리",
+                                      "현재 로그인 Chrome 프로필 선택 규칙 문서화",
                                       "전체 회귀 155개 통과"
                                   ],
                     "next_actions":  [
-                                         "현재 관측되는 소비·콘텐츠·스포츠 트렌드의 5개 기업 온톨로지 순차 보강",
-                                         "X 확장 설치 뒤 X 30개 실제 이중출처 수집 검증"
+                                         "Chrome 확장 1회 수동 등록 후 X 한국 30개 실측"
                                      ],
                     "blockers":  [
-                                     "찬희님 Chrome에서 X 현재세션 확장 프로그램 1회 수동 등록 필요"
+                                     "Chrome 보안상 압축해제 확장 로드는 사용자 1회 승인 필요"
                                  ],
                     "known_limitations":  [
-                                              "온톨로지 미완성 트렌드는 전체 순위에 남지만 홈에서는 보류"
+
                                           ]
                 },
     "runtime_contract":  {

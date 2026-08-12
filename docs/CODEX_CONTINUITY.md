@@ -106,7 +106,7 @@ powershell -ExecutionPolicy Bypass -File "$runtime\scripts\install-hourly-task.p
 
 Chrome 보안상 내부 확장 관리 화면은 Codex 브라우저 자동화가 직접 조작할 수 없습니다. 찬희님이 실제 X에 로그인한 Chrome 프로필에서 한 번만 아래 작업이 필요합니다.
 
-1. `chrome://extensions` 열기
+1. 평소 X에 로그인해 사용하는 Chrome 프로필에서 `chrome://extensions` 열기
 2. 개발자 모드 켜기
 3. 압축해제된 확장 프로그램 로드
 4. `$env:USERPROFILE\Documents\Codex\noinbada-runtime\chrome-extension\trzip-x-current-session` 선택
