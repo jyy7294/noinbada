@@ -45,6 +45,11 @@ ALIASES = {
 }
 
 COMPANY_REGISTRY = {
+    "삼성전자": [
+        {"company": "삼성전자", "stock_code": "005930", "relation_type": "listed_company_itself",
+         "strength": "direct", "reason": "검색어 자체가 삼성전자 기업·종목을 직접 지칭",
+         "evidence_kind": "company_official_profile", "evidence_url": "https://www.samsung.com/sec/about-us/company-info/"},
+    ],
     "불닭": [
         {"company": "삼양식품", "stock_code": "003230", "relation_type": "manufacturer",
          "strength": "direct", "reason": "불닭 브랜드 제품의 제조·판매 주체",
@@ -168,6 +173,7 @@ KEYWORD_REGISTRY = {
 }
 
 COMPANY_ROLE_META = {
+    "listed_company_itself": ("직접 기업", "core"),
     "manufacturer": ("제조", "core"),
     "official_distributor": ("플랫폼·채널", "core"),
     "ingredient_product_exposure": ("원재료·부품", "value_chain"),
@@ -391,6 +397,11 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
         ]
         sensitive_context = any(is_sensitive_context(item["topic"]) for item in observations)
         classified_business_context = detected_category != "unclassified" or topic in COMPANY_REGISTRY
+        if detected_category == "investment_market" and topic not in COMPANY_REGISTRY:
+            # A generic market term (for example, 관리종목) does not identify a
+            # beneficiary. Attaching unrelated consumer companies only to meet
+            # a category quota would be a false investment claim.
+            classified_business_context = False
         context_resolved = event_resolution["context_status"] not in {
             "unresolved", "needs_context", "ambiguous_person"
         }
@@ -403,7 +414,18 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
             and classified_business_context
             and (context_resolved or topic in COMPANY_REGISTRY or is_reconstructed)
         )
-        if company_eligible:
+        if company_eligible and detected_category == "investment_market":
+            for company in companies:
+                company["relation_category"] = "직접 기업·종목"
+                company["value_chain_stage"] = "core"
+            company_categories = [{
+                "name": "직접 기업·종목",
+                "value_chain_stage": "core",
+                "companies": [company["company"] for company in companies],
+                "candidate_count": len(companies),
+                "policy": "검색어가 직접 지칭하는 상장기업만 표시",
+            }]
+        elif company_eligible:
             company_categories, companies = expand_value_chain(topic, detected_category, companies)
         else:
             company_categories, companies = [], []

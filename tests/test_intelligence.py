@@ -180,6 +180,25 @@ def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
     assert any(item["display_name"] == "삼성전자" for item in result["public_top10"])
 
 
+def test_investment_terms_do_not_receive_unrelated_generic_companies(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+    target = tmp_path / "investment-company-guard.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([
+        HourlyObservation(at.isoformat(), "google_trends", "관리 종목", 1, 100, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "삼성전자", 2, 99, "observed"),
+    ], target)
+
+    result = build_intelligence(at, hours=1, path=target)
+    generic = next(item for item in result["unified_ranking"] if item["display_name"] == "관리종목")
+    samsung = next(item for item in result["unified_ranking"] if item["display_name"] == "삼성전자")
+
+    assert generic["company_eligible"] is False
+    assert generic["companies"] == []
+    assert [company["company"] for company in samsung["companies"]] == ["삼성전자"]
+    assert samsung["company_categories"][0]["name"] == "직접 기업·종목"
+
+
 def test_quality_summary_detects_unchanged_source_snapshots(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
     target = tmp_path / "snapshot-quality.sqlite3"
