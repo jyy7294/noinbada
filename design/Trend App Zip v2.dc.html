@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&amp;family=Space+Grotesk:wght@700&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #F5F8E3; }
+  a { color: #6B554A; text-decoration: none; }
+  a:hover { color: #CBB6F7; }
+  @keyframes zpBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  @keyframes zpSlide { 0% { transform: translateY(0); opacity: 1; } 55% { transform: translateY(236px); } 84% { transform: translateY(236px); opacity: 1; } 90% { transform: translateY(236px); opacity: 0; } 94% { transform: translateY(0); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+  @keyframes zpUp { 0% { transform: translateY(30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+  @keyframes zpIn { 0% { transform: translateY(16px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+  @keyframes zpGrow { 0% { transform: scaleY(0.04); } 100% { transform: scaleY(1); } }
+  @keyframes zpFill { 0% { width: 0%; } 100% { width: 64%; } }
+  @keyframes zpPull { 0% { left: 4px; } 100% { left: 64%; } }
+  @keyframes zpCount { 0% { transform: translateY(8px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+</style>
+</helmet>
+
+<div style="display:flex; flex-wrap:wrap; align-items:flex-start; gap:34px; padding:34px; background:#F5F8E3; font-family:Pretendard, system-ui, sans-serif;">
+
+  <!-- ══════════ Z0 스플래시 ══════════ -->
+  <div data-screen-label="Z0 스플래시" style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-weight:800; font-size:13px; color:#6B554A;">Z0 · 스플래시</div>
+    <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#F7FABF; border:3px solid #111111; border-radius:34px; overflow:hidden;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 24px 0; font-weight:800; font-size:14px; color:#6B554A;">
+        <span>9:41</span>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <svg width="19" height="12" viewBox="0 0 19 12" style="display:block;"><rect x="0" y="7.5" width="3" height="4" rx="1" fill="#6B554A"></rect><rect x="5" y="5" width="3" height="6.5" rx="1" fill="#6B554A"></rect><rect x="10" y="2.5" width="3" height="9" rx="1" fill="#6B554A"></rect><rect x="15" y="0" width="3" height="11.5" rx="1" fill="#6B554A" opacity="0.35"></rect></svg><svg width="17" height="12" viewBox="0 0 17 12" style="display:block;"><path d="M1.5 4.2 C5.4 0.6 11.6 0.6 15.5 4.2" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><path d="M4 7 C6.6 4.7 10.4 4.7 13 7" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><circle cx="8.5" cy="10.2" r="1.6" fill="#6B554A"></circle></svg><svg width="26" height="12" viewBox="0 0 26 12" style="display:block;"><rect x="0.6" y="0.6" width="21.5" height="10.8" rx="3.4" fill="none" stroke="#6B554A" stroke-width="1.1" opacity="0.4"></rect><rect x="2.3" y="2.3" width="14.5" height="7.4" rx="1.8" fill="#6B554A"></rect><path d="M23.6 4.2 C24.7 4.5 25.4 5.2 25.4 6 C25.4 6.8 24.7 7.5 23.6 7.8 Z" fill="#6B554A" opacity="0.4"></path></svg>
+        </div>
+      </div>
+
+
+      <div style="position:relative; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:0 20px 30px;">
+        <div style="width:100%; animation:zpUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.25s both;">
+        <div style="width:100%; position:relative; animation:zpUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.25s both;">
+        <div style="position:relative; z-index:1; width:44%; height:26px; background:#FFFFFF; border:3px solid #6B554A; border-bottom:0; border-radius:14px 16px 0 0; box-sizing:border-box;"></div>
+        <div style="position:relative; z-index:1; background:#FFFFFF; border:3px solid #6B554A; border-radius:0 20px 20px 20px; box-shadow:6px 7px 0 #6B554A; padding:30px 28px 28px; width:100%; box-sizing:border-box; text-align:center;">
+          <div style="font-weight:900; font-size:32px; line-height:1.18; letter-spacing:-0.01em; color:#6B554A;">오늘의 트렌드를<br>압축했어요</div>
+          <div style="margin-top:10px; font-weight:600; font-size:13.5px; color:#87857B;">키워드 → 기업 → 밈트폴리오까지 한 번에</div>
+          <div data-z-slide="1" style="margin-top:26px; position:relative; height:56px; background:#F5F8E3; border:1.5px solid #6B554A; border-radius:999px; touch-action:none;">
+            <div style="position:absolute; left:20px; right:20px; top:50%; height:8px; margin-top:-4px; background:repeating-linear-gradient(90deg, #CFCBBE 0 5px, transparent 5px 10px); border-radius:4px;"></div>
+            <div data-z-knob="1" style="position:absolute; left:6px; top:10px; width:30px; height:64px; cursor:grab; z-index:3; filter:drop-shadow(1.5px 2px 0 rgba(107,85,74,0.18));">
+              <svg width="30" height="64" viewBox="0 0 52 108" style="display:block;">
+                <path d="M26 8 C38 8 47.5 17.8 47.5 29.5 C47.5 37.5 43.5 44 40 47.5 C43.5 56 45.5 64.5 45.5 74 C45.5 89.5 36.8 101.5 26 101.5 C15.2 101.5 6.5 89.5 6.5 74 C6.5 64.5 8.5 56 12 47.5 C8.5 44 4.5 37.5 4.5 29.5 C4.5 17.8 14 8 26 8 Z" fill="#FBF3D2" stroke="#5A4038" stroke-width="4" stroke-linejoin="round"></path>
+                <rect x="22" y="19" width="8" height="24" rx="4" fill="none" stroke="#5A4038" stroke-width="3.4"></rect>
+                <path d="M17.5 25.5 C14.5 29 14.5 34 17.5 37.5" fill="none" stroke="#5A4038" stroke-width="3.4" stroke-linecap="round"></path>
+                <path d="M34.5 25.5 C37.5 29 37.5 34 34.5 37.5" fill="none" stroke="#5A4038" stroke-width="3.4" stroke-linecap="round"></path>
+                <circle cx="26" cy="77" r="11" fill="#FFFFFF" stroke="#5A4038" stroke-width="4"></circle>
+              </svg>
+            </div>
+          </div>
+          <div data-z-slabel="1" style="margin-top:28px; font-weight:800; font-size:11.5px; color:#87857B;">밀어서 압축 풀기 →</div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ Z1 홈 ══════════ -->
+  <div data-screen-label="Z1 홈" style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-weight:800; font-size:13px; color:#6B554A;">Z1 · 홈</div>
+    <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FDFEEA; border:3px solid #111111; border-radius:34px; overflow:hidden;">
+
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 24px 0; font-weight:800; font-size:14px; color:#6B554A;">
+        <span>9:41</span>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <svg width="19" height="12" viewBox="0 0 19 12" style="display:block;"><rect x="0" y="7.5" width="3" height="4" rx="1" fill="#6B554A"></rect><rect x="5" y="5" width="3" height="6.5" rx="1" fill="#6B554A"></rect><rect x="10" y="2.5" width="3" height="9" rx="1" fill="#6B554A"></rect><rect x="15" y="0" width="3" height="11.5" rx="1" fill="#6B554A" opacity="0.35"></rect></svg><svg width="17" height="12" viewBox="0 0 17 12" style="display:block;"><path d="M1.5 4.2 C5.4 0.6 11.6 0.6 15.5 4.2" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><path d="M4 7 C6.6 4.7 10.4 4.7 13 7" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><circle cx="8.5" cy="10.2" r="1.6" fill="#6B554A"></circle></svg><svg width="26" height="12" viewBox="0 0 26 12" style="display:block;"><rect x="0.6" y="0.6" width="21.5" height="10.8" rx="3.4" fill="none" stroke="#6B554A" stroke-width="1.1" opacity="0.4"></rect><rect x="2.3" y="2.3" width="14.5" height="7.4" rx="1.8" fill="#6B554A"></rect><path d="M23.6 4.2 C24.7 4.5 25.4 5.2 25.4 6 C25.4 6.8 24.7 7.5 23.6 7.8 Z" fill="#6B554A" opacity="0.4"></path></svg>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px 0;">
+        <span></span>
+        <span data-z-my="1" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer;">
+          <svg width="18" height="18" viewBox="0 0 20 20" style="display:block;"><circle cx="10" cy="7" r="3.2" fill="none" stroke="#6B554A" stroke-width="2"></circle><path d="M4 17 C4 13.8 6.7 11.8 10 11.8 C13.3 11.8 16 13.8 16 17" fill="none" stroke="#6B554A" stroke-width="2" stroke-linecap="round"></path></svg>
+        </span>
+      </div>
+
+      <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none;">
+        <div style="padding:20px 20px 0;">
+          <div style="font-weight:900; font-size:33px; line-height:1.16; letter-spacing:-0.01em; color:#6B554A;">오늘의 트렌드,<br>압축 풀어보기</div>
+          <div style="margin-top:13px; font-weight:600; font-size:13px; color:#87857B;">요즘 뜨는 흐름, 한 번에 정리했어요</div>
+        </div>
+
+        <div style="padding:22px 20px 0; display:flex; align-items:center; justify-content:space-between;">
+          <span data-z-live-date="1" style="display:inline-flex; align-items:center; background:#F7FABF; border:1.5px solid #6B554A; border-radius:6px; padding:5px 12px; font-weight:900; font-size:10px; letter-spacing:0.08em; color:#6B554A;">TODAY&#39;S FILE · 연결 중</span>
+        </div>
+        <div data-z-dial-stage="1" style="position:relative; height:352px; margin-top:10px; touch-action:none; user-select:none; cursor:grab;">
+          <div data-z-dial="0" data-label="두바이초콜릿" data-cat="음식/디저트" data-delta="언급 +38%" data-col="#F9BFD8" data-line="#EC9DC2" data-rank="01" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#F9BFD8" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">01</text></svg>
+          </div>
+          <div data-z-dial="1" data-label="흑백요리사" data-cat="방송/예능" data-delta="언급 +24%" data-col="#F8D8B0" data-line="#E9BE8A" data-rank="02" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#F8D8B0" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">02</text></svg>
+          </div>
+          <div data-z-dial="2" data-label="러닝크루" data-cat="스포츠/아웃도어" data-delta="언급 +19%" data-col="#F7FABF" data-line="#DEE393" data-rank="03" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#F7FABF" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">03</text></svg>
+          </div>
+          <div data-z-dial="3" data-label="탕후루" data-cat="음식/디저트" data-delta="언급 -7%" data-col="#F9BFD8" data-line="#EC9DC2" data-rank="04" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#F9BFD8" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">04</text></svg>
+          </div>
+          <div data-z-dial="4" data-label="라부부" data-cat="캐릭터/굿즈" data-delta="언급 +12%" data-col="#CDB5F9" data-line="#B197E9" data-rank="05" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#CDB5F9" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">05</text></svg>
+          </div>
+          <div data-z-dial="5" data-label="얼먹젤리" data-cat="식품/간식" data-delta="언급 +11%" data-col="#F7FABF" data-line="#DEE393" data-rank="06" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#F7FABF" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">06</text></svg>
+          </div>
+          <div data-z-dial="6" data-label="우베 디저트" data-cat="음식/디저트" data-delta="언급 +9%" data-col="#F9BFD8" data-line="#EC9DC2" data-rank="07" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#F9BFD8" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">07</text></svg>
+          </div>
+          <div data-z-dial="7" data-label="F1 입문" data-cat="스포츠/모터" data-delta="언급 +8%" data-col="#CDB5F9" data-line="#B197E9" data-rank="08" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#CDB5F9" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">08</text></svg>
+          </div>
+          <div data-z-dial="8" data-label="요아정" data-cat="음식/디저트" data-delta="언급 -4%" data-col="#F9BFD8" data-line="#EC9DC2" data-rank="09" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#F9BFD8" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">09</text></svg>
+          </div>
+          <div data-z-dial="9" data-label="리센느" data-cat="캐릭터/굿즈" data-delta="언급 +6%" data-col="#CDB5F9" data-line="#B197E9" data-rank="10" style="position:absolute; left:0; top:0; width:52px; margin:-21px 0 0 -26px; cursor:pointer; transition:opacity 0.12s linear;">
+            <svg data-z-dbody="1" width="100%" viewBox="0 0 100 82" style="display:block; overflow:visible;"><path d="M6 20C6 14 10 10 16 10H38C41 10 44 11.5 46 14L51 20.5C52.5 22 54 22.7 56 22.7H84C90 22.7 94 27 94 33V64C94 70 90 74 84 74H16C10 74 6 70 6 64V20Z" fill="#CDB5F9" stroke="#6F4E37" stroke-width="3.4" stroke-linejoin="round"></path><path d="M10 32H90" stroke="#6F4E37" stroke-width="2.2" stroke-linecap="round" opacity=".3"></path><text x="50" y="58.5" text-anchor="middle" font-size="28" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.02em;">10</text></svg>
+          </div>
+          <div data-z-dial-center="1" style="position:absolute; left:50%; top:50%; width:158px; margin:-97px 0 0 -79px; z-index:300; cursor:pointer;">
+            <div style="position:relative; z-index:2; height:31px; margin-bottom:-3.5px;"><svg width="100%" viewBox="0 0 158 31" preserveAspectRatio="none" style="display:block; overflow:visible;"><path data-z-dial-tab="1" d="M1.75 31 V13.5 C1.75 7.6 6 3.2 11.9 3.2 H57 C60.8 3.2 63.9 4.7 66.3 7.7 L77.5 23.5 C80.2 27.4 82.8 31 87.2 31" fill="#F9BFD8" stroke="#6F4E37" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"></path></svg><span data-z-dial-rank="1" style="position:absolute; left:15px; top:11px; font-weight:900; font-size:13.5px; line-height:1; color:#4C3627; letter-spacing:0.06em;">01</span></div>
+            <div data-z-dial-card="1" style="position:relative; background:#FFF9EF; border:3.5px solid #6F4E37; border-radius:0 18px 18px 18px; box-shadow:4px 5px 0 #EC9DC2; padding:12px 13px 12px;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                <span data-z-dial-cat="1" style="display:inline-flex; background:#FFF1C6; border:2px solid #6F4E37; border-radius:999px; padding:3px 9px; font-weight:800; font-size:9px; white-space:nowrap; color:#4C3627;">음식/디저트</span>
+              </div>
+              <div data-z-dial-title="1" style="margin-top:10px; font-weight:900; font-size:17px; color:#4C3627; letter-spacing:-0.01em;">두바이초콜릿</div>
+              <div style="margin-top:6px; font-weight:800; font-size:8px; letter-spacing:0.12em; color:#8D705D;">TREND MENTION</div>
+              <div data-z-dial-delta="1" style="margin-top:1px; font-weight:900; font-size:22px; color:#E0453C; letter-spacing:-0.01em;">+38%</div>
+              <div data-z-unzip="1" style="margin-top:9px; cursor:pointer;"><svg width="100%" viewBox="0 0 194 52" style="display:block; overflow:visible;"><rect x="1.7" y="1.7" width="190" height="46" rx="23" fill="#FFE99B" stroke="#6F4E37" stroke-width="3.4"></rect><text x="97" y="32" text-anchor="middle" font-size="20" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.1em;">UNZIP</text></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin:22px 20px 26px; position:relative;">
+          <div data-z-zip="1" style="position:relative; background:#4A2E24; border-radius:16px; padding:18px 18px 17px; cursor:pointer;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <div>
+                <div style="font-weight:900; font-size:17px; color:#FBF7EE; letter-spacing:-0.01em;">밈트폴리오.zip</div>
+                <div style="margin-top:4px; font-weight:600; font-size:11.5px; color:#C4AFA4;">사람들이 만든 밈트폴리오, 구경해볼까요?</div>
+              </div>
+              <span style="display:flex; width:44px; height:44px; align-items:center; justify-content:center; background:#F7FABF; border:2.5px solid #FBF7EE; border-radius:999px; animation:zpBob 2.4s ease-in-out infinite;">
+                <svg width="18" height="18" viewBox="0 0 16 16" style="display:block;"><path d="M6.2 2.05c-1.1-.85-2.5-1-3.5-.25-1.2.9-1.15 2.6.1 3.5.75.55 1.7.8 2.6.8h.8V2.05ZM9.8 2.05c1.1-.85 2.5-1 3.5-.25 1.2.9 1.15 2.6-.1 3.5-.75.55-1.7.8-2.6.8h-.8V2.05ZM6.55 1.4h2.9c.55 0 1 .45 1 1v5.4c0 .55-.45 1-1 1h-2.9c-.55 0-1-.45-1-1V2.4c0-.55.45-1 1-1ZM7 2.85v4.5c0 .3.25.55.55.55h.9c.3 0 .55-.25.55-.55V2.85c0-.3-.25-.55-.55-.55h-.9c-.3 0-.55.25-.55.55ZM5.6 8.2h4.8c.5 0 .93.37 1 .87l.48 3.45c.27 1.93-1.23 3.63-3.17 3.63h-1.42c-1.94 0-3.44-1.7-3.17-3.63l.48-3.45c.07-.5.5-.87 1-.87ZM5.95 12.8c0 .75.92 1.35 2.05 1.35s2.05-.6 2.05-1.35-.92-1.35-2.05-1.35-2.05.6-2.05 1.35Z" fill="#6B554A"></path></svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ Z2 트렌드 상세 ══════════ -->
+  <div data-screen-label="Z2 트렌드 상세" style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-weight:800; font-size:13px; color:#6B554A;">Z2 · 트렌드 상세</div>
+    <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FDFEEA; border:3px solid #111111; border-radius:34px; overflow:hidden;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 24px 0; font-weight:800; font-size:14px; color:#6B554A;">
+        <span>9:41</span>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <svg width="19" height="12" viewBox="0 0 19 12" style="display:block;"><rect x="0" y="7.5" width="3" height="4" rx="1" fill="#6B554A"></rect><rect x="5" y="5" width="3" height="6.5" rx="1" fill="#6B554A"></rect><rect x="10" y="2.5" width="3" height="9" rx="1" fill="#6B554A"></rect><rect x="15" y="0" width="3" height="11.5" rx="1" fill="#6B554A" opacity="0.35"></rect></svg><svg width="17" height="12" viewBox="0 0 17 12" style="display:block;"><path d="M1.5 4.2 C5.4 0.6 11.6 0.6 15.5 4.2" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><path d="M4 7 C6.6 4.7 10.4 4.7 13 7" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><circle cx="8.5" cy="10.2" r="1.6" fill="#6B554A"></circle></svg><svg width="26" height="12" viewBox="0 0 26 12" style="display:block;"><rect x="0.6" y="0.6" width="21.5" height="10.8" rx="3.4" fill="none" stroke="#6B554A" stroke-width="1.1" opacity="0.4"></rect><rect x="2.3" y="2.3" width="14.5" height="7.4" rx="1.8" fill="#6B554A"></rect><path d="M23.6 4.2 C24.7 4.5 25.4 5.2 25.4 6 C25.4 6.8 24.7 7.5 23.6 7.8 Z" fill="#6B554A" opacity="0.4"></path></svg>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:16px 20px 0;">
+        <span data-z-go="Z1" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 20 20" style="display:block;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#6B554A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+        </span>
+        <div style="flex:1; min-width:0;">
+          <div style="display:flex; align-items:center; gap:6px;"><span style="display:inline-flex; background:#F7FABF; border:1px solid #6B554A; border-radius:5px; padding:2px 7px; font-weight:900; font-size:9px; letter-spacing:0.06em; color:#6B554A;">TREND INDEX</span></div>
+          <div data-z-ttitle="1" style="margin-top:4px; font-weight:900; font-size:21px; color:#6B554A; letter-spacing:-0.01em;">두바이초콜릿</div>
+        </div>
+        <span data-z-shareopen="1" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer; transition:transform 0.12s ease;">
+          <svg width="17" height="17" viewBox="0 0 20 20" style="display:block;"><circle cx="14.5" cy="4.5" r="2.4" fill="none" stroke="#6B554A" stroke-width="2"></circle><circle cx="5.5" cy="10" r="2.4" fill="none" stroke="#6B554A" stroke-width="2"></circle><circle cx="14.5" cy="15.5" r="2.4" fill="none" stroke="#6B554A" stroke-width="2"></circle><line x1="7.8" y1="8.8" x2="12.2" y2="6" stroke="#6B554A" stroke-width="2"></line><line x1="7.8" y1="11.2" x2="12.2" y2="14" stroke="#6B554A" stroke-width="2"></line></svg>
+        </span>
+        <span data-z-my="1" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer;">
+          <svg width="18" height="18" viewBox="0 0 20 20" style="display:block;"><circle cx="10" cy="7" r="3.2" fill="none" stroke="#6B554A" stroke-width="2"></circle><path d="M4 17 C4 13.8 6.7 11.8 10 11.8 C13.3 11.8 16 13.8 16 17" fill="none" stroke="#6B554A" stroke-width="2" stroke-linecap="round"></path></svg>
+        </span>
+      </div>
+
+      <div data-z-shdim="1" style="position:absolute; inset:0; background:rgba(43,31,26,0.42); opacity:0; pointer-events:none; transition:opacity 0.25s ease; z-index:52;"></div>
+      <div data-z-shsheet="1" style="position:absolute; left:0; right:0; bottom:0; background:#FFFFFF; border:1.5px solid #6B554A; border-bottom:0; border-radius:20px 20px 0 0; padding:14px 20px 26px; transform:translateY(102%); transition:transform 0.32s cubic-bezier(0.22,1,0.36,1); z-index:53;">
+        <div style="width:44px; height:5px; border-radius:999px; background:#E4E1D4; margin:0 auto;"></div>
+        <div style="margin-top:16px; font-weight:900; font-size:17px; color:#6B554A; letter-spacing:-0.01em;">공유하기</div>
+        <div style="margin-top:14px; display:flex; flex-direction:column; gap:9px;">
+          <div data-z-sh-opt="링크를 복사했어요" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:10px; padding:13px 14px; cursor:pointer;">
+            <span style="display:flex; flex:none; width:36px; height:36px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:9px;">
+              <svg width="17" height="17" viewBox="0 0 20 20" style="display:block;"><path d="M8.4 11.6a3.4 3.4 0 0 0 4.8 0l2.6-2.6a3.4 3.4 0 0 0-4.8-4.8l-1 1" fill="none" stroke="#6B554A" stroke-width="1.9" stroke-linecap="round"></path><path d="M11.6 8.4a3.4 3.4 0 0 0-4.8 0l-2.6 2.6a3.4 3.4 0 1 0 4.8 4.8l1-1" fill="none" stroke="#6B554A" stroke-width="1.9" stroke-linecap="round"></path></svg>
+            </span>
+            <span style="flex:1; font-weight:800; font-size:13.5px; color:#6B554A;">링크 복사</span>
+          </div>
+          <div data-z-sh-opt="카카오톡으로 공유했어요" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:10px; padding:13px 14px; cursor:pointer;">
+            <span style="display:flex; flex:none; width:36px; height:36px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:9px;">
+              <svg width="18" height="18" viewBox="0 0 20 20" style="display:block;"><path d="M10 3.2c-3.9 0-7 2.4-7 5.4 0 1.9 1.3 3.6 3.2 4.6l-.7 2.6c-.06.24.2.43.41.3l3.05-1.94c.34.03.68.05 1.04.05 3.9 0 7-2.4 7-5.4S13.9 3.2 10 3.2Z" fill="#6B554A"></path></svg>
+            </span>
+            <span style="flex:1; font-weight:800; font-size:13.5px; color:#6B554A;">카카오톡으로 공유</span>
+          </div>
+          <div data-z-sh-opt="문자로 공유했어요" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:10px; padding:13px 14px; cursor:pointer;">
+            <span style="display:flex; flex:none; width:36px; height:36px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:9px;">
+              <svg width="18" height="18" viewBox="0 0 20 20" style="display:block;"><rect x="2.6" y="4" width="14.8" height="10.4" rx="2.2" fill="none" stroke="#6B554A" stroke-width="1.9"></rect><path d="M3.6 5.4 10 10l6.4-4.6" fill="none" stroke="#6B554A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </span>
+            <span style="flex:1; font-weight:800; font-size:13.5px; color:#6B554A;">문자로 공유</span>
+          </div>
+        </div>
+        <div data-z-sh-cancel="1" style="margin-top:14px; display:flex; align-items:center; justify-content:center; background:#FFFFFF; border:1px solid #6B554A; border-radius:999px; padding:14px 0; box-shadow:3px 4px 0 #6B554A; cursor:pointer; font-weight:900; font-size:13.5px; color:#6B554A;">취소</div>
+      </div>
+
+      <div data-z-toast="1" style="position:absolute; left:50%; bottom:34px; transform:translate(-50%, 14px); background:#6B554A; color:#FBFAEA; border-radius:999px; padding:11px 20px; font-weight:800; font-size:12.5px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity 0.22s ease, transform 0.22s ease; z-index:40;">링크를 복사했어요</div>
+
+      <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:22px 20px 26px;">
+        <div style="position:relative;">
+          <div style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:16px; padding:18px 17px;">
+            <div style="display:flex; align-items:center; justify-content:space-between;">
+              <span style="font-weight:900; font-size:14px; color:#6B554A;">신선도 게이지</span>
+              <span data-z-detail-state="1" style="background:#FFFFFF; border:1px solid #6B554A; border-radius:999px; padding:4px 10px; font-weight:900; font-size:12px; color:#6B554A;">수집 중</span>
+            </div>
+            <div style="margin-top:18px; position:relative; height:48px;">
+              <div style="position:absolute; left:0; right:0; top:0; height:24px; background:#FDF9EC; border:2.5px solid #6B554A; border-radius:999px; box-sizing:border-box;"></div>
+              <div style="position:absolute; left:7px; top:6px; width:64%; height:12px; overflow:hidden; display:flex; gap:5px; animation:zpFill 1.05s cubic-bezier(0.22,1,0.36,1) 0.25s both;">
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+                <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
+              </div>
+              <div style="position:absolute; left:64%; top:-8px; margin-left:-2px; width:31px; height:64px; filter:drop-shadow(1.5px 2px 0 rgba(107,85,74,0.18)); animation:zpPull 1.05s cubic-bezier(0.22,1,0.36,1) 0.25s both;">
+                <svg width="31" height="64" viewBox="0 0 52 108" style="display:block;">
+                  <path d="M26 8 C38 8 47.5 17.8 47.5 29.5 C47.5 37.5 43.5 44 40 47.5 C43.5 56 45.5 64.5 45.5 74 C45.5 89.5 36.8 101.5 26 101.5 C15.2 101.5 6.5 89.5 6.5 74 C6.5 64.5 8.5 56 12 47.5 C8.5 44 4.5 37.5 4.5 29.5 C4.5 17.8 14 8 26 8 Z" fill="#FBF3D2" stroke="#5A4038" stroke-width="4" stroke-linejoin="round"></path>
+                  <rect x="22" y="19" width="8" height="24" rx="4" fill="none" stroke="#5A4038" stroke-width="3.4"></rect>
+                  <path d="M17.5 25.5 C14.5 29 14.5 34 17.5 37.5" fill="none" stroke="#5A4038" stroke-width="3.4" stroke-linecap="round"></path>
+                  <path d="M34.5 25.5 C37.5 29 37.5 34 34.5 37.5" fill="none" stroke="#5A4038" stroke-width="3.4" stroke-linecap="round"></path>
+                  <circle cx="26" cy="77" r="11" fill="#FFFFFF" stroke="#5A4038" stroke-width="4"></circle>
+                </svg>
+              </div>
+            </div>
+            <div style="margin-top:8px; display:flex; justify-content:space-between; font-weight:800; font-size:10px; color:#6B554A;"><span>태동</span><span>확산</span><span>전성기</span><span>쇠퇴</span></div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; position:relative;">
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+            <span data-z-detail-category="1" style="font-weight:800; font-size:12px; color:#7B5BC4; letter-spacing:0.02em;">트렌드 분류</span>
+              <span data-z-src="1" style="position:relative; display:flex; width:20px; height:20px; align-items:center; justify-content:center; background:#F7FABF; border:1.2px solid #6B554A; border-radius:999px; font-weight:900; font-size:10.5px; color:#6B554A; cursor:pointer;">?<span data-z-srctip="1" style="position:absolute; right:0; top:26px; background:#6B554A; color:#FBFAEA; border-radius:9px; padding:8px 11px; font-weight:700; font-size:10.5px; line-height:1.5; white-space:nowrap; opacity:0; pointer-events:none; transform:translateY(-4px); transition:opacity 0.16s ease, transform 0.16s ease; z-index:20;">데이터 출처 · X 한국 실시간, Google Trends KR</span></span>
+          </div>
+          <div style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:16px; padding:18px 17px 14px;">
+            <div style="display:flex; align-items:baseline; justify-content:space-between;">
+              <span data-z-detail-delta="1" style="display:inline-block; font-weight:900; font-size:22px; color:#E0453C; letter-spacing:-0.01em; animation:zpCount 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s both;">수집 중</span>
+              <span data-z-detail-period="1" style="font-weight:700; font-size:10.5px; color:#87857B;">관측기간</span>
+            </div>
+            <div style="margin-top:12px; display:flex; align-items:flex-end; gap:6px; height:84px;">
+              <div style="flex:1; height:32%; background:#FBF7EE; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.18s both;"></div>
+              <div style="flex:1; height:44%; background:#FBF7EE; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.25s both;"></div>
+              <div style="flex:1; height:39%; background:#FBF7EE; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.32s both;"></div>
+              <div style="flex:1; height:57%; background:#E4E1D4; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.39s both;"></div>
+              <div style="flex:1; height:69%; background:#E4E1D4; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.46s both;"></div>
+              <div style="flex:1; height:84%; background:#F7FABF; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.53s both;"></div>
+              <div style="flex:1; height:100%; background:#CBB6F7; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.60s both;"></div>
+            </div>
+            <div style="margin-top:7px; display:flex; gap:6px; font-weight:700; font-size:9.5px; color:#87857B; text-align:center;">
+              <span style="flex:1;">08.02</span>
+              <span style="flex:1;"></span>
+              <span style="flex:1;">08.04</span>
+              <span style="flex:1;"></span>
+              <span style="flex:1;">08.06</span>
+              <span style="flex:1;"></span>
+              <span style="flex:1; font-weight:900; color:#6B554A;">08.08</span>
+            </div>
+            <div data-z-detail-summary="1" style="margin-top:13px; padding-top:12px; border-top:1px solid #E4E1D4; font-weight:700; font-size:11.5px; line-height:1.55; color:#5F5D53;">실시간 데이터를 불러오는 중입니다.</div>
+            <div style="margin-top:8px; display:flex; align-items:center; justify-content:space-between; gap:8px; font-weight:800; font-size:9.5px; color:#87857B;">
+              <span data-z-detail-source="1">X · Google 순위</span>
+              <span data-z-detail-confidence="1">검증 중</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; position:relative;">
+          <div style="padding:2px 0;">
+            <div style="display:flex; gap:6px; flex-wrap:wrap;">
+              <span data-z-vc="0" style="background:#CBB6F7; border:2px solid #CBB6F7; border-radius:999px; padding:7px 13px; font-weight:900; font-size:11.5px; white-space:nowrap; color:#FFFFFF; cursor:pointer;">원재료</span>
+              <span data-z-vc="1" style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:999px; padding:7px 13px; font-weight:900; font-size:11.5px; white-space:nowrap; color:#6B554A; cursor:pointer;">제조</span>
+              <span data-z-vc="2" style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:999px; padding:7px 13px; font-weight:900; font-size:11.5px; white-space:nowrap; color:#6B554A; cursor:pointer;">브랜드</span>
+              <span data-z-vc="3" style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:999px; padding:7px 13px; font-weight:900; font-size:11.5px; white-space:nowrap; color:#6B554A; cursor:pointer;">유통/판매</span>
+            </div>
+            <div data-z-vclist="1" style="margin-top:6px; display:flex; flex-direction:column;"></div>
+          </div>
+        </div>
+
+        <div data-z-go="Z6" style="margin-top:18px; background:#6B554A; border-radius:16px; padding:17px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+          <div>
+            <div style="font-weight:900; font-size:16px; color:#FBF7EE; letter-spacing:-0.01em;">이 기업들로 밈트폴리오 만들기</div>
+            <div style="margin-top:3px; font-weight:600; font-size:11px; color:#B9B2A4;">마음에 드는 기업만 골라 담아볼까요?</div>
+          </div>
+          <span style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:2.5px solid #FBF7EE; border-radius:999px; font-weight:900; color:#6B554A;">→</span>
+        </div>
+      </div>
+
+      <div data-z-dim="1" style="position:absolute; inset:0; background:rgba(17,17,17,0.4); opacity:0; pointer-events:none; transition:opacity 0.25s ease; z-index:5;"></div>
+      <div data-z-sheet="1" style="position:absolute; left:0; right:0; bottom:0; background:#FFFFFF; border:1.5px solid #6B554A; border-bottom:0; border-radius:20px 20px 0 0; padding:14px 20px 26px; transform:translateY(105%); transition:transform 0.32s cubic-bezier(0.32,0.72,0.22,1); z-index:6; box-sizing:border-box;">
+        <div style="width:44px; height:5px; border-radius:999px; background:#E4E1D4; margin:0 auto;"></div>
+        <div style="margin-top:18px; display:flex; align-items:center; gap:13px;">
+          <span data-z-sh-logo="1" style="display:flex; flex:none; width:52px; height:52px; align-items:center; justify-content:center; background:#CDB5F9; border:1.5px solid #6B554A; border-radius:999px; font-weight:900; font-size:19px; color:#6B554A;">신</span>
+          <div style="flex:1; min-width:0;">
+            <div data-z-sh-name="1" style="font-weight:900; font-size:19px; color:#6B554A; letter-spacing:-0.01em;">신라교역</div>
+            <div data-z-sh-role="1" style="margin-top:3px; font-weight:700; font-size:11.5px; color:#87857B;">원재료 · 카카오 원물 수입</div>
+          </div>
+          <span data-z-sh-ret="1" style="flex:none; font-weight:900; font-size:16px; color:#E0453C;">+4.2%</span>
+        </div>
+        <div style="margin-top:16px; background:#F5F8E3; border:1.5px solid #6B554A; border-radius:12px; padding:15px;">
+          <div style="font-weight:900; font-size:12.5px; color:#6B554A; letter-spacing:0.02em;">이 트렌드와의 연결고리</div>
+          <div style="margin-top:11px; display:flex; flex-direction:column; gap:13px;">
+            <div>
+              <div style="font-weight:900; font-size:11px; color:#7B5BC4; letter-spacing:0.02em;">역할</div>
+              <div data-z-sh-role2="1" style="margin-top:4px; font-weight:600; font-size:12.5px; line-height:1.65; color:#5F5D53;"></div>
+            </div>
+            <div>
+              <div style="font-weight:900; font-size:11px; color:#7B5BC4; letter-spacing:0.02em;">연관 이유</div>
+              <div data-z-sh-why="1" style="margin-top:4px; font-weight:600; font-size:12.5px; line-height:1.65; color:#5F5D53;"></div>
+            </div>
+            <div>
+              <div style="font-weight:900; font-size:11px; color:#7B5BC4; letter-spacing:0.02em;">영향</div>
+              <div data-z-sh-impact="1" style="margin-top:4px; font-weight:600; font-size:12.5px; line-height:1.65; color:#5F5D53;"></div>
+            </div>
+          </div>
+        </div>
+        <div data-z-sh-buy="1" style="margin-top:16px; display:flex; align-items:center; justify-content:center; gap:8px; background:#F7FABF; border:2px solid #6B554A; border-radius:999px; padding:15px 0; font-weight:900; font-size:14.5px; color:#6B554A; cursor:pointer;">구매하러 가기 →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ Z3 밈트폴리오 홈 ══════════ -->
+  <div data-screen-label="Z3 밈트폴리오 홈" style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-weight:800; font-size:13px; color:#6B554A;">Z3 · 밈트폴리오 홈</div>
+    <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FDFEEA; border:3px solid #111111; border-radius:34px; overflow:hidden;">
+
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 24px 0; font-weight:800; font-size:14px; color:#6B554A;">
+        <span>9:41</span>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <svg width="19" height="12" viewBox="0 0 19 12" style="display:block;"><rect x="0" y="7.5" width="3" height="4" rx="1" fill="#6B554A"></rect><rect x="5" y="5" width="3" height="6.5" rx="1" fill="#6B554A"></rect><rect x="10" y="2.5" width="3" height="9" rx="1" fill="#6B554A"></rect><rect x="15" y="0" width="3" height="11.5" rx="1" fill="#6B554A" opacity="0.35"></rect></svg><svg width="17" height="12" viewBox="0 0 17 12" style="display:block;"><path d="M1.5 4.2 C5.4 0.6 11.6 0.6 15.5 4.2" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><path d="M4 7 C6.6 4.7 10.4 4.7 13 7" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><circle cx="8.5" cy="10.2" r="1.6" fill="#6B554A"></circle></svg><svg width="26" height="12" viewBox="0 0 26 12" style="display:block;"><rect x="0.6" y="0.6" width="21.5" height="10.8" rx="3.4" fill="none" stroke="#6B554A" stroke-width="1.1" opacity="0.4"></rect><rect x="2.3" y="2.3" width="14.5" height="7.4" rx="1.8" fill="#6B554A"></rect><path d="M23.6 4.2 C24.7 4.5 25.4 5.2 25.4 6 C25.4 6.8 24.7 7.5 23.6 7.8 Z" fill="#6B554A" opacity="0.4"></path></svg>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:12px; padding:16px 20px 0;">
+        <span data-z-back="1" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 20 20" style="display:block;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#6B554A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+        </span>
+        <div style="flex:1; font-weight:900; font-size:21px; color:#6B554A; letter-spacing:-0.01em;">밈트폴리오.zip</div>
+      </div>
+
+      <div style="padding:4px 20px 0; font-weight:600; font-size:12.5px; color:#87857B;">키워드로 만든 나만의 밈트폴리오예요</div>
+
+      <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:22px 20px 26px;">
+        <div data-z-grid="1" style="display:grid; grid-template-columns:1fr 1fr; gap:22px 18px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ Z4 폴더 안 ══════════ -->
+  <div data-screen-label="Z4 폴더 안" style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-weight:800; font-size:13px; color:#6B554A;">Z4 · 폴더 안 (압축 해제)</div>
+    <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FDFEEA; border:3px solid #111111; border-radius:34px; overflow:hidden;">
+
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 24px 0; font-weight:800; font-size:14px; color:#6B554A;">
+        <span>9:41</span>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <svg width="19" height="12" viewBox="0 0 19 12" style="display:block;"><rect x="0" y="7.5" width="3" height="4" rx="1" fill="#6B554A"></rect><rect x="5" y="5" width="3" height="6.5" rx="1" fill="#6B554A"></rect><rect x="10" y="2.5" width="3" height="9" rx="1" fill="#6B554A"></rect><rect x="15" y="0" width="3" height="11.5" rx="1" fill="#6B554A" opacity="0.35"></rect></svg><svg width="17" height="12" viewBox="0 0 17 12" style="display:block;"><path d="M1.5 4.2 C5.4 0.6 11.6 0.6 15.5 4.2" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><path d="M4 7 C6.6 4.7 10.4 4.7 13 7" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><circle cx="8.5" cy="10.2" r="1.6" fill="#6B554A"></circle></svg><svg width="26" height="12" viewBox="0 0 26 12" style="display:block;"><rect x="0.6" y="0.6" width="21.5" height="10.8" rx="3.4" fill="none" stroke="#6B554A" stroke-width="1.1" opacity="0.4"></rect><rect x="2.3" y="2.3" width="14.5" height="7.4" rx="1.8" fill="#6B554A"></rect><path d="M23.6 4.2 C24.7 4.5 25.4 5.2 25.4 6 C25.4 6.8 24.7 7.5 23.6 7.8 Z" fill="#6B554A" opacity="0.4"></path></svg>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:12px; padding:16px 20px 0;">
+        <span data-z-back2="1" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 20 20" style="display:block;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#6B554A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+        </span>
+        <div style="flex:1; min-width:0;">
+          <div data-z-ftitle="1" style="font-weight:900; font-size:21px; color:#6B554A; letter-spacing:-0.01em;">두바이초콜릿.zip</div>
+          <div style="margin-top:2px; font-weight:700; font-size:11px; color:#87857B;">압축 해제됨 · 밈트폴리오 12개</div>
+        </div>
+      </div>
+
+      <!-- 열린 지퍼 헤더 -->
+      <div style="display:flex; align-items:center; gap:7px; padding:22px 20px 0;">
+        <span data-z-sort="pop" style="display:inline-flex; align-items:center; background:#6B554A; border:1.5px solid #6B554A; border-radius:999px; padding:6px 13px; font-weight:800; font-size:11.5px; color:#FBFAEA; cursor:pointer; transition:transform 0.12s ease;">인기순</span>
+        <span data-z-sort="ret" style="display:inline-flex; align-items:center; background:transparent; border:1.5px solid #C9C5B4; border-radius:999px; padding:6px 13px; font-weight:800; font-size:11.5px; color:#87857B; cursor:pointer; transition:transform 0.12s ease;">수익률순</span>
+        <span data-z-sort="new" style="display:inline-flex; align-items:center; background:transparent; border:1.5px solid #C9C5B4; border-radius:999px; padding:6px 13px; font-weight:800; font-size:11.5px; color:#87857B; cursor:pointer; transition:transform 0.12s ease;">최신순</span>
+      </div>
+
+      <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:20px 20px 26px;">
+        <div data-z-feedlist="1" style="display:flex; flex-direction:column; gap:16px;">
+          <div data-z-feed="0" style="position:relative; cursor:pointer; animation:zpIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.05s both;">
+            <div style="width:38%; height:22px; background:#F9BFD8; border:3.5px solid #6F4E37; border-bottom:0; border-radius:13px 13px 0 0; box-sizing:border-box; margin-bottom:-3px; position:relative; z-index:2;"></div>
+            <div style="position:relative; background:#FFF9EF; border:3.5px solid #6F4E37; border-radius:0 18px 18px 18px; padding:15px;">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                <div data-z-fd-title="1" style="font-weight:900; font-size:16px; color:#6B554A; letter-spacing:-0.01em;">두바이초콜릿 이름값 3종 담았다</div>
+                <span data-z-fd-ret="1" style="flex:none; font-weight:900; font-size:13px; color:#E0453C; white-space:nowrap;">+18.2%</span>
+              </div>
+              <div style="margin-top:8px; display:flex; gap:5px; flex-wrap:wrap;">
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#롯데웰푸드</span>
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#바인더스</span>
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#신라교역</span>
+              </div>
+              <div data-z-fd-meta="1" style="margin-top:11px; display:flex; align-items:center; justify-content:space-between; gap:11px; font-weight:700; font-size:11px; color:#87857B;"><div style="display:flex; gap:11px;"><span>@choco_lover</span><span>종목 3</span></div><span style="display:inline-flex; align-items:center; gap:4px; flex:none; background:#FAFAF3; border:1.2px solid #C9C5B4; border-radius:999px; padding:3px 9px; font-weight:900; font-size:11px; color:#87857B; white-space:nowrap; cursor:pointer;">♥ 284</span></div>
+            </div>
+          </div>
+
+          <div data-z-feed="1" style="position:relative; cursor:pointer; animation:zpIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.14s both;">
+            <div style="width:38%; height:22px; background:#F7FABF; border:3.5px solid #6F4E37; border-bottom:0; border-radius:13px 13px 0 0; box-sizing:border-box; margin-bottom:-3px; position:relative; z-index:2;"></div>
+            <div style="position:relative; background:#FFF9EF; border:3.5px solid #6F4E37; border-radius:0 18px 18px 18px; padding:15px;">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                <div data-z-fd-title="1" style="font-weight:900; font-size:16px; color:#6B554A; letter-spacing:-0.01em;">초콜릿 원재료 쪽으로 파봤습니다</div>
+                <span data-z-fd-ret="1" style="flex:none; font-weight:900; font-size:13px; color:#2B5FB8; white-space:nowrap;">-2.1%</span>
+              </div>
+              <div style="margin-top:8px; display:flex; gap:5px; flex-wrap:wrap;">
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#카카오원물</span>
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#원당</span>
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#유지</span>
+              </div>
+              <div data-z-fd-meta="1" style="margin-top:11px; display:flex; align-items:center; justify-content:space-between; gap:11px; font-weight:700; font-size:11px; color:#87857B;"><div style="display:flex; gap:11px;"><span>@raw_cacao</span><span>종목 4</span></div><span style="display:inline-flex; align-items:center; gap:4px; flex:none; background:#FAFAF3; border:1.2px solid #C9C5B4; border-radius:999px; padding:3px 9px; font-weight:900; font-size:11px; color:#87857B; white-space:nowrap; cursor:pointer;">♥ 97</span></div>
+            </div>
+          </div>
+
+          <div data-z-feed="2" style="position:relative; cursor:pointer; animation:zpIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.23s both;">
+            <div style="width:38%; height:22px; background:#CBB6F7; border:3.5px solid #6F4E37; border-bottom:0; border-radius:13px 13px 0 0; box-sizing:border-box; margin-bottom:-3px; position:relative; z-index:2;"></div>
+            <div style="position:relative; background:#FFF9EF; border:3.5px solid #6F4E37; border-radius:0 18px 18px 18px; padding:15px;">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                <div data-z-fd-title="1" style="font-weight:900; font-size:16px; color:#6B554A; letter-spacing:-0.01em;">껍데기 수혜주는 따로 있다</div>
+                <span data-z-fd-ret="1" style="flex:none; font-weight:900; font-size:13px; color:#E0453C; white-space:nowrap;">+4.3%</span>
+              </div>
+              <div style="margin-top:8px; display:flex; gap:5px; flex-wrap:wrap;">
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#포장재</span>
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#물류</span>
+              </div>
+              <div data-z-fd-meta="1" style="margin-top:11px; display:flex; align-items:center; justify-content:space-between; gap:11px; font-weight:700; font-size:11px; color:#87857B;"><div style="display:flex; gap:11px;"><span>@quant_min</span><span>종목 3</span></div><span style="display:inline-flex; align-items:center; gap:4px; flex:none; background:#FAFAF3; border:1.2px solid #C9C5B4; border-radius:999px; padding:3px 9px; font-weight:900; font-size:11px; color:#87857B; white-space:nowrap; cursor:pointer;">♥ 61</span></div>
+            </div>
+          </div>
+
+          <div data-z-feed="3" style="position:relative; cursor:pointer; animation:zpIn 0.5s cubic-bezier(0.22,1,0.36,1) 0.32s both;">
+            <div style="width:38%; height:22px; background:#F8D8B0; border:3.5px solid #6F4E37; border-bottom:0; border-radius:13px 13px 0 0; box-sizing:border-box; margin-bottom:-3px; position:relative; z-index:2;"></div>
+            <div style="position:relative; background:#FFF9EF; border:3.5px solid #6F4E37; border-radius:0 18px 18px 18px; padding:15px;">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:10px;">
+                <div data-z-fd-title="1" style="font-weight:900; font-size:16px; color:#6B554A; letter-spacing:-0.01em;">리센느 매매법</div>
+                <span data-z-fd-ret="1" style="flex:none; font-weight:900; font-size:13px; color:#E0453C; white-space:nowrap;">+9.6%</span>
+              </div>
+              <div style="margin-top:8px; display:flex; gap:5px; flex-wrap:wrap;">
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#리센느</span>
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#원이</span>
+                <span style="background:#FAFAF3; border:1.5px solid #6B554A; border-radius:8px; padding:3px 8px; font-weight:700; font-size:10.5px; white-space:nowrap; color:#5F5D53;">#미나미</span>
+              </div>
+              <div data-z-fd-meta="1" style="margin-top:11px; display:flex; align-items:center; justify-content:space-between; gap:11px; font-weight:700; font-size:11px; color:#87857B;"><div style="display:flex; gap:11px;"><span>@lisenne_fan</span><span>종목 5</span></div><span style="display:inline-flex; align-items:center; gap:4px; flex:none; background:#FAFAF3; border:1.2px solid #C9C5B4; border-radius:999px; padding:3px 9px; font-weight:900; font-size:11px; color:#87857B; white-space:nowrap; cursor:pointer;">♥ 412</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ Z5 밈트폴리오 상세 ══════════ -->
+  <div data-screen-label="Z5 밈트 상세" style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-weight:800; font-size:13px; color:#6B554A;">Z5 · 밈트폴리오 상세</div>
+    <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FDFEEA; border:3px solid #111111; border-radius:34px; overflow:hidden;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 24px 0; font-weight:800; font-size:14px; color:#6B554A;">
+        <span>9:41</span>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <svg width="19" height="12" viewBox="0 0 19 12" style="display:block;"><rect x="0" y="7.5" width="3" height="4" rx="1" fill="#6B554A"></rect><rect x="5" y="5" width="3" height="6.5" rx="1" fill="#6B554A"></rect><rect x="10" y="2.5" width="3" height="9" rx="1" fill="#6B554A"></rect><rect x="15" y="0" width="3" height="11.5" rx="1" fill="#6B554A" opacity="0.35"></rect></svg><svg width="17" height="12" viewBox="0 0 17 12" style="display:block;"><path d="M1.5 4.2 C5.4 0.6 11.6 0.6 15.5 4.2" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><path d="M4 7 C6.6 4.7 10.4 4.7 13 7" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><circle cx="8.5" cy="10.2" r="1.6" fill="#6B554A"></circle></svg><svg width="26" height="12" viewBox="0 0 26 12" style="display:block;"><rect x="0.6" y="0.6" width="21.5" height="10.8" rx="3.4" fill="none" stroke="#6B554A" stroke-width="1.1" opacity="0.4"></rect><rect x="2.3" y="2.3" width="14.5" height="7.4" rx="1.8" fill="#6B554A"></rect><path d="M23.6 4.2 C24.7 4.5 25.4 5.2 25.4 6 C25.4 6.8 24.7 7.5 23.6 7.8 Z" fill="#6B554A" opacity="0.4"></path></svg>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:16px 20px 0;">
+        <span data-z-go="Z4" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 20 20" style="display:block;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#6B554A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+        </span>
+        <span style="flex:1; font-weight:900; font-size:15px; color:#87857B;">두바이초콜릿.zip / 01</span>
+        <span data-z-shareopen="1" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer; transition:transform 0.12s ease;">
+          <svg width="17" height="17" viewBox="0 0 20 20" style="display:block;"><circle cx="14.5" cy="4.5" r="2.4" fill="none" stroke="#6B554A" stroke-width="2"></circle><circle cx="5.5" cy="10" r="2.4" fill="none" stroke="#6B554A" stroke-width="2"></circle><circle cx="14.5" cy="15.5" r="2.4" fill="none" stroke="#6B554A" stroke-width="2"></circle><line x1="7.8" y1="8.8" x2="12.2" y2="6" stroke="#6B554A" stroke-width="2"></line><line x1="7.8" y1="11.2" x2="12.2" y2="14" stroke="#6B554A" stroke-width="2"></line></svg>
+        </span>
+        <span data-z-my5="1" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer; transition:transform 0.2s cubic-bezier(0.3,1.6,0.5,1);">
+          <svg width="18" height="18" viewBox="0 0 20 20" style="display:block;"><circle cx="10" cy="7" r="3.2" fill="none" stroke="#6B554A" stroke-width="2"></circle><path d="M4 17 C4 13.8 6.7 11.8 10 11.8 C13.3 11.8 16 13.8 16 17" fill="none" stroke="#6B554A" stroke-width="2" stroke-linecap="round"></path></svg>
+        </span>
+      </div>
+
+      <div data-z-shdim="1" style="position:absolute; inset:0; background:rgba(43,31,26,0.42); opacity:0; pointer-events:none; transition:opacity 0.25s ease; z-index:52;"></div>
+      <div data-z-shsheet="1" style="position:absolute; left:0; right:0; bottom:0; background:#FFFFFF; border:1.5px solid #6B554A; border-bottom:0; border-radius:20px 20px 0 0; padding:14px 20px 26px; transform:translateY(102%); transition:transform 0.32s cubic-bezier(0.22,1,0.36,1); z-index:53;">
+        <div style="width:44px; height:5px; border-radius:999px; background:#E4E1D4; margin:0 auto;"></div>
+        <div style="margin-top:16px; font-weight:900; font-size:17px; color:#6B554A; letter-spacing:-0.01em;">공유하기</div>
+        <div style="margin-top:14px; display:flex; flex-direction:column; gap:9px;">
+          <div data-z-sh-opt="링크를 복사했어요" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:10px; padding:13px 14px; cursor:pointer;">
+            <span style="display:flex; flex:none; width:36px; height:36px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:9px;">
+              <svg width="17" height="17" viewBox="0 0 20 20" style="display:block;"><path d="M8.4 11.6a3.4 3.4 0 0 0 4.8 0l2.6-2.6a3.4 3.4 0 0 0-4.8-4.8l-1 1" fill="none" stroke="#6B554A" stroke-width="1.9" stroke-linecap="round"></path><path d="M11.6 8.4a3.4 3.4 0 0 0-4.8 0l-2.6 2.6a3.4 3.4 0 1 0 4.8 4.8l1-1" fill="none" stroke="#6B554A" stroke-width="1.9" stroke-linecap="round"></path></svg>
+            </span>
+            <span style="flex:1; font-weight:800; font-size:13.5px; color:#6B554A;">링크 복사</span>
+          </div>
+          <div data-z-sh-opt="카카오톡으로 공유했어요" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:10px; padding:13px 14px; cursor:pointer;">
+            <span style="display:flex; flex:none; width:36px; height:36px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:9px;">
+              <svg width="18" height="18" viewBox="0 0 20 20" style="display:block;"><path d="M10 3.2c-3.9 0-7 2.4-7 5.4 0 1.9 1.3 3.6 3.2 4.6l-.7 2.6c-.06.24.2.43.41.3l3.05-1.94c.34.03.68.05 1.04.05 3.9 0 7-2.4 7-5.4S13.9 3.2 10 3.2Z" fill="#6B554A"></path></svg>
+            </span>
+            <span style="flex:1; font-weight:800; font-size:13.5px; color:#6B554A;">카카오톡으로 공유</span>
+          </div>
+          <div data-z-sh-opt="문자로 공유했어요" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:10px; padding:13px 14px; cursor:pointer;">
+            <span style="display:flex; flex:none; width:36px; height:36px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:9px;">
+              <svg width="18" height="18" viewBox="0 0 20 20" style="display:block;"><rect x="2.6" y="4" width="14.8" height="10.4" rx="2.2" fill="none" stroke="#6B554A" stroke-width="1.9"></rect><path d="M3.6 5.4 10 10l6.4-4.6" fill="none" stroke="#6B554A" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </span>
+            <span style="flex:1; font-weight:800; font-size:13.5px; color:#6B554A;">문자로 공유</span>
+          </div>
+        </div>
+        <div data-z-sh-cancel="1" style="margin-top:14px; display:flex; align-items:center; justify-content:center; background:#FFFFFF; border:1px solid #6B554A; border-radius:999px; padding:14px 0; box-shadow:3px 4px 0 #6B554A; cursor:pointer; font-weight:900; font-size:13.5px; color:#6B554A;">취소</div>
+      </div>
+
+      <div data-z-toast="1" style="position:absolute; left:50%; bottom:34px; transform:translate(-50%, 14px); background:#6B554A; color:#FBFAEA; border-radius:999px; padding:11px 20px; font-weight:800; font-size:12.5px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity 0.22s ease, transform 0.22s ease; z-index:40;">링크를 복사했어요</div>
+      <div data-z-sdim="1" style="position:absolute; inset:0; background:rgba(43,31,26,0.42); opacity:0; pointer-events:none; transition:opacity 0.25s ease; z-index:50;"></div>
+      <div data-z-ssheet="1" style="position:absolute; left:0; right:0; bottom:0; background:#FFFFFF; border:1.5px solid #6B554A; border-bottom:0; border-radius:20px 20px 0 0; padding:14px 20px 26px; transform:translateY(102%); transition:transform 0.32s cubic-bezier(0.22,1,0.36,1); z-index:51;">
+        <div style="width:44px; height:5px; border-radius:999px; background:#E4E1D4; margin:0 auto;"></div>
+        <div style="margin-top:18px; display:flex; align-items:center; gap:13px;">
+          <span data-z-st-logo="1" style="display:flex; flex:none; width:52px; height:52px; align-items:center; justify-content:center; background:#F9BFD8; border:1.5px solid #6B554A; border-radius:999px; font-weight:900; font-size:19px; color:#6B554A;">롯</span>
+          <div style="flex:1; min-width:0;">
+            <div data-z-st-name="1" style="font-weight:900; font-size:19px; color:#6B554A; letter-spacing:-0.01em;">롯데웰푸드</div>
+            <div data-z-st-code="1" style="margin-top:3px; font-weight:700; font-size:11.5px; color:#87857B;">280360 · KOSPI</div>
+          </div>
+        </div>
+        <div style="margin-top:16px; display:flex; align-items:baseline; gap:9px;">
+          <span data-z-st-price="1" style="font-weight:900; font-size:30px; color:#6B554A; letter-spacing:-0.02em;">142,300</span>
+          <span style="font-weight:800; font-size:14px; color:#87857B;">원</span>
+          <span data-z-st-chg="1" style="margin-left:auto; font-weight:900; font-size:15px; color:#E0453C;">+21.4% (+25,100)</span>
+        </div>
+        <div style="margin-top:16px; display:grid; grid-template-columns:1fr 1fr; gap:9px;">
+          <div style="background:#FDFEEA; border:1.5px solid #6B554A; border-radius:10px; padding:11px 12px;"><div style="font-weight:800; font-size:10px; color:#87857B;">시가총액</div><div data-z-st-cap="1" style="margin-top:3px; font-weight:900; font-size:14px; color:#6B554A;">1조 6,240억</div></div>
+          <div style="background:#FDFEEA; border:1.5px solid #6B554A; border-radius:10px; padding:11px 12px;"><div style="font-weight:800; font-size:10px; color:#87857B;">거래량</div><div data-z-st-vol="1" style="margin-top:3px; font-weight:900; font-size:14px; color:#6B554A;">412,880</div></div>
+          <div style="background:#FDFEEA; border:1.5px solid #6B554A; border-radius:10px; padding:11px 12px;"><div style="font-weight:800; font-size:10px; color:#87857B;">PER</div><div data-z-st-per="1" style="margin-top:3px; font-weight:900; font-size:14px; color:#6B554A;">14.2배</div></div>
+          <div style="background:#FDFEEA; border:1.5px solid #6B554A; border-radius:10px; padding:11px 12px;"><div style="font-weight:800; font-size:10px; color:#87857B;">52주 최고 · 최저</div><div data-z-st-band="1" style="margin-top:3px; font-weight:900; font-size:14px; color:#6B554A;">156,000 · 98,400</div></div>
+        </div>
+
+        <div style="margin-top:14px; background:#FDFEEA; border:1.5px solid #6B554A; border-radius:12px; padding:13px 14px 11px;">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <span data-z-st-label="1" style="font-weight:800; font-size:10.5px; color:#87857B; white-space:nowrap;">최근 3개월</span>
+            <div style="display:flex; gap:4px;">
+              <span data-z-st-range="1M" style="background:#FFFFFF; border:1px solid #CFCBBE; border-radius:999px; padding:3px 9px; font-weight:800; font-size:9.5px; white-space:nowrap; color:#87857B; cursor:pointer;">1개월</span>
+              <span data-z-st-range="3M" style="background:#6B554A; border:1px solid #6B554A; border-radius:999px; padding:3px 9px; font-weight:800; font-size:9.5px; white-space:nowrap; color:#FBFAEA; cursor:pointer;">3개월</span>
+              <span data-z-st-range="1Y" style="background:#FFFFFF; border:1px solid #CFCBBE; border-radius:999px; padding:3px 9px; font-weight:800; font-size:9.5px; white-space:nowrap; color:#87857B; cursor:pointer;">1년</span>
+            </div>
+          </div>
+          <svg data-z-st-chart="1" width="100%" height="96" viewBox="0 0 320 96" preserveAspectRatio="none" style="display:block; margin-top:10px;">
+            <line x1="0" y1="24" x2="320" y2="24" stroke="#E4E1D4" stroke-width="1"></line>
+            <line x1="0" y1="60" x2="320" y2="60" stroke="#E4E1D4" stroke-width="1"></line>
+            <path data-z-st-area="1" d="" fill="rgba(224,69,60,0.10)"></path>
+            <path data-z-st-line="1" d="" fill="none" stroke="#E0453C" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"></path>
+            <circle data-z-st-dot="1" cx="316" cy="20" r="3.6" fill="#E0453C" stroke="#FDFEEA" stroke-width="2"></circle>
+          </svg>
+        </div>
+
+        <div style="margin-top:16px; display:flex; gap:10px;">
+          <div data-z-st-close="1" style="flex:1; display:flex; align-items:center; justify-content:center; background:#FFFFFF; border:1px solid #6B554A; border-radius:999px; padding:14px 0; box-shadow:3px 4px 0 #6B554A; cursor:pointer; font-weight:900; font-size:13.5px; color:#6B554A;">닫기</div>
+          <div data-z-order="1" style="flex:1; display:flex; align-items:center; justify-content:center; background:#7B5BC4; border:1px solid #6B554A; border-radius:999px; padding:14px 0; box-shadow:3px 4px 0 #6B554A; cursor:pointer; font-weight:900; font-size:13.5px; color:#FFFFFF; transition:transform 0.12s ease, box-shadow 0.12s ease;">주문하기</div>
+        </div>
+      </div>
+
+      <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:22px 20px 26px;">
+        <div data-z-hero="1" style="position:relative;">
+          <div style="width:56%; height:24px; background:#F7FABF; border:3.5px solid #6F4E37; border-bottom:0; border-radius:13px 13px 0 0; box-sizing:border-box; margin-bottom:-3px; position:relative; z-index:2;"></div>
+          <div style="position:relative; background:#FFF9EF; border:3.5px solid #6F4E37; border-radius:0 20px 20px 20px; padding:20px 18px;">
+            <div data-z-hero-title="1" style="font-weight:900; font-size:21px; line-height:1.25; letter-spacing:-0.01em; color:#6B554A;">두바이초콜릿 이름값<br>3종 담았다</div>
+            <div data-z-hero-meta="1" style="margin-top:12px; display:flex; align-items:center; gap:11px; font-weight:700; font-size:11.5px; color:#87857B;">
+              <span>@choco_lover</span><span>♥ 284</span><span>댓글 41</span>
+            </div>
+            <div style="margin-top:14px; display:flex; align-items:center; justify-content:space-between; background:#FFFDF6; border:2px solid #6F4E37; border-radius:12px; padding:12px 14px;">
+              <span style="font-weight:800; font-size:12px; color:#6B554A;">누적 수익률</span>
+              <span data-z-hero-ret="1" style="font-weight:900; font-size:22px; color:#E0453C; letter-spacing:-0.01em;">+18.2%</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; position:relative;">
+          <div style="font-weight:800; font-size:12px; color:#7B5BC4; letter-spacing:0.02em; margin-bottom:8px;">구성 종목 3</div>
+          <div style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:12px; padding:15px; display:flex; flex-direction:column; gap:10px;">
+            <div data-z-stock="0" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:8px; padding:12px 13px; cursor:pointer; transition:transform 0.12s ease;">
+              <span style="display:flex; width:38px; height:38px; align-items:center; justify-content:center; background:#F9BFD8; border:1px solid #6B554A; border-radius:8px; font-weight:900; font-size:13px; color:#6B554A;">롯</span>
+              <div style="flex:1; min-width:0;"><div style="font-weight:900; font-size:14.5px; color:#6B554A;">롯데웰푸드</div><div style="margin-top:2px; font-weight:700; font-size:10.5px; color:#87857B;">비중 45% · 브랜드</div></div>
+              <span style="font-weight:900; font-size:13px; color:#E0453C; white-space:nowrap;">+21.4%</span>
+            </div>
+            <div data-z-stock="1" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:8px; padding:12px 13px; cursor:pointer; transition:transform 0.12s ease;">
+              <span style="display:flex; width:38px; height:38px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:8px; font-weight:900; font-size:13px; color:#6B554A;">바</span>
+              <div style="flex:1; min-width:0;"><div style="font-weight:900; font-size:14.5px; color:#6B554A;">바인더스</div><div style="margin-top:2px; font-weight:700; font-size:10.5px; color:#87857B;">비중 32% · 제조</div></div>
+              <span style="font-weight:900; font-size:13px; color:#E0453C; white-space:nowrap;">+15.8%</span>
+            </div>
+            <div data-z-stock="2" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:8px; padding:12px 13px; cursor:pointer; transition:transform 0.12s ease;">
+              <span style="display:flex; width:38px; height:38px; align-items:center; justify-content:center; background:#CDB5F9; border:1px solid #6B554A; border-radius:8px; font-weight:900; font-size:13px; color:#6B554A;">신</span>
+              <div style="flex:1; min-width:0;"><div style="font-weight:900; font-size:14.5px; color:#6B554A;">신라교역</div><div style="margin-top:2px; font-weight:700; font-size:10.5px; color:#87857B;">비중 23% · 원재료</div></div>
+              <span style="font-weight:900; font-size:13px; color:#2B5FB8; white-space:nowrap;">-3.1%</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; display:flex; gap:10px;">
+          <div data-z-like="1" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:#FFFFFF; border:1px solid #6B554A; border-radius:999px; padding:14px 0; box-shadow:3px 4px 0 #6B554A; cursor:pointer; font-weight:900; font-size:13.5px; color:#6B554A; transition:background 0.18s ease, color 0.18s ease, transform 0.12s ease;"><span data-z-heart="1" style="display:inline-block;">♥</span> <span data-z-likelabel="1">좋아요</span></div>
+          <div data-z-add="1" style="flex:1; display:flex; align-items:center; justify-content:center; gap:8px; background:#7B5BC4; border:1px solid #6B554A; border-radius:999px; padding:14px 0; box-shadow:3px 4px 0 #6B554A; cursor:pointer; font-weight:900; font-size:13.5px; color:#FFFFFF; transition:background 0.18s ease, transform 0.12s ease;">따라 담기</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ Z6 만들기 ══════════ -->
+  <div data-screen-label="Z6 만들기" style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-weight:800; font-size:13px; color:#6B554A;">Z6 · 밈트폴리오 만들기</div>
+    <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FDFEEA; border:3px solid #111111; border-radius:34px; overflow:hidden;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 24px 0; font-weight:800; font-size:14px; color:#6B554A;">
+        <span>9:41</span>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <svg width="19" height="12" viewBox="0 0 19 12" style="display:block;"><rect x="0" y="7.5" width="3" height="4" rx="1" fill="#6B554A"></rect><rect x="5" y="5" width="3" height="6.5" rx="1" fill="#6B554A"></rect><rect x="10" y="2.5" width="3" height="9" rx="1" fill="#6B554A"></rect><rect x="15" y="0" width="3" height="11.5" rx="1" fill="#6B554A" opacity="0.35"></rect></svg><svg width="17" height="12" viewBox="0 0 17 12" style="display:block;"><path d="M1.5 4.2 C5.4 0.6 11.6 0.6 15.5 4.2" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><path d="M4 7 C6.6 4.7 10.4 4.7 13 7" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><circle cx="8.5" cy="10.2" r="1.6" fill="#6B554A"></circle></svg><svg width="26" height="12" viewBox="0 0 26 12" style="display:block;"><rect x="0.6" y="0.6" width="21.5" height="10.8" rx="3.4" fill="none" stroke="#6B554A" stroke-width="1.1" opacity="0.4"></rect><rect x="2.3" y="2.3" width="14.5" height="7.4" rx="1.8" fill="#6B554A"></rect><path d="M23.6 4.2 C24.7 4.5 25.4 5.2 25.4 6 C25.4 6.8 24.7 7.5 23.6 7.8 Z" fill="#6B554A" opacity="0.4"></path></svg>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:16px 20px 0;">
+        <span data-z-go="Z3" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 20 20" style="display:block;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#6B554A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+        </span>
+        <div style="flex:1; font-weight:900; font-size:21px; color:#6B554A; letter-spacing:-0.01em;">새 밈트폴리오</div>
+        <span data-z-count="1" style="background:#F7FABF; border:1px solid #6B554A; border-radius:999px; padding:6px 11px; font-weight:900; font-size:11px; color:#6B554A;">2/10 종목</span>
+      </div>
+
+      <div data-z-toast6="1" style="position:absolute; left:50%; bottom:34px; transform:translate(-50%, 14px); background:#6B554A; color:#FBFAEA; border-radius:999px; padding:11px 20px; font-weight:800; font-size:12.5px; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity 0.22s ease, transform 0.22s ease; z-index:40;">저장했어요</div>
+
+      <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:22px 20px 26px;">
+        <div style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:12px; padding:14px 15px; box-shadow:3px 4px 0 rgba(17,17,17,0.9);">
+          <div style="font-weight:800; font-size:11px; color:#87857B;">폴더 이름</div>
+          <div style="margin-top:7px; display:flex; align-items:center; justify-content:space-between;">
+            <span data-z-cname="1" style="font-weight:900; font-size:17px; color:#6B554A; outline:none;">두바이초콜릿 풀패키지</span>
+            <span data-z-cedit="1" style="font-weight:900; font-size:13px; color:#7B5BC4; cursor:pointer;">수정</span>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; position:relative;">
+          <div style="font-weight:800; font-size:12px; color:#7B5BC4; letter-spacing:0.02em; margin-bottom:8px;">연결 키워드</div>
+          <div data-z-kwbox="1" style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:12px; padding:14px 15px; box-shadow:3px 4px 0 rgba(17,17,17,0.9); display:flex; gap:6px; flex-wrap:wrap;">
+            <span data-z-kw="두바이초콜릿" data-on="1" style="background:#7B5BC4; border:1.5px solid #7B5BC4; border-radius:999px; padding:7px 13px; font-weight:900; font-size:11.5px; white-space:nowrap; color:#FFFFFF; cursor:pointer; transition:transform 0.12s ease;">#두바이초콜릿 ✕</span>
+            <span data-z-kw="탕후루" style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:999px; padding:7px 13px; font-weight:900; font-size:11.5px; white-space:nowrap; color:#6B554A; cursor:pointer; transition:transform 0.12s ease;">#탕후루</span>
+            <span data-z-kw="요아정" style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:999px; padding:7px 13px; font-weight:900; font-size:11.5px; white-space:nowrap; color:#6B554A; cursor:pointer; transition:transform 0.12s ease;">#요아정</span>
+            <span data-z-kwadd="1" style="background:#FFFFFF; border:1px dashed #CFCBBE; border-radius:999px; padding:6px 12px; font-weight:900; font-size:11.5px; white-space:nowrap; color:#87857B; cursor:pointer;">+ 추가</span>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; position:relative;">
+          <div style="font-weight:800; font-size:12px; color:#7B5BC4; letter-spacing:0.02em; margin-bottom:8px;">담은 종목</div>
+          <div data-z-picklist="1" style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:12px; padding:15px; display:flex; flex-direction:column; gap:10px;">
+            <div data-z-picked="0" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:8px; padding:12px 13px; cursor:pointer; transition:transform 0.12s ease;">
+              <span style="display:flex; width:38px; height:38px; align-items:center; justify-content:center; background:#F9BFD8; border:1px solid #6B554A; border-radius:8px; font-weight:900; font-size:13px; color:#6B554A;">롯</span>
+              <div style="flex:1; min-width:0;"><div style="font-weight:900; font-size:14.5px; color:#6B554A;">롯데웰푸드</div><div style="margin-top:2px; font-weight:700; font-size:10.5px; color:#87857B;">브랜드 · 비중 60%</div></div>
+              <span style="display:flex; flex:none; width:28px; height:28px; align-items:center; justify-content:center; box-sizing:border-box; background:#FFFFFF; border:1px solid #6B554A; border-radius:8px; font-weight:800; font-size:12px; line-height:1; color:#6B554A; cursor:pointer;" data-z-rm="1">✕</span>
+            </div>
+            <div data-z-picked="1" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:8px; padding:12px 13px; cursor:pointer; transition:transform 0.12s ease;">
+              <span style="display:flex; width:38px; height:38px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:8px; font-weight:900; font-size:13px; color:#6B554A;">바</span>
+              <div style="flex:1; min-width:0;"><div style="font-weight:900; font-size:14.5px; color:#6B554A;">바인더스</div><div style="margin-top:2px; font-weight:700; font-size:10.5px; color:#87857B;">제조 · 비중 40%</div></div>
+              <span style="display:flex; flex:none; width:28px; height:28px; align-items:center; justify-content:center; box-sizing:border-box; background:#FFFFFF; border:1px solid #6B554A; border-radius:8px; font-weight:800; font-size:12px; line-height:1; color:#6B554A; cursor:pointer;" data-z-rm="1">✕</span>
+            </div>
+            <div data-z-addstock="1" style="display:flex; align-items:center; justify-content:center; gap:8px; border:1px dashed #CFCBBE; border-radius:12px; padding:13px 0; font-weight:900; font-size:12.5px; color:#87857B; cursor:pointer;">+ 종목 추가하기</div>
+          </div>
+        </div>
+
+        <div data-z-save="1" style="margin-top:20px; display:flex; align-items:center; justify-content:center; gap:10px; background:#F7FABF; border:3px solid #6B554A; border-radius:999px; padding:16px 0; box-shadow:5px 6px 0 #6B554A; cursor:pointer; transition:transform 0.13s ease, box-shadow 0.13s ease;">
+          <svg width="17" height="17" viewBox="0 0 16 16" style="display:block;"><path d="M6.2 2.05c-1.1-.85-2.5-1-3.5-.25-1.2.9-1.15 2.6.1 3.5.75.55 1.7.8 2.6.8h.8V2.05ZM9.8 2.05c1.1-.85 2.5-1 3.5-.25 1.2.9 1.15 2.6-.1 3.5-.75.55-1.7.8-2.6.8h-.8V2.05ZM6.55 1.4h2.9c.55 0 1 .45 1 1v5.4c0 .55-.45 1-1 1h-2.9c-.55 0-1-.45-1-1V2.4c0-.55.45-1 1-1ZM7 2.85v4.5c0 .3.25.55.55.55h.9c.3 0 .55-.25.55-.55V2.85c0-.3-.25-.55-.55-.55h-.9c-.3 0-.55.25-.55.55ZM5.6 8.2h4.8c.5 0 .93.37 1 .87l.48 3.45c.27 1.93-1.23 3.63-3.17 3.63h-1.42c-1.94 0-3.44-1.7-3.17-3.63l.48-3.45c.07-.5.5-.87 1-.87ZM5.95 12.8c0 .75.92 1.35 2.05 1.35s2.05-.6 2.05-1.35-.92-1.35-2.05-1.35-2.05.6-2.05 1.35Z" fill="#6B554A"></path></svg>
+          <span style="font-weight:900; font-size:15.5px; color:#6B554A; white-space:nowrap;">압축해서 저장하기</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ Z7 마이페이지 ══════════ -->
+  <div data-screen-label="Z7 마이" style="display:flex; flex-direction:column; gap:12px;">
+    <div style="font-weight:800; font-size:13px; color:#6B554A;">Z7 · 마이페이지</div>
+    <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FDFEEA; border:3px solid #111111; border-radius:34px; overflow:hidden;">
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 24px 0; font-weight:800; font-size:14px; color:#6B554A;">
+        <span>9:41</span>
+        <div style="display:flex; align-items:center; gap:5px;">
+          <svg width="19" height="12" viewBox="0 0 19 12" style="display:block;"><rect x="0" y="7.5" width="3" height="4" rx="1" fill="#6B554A"></rect><rect x="5" y="5" width="3" height="6.5" rx="1" fill="#6B554A"></rect><rect x="10" y="2.5" width="3" height="9" rx="1" fill="#6B554A"></rect><rect x="15" y="0" width="3" height="11.5" rx="1" fill="#6B554A" opacity="0.35"></rect></svg><svg width="17" height="12" viewBox="0 0 17 12" style="display:block;"><path d="M1.5 4.2 C5.4 0.6 11.6 0.6 15.5 4.2" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><path d="M4 7 C6.6 4.7 10.4 4.7 13 7" fill="none" stroke="#6B554A" stroke-width="1.7" stroke-linecap="round"></path><circle cx="8.5" cy="10.2" r="1.6" fill="#6B554A"></circle></svg><svg width="26" height="12" viewBox="0 0 26 12" style="display:block;"><rect x="0.6" y="0.6" width="21.5" height="10.8" rx="3.4" fill="none" stroke="#6B554A" stroke-width="1.1" opacity="0.4"></rect><rect x="2.3" y="2.3" width="14.5" height="7.4" rx="1.8" fill="#6B554A"></rect><path d="M23.6 4.2 C24.7 4.5 25.4 5.2 25.4 6 C25.4 6.8 24.7 7.5 23.6 7.8 Z" fill="#6B554A" opacity="0.4"></path></svg>
+        </div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; padding:16px 20px 0;">
+        <span data-z-go="Z1" style="display:flex; width:40px; height:40px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:12px; cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 20 20" style="display:block;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#6B554A" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+        </span>
+        <div style="flex:1; font-weight:900; font-size:21px; color:#6B554A; letter-spacing:-0.01em;">마이페이지</div>
+      </div>
+
+      <div data-z-my-scroll style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:22px 20px 26px;">
+        <div style="position:relative;">
+          <div style="background:#B79BF0; border:1px solid #6B554A; border-radius:16px; box-shadow:5px 6px 0 #6B554A; padding:17px 16px;">
+            <div style="display:flex; align-items:center; gap:13px;">
+              <span style="display:flex; width:54px; height:54px; align-items:center; justify-content:center; background:#F7FABF; border:1px solid #6B554A; border-radius:16px;"><svg width="30" height="30" viewBox="0 0 32 32" style="display:block;"><path d="M5.8 13 C12.2 8.8 19.8 8.8 26.2 13 L16 28.5 Z" fill="#FFFFFF" stroke="#6B554A" stroke-width="2" stroke-linejoin="round"></path><path d="M3.5 9.5 C11 4.2 21 4.2 28.5 9.5 L26.2 13 C19.8 8.8 12.2 8.8 5.8 13 Z" fill="#CBB6F7" stroke="#6B554A" stroke-width="2" stroke-linejoin="round"></path><circle cx="13" cy="15.5" r="2" fill="#CBB6F7" stroke="#6B554A" stroke-width="1.5"></circle><circle cx="19" cy="16.5" r="1.8" fill="#CBB6F7" stroke="#6B554A" stroke-width="1.5"></circle><circle cx="16" cy="21.5" r="1.7" fill="#F7FABF" stroke="#6B554A" stroke-width="1.5"></circle></svg></span>
+              <div style="flex:1; min-width:0;">
+                <div style="font-weight:900; font-size:19px; color:#FFFFFF; letter-spacing:-0.01em; text-shadow:1.5px 1.5px 0 #6B554A;">로컬 사용자</div>
+                <div style="margin-top:3px; font-weight:700; font-size:11.5px; color:#FBF7EE;">이 기기에 안전하게 저장됩니다</div>
+              </div>
+            </div>
+            <div style="margin-top:15px; display:flex; gap:8px;">
+              <span style="flex:1; background:#FFFFFF; border-radius:8px; padding:10px 0; text-align:center;"><span style="display:block; font-weight:800; font-size:9.5px; color:#87857B;">내 폴더</span><span data-z-my-count style="display:block; margin-top:2px; font-weight:900; font-size:16px; color:#6B554A;">0</span></span>
+              <span style="flex:1; background:#FFFFFF; border-radius:8px; padding:10px 0; text-align:center;"><span style="display:block; font-weight:800; font-size:9.5px; color:#87857B;">팔로워</span><span style="display:block; margin-top:2px; font-weight:900; font-size:16px; color:#6B554A;">—</span></span>
+              <span style="flex:1; background:#FFFFFF; border-radius:8px; padding:10px 0; text-align:center;"><span style="display:block; font-weight:800; font-size:9.5px; color:#87857B;">받은 ♥</span><span style="display:block; margin-top:2px; font-weight:900; font-size:16px; color:#6B554A;">—</span></span>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px; position:relative;">
+          <div style="font-weight:800; font-size:12px; color:#7B5BC4; letter-spacing:0.02em; margin-bottom:8px;">내 폴더</div>
+          <div data-z-my-folders style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:12px; padding:15px; display:flex; flex-direction:column; gap:10px;">
+            <div data-z-go="Z5" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:8px; padding:12px 13px; cursor:pointer;">
+              <svg viewBox="0 0 200 134" width="38" height="26" style="display:block; flex:none;"><path d="M14 70 V27 q0-13 13-13 h42 q10 0 13 8 l4 7 h95 q11 0 11 11 v37 Z" fill="#F9B0C4" stroke="#6B554A" stroke-width="9" stroke-linejoin="round"></path><rect x="76" y="33" width="102" height="18" rx="8" fill="#F9F0C8" stroke="#6B554A" stroke-width="8"></rect><rect x="8" y="46" width="184" height="84" rx="19" fill="#FBC9D8" stroke="#6B554A" stroke-width="9"></rect><path d="M28 68 q3-9 14-11" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" opacity="0.8"></path></svg>
+              <div style="flex:1; min-width:0;"><div style="font-weight:900; font-size:14.5px; color:#6B554A;">두바이초콜릿 풀패키지</div><div style="margin-top:2px; font-weight:700; font-size:10.5px; color:#87857B;">종목 2 · ♥ 18</div></div>
+              <span style="font-weight:900; font-size:13px; color:#E0453C; white-space:nowrap;">+6.2%</span>
+            </div>
+            <div data-z-go="Z5" style="display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:8px; padding:12px 13px; cursor:pointer;">
+              <svg viewBox="0 0 200 134" width="38" height="26" style="display:block; flex:none;"><path d="M14 70 V27 q0-13 13-13 h42 q10 0 13 8 l4 7 h95 q11 0 11 11 v37 Z" fill="#7FB6F8" stroke="#6B554A" stroke-width="9" stroke-linejoin="round"></path><rect x="76" y="33" width="102" height="18" rx="8" fill="#F9F0C8" stroke="#6B554A" stroke-width="8"></rect><rect x="8" y="46" width="184" height="84" rx="19" fill="#A9CFFB" stroke="#6B554A" stroke-width="9"></rect><path d="M28 68 q3-9 14-11" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" opacity="0.8"></path></svg>
+              <div style="flex:1; min-width:0;"><div style="font-weight:900; font-size:14.5px; color:#6B554A;">러닝크루 시즌픽</div><div style="margin-top:2px; font-weight:700; font-size:10.5px; color:#87857B;">종목 4 · ♥ 52</div></div>
+              <span style="font-weight:900; font-size:13px; color:#E0453C; white-space:nowrap;">+3.8%</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1360,&quot;height&quot;:960}}">
+class Component extends DCLogic {
+  componentDidMount() {
+    setTimeout(() => { this.shell(); this.grid(); this.nav(); this.dial(); this.neutralizeUnlinkedMarketData(); this.hydrate(); }, 60);
+  }
+
+  // GitHub live-data → 화면 표시 / localStorage → 저장 / JSON·CSV → 내보내기.
+  hydrate() {
+    var self = this;
+    import('./trendzip-data.js').then(function (api) {
+      self.api = api;
+      return api.loadTrends({ mode: 'live' }).then(function (res) {
+        self.data = res;
+        self.savedPortfolios = api.listPortfolios();
+        var list = api.sortTrends(res.trends, 'score').slice(0, 10);
+        if (!list.length) return;
+        self.trends = res.trends;
+        var sats = [].slice.call(document.querySelectorAll('[data-z-dial]'));
+        sats.forEach(function (el, i) {
+          var t = list[i];
+          if (!t) { el.style.display = 'none'; return; }
+          el.setAttribute('data-label', t.displayName);
+          el.setAttribute('data-cat', t.categoryKo);
+          el.setAttribute('data-delta', t.delta);
+          el.setAttribute('data-rank', t.rankLabel);
+          el.setAttribute('data-topic', t.topic);
+        });
+        var t0 = list[0];
+        self.applyTrend(t0);
+        self.installDataControls();
+        self.grid(true);
+        self.renderMyPage();
+        (window.__omPaints || []).forEach(function (paint) { paint(); });
+        console.log('[trendzip] source=' + res.source + ' stale=' + res.stale + ' trends=' + res.trends.length);
+      });
+    }).catch(function (e) {
+      console.error('[trendzip] live data unavailable', e);
+      var label = document.querySelector('[data-z-dial-title]');
+      if (label) label.textContent = '데이터 연결 실패';
+    });
+  }
+
+  findTrend(key) {
+    return (this.trends || []).find(function (trend) {
+      return trend.topic === key || trend.displayName === key;
+    });
+  }
+
+  applyTrend(trend) {
+    if (!trend) return;
+    this.currentTrend = trend;
+    var set = function (selector, value) {
+      var node = document.querySelector(selector);
+      if (node) node.textContent = value == null ? '' : String(value);
+    };
+    set('[data-z-ttitle]', trend.displayName);
+    set('[data-z-detail-category]', trend.categoryKo);
+    set('[data-z-detail-summary]', trend.summary);
+    set('[data-z-detail-state]', trend.lifecycleLabel || trend.lifecycle);
+    set('[data-z-detail-confidence]', trend.confidence && trend.confidence.label);
+    set('[data-z-detail-delta]', trend.delta);
+    set('[data-z-detail-period]', trend.ageHours + '시간 관측');
+    set('[data-z-detail-source]', 'X ' + (trend.sources.x || '—') + '위 · Google ' + (trend.sources.google_trends || '—') + '위');
+    var date = document.querySelector('[data-z-live-date]');
+    if (date && this.data) date.textContent = "TODAY'S FILE · " + new Date(this.data.observedAt).toLocaleDateString('ko-KR', { month:'2-digit', day:'2-digit' });
+    this.vc(true);
+    this.preparePortfolio(trend);
+    this.neutralizeUnlinkedMarketData();
+  }
+
+  neutralizeUnlinkedMarketData() {
+    [].slice.call(document.querySelectorAll('[data-z-fd-ret],[data-z-hero-ret],[data-z-sh-ret]')).forEach(function (node) {
+      node.textContent = '시장데이터 미연동';
+      node.style.color = '#87857B';
+      node.style.fontSize = '10.5px';
+    });
+    var values = {
+      price: '—', chg: '시장데이터 미연동', cap: '—', vol: '—', per: '—', band: '—'
+    };
+    Object.keys(values).forEach(function (key) {
+      var node = document.querySelector('[data-z-st-' + key + ']');
+      if (node) node.textContent = values[key];
+    });
+    ['line', 'area', 'dot'].forEach(function (key) {
+      var node = document.querySelector('[data-z-st-' + key + ']');
+      if (node) node.style.display = 'none';
+    });
+    var chartLabel = document.querySelector('[data-z-st-label]');
+    if (chartLabel) chartLabel.textContent = '시세 API 연결 전';
+    [].slice.call(document.querySelectorAll('[data-screen-label^="Z5"] span')).forEach(function (node) {
+      if (!node.children.length && /^[+-]\d+(?:\.\d+)?%/.test(node.textContent.trim())) {
+        node.textContent = '—';
+        node.style.color = '#87857B';
+      }
+    });
+  }
+
+  preparePortfolio(trend) {
+    if (!trend) return;
+    var name = document.querySelector('[data-z-cname]');
+    if (name) name.textContent = trend.displayName + ' 연결기업';
+    var kwBox = document.querySelector('[data-z-kwbox]');
+    var add = kwBox && kwBox.querySelector('[data-z-kwadd]');
+    if (kwBox && add) {
+      [].slice.call(kwBox.querySelectorAll('[data-z-kw]')).forEach(function (node) { node.remove(); });
+      var words = [trend.displayName].concat((trend.keywords || []).map(function (item) { return item.text; })).slice(0, 5);
+      words.forEach(function (word) {
+        var chip = document.createElement('span');
+        chip.setAttribute('data-z-kw', word);
+        chip.setAttribute('data-on', '1');
+        chip.style.cssText = 'background:#7B5BC4;border:1.5px solid #7B5BC4;border-radius:999px;padding:7px 13px;font-weight:900;font-size:11.5px;white-space:nowrap;color:#FFFFFF;cursor:pointer;';
+        chip.textContent = '#' + word + ' ✕';
+        kwBox.insertBefore(chip, add);
+      });
+    }
+    var pickList = document.querySelector('[data-z-picklist]');
+    var addStock = pickList && pickList.querySelector('[data-z-addstock]');
+    if (pickList && addStock) {
+      var safe = function (value) {
+        return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
+          return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char];
+        });
+      };
+      [].slice.call(pickList.querySelectorAll('[data-z-picked]')).forEach(function (node) { node.remove(); });
+      (trend.companies || []).slice(0, 5).forEach(function (company, index) {
+        var row = document.createElement('div');
+        row.setAttribute('data-z-picked', String(index));
+        row.style.cssText = 'display:flex;align-items:center;gap:12px;background:#FFFFFF;border:1.5px solid #6B554A;border-radius:8px;padding:12px 13px;';
+        var initial = safe((company.company || '?').slice(0, 1));
+        row.innerHTML = '<span style="display:flex;width:38px;height:38px;align-items:center;justify-content:center;background:#CDB5F9;border:1px solid #6B554A;border-radius:8px;font-weight:900;font-size:13px;color:#6B554A;">' + initial + '</span>'
+          + '<div style="flex:1;min-width:0;"><div style="font-weight:900;font-size:14.5px;color:#6B554A;">' + safe(company.company || '기업명 미확인') + '</div><div style="margin-top:2px;font-weight:700;font-size:10.5px;color:#87857B;">' + safe(company.relation_category || '연관기업') + ' · ' + safe(company.stock_code || '종목코드 미확인') + '</div></div>'
+          + '<span data-z-rm="1" style="display:flex;flex:none;width:28px;height:28px;align-items:center;justify-content:center;background:#FFFFFF;border:1px solid #6B554A;border-radius:8px;font-weight:800;font-size:12px;color:#6B554A;cursor:pointer;">✕</span>';
+        pickList.insertBefore(row, addStock);
+      });
+      var count = document.querySelector('[data-z-count]');
+      if (count) count.textContent = Math.min((trend.companies || []).length, 5) + '/10 종목';
+    }
+  }
+
+  installDataControls() {
+    if (document.querySelector('[data-z-export-controls]')) return;
+    var my = [].slice.call(document.querySelectorAll('[data-screen-label]')).find(function (screen) {
+      return screen.getAttribute('data-screen-label').indexOf('Z7') === 0;
+    });
+    var scroll = my && my.querySelector('[data-z-my-scroll]');
+    if (!scroll || !this.api) return;
+    var host = document.createElement('div');
+    host.setAttribute('data-z-export-controls', '1');
+    host.style.cssText = 'margin-top:16px;background:#FFFFFF;border:1.5px solid #6B554A;border-radius:12px;padding:14px;box-shadow:3px 4px 0 rgba(17,17,17,.9);';
+    host.innerHTML = '<div style="font-weight:900;font-size:13px;color:#7B5BC4;">내 데이터</div>'
+      + '<div style="margin-top:5px;font-weight:700;font-size:10.5px;color:#87857B;">이 기기에 저장 · 파일로 내보내기</div>'
+      + '<div style="display:flex;gap:8px;margin-top:12px;"><button data-z-export-json style="flex:1;border:1.5px solid #6B554A;border-radius:999px;padding:10px;background:#F7FABF;font-weight:900;color:#6B554A;cursor:pointer;">JSON</button>'
+      + '<button data-z-export-csv style="flex:1;border:1.5px solid #6B554A;border-radius:999px;padding:10px;background:#CBB6F7;font-weight:900;color:#FFFFFF;cursor:pointer;">CSV</button></div>';
+    scroll.appendChild(host);
+    var api = this.api;
+    host.querySelector('[data-z-export-json]').onclick = function () { api.exportPortfoliosJson(); };
+    host.querySelector('[data-z-export-csv]').onclick = function () { api.exportPortfoliosCsv(); };
+  }
+
+  renderMyPage() {
+    var portfolios = this.api ? this.api.listPortfolios() : [];
+    var count = document.querySelector('[data-z-my-count]');
+    if (count) count.textContent = String(portfolios.length);
+    var host = document.querySelector('[data-z-my-folders]');
+    if (!host) return;
+    if (!portfolios.length) {
+      host.innerHTML = '<div style="padding:16px 8px;text-align:center;font-weight:800;font-size:12px;color:#87857B;">아직 저장한 폴더가 없어요</div>';
+      return;
+    }
+    var safe = function (value) {
+      return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) {
+        return ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[char];
+      });
+    };
+    host.innerHTML = portfolios.slice(0, 6).map(function (portfolio) {
+      return '<div data-z-go="Z5" style="display:flex;align-items:center;gap:12px;background:#FFFFFF;border:1.5px solid #6B554A;border-radius:8px;padding:12px 13px;cursor:pointer;">'
+        + '<span style="display:flex;width:38px;height:28px;align-items:center;justify-content:center;background:#F9BFD8;border:1px solid #6B554A;border-radius:7px;font-weight:900;color:#6B554A;">zip</span>'
+        + '<div style="flex:1;min-width:0;"><div style="font-weight:900;font-size:14.5px;color:#6B554A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + safe(portfolio.name) + '</div>'
+        + '<div style="margin-top:2px;font-weight:700;font-size:10.5px;color:#87857B;">종목 ' + ((portfolio.companies || []).length) + ' · 키워드 ' + ((portfolio.keywords || []).length) + '</div></div>'
+        + '<span style="font-weight:900;font-size:10.5px;color:#87857B;white-space:nowrap;">저장됨</span></div>';
+    }).join('');
+    var self = this;
+    [].slice.call(host.querySelectorAll('[data-z-go]')).forEach(function (node) {
+      node.onclick = function () { if (self.jl) self.jl('Z5'); };
+    });
+  }
+
+  shell() {
+    if (window.__zpShell) return;
+    window.__zpShell = true;
+    var st = document.createElement('style');
+    st.textContent = "::-webkit-scrollbar { width:0; height:0; }\n #zp-nav { position: fixed; left:0; right:0; bottom:0; z-index:60; display:flex; gap:8px; justify-content:flex-start; overflow-x:auto; scrollbar-width:none; padding:12px 14px 16px; background:linear-gradient(180deg, rgba(240,245,216,0) 0%, rgba(240,245,216,0.96) 55%); }\n #zp-nav button { white-space:nowrap; flex:none; border:1px solid #6B554A; border-radius:12px; padding:9px 15px; font-weight:900; font-size:12px; color:#6B554A; background:#FFFFFF; cursor:pointer; font-family:Pretendard, sans-serif; }\n #zp-nav button[data-on] { background:#CBB6F7; color:#FFFFFF; border-color:#CBB6F7; }";
+    document.head.appendChild(st);
+  }
+
+  nav() {
+    if (document.getElementById('zp-nav')) return;
+    var sc = [].slice.call(document.querySelectorAll('[data-screen-label]'));
+    if (!sc.length) return;
+    var nav = document.createElement('div');
+    nav.id = 'zp-nav';
+    nav.innerHTML = sc.map(function (w) { return '<button type="button">' + w.getAttribute('data-screen-label') + '</button>'; }).join('');
+    var jump = function (k) {
+      var r = sc[k].getBoundingClientRect();
+      window.scrollTo({ left: window.scrollX + r.left - 34, top: window.scrollY + r.top - 34, behavior: 'smooth' });
+      [].slice.call(nav.children).forEach(function (x, i) { if (i === k) x.setAttribute('data-on', '1'); else x.removeAttribute('data-on'); });
+    };
+    [].slice.call(nav.children).forEach(function (b, k) { b.onclick = function () { jump(k); }; });
+    nav.children[0].setAttribute('data-on', '1');
+    document.body.appendChild(nav);
+    this.jump = jump;
+    var jl = function (pre) {
+      for (var i = 0; i < sc.length; i++) { if (sc[i].getAttribute('data-screen-label').indexOf(pre) === 0) { jump(i); return; } }
+    };
+    this.jl = jl;
+    var self = this;
+    [].slice.call(document.querySelectorAll('[data-z-go]')).forEach(function (el) {
+      el.onclick = function (e) { e.stopPropagation(); jl(el.getAttribute('data-z-go')); };
+    });
+    var zip = document.querySelector('[data-z-zip]');
+    if (zip) zip.onclick = function () { jl('Z3'); };
+    var back = document.querySelector('[data-z-back]');
+    if (back) back.onclick = function () { jl('Z1'); };
+    var back2 = document.querySelector('[data-z-back2]');
+    if (back2) back2.onclick = function () { jl('Z3'); };
+    [].slice.call(document.querySelectorAll('[data-z-my]')).forEach(function (el) {
+      el.onclick = function () { jl('Z7'); };
+    });
+    var feedList = document.querySelector('[data-z-feedlist]');
+    if (feedList && !feedList.__wired) {
+      feedList.__wired = true;
+      var order0 = [].slice.call(feedList.querySelectorAll('[data-z-feed]'));
+      var num = function (el, sel) {
+        var n = el.querySelector(sel);
+        if (!n) return 0;
+        var m = n.textContent.replace(/[^0-9.\-]/g, '');
+        return parseFloat(m) || 0;
+      };
+      var applySort = function (mode) {
+        var rows = order0.slice();
+        if (mode === 'pop') rows.sort(function (a, b) { return num(b, '[data-z-fd-meta] span:last-child') - num(a, '[data-z-fd-meta] span:last-child'); });
+        else if (mode === 'ret') rows.sort(function (a, b) { return num(b, '[data-z-fd-ret]') - num(a, '[data-z-fd-ret]'); });
+        rows.forEach(function (r, i) {
+          r.style.order = String(i);
+          r.style.animation = 'zpIn 0.36s cubic-bezier(0.22,1,0.36,1) ' + (i * 0.05).toFixed(2) + 's both';
+        });
+      };
+      [].slice.call(document.querySelectorAll('[data-z-sort]')).forEach(function (b) {
+        b.onclick = function () {
+          b.style.transform = 'scale(0.95)';
+          setTimeout(function () { b.style.transform = ''; }, 130);
+          [].slice.call(document.querySelectorAll('[data-z-sort]')).forEach(function (o) {
+            var on = o === b;
+            o.style.background = on ? '#6B554A' : 'transparent';
+            o.style.borderColor = on ? '#6B554A' : '#C9C5B4';
+            o.style.color = on ? '#FBFAEA' : '#87857B';
+          });
+          applySort(b.getAttribute('data-z-sort'));
+        };
+      });
+    }
+    var orderBtn = document.querySelector('[data-z-order]');
+    if (orderBtn && !orderBtn.__wired) {
+      orderBtn.__wired = true;
+      orderBtn.onclick = function () {
+        orderBtn.style.transform = 'translate(2px, 3px)';
+        orderBtn.style.boxShadow = '1px 1px 0 #6B554A';
+        setTimeout(function () { orderBtn.style.transform = ''; orderBtn.style.boxShadow = '3px 4px 0 #6B554A'; }, 140);
+        var nm = document.querySelector('[data-z-st-name]');
+        var sd = document.querySelector('[data-z-sdim]'), ss = document.querySelector('[data-z-ssheet]');
+        if (ss) ss.style.transform = 'translateY(102%)';
+        if (sd) { sd.style.opacity = '0'; sd.style.pointerEvents = 'none'; }
+        setTimeout(function () { pop((nm ? nm.textContent : '종목') + ' 주문 화면으로 이동해요'); }, 200);
+      };
+    }
+    var mk = document.querySelector('[data-z-picklist]');
+    if (mk && !mk.__wired) {
+      mk.__wired = true;
+      var toast6 = document.querySelector('[data-z-toast6]');
+      var t6 = null;
+      var pop6 = function (msg) {
+        if (!toast6) return;
+        toast6.textContent = msg;
+        toast6.style.opacity = '1';
+        toast6.style.transform = 'translate(-50%, 0)';
+        clearTimeout(t6);
+        t6 = setTimeout(function () {
+          toast6.style.opacity = '0';
+          toast6.style.transform = 'translate(-50%, 14px)';
+        }, 1500);
+      };
+      var countEl = document.querySelector('[data-z-count]');
+      var syncCount = function () {
+        var n = mk.querySelectorAll('[data-z-picked]').length;
+        if (countEl) countEl.textContent = n + '/10 종목';
+      };
+      var pool = [
+        ['신', '신라교역', '원재료 · 비중 —', '#CDB5F9'],
+        ['삼', '삼양사', '원재료 · 비중 —', '#F8D8B0'],
+        ['오', '오리온', '브랜드 · 비중 —', '#F9BFD8']
+      ];
+      var addBtn = document.querySelector('[data-z-addstock]');
+      var wireRemove = function (row) {
+        var x = row.querySelector('[data-z-rm]');
+        if (!x || x.__w) return;
+        x.__w = true;
+        x.onclick = function (e) {
+          e.stopPropagation();
+          row.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+          row.style.opacity = '0';
+          row.style.transform = 'translateX(-18px)';
+          setTimeout(function () {
+            row.remove();
+            syncCount();
+            pop6('종목을 뺐어요');
+          }, 200);
+        };
+      };
+      [].slice.call(mk.querySelectorAll('[data-z-picked]')).forEach(wireRemove);
+      if (addBtn) addBtn.onclick = function () {
+        var have = [].slice.call(mk.querySelectorAll('[data-z-picked]')).map(function (r) {
+          var t = r.querySelector('div div');
+          return t ? t.textContent : '';
+        });
+        var next = pool.filter(function (p) { return have.indexOf(p[1]) < 0; })[0];
+        if (!next) { pop6('추천 종목을 모두 담았어요'); return; }
+        var row = document.createElement('div');
+        row.setAttribute('data-z-picked', String(have.length));
+        row.style.cssText = 'display:flex; align-items:center; gap:12px; background:#FFFFFF; border:1.5px solid #6B554A; border-radius:8px; padding:12px 13px; cursor:pointer; animation:zpIn 0.34s cubic-bezier(0.22,1,0.36,1) both;';
+        row.innerHTML = '<span style="display:flex; width:38px; height:38px; align-items:center; justify-content:center; background:' + next[3] + '; border:1px solid #6B554A; border-radius:8px; font-weight:900; font-size:13px; color:#6B554A;">' + next[0] + '</span>'
+          + '<div style="flex:1; min-width:0;"><div style="font-weight:900; font-size:14.5px; color:#6B554A;">' + next[1] + '</div><div style="margin-top:2px; font-weight:700; font-size:10.5px; color:#87857B;">' + next[2] + '</div></div>'
+          + '<span data-z-rm="1" style="display:flex; flex:none; width:28px; height:28px; align-items:center; justify-content:center; box-sizing:border-box; background:#FFFFFF; border:1px solid #6B554A; border-radius:8px; font-weight:800; font-size:12px; line-height:1; color:#6B554A; cursor:pointer;">✕</span>';
+        mk.insertBefore(row, addBtn);
+        wireRemove(row);
+        syncCount();
+        pop6(next[1] + ' 담았어요');
+      };
+
+      [].slice.call(document.querySelectorAll('[data-z-kw]')).forEach(function (chip) {
+        if (chip.__w) return;
+        chip.__w = true;
+        chip.onclick = function () {
+          var on = chip.getAttribute('data-on') === '1';
+          var name = chip.getAttribute('data-z-kw');
+          chip.style.transform = 'scale(0.94)';
+          setTimeout(function () { chip.style.transform = ''; }, 130);
+          if (on) {
+            chip.removeAttribute('data-on');
+            chip.style.background = '#FFFFFF';
+            chip.style.borderColor = '#6B554A';
+            chip.style.color = '#6B554A';
+            chip.textContent = '#' + name;
+          } else {
+            chip.setAttribute('data-on', '1');
+            chip.style.background = '#7B5BC4';
+            chip.style.borderColor = '#7B5BC4';
+            chip.style.color = '#FFFFFF';
+            chip.textContent = '#' + name + ' ✕';
+          }
+        };
+      });
+
+      var kwAdd = document.querySelector('[data-z-kwadd]');
+      var kwBox = document.querySelector('[data-z-kwbox]');
+      var kwPool = ['얼먹젤리', '우베 디저트', '두바이쿠키'];
+      if (kwAdd && kwBox) kwAdd.onclick = function () {
+        var have = [].slice.call(kwBox.querySelectorAll('[data-z-kw]')).map(function (c) { return c.getAttribute('data-z-kw'); });
+        var next = kwPool.filter(function (k) { return have.indexOf(k) < 0; })[0];
+        if (!next) { pop6('추천 키워드를 모두 담았어요'); return; }
+        var c = document.createElement('span');
+        c.setAttribute('data-z-kw', next);
+        c.setAttribute('data-on', '1');
+        c.style.cssText = 'background:#7B5BC4; border:1.5px solid #7B5BC4; border-radius:999px; padding:7px 13px; font-weight:900; font-size:11.5px; white-space:nowrap; color:#FFFFFF; cursor:pointer; transition:transform 0.12s ease; animation:zpIn 0.3s cubic-bezier(0.22,1,0.36,1) both;';
+        c.textContent = '#' + next + ' ✕';
+        kwBox.insertBefore(c, kwAdd);
+        c.__w = true;
+        c.onclick = function () {
+          c.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
+          c.style.opacity = '0';
+          c.style.transform = 'scale(0.8)';
+          setTimeout(function () { c.remove(); }, 180);
+        };
+      };
+
+      var nameEl = document.querySelector('[data-z-cname]');
+      var editBtn = document.querySelector('[data-z-cedit]');
+      if (nameEl && editBtn) editBtn.onclick = function () {
+        var editing = nameEl.getAttribute('contenteditable') === 'true';
+        if (editing) {
+          nameEl.removeAttribute('contenteditable');
+          nameEl.style.borderBottom = 'none';
+          editBtn.textContent = '수정';
+          pop6('폴더 이름을 바꿨어요');
+        } else {
+          nameEl.setAttribute('contenteditable', 'true');
+          nameEl.style.borderBottom = '2px solid #7B5BC4';
+          editBtn.textContent = '완료';
+          nameEl.focus();
+          var r = document.createRange();
+          r.selectNodeContents(nameEl);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(r);
+        }
+      };
+
+      var save = document.querySelector('[data-z-save]');
+      if (save) save.onclick = function () {
+        save.style.transform = 'translate(3px, 4px)';
+        save.style.boxShadow = '2px 2px 0 #6B554A';
+        setTimeout(function () { save.style.transform = ''; save.style.boxShadow = '5px 6px 0 #6B554A'; }, 140);
+        if (!self.api || !self.currentTrend) { pop6('실시간 데이터를 먼저 불러와 주세요'); return; }
+        var keywords = [].slice.call(document.querySelectorAll('[data-z-kw][data-on="1"]')).map(function (chip) { return chip.getAttribute('data-z-kw'); });
+        var portfolio = self.api.savePortfolio({
+          name: (nameEl && nameEl.textContent) || self.currentTrend.displayName + ' 연결기업',
+          trendTopic: self.currentTrend.topic,
+          observedAt: self.data && self.data.observedAt,
+          keywords: keywords,
+          companies: self.currentTrend.companies || []
+        });
+        self.savedPortfolios = self.api.listPortfolios();
+        self.grid(true);
+        self.renderMyPage();
+        pop6(portfolio.name + ' 저장했어요');
+        setTimeout(function () { jl('Z3'); }, 780);
+      };
+      syncCount();
+    }
+    var knob = document.querySelector('[data-z-knob]');
+    if (knob && !knob.__w) {
+      knob.__w = true;
+      var track = document.querySelector('[data-z-slide]');
+      var slabel = document.querySelector('[data-z-slabel]');
+      var kx = 0, kDrag = false, kx0 = 0;
+      var kmax = function () { return track.clientWidth - knob.offsetWidth - 10; };
+      var paint = function () {
+        knob.style.transform = 'translateX(' + kx + 'px)';
+        if (slabel) slabel.style.opacity = String(Math.max(0, 1 - kx / (kmax() * 0.6)));
+      };
+      var finish = function () {
+        jl('Z1');
+        setTimeout(function () { kx = 0; knob.style.transition = 'none'; paint(); }, 700);
+      };
+      knob.addEventListener('pointerdown', function (e) {
+        kDrag = true; kx0 = e.clientX - kx; knob.style.transition = 'none'; knob.style.cursor = 'grabbing';
+        try { knob.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+      knob.addEventListener('pointermove', function (e) {
+        if (!kDrag) return;
+        kx = Math.max(0, Math.min(kmax(), e.clientX - kx0));
+        paint();
+      });
+      var krel = function () {
+        if (!kDrag) return;
+        kDrag = false; knob.style.cursor = 'grab';
+        if (kx < 8) { // 탭 폴백: 자동 슬라이드
+          knob.style.transition = 'transform 0.6s cubic-bezier(0.5,0,0.3,1)';
+          kx = kmax(); paint();
+          setTimeout(finish, 620);
+        } else if (kx > kmax() * 0.72) {
+          knob.style.transition = 'transform 0.18s ease-out';
+          kx = kmax(); paint();
+          setTimeout(finish, 200);
+        } else {
+          knob.style.transition = 'transform 0.35s cubic-bezier(0.34,1.56,0.64,1)';
+          kx = 0; paint();
+        }
+      };
+      knob.addEventListener('pointerup', krel);
+      knob.addEventListener('pointercancel', krel);
+    }
+    var fab = document.querySelector('[data-z-fab]');
+    if (fab) fab.onclick = function () { jl('Z6'); };
+    [].slice.call(document.querySelectorAll('[data-z-open]')).forEach(function (el) {
+      el.onclick = function () { self.openTrend(el.getAttribute('data-z-open')); };
+    });
+    [].slice.call(document.querySelectorAll('[data-z-shareopen]')).forEach(function (btn) {
+      if (btn.__wired) return;
+      btn.__wired = true;
+      var frame = btn.parentElement;
+      while (frame && frame.style.borderRadius !== '34px') frame = frame.parentElement;
+      if (!frame) return;
+      var dim = frame.querySelector('[data-z-shdim]');
+      var sheet = frame.querySelector('[data-z-shsheet]');
+      var tst = frame.querySelector('[data-z-toast]');
+      var tt = null;
+      var say = function (msg) {
+        if (!tst) return;
+        tst.textContent = msg;
+        tst.style.opacity = '1';
+        tst.style.transform = 'translate(-50%, 0)';
+        clearTimeout(tt);
+        tt = setTimeout(function () {
+          tst.style.opacity = '0';
+          tst.style.transform = 'translate(-50%, 14px)';
+        }, 1600);
+      };
+      var close = function () {
+        if (sheet) sheet.style.transform = 'translateY(102%)';
+        if (dim) { dim.style.opacity = '0'; dim.style.pointerEvents = 'none'; }
+      };
+      btn.onclick = function () {
+        btn.style.transform = 'scale(0.88)';
+        setTimeout(function () { btn.style.transform = ''; }, 130);
+        if (sheet) sheet.style.transform = 'translateY(0)';
+        if (dim) { dim.style.opacity = '1'; dim.style.pointerEvents = 'auto'; }
+      };
+      if (dim) dim.onclick = close;
+      var cancel = sheet && sheet.querySelector('[data-z-sh-cancel]');
+      if (cancel) cancel.onclick = close;
+      if (sheet) [].slice.call(sheet.querySelectorAll('[data-z-sh-opt]')).forEach(function (o) {
+        o.onclick = function () {
+          o.style.transform = 'scale(0.98)';
+          setTimeout(function () { o.style.transform = ''; }, 130);
+          close();
+          setTimeout(function () { say(o.getAttribute('data-z-sh-opt')); }, 180);
+        };
+      });
+    });
+    var srcBtn = document.querySelector('[data-z-src]');
+    if (srcBtn && !srcBtn.__wired) {
+      srcBtn.__wired = true;
+      var tip = srcBtn.querySelector('[data-z-srctip]');
+      var showTip = function (on) {
+        if (!tip) return;
+        tip.style.opacity = on ? '1' : '0';
+        tip.style.transform = on ? 'translateY(0)' : 'translateY(-4px)';
+      };
+      srcBtn.addEventListener('mouseenter', function () { showTip(true); });
+      srcBtn.addEventListener('mouseleave', function () { showTip(false); });
+      srcBtn.addEventListener('click', function () {
+        var on = tip && tip.style.opacity !== '1';
+        showTip(on);
+        if (on) setTimeout(function () { showTip(false); }, 2000);
+      });
+    }
+    // Z5 좋아요 / 담기 / 공유
+    var toast = document.querySelector('[data-z-toast]');
+    var toastT = null;
+    var pop = function (msg) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translate(-50%, 0)';
+      clearTimeout(toastT);
+      toastT = setTimeout(function () {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translate(-50%, 14px)';
+      }, 1500);
+    };
+    var press = function (el) {
+      el.style.transform = 'translate(2px, 3px)';
+      el.style.boxShadow = '1px 1px 0 #6B554A';
+      setTimeout(function () { el.style.transform = ''; el.style.boxShadow = '3px 4px 0 #6B554A'; }, 130);
+    };
+    var burst = function (host) {
+      var frame = host.parentElement;
+      while (frame && frame.style.borderRadius !== '34px') frame = frame.parentElement;
+      if (!frame) return;
+      var fr = frame.getBoundingClientRect(), hr2 = host.getBoundingClientRect();
+      var cx = hr2.left - fr.left + hr2.width / 2, cy = hr2.top - fr.top + hr2.height / 2;
+      var cols = ['#E0453C', '#F9BFD8', '#CBB6F7', '#F7FABF', '#EC9DC2'];
+      var ring = document.createElement('div');
+      ring.style.cssText = 'position:absolute; left:' + (cx - 26) + 'px; top:' + (cy - 26) + 'px; width:52px; height:52px; border:2.5px solid #F9BFD8; border-radius:999px; z-index:44; pointer-events:none; opacity:0.9; transition:transform 0.5s cubic-bezier(0.2,0.9,0.3,1), opacity 0.5s ease;';
+      frame.appendChild(ring);
+      var bits = [];
+      for (var i = 0; i < 12; i++) {
+        var b = document.createElement('div');
+        var sz = 5 + (i % 3) * 2.5;
+        b.style.cssText = 'position:absolute; left:' + (cx - sz / 2) + 'px; top:' + (cy - sz / 2) + 'px; width:' + sz + 'px; height:' + sz + 'px; background:' + cols[i % cols.length] + '; border-radius:' + (i % 2 ? '999px' : '2px') + '; z-index:44; pointer-events:none; transition:transform 0.62s cubic-bezier(0.15,0.85,0.3,1), opacity 0.62s ease;';
+        frame.appendChild(b);
+        bits.push({ el: b, a: (i / 12) * Math.PI * 2 + 0.3, d: 46 + (i % 4) * 16 });
+      }
+      requestAnimationFrame(function () {
+        ring.style.transform = 'scale(2.4)';
+        ring.style.opacity = '0';
+        bits.forEach(function (o) {
+          var x = Math.cos(o.a) * o.d, y = Math.sin(o.a) * o.d - 12;
+          o.el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) scale(0.35) rotate(' + (o.a * 60).toFixed(0) + 'deg)';
+          o.el.style.opacity = '0';
+        });
+      });
+      setTimeout(function () {
+        ring.remove();
+        bits.forEach(function (o) { o.el.remove(); });
+      }, 660);
+    };
+    var like = document.querySelector('[data-z-like]');
+    if (like && !like.__wired) {
+      like.__wired = true;
+      var heart = like.querySelector('[data-z-heart]');
+      var label = like.querySelector('[data-z-likelabel]');
+      var liked = false;
+      like.onclick = function () {
+        liked = !liked;
+        press(like);
+        like.style.background = liked ? '#F9BFD8' : '#FFFFFF';
+        if (label) label.textContent = liked ? '284' : '좋아요';
+        if (heart) {
+          heart.style.color = liked ? '#E0407F' : '#6B554A';
+          heart.style.transition = 'none';
+          heart.style.transform = 'scale(1.9)';
+          requestAnimationFrame(function () {
+            heart.style.transition = 'transform 0.34s cubic-bezier(0.2,1.6,0.4,1)';
+            heart.style.transform = 'scale(1)';
+          });
+        }
+        if (liked) {
+          burst(like);
+          pop('밈트폴리오를 좋아합니다');
+        }
+      };
+    }
+    var flyToMy = function () {
+      var hero = document.querySelector('[data-z-hero]');
+      var my = document.querySelector('[data-z-my5]');
+      if (!hero || !my) return;
+      var frame = my.parentElement;
+      while (frame && frame.style.borderRadius !== '34px') frame = frame.parentElement;
+      if (!frame) return;
+      var fr = frame.getBoundingClientRect(), hr = hero.getBoundingClientRect(), tr = my.getBoundingClientRect();
+      var ZIP = 'M6.2 2.05c-1.1-.85-2.5-1-3.5-.25-1.2.9-1.15 2.6.1 3.5.75.55 1.7.8 2.6.8h.8V2.05ZM9.8 2.05c1.1-.85 2.5-1 3.5-.25 1.2.9 1.15 2.6-.1 3.5-.75.55-1.7.8-2.6.8h-.8V2.05ZM6.55 1.4h2.9c.55 0 1 .45 1 1v5.4c0 .55-.45 1-1 1h-2.9c-.55 0-1-.45-1-1V2.4c0-.55.45-1 1-1ZM7 2.85v4.5c0 .3.25.55.55.55h.9c.3 0 .55-.25.55-.55V2.85c0-.3-.25-.55-.55-.55h-.9c-.3 0-.55.25-.55.55ZM5.6 8.2h4.8c.5 0 .93.37 1 .87l.48 3.45c.27 1.93-1.23 3.63-3.17 3.63h-1.42c-1.94 0-3.44-1.7-3.17-3.63l.48-3.45c.07-.5.5-.87 1-.87ZM5.95 12.8c0 .75.92 1.35 2.05 1.35s2.05-.6 2.05-1.35-.92-1.35-2.05-1.35-2.05.6-2.05 1.35Z';
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'position:absolute; left:' + (hr.left - fr.left) + 'px; top:' + (hr.top - fr.top) + 'px; width:' + hr.width + 'px; height:' + hr.height + 'px; z-index:45; pointer-events:none; transform-origin:top left; transition:transform 0.82s cubic-bezier(0.5,0,0.28,1);';
+
+      var card = hero.cloneNode(true);
+      card.removeAttribute('data-z-hero');
+      card.style.position = 'absolute';
+      card.style.left = '0';
+      card.style.top = '0';
+      card.style.width = '100%';
+      card.style.margin = '0';
+      card.style.transformOrigin = 'center center';
+      card.style.transition = 'opacity 0.2s ease, transform 0.28s cubic-bezier(0.6,0,0.8,0.4)';
+      wrap.appendChild(card);
+
+      var zip = document.createElement('div');
+      zip.style.cssText = 'position:absolute; left:50%; top:50%; width:92px; margin:-38px 0 0 -46px; opacity:0; transform:scale(0.6); transition:opacity 0.22s ease 0.1s, transform 0.34s cubic-bezier(0.3,1.55,0.5,1) 0.1s;';
+      zip.innerHTML =
+        '<div style="width:46%; height:13px; background:#F7FABF; border:2.5px solid #6B554A; border-bottom:0; border-radius:8px 8px 0 0; box-sizing:border-box; margin-bottom:-2.5px;"></div>'
+        + '<div style="background:#F7FABF; border:2.5px solid #6B554A; border-radius:0 13px 13px 13px; box-shadow:3px 4px 0 #6B554A; padding:11px 8px 10px; text-align:center;">'
+        + '<svg width="24" height="24" viewBox="0 0 16 16" style="display:block; margin:0 auto;"><path d="' + ZIP + '" fill="#6B554A"></path></svg>'
+        + '<div style="margin-top:4px; font-weight:900; font-size:10px; color:#6B554A; letter-spacing:0.02em;">.zip</div>'
+        + '</div>';
+      wrap.appendChild(zip);
+      frame.appendChild(wrap);
+
+      var s = 0.34;
+      var tcx = tr.left - fr.left + tr.width / 2, tcy = tr.top - fr.top + tr.height / 2;
+      var tx = tcx - (hr.left - fr.left) - hr.width * s / 2;
+      var ty = tcy - (hr.top - fr.top) - hr.height * s / 2;
+      requestAnimationFrame(function () {
+        card.style.opacity = '0';
+        card.style.transform = 'scale(0.72)';
+        zip.style.opacity = '1';
+        zip.style.transform = 'scale(1)';
+        wrap.style.transform = 'translate(' + tx.toFixed(1) + 'px,' + ty.toFixed(1) + 'px) scale(' + s + ') rotate(-7deg)';
+      });
+      setTimeout(function () {
+        zip.style.transition = 'opacity 0.16s ease, transform 0.16s ease';
+        zip.style.opacity = '0';
+        zip.style.transform = 'scale(0.6)';
+      }, 760);
+      setTimeout(function () {
+        wrap.remove();
+        my.style.transform = 'scale(1.35)';
+        setTimeout(function () { my.style.transform = ''; }, 220);
+      }, 900);
+    };
+    var add = document.querySelector('[data-z-add]');
+    if (add && !add.__wired) {
+      add.__wired = true;
+      var added = false;
+      add.onclick = function () {
+        added = !added;
+        press(add);
+        add.style.background = added ? '#F7FABF' : '#7B5BC4';
+        add.style.color = added ? '#6B554A' : '#FFFFFF';
+        add.textContent = added ? '담았어요 ✓' : '따라 담기';
+        if (added) { flyToMy(); setTimeout(function () { pop('내 폴더에 담았어요'); }, 780); }
+        else pop('담기를 취소했어요');
+      };
+    }
+    var sdim = document.querySelector('[data-z-sdim]');
+    var ssheet = document.querySelector('[data-z-ssheet]');
+    if (ssheet && !ssheet.__wired) {
+      ssheet.__wired = true;
+      var stocks = [];
+      var qs = function (k) { return ssheet.querySelector('[data-z-st-' + k + ']'); };
+      var series = [
+        [42, 46, 41, 48, 55, 51, 58, 64, 60, 68, 74, 71, 79, 84, 81, 88, 93, 96],
+        [30, 36, 33, 40, 38, 46, 52, 49, 57, 63, 59, 66, 72, 69, 77, 82, 79, 88],
+        [82, 78, 84, 76, 71, 74, 66, 69, 61, 57, 62, 54, 49, 52, 45, 41, 44, 36]
+      ];
+      var ranges = {
+        '1M': { label: '최근 1개월', cut: 6, wob: 0 },
+        '3M': { label: '최근 3개월', cut: 0, wob: 0 },
+        '1Y': { label: '최근 1년', cut: 0, wob: 1 }
+      };
+      var curStock = 0, curRange = '3M';
+      var paintChart = function () {
+        var raw = (series[curStock] || series[0]).slice();
+        var cfg = ranges[curRange] || ranges['3M'];
+        if (cfg.cut) raw = raw.slice(cfg.cut);
+        if (cfg.wob) {
+          var head = [];
+          for (var w = 0; w < 12; w++) {
+            head.push(raw[0] + (w % 3 === 0 ? -9 : (w % 3 === 1 ? 6 : -2)) + (w % 4) * 3 - 8);
+          }
+          raw = head.concat(raw);
+        }
+        var line = qs('line'), area = qs('area'), dot = qs('dot'), hd = qs('label');
+        if (!line) return;
+        if (hd) hd.textContent = cfg.label;
+        var vals = raw;
+        var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+        var span = Math.max(1, hi - lo);
+        var pts = vals.map(function (v, i) {
+          var x = (i / (vals.length - 1)) * 316 + 2;
+          var y = 84 - ((v - lo) / span) * 68;
+          return [x, y];
+        });
+        var d = pts.map(function (p, i) { return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
+        var up = vals[vals.length - 1] >= vals[0];
+        var col = up ? '#E0453C' : '#2B5FB8';
+        line.setAttribute('d', d);
+        line.setAttribute('stroke', col);
+        if (area) {
+          area.setAttribute('d', d + ' L318 96 L2 96 Z');
+          area.setAttribute('fill', up ? 'rgba(224,69,60,0.10)' : 'rgba(43,95,184,0.10)');
+        }
+        if (dot) {
+          var last = pts[pts.length - 1];
+          dot.setAttribute('cx', last[0].toFixed(1));
+          dot.setAttribute('cy', last[1].toFixed(1));
+          dot.setAttribute('fill', col);
+        }
+        var L = 0;
+        try { L = line.getTotalLength(); } catch (e) { L = 0; }
+        if (L > 0) {
+          line.style.transition = 'none';
+          line.style.strokeDasharray = L + 'px';
+          line.style.strokeDashoffset = L + 'px';
+          void line.getBoundingClientRect();
+          line.style.transition = 'stroke-dashoffset 0.85s cubic-bezier(0.3,0.9,0.4,1)';
+          line.style.strokeDashoffset = '0px';
+        } else {
+          line.style.strokeDasharray = 'none';
+          line.style.strokeDashoffset = '0px';
+        }
+      };
+      [].slice.call(ssheet.querySelectorAll('[data-z-st-range]')).forEach(function (b) {
+        b.onclick = function () {
+          curRange = b.getAttribute('data-z-st-range');
+          [].slice.call(ssheet.querySelectorAll('[data-z-st-range]')).forEach(function (o) {
+            var on = o === b;
+            o.style.background = on ? '#6B554A' : '#FFFFFF';
+            o.style.borderColor = on ? '#6B554A' : '#CFCBBE';
+            o.style.color = on ? '#FBFAEA' : '#87857B';
+          });
+          paintChart();
+        };
+      });
+      var openStock = function (n) {
+        stocks = ((self.currentTrend && self.currentTrend.companies) || []).slice(0, 3).map(function (company) {
+          return [
+            (company.company || '?').slice(0, 1),
+            company.company || '기업명 미확인',
+            (company.stock_code || '종목코드 미확인') + ' · ' + (company.verification_status || '검증상태 미확인'),
+            '—', '시장데이터 미연동', '#87857B', '—', '—', '—', '—', '#CDB5F9'
+          ];
+        });
+        var d = stocks[n] || stocks[0];
+        if (!d) return;
+        var lg = qs('logo');
+        if (lg) { lg.textContent = d[0]; lg.style.background = d[10]; }
+        if (qs('name')) qs('name').textContent = d[1];
+        if (qs('code')) qs('code').textContent = d[2];
+        if (qs('price')) qs('price').textContent = d[3];
+        var ch = qs('chg');
+        if (ch) { ch.textContent = d[4]; ch.style.color = d[5]; }
+        if (qs('cap')) qs('cap').textContent = d[6];
+        if (qs('vol')) qs('vol').textContent = d[7];
+        if (qs('per')) qs('per').textContent = d[8];
+        if (qs('band')) qs('band').textContent = d[9];
+        curStock = n;
+        paintChart();
+        self.neutralizeUnlinkedMarketData();
+        ssheet.style.transform = 'translateY(0)';
+        if (sdim) { sdim.style.opacity = '1'; sdim.style.pointerEvents = 'auto'; }
+      };
+      var closeStock = function () {
+        ssheet.style.transform = 'translateY(102%)';
+        if (sdim) { sdim.style.opacity = '0'; sdim.style.pointerEvents = 'none'; }
+      };
+      if (sdim) sdim.onclick = closeStock;
+      var cbtn = ssheet.querySelector('[data-z-st-close]');
+      if (cbtn) cbtn.onclick = closeStock;
+      var z5root = ssheet.parentElement;
+      [].slice.call(z5root.querySelectorAll('[data-z-stock]')).forEach(function (row) {
+        row.onclick = function () {
+          row.style.transform = 'scale(0.97)';
+          setTimeout(function () { row.style.transform = ''; }, 130);
+          openStock(+row.getAttribute('data-z-stock'));
+        };
+      });
+    }
+    var my5 = document.querySelector('[data-z-my5]');
+    if (my5 && !my5.__wired) { my5.__wired = true; my5.onclick = function () { jl('Z7'); }; }
+
+    // Z4 카드 → Z5 상세
+    var z4 = null;
+    for (var i = 0; i < sc.length; i++) { if (sc[i].getAttribute('data-screen-label').indexOf('Z4') === 0) z4 = sc[i]; }
+    [].slice.call(document.querySelectorAll('[data-z-feed]')).forEach(function (card) {
+      if (card.__wired) return;
+      card.__wired = true;
+      card.style.transition = 'transform 0.13s ease';
+      card.onclick = function () {
+        card.style.transform = 'scale(0.975)';
+        setTimeout(function () { card.style.transform = ''; }, 140);
+        var h = document.querySelector('[data-z-hero]');
+        if (h) {
+          var t = card.querySelector('[data-z-fd-title]');
+          var ht = h.querySelector('[data-z-hero-title]');
+          if (t && ht) ht.textContent = t.textContent;
+          var tab = card.firstElementChild, htab = h.firstElementChild;
+          var hbody = htab && htab.nextElementSibling;
+          if (tab && htab) {
+            var col = tab.getAttribute('fill') || getComputedStyle(tab).backgroundColor;
+            var line = '#EC9DC2';
+            htab.style.background = col;
+            htab.style.borderColor = '#6B554A';
+            if (hbody) hbody.style.borderColor = '#6B554A';
+          }
+          var meta = card.querySelector('[data-z-fd-meta]');
+          var hm = h.querySelector('[data-z-hero-meta]');
+          if (meta && hm) {
+            var user = meta.querySelector('span');
+            var likes = meta.lastElementChild;
+            hm.innerHTML = '<span style="white-space:nowrap;">' + (user ? user.textContent : '') + '</span><span style="white-space:nowrap;">' + (likes ? likes.textContent : '') + '</span><span style="white-space:nowrap;">댓글 41</span>';
+          }
+          var ret = card.querySelector('[data-z-fd-ret]');
+          var hr2 = h.querySelector('[data-z-hero-ret]');
+          if (ret && hr2) { hr2.textContent = ret.textContent; hr2.style.color = getComputedStyle(ret).color; }
+        }
+        setTimeout(function () { jl('Z5'); }, 150);
+      };
+      var mrow = card.querySelector('[data-z-fd-meta]');
+      var badge = mrow && mrow.lastElementChild;
+      if (badge) {
+        badge.style.transition = 'transform 0.15s ease, background 0.15s ease, color 0.15s ease, border-color 0.15s ease';
+        badge.onclick = function (e) {
+          e.stopPropagation();
+          var on = badge.__liked = !badge.__liked;
+          var n = parseInt(badge.textContent.replace(/[^0-9]/g, ''), 10) || 0;
+          badge.textContent = '♥ ' + (on ? n + 1 : n - 1);
+          badge.style.background = on ? '#FDEAF2' : '#FAFAF3';
+          badge.style.borderColor = on ? '#EC9DC2' : '#C9C5B4';
+          badge.style.color = on ? '#E0453C' : '#87857B';
+          badge.style.transform = 'scale(1.22)';
+          setTimeout(function () { badge.style.transform = ''; }, 160);
+        };
+      }
+    });
+    this.vc();
+  }
+
+  dial() {
+    var stage = document.querySelector('[data-z-dial-stage]');
+    if (!stage || stage.__wired) return;
+    stage.__wired = true;
+    var self = this;
+    var sats = [].slice.call(stage.querySelectorAll('[data-z-dial]'));
+    var N = sats.length, RADX = 150, RADY = 150;
+    sats.forEach(function (s) { s.style.transformOrigin = '50% 0%'; });
+    var q = function (s) { return stage.querySelector(s); };
+    var title = q('[data-z-dial-title]'), cat = q('[data-z-dial-cat]'), delta = q('[data-z-dial-delta]');
+    var rank = q('[data-z-dial-rank]'), card = q('[data-z-dial-card]'), tab = q('[data-z-dial-tab]');
+    var rot = 0, topIdx = 0, prevRot = 0, sway = 0;
+    var paint = function () {
+      var vel = rot - prevRot; prevRot = rot;
+      sway += (Math.max(-0.5, Math.min(0.5, vel)) * 26 - sway) * 0.35;
+      var sw = stage.clientWidth || 353, sh = stage.clientHeight || 322;
+      var cx = sw / 2, cy = sh / 2, best = null;
+      sats.forEach(function (el, i) {
+        var ang = rot + (i / N) * Math.PI * 2 - Math.PI / 2;
+        var x = cx + Math.cos(ang) * RADX, y = cy + Math.sin(ang) * RADY;
+        var tn = Math.cos(ang + Math.PI / 2);
+        var sc = 0.82 + 0.3 * Math.max(0, tn);
+        el.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px) rotate(' + sway.toFixed(2) + 'deg) scale(' + sc.toFixed(3) + ')';
+        el.style.opacity = String(0.55 + 0.45 * Math.max(0, tn));
+        el.style.zIndex = String(Math.round(sc * 100));
+        if (!best || tn > best.t) best = { t: tn, el: el, i: i };
+      });
+      if (!best) return;
+      topIdx = best.i;
+      var el = best.el, col = el.getAttribute('data-col'), line = el.getAttribute('data-line');
+      if (title) title.textContent = el.getAttribute('data-label');
+      if (rank) rank.textContent = el.getAttribute('data-rank');
+      if (cat) { cat.textContent = el.getAttribute('data-cat'); cat.style.background = col; }
+      if (delta) { var d = el.getAttribute('data-delta'); delta.textContent = d.replace('언급 ', ''); delta.style.color = d.indexOf('-') >= 0 ? '#2B5FB8' : '#E0453C'; }
+      if (card) { card.style.borderColor = '#6F4E37'; card.style.boxShadow = '4px 5px 0 ' + line; }
+      if (tab) { tab.setAttribute('fill', col); }
+      sats.forEach(function (s2, i) {
+        var b = s2.querySelector('[data-z-dbody]');
+        if (b) { b.style.filter = i === topIdx ? 'drop-shadow(3px 3.5px 0 ' + s2.getAttribute('data-line') + ')' : 'none'; }
+      });
+    };
+    (window.__omPaints = window.__omPaints || []).push(paint);
+    paint();
+    var settle = function () {
+      if (Math.abs(sway) < 0.15) { sway = 0; paint(); return; }
+      paint();
+      requestAnimationFrame(settle);
+    };
+    var glide = function (target) {
+      var from = rot, t0 = performance.now(), dur = 320;
+      var tick = function () {
+        var k = Math.min(1, (performance.now() - t0) / dur);
+        rot = from + (target - from) * (1 - Math.pow(1 - k, 3));
+        paint();
+        if (k < 1) requestAnimationFrame(tick);
+        else settle();
+      };
+      requestAnimationFrame(tick);
+    };
+    var drag = false, lastAng = 0, moved = 0;
+    var angleOf = function (e) {
+      var r = stage.getBoundingClientRect();
+      return Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2));
+    };
+    stage.addEventListener('pointerdown', function (e) {
+      drag = true; moved = 0; lastAng = angleOf(e);
+      stage.style.cursor = 'grabbing';
+      try { stage.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var a = angleOf(e), d = a - lastAng;
+      if (d > Math.PI) d -= Math.PI * 2;
+      if (d < -Math.PI) d += Math.PI * 2;
+      rot += d; lastAng = a; moved += Math.abs(d);
+      paint();
+    });
+    var snap = function () {
+      if (!drag) return;
+      drag = false;
+      stage.style.cursor = 'grab';
+      var step = (Math.PI * 2) / N;
+      glide(Math.round(rot / step) * step);
+    };
+    stage.addEventListener('pointerup', snap);
+    stage.addEventListener('pointercancel', snap);
+    stage.addEventListener('pointerleave', snap);
+    sats.forEach(function (el, i) {
+      el.addEventListener('click', function () {
+        if (moved > 0.08) return;
+        if (i === topIdx) { self.openTrend(el.getAttribute('data-label')); return; }
+        var step = (Math.PI * 2) / N;
+        var target = -i * step;
+        while (target - rot > Math.PI) target -= Math.PI * 2;
+        while (rot - target > Math.PI) target += Math.PI * 2;
+        glide(target);
+      });
+    });
+    var center = q('[data-z-dial-center]');
+    var unzipping = false;
+    var playUnzip = function (done) {
+      if (unzipping || !center) { done(); return; }
+      unzipping = true;
+      var cr = center.getBoundingClientRect(), sr = stage.getBoundingClientRect();
+      var L = cr.left - sr.left, T = cr.top - sr.top;
+      var halves = [];
+      [0, 1].forEach(function (side) {
+        var g = center.cloneNode(true);
+        g.removeAttribute('data-z-dial-center');
+        g.style.position = 'absolute';
+        g.style.left = L + 'px';
+        g.style.top = T + 'px';
+        g.style.margin = '0';
+        g.style.width = cr.width + 'px';
+        g.style.zIndex = '320';
+        g.style.pointerEvents = 'none';
+        g.style.clipPath = side ? 'inset(-14% 0 -14% 50%)' : 'inset(-14% 50% -14% 0)';
+        g.style.transition = 'transform 0.46s cubic-bezier(0.5,0,0.35,1), opacity 0.46s ease';
+        stage.appendChild(g);
+        halves.push({ el: g, side: side });
+      });
+      var seam = document.createElement('div');
+      seam.style.cssText = 'position:absolute; left:' + (L + cr.width / 2 - 2) + 'px; top:' + (T - 6) + 'px; width:4px; height:0; background:#F7FABF; border-left:1.5px solid #6B554A; border-right:1.5px solid #6B554A; box-sizing:border-box; z-index:322; pointer-events:none; transition:height 0.3s cubic-bezier(0.4,0,0.3,1);';
+      stage.appendChild(seam);
+      center.style.transition = 'opacity 0.12s ease';
+      center.style.opacity = '0';
+      requestAnimationFrame(function () {
+        seam.style.height = (cr.height + 12) + 'px';
+        halves.forEach(function (h) {
+          h.el.style.transform = 'translateX(' + (h.side ? 138 : -138) + 'px) rotate(' + (h.side ? 7 : -7) + 'deg)';
+          h.el.style.opacity = '0';
+        });
+      });
+      setTimeout(function () {
+        halves.forEach(function (h) { h.el.remove(); });
+        seam.remove();
+        center.style.opacity = '1';
+        unzipping = false;
+        done();
+      }, 470);
+    };
+    if (center) center.addEventListener('click', function () {
+      if (moved > 0.08) return;
+      var key = title ? title.textContent : '';
+      playUnzip(function () { self.openTrend(key); });
+    });
+  }
+
+  openTrend(key) {
+    var trend = this.findTrend(key);
+    if (trend) this.applyTrend(trend);
+    else {
+      var t = document.querySelector('[data-z-ttitle]');
+      if (t && key) t.textContent = key;
+    }
+    if (this.jl) this.jl('Z2');
+  }
+
+  openFolder(key) {
+    var t = document.querySelector('[data-z-ftitle]');
+    if (t && key) t.textContent = key + '.zip';
+    if (this.jl) this.jl('Z4');
+  }
+
+  vc(force) {
+    var host = document.querySelector('[data-z-vclist]');
+    if (!host || (host.__w && !force)) return;
+    if (this.currentTrend) {
+      var self = this;
+      var companies = this.currentTrend.companies || [];
+      var safe = function (value) { return String(value == null ? '' : value).replace(/[&<>"']/g, function (char) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[char]; }); };
+      var groups = [];
+      companies.forEach(function (company) {
+        var name = company.relation_category || company.company_role || '연관기업';
+        var group = groups.find(function (item) { return item.name === name; });
+        if (!group) { group = { name:name, rows:[] }; groups.push(group); }
+        group.rows.push(company);
+      });
+      var buttons = [].slice.call(document.querySelectorAll('[data-z-vc]'));
+      buttons.forEach(function (button, index) {
+        var group = groups[index];
+        button.style.display = group ? 'inline-flex' : 'none';
+        if (group) button.textContent = group.name;
+      });
+      var renderLive = function (index) {
+        var group = groups[index];
+        buttons.forEach(function (button, i) {
+          var on = i === index;
+          button.style.background = on ? '#CBB6F7' : '#FFFFFF';
+          button.style.borderColor = on ? '#CBB6F7' : '#CFCBBE';
+          button.style.color = on ? '#FBF7EE' : '#6B554A';
+        });
+        if (!group) {
+          host.innerHTML = '<div style="padding:16px 2px;font-weight:700;font-size:11.5px;line-height:1.6;color:#87857B;">' + safe((self.currentTrend.companyResolution && self.currentTrend.companyResolution.reason) || '검증된 연결기업이 없습니다.') + '</div>';
+          return;
+        }
+        host.innerHTML = group.rows.map(function (company, rowIndex) {
+          return '<div data-z-live-co="' + rowIndex + '" style="display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid #E4E1D4;cursor:pointer;">'
+            + '<span style="display:flex;width:38px;height:38px;align-items:center;justify-content:center;background:#EFE7FD;border-radius:999px;font-weight:900;font-size:13px;color:#7B5BC4;">' + safe(company.company.slice(0,1)) + '</span>'
+            + '<div style="flex:1;min-width:0;"><div style="font-weight:900;font-size:14.5px;color:#6B554A;">' + safe(company.company) + '</div>'
+            + '<div style="margin-top:2px;font-weight:700;font-size:10.5px;color:#87857B;">' + safe(company.company_role) + ' · ' + safe(company.relation_tier_label) + '</div></div>'
+            + '<span style="font-weight:900;font-size:10.5px;color:#7B5BC4;white-space:nowrap;">' + safe(company.verification_status) + '</span></div>';
+        }).join('');
+        [].slice.call(host.querySelectorAll('[data-z-live-co]')).forEach(function (row, rowIndex) {
+          row.onclick = function () {
+            var company = group.rows[rowIndex];
+            self.openSheet([
+              company.company.slice(0,1), company.company, company.company_role, '관찰',
+              company.relation_tier_label + ' · ' + company.relation_horizon,
+              company.reason, company.investment_warning
+            ], group.name, '#CDB5F9');
+          };
+        });
+      };
+      buttons.forEach(function (button, index) { button.onclick = function () { renderLive(index); }; });
+      renderLive(0);
+      host.__w = true;
+      return;
+    }
+    host.__w = true;
+    var self = this;
+    var cats = ['원재료', '제조', '브랜드', '유통/판매'];
+    var data = [
+      [['신', '신라교역', '카카오 원물 수입', '+4.2%',
+        '<b>원재료</b> 단계에서 <b>카카오 원물</b>을 국내에 수입·공급해요.',
+        '<b>두바이 초콜릿</b>의 핵심 원료가 카카오 매스라, 제품이 늘어날수록 원물 발주가 먼저 들어와요.',
+        '원물 계약 물량이 분기 단위로 늘어나며 <b>수입 단가·환율</b>에 민감하게 반응해요.'],
+       ['삼', '삼양사', '원당·유지 공급', '+7.8%',
+        '<b>원재료</b> 단계에서 <b>원당과 식용 유지</b>를 공급해요.',
+        '초콜릿·시럽 배합에 설탕과 유지가 필수라 <b>디저트 트렌드</b> 전반과 함께 움직여요.',
+        'B2B 출하량이 늘며 <b>식품소재 부문 매출</b>이 개선되는 구조예요.']],
+      [['오', '오리온', '초콜릿 OEM 생산', '+2.4%',
+        '<b>제조</b> 단계에서 <b>두바이 초콜릿 스타일 제품</b>을 자체·OEM 생산해요.',
+        '유행 제품을 가장 빠르게 양산할 수 있는 설비를 갖춰 <b>편의점 협업</b> 물량을 받아요.',
+        '신제품 출시 시점마다 <b>단기 매출과 언급량</b>이 동시에 뛰어요.'],
+       ['풀', '풀무원', '카다이프 면 제조', '-1.5%',
+        '<b>제조</b> 단계에서 식감을 만드는 <b>카다이프 면</b>을 생산해요.',
+        '두바이 초콜릿의 바삭한 속재료가 카다이프라 <b>레시피 확산</b>과 직결돼요.',
+        '아직 <b>매출 비중은 작지만</b> 관련 라인을 늘리는 중이에요.']],
+      [['롯', '롯데웰푸드', '이름값 브랜드', '+5.1%',
+        '<b>브랜드</b> 단계에서 <b>"이름값" 시리즈</b> 정식 제품을 판매해요.',
+        '대형 브랜드가 정식 출시하며 <b>트렌드를 대중화</b>시킨 축이에요.',
+        '출시 첫 주 완판 이력이 있고 <b>재고·생산 계획</b>이 트렌드에 맞춰 조정돼요.'],
+       ['바', '바인더스', '수제 디저트 IP', '+11.3%',
+        '<b>브랜드</b> 단계에서 <b>수제 두바이 초콜릿 IP</b>를 운영해요.',
+        'SNS에서 가장 많이 태그되는 브랜드라 <b>바이럴 지표</b>와 직접 연결돼요.',
+        '팝업 오픈런이 이어지며 <b>객단가와 신규 매장 수</b>가 함께 늘어요.']],
+      [['B', 'BGF리테일', '편의점 유통', '+3.7%',
+        '<b>유통/판매</b> 단계에서 <b>CU 편의점</b> 단독 상품을 유통해요.',
+        '트렌드 디저트를 가장 먼저 접하는 채널이라 <b>발주 물량</b>이 지표와 같이 움직여요.',
+        '히트 상품 하나가 <b>점포 방문 빈도</b>까지 끌어올려요.'],
+       ['컬', '컬리', '온라인 커머스', '+6.9%',
+        '<b>유통/판매</b> 단계에서 <b>새벽배송 기획전</b>을 운영해요.',
+        '검색량 상위 키워드에 3주째 올라 있어 <b>온라인 수요</b>를 직접 흡수해요.',
+        '기획전 기간 <b>디저트 카테고리 거래액</b>이 뚜렷하게 늘어요.']]
+    ];
+    var cols = ['#EFE7FD', '#EFE7FD', '#EFE7FD', '#EFE7FD'];
+    var btns = [].slice.call(document.querySelectorAll('[data-z-vc]'));
+    var render = function (i) {
+      btns.forEach(function (b, k) {
+        var on = k === i;
+        b.style.background = on ? '#CBB6F7' : '#FFFFFF'; b.style.borderColor = on ? '#CBB6F7' : '#CFCBBE';
+        b.style.color = on ? '#FBF7EE' : '#6B554A';
+      });
+      host.innerHTML = data[i].map(function (c, n) {
+        return '<div data-z-co="' + i + '-' + n + '" style="display:flex; align-items:center; gap:12px; padding:13px 2px; border-bottom:1px solid #E4E1D4; cursor:pointer; animation:zpIn 0.42s cubic-bezier(0.22,1,0.36,1) ' + (n * 0.06).toFixed(2) + 's both;">'
+          + '<span style="display:flex; width:38px; height:38px; align-items:center; justify-content:center; background:' + cols[(i + n) % 4] + '; border-radius:999px; font-weight:900; font-size:13px; color:#CBB6F7;">' + c[0] + '</span>'
+          + '<div style="flex:1; min-width:0;"><div style="font-weight:900; font-size:14.5px; color:#6B554A;">' + c[1] + '</div>'
+          + '<div style="margin-top:2px; font-weight:700; font-size:10.5px; color:#87857B;">' + c[2] + '</div></div>'
+          + '<span style="font-weight:900; font-size:13px; color:' + (c[3][0] === '-' ? '#2B5FB8' : '#E0453C') + '; white-space:nowrap;">' + c[3] + '</span></div>';
+      }).join('');
+      var cols2 = ['#CDB5F9', '#F9BFD8', '#F7FABF', '#F8D8B0'];
+      [].slice.call(host.querySelectorAll('[data-z-co]')).forEach(function (row, n) {
+        row.onclick = function () { self.openSheet(data[i][n], cats[i], cols2[(i + n) % 4]); };
+      });
+    };
+    btns.forEach(function (b, k) { b.onclick = function () { render(k); }; });
+    render(0);
+  }
+
+  openSheet(c, cat, col) {
+    var dim = document.querySelector('[data-z-dim]');
+    var sheet = document.querySelector('[data-z-sheet]');
+    if (!dim || !sheet) return;
+    var q = function (s) { return document.querySelector(s); };
+    var logo = q('[data-z-sh-logo]');
+    if (logo) { logo.textContent = c[0]; logo.style.background = col; }
+    if (q('[data-z-sh-name]')) q('[data-z-sh-name]').textContent = c[1];
+    if (q('[data-z-sh-role]')) q('[data-z-sh-role]').textContent = cat + ' · ' + c[2];
+    var ret = q('[data-z-sh-ret]');
+    if (ret) { ret.textContent = c[3]; ret.style.color = c[3][0] === '-' ? '#2B5FB8' : '#E0453C'; }
+    if (q('[data-z-sh-role2]')) q('[data-z-sh-role2]').innerHTML = c[4] || '';
+    if (q('[data-z-sh-why]')) q('[data-z-sh-why]').innerHTML = c[5] || '';
+    if (q('[data-z-sh-impact]')) q('[data-z-sh-impact]').innerHTML = c[6] || '';
+    dim.style.opacity = '1'; dim.style.pointerEvents = 'auto';
+    sheet.style.transform = 'translateY(0)';
+    var close = function () {
+      dim.style.opacity = '0'; dim.style.pointerEvents = 'none';
+      sheet.style.transform = 'translateY(105%)';
+    };
+    dim.onclick = close;
+    var buy = q('[data-z-sh-buy]');
+    if (buy) buy.onclick = close;
+  }
+
+  grid(force) {
+    var grid = document.querySelector('[data-z-grid]');
+    if (!grid || (grid.__w && !force)) return;
+    grid.__w = true;
+    var paletteKeys = ['11', '09', '10', '12', '03', '02', '04', '01', '06'];
+    var saved = this.api ? this.api.listPortfolios() : [];
+    var folders = saved.map(function (portfolio, index) {
+      return [portfolio.name, (portfolio.companies || []).length, paletteKeys[index % paletteKeys.length]];
+    });
+    folders.push(['__new', 0, '']);
+    var pal = {
+      '11': '#F9BFD8', '09': '#CDB5F9', '10': '#F7FABF', '12': '#BCD8FA',
+      '03': '#F8D8B0', '02': '#F9CFEF', '04': '#FACDBD', '01': '#CFE0F6', '06': '#E2DDCC'
+    };
+    var svgF = function (c) {
+      return '<svg viewBox="0 0 200 134" preserveAspectRatio="none" style="position:absolute; inset:0; width:100%; height:100%; display:block; overflow:visible;">'
+        + '<path d="M10 34C10 24 17 17 27 17H72C78 17 83 19.5 87 24L96 34C99 37.5 103 39 108 39H173C183 39 190 46 190 56V108C190 118 183 125 173 125H27C17 125 10 118 10 108V34Z" fill="' + c + '" stroke="#6F4E37" stroke-width="6" stroke-linejoin="round"></path>'
+        + '<path d="M17 55H183" stroke="#6F4E37" stroke-width="3.6" stroke-linecap="round" opacity=".28"></path>'
+        + '</svg>';
+    };
+    var self = this;
+    grid.innerHTML = folders.map(function (f, fi) {
+      var anim = ' animation:zpIn 0.46s cubic-bezier(0.22,1,0.36,1) ' + (0.04 + fi * 0.055).toFixed(2) + 's both;';
+      if (f[0] === '__new') {
+        return '<div data-z-newfolder="1" style="cursor:pointer; position:relative; height:116px; border:3.5px dashed #C0A188; border-radius:16px; box-sizing:border-box; display:flex; align-items:center; justify-content:center;' + anim + '">'
+          + '<svg width="26" height="26" viewBox="0 0 16 16" style="display:block;"><line x1="8" y1="2.2" x2="8" y2="13.8" stroke="#6F4E37" stroke-width="2.6" stroke-linecap="round"></line><line x1="2.2" y1="8" x2="13.8" y2="8" stroke="#6F4E37" stroke-width="2.6" stroke-linecap="round"></line></svg>'
+          + '<div style="position:absolute; left:0; right:0; bottom:11px; text-align:center; font-weight:900; font-size:12.5px; color:#8D705D; letter-spacing:-0.01em;">새 폴더</div>'
+          + '</div>';
+      }
+      return '<div data-z-folder="' + f[0] + '" style="cursor:pointer; position:relative; height:116px;' + anim + '">'
+        + svgF(pal[f[2]])
+        + '<div style="position:absolute; left:20px; right:22px; bottom:15px; text-align:left;">'
+        + '<div style="font-weight:900; font-size:13.5px; color:#4C3627; letter-spacing:-0.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + f[0] + '</div>'
+        + '<div style="margin-top:2px; font-weight:700; font-size:10px; color:#7C6047;">' + (f[0] === '아카이브' ? '지난 트렌드 ' + f[1] + '개' : f[1] + '개 담김') + '</div>'
+        + '</div></div>';
+    }).join('');
+    [].slice.call(grid.querySelectorAll('[data-z-folder]')).forEach(function (el) {
+      el.onclick = function () { self.openFolder(el.getAttribute('data-z-folder')); };
+    });
+    var nf = grid.querySelector('[data-z-newfolder]');
+    if (nf) nf.onclick = function () { self.jump && self.jump(6); };
+  }
+}
+</script>
+</body>
+</html>

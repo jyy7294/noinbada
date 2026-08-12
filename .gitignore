@@ -9,5 +9,9 @@ data/live/
 data/*.sqlite3
 data/*.sqlite3-shm
 data/*.sqlite3-wal
+.vercel/
+.env.local
+frontend-server.*.log
+work/
 
 .vercel

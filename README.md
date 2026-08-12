@@ -10,6 +10,9 @@ TRZIP은 대한민국의 X 실시간 트렌드와 Google Trends 신호를 시간
 - 프론트 배포: Vercel
 
 > 비용 0원 운영 정책: GitHub Actions가 매시간 수집·분석하고 `live-data` 브랜치에 결과를 저장합니다. Claude Design 프론트는 Vercel에서 배포하며 최신 JSON을 읽습니다. API 키·쿠키·SQLite DB는 커밋하지 않습니다.
+
+- 최종 디자인 데이터 연결: [Trend App Zip v2 데이터 계약](docs/DESIGN_DATA_CONTRACT.md)
+- 프로덕션 화면: https://trzip-x-google.vercel.app
 - 데이터 소스: X 대한민국, Google Trends `geo=KR`
 - 자동 수집에서 Trends MCP 사용: 비활성화
 
@@ -154,6 +157,8 @@ src/trzip/value_chain.py      3개 이상 가치사슬 관점 확장
 src/trzip/company_adapters.py OpenDART·pykrx 어댑터
 src/trzip/e2e.py              수집부터 보고서까지 E2E 실행
 web/                          현재 확인용 프론트
+frontend/                     Claude Design 원형을 유지한 Vercel 프로덕션 정적 앱
+design/                       원본 .dc.html과 데이터 어댑터 보존본
 tests/                        단위·통합 테스트
 docs/                         정책·분류·설계 문서
 ```
@@ -204,6 +209,7 @@ powershell -ExecutionPolicy Bypass -File scripts\install-hourly-task.ps1
 - PostgreSQL 스키마 생성·upsert·coverage·FastAPI 조회: E2E 통과
 - 실제 현재 회차 수집: X 한국 50건 + Google Trends KR 10건 저장 확인
 - GitHub Actions 시간별 워크플로와 `live-data` 계약 검증
+- Vercel 프로덕션에서 라이브 트렌드·관련기업·로컬 저장·JSON/CSV 내보내기 검증
 - 8월 데모에서 오징어 게임 잔존: 0건
 - 실측과 생성 데이터의 동일 시각 공존: 검증
 - 논란·미분류 항목의 기업 오연결 차단: 검증
