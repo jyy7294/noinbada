@@ -25,3 +25,4 @@ def test_windows_task_runs_full_local_publication_pipeline():
     assert "Global\\TRZIP-NOINBADA-HOURLY-V1" in runner
     assert "New-TimeSpan -Hours 1" in installer
     assert "-WorkingDirectory $ProjectRoot" in installer
+    assert "+refs/heads/live-data:refs/remotes/origin/live-data" in installer

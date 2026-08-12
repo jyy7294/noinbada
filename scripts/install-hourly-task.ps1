@@ -24,7 +24,10 @@ if (-not (Test-Path -LiteralPath $Python)) {
 if ($LASTEXITCODE -ne 0) { throw "Dependency installation failed" }
 
 if (-not (Test-Path -LiteralPath (Join-Path $LiveDataRoot ".git"))) {
-    & git -C $ProjectRoot fetch origin live-data
+    # A runtime clone may have been created with --single-branch main. Fetch
+    # the publication branch into an explicit remote-tracking ref so worktree
+    # creation is deterministic in both full and single-branch clones.
+    & git -C $ProjectRoot fetch origin "+refs/heads/live-data:refs/remotes/origin/live-data"
     if ($LASTEXITCODE -ne 0) { throw "Cannot fetch origin/live-data" }
     & git -C $ProjectRoot show-ref --verify --quiet refs/heads/live-data
     if ($LASTEXITCODE -eq 0) {
