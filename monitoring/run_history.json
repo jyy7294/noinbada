@@ -113,5 +113,28 @@
         "detail": "extension_not_ready"
       }
     }
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-12T21:00:00+00:00",
+    "started_at": "2026-08-12T21:26:18.361148+00:00",
+    "finished_at": "2026-08-12T21:26:28.982892+00:00",
+    "delay_seconds": 1578,
+    "duration_seconds": 10.62,
+    "success": false,
+    "source_success": {
+      "x": false,
+      "google_trends": true
+    },
+    "observed_rows": 202,
+    "errors": {
+      "x": "extension_not_ready"
+    },
+    "source_failures": {
+      "x": {
+        "class": "unknown",
+        "detail": "extension_not_ready"
+      }
+    }
   }
 ]
