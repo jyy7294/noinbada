@@ -61,7 +61,8 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 ## 빈 상태 규칙
 
 - 관련어 0개: 임의 키워드 칩을 만들지 않음
-- `source=reviewed_ontology`: `status=approved_ontology_term`, `evidence_urls`를 함께 표시하며 순위에는 반영하지 않음
+- `source=reviewed_ontology`: 별칭은 `status=approved_ontology_term`, 근거 기반 연관 개념은 `status=approved_ontology_related_term`으로 구분하고 `evidence_urls`를 함께 표시하며 순위에는 반영하지 않음
+- `keywords[].role`은 온톨로지 관계를 설명하는 확장 가능한 문자열이므로 프론트가 고정 enum으로 분기하지 않음
 - `companies=[]`: 기업 CTA를 숨기고 `company_resolution.reason` 표시
 - `partial=true`: 실패한 출처와 마지막 관측시각 표시
 - `ranking_availability.is_combined_rank=false`: 통합 순위라고 표현하지 않고 잠정 배지 표시

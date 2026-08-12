@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T17:43:30.8174703+00:00",
+    "updated_at":  "2026-08-12T17:51:25.4096116+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,30 +8,30 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "1a7a9485f21c1f4eaef9cec56255b570bc9421bb",
+                       "base_remote_main_sha":  "4c86155befea300b03a341f85c6af89c146243f5",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "data/ontology_enrichment.json",
-                                             "src/trzip/intelligence.py",
-                                             "src/trzip/ontology.py",
-                                             "tests/test_intelligence.py",
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
+                                             "schemas/intelligence-v3.schema.json",
+                                             "src/trzip/enrichment_queue.py",
                                              "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "data/ontology_enrichment.json":  "0b6a7d5450136d349e08b8037a097ecdff136b878c447bff2fba6d7d4781cf09",
-                                                    "src/trzip/intelligence.py":  "6dce0bb2e2115a1a4ac951207e8b1e739103825309688e2cfc889ca22b82b34d",
-                                                    "src/trzip/ontology.py":  "eea49b0e0c30ec3b442288c66d93687679840aa8c5de98028b4036bd35a34ce3",
-                                                    "tests/test_intelligence.py":  "a31f3ef9f3bdbb86346f352b91060ad75d3371e2dd6d7490aca56eb7ee1d6b15",
-                                                    "tests/test_ontology.py":  "0cc4078db699f5ad19698c98e3d27f94df6c8f2f3902d64609eb33cced484a3a"
+                                                    "data/ontology_enrichment.json":  "762e54814d8fa77d6cd7efac943a9947b85eab59b7390ff68a5e737d0a2e2b6d",
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "a0668edb13ee6961b1490314ca0bc8c38ca52c80ecf064ead1e9d6ff0d236e62",
+                                                    "schemas/intelligence-v3.schema.json":  "ed00954fe25105f4ea0428798cee813e4db531f75842f53241d09c4c56a59528",
+                                                    "src/trzip/enrichment_queue.py":  "427bb888a170f9742603cc2cdb90d7f232b35bf40332c9ea6c6806104c1d8878",
+                                                    "tests/test_ontology.py":  "9b5aa64bce8606f07a58aef4543e37d49b12a3b11bc08c499ba754ac8708c8a9"
                                                 },
-                       "commit_message":  "feat: model evidence-backed related concepts",
+                       "commit_message":  "feat: add evidence-backed Malbok related concepts",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  158
+                                      "count":  159
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -53,21 +53,20 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "관련 키워드 5개를 임의 생성하지 않고 관측 표현 별칭과 URL 근거 관련 개념으로 분리해 공개",
+                    "objective":  "Publish evidence-backed related concepts without inventing keywords",
                     "completed":  [
-                                      "온톨로지 related_terms 계약과 검증 추가",
-                                      "티빙 관련어 5개에 각 관계 역할과 URL 근거 연결",
-                                      "전체 회귀 159개 통과"
+                                      "Added five reviewed Malbok concepts",
+                                      "Extended the public keyword contract"
                                   ],
                     "next_actions":  [
-                                         "X Chrome 확장 1회 승인 후 X 30개 포함 통합 순위 실측",
-                                         "상위 트렌드별 관련 개념 온톨로지 확대"
+                                         "Complete current-session Chrome extension installation",
+                                         "Accumulate 96 eligible hourly observations"
                                      ],
                     "blockers":  [
-                                     "Chrome 보안상 압축해제 확장 프로그램 로드는 사용자 1회 승인 필요"
+                                     "X current-session extension requires one manual Chrome approval"
                                  ],
                     "known_limitations":  [
-
+                                              "Combined ranking remains provisional until X observations arrive"
                                           ]
                 },
     "runtime_contract":  {

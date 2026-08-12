@@ -214,8 +214,8 @@
         "text": {"type": "string", "minLength": 1},
         "source": {"type": "array", "items": {"enum": ["x", "google_trends", "reviewed_ontology"]}},
         "observed_hours": {"type": "integer", "minimum": 0},
-        "status": {"enum": ["observed_ranked_term", "observed_related_query", "approved_ontology_term"]},
-        "role": {"enum": ["alias_or_variant", "consumer_or_participation_signal", "component_or_product", "review_required"]},
+        "status": {"enum": ["observed_ranked_term", "observed_related_query", "approved_ontology_term", "approved_ontology_related_term"]},
+        "role": {"type": "string", "minLength": 1},
         "role_status": {"enum": ["deterministic_draft", "reviewed_evidence"]},
         "evidence_urls": {"type": "array", "items": {"type": "string", "format": "uri"}},
         "affects_score": {"const": false}

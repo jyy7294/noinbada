@@ -102,6 +102,7 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
                     "x_or_google_observed_expression",
                     "google_related_query",
                     "approved_ontology_term",
+                    "approved_ontology_related_term",
                     "reviewed_provider_expression",
                 ],
                 "invented_terms_forbidden": True,

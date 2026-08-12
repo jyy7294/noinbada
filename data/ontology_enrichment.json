@@ -1230,6 +1230,51 @@
   ],
   "related_terms": [
     {
+      "id": "related:reviewed:malbok-sambok",
+      "label": "삼복",
+      "target_node_id": "term:reviewed:malbok",
+      "relation_role": "seasonal_calendar_group",
+      "evidence_ids": ["evidence:reviewed:mcst-sambok"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:malbok-chobok",
+      "label": "초복",
+      "target_node_id": "term:reviewed:malbok",
+      "relation_role": "same_seasonal_calendar_group",
+      "evidence_ids": ["evidence:reviewed:mcst-sambok"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:malbok-jungbok",
+      "label": "중복",
+      "target_node_id": "term:reviewed:malbok",
+      "relation_role": "same_seasonal_calendar_group",
+      "evidence_ids": ["evidence:reviewed:mcst-sambok"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:malbok-bokdalim",
+      "label": "복달임",
+      "target_node_id": "term:reviewed:malbok",
+      "relation_role": "seasonal_custom",
+      "evidence_ids": ["evidence:reviewed:mcst-sambok"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:malbok-samgyetang",
+      "label": "삼계탕",
+      "target_node_id": "term:reviewed:malbok",
+      "relation_role": "representative_seasonal_food",
+      "evidence_ids": ["evidence:reviewed:mcst-sambok"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
       "id": "related:reviewed:tving-kt-seezn",
       "label": "KT 시즌",
       "target_node_id": "term:reviewed:tving",

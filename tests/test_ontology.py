@@ -477,6 +477,27 @@ def test_tving_related_terms_are_evidenced_concepts_not_aliases():
     )
 
 
+def test_malbok_related_terms_follow_the_reviewed_sambok_calendar_and_custom():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    related = graph.reviewed_related_terms("말복")
+
+    assert {item["label"] for item in related} == {
+        "삼복",
+        "초복",
+        "중복",
+        "복달임",
+        "삼계탕",
+    }
+    assert all(
+        record["id"] == "evidence:reviewed:mcst-sambok"
+        and record["review_status"] == "approved"
+        and record["url"].startswith("https://")
+        for item in related
+        for record in item["evidence"]
+    )
+
+
 def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
 
