@@ -154,11 +154,12 @@
       "required": ["text", "source", "observed_hours", "status", "role", "role_status", "affects_score"],
       "properties": {
         "text": {"type": "string", "minLength": 1},
-        "source": {"type": "array", "items": {"enum": ["x", "google_trends"]}},
-        "observed_hours": {"type": "integer", "minimum": 1},
-        "status": {"enum": ["observed_ranked_term", "observed_related_query"]},
+        "source": {"type": "array", "items": {"enum": ["x", "google_trends", "reviewed_ontology"]}},
+        "observed_hours": {"type": "integer", "minimum": 0},
+        "status": {"enum": ["observed_ranked_term", "observed_related_query", "approved_ontology_term"]},
         "role": {"enum": ["alias_or_variant", "consumer_or_participation_signal", "component_or_product", "review_required"]},
-        "role_status": {"const": "deterministic_draft"},
+        "role_status": {"enum": ["deterministic_draft", "reviewed_evidence"]},
+        "evidence_urls": {"type": "array", "items": {"type": "string", "format": "uri"}},
         "affects_score": {"const": false}
       }
     },

@@ -259,6 +259,59 @@ def _related_term_evidence(observations: list[dict], representative: str) -> lis
     ]
 
 
+def _merge_reviewed_ontology_keywords(
+    observed: list[dict],
+    *,
+    graph: OntologyGraph,
+    representative: str,
+    limit: int = 5,
+) -> list[dict]:
+    """Fill remaining keyword slots only with reviewed alias evidence."""
+
+    selected = list(observed[:limit])
+    seen = {
+        "".join(str(item.get("text") or "").casefold().split())
+        for item in selected
+    }
+    seen.add("".join(representative.casefold().split()))
+    reviewed_terms = graph.reviewed_aliases(representative)
+    lookup = graph.lookup(representative)
+    if lookup and lookup.get("match_type") != "exact_term" and lookup.get("evidence"):
+        reviewed_terms = [
+            {
+                "label": lookup["target_node_label"],
+                "evidence": lookup["evidence"],
+            },
+            *reviewed_terms,
+        ]
+    for alias in reviewed_terms:
+        text = " ".join(str(alias.get("label") or "").strip().split())
+        key = "".join(text.casefold().split())
+        if not text or key in seen:
+            continue
+        evidence_urls = sorted({
+            str(record.get("url") or "").strip()
+            for record in alias.get("evidence", [])
+            if str(record.get("url") or "").strip()
+        })
+        if not evidence_urls:
+            continue
+        seen.add(key)
+        selected.append({
+            "text": text,
+            "source": ["reviewed_ontology"],
+            "observed_hours": 0,
+            "status": "approved_ontology_term",
+            "role": "alias_or_variant",
+            "role_status": "reviewed_evidence",
+            "evidence_urls": evidence_urls,
+            "affects_score": False,
+        })
+        if len(selected) >= limit:
+            break
+    return selected
+
+
 def _hourly_and_daily_rankings(rows: list[dict]) -> tuple[list[dict], list[dict]]:
     by_hour: dict[str, list[dict]] = defaultdict(list)
     for row in rows:
@@ -778,7 +831,11 @@ def build_intelligence(
             lifecycle, lifecycle_reason = "sustained", "여러 시간 반복 관측되어 지속성 확인"
         score = 0.60 * normalized_rrf + 0.20 * ((momentum + 1) / 2) + 0.15 * persistence + 0.05 * cross
         phenomenon_summary = observation_summary(representative_term, sources)
-        keyword_items = _related_term_evidence(observations, representative_term)
+        keyword_items = _merge_reviewed_ontology_keywords(
+            _related_term_evidence(observations, representative_term),
+            graph=ontology_graph,
+            representative=representative_term,
+        )
         detected_category = event_resolution["category"] or _category(event_key)
         if detected_category == "unclassified" and keyword_items:
             # Google related queries are observed source evidence, not an LLM
@@ -1006,12 +1063,15 @@ def build_intelligence(
                     item["status"] in {"observed_ranked_term", "observed_related_query"}
                     for item in keyword_items
                 ),
+                "reviewed_ontology_count": sum(
+                    item["status"] == "approved_ontology_term" for item in keyword_items
+                ),
                 "candidate_count": 0,
-                "status": "observed" if keyword_items else "insufficient",
+                "status": "evidence_backed" if keyword_items else "insufficient",
                 "reason": (
-                    "동일 사건으로 묶인 관측 원문 또는 Google 관련 검색어만 표시"
+                    "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 검수된 온톨로지 동의어만 표시"
                     if keyword_items
-                    else "관측된 관련 원문이 없어 키워드를 비워 둠"
+                    else "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
                 ),
             },
             "companies": published_companies,

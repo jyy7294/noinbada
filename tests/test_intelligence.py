@@ -612,6 +612,16 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
     companies = {company["stock_code"]: company for company in item["companies"]}
 
     assert item["display_name"] == "나솔"
+    assert {keyword["text"] for keyword in item["keywords"]} == {
+        "나는 SOLO", "나는 솔로",
+    }
+    assert all(keyword["affects_score"] is False for keyword in item["keywords"])
+    assert any(
+        keyword["status"] == "approved_ontology_term"
+        and keyword["source"] == ["reviewed_ontology"]
+        and keyword["evidence_urls"]
+        for keyword in item["keywords"]
+    )
     assert item["company_resolution"]["publish_status"] == "published"
     assert set(companies) == {"030200", "034120", "035760", "053210", "402340"}
     assert {

@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T16:01:37.5393896+00:00",
+    "updated_at":  "2026-08-12T16:09:02.1323996+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,32 +8,32 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "466155473d99f5168a14f15164de34ba2c963249",
+                       "base_remote_main_sha":  "9ca2b7b8b97e8365dc70de9c231a655b7e79b469",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
                                              "schemas/intelligence-v3.schema.json",
-                                             "src/trzip/enrichment_queue.py",
-                                             "src/trzip/publication_pipeline.py",
-                                             "tests/test_enrichment_queue.py",
-                                             "tests/test_publication_pipeline.py"
+                                             "src/trzip/intelligence.py",
+                                             "src/trzip/ontology.py",
+                                             "tests/test_intelligence.py",
+                                             "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "6342f56bb0356cde6dc4bbd0358da19105cb4e83520d8b2f1cf6484bc37f3331",
-                                                    "schemas/intelligence-v3.schema.json":  "deef022ac1c6113a7a57041044fbd603361bfa891f9d0b6e096ea53b247d96b1",
-                                                    "src/trzip/enrichment_queue.py":  "a7afbf23c3057c18551023c0999a877dbce80cab331bf63c532d9bfb05f39fef",
-                                                    "src/trzip/publication_pipeline.py":  "4abffaa6d23c52bf5bc42b15bf323d750d490ce6dad3ef9e033f3e1f2edb7fa7",
-                                                    "tests/test_enrichment_queue.py":  "1d5153aeded48e1411571b8bfccb0400ddc188688c32aa0d3e27b8425e38b2c7",
-                                                    "tests/test_publication_pipeline.py":  "96742351fadd030bad1ebc2ff9d78005fa5173932c9e08aeb33e7fda59c1e6fb"
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "1d47a7f7d0b3010424d5f604989b0c74f8bfc1eb009f1fd4e2eb592e5a7f1b72",
+                                                    "schemas/intelligence-v3.schema.json":  "a968c4f79cfcb3f4eadb239c3e7b7250916c3289f05b7a80f18b1c988711aee1",
+                                                    "src/trzip/intelligence.py":  "7447092cc8bfc6e34d0aabd8527d7e8dbec4a7ee240e908ed5437d363cac03a8",
+                                                    "src/trzip/ontology.py":  "bae4b3d2b02979a86fae62b9456e724f14d5de9694ffdaa163f8c585c22f2346",
+                                                    "tests/test_intelligence.py":  "1d349a1b0daaef9536d3c2050c977126487c8c8edbbf7998a198cc84ad2e9f53",
+                                                    "tests/test_ontology.py":  "67a053f38d523dfac5922ba8d92ae69860ff713390c938735b200dbaadff1078"
                                                 },
-                       "commit_message":  "feat: persist fair evidence enrichment work",
+                       "commit_message":  "feat: derive related terms from reviewed ontology",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  142
+                                      "count":  143
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -55,24 +55,22 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "모든 실측 트렌드의 관련어와 기업 근거 부족을 누적 관리하고 검증 비용을 공정하게 순환",
+                    "objective":  "원천 관측과 검수된 온톨로지 근거만으로 관련어를 생성하고 프런트 계약에 증거를 전달한다.",
                     "completed":  [
-                                      "상위 10개 보조 검증을 미검증 우선 순환 방식으로 변경",
-                                      "같은 관측시간 재실행의 추가 API 소비 차단",
-                                      "모든 순위 항목의 관련어 및 기업 근거 작업을 SQLite에 영구 누적",
-                                      "프론트용 근거 작업대기열 계약과 스키마 추가"
+                                      "검수된 동일 사건 동의어를 최대 5개 범위에서 병합",
+                                      "띄어쓰기 중복 제거와 evidence URL 강제",
+                                      "관련어가 순위 점수에 영향을 주지 않는 계약과 테스트 추가"
                                   ],
                     "next_actions":  [
-                                         "실행본에서 실제 작업대기열 생성과 보조 검증 순환 실측",
-                                         "근거 대기열을 활용한 온톨로지 커버리지 확대",
-                                         "로그인 Chrome X 확장 1회 설치 후 X와 Google 통합 실측"
+                                         "찬희 Chrome 확장 설치 후 X 한국 트렌드 30개 실측 연결",
+                                         "온톨로지 기업·관련어 커버리지를 증거 기반으로 확대"
                                      ],
                     "blockers":  [
-                                     "Chrome 내부 확장 관리 화면은 사용자 1회 설치가 필요"
+                                     "Chrome 보안 정책상 현재 로그인 세션 확장은 사용자 1회 설치가 필요",
+                                     "Naver API 인증 024와 Instagram 수집기 미지원"
                                  ],
                     "known_limitations":  [
-                                              "근거가 5개 미만인 트렌드는 관련어 또는 기업 Gold 공개를 보류",
-                                              "NAVER API 인증 024와 Instagram 미구성은 보조 검증 실패 상태로 저장"
+                                              "대부분의 신규 트렌드는 아직 검수된 온톨로지 관계가 없어 관련어와 기업이 비어 있을 수 있음"
                                           ]
                 },
     "runtime_contract":  {

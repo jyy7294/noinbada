@@ -38,7 +38,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 원천 순위 | `latest_source_ranks`, `source_badge` |
 | 변화·지속 | `rank_change_by_source`, `lifecycle`, `persistence_rank`, `momentum_rank` |
 | 신뢰 상태 | `data_confidence`, `home_context_status` |
-| 관련어 | `keywords` (0~5), `role`은 결정론적 초안이고 `affects_score=false` |
+| 관련어 | `keywords` (0~5), 원천 관측 또는 검수된 온톨로지 표현만 허용하고 `affects_score=false` |
 | 기업 Gold | `companies` (0 또는 5개 이상) |
 | 기업 후보 감사 | `company_candidates`, `company_resolution` |
 | 보조 검증 | `verification_layer` |
@@ -49,6 +49,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 ## 빈 상태 규칙
 
 - 관련어 0개: 임의 키워드 칩을 만들지 않음
+- `source=reviewed_ontology`: `status=approved_ontology_term`, `evidence_urls`를 함께 표시하며 순위에는 반영하지 않음
 - `companies=[]`: 기업 CTA를 숨기고 `company_resolution.reason` 표시
 - `partial=true`: 실패한 출처와 마지막 관측시각 표시
 - `ranking_availability.is_combined_rank=false`: 통합 순위라고 표현하지 않고 잠정 배지 표시

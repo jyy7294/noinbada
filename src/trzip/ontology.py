@@ -217,6 +217,38 @@ class OntologyGraph:
         match = self._lookup_by_key.get(normalize_label(label))
         return None if match is None else deepcopy(match)
 
+    def reviewed_aliases(self, label: str) -> list[dict[str, Any]]:
+        """Return evidenced aliases for the same reviewed term node.
+
+        Alias records are context evidence only.  They never create source
+        observations or ranking points.
+        """
+
+        match = self.lookup(label)
+        if match is None:
+            return []
+        target_id = str(match["target_node_id"])
+        records = []
+        for alias in sorted(self.aliases, key=lambda item: str(item["id"])):
+            if str(alias.get("target_node_id")) != target_id:
+                continue
+            if str(alias.get("review_status")) not in DEFAULT_PUBLISHABLE_REVIEW_STATUSES:
+                continue
+            evidence = [
+                self.evidence_record(str(evidence_id))
+                for evidence_id in alias.get("evidence_ids") or []
+            ]
+            records.append({
+                "label": str(alias["label"]),
+                "target_node_id": target_id,
+                "target_node_label": str(self._node_by_id[target_id]["label"]),
+                "match_type": str(alias.get("match_type") or "reviewed_alias"),
+                "review_status": str(alias["review_status"]),
+                "evidence": evidence,
+                "provenance": deepcopy(dict(alias.get("provenance") or {})),
+            })
+        return records
+
     def _validate(self) -> None:
         evidence_node_ids = {
             str(node["id"])

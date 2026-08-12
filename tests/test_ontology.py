@@ -266,6 +266,18 @@ def test_reviewed_iam_solo_aliases_publish_exactly_five_officially_evidenced_com
         )
 
 
+def test_reviewed_aliases_return_only_same_node_publishable_evidence():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    aliases = graph.reviewed_aliases("나솔")
+
+    assert {item["label"] for item in aliases} == {"나는솔로", "나는 솔로", "나솔"}
+    assert {item["target_node_label"] for item in aliases} == {"나는 SOLO"}
+    assert all(
+        record["url"].startswith("https://")
+        for item in aliases
+        for record in item["evidence"]
+    )
 def test_iam_solo_business_edges_are_three_core_and_two_value_chain():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
     relation_edges = [
