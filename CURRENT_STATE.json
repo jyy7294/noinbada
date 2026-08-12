@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T16:55:58.3639612+00:00",
+    "updated_at":  "2026-08-12T17:12:43.6659987+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,34 +8,34 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "1cabe286618f12c007e9aaef0871196f6dd06a2d",
+                       "base_remote_main_sha":  "d2266af459e74edfa8170270a5b8634f53d243a5",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
+                                             "data/ontology_enrichment.json",
                                              "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
                                              "README.md",
                                              "schemas/intelligence-v3.schema.json",
                                              "src/trzip/intelligence.py",
-                                             "src/trzip/publication_pipeline.py",
                                              "tests/test_intelligence.py",
-                                             "tests/test_publication_pipeline.py"
+                                             "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "96cfb38840f2b3ab95ec3438a6d5929c87eee29ab11ffef542eacecd653f3f1f",
-                                                    "README.md":  "8aef1c0b4344d5669a00d25ef5fd035c2b4df1b758b37b237f9200bb0882de98",
-                                                    "schemas/intelligence-v3.schema.json":  "31bfc26e6b3d5b8a854ba4d97be0a47e4ce053518c3e15e0ff3d376448b8f076",
-                                                    "src/trzip/intelligence.py":  "01e38defffff4c3b072e65c65d4559de28e0cbd6b2264bf4ba3a3f6df95d558c",
-                                                    "src/trzip/publication_pipeline.py":  "f2758e54c111536ded545014cfb72ada24e3420fa7f7dbf57ea0ec8b3a102e42",
-                                                    "tests/test_intelligence.py":  "c735a723fdeda9283ce76ef40435ad4df67a12107ea8e2a24c1e589fcf1ad446",
-                                                    "tests/test_publication_pipeline.py":  "cfadfc98ef107580b2e9faa1f3a585d1f67919643c1bac5cb5f3d9033eb31e6c"
+                                                    "data/ontology_enrichment.json":  "544727bb257c48ea5795e9c37dcffd89062d26bedba48922f5fb225cd1140e2e",
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "6cd4268e1dbff31f5330121035dfec7995abc3aceaca34099162552539b1dc6d",
+                                                    "README.md":  "73238670f869efc91591555a52c9fcd3179bd1d8e6821233c2d77215ea57c36f",
+                                                    "schemas/intelligence-v3.schema.json":  "508c87427af15284ffc91e9f5ad7b2b02bd80b4f1d863d2cc9315681a46a8a50",
+                                                    "src/trzip/intelligence.py":  "9b9157edae084c6092ddc9d7947c10becbe47591ac09f5d9dba3e0e457042ce7",
+                                                    "tests/test_intelligence.py":  "843b2dd80360850af37cb1e8c793586f2b1f3c2b81d69a44f05bc446845cc481",
+                                                    "tests/test_ontology.py":  "4c013652da847438b26710a96836fa1e47afb5bea388ef7fffeece0546731d0a"
                                                 },
-                       "commit_message":  "fix: require context evidence for home trends",
+                       "commit_message":  "feat: require five-company ontology for home trends",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  152
+                                      "count":  153
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -57,25 +57,21 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Keep every observed term in the fair unified ranking while preventing evidence-free needs_context terms from appearing as resolved home trends, and let provider verification resolve held candidates without changing rank.",
+                    "objective":  "홈 트렌드는 근거가 이어진 국내 상장기업 5개 이상일 때만 공개하고 전체 순위는 보존",
                     "completed":  [
-                                      "Added a non-scoring home context gate",
-                                      "Preserved the complete unified ranking and score components",
-                                      "Rotated provider verification across all current main candidates",
-                                      "Updated the public JSON schema and frontend contract",
-                                      "Passed the full regression suite and production-database read-only smoke test"
+                                      "홈 품질 게이트에 기업 5개 최소조건 추가",
+                                      "005930 본체와 검토된 전기전자 산업 관찰기업 4개 온톨로지 연결",
+                                      "전체 회귀 154개 통과 및 운영 DB 읽기 검증"
                                   ],
                     "next_actions":  [
-                                         "Install the local X current-session extension once in ChanHee Chrome",
-                                         "Run the next production collection and verify X ranks 1 through 30",
-                                         "Continue evidence-backed ontology enrichment until each published home trend has at least five listed companies"
+                                         "현재 Google 상위 관측어의 온톨로지 보강 큐를 근거 기반으로 순차 처리",
+                                         "X 확장 설치 후 X 30개와 Google 전체의 이중출처 운영 검증"
                                      ],
                     "blockers":  [
-                                     "X remains unavailable until the local unpacked extension is installed in the current logged-in Chrome profile"
+                                     "찬희님 Chrome에서 X 현재세션 확장 프로그램 1회 수동 등록 필요"
                                  ],
                     "known_limitations":  [
-                                              "Current ranking remains provisional_single_source until an X snapshot is collected",
-                                              "Only evidence-backed ontology slices expose companies; unsupported trends stay incomplete rather than receiving filler companies"
+                                              "기업 5개 온톨로지 완료 전 트렌드는 홈에서 보류되며 전체 순위에는 남음"
                                           ]
                 },
     "runtime_contract":  {

@@ -144,19 +144,28 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
     context_status = str(item.get("context_status") or "")
     if context_status in {"unresolved", "ambiguous_person"}:
         return False, context_status
-    if context_status != "needs_context":
-        return True, "context_resolved"
-    if item.get("keywords"):
-        return True, "observed_or_reviewed_related_expression"
-    if int((item.get("company_resolution") or {}).get("candidate_count") or 0) > 0:
-        return True, "reviewed_ontology_path"
-    verification = item.get("verification_layer") or {}
-    if verification.get("status") == "observed" and verification.get("observed_platforms"):
-        return True, "matched_verification_provider"
-    news_context = item.get("news_context") or {}
-    if news_context.get("records"):
-        return True, "linked_news_context"
-    return False, "context_evidence_missing"
+    context_reason = "context_resolved"
+    if context_status == "needs_context":
+        if item.get("keywords"):
+            context_reason = "observed_or_reviewed_related_expression"
+        elif int((item.get("company_resolution") or {}).get("candidate_count") or 0) > 0:
+            context_reason = "reviewed_ontology_path"
+        else:
+            verification = item.get("verification_layer") or {}
+            if verification.get("status") == "observed" and verification.get("observed_platforms"):
+                context_reason = "matched_verification_provider"
+            elif (item.get("news_context") or {}).get("records"):
+                context_reason = "linked_news_context"
+            else:
+                return False, "context_evidence_missing"
+
+    # The product promise is not merely a trend list: every home trend must be
+    # actionable as an evidence-backed company exploration.  A partial
+    # ontology remains visible in the unified ranking and enrichment queue, but
+    # it is never padded with generic companies to fill the home list.
+    if len(item.get("companies") or []) < MINIMUM_PUBLISHED_COMPANIES:
+        return False, "company_ontology_incomplete"
+    return True, context_reason
 
 
 def _series_rows(start: datetime, end: datetime, path: Path | None = None) -> list[sqlite3.Row]:
@@ -539,7 +548,14 @@ def _ontology_company_candidates(
         )
         for path in paths:
             nodes = [graph.node(node_id) for node_id in path.node_ids]
-            company_node = next((node for node in nodes if node["type"] == "company"), None)
+            # A reviewed path may pass through the observed company and then an
+            # industry peer before reaching that peer's stock.  The company
+            # represented by the terminal stock is therefore the last company
+            # node on the path, not the first one.
+            company_node = next(
+                (node for node in reversed(nodes) if node["type"] == "company"),
+                None,
+            )
             stock_node = next((node for node in reversed(nodes) if node["type"] == "stock"), None)
             if not company_node or not stock_node:
                 continue
@@ -1162,6 +1178,7 @@ def build_intelligence(
         "ranking_effect": "none",
         "unified_ranking_preserved": True,
         "main_lane_total": len(home_candidates),
+        "minimum_published_companies": MINIMUM_PUBLISHED_COMPANIES,
         "home_eligible_total": len(resolved_public_candidates),
         "home_excluded_total": len(home_candidates) - len(resolved_public_candidates),
         "exclusion_reasons": dict(sorted(Counter(
@@ -1170,8 +1187,9 @@ def build_intelligence(
             if not home_gate_results[item["event_key"]][0]
         ).items())),
         "rule": (
-            "needs_context 항목은 관측·검수 관련어, 검수 온톨로지 경로, "
-            "일치한 보조 검증 또는 연결된 기사 맥락 중 하나가 있어야 홈 후보가 됨"
+            "맥락 근거를 통과하고 URL 증거가 이어진 국내 상장기업이 최소 "
+            f"{MINIMUM_PUBLISHED_COMPANIES}개인 항목만 홈 후보가 됨; 미달 후보는 "
+            "전체 순위와 온톨로지 보강 큐에 보존하며 기업을 임의로 채우지 않음"
         ),
     }
     ontology_enrichment_queue = [

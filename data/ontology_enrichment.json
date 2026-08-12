@@ -364,6 +364,69 @@
       "label": "한국거래소 네오위즈 상장회사 코드 확인",
       "normalized_label": "한국거래소 네오위즈 상장회사 코드 확인",
       "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-electronics-k11",
+      "type": "evidence",
+      "label": "삼성전자 반도체 사업영역 확인",
+      "normalized_label": "삼성전자 반도체 사업영역 확인",
+      "metadata": {"publisher": "삼성전자"}
+    },
+    {
+      "id": "evidence:reviewed:skhynix-k11",
+      "type": "evidence",
+      "label": "SK하이닉스 반도체 사업영역 확인",
+      "normalized_label": "SK하이닉스 반도체 사업영역 확인",
+      "metadata": {"publisher": "SK하이닉스"}
+    },
+    {
+      "id": "evidence:reviewed:krx-skhynix-000660",
+      "type": "evidence",
+      "label": "한국거래소 SK하이닉스 상장회사 코드 확인",
+      "normalized_label": "한국거래소 SK하이닉스 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-electro-k11",
+      "type": "evidence",
+      "label": "삼성전기 전자부품 사업영역 확인",
+      "normalized_label": "삼성전기 전자부품 사업영역 확인",
+      "metadata": {"publisher": "삼성전기"}
+    },
+    {
+      "id": "evidence:reviewed:krx-samsung-electro-009150",
+      "type": "evidence",
+      "label": "한국거래소 삼성전기 상장회사 코드 확인",
+      "normalized_label": "한국거래소 삼성전기 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:lg-electronics-k11",
+      "type": "evidence",
+      "label": "LG전자 전자 사업영역 확인",
+      "normalized_label": "LG전자 전자 사업영역 확인",
+      "metadata": {"publisher": "LG전자"}
+    },
+    {
+      "id": "evidence:reviewed:krx-lg-electronics-066570",
+      "type": "evidence",
+      "label": "한국거래소 LG전자 상장회사 코드 확인",
+      "normalized_label": "한국거래소 LG전자 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-sdi-k11",
+      "type": "evidence",
+      "label": "삼성SDI 배터리·전자소재 사업영역 확인",
+      "normalized_label": "삼성SDI 배터리 전자소재 사업영역 확인",
+      "metadata": {"publisher": "삼성SDI"}
+    },
+    {
+      "id": "evidence:reviewed:krx-samsung-sdi-006400",
+      "type": "evidence",
+      "label": "한국거래소 삼성SDI 상장회사 코드 확인",
+      "normalized_label": "한국거래소 삼성SDI 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
     }
   ],
   "evidence": [
@@ -705,6 +768,105 @@
       "evidence_type": "official_listing_record",
       "summary": "네오위즈의 코스닥상장법인 회사코드가 095660임을 확인한다.",
       "published_at": "2026-06-04",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-electronics-k11",
+      "title": "삼성전자 반도체 사업영역",
+      "publisher": "삼성전자",
+      "url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+      "evidence_type": "official_company_business_page",
+      "summary": "삼성전자가 메모리·시스템LSI·파운드리 등 반도체 사업을 영위함을 확인한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_industry"}
+    },
+    {
+      "id": "evidence:reviewed:skhynix-k11",
+      "title": "SK하이닉스 Corporate Fact Sheet",
+      "publisher": "SK하이닉스",
+      "url": "https://news.skhynix.com/corporate/fact-sheet/",
+      "evidence_type": "official_company_business_page",
+      "summary": "SK하이닉스가 메모리 반도체를 중심으로 사업을 영위함을 확인한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "industry_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-skhynix-000660",
+      "title": "SK하이닉스 유가증권상장법인 회사코드 000660",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2025/09/09/000034/20250909000060/10136.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "SK하이닉스의 유가증권상장법인 회사코드가 000660임을 확인한다.",
+      "published_at": "2025-09-09",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-electro-k11",
+      "title": "삼성전기 회사개요",
+      "publisher": "삼성전기",
+      "url": "https://sem.samsung.com/kr/about-us/company/overview.do",
+      "evidence_type": "official_company_business_page",
+      "summary": "삼성전기가 적층세라믹콘덴서·카메라모듈·패키지기판 등 전자부품 사업을 영위함을 확인한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "industry_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-samsung-electro-009150",
+      "title": "삼성전기 유가증권상장법인 회사코드 009150",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/02/20/000241/20260220000716/00637.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "삼성전기의 유가증권상장법인 회사코드가 009150임을 확인한다.",
+      "published_at": "2026-02-20",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:lg-electronics-k11",
+      "title": "LG Electronics Our Business",
+      "publisher": "LG전자",
+      "url": "https://www.lg.com/global/business/about-lg-business/",
+      "evidence_type": "official_company_business_page",
+      "summary": "LG전자가 가전·TV·전장 등 전자 사업을 영위함을 확인한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "industry_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-lg-electronics-066570",
+      "title": "LG전자 유가증권상장법인 회사코드 066570",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "LG전자의 유가증권상장법인 회사코드가 066570임을 확인한다.",
+      "published_at": "2026-03-24",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-sdi-k11",
+      "title": "Samsung SDI Sustainability Report 2025",
+      "publisher": "삼성SDI",
+      "url": "https://www.samsungsdi.com/upload/download/sustainable-management/Samsung_SDI_Sustainability_Report_2025_EN.pdf",
+      "evidence_type": "official_company_report",
+      "summary": "삼성SDI가 배터리와 전자소재 사업을 영위함을 확인한다.",
+      "published_at": "2025-06-30",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "industry_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-samsung-sdi-006400",
+      "title": "삼성SDI 유가증권상장법인 회사코드 006400",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2025/07/02/000294/20250702000872/00637.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "삼성SDI의 유가증권상장법인 회사코드가 006400임을 확인한다.",
+      "published_at": "2025-07-02",
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
     }
@@ -1176,6 +1338,92 @@
       "to_node": "stock:kr:kosdaq:095660",
       "relation_type": "listed_as",
       "evidence_ids": ["evidence:reviewed:krx-neowiz-095660"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:005930-to-k11",
+      "from_node": "term:reviewed:005930",
+      "to_node": "industry:k11",
+      "relation_type": "reviewed_company_sector_context",
+      "evidence_ids": ["evidence:reviewed:samsung-electronics-k11"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "삼성전자의 전기·전자 산업 사업영역 확인", "temporal_scope": "현재 공개 사업영역", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:k11-skhynix",
+      "from_node": "industry:k11",
+      "to_node": "company:kr:kospi:000660",
+      "relation_type": "industry_has_listed_participant",
+      "evidence_ids": ["evidence:reviewed:skhynix-k11"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "동일 광역 전기·전자 산업의 검토된 상장사; 직접 수혜 관계 아님", "temporal_scope": "현재 공개 사업영역", "confidence": "medium", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-skhynix-000660",
+      "from_node": "company:kr:kospi:000660",
+      "to_node": "stock:kr:kospi:000660",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-skhynix-000660"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:k11-samsung-electro",
+      "from_node": "industry:k11",
+      "to_node": "company:kr:kospi:009150",
+      "relation_type": "industry_has_listed_participant",
+      "evidence_ids": ["evidence:reviewed:samsung-electro-k11"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "동일 광역 전기·전자 산업의 검토된 상장사; 직접 수혜 관계 아님", "temporal_scope": "현재 공개 사업영역", "confidence": "medium", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-samsung-electro-009150",
+      "from_node": "company:kr:kospi:009150",
+      "to_node": "stock:kr:kospi:009150",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-samsung-electro-009150"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:k11-lg-electronics",
+      "from_node": "industry:k11",
+      "to_node": "company:kr:kospi:066570",
+      "relation_type": "industry_has_listed_participant",
+      "evidence_ids": ["evidence:reviewed:lg-electronics-k11"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "동일 광역 전기·전자 산업의 검토된 상장사; 직접 수혜 관계 아님", "temporal_scope": "현재 공개 사업영역", "confidence": "medium", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-lg-electronics-066570",
+      "from_node": "company:kr:kospi:066570",
+      "to_node": "stock:kr:kospi:066570",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-lg-electronics-066570"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:k11-samsung-sdi",
+      "from_node": "industry:k11",
+      "to_node": "company:kr:kospi:006400",
+      "relation_type": "industry_has_listed_participant",
+      "evidence_ids": ["evidence:reviewed:samsung-sdi-k11"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "adjacent", "proof_scope": "동일 광역 전기·전자 산업의 검토된 상장사; 직접 수혜 관계 아님", "temporal_scope": "현재 공개 사업영역", "confidence": "medium", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-samsung-sdi-006400",
+      "from_node": "company:kr:kospi:006400",
+      "to_node": "stock:kr:kospi:006400",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-samsung-sdi-006400"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     }

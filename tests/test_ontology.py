@@ -419,8 +419,8 @@ def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
     assert match["match_type"] == "reviewed_company_identifier_alias"
     assert match["review_status"] == "approved"
     assert all(record["url"].startswith("https://") for record in match["evidence"])
-    assert resolution["company_count"] == 1
-    assert resolution["publishable"] is False
+    assert resolution["company_count"] == 5
+    assert resolution["publishable"] is True
 
 
 def test_unreviewed_alias_is_validated_but_not_used_for_lookup():
@@ -509,3 +509,31 @@ def test_publishable_company_edge_cannot_use_unreviewed_evidence():
 def test_missing_enrichment_overlay_fails_loudly(tmp_path):
     with pytest.raises(FileNotFoundError, match="enrichment overlay is missing"):
         OntologyGraph.load_merged(SEED_PATH, tmp_path / "missing.json")
+
+
+def test_reviewed_005930_peer_ontology_has_five_distinct_listed_companies():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    resolution = graph.resolve_term("005930", min_companies=5, max_hops=7)
+
+    assert resolution["status"] == "published"
+    assert resolution["publishable"] is True
+    assert resolution["company_count"] >= 5
+    paths = graph.trace_paths(
+        resolution["match"]["target_node_id"],
+        target_types=("stock",),
+        max_hops=7,
+        allowed_review_statuses={"observed", "approved"},
+    )
+    tickers = {
+        graph.node(path.node_ids[-1])["metadata"]["ticker"]
+        for path in paths
+    }
+    assert {"000660", "005930", "006400", "009150", "066570"} <= tickers
+    for path in paths:
+        if graph.node(path.node_ids[-1])["metadata"]["ticker"] not in tickers:
+            continue
+        for edge_id in path.edge_ids:
+            edge = next(edge for edge in graph.edges if edge["id"] == edge_id)
+            assert edge["review_status"] in {"observed", "approved"}
+            assert edge["evidence_ids"]

@@ -256,7 +256,8 @@ def test_google_related_queries_can_disambiguate_category_without_renaming_term(
     assert item["category"] == "sports_participation"
     assert item["broad_category"] == "sports"
     assert item["context_status"] == "resolved_by_observed_context"
-    assert item["home_context_status"] == "resolved"
+    assert item["home_context_status"] == "review_required"
+    assert item["home_context_reason"] == "company_ontology_incomplete"
 
 
 def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
@@ -283,9 +284,26 @@ def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
     assert generic["company_eligible"] is True
     assert generic["companies"] == []
     assert generic not in result["public_top10"]
-    assert any(item["topic"] == "005930" for item in result["public_top10"])
-    stock = next(item for item in result["public_top10"] if item["topic"] == "005930")
+    stock = next(item for item in result["unified_ranking"] if item["topic"] == "005930")
     assert stock["resolved_entity_name"] == "삼성전자"
+    assert stock["home_context_status"] == "resolved"
+    assert stock["home_context_reason"] == "context_resolved"
+    assert stock in result["public_top10"]
+    assert {company["stock_code"] for company in stock["companies"]} == {
+        "000660",
+        "005930",
+        "006400",
+        "009150",
+        "066570",
+    }
+    assert next(
+        company for company in stock["companies"] if company["stock_code"] == "005930"
+    )["relation_tier"] == "core"
+    assert {
+        company["relation_tier"]
+        for company in stock["companies"]
+        if company["stock_code"] != "005930"
+    } == {"adjacent"}
 
 
 def test_home_subset_holds_needs_context_term_without_any_disambiguation_evidence(tmp_path):
@@ -295,7 +313,7 @@ def test_home_subset_holds_needs_context_term_without_any_disambiguation_evidenc
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
     upsert([
         HourlyObservation(at.isoformat(), "google_trends", "애니", 1, 100, "observed"),
-        HourlyObservation(at.isoformat(), "google_trends", "불닭", 2, 99, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "말복", 2, 99, "observed"),
     ], target)
 
     result = build_intelligence(at, hours=1, path=target)
@@ -310,7 +328,7 @@ def test_home_subset_holds_needs_context_term_without_any_disambiguation_evidenc
     assert ambiguous["home_context_reason"] == "context_evidence_missing"
     assert ambiguous["selection_layer"] == "context_review_queue"
     assert ambiguous not in result["public_top10"]
-    assert [item["topic"] for item in result["public_top10"]] == ["불닭"]
+    assert [item["topic"] for item in result["public_top10"]] == ["말복"]
     assert result["home_quality_gate"]["ranking_effect"] == "none"
     assert result["home_quality_gate"]["unified_ranking_preserved"] is True
     assert result["home_quality_gate"]["home_excluded_total"] == 1
@@ -332,16 +350,15 @@ def test_investment_terms_do_not_receive_unrelated_generic_companies(tmp_path):
     generic = next(item for item in result["unified_ranking"] if item["resolved_entity_name"] == "관리종목")
     samsung = next(item for item in result["unified_ranking"] if item["resolved_entity_name"] == "삼성전자")
 
-    # A stock-market phenomenon remains a valid main trend. It still receives
-    # no companies until the evidence ontology has five complete paths.
+    # A generic market term receives no companies.  A reviewed company term
+    # may expose its own stock plus clearly-labelled industry observations.
     assert generic["company_eligible"] is True
     assert generic["companies"] == []
-    assert samsung["companies"] == []
-    assert [
-        company["stock_code"] for company in samsung["company_candidates"]
-    ] == ["005930"]
-    assert samsung["company_resolution"]["publish_status"] == "ontology_incomplete"
-    assert samsung["company_resolution"]["published_count"] == 0
+    assert {company["stock_code"] for company in samsung["companies"]} == {
+        "000660", "005930", "006400", "009150", "066570"
+    }
+    assert samsung["company_resolution"]["publish_status"] == "published"
+    assert samsung["company_resolution"]["published_count"] == 5
 
 
 def test_quality_summary_detects_unchanged_source_snapshots(tmp_path):
@@ -567,7 +584,7 @@ def test_unified_ranking_preserves_main_issue_and_review_without_score_calibrati
     upsert([
         HourlyObservation(at.isoformat(), "x", "국가장학금", 1, 100, "observed"),
         HourlyObservation(at.isoformat(), "x", "스네즈나", 2, 99, "observed"),
-        HourlyObservation(at.isoformat(), "x", "불닭", 3, 98, "observed"),
+        HourlyObservation(at.isoformat(), "x", "말복", 3, 98, "observed"),
     ], target)
 
     result = build_intelligence(at, hours=1, path=target)
@@ -577,7 +594,7 @@ def test_unified_ranking_preserves_main_issue_and_review_without_score_calibrati
         "main_subset", "issue_context", "review_queue",
     }
     assert all(item["trend_fit"]["affects_score"] is False for item in result["unified_ranking"])
-    assert [item["topic"] for item in result["public_top10"]] == ["불닭"]
+    assert [item["topic"] for item in result["public_top10"]] == ["말복"]
 
 
 def test_window_only_history_cannot_reenter_current_ranking(tmp_path):
@@ -700,7 +717,7 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
     assert all(company["relation_type"] != "listed_as" for company in companies.values())
 
 
-def test_stock_code_has_one_real_candidate_but_gold_gate_never_adds_filler(tmp_path):
+def test_stock_code_has_reviewed_company_and_four_labelled_industry_peers(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 
     target = tmp_path / "stock-code-enrichment.sqlite3"
@@ -714,13 +731,16 @@ def test_stock_code_has_one_real_candidate_but_gold_gate_never_adds_filler(tmp_p
     item = result["unified_ranking"][0]
 
     assert item["display_name"] == "005930"
-    assert [company["stock_code"] for company in item["company_candidates"]] == ["005930"]
-    assert item["companies"] == []
-    assert item["company_resolution"]["publish_status"] == "ontology_incomplete"
-    queue = result["ontology_enrichment_queue"][0]
-    assert queue["lookup_status"] == "reviewed_match_below_gold_gate"
-    assert queue["missing_company_paths"] == 4
-    assert queue["padding_forbidden"] is True
+    assert {company["stock_code"] for company in item["company_candidates"]} == {
+        "000660", "005930", "006400", "009150", "066570"
+    }
+    assert item["companies"] == item["company_candidates"]
+    assert item["company_resolution"]["publish_status"] == "published"
+    assert item["company_resolution"]["published_count"] == 5
+    assert not any(
+        queue["representative"] == "005930"
+        for queue in result["ontology_enrichment_queue"]
+    )
 
 
 def test_listed_company_name_has_one_verified_stock_without_industry_filler(tmp_path):

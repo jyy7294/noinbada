@@ -29,6 +29,9 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 `needs_context`인 항목은 관련 표현·검수 온톨로지·일치한 보조 검증·연결 기사 중
 하나도 없으면 전체 순위에는 남지만 `public_top10`에서는 제외됩니다. 프런트는
 `home_context_status`와 `home_context_reason`을 그대로 표시하고 자체 승격하지 않습니다.
+또한 `companies`가 URL 근거를 갖춘 서로 다른 국내 상장종목 5개 미만이면
+`company_ontology_incomplete`로 홈에서 보류됩니다. 이때 백엔드는 기업을 채워 넣지
+않으며 `public_top10`은 10개보다 적을 수 있습니다.
 보조 검증 스케줄러는 이 상태를 풀 수 있도록 `public_top10`만이 아니라 현재
 `main` 후보 전체를 순환하며, 한 시간 최대 3개만 조회합니다. 검증 결과는 순위에
 영향을 주지 않습니다.

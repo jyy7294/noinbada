@@ -35,7 +35,7 @@
       "type": "object",
       "required": [
         "policy_version", "ranking_effect", "unified_ranking_preserved",
-        "main_lane_total", "home_eligible_total", "home_excluded_total",
+        "main_lane_total", "minimum_published_companies", "home_eligible_total", "home_excluded_total",
         "exclusion_reasons", "rule"
       ],
       "properties": {
@@ -43,6 +43,7 @@
         "ranking_effect": {"const": "none"},
         "unified_ranking_preserved": {"const": true},
         "main_lane_total": {"type": "integer", "minimum": 0},
+        "minimum_published_companies": {"const": 5},
         "home_eligible_total": {"type": "integer", "minimum": 0},
         "home_excluded_total": {"type": "integer", "minimum": 0},
         "exclusion_reasons": {
@@ -282,7 +283,8 @@
             "not_main_lane", "unclassified", "unresolved", "ambiguous_person",
             "context_resolved", "observed_or_reviewed_related_expression",
             "reviewed_ontology_path", "matched_verification_provider",
-            "linked_news_context", "context_evidence_missing"
+            "linked_news_context", "context_evidence_missing",
+            "company_ontology_incomplete"
           ]
         },
         "ranking_availability_status": {
