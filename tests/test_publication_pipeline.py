@@ -1,15 +1,23 @@
 import json
 from datetime import UTC, datetime
 
-from trzip.github_pipeline import _collection_health, _failure_class, run
+from trzip.publication_pipeline import _collection_health, _failure_class, run
 from trzip.hourly_store import HourlyObservation
+
+
+def test_local_cli_is_canonical_and_legacy_module_is_compatible():
+    from trzip.github_pipeline import run as legacy_run
+    from trzip.local_pipeline import run as local_run
+
+    assert local_run is run
+    assert legacy_run is run
 
 
 def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     at = datetime.now(UTC).replace(minute=0, second=0, microsecond=0)
     stamp = at.isoformat()
 
-    monkeypatch.setattr("trzip.github_pipeline.floor_hour", lambda value: at)
+    monkeypatch.setattr("trzip.publication_pipeline.floor_hour", lambda value: at)
     monkeypatch.setattr(
         "trzip.hourly_store.collect_google",
         lambda value: [HourlyObservation(stamp, "google_trends", "말복", 1, 100, "observed")],
@@ -19,7 +27,7 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
         lambda value: [HourlyObservation(stamp, "x", "말복", 1, 100, "observed")],
     )
     monkeypatch.setattr(
-        "trzip.github_pipeline.pykrx_stock",
+        "trzip.publication_pipeline.pykrx_stock",
         lambda code, base_date, lookback_days=21: {
             "status": "observed",
             "provider": "pykrx",
@@ -49,6 +57,9 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     }
     assert intelligence["unified_ranking"][0]["companies"][0]["market_reference"]["status"] == "observed"
     assert list((tmp_path / "observations").glob("*.json"))
+    status = json.loads((tmp_path / "latest" / "status.json").read_text(encoding="utf-8"))
+    assert status["partial"] is False
+    assert result["storage"] == "local-sqlite-published-to-live-data"
 
     second = run(tmp_path)
     daily = json.loads((tmp_path / second["daily_file"]).read_text(encoding="utf-8"))
@@ -76,7 +87,47 @@ def test_collection_health_deduplicates_hour_and_classifies_source_failures(tmp_
     assert second["source_targets_met"] == {"x": False, "google_trends": False}
 
 
+def test_pipeline_uses_preserved_same_hour_source_after_retry_failure(tmp_path, monkeypatch):
+    at = datetime.now(UTC).replace(minute=0, second=0, microsecond=0)
+    stamp = at.isoformat()
+    database = tmp_path / "runtime.sqlite3"
+    from trzip.hourly_store import collect_current
+
+    monkeypatch.setattr("trzip.publication_pipeline.floor_hour", lambda value: at)
+    monkeypatch.setattr(
+        "trzip.hourly_store.collect_google",
+        lambda value: [HourlyObservation(stamp, "google_trends", "말복", 1, 100, "observed")],
+    )
+    monkeypatch.setattr(
+        "trzip.hourly_store.collect_x",
+        lambda value: [HourlyObservation(stamp, "x", "불꽃축제", 1, 100, "observed")],
+    )
+    collect_current(database, at)
+
+    monkeypatch.setattr(
+        "trzip.hourly_store.collect_x",
+        lambda value: (_ for _ in ()).throw(RuntimeError("browser temporarily unavailable")),
+    )
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.pykrx_stock",
+        lambda *args, **kwargs: {"status": "unavailable", "reason": "test"},
+    )
+    result = run(tmp_path / "publication", database_path=database, now=at)
+
+    assert result["collection"]["errors"] == {}
+    assert result["collection"]["audit"]["x_korea_realtime"]["status"] == "observed"
+    assert "dedicated profile" in result["collection"]["audit"]["x_korea_realtime"]["detail"]
+    assert result["collection"]["observed"] == 2
+    status = json.loads(
+        (tmp_path / "publication" / "latest" / "status.json").read_text(encoding="utf-8")
+    )
+    assert status["partial"] is False
+
+
 def test_failure_class_has_required_operational_buckets():
     assert _failure_class("429 quota exceeded") == "quota_or_rate_limit"
     assert _failure_class("TimeoutError") == "network"
     assert _failure_class("XML parser failed") == "parser_change"
+    assert _failure_class("auth_required: login once") == "browser_authentication"
+    assert _failure_class("region_unverified") == "region_configuration"
+    assert _failure_class("selector_changed") == "browser_page_change"

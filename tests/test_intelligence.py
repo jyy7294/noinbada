@@ -157,19 +157,26 @@ def test_observed_related_expression_is_distinguished_from_operator_candidate(tm
     assert event["rank_change_by_source"]["x"] is None
 
 
-def test_public_top10_excludes_unresolved_context_but_keeps_full_ranking(tmp_path):
+def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
     target = tmp_path / "public-quality-gate.sqlite3"
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
     upsert([
         HourlyObservation(at.isoformat(), "x", "스네즈나", 1, 100, "observed"),
         HourlyObservation(at.isoformat(), "google_trends", "005930", 2, 99, "observed"),
+        HourlyObservation(at.isoformat(), "x", "패션 브랜드", 3, 98, "observed"),
     ], target)
 
     result = build_intelligence(at, hours=1, path=target)
 
     assert any(item["topic"] == "스네즈나" for item in result["unified_ranking"])
-    assert all(item["topic"] != "스네즈나" for item in result["public_top10"])
+    unresolved = next(item for item in result["public_top10"] if item["topic"] == "스네즈나")
+    assert unresolved["home_context_status"] == "review_required"
+    assert unresolved["companies"] == []
+    generic = next(item for item in result["public_top10"] if item["topic"] == "패션 브랜드")
+    assert generic["home_context_status"] == "review_required"
+    assert generic["company_eligible"] is False
+    assert generic["companies"] == []
     assert any(item["display_name"] == "삼성전자" for item in result["public_top10"])
 
 

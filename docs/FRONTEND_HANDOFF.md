@@ -1,77 +1,55 @@
-# Claude Design 프론트엔드 연동 명세
+# 프론트엔드 연동 명세
 
-## 연결 원칙
+## 단일 권위 데이터
 
-비용 0원 운영에서는 프론트가 `live-data` 브랜치의 최신 JSON을 조회합니다.
-
-```env
-NEXT_PUBLIC_TRZIP_DATA_URL=https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest
-```
-
-Vite를 사용하면 변수명만 다음과 같이 바꿉니다.
-
-```env
-VITE_TRZIP_DATA_URL=https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest
-```
-
-공개 저장소의 JSON이므로 프론트에 GitHub 토큰을 넣지 않습니다.
-
-## 기본 호출
-
-```ts
-const DATA = process.env.NEXT_PUBLIC_TRZIP_DATA_URL!;
-
-export async function getLiveTrends(hours = 24) {
-  const response = await fetch(`${DATA}/intelligence.json?t=${Date.now()}`, {
-    cache: "no-store",
-  });
-  if (!response.ok) throw new Error(`TRZIP data ${response.status}`);
-  return response.json();
-}
-```
-
-## 데이터 파일
-
-| 파일 | 프론트 사용처 |
-|---|---|
-| `latest/intelligence.json` | 전체 통합 순위와 상세 데이터 |
-| `latest/coverage.json` | 누적 관찰기간·행 수 |
-| `latest/metadata.json` | 마지막 실행·수집 성공·오류 상태 |
-
-## 반드시 분리할 필드
+정적 프론트는 다음 고정 경로만 읽습니다.
 
 ```text
-display_name       대표 사건·현상명. 예: 말복
-raw_terms          X·Google에서 실제 관찰된 표현
-phenomenon_summary 왜 관심이 증가했는지에 대한 설명
+https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/intelligence.json
+https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/status.json
+https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.json
 ```
 
-`phenomenon_summary`를 카드 제목으로 사용하면 안 됩니다.
+URL 쿼리로 임의 `dataBase`를 주입하거나 배포 시점의 `/live` 스냅샷으로 전환하지 않습니다. GitHub 토큰과 API 키도 브라우저에 넣지 않습니다.
 
-## 목록 정렬
+## 목록
 
-| 정렬 | 필드 |
+- 홈: `public_top10`
+- 전체: `unified_ranking`
+- 지속기간순: `persistence_rank`
+- 급상승순: `momentum_rank`
+- 이슈·주의: `lanes.issue`
+
+`home_context_status=review_required`는 실제 순위에는 포함하되 현상 맥락과 기업 관계가 아직 미확정이라는 뜻입니다. 이를 삭제하거나 임의 설명·기업으로 채우지 않습니다.
+
+## 상태 판정
+
+| 조건 | 화면 상태 |
 |---|---|
-| 통합 순위 | `rank` |
-| 지속기간순 | `persistence_rank` |
-| 급상승순 | `momentum_rank` |
+| 마지막 관측 90분 이내 | 최신 |
+| 90분 초과~3시간 | 지연 |
+| 3시간 초과 | 오래된 데이터 |
+| X·Google 중 한쪽 실패 | 부분 수집 |
+| 네트워크 실패 후 캐시 | 오래된 캐시 |
+| 네트워크·캐시 모두 없음 | 데이터 연결 실패 |
 
-카테고리와 인물 여부로 항목을 삭제하지 않습니다. `classification`, `lane`, `company_eligible`을 사용해 상태만 구분합니다.
+실패 시 HTML에 남아 있는 목업 트렌드를 실데이터처럼 표시하면 안 됩니다.
 
-## 관련기업 표시
+## 필드 분리
 
-- `official_evidence`: 공식 관계 확인
-- `pending_evidence`: 추가 확인 필요
-- `industry_structure_only`: 산업 구조 탐색 후보
-- `excluded`: 표시 제외
+| UI | 필드 |
+|---|---|
+| 제목 | `display_name` |
+| 실제 관측 표현 | `raw_terms` |
+| 설명 | `phenomenon_summary` |
+| 검토 상태 | `context_status`, `home_context_status` |
+| 출처 | `latest_source_ranks`, `source_badge` |
+| 관련어 | `keywords` 중 실제 관측 상태만 |
+| 기업 | `companies` |
+| 기업 관계 | `relation_display_type`, `verification_status`, `team_review_label` |
 
-`industry_structure_only`를 직접 수혜 기업이나 추천 종목처럼 표시하지 않습니다.
+원격 문자열은 `textContent`로 렌더링합니다. `innerHTML`에 직접 삽입하지 않습니다.
 
-## 프론트 완료 조건
+## 사용자 저장
 
-1. 데이터 주소를 코드에 하드코딩하지 않고 환경변수로 관리
-2. GitHub 데이터 갱신 지연·실패 상태 표시
-3. 통합 순위·지속기간순·급상승순 전환
-4. 대표명·원천 표현·현상 설명 분리
-5. 기업 관계의 근거 상태와 투자 유의사항 표시
-6. 실측과 재구성 데모를 명확히 구분
+사용자가 현재 화면에서 선택·삭제한 키워드와 기업만 `trzip:portfolios:v1`에 저장합니다. 저장 폴더를 열면 정적 목업이 아니라 해당 저장 객체를 표시합니다. Z4·Z5의 사전 제작 밈트폴리오는 발표 목업으로 별도 유지합니다.

@@ -1,6 +1,11 @@
-const DEFAULT_LIVE_BASE = 'https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest';
-const CACHE_KEY = 'trzip:latest-intelligence:v1';
+const LIVE_DATA_BASE = 'https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest';
+const INTELLIGENCE_URL = `${LIVE_DATA_BASE}/intelligence.json`;
+const STATUS_URL = `${LIVE_DATA_BASE}/status.json`;
+const METADATA_URL = `${LIVE_DATA_BASE}/metadata.json`;
+const CACHE_KEY = 'trzip:latest-intelligence:v2';
 const PORTFOLIO_KEY = 'trzip:portfolios:v1';
+const FRESH_FOR_MINUTES = 90;
+const STALE_AFTER_MINUTES = 180;
 
 const CATEGORY_KO = {
   food_culinary: '음식·식품',
@@ -12,21 +17,15 @@ const CATEGORY_KO = {
   sports_attendance: '스포츠',
   place_experience: '여행·공간',
   lifestyle_behavior: '생활',
+  wellness_behavior: '생활',
+  participation_meme: '밈·참여',
   product_brand: '제품·브랜드',
   technology_tool: '기술',
-  fashion_collectible: '패션',
+  fashion_beauty: '패션·뷰티',
+  fashion_collectible: '패션·굿즈',
+  investment_market: '금융·투자',
   unclassified: '기타',
 };
-
-function liveBase() {
-  const configured = globalThis.TRZIP_DATA_BASE
-    || new URLSearchParams(globalThis.location?.search || '').get('dataBase');
-  if (!configured) return DEFAULT_LIVE_BASE;
-  if (configured.startsWith('/') || configured.startsWith('https://')) {
-    return configured.replace(/\/$/, '');
-  }
-  return DEFAULT_LIVE_BASE;
-}
 
 function readJson(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
@@ -34,13 +33,82 @@ function readJson(key, fallback) {
 }
 
 function writeJson(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function asDate(value) {
+  if (!value) return null;
+  const date = new Date(value);
+  return Number.isFinite(date.getTime()) ? date : null;
+}
+
+function normalizedSourceStatus(payload, metadata, runtimeStatus) {
+  const published = runtimeStatus?.source_status || {};
+  const direct = payload.collection_status?.source_status || {};
+  const audit = metadata.collection?.audit || {};
+  return {
+    x: published.x || direct.x || audit.x_korea_realtime?.status || 'unknown',
+    google_trends: published.google_trends || direct.google_trends || audit.google_geo_kr?.status || 'unknown',
+  };
+}
+
+function dataStatus(payload, metadata, runtimeStatus, { fromCache = false, now = new Date() } = {}) {
+  const payloadAt = asDate(payload.window?.to || payload.generated_at);
+  const metadataAt = asDate(runtimeStatus?.observed_at || metadata.observed_at || metadata.collection?.observed_at);
+  const observedAt = metadataAt || payloadAt;
+  const ageMinutes = observedAt
+    ? Math.max(0, Math.round((now.getTime() - observedAt.getTime()) / 60000))
+    : null;
+  const snapshotMismatch = Boolean(
+    payloadAt && metadataAt && Math.abs(payloadAt.getTime() - metadataAt.getTime()) > 60000,
+  );
+  const sourceStatus = normalizedSourceStatus(payload, metadata, runtimeStatus);
+  const unavailableSources = Object.entries(sourceStatus)
+    .filter(([, status]) => status !== 'observed')
+    .map(([source]) => source);
+  const partial = Boolean(runtimeStatus?.partial || payload.collection_status?.partial || unavailableSources.length);
+  const delayed = Boolean(!fromCache && observedAt && ageMinutes > FRESH_FOR_MINUTES && ageMinutes <= STALE_AFTER_MINUTES);
+  const stale = Boolean(
+    fromCache || !observedAt || ageMinutes > STALE_AFTER_MINUTES || snapshotMismatch,
+  );
+
+  return {
+    observedAt: observedAt?.toISOString() || null,
+    ageMinutes,
+    freshness: stale ? 'stale' : delayed ? 'delayed' : partial ? 'partial' : 'fresh',
+    stale,
+    delayed,
+    partial,
+    fromCache,
+    snapshotMismatch,
+    sourceStatus,
+    unavailableSources,
+    errors: runtimeStatus?.errors || payload.collection_status?.errors || metadata.collection?.errors || {},
+    reason: fromCache
+      ? '네트워크 응답 대신 마지막 정상 저장본을 표시합니다.'
+      : snapshotMismatch
+        ? '순위와 수집 상태의 기준시각이 일치하지 않습니다.'
+        : !observedAt
+          ? '관측 기준시각을 확인할 수 없습니다.'
+          : ageMinutes > STALE_AFTER_MINUTES
+            ? `마지막 관측 후 ${ageMinutes}분이 지나 최신 상태가 아닙니다.`
+            : delayed
+              ? `마지막 관측 후 ${ageMinutes}분이 지나 다음 수집을 기다리고 있습니다.`
+            : partial
+              ? `${unavailableSources.join(', ')} 수집이 완료되지 않았습니다.`
+              : 'X와 Google Trends 최신 수집을 모두 확인했습니다.',
+  };
 }
 
 function rankDelta(item) {
   const values = Object.values(item.rank_change_by_source || {}).filter(Number.isFinite);
   if (!values.length) return item.lifecycle === 'new' ? '신규 포착' : '순위 유지';
-  const best = values.sort((a, b) => Math.abs(b) - Math.abs(a))[0];
+  const best = [...values].sort((a, b) => Math.abs(b) - Math.abs(a))[0];
   if (best === 0) return '순위 유지';
   return best > 0 ? `순위 +${best}` : `순위 ${best}`;
 }
@@ -50,8 +118,8 @@ function normalizeTrend(item) {
     id: item.topic,
     topic: item.topic,
     displayName: item.display_name || item.topic,
-    rank: item.rank,
-    rankLabel: String(item.rank).padStart(2, '0'),
+    rank: Number(item.rank || 0),
+    rankLabel: String(item.rank || '--').padStart(2, '0'),
     category: item.category,
     categoryKo: CATEGORY_KO[item.category] || '기타',
     delta: rankDelta(item),
@@ -63,8 +131,7 @@ function normalizeTrend(item) {
     contextStatus: item.context_status,
     sourceBadge: item.source_badge,
     scoreComponents: item.score_components || {},
-    // 운영 화면에는 실제 X/Google 원천에서 관측된 표현만 노출한다.
-    // 운영자 후보어는 품질 감사용 raw에 남기되 관련 키워드처럼 보이지 않는다.
+    // 공개 키워드는 X/Google 원천에서 실제 관측된 표현만 허용한다.
     keywords: (item.keywords || [])
       .filter((row) => row.status === 'observed_source_expression')
       .slice(0, 5),
@@ -72,51 +139,83 @@ function normalizeTrend(item) {
       .filter((row) => row.status === 'operator_candidate_not_rank_evidence')
       .slice(0, 5),
     keywordEvidence: item.keyword_evidence || {},
-    companies: item.companies || [],
+    companies: Array.isArray(item.companies) ? item.companies : [],
     companyEligible: Boolean(item.company_eligible),
     companyResolution: item.company_resolution,
     sources: item.latest_source_ranks || {},
-    sourceCount: item.source_count,
+    sourceCount: Number(item.source_count || 0),
     firstSeenAt: item.first_seen_at,
     lastSeenAt: item.last_seen_at,
-    ageHours: item.age_hours,
-    persistence: item.persistence,
-    momentum: item.momentum,
-    score: item.score,
-    series: item.series || [],
+    ageHours: Number(item.age_hours || 0),
+    persistence: Number(item.persistence || 0),
+    momentum: Number(item.momentum || 0),
+    score: Number(item.score || 0),
+    series: Array.isArray(item.series) ? item.series : [],
     raw: item,
+  };
+}
+
+function validatedBundle(payload, metadata, runtimeStatus = null) {
+  if (payload?.mode !== 'live' || !Array.isArray(payload.unified_ranking)) {
+    throw new Error('실시간 순위 데이터 계약이 올바르지 않습니다.');
+  }
+  if (metadata?.mode !== 'live' || !metadata.observed_at) {
+    throw new Error('실시간 수집 상태 데이터 계약이 올바르지 않습니다.');
+  }
+  if (runtimeStatus && (runtimeStatus.mode !== 'live' || !runtimeStatus.observed_at)) {
+    throw new Error('실행 상태 데이터 계약이 올바르지 않습니다.');
+  }
+  return { payload, metadata, runtimeStatus };
+}
+
+function viewModel(bundle, { source, fromCache }) {
+  const { payload, metadata, runtimeStatus } = bundle;
+  const status = dataStatus(payload, metadata, runtimeStatus, { fromCache });
+  const rankingByTopic = new Map(payload.unified_ranking.map((item) => [item.topic, item]));
+  const publicRows = (payload.public_top10 || [])
+    .map((item) => rankingByTopic.get(item.topic) || item)
+    .filter((item) => item && item.topic);
+  return {
+    source,
+    stale: status.stale,
+    partial: status.partial,
+    observedAt: status.observedAt,
+    status,
+    trends: payload.unified_ranking.map(normalizeTrend),
+    featuredTrends: publicRows.map(normalizeTrend),
+    metadata,
+    raw: payload,
   };
 }
 
 export async function loadTrends({ mode = 'live' } = {}) {
   if (mode !== 'live') throw new Error('운영 화면은 live-data만 사용합니다.');
   try {
-    const response = await fetch(`${liveBase()}/intelligence.json?t=${Date.now()}`, { cache: 'no-store' });
-    if (!response.ok) throw new Error(`TRZIP data ${response.status}`);
-    const payload = await response.json();
-    if (payload.mode !== 'live' || !Array.isArray(payload.unified_ranking)) {
-      throw new Error('실시간 데이터 계약이 올바르지 않습니다.');
-    }
-    writeJson(CACHE_KEY, payload);
-    return {
-      source: 'github-live-data',
-      stale: false,
-      observedAt: payload.window?.to || payload.generated_at,
-      trends: payload.unified_ranking.map(normalizeTrend),
-      featuredTrends: (payload.public_top10 || []).map(normalizeTrend),
-      raw: payload,
-    };
+    const nonce = Date.now();
+    const [intelligenceResponse, statusResponse, metadataResponse] = await Promise.all([
+      fetch(`${INTELLIGENCE_URL}?t=${nonce}`, { cache: 'no-store' }),
+      fetch(`${STATUS_URL}?t=${nonce}`, { cache: 'no-store' }),
+      fetch(`${METADATA_URL}?t=${nonce}`, { cache: 'no-store' }),
+    ]);
+    if (!intelligenceResponse.ok) throw new Error(`TRZIP intelligence ${intelligenceResponse.status}`);
+    if (!statusResponse.ok) throw new Error(`TRZIP status ${statusResponse.status}`);
+    if (!metadataResponse.ok) throw new Error(`TRZIP metadata ${metadataResponse.status}`);
+    const bundle = validatedBundle(
+      await intelligenceResponse.json(),
+      await metadataResponse.json(),
+      await statusResponse.json(),
+    );
+    writeJson(CACHE_KEY, bundle);
+    return viewModel(bundle, { source: 'live-data', fromCache: false });
   } catch (error) {
     const cached = readJson(CACHE_KEY, null);
-    if (!cached) throw error;
+    if (!cached?.payload || !cached?.metadata) throw error;
     return {
-      source: 'local-cache',
-      stale: true,
+      ...viewModel(validatedBundle(cached.payload, cached.metadata, cached.runtimeStatus || null), {
+        source: 'local-cache',
+        fromCache: true,
+      }),
       error: String(error),
-      observedAt: cached.window?.to || cached.generated_at,
-      trends: cached.unified_ranking.map(normalizeTrend),
-      featuredTrends: (cached.public_top10 || []).map(normalizeTrend),
-      raw: cached,
     };
   }
 }
@@ -128,25 +227,54 @@ export function sortTrends(trends, mode = 'score') {
   return rows.sort((a, b) => a.rank - b.rank);
 }
 
+function normalizePortfolio(record) {
+  if (!record || typeof record !== 'object') return null;
+  const id = String(record.id || '').trim();
+  if (!id) return null;
+  return {
+    schemaVersion: 'trzip-portfolio-v1',
+    id,
+    name: String(record.name || '이름 없는 밈트폴리오'),
+    trendTopic: record.trendTopic || null,
+    observedAt: record.observedAt || null,
+    keywords: Array.isArray(record.keywords) ? record.keywords.map(String).slice(0, 10) : [],
+    companies: Array.isArray(record.companies) ? record.companies.slice(0, 10) : [],
+    createdAt: record.createdAt || null,
+    updatedAt: record.updatedAt || null,
+  };
+}
+
 export function listPortfolios() {
-  return readJson(PORTFOLIO_KEY, []);
+  const stored = readJson(PORTFOLIO_KEY, []);
+  return Array.isArray(stored) ? stored.map(normalizePortfolio).filter(Boolean) : [];
+}
+
+export function getPortfolio(id) {
+  return listPortfolios().find((portfolio) => portfolio.id === String(id)) || null;
 }
 
 export function savePortfolio(input) {
   const portfolios = listPortfolios();
-  const record = {
+  const keywords = [...new Set((input.keywords || [])
+    .map((keyword) => String(keyword).trim())
+    .filter(Boolean))]
+    .slice(0, 10);
+  const id = input.id || globalThis.crypto?.randomUUID?.() || `portfolio-${Date.now()}`;
+  const record = normalizePortfolio({
     schemaVersion: 'trzip-portfolio-v1',
-    id: input.id || `portfolio-${Date.now()}`,
-    name: String(input.name || '새 밈트폴리오').trim(),
+    id,
+    name: String(input.name || '새 밈트폴리오').trim().slice(0, 80) || '새 밈트폴리오',
     trendTopic: input.trendTopic || null,
     observedAt: input.observedAt || null,
-    keywords: [...new Set(input.keywords || [])].slice(0, 10),
+    keywords,
     companies: (input.companies || []).slice(0, 10),
     createdAt: input.createdAt || new Date().toISOString(),
     updatedAt: new Date().toISOString(),
-  };
+  });
   const next = [record, ...portfolios.filter((item) => item.id !== record.id)];
-  writeJson(PORTFOLIO_KEY, next);
+  if (!writeJson(PORTFOLIO_KEY, next)) {
+    throw new Error('브라우저 저장공간에 밈트폴리오를 저장하지 못했습니다.');
+  }
   return record;
 }
 
@@ -189,8 +317,12 @@ export function exportPortfoliosCsv() {
 }
 
 export const dataContract = Object.freeze({
-  input: `${DEFAULT_LIVE_BASE}/intelligence.json`,
+  intelligence: INTELLIGENCE_URL,
+  status: STATUS_URL,
+  metadata: METADATA_URL,
   cache: CACHE_KEY,
   portfolios: PORTFOLIO_KEY,
   exportSchema: 'trzip-export-v1',
+  freshForMinutes: FRESH_FOR_MINUTES,
+  staleAfterMinutes: STALE_AFTER_MINUTES,
 });

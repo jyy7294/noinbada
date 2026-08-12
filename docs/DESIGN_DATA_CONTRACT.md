@@ -4,8 +4,8 @@
 
 | 계층 | 책임 | 저장 위치 |
 |---|---|---|
-| GitHub Actions | 매시 X 대한민국·Google Trends KR 수집, 정규화, 통합 순위와 기업관계 생성 | `live-data` 브랜치 |
-| 디자인 데이터 어댑터 | 최신 JSON 조회, 화면용 필드 변환, 오프라인 캐시 | `design/trendzip-data.js` |
+| 노트북 로컬 파이프라인 | 매시 X 대한민국·Google Trends KR 수집, 정규화, 통합 순위와 기업관계 생성 | 로컬 SQLite·`live-data` 브랜치 |
+| 프론트 데이터 어댑터 | 최신 JSON 조회, 화면용 필드 변환, 오프라인 캐시 | `frontend/trendzip-data.js` |
 | Trend App 화면 | 순위·상세·키워드·기업 표시, 밈트폴리오 편집 | 브라우저 메모리 |
 | 사용자 저장 | 이름·키워드·선택 기업 저장 | `localStorage` |
 | 사용자 내보내기 | 저장된 밈트폴리오 전체를 JSON 또는 CSV로 다운로드 | 사용자 다운로드 폴더 |
@@ -16,19 +16,21 @@
 
 ```text
 https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/intelligence.json
+https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/status.json
+https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.json
 ```
 
 - 운영 화면은 `mode=live`만 허용합니다.
 - 트렌드·키워드·관련기업·기업 일별 시장자료에는 생성·fixture 데이터를 넣지 않습니다.
 - Z4·Z5의 밈트폴리오 사용자명·좋아요·수익률·구성 비중은 발표용 목업으로 유지합니다. 이 값은 실제 투자성과나 백엔드 관측값으로 취급하지 않습니다.
-- 네트워크 실패 시 마지막 정상 응답을 `trzip:latest-intelligence:v1`에서 읽고 `stale=true`로 구분합니다.
+- 네트워크 실패 시 마지막 정상 응답 묶음을 `trzip:latest-intelligence:v2`에서 읽고 `stale=true`로 구분합니다.
 - GitHub 토큰이나 API 키를 브라우저에 넣지 않습니다.
 
 ## 3. 화면 매핑
 
 | 화면 | 표시 내용 | 원본 필드 |
 |---|---|---|
-| Z1 홈 다이얼 | 맥락 품질 게이트를 통과한 최대 10개 대표명 | `public_top10[].display_name` |
+| Z1 홈 다이얼 | 원천 점수 순 최대 10개 대표명과 검토 상태 | `public_top10[].display_name`, `home_context_status` |
 | Z1 순위 | 통합 순위 | `rank` |
 | Z1 분류 | 넓은 트렌드 분류 | `category` |
 | Z1 변화 | 소스별 이전 순위 대비 변화 | `rank_change_by_source` |
@@ -45,7 +47,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/intelligence
 | Z6 만들기 | 현재 트렌드의 키워드·기업 후보 | 선택한 정규화 트렌드 |
 | Z7 내 데이터 | JSON·CSV 내보내기 | 저장된 밈트폴리오 전체 |
 
-홈은 디자인 구조상 `public_top10`을 보여주며, 미해결·동음이의·맥락부족 항목으로 10칸을 억지로 채우지 않습니다. `loadTrends()`의 `trends`에는 제한 없는 `unified_ranking`, `featuredTrends`에는 공개 품질 게이트를 통과한 목록을 유지합니다.
+홈은 디자인 구조상 `public_top10`을 보여줍니다. 미해결·동음이의·맥락부족 항목도 실제 원천 순위라면 삭제하지 않되 `review_required`로 표시하고 기업을 붙이지 않습니다. `loadTrends()`의 `trends`에는 제한 없는 `unified_ranking`을 유지합니다.
 
 ## 4. 저장 스키마
 
@@ -105,7 +107,8 @@ relation_category,verification_status,created_at
 ## 7. 파일 구성
 
 ```text
-design/Trend App Zip v2.dc.html  제공 디자인과 상호작용
-design/trendzip-data.js          수집 결과 변환·저장·내보내기
+frontend/index.html              제공 디자인을 유지한 운영 화면과 상호작용
+frontend/trendzip-data.js        수집 결과 변환·저장·내보내기
+design/                          원본 디자인 참고자료(운영 진입점 아님)
 docs/DESIGN_DATA_CONTRACT.md     프론트·백엔드 합의 계약
 ```

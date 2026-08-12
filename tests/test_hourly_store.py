@@ -1,6 +1,15 @@
 from datetime import UTC, datetime
 
-from trzip.hourly_store import HourlyObservation, collect_current, demo_topics, generated_hour, snapshot, upsert
+from trzip.hourly_store import (
+    HourlyObservation,
+    collect_current,
+    demo_topics,
+    generated_hour,
+    latest_audit,
+    snapshot,
+    store_verified_source_snapshot,
+    upsert,
+)
 
 
 def test_observed_and_generated_rows_coexist_without_overwrite(tmp_path):
@@ -62,3 +71,56 @@ def test_demo_topics_expire_instead_of_staying_ranked_forever():
     assert any(row.topic == "오징어 게임" for row in may)
     assert all(row.topic != "오징어 게임" for row in august)
     assert "말복" in demo_topics(datetime(2026, 8, 10, 3, tzinfo=UTC))
+
+
+def test_failed_source_does_not_erase_successful_snapshot_for_same_hour(tmp_path, monkeypatch):
+    target = tmp_path / "preserve.sqlite3"
+    at = datetime(2026, 8, 12, 4, tzinfo=UTC)
+    stamp = at.isoformat()
+    monkeypatch.setattr(
+        "trzip.hourly_store.collect_google",
+        lambda value: [HourlyObservation(stamp, "google_trends", "말복", 1, 100, "observed")],
+    )
+    monkeypatch.setattr(
+        "trzip.hourly_store.collect_x",
+        lambda value: [HourlyObservation(stamp, "x", "불꽃축제", 1, 100, "observed")],
+    )
+    collect_current(target, at)
+
+    monkeypatch.setattr(
+        "trzip.hourly_store.collect_google",
+        lambda value: [HourlyObservation(stamp, "google_trends", "삼성전자", 1, 100, "observed")],
+    )
+    monkeypatch.setattr("trzip.hourly_store.collect_x", lambda value: (_ for _ in ()).throw(RuntimeError("offline")))
+    result = collect_current(target, at)
+    rows = snapshot(at, target)
+
+    assert result["errors"]["x"].startswith("RuntimeError")
+    assert {row["topic"] for row in rows if row["source"] == "x"} == {"불꽃축제"}
+    assert {row["topic"] for row in rows if row["source"] == "google_trends"} == {"삼성전자"}
+
+
+def test_verified_source_snapshot_replaces_rows_and_writes_audit_atomically(tmp_path):
+    target = tmp_path / "verified.sqlite3"
+    at = datetime(2026, 8, 12, 4, tzinfo=UTC)
+    stamp = at.isoformat()
+    upsert([HourlyObservation(stamp, "x", "old", 1, 100, "observed")], target)
+
+    count = store_verified_source_snapshot(
+        [
+            HourlyObservation(stamp, "x", "불꽃축제", 1, 100, "observed"),
+            HourlyObservation(stamp, "x", "블루레이", 2, 99, "observed"),
+        ],
+        source="x",
+        collector="x_korea_realtime",
+        detail="user Chrome page; South Korea marker verified",
+        path=target,
+    )
+
+    assert count == 2
+    assert [row["topic"] for row in snapshot(at, target)] == ["불꽃축제", "블루레이"]
+    assert latest_audit(at, target)["x_korea_realtime"] == {
+        "status": "observed",
+        "row_count": 2,
+        "detail": "user Chrome page; South Korea marker verified",
+    }

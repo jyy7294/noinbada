@@ -1,227 +1,176 @@
-# TRZIP — 한국 트렌드에서 관련 기업까지
+# TRZIP — 한국 실시간 트렌드에서 관련 기업까지
 
-TRZIP은 대한민국의 X 실시간 트렌드와 Google Trends 신호를 시간별로 수집하고, 관측된 트렌드를 관련 키워드·산업·상장기업으로 연결하는 트렌드 인텔리전스 백엔드입니다.
+TRZIP은 한국의 **X 실시간 트렌드 페이지**와 **Google Trends KR**을 매시간 수집하고, 원천 순위를 사건·현상으로 정규화한 뒤 가치사슬 기업 탐색까지 연결합니다.
 
 > 주식도 트렌드가 된 시대, 내가 아는 유행에서 기업을 찾다.
 
-- 프로덕트 저장소: <https://github.com/jyy7294/noinbada>
-- 정시 백엔드 작업: GitHub Actions
-- 운영 데이터 원장: GitHub `live-data` 브랜치의 날짜별 JSON
-- 프론트 배포: Vercel
+- 저장소: <https://github.com/jyy7294/noinbada>
+- 프론트: <https://trzip-x-google.vercel.app>
+- 운영 데이터: `live-data` 브랜치의 정적 JSON
+- 자동 실행: 찬희님 노트북의 Windows 작업 스케줄러
+- GitHub Actions 시간별 실행: 사용하지 않음
+- Trends MCP 자동 실행: 사용하지 않음
+- X API·X API 키: 사용하지 않음
 
-> 비용 0원 운영 정책: GitHub Actions가 매시간 수집·분석하고 `live-data` 브랜치에 결과를 저장합니다. Claude Design 프론트는 Vercel에서 배포하며 최신 JSON을 읽습니다. API 키·쿠키·SQLite DB는 커밋하지 않습니다.
+## 1. 현재 운영 구조
 
-관련기업에는 pykrx 일별 종가·등락률·거래량을 백엔드 파이프라인이 함께 저장합니다. Z4·Z5 밈트폴리오 피드와 수익률은 발표용 목업이며 실제 투자성과와 분리합니다.
+```text
+Windows 작업 스케줄러 · 매시 00분
+        ↓
+설치된 Google Chrome + 전용 프로필
+  └─ X /explore/tabs/trending (한국 지역 확인)
+Google Trends RSS geo=KR
+        ↓
+로컬 SQLite 원장 (%LOCALAPPDATA%\TRZIP)
+        ↓
+정규화 → RRF 순위 → 상태 → 관련기업 → 계약 검증
+        ↓
+별도 live-data Git worktree에 JSON만 커밋·푸시
+        ↓
+Vercel 정적 프론트가 최신 JSON 조회
+```
 
-- 최종 디자인 데이터 연결: [Trend App Zip v2 데이터 계약](docs/DESIGN_DATA_CONTRACT.md)
-- 현재 제품·실측·과거 프로토타입 비교: [2026-08-12 제품·데이터·디자인 감사](docs/PRODUCT_DATA_DESIGN_AUDIT_20260812.md)
-- 프로덕션 화면: https://trzip-x-google.vercel.app
-- 데이터 소스: X 대한민국, Google Trends `geo=KR`
-- 자동 수집에서 Trends MCP 사용: 비활성화
+코드, 런타임, 공개 데이터를 분리합니다.
 
-## 1. 해결하려는 문제
+| 구분 | 위치 | 내용 |
+|---|---|---|
+| 제품 코드 | `main` | 팀원이 수정·검토하는 소스코드 |
+| 로컬 런타임 | `%LOCALAPPDATA%\TRZIP` | Chrome 세션, SQLite, 로그, 게시 준비물 |
+| 공개 데이터 | `live-data` | `latest/`, `observations/`, `monitoring/` JSON만 저장 |
+| 사용자 저장 | 브라우저 `localStorage` | 사용자가 만든 밈트폴리오 |
 
-트렌드에 민감하지만 투자 연결에는 익숙하지 않은 사용자는 `말복`, `불닭`, `러닝크루`, `콘텐츠`, `게임` 같은 유행을 알고 있어도 다음을 직접 찾기 어렵습니다.
+노트북이 종료되거나 사용자가 로그아웃한 동안에는 수집할 수 없습니다. 누락 시간을 생성 데이터로 메우지 않고 실패·누락 상태로 남깁니다.
 
-1. 실제로 얼마나 빠르게 관심이 커지고 있는가?
-2. 잠깐 나타난 검색어인가, 여러 시간 지속되는 현상인가?
-3. 어떤 산업과 소비 행동으로 연결되는가?
-4. 직접 사업자뿐 아니라 제조·유통·플랫폼·주변 소비 기업은 무엇인가?
-5. 공식적으로 확인된 관계와 단순 산업 후보는 어떻게 다른가?
+## 2. 데이터 원칙
 
-TRZIP은 `트렌드 탐지 → 원천 표현 보존 → 현상 해석 → 관련 키워드 → 가치사슬 기업 → 공식 정보 확인` 흐름으로 이 문제를 해결합니다.
-
-## 2. 가장 중요한 데이터 원칙
-
-### 원천 트렌드명과 해석을 섞지 않습니다
+### 원천명과 해석 분리
 
 ```json
 {
   "display_name": "말복",
-  "raw_terms": ["말복", "삼계탕", "보양식"],
-  "phenomenon_summary": "말복을 앞두고 삼계탕·보양식·외식 관심이 증가"
+  "raw_terms": ["말복"],
+  "phenomenon_summary": "말복을 앞두고 삼계탕·보양식 관련 관심 증가",
+  "context_status": "resolved_reference"
 }
 ```
 
-- 순위명은 실제 관측된 짧은 대표어를 사용합니다.
-- `말복 삼계탕·보양식 소비`처럼 해석 문장을 트렌드명으로 만들지 않습니다.
-- 동의어와 연관 표현은 `raw_terms`에 보존합니다.
-- 현상 해석은 `phenomenon_summary`에만 기록합니다.
-- 원인을 확인하지 못했으면 `원인 미확인 — X·Google 관측 신호 증가`로 표시합니다.
+- 제목은 원천 대표어를 유지합니다. `말복`을 임의의 긴 사건명으로 바꾸지 않습니다.
+- 동의어나 실제 함께 관측된 표현은 `raw_terms`에 남깁니다.
+- 원인을 확인하지 못하면 `원인 미확인`과 `review_required`를 표시합니다.
+- 논란·범죄·재난 등은 순위 원장에는 남지만 기업 연결에서 제외합니다.
+- 키워드 증거가 없으면 0개가 정상입니다. 운영자 후보어를 실측 키워드로 표시하지 않습니다.
 
-이 분리는 프론트에서도 반드시 유지해야 합니다.
+### 실측과 재구성 데모 분리
 
-| UI 열 | API 필드 | 용도 |
-|---|---|---|
-| 트렌드 | `display_name` | 사용자가 보는 대표명 |
-| 원천 | `raw_terms` | 실제 관측 표현 |
-| 왜 뜨는가 | `phenomenon_summary` | 검증된 맥락 또는 원인 미확인 상태 |
+- `provenance=observed`: 실제 X·Google 관측
+- `provenance=generated`: 2026-05-01~2026-08-12 시연용 결정론적 재구성
 
-## 3. 순위 설계
+라이브 모드에는 `generated` 행이 들어갈 수 없습니다. Z4·Z5 밈트폴리오의 좋아요·수익률은 의도된 발표 목업이며 트렌드·기업 실측과 분리됩니다.
 
-모든 관측 항목은 하나의 제한 없는 통합 순위에 들어갑니다. 음식·문화·인물·게임·스포츠·생활·제품·금융 관련 표현을 미리 삭제하지 않습니다.
+## 3. 순위와 화면 노출
 
 ```text
-통합 점수 = 60% 최신 플랫폼 순위 RRF
+통합 점수 = 60% 최신 원천 순위 RRF
           + 20% 모멘텀
-          + 15% 관측 지속성
-          +  5% X·Google 교차 관측
+          + 15% 지속성
+          +  5% X·Google 교차관측
 ```
 
-- `rank`: 기본 통합 순위
-- `persistence_rank`: 지속기간순
-- `momentum_rank`: 급상승순
-- `lifecycle`: 신규, 급상승, 지속, 대중화, 재부상, 둔화
-- `data_confidence`: 초기 관찰, 보통, 높음, 재구성 데모
+- `unified_ranking`: 관측된 전체 순위, 개수 제한 없음
+- `public_top10`: 원천 점수 순서를 유지한 홈 10개. 맥락 미확정 항목도 삭제하지 않고 `review_required`로 표시
+- `lanes.main`: 일반 트렌드
+- `lanes.issue`: 논란·정책·범죄·재난 등 주의 항목
+- `lanes.review`: 정규화 검토 항목
+- `persistence_rank`, `momentum_rank`: 지속기간순·급상승순
 
-미분류 표현과 사건·논란 맥락은 삭제하지 않고 각각 `맥락 확인`, `이슈·주의`로 표시합니다. 다만 상단을 점령하지 않도록 점수를 감쇠합니다.
+맥락 미확정 항목은 홈에서 보일 수 있지만 기업은 붙이지 않습니다. 따라서 “실시간 검색어를 숨기지 않기”와 “근거 없는 테마주 연결을 막기”를 동시에 지킵니다.
 
-## 4. 인물·논란 처리
+## 4. 관련기업
 
-인물명 자체는 트렌드에서 제외하지 않습니다. `지드래곤`, `진`처럼 공연·음악·팬덤·콘텐츠 맥락이 있으면 일반 트렌드와 공식 소속사 관계를 보여줄 수 있습니다.
-
-반면 다음 문맥은 순위에는 남기되 기업 연결을 차단합니다.
-
-- 논란·사생활·불륜·스토커
-- 범죄·혐의·폭행·구속
-- 재난·전쟁·테러
-- 단순 정책·기관·사건성 검색어
-- 사업 맥락을 아직 분류하지 못한 표현
-
-즉, `순위 포함 여부`와 `기업 연결 가능 여부`는 별도 판단입니다.
-
-## 5. 관련기업 설계
-
-직접 관련 기업 한두 곳만 보여주지 않고 트렌드당 최소 3개 사업 관점으로 확장합니다.
-
-예시 — 야구 트렌드:
-
-1. 스포츠웨어·유니폼·굿즈
-2. 미디어·중계·플랫폼
-3. 경기장·식음료·주변 소비
-
-기업 상태는 반드시 구분합니다.
+관계가 확인된 기업과 산업 탐색 후보를 분리합니다.
 
 | 상태 | 의미 |
 |---|---|
-| `official_evidence` | 공식 제품·소속·계열·사업 관계가 확인됨 |
-| `pending_evidence` | 관계 가설이 있으나 추가 검증 필요 |
-| `industry_structure_only` | 업종·가치사슬 탐색 후보일 뿐 실제 수혜를 뜻하지 않음 |
-| `excluded` | 연결 근거가 부족해 제외 |
+| `official_evidence` | 공식 제품·소속·사업 관계 확인 |
+| `pending_evidence` | 관계 가설은 있으나 추가 검증 필요 |
+| `industry_structure_only` | 가치사슬 탐색 후보이며 직접 수혜가 아님 |
+| `excluded` | 연결 제외 |
 
-OpenDART는 기업 식별·공시 근거에 사용하고, pykrx는 국내 종목명과 일별 OHLCV 참고정보에 사용합니다. 주가 자료는 트렌드 순위나 기업 관계 판정에 사용하지 않습니다.
+트렌드당 원재료·제조·유통·플랫폼·현장 소비 등 세 가지 사업 관점을 제시할 수 있지만, 후보가 부족하다고 관계를 만들어내지는 않습니다. pykrx 자료는 일별 참고자료이며 순위 계산이나 매수 추천에 사용하지 않습니다.
 
-## 6. 데모와 실측의 구분
+## 5. 설치와 시간별 실행
 
-- `provenance=observed`: 실제 수집된 X·Google 결과
-- `provenance=generated`: 2026-05-01~2026-08-12 시연용 결정론적 재구성 데이터
-
-생성 데이터는 실제 과거 검색량이 아닙니다. 화면의 기본 데모는 2026-08-12 기준 최근 7일을 사용합니다.
-
-과거 트렌드가 최신 순위에 계속 남지 않도록 항목별 활성 기간을 적용합니다.
-
-- 오징어 게임·두바이 초콜릿: 6월 중순 이후 종료
-- 리센느: 5월 중순~7월 중순
-- 폴더블폰: 7월 이후
-- 말복·삼계탕·보양식: 8월 활성화
-
-## 7. 핵심 API
-
-| 경로 | 역할 |
-|---|---|
-| `GET /api/v1/intelligence` | 특정 기준시각·관찰창의 통합 순위와 전체 상세 |
-| `GET /api/v1/korea/curated-feed` | 최근 실측 24시간 피드 |
-| `GET /api/v1/hourly/coverage` | 데이터 시간 범위와 실측/생성 비중 |
-| `GET /api/v1/hourly/snapshot` | 특정 시간의 원천 스냅샷 |
-| `GET /api/v1/keywords/x-related` | X 동시출현 관련 표현 최대 5개 |
-| `GET /api/v1/companies/profile` | OpenDART 기업정보와 pykrx 시장 참고정보 |
-| `GET /api/v1/integrations` | 외부 연동 상태 |
-| `GET /health` | 서버 상태 |
-
-데모 호출 예시:
-
-```text
-GET /api/v1/intelligence?at=2026-08-12T11:00:00%2B09:00&hours=168
-```
-
-프론트 연결 예시는 [docs/FRONTEND_HANDOFF.md](docs/FRONTEND_HANDOFF.md)를 참고하십시오.
-
-## 8. 프로젝트 구조
-
-```text
-.github/workflows/            매시간 GitHub Actions 수집
-api/index.py                  호스팅 환경 호환용 Python API 진입점
-src/trzip/api.py              FastAPI 라우트
-src/trzip/hourly_store.py     시간별 수집·저장·데모 재생성
-src/trzip/intelligence.py     정규화·통합순위·상태·기업 연결
-src/trzip/curation.py         분류·민감 맥락 규칙
-src/trzip/related_keywords.py X 관련 표현 도출
-src/trzip/value_chain.py      3개 이상 가치사슬 관점 확장
-src/trzip/company_adapters.py OpenDART·pykrx 어댑터
-src/trzip/e2e.py              수집부터 보고서까지 E2E 실행
-web/                          현재 확인용 프론트
-frontend/                     Claude Design 원형을 유지한 Vercel 프로덕션 정적 앱
-design/                       원본 .dc.html과 데이터 어댑터 보존본
-tests/                        단위·통합 테스트
-docs/                         정책·분류·설계 문서
-```
-
-## 9. 로컬 실행
+Python 3.13과 Google Chrome이 설치된 Windows 노트북 기준입니다.
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\pip install -e ".[dev]"
-Copy-Item .env.example .env
-.venv\Scripts\python -m pytest -q
-.venv\Scripts\python -m trzip.hourly_cli backfill
-.venv\Scripts\python -m uvicorn trzip.api:app --reload
-```
-
-브라우저에서 <http://127.0.0.1:8000>을 엽니다.
-
-## 10. 환경변수
-
-```env
-X_BEARER_TOKEN=
-X_KOREA_WOEID=23424868
-OPENDART_API_KEY=
-DATABASE_URL= # 향후 PostgreSQL 이전 시에만 사용
-TRZIP_CORS_ORIGINS=https://<frontend>.vercel.app
-TRZIP_DB_PATH=data/trzip-hourly.sqlite3
-```
-
-- 키는 저장소에 커밋하지 않습니다.
-- Trends MCP 자동 실행은 금지합니다.
-- X 키가 없으면 X 수집은 `unavailable`로 기록합니다.
-- pykrx는 별도 키가 없습니다.
-
-## 11. 시간별 운영
-
-로컬 대체 실행은 Windows 작업 스케줄러를 사용할 수 있습니다.
-
-```powershell
+py -3.13 -m venv .venv
+.venv\Scripts\python.exe -m pip install -e ".[dev]"
 powershell -ExecutionPolicy Bypass -File scripts\install-hourly-task.ps1
+powershell -ExecutionPolicy Bypass -File scripts\setup-x-chrome.ps1
 ```
 
-프로덕션에서는 GitHub Actions가 매시 정각 실행하고 `live-data` 브랜치에 날짜별 원본과 최신 결과를 저장합니다. 상세 설정은 [비용 0원 운영 명세](docs/FREE_PRODUCTION.md)를 따릅니다.
+마지막 명령은 TRZIP 전용 Chrome 프로필을 엽니다. X에 한 번 로그인하고 `실시간 트렌드` 탭에서 한국 항목 10개 이상이 보이는지 확인한 뒤 Enter를 누릅니다. 개인 기본 Chrome 프로필이나 쿠키를 복사하지 않습니다.
 
-## 12. 현재 검증 상태
+즉시 전체 파이프라인을 시험하려면:
 
-- Python 테스트: 53개 통과
-- JavaScript 구문검사: 통과
-- PostgreSQL 스키마 생성·upsert·coverage·FastAPI 조회: E2E 통과
-- 최신 회차(2026-08-12 09:00 UTC): Google Trends KR 10건 정상, X는 HTTP 402로 실패해 `부분 수집` 상태
-- GitHub Actions 시간별 워크플로와 `live-data` 계약 검증
-- Vercel 프로덕션에서 라이브 트렌드·관련기업·로컬 저장·JSON/CSV 내보내기 검증
-- 8월 데모에서 오징어 게임 잔존: 0건
-- 실측과 생성 데이터의 동일 시각 공존: 검증
-- 논란·미분류 항목의 기업 오연결 차단: 검증
-- 트렌드 대표명과 현상 설명 분리: 검증
-- 전체 92개 관측 항목과 공개 품질 통과 8개를 분리하고, 홈의 빈 자리를 미해결 검색어로 채우지 않음
-- 공개 관련 키워드: 최신 회차 0개. 운영자 후보어를 실측 키워드처럼 표시하지 않음
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\collect-hourly.ps1
+```
 
-## 13. 해석 한계
+작업 확인:
 
-TRZIP은 종목 추천이나 수익률 예측 서비스가 아닙니다. 관련기업은 공식 관계와 산업 구조를 탐색하기 위한 후보이며, 기업 실적·시장 기대·밸류에이션·매수 시점에 따라 주가 반응은 달라질 수 있습니다.
+```powershell
+Get-ScheduledTask -TaskName "TRZIP X Google Hourly Collector"
+Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
+```
 
-현재 누적 이력은 4시간뿐이며 3~7일 자동수집 안정성은 아직 검증되지 않았습니다. 최신 원장에는 과거 X 관측값이 포함되지만 최신 회차 X 수집은 실패했으므로 `X+Google 정상 실시간`으로 표현하지 않습니다.
+로그는 `%LOCALAPPDATA%\TRZIP\logs\hourly-YYYY-MM-DD.jsonl`에 30일간 보존합니다. 쿠키·토큰·요청 헤더는 기록하지 않습니다.
+
+## 6. 개발 실행
+
+```powershell
+.venv\Scripts\python.exe -m pytest -q
+.venv\Scripts\python.exe -m trzip.local_pipeline `
+  --output work\local-publication `
+  --database work\local.sqlite3
+.venv\Scripts\python.exe -m uvicorn trzip.api:app --reload
+```
+
+환경변수 예시는 [.env.example](.env.example)을 참고하십시오. OpenDART 외에는 시간별 수집에 API 키가 필요하지 않습니다.
+
+## 7. 공개 데이터 계약
+
+| 파일 | 역할 |
+|---|---|
+| `latest/intelligence.json` | 전체 순위·홈 목록·상태·키워드·기업 |
+| `latest/status.json` | 부분수집·출처별 상태·측정 진행상태 |
+| `latest/metadata.json` | 실행시각·수집 감사·저장 방식 |
+| `latest/coverage.json` | SQLite 누적 범위·실측/생성 비중 |
+| `observations/YYYY-MM-DD.json` | 시간별 원천 순위 |
+| `monitoring/run_history.json` | 최근 168회 실행 이력 |
+
+프론트는 GitHub 토큰 없이 `live-data/latest`의 JSON을 읽습니다. 90분 초과는 지연, 3시간 초과 또는 캐시 사용은 오래된 데이터로 표시합니다.
+
+세부 계약은 [프론트 연동](docs/FRONTEND_HANDOFF.md), [디자인 데이터 계약](docs/DESIGN_DATA_CONTRACT.md), [로컬 무비용 운영](docs/FREE_PRODUCTION.md)을 참고하십시오.
+
+## 8. 핵심 파일
+
+```text
+src/trzip/x_web_collector.py   Chrome 기반 X 한국 실시간 페이지 수집
+src/trzip/hourly_store.py      Google·X 수집과 SQLite 원장
+src/trzip/intelligence.py      정규화·통합순위·기업 연결
+src/trzip/publication_pipeline.py 발행 로직과 정적 출력 계약
+src/trzip/local_pipeline.py    노트북 정식 CLI 진입점
+scripts/collect-hourly.ps1     잠금·검증·live-data 커밋/푸시
+scripts/install-hourly-task.ps1 작업 스케줄러·전용 worktree 설치
+frontend/                      기존 디자인을 유지한 Vercel 정적 앱
+tests/                         단위·계약·통합 테스트
+```
+
+## 9. 한계
+
+- X는 웹 UI 구조가 바뀌거나 로그인이 만료되면 `browser_page_change` 또는 `browser_authentication`으로 실패합니다.
+- X 실시간 페이지는 관련 게시물 검색 API가 아닙니다. 관련 키워드는 독립 관측 근거가 있을 때만 공개합니다.
+- 사건 정규화 회귀셋은 이미 라벨링한 24건의 규칙 퇴행 방지 자료이며 신규 사건 일반화 정확도를 증명하지 않습니다.
+- 3일·7일 성공률은 새 로컬 파이프라인 실행 후 각각 72회·168회가 실제로 쌓여야 확정됩니다.
+- 관련기업은 투자 추천이나 수익 예측이 아닙니다.

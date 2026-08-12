@@ -1,8 +1,8 @@
 {
-  "schema_version": "trzip-normalization-holdout-v1",
+  "schema_version": "trzip-normalization-regression-v1",
   "frozen_at": "2026-08-12",
   "source": "noinbada/live-data observations/2026-08-12.json",
-  "scope": "규칙 파일과 분리해 고정한 실제 X·Google Trends KR 관측 사건 24건",
+  "scope": "규칙 회귀 방지용 실제 관측 24건; 신규 사건 일반화 성능 평가셋이 아님",
   "cases": [
     {"input": "네이마르", "display_name": "네이마르", "category": "sports_participation", "context_status": "resolved_reference"},
     {"input": "과학자", "display_name": "과학자", "category": null, "context_status": "needs_context"},

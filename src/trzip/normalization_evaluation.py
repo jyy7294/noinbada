@@ -6,11 +6,11 @@ from pathlib import Path
 from .event_resolution import resolve_event
 
 
-DEFAULT_HOLDOUT = Path(__file__).resolve().parents[2] / "config" / "normalization_holdout.json"
+DEFAULT_REGRESSION_SET = Path(__file__).resolve().parents[2] / "config" / "normalization_holdout.json"
 
 
-def evaluate_holdout(path: Path | None = None) -> dict:
-    source = path or DEFAULT_HOLDOUT
+def evaluate_regression_set(path: Path | None = None) -> dict:
+    source = path or DEFAULT_REGRESSION_SET
     payload = json.loads(source.read_text(encoding="utf-8"))
     cases = payload.get("cases", [])
     errors = []
@@ -49,9 +49,9 @@ def evaluate_holdout(path: Path | None = None) -> dict:
         total and name_accuracy >= 0.85 and category_accuracy >= 0.90 and dangerous_false_links == 0
     )
     return {
-        "schema_version": "trzip-normalization-evaluation-v1",
-        "holdout_schema_version": payload.get("schema_version"),
-        "holdout_frozen_at": payload.get("frozen_at"),
+        "schema_version": "trzip-normalization-regression-report-v1",
+        "regression_set_schema_version": payload.get("schema_version"),
+        "regression_set_frozen_at": payload.get("frozen_at"),
         "scope": payload.get("scope"),
         "evaluated_count": total,
         "name_accuracy": name_accuracy,
@@ -65,8 +65,14 @@ def evaluate_holdout(path: Path | None = None) -> dict:
     }
 
 
-def write_holdout_report(output: Path, path: Path | None = None) -> dict:
-    report = evaluate_holdout(path)
+def write_regression_report(output: Path, path: Path | None = None) -> dict:
+    report = evaluate_regression_set(path)
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     return report
+
+
+# Backward compatible imports for the teammate handoff commit. New code should
+# use the regression-set names because these cases overlap the rule registry.
+evaluate_holdout = evaluate_regression_set
+write_holdout_report = write_regression_report

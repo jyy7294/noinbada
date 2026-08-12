@@ -4,13 +4,13 @@ import hashlib
 import json
 import os
 import sqlite3
-import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
+from collections.abc import Iterator
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from typing import Any
 
 KST = timedelta(hours=9)
 BACKFILL_START = datetime(2026, 5, 1, tzinfo=UTC) - KST
@@ -29,131 +29,20 @@ class HourlyObservation:
 
 
 def default_db_path() -> Path:
-    if os.environ.get("VERCEL"):
-        return Path("/tmp/trzip-hourly.sqlite3")
     return Path(os.environ.get("TRZIP_DB_PATH", "data/trzip-hourly.sqlite3"))
 
 
-def _postgres_url(path: Path | None) -> str | None:
-    if path is not None:
-        return None
-    value = os.environ.get("DATABASE_URL", "").strip()
-    return value or None
-
-
-class DatabaseConnection:
-    """Compatibility layer for SQLite and an optional future PostgreSQL migration."""
-
-    def __init__(self, raw: Any, dialect: str):
-        self.raw = raw
-        self.dialect = dialect
-
-    def __enter__(self) -> "DatabaseConnection":
-        return self
-
-    def __exit__(self, exc_type, exc, traceback) -> None:
-        if exc_type is None:
-            self.raw.commit()
-        else:
-            self.raw.rollback()
-        self.raw.close()
-
-    def _sql(self, sql: str) -> str:
-        if self.dialect == "sqlite":
-            return sql
-        # The project uses SQLite qmark and named parameters internally.
-        converted = sql.replace("?", "%s")
-        import re
-        return re.sub(r":([A-Za-z_][A-Za-z0-9_]*)", r"%(\1)s", converted)
-
-    def execute(self, sql: str, params: Any = None):
-        return self.raw.execute(self._sql(sql), params or ())
-
-    def executemany(self, sql: str, params: Any):
-        if self.dialect == "sqlite":
-            return self.raw.executemany(sql, params)
-        cursor = self.raw.cursor()
-        cursor.executemany(self._sql(sql), params)
-        return cursor
-
-    def executescript(self, sql: str) -> None:
-        if self.dialect != "sqlite":
-            raise RuntimeError("executescript is only used for SQLite migrations")
-        self.raw.executescript(sql)
-
-
-def _initialize_postgres(connection: DatabaseConnection) -> None:
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS hourly_observations (
-            observed_at TEXT NOT NULL,
-            source TEXT NOT NULL CHECK(source IN ('x','google_trends')),
-            topic TEXT NOT NULL,
-            source_rank INTEGER NOT NULL CHECK(source_rank > 0),
-            value DOUBLE PRECISION NOT NULL CHECK(value >= 0),
-            provenance TEXT NOT NULL CHECK(provenance IN ('observed','generated')),
-            seed_observed_at TEXT,
-            PRIMARY KEY (observed_at, source, topic, provenance)
-        )
-    """)
-    connection.execute(
-        "CREATE INDEX IF NOT EXISTS hourly_observations_time ON hourly_observations(observed_at)"
-    )
-    connection.execute("""
-        CREATE TABLE IF NOT EXISTS collection_audit (
-            observed_at TEXT NOT NULL,
-            collector TEXT NOT NULL,
-            status TEXT NOT NULL,
-            row_count INTEGER NOT NULL,
-            detail TEXT NOT NULL,
-            PRIMARY KEY (observed_at, collector)
-        )
-    """)
-
-
-def connect(path: Path | None = None) -> DatabaseConnection:
-    postgres_url = _postgres_url(path)
-    if postgres_url:
-        try:
-            import psycopg
-            from psycopg.rows import dict_row
-        except ImportError as exc:
-            raise RuntimeError("PostgreSQL requires psycopg[binary]") from exc
-        raw = psycopg.connect(postgres_url, row_factory=dict_row)
-        connection = DatabaseConnection(raw, "postgres")
-        _initialize_postgres(connection)
-        raw.commit()
-        return connection
-
+@contextmanager
+def connect(path: Path | None = None) -> Iterator[sqlite3.Connection]:
+    """Open the single local SQLite store and close it after each operation."""
     target = path or default_db_path()
     target.parent.mkdir(parents=True, exist_ok=True)
-    raw = sqlite3.connect(target)
-    raw.row_factory = sqlite3.Row
-    raw.execute("PRAGMA journal_mode=WAL")
-    connection = DatabaseConnection(raw, "sqlite")
-    connection.executescript("""
-        CREATE TABLE IF NOT EXISTS hourly_observations (
-            observed_at TEXT NOT NULL,
-            source TEXT NOT NULL CHECK(source IN ('x','google_trends')),
-            topic TEXT NOT NULL,
-            source_rank INTEGER NOT NULL CHECK(source_rank > 0),
-            value REAL NOT NULL CHECK(value >= 0),
-            provenance TEXT NOT NULL CHECK(provenance IN ('observed','generated')),
-            seed_observed_at TEXT,
-            PRIMARY KEY (observed_at, source, topic, provenance)
-        );
-        CREATE INDEX IF NOT EXISTS hourly_observations_time ON hourly_observations(observed_at);
-        CREATE TABLE IF NOT EXISTS collection_audit (
-            observed_at TEXT NOT NULL, collector TEXT NOT NULL, status TEXT NOT NULL,
-            row_count INTEGER NOT NULL, detail TEXT NOT NULL,
-            PRIMARY KEY (observed_at, collector)
-        );
-    """)
-    table_sql = connection.execute(
-        "SELECT sql FROM sqlite_master WHERE type='table' AND name='hourly_observations'"
-    ).fetchone()[0]
-    if "topic, provenance" not in table_sql:
+    connection = sqlite3.connect(target)
+    try:
+        connection.row_factory = sqlite3.Row
+        connection.execute("PRAGMA journal_mode=WAL")
         connection.executescript("""
-            CREATE TABLE hourly_observations_v2 (
+            CREATE TABLE IF NOT EXISTS hourly_observations (
                 observed_at TEXT NOT NULL,
                 source TEXT NOT NULL CHECK(source IN ('x','google_trends')),
                 topic TEXT NOT NULL,
@@ -163,14 +52,43 @@ def connect(path: Path | None = None) -> DatabaseConnection:
                 seed_observed_at TEXT,
                 PRIMARY KEY (observed_at, source, topic, provenance)
             );
-            INSERT OR IGNORE INTO hourly_observations_v2
-            SELECT observed_at,source,topic,source_rank,value,provenance,seed_observed_at
-            FROM hourly_observations;
-            DROP TABLE hourly_observations;
-            ALTER TABLE hourly_observations_v2 RENAME TO hourly_observations;
-            CREATE INDEX hourly_observations_time ON hourly_observations(observed_at);
+            CREATE INDEX IF NOT EXISTS hourly_observations_time ON hourly_observations(observed_at);
+            CREATE TABLE IF NOT EXISTS collection_audit (
+                observed_at TEXT NOT NULL, collector TEXT NOT NULL, status TEXT NOT NULL,
+                row_count INTEGER NOT NULL, detail TEXT NOT NULL,
+                PRIMARY KEY (observed_at, collector)
+            );
         """)
-    return connection
+        table_sql = connection.execute(
+            "SELECT sql FROM sqlite_master WHERE type='table' AND name='hourly_observations'"
+        ).fetchone()[0]
+        if "topic, provenance" not in table_sql:
+            connection.executescript("""
+                CREATE TABLE hourly_observations_v2 (
+                    observed_at TEXT NOT NULL,
+                    source TEXT NOT NULL CHECK(source IN ('x','google_trends')),
+                    topic TEXT NOT NULL,
+                    source_rank INTEGER NOT NULL CHECK(source_rank > 0),
+                    value REAL NOT NULL CHECK(value >= 0),
+                    provenance TEXT NOT NULL CHECK(provenance IN ('observed','generated')),
+                    seed_observed_at TEXT,
+                    PRIMARY KEY (observed_at, source, topic, provenance)
+                );
+                INSERT OR IGNORE INTO hourly_observations_v2
+                SELECT observed_at,source,topic,source_rank,value,provenance,seed_observed_at
+                FROM hourly_observations;
+                DROP TABLE hourly_observations;
+                ALTER TABLE hourly_observations_v2 RENAME TO hourly_observations;
+                CREATE INDEX hourly_observations_time ON hourly_observations(observed_at);
+            """)
+        yield connection
+    except BaseException:
+        connection.rollback()
+        raise
+    else:
+        connection.commit()
+    finally:
+        connection.close()
 
 
 def floor_hour(value: datetime | None = None) -> datetime:
@@ -194,10 +112,7 @@ def load_local_env() -> None:
 
     # Reuse the existing TRZIP Windows user-level secret inventory. Values are
     # read into this process only and are never copied to files or logs.
-    aliases = {
-        "X_BEARER_TOKEN": "KIWOOM_TRZIP_X_BEARER_TOKEN",
-        "OPENDART_API_KEY": "KIWOOM_TRZIP_DART_API_KEY",
-    }
+    aliases = {"OPENDART_API_KEY": "KIWOOM_TRZIP_DART_API_KEY"}
     if os.name == "nt":
         try:
             import winreg
@@ -312,24 +227,30 @@ def collect_trends_mcp(at: datetime, feed_type: str, source: str) -> list[Hourly
 
 
 def collect_x(at: datetime) -> list[HourlyObservation]:
-    load_local_env()
-    token = os.environ.get("X_BEARER_TOKEN", "").strip()
-    if not token:
-        return []
-    # South Korea country WOEID. The override exists only for explicit tests.
-    korea_woeid = os.environ.get("X_KOREA_WOEID", "23424868").strip()
-    if not korea_woeid.isdigit():
-        return []
-    query = urllib.parse.urlencode({"max_trends": 50, "trend.fields": "trend_name,tweet_count"})
-    endpoint = f"https://api.x.com/2/trends/by/woeid/{korea_woeid}?{query}"
-    request = urllib.request.Request(endpoint, headers={"Authorization": f"Bearer {token}"})
-    with urllib.request.urlopen(request, timeout=15) as response:
-        payload = json.load(response)
+    """Collect the numbered Korea realtime list shown by X in local Chrome."""
+    from .x_web_collector import collect_x_page
+
+    profile_value = os.environ.get("TRZIP_X_CHROME_PROFILE", "").strip()
+    profile_dir = Path(profile_value) if profile_value else None
+    headed = os.environ.get("TRZIP_X_HEADED", "0").strip() == "1"
+    minimum_rows = int(os.environ.get("TRZIP_X_MINIMUM_ROWS", "10"))
+    topics, _audit = collect_x_page(
+        profile_dir=profile_dir,
+        headless=not headed,
+        minimum_rows=max(1, minimum_rows),
+    )
     stamp = floor_hour(at).isoformat()
-    topics = payload.get("data", payload.get("topics", []))
-    return [HourlyObservation(stamp, "x", str(item.get("trend_name") or item.get("name")), rank,
-                              float(item.get("tweet_count") or item.get("value") or 101 - rank), "observed")
-            for rank, item in enumerate(topics, 1)]
+    return [
+        HourlyObservation(
+            stamp,
+            "x",
+            item.topic,
+            item.rank,
+            float(max(1, 101 - item.rank)),
+            "observed",
+        )
+        for item in topics
+    ]
 
 
 def upsert(rows: list[HourlyObservation], path: Path | None = None) -> int:
@@ -342,6 +263,44 @@ def upsert(rows: list[HourlyObservation], path: Path | None = None) -> int:
               source_rank=excluded.source_rank, value=excluded.value,
               seed_observed_at=excluded.seed_observed_at
         """, [asdict(row) for row in rows])
+    return len(rows)
+
+
+def store_verified_source_snapshot(
+    rows: list[HourlyObservation],
+    *,
+    source: str,
+    collector: str,
+    detail: str,
+    path: Path | None = None,
+) -> int:
+    """Atomically replace one verified source snapshot and its audit row."""
+    if not rows:
+        raise ValueError("verified source snapshot cannot be empty")
+    stamps = {row.observed_at for row in rows}
+    if len(stamps) != 1 or any(row.source != source or row.provenance != "observed" for row in rows):
+        raise ValueError("snapshot rows must share one hour, source, and observed provenance")
+    stamp = next(iter(stamps))
+    with connect(path) as connection:
+        connection.execute(
+            "DELETE FROM hourly_observations WHERE observed_at=? AND source=? AND provenance='observed'",
+            (stamp, source),
+        )
+        connection.executemany(
+            """
+            INSERT INTO hourly_observations
+            (observed_at, source, topic, source_rank, value, provenance, seed_observed_at)
+            VALUES (:observed_at,:source,:topic,:source_rank,:value,:provenance,:seed_observed_at)
+            """,
+            [asdict(row) for row in rows],
+        )
+        connection.execute(
+            """INSERT INTO collection_audit
+               (observed_at, collector, status, row_count, detail) VALUES (?,?,?,?,?)
+               ON CONFLICT(observed_at, collector) DO UPDATE SET
+                 status=excluded.status, row_count=excluded.row_count, detail=excluded.detail""",
+            (stamp, collector, "observed", len(rows), detail),
+        )
     return len(rows)
 
 
@@ -403,14 +362,46 @@ def collect_current(path: Path | None = None, now: datetime | None = None, *, us
                 errors[source] = "approved collector not configured or returned no rows"
         except Exception as exc:  # operational boundary: fallback remains labelled
             errors[source] = f"{type(exc).__name__}: {exc}"
-    audit["x_korea_realtime"] = {"status": "observed" if any(row.source == "x" for row in observed) else "unavailable",
-                                 "row_count": sum(row.source == "x" for row in observed),
-                                 "detail": "Korea realtime trends only; no generated fallback after cutoff"}
-    by_source = {row.source for row in observed}
+    x_rows = sum(row.source == "x" for row in observed)
+    x_error = errors.get("x", "")
+    x_status = "observed" if x_rows else (
+        x_error.split(":", 1)[1].strip().split(":", 1)[0]
+        if x_error.startswith("XCollectionError:") else "unavailable"
+    )
+    audit["x_korea_realtime"] = {
+        "status": x_status,
+        "row_count": x_rows,
+        "detail": (
+            "Installed Chrome, dedicated profile, X realtime page, South Korea marker verified"
+            if x_rows else x_error or "X realtime page returned no rows"
+        ),
+    }
     inside_demo_window = BACKFILL_START <= at <= BACKFILL_END
     generated = generated_hour(at) if inside_demo_window else []
-    upsert(generated + observed, path)
     with connect(path) as connection:
+        # Replace only sources that were collected successfully. A transient
+        # failure must not erase a valid snapshot already stored for this hour.
+        for source in sorted({row.source for row in observed}):
+            connection.execute(
+                "DELETE FROM hourly_observations WHERE observed_at=? AND source=? AND provenance='observed'",
+                (at.isoformat(), source),
+            )
+        if generated:
+            connection.execute(
+                "DELETE FROM hourly_observations WHERE observed_at=? AND provenance='generated'",
+                (at.isoformat(),),
+            )
+        connection.executemany(
+            """
+            INSERT INTO hourly_observations
+            (observed_at, source, topic, source_rank, value, provenance, seed_observed_at)
+            VALUES (:observed_at,:source,:topic,:source_rank,:value,:provenance,:seed_observed_at)
+            ON CONFLICT(observed_at, source, topic, provenance) DO UPDATE SET
+              source_rank=excluded.source_rank, value=excluded.value,
+              seed_observed_at=excluded.seed_observed_at
+            """,
+            [asdict(row) for row in generated + observed],
+        )
         connection.executemany(
             """INSERT INTO collection_audit
                (observed_at, collector, status, row_count, detail) VALUES (?,?,?,?,?)
@@ -432,6 +423,24 @@ def snapshot(at: datetime, path: Path | None = None) -> list[dict]:
             "SELECT * FROM hourly_observations WHERE observed_at=? ORDER BY source, source_rank", (stamp,)
         ).fetchall()
     return [dict(row) for row in rows]
+
+
+def latest_audit(at: datetime, path: Path | None = None) -> dict[str, dict]:
+    """Return persisted collector status for one scheduled hour."""
+    stamp = floor_hour(at).isoformat()
+    with connect(path) as connection:
+        rows = connection.execute(
+            "SELECT collector,status,row_count,detail FROM collection_audit WHERE observed_at=?",
+            (stamp,),
+        ).fetchall()
+    return {
+        str(row["collector"]): {
+            "status": row["status"],
+            "row_count": row["row_count"],
+            "detail": row["detail"],
+        }
+        for row in rows
+    }
 
 
 def coverage(path: Path | None = None) -> dict:

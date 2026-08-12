@@ -40,4 +40,4 @@ def test_public_read_api_allows_frontend_cross_origin():
 def test_health_reports_database_backend():
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json()["database"] in {"sqlite", "postgresql"}
+    assert response.json()["database"] == "sqlite"

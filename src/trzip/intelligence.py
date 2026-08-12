@@ -11,11 +11,26 @@ from .hourly_store import BACKFILL_END, BACKFILL_START, connect, floor_hour, gen
 from .value_chain import expand_value_chain
 from .event_resolution import (
     GROUND_TRUTH,
+    company_evidence_status,
     evaluate_resolution,
     load_company_review_overrides,
     relation_display,
     resolve_event,
 )
+
+
+def _company_display_state(company: dict) -> dict:
+    evidence = company_evidence_status(company)
+    status = evidence["verification_status"]
+    if status == "excluded":
+        opportunity = "excluded"
+    elif status == "official_evidence" and company.get("strength") in {"direct", "indirect"}:
+        opportunity = "confirmed_relationship"
+    elif status == "industry_structure_only":
+        opportunity = "observable_opportunity"
+    else:
+        opportunity = "verification_required"
+    return {**evidence, "opportunity_status": opportunity}
 
 ALIASES = {
     "두쫀쿠": "두바이 초콜릿",
@@ -364,16 +379,8 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
              "company_role": COMPANY_ROLE_META.get(company["relation_type"], ("기타", "adjacent"))[0],
              "relation_tier": COMPANY_ROLE_META.get(company["relation_type"], ("기타", "adjacent"))[1],
              "relation_tier_label": RELATION_TIER_LABEL[COMPANY_ROLE_META.get(company["relation_type"], ("기타", "adjacent"))[1]],
-             "verification_status": ("excluded" if company["strength"] == "excluded"
-                                     else "official_evidence" if company.get("evidence_url")
-                                     else "pending_evidence"),
+             **_company_display_state(company),
              "relation_horizon": RELATION_HORIZON.get(company["strength"], "확장 기회 관찰"),
-             "opportunity_status": (
-                 "confirmed_relationship" if company.get("evidence_url") and company["strength"] in {"direct", "indirect"}
-                 else "observable_opportunity" if company["strength"] == "sector_watch"
-                 else "excluded" if company["strength"] == "excluded"
-                 else "verification_required"
-             ),
              "exposure_status": (
                  "high_relevance" if company["strength"] == "direct"
                  else "limited_market_reflection" if company["strength"] == "indirect"
@@ -384,7 +391,18 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
         ]
         sensitive_context = any(is_sensitive_context(item["topic"]) for item in observations)
         classified_business_context = detected_category != "unclassified" or topic in COMPANY_REGISTRY
-        company_eligible = lane != "issue" and not sensitive_context and classified_business_context
+        context_resolved = event_resolution["context_status"] not in {
+            "unresolved", "needs_context", "ambiguous_person"
+        }
+        # Live names/phrases whose meaning is still uncertain must not receive
+        # generic theme-stock candidates. Curated registries and explicitly
+        # labelled reconstructed demos retain their reviewed mappings.
+        company_eligible = (
+            lane != "issue"
+            and not sensitive_context
+            and classified_business_context
+            and (context_resolved or topic in COMPANY_REGISTRY or is_reconstructed)
+        )
         if company_eligible:
             company_categories, companies = expand_value_chain(topic, detected_category, companies)
         else:
@@ -472,13 +490,24 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
                 "category": item["category"],
                 "ground_truth_expected": {"display_name": expected[0], "category": expected[1]},
             })
-    public_candidates = [
+    resolved_public_candidates = [
         item for item in candidates
         if item["lane"] == "main"
         and item["category"] != "unclassified"
-        and item["context_status"] not in {"unresolved", "needs_context", "ambiguous_person"}
+        and (
+            item["context_status"] not in {"unresolved", "needs_context", "ambiguous_person"}
+            or item["topic"] in COMPANY_REGISTRY
+        )
     ]
-    public_top10 = public_candidates[:10]
+    # Preserve the source-derived score order. Unresolved but non-sensitive
+    # topics stay visible with an explicit review badge and no company mapping;
+    # otherwise a normal live hour can misleadingly render an empty chart.
+    home_candidates = [item for item in candidates if item["lane"] != "issue"]
+    for item in home_candidates:
+        item["home_context_status"] = (
+            "resolved" if item in resolved_public_candidates else "review_required"
+        )
+    public_top10 = home_candidates[:10]
 
     snapshot_quality = {}
     for source in ("x", "google_trends"):
@@ -527,9 +556,13 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
         "quality_summary": {
             "total_ranked_candidates": len(candidates),
             "main_candidates": len(lanes["main"]),
-            "public_eligible_candidates": len(public_candidates),
+            "public_eligible_candidates": len(home_candidates),
+            "resolved_public_candidates": len(resolved_public_candidates),
+            "review_required_in_public_top10": sum(
+                item["home_context_status"] == "review_required" for item in public_top10
+            ),
             "public_top10_count": len(public_top10),
-            "excluded_from_public_due_to_context": len(candidates) - len(public_candidates),
+            "excluded_from_public_due_to_issue_lane": len(candidates) - len(home_candidates),
             "top10_with_five_keywords": sum(
                 sum(keyword["status"] == "observed_source_expression" for keyword in item["keywords"]) == 5
                 for item in public_top10

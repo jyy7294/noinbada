@@ -43,7 +43,7 @@ def health() -> dict:
         connection.execute("SELECT 1").fetchone()
     return {
         "status": "ok",
-        "database": "postgresql" if os.environ.get("DATABASE_URL") else "sqlite",
+        "database": "sqlite",
         "version": app.version,
     }
 
