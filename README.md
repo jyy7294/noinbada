@@ -6,6 +6,8 @@ TRZIP은 대한민국의 X 실시간 트렌드와 Google Trends 신호를 시간
 
 - 배포 서비스: <https://trzip-x-google.vercel.app>
 - API 문서: <https://trzip-x-google.vercel.app/docs>
+
+> 저장소 운영 정책: 이 `jyy7294/noinbada` 저장소는 팀 공유 및 프로덕트 통합용 원본 저장소이며 Vercel 자동 배포에 연결하지 않습니다. 위 주소는 별도 데모 저장소에서 운영되는 API입니다. 이 저장소에는 Vercel 프로젝트 연결 정보와 자동 배포 워크플로를 포함하지 않습니다.
 - 데이터 소스: X 대한민국, Google Trends `geo=KR`
 - 자동 수집에서 Trends MCP 사용: 비활성화
 
@@ -139,7 +141,7 @@ GET /api/v1/intelligence?at=2026-08-12T11:00:00%2B09:00&hours=168
 ## 8. 프로젝트 구조
 
 ```text
-api/index.py                  Vercel Python 진입점
+api/index.py                  호스팅 환경 호환용 Python API 진입점
 src/trzip/api.py              FastAPI 라우트
 src/trzip/hourly_store.py     시간별 수집·저장·데모 재생성
 src/trzip/intelligence.py     정규화·통합순위·상태·기업 연결
