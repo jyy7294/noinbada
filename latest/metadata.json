@@ -1,7 +1,7 @@
 {
   "schema_version": "github-live-data-v1",
-  "generated_at": "2026-08-12T07:35:07.500877+00:00",
-  "observed_at": "2026-08-12T07:00:00+00:00",
+  "generated_at": "2026-08-12T08:24:34.697566+00:00",
+  "observed_at": "2026-08-12T08:00:00+00:00",
   "mode": "live",
   "storage": "github-live-data-branch",
   "retention_days": 104,
@@ -30,22 +30,22 @@
         "detail": "Korea realtime trends only; no generated fallback after cutoff"
       }
     },
-    "observed_at": "2026-08-12T07:00:00+00:00"
+    "observed_at": "2026-08-12T08:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T06:00:00+00:00",
-    "last_hour": "2026-08-12T07:00:00+00:00",
-    "hours": 2,
-    "rows": 120,
-    "observed_rows": 120,
+    "last_hour": "2026-08-12T08:00:00+00:00",
+    "hours": 3,
+    "rows": 180,
+    "observed_rows": 180,
     "generated_rows": 0
   },
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 11,
-    "newly_observed": 11,
-    "reused_company_rows": 4,
+    "requested_stock_codes": 2,
+    "newly_observed": 2,
+    "reused_company_rows": 19,
     "unavailable_company_rows": 0
   }
 }
