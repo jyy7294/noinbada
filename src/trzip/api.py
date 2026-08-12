@@ -11,7 +11,7 @@ from .hourly_store import coverage, snapshot
 from .curation import reconstructed_demo_feed
 from .intelligence import KEYWORD_REGISTRY, build_intelligence, canonical_topic
 from .company_adapters import company_profile, integration_status, opendart_company, pykrx_stock
-from .related_keywords import x_related_keywords
+from .related_keywords import fetch_google_related_keywords, x_related_keywords
 
 app = FastAPI(title="TRZIP X + Google", version="0.2.0")
 configured_origins = [
@@ -109,3 +109,10 @@ def x_related(query: str = Query(min_length=1, max_length=100),
               topic: str | None = Query(default=None, max_length=100)) -> dict:
     canonical = canonical_topic(topic or query)
     return x_related_keywords(query, candidates=KEYWORD_REGISTRY.get(canonical, []))
+
+
+@app.get("/api/v1/keywords/google-related")
+def google_related(query: str = Query(min_length=1, max_length=100),
+                   topic: str | None = Query(default=None, max_length=100)) -> dict:
+    canonical = canonical_topic(topic or query)
+    return fetch_google_related_keywords(query, candidates=KEYWORD_REGISTRY.get(canonical, []))

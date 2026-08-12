@@ -133,6 +133,7 @@ OpenDART는 기업 식별·공시 근거에 사용하고, pykrx는 국내 종목
 | `GET /api/v1/hourly/coverage` | 데이터 시간 범위와 실측/생성 비중 |
 | `GET /api/v1/hourly/snapshot` | 특정 시간의 원천 스냅샷 |
 | `GET /api/v1/keywords/x-related` | X 동시출현 관련 표현 최대 5개 |
+| `GET /api/v1/keywords/google-related` | Google Trends KR RSS 제목·설명에서 반복된 관련 표현 최대 5개 |
 | `GET /api/v1/companies/profile` | OpenDART 기업정보와 pykrx 시장 참고정보 |
 | `GET /api/v1/integrations` | 외부 연동 상태 |
 | `GET /health` | 서버 상태 |
@@ -155,6 +156,7 @@ src/trzip/hourly_store.py     시간별 수집·저장·데모 재생성
 src/trzip/intelligence.py     정규화·통합순위·상태·기업 연결
 src/trzip/curation.py         분류·민감 맥락 규칙
 src/trzip/related_keywords.py X 관련 표현 도출
+src/trzip/normalization_evaluation.py 고정 변형 평가셋 정확도·오답 산출
 src/trzip/value_chain.py      3개 이상 가치사슬 관점 확장
 src/trzip/company_adapters.py OpenDART·pykrx 어댑터
 src/trzip/e2e.py              수집부터 보고서까지 E2E 실행
@@ -172,6 +174,7 @@ python -m venv .venv
 .venv\Scripts\pip install -e ".[dev]"
 Copy-Item .env.example .env
 .venv\Scripts\python -m pytest -q
+.venv\Scripts\python scripts\evaluate-normalization.py --output work\normalization-evaluation.json
 .venv\Scripts\python -m trzip.hourly_cli backfill
 .venv\Scripts\python -m uvicorn trzip.api:app --reload
 ```

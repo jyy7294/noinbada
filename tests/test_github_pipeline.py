@@ -1,7 +1,7 @@
 import json
 from datetime import UTC, datetime
 
-from trzip.github_pipeline import run
+from trzip.github_pipeline import _collection_health, _failure_class, run
 from trzip.hourly_store import HourlyObservation
 
 
@@ -50,3 +50,29 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     daily = json.loads((tmp_path / second["daily_file"]).read_text(encoding="utf-8"))
     assert len(daily) == 2
     assert second["coverage"]["rows"] == 2
+
+
+def test_collection_health_deduplicates_hour_and_classifies_source_failures(tmp_path):
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    collection = {
+        "observed": 10,
+        "errors": {"x": "HTTP Error 401: Unauthorized"},
+        "audit": {
+            "x_korea_realtime": {"status": "unavailable", "detail": "token rejected"},
+            "google_geo_kr": {"status": "observed", "detail": "geo=KR"},
+        },
+    }
+    first = _collection_health(tmp_path, at, collection, at, at)
+    second = _collection_health(tmp_path, at, collection, at, at)
+    history = json.loads((tmp_path / "monitoring" / "run_history.json").read_text(encoding="utf-8"))
+    assert len(history) == 1
+    assert first["status"] == second["status"] == "collecting_baseline"
+    assert second["source_failure_counts"]["x"]["api_authentication"] == 1
+    assert second["remaining_runs_for_3d"] == 71
+    assert second["source_targets_met"] == {"x": False, "google_trends": False}
+
+
+def test_failure_class_has_required_operational_buckets():
+    assert _failure_class("429 quota exceeded") == "quota_or_rate_limit"
+    assert _failure_class("TimeoutError") == "network"
+    assert _failure_class("XML parser failed") == "parser_change"

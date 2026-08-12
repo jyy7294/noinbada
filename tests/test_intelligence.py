@@ -142,16 +142,31 @@ def test_live_intelligence_never_mixes_generated_rows(tmp_path):
 def test_observed_related_expression_is_distinguished_from_operator_candidate(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
     target = tmp_path / "keyword-evidence.sqlite3"
-    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    # Stay outside the deterministic demo window so both rows are live evidence.
+    at = datetime(2026, 8, 13, 3, tzinfo=UTC)
+    previous = datetime(2026, 8, 13, 2, tzinfo=UTC)
     upsert([
+        HourlyObservation(previous.isoformat(), "x", "#JIN_IN_BALTIMORE_D2", 5, 95, "observed"),
+        HourlyObservation(previous.isoformat(), "x", "JIN LIGHTS UP CHARM CITY", 10, 90, "observed"),
         HourlyObservation(at.isoformat(), "x", "#JIN_IN_BALTIMORE_D2", 4, 96, "observed"),
         HourlyObservation(at.isoformat(), "x", "JIN LIGHTS UP CHARM CITY", 9, 91, "observed"),
     ], target)
-    result = build_intelligence(at, hours=1, path=target)
+    result = build_intelligence(at, hours=2, path=target)
     event = next(item for item in result["lanes"]["main"] if item["topic"] == "진")
     observed = [item for item in event["keywords"] if item["status"] == "observed_source_expression"]
     assert {item["text"] for item in observed} == {"#JIN_IN_BALTIMORE_D2", "JIN LIGHTS UP CHARM CITY"}
     assert all(item["source"] == ["x"] for item in observed)
     assert event["company_resolution"]["status"] == "mapped"
     assert event["latest_source_ranks"]["x"] == 4
-    assert event["rank_change_by_source"]["x"] is None
+    assert event["rank_change_by_source"]["x"] == 1
+
+
+def test_live_keywords_are_empty_when_only_operator_candidates_exist(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+    target = tmp_path / "keyword-insufficient.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([HourlyObservation(at.isoformat(), "x", "말복", 1, 100, "observed")], target)
+    event = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
+    assert event["keywords"] == []
+    assert event["keyword_candidates"]
+    assert event["keyword_evidence"]["status"] == "insufficient"

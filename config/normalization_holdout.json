@@ -1,0 +1,32 @@
+{
+  "schema_version": "trzip-normalization-holdout-v1",
+  "frozen_at": "2026-08-12",
+  "source": "noinbada/live-data observations/2026-08-12.json",
+  "scope": "규칙 파일과 분리해 고정한 실제 X·Google Trends KR 관측 사건 24건",
+  "cases": [
+    {"input": "네이마르", "display_name": "네이마르", "category": "sports_participation", "context_status": "resolved_reference"},
+    {"input": "과학자", "display_name": "과학자", "category": null, "context_status": "needs_context"},
+    {"input": "피의 게임", "display_name": "피의 게임", "category": "screen_content", "context_status": "resolved_reference"},
+    {"input": "동아일보", "display_name": "동아일보", "category": null, "context_status": "needs_context"},
+    {"input": "지민", "display_name": "지민", "category": null, "context_status": "needs_context"},
+    {"input": "엘리베이터", "display_name": "엘리베이터", "category": null, "context_status": "needs_context"},
+    {"input": "업 비트", "display_name": "업 비트", "category": null, "context_status": "needs_context"},
+    {"input": "김지민", "display_name": "김지민", "category": null, "context_status": "ambiguous_person"},
+    {"input": "라클란 웰스", "display_name": "라클란 웰스", "category": null, "context_status": "needs_context"},
+    {"input": "은마아파트", "display_name": "은마아파트", "category": null, "context_status": "needs_context"},
+    {"input": "데이즈드", "display_name": "데이즈드", "category": "screen_content", "context_status": "resolved_reference"},
+    {"input": "스네즈나", "display_name": "스네즈나", "category": "unclassified", "context_status": "needs_context"},
+    {"input": "유부초밥", "display_name": "유부초밥", "category": null, "context_status": "needs_context"},
+    {"input": "독립운동가", "display_name": "독립운동가", "category": null, "context_status": "needs_context"},
+    {"input": "블루레이", "display_name": "블루레이", "category": "product_brand", "context_status": "resolved_reference"},
+    {"input": "탐라 포지션", "display_name": "탐라 포지션", "category": null, "context_status": "needs_context"},
+    {"input": "사진 로딩", "display_name": "사진 로딩", "category": null, "context_status": "needs_context"},
+    {"input": "지오다노", "display_name": "지오다노", "category": null, "context_status": "needs_context"},
+    {"input": "#피냐타_내용_궁금해", "display_name": "#피냐타_내용_궁금해", "category": null, "context_status": "needs_context"},
+    {"input": "#JIN_IN_BALTIMORE_D2", "display_name": "BTS 진 볼티모어 공연", "category": "music_performance", "context_status": "resolved_reference"},
+    {"input": "친일 논란", "display_name": "친일 논란", "category": null, "context_status": "needs_context"},
+    {"input": "친일파 후손", "display_name": "친일파 후손", "category": null, "context_status": "needs_context"},
+    {"input": "증조부 친일", "display_name": "증조부 친일", "category": null, "context_status": "needs_context"},
+    {"input": "관리 종목", "display_name": "관리종목", "category": "investment_market", "context_status": "resolved_reference"}
+  ]
+}

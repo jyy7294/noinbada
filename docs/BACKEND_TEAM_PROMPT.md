@@ -10,6 +10,8 @@
 
 먼저 `README.md`, `docs/BACKEND_TEAM_HANDOFF.md`, `docs/COMPANY_RELATION_POLICY.md`, `docs/DESIGN_DATA_CONTRACT.md`를 읽고 현재 테스트를 실행하세요. 기존 사용자 변경과 프론트 디자인을 보존하세요.
 
+`docs/BACKEND_TEAM_HANDOFF.md`의 2026-08-12 후속 구현 결과가 현재 코드에 존재하면 A~E를 처음부터 다시 작성하지 마세요. 먼저 테스트와 JSON 산출물로 구현 사실을 확인하고, 실패한 계약만 최소 범위로 수정하세요. 72회·168회처럼 실제 시간 누적이 필요한 측정치는 샘플을 복제해 완료로 만들지 말고 `collecting_baseline` 또는 `measuring_3_to_7_days`로 남기세요.
+
 목표는 UI를 바꾸는 것이 아니라 다음 백엔드 품질을 개선하는 것입니다.
 
 1. X와 Google Trends의 서로 다른 검색어를 동일 사건으로 안전하게 클러스터링합니다.
@@ -19,6 +21,13 @@
 5. `config/company_review_overrides.json`의 팀 승인 상태를 결과에 적용합니다.
 6. 별도 수동 평가셋으로 사건명·카테고리·동음이의어 판별 정확도를 측정하고 오답 목록을 남깁니다.
 7. `live-data/monitoring/run_history.json`을 이용해 최소 3일, 최종 7일 수집 성공률을 측정합니다.
+
+현재 추가된 검증 자산:
+
+- `config/normalization_holdout.json`: `live-data` 실제 관측에서 별도 라벨링해 고정한 24건 평가셋
+- `scripts/evaluate-normalization.py`: 정확도와 오답 JSON 생성
+- `GET /api/v1/keywords/google-related`: Google Trends KR RSS 제목·설명 반복 표현 집계
+- `latest/normalization_evaluation.json`: 운영 파이프라인의 고정 평가 보고서
 
 강제 제약:
 

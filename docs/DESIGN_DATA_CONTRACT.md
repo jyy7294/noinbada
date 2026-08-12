@@ -37,7 +37,8 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/intelligence
 | Z2 설명 | 왜 관측됐는지에 대한 설명 | `phenomenon_summary` |
 | Z2 신뢰도 | 초기 관찰·교차 관찰 등 | `data_confidence` |
 | Z2 출처 | X·Google의 최신 원천 순위 | `latest_source_ranks` |
-| Z2 키워드 | 관측 근거가 있는 최대 5개 | `keywords` |
+| Z2 키워드 | 서로 다른 관측 2건 이상에서 반복된 최대 5개 | `keywords` |
+| Z2 키워드 빈 상태 | 반복 실측 없음과 수집 실패를 구분한 사유 | `keyword_evidence.status`, `keyword_evidence.reason` |
 | Z2 기업 탭 | 관계 범주별 기업 | `companies[].relation_category` |
 | Z2 기업 카드 | 역할·관계 강도·검증 상태·근거·주의 | `companies[]` |
 | Z2 기업 일별 시장자료 | 기준일·종가·등락률·거래량 | `companies[].market_reference.summary` |
@@ -92,8 +93,11 @@ relation_category,verification_status,created_at
 ## 6. 표시 금지와 실패 상태
 
 - 실측되지 않은 관련 키워드는 채우지 않고 빈 상태로 둡니다.
+- 운영자 후보어는 `keyword_candidates`에만 두며 `keywords`나 순위 근거로 승격하지 않습니다.
 - `company_eligible=false`인 트렌드는 기업을 억지로 붙이지 않습니다.
 - `verification_status=industry_structure_only`는 업종 후보로 표시하며 직접 수혜로 표현하지 않습니다.
+- 모든 기업은 `relation_display_type`과 `team_review_status`를 가지며, 승인 기록이 없으면 `unreviewed`로 표시합니다.
+- `normalization_holdout_evaluation`은 2026-08-12 실제 관측 24건의 고정 평가 결과이며 신규 사건 전체에 대한 일반화 정확도로 표현하지 않습니다.
 - `investment_warning`은 기업 상세에서 항상 함께 표시합니다.
 - 네트워크와 캐시가 모두 없으면 목업으로 대체하지 않고 `데이터 연결 실패`를 표시합니다.
 - Z2 시장자료는 pykrx의 실제 일별 자료가 `observed`일 때만 표시하며 실시간 체결가라고 표현하지 않습니다.

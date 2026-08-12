@@ -2,7 +2,9 @@ from __future__ import annotations
 
 import json
 import re
+import unicodedata
 from pathlib import Path
+from urllib.parse import urlparse
 
 
 # 수동 정답셋: 이름을 "흥미로운 문장"으로 바꾸는 목록이 아니라
@@ -47,18 +49,50 @@ ALIASES = {
 }
 
 PERSON_NAME_RE = re.compile(r"^[가-힣]{2,4}$")
+COMMON_KOREAN_SURNAMES = frozenset("김이박최정강조윤장임한오서신권황안송전홍유고문양손배백허남심노하곽성차주우구민류나진지엄채원천방공현함변염여추도소석선설마길연위표명기반왕금옥육인맹제모탁국어은편용")
+REVIEW_STATUSES = frozenset({"approved", "rejected", "needs_revision"})
+
+
+def normalize_event_key(raw: str) -> str:
+    """Normalize presentation variants without inventing semantic aliases."""
+    value = unicodedata.normalize("NFKC", str(raw or "")).strip()
+    value = re.sub(r"^[#＃]+", "", value)
+    value = value.replace("_", " ")
+    value = re.sub(r"[·ㆍ:：/\\|]+", " ", value)
+    return " ".join(value.split()).casefold()
+
+
+def _lookup_key(raw: str) -> str:
+    normalized = normalize_event_key(raw)
+    alias_lookup = {normalize_event_key(key): value for key, value in ALIASES.items()}
+    aliased = alias_lookup.get(normalized)
+    if aliased:
+        return aliased
+
+    exact_lookup = {normalize_event_key(key): key for key in GROUND_TRUTH}
+    if normalized in exact_lookup:
+        return exact_lookup[normalized]
+
+    spaceless = normalized.replace(" ", "")
+    matches = [key for key in GROUND_TRUTH if normalize_event_key(key).replace(" ", "") == spaceless]
+    return matches[0] if len(matches) == 1 else " ".join(str(raw or "").strip().split())
 
 
 def resolve_event(raw: str, sources: set[str]) -> dict:
-    compact = " ".join(str(raw).strip().split())
-    key = ALIASES.get(compact, compact)
+    compact = " ".join(unicodedata.normalize("NFKC", str(raw or "")).strip().split())
+    key = _lookup_key(compact)
     truth = GROUND_TRUTH.get(key)
     if truth:
         display, category, context, keyword_candidates = truth
         context_status = "needs_context" if category == "unclassified" else "resolved_reference"
     else:
         display, category, context, keyword_candidates = compact, None, None, ()
-        context_status = "ambiguous_person" if PERSON_NAME_RE.fullmatch(compact) else "unresolved"
+        looks_like_person = (
+            bool(PERSON_NAME_RE.fullmatch(compact))
+            and len(compact) == 3
+            and compact[0] in COMMON_KOREAN_SURNAMES
+        )
+        context_status = "ambiguous_person" if looks_like_person else "needs_context"
     source_label = source_observation_label(sources)
     summary = f"{context} · {source_label}" if context else f"원인 미확인 — {source_label}"
     return {
@@ -83,12 +117,53 @@ def source_observation_label(sources: set[str]) -> str:
     return ("·".join(named) + "에서 관측") if named else "관측 출처 확인 필요"
 
 
-def load_company_review_overrides() -> dict[str, str]:
-    path = Path(__file__).resolve().parents[2] / "config" / "company_review_overrides.json"
+def load_company_review_overrides(path: Path | None = None) -> dict[str, str]:
+    path = path or Path(__file__).resolve().parents[2] / "config" / "company_review_overrides.json"
     if not path.exists():
         return {}
     data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("company review overrides must be a JSON object")
+    invalid = {str(key): str(value) for key, value in data.items() if str(value) not in REVIEW_STATUSES}
+    if invalid:
+        raise ValueError(f"invalid company review status: {invalid}")
     return {str(key): str(value) for key, value in data.items()}
+
+
+def company_evidence_status(company: dict) -> dict:
+    """Classify evidence independently from value-chain and team-review labels."""
+    strength = company.get("strength", "sector_watch")
+    kind = str(company.get("evidence_kind") or "")
+    url = str(company.get("evidence_url") or "")
+    parsed = urlparse(url) if url else None
+    valid_url = bool(parsed and parsed.scheme == "https" and parsed.netloc)
+    official_kind = (
+        kind.startswith("company_official_")
+        or kind in {"official_content_page", "opendart_filing", "company_ir"}
+    )
+    pending_kind = "pending" in kind or kind in {
+        "category_exposure_pending", "consumer_path_hypothesis", "sector_watch_only",
+        "industry_structure_reference", "exclusion_rule",
+    }
+    if strength == "excluded":
+        status = "excluded"
+    elif strength == "sector_watch":
+        status = "industry_structure_only"
+    elif valid_url and official_kind and not pending_kind:
+        status = "official_evidence"
+    else:
+        status = "pending_evidence"
+    return {
+        "verification_status": status,
+        "evidence_url_valid": valid_url,
+        "evidence_official": status == "official_evidence",
+        "evidence_review_reason": (
+            "공식 URL과 관계 유형이 확인됨" if status == "official_evidence"
+            else "산업 구조 관찰 후보이며 개별 계약·제품 관계는 미확인" if status == "industry_structure_only"
+            else "연결 제외" if status == "excluded"
+            else "공식 관계 문서 또는 관계 유형 검증이 추가로 필요"
+        ),
+    }
 
 
 def relation_display(company: dict, reviews: dict[str, str]) -> dict:

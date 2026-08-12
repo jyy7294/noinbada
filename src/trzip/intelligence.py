@@ -11,8 +11,10 @@ from .hourly_store import BACKFILL_END, BACKFILL_START, connect, floor_hour, gen
 from .value_chain import expand_value_chain
 from .event_resolution import (
     GROUND_TRUTH,
+    company_evidence_status,
     evaluate_resolution,
     load_company_review_overrides,
+    normalize_event_key,
     relation_display,
     resolve_event,
 )
@@ -188,7 +190,8 @@ RELATION_TIER_LABEL = {
 
 def canonical_topic(raw: str) -> str:
     compact = " ".join(raw.strip().split())
-    legacy = ALIASES.get(compact, compact)
+    normalized_aliases = {normalize_event_key(key): value for key, value in ALIASES.items()}
+    legacy = normalized_aliases.get(normalize_event_key(compact), compact)
     return resolve_event(legacy, set())["canonical"]
 
 
@@ -257,10 +260,12 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
         observations.sort(key=lambda item: (item["observed_at"], item["source"], item["source_rank"]))
         sources = {item["source"] for item in observations}
         event_resolution = resolve_event(topic, sources)
-        observed_term_sources: dict[str, set[str]] = defaultdict(set)
+        observed_term_evidence: dict[str, set[tuple[str, str]]] = defaultdict(set)
         for item in observations:
             if item["provenance"] == "observed":
-                observed_term_sources[item["topic"].casefold()].add(item["source"])
+                observed_term_evidence[normalize_event_key(item["topic"])].add(
+                    (item["observed_at"], item["source"])
+                )
         observed_hours = len({item["observed_at"] for item in observations})
         latest_by_source = {}
         history_by_source: dict[str, list[dict]] = defaultdict(list)
@@ -349,24 +354,21 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
             list(KEYWORD_REGISTRY.get(topic, [])) + event_resolution["keyword_candidates"]
         ))[:5]
         for keyword in keyword_candidates:
-            observed_sources = sorted(observed_term_sources.get(keyword.casefold(), set()))
+            evidence = observed_term_evidence.get(normalize_event_key(keyword), set())
+            observed_sources = sorted({source for _, source in evidence})
             if is_reconstructed:
                 keyword_items.append({"text": keyword, "source": ["reconstructed_demo"],
                                       "status": "reconstructed_demo"})
-            elif observed_sources:
+            elif len(evidence) >= 2:
                 keyword_items.append({"text": keyword, "source": observed_sources,
+                                      "observation_count": len(evidence),
                                       "status": "observed_source_expression"})
-            else:
-                keyword_items.append({"text": keyword, "source": [],
-                                      "status": "operator_candidate_not_rank_evidence"})
         companies = [
             {**company,
              "company_role": COMPANY_ROLE_META.get(company["relation_type"], ("기타", "adjacent"))[0],
              "relation_tier": COMPANY_ROLE_META.get(company["relation_type"], ("기타", "adjacent"))[1],
              "relation_tier_label": RELATION_TIER_LABEL[COMPANY_ROLE_META.get(company["relation_type"], ("기타", "adjacent"))[1]],
-             "verification_status": ("excluded" if company["strength"] == "excluded"
-                                     else "official_evidence" if company.get("evidence_url")
-                                     else "pending_evidence"),
+             **company_evidence_status(company),
              "relation_horizon": RELATION_HORIZON.get(company["strength"], "확장 기회 관찰"),
              "opportunity_status": (
                  "confirmed_relationship" if company.get("evidence_url") and company["strength"] in {"direct", "indirect"}
@@ -389,11 +391,17 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
             company_categories, companies = expand_value_chain(topic, detected_category, companies)
         else:
             company_categories, companies = [], []
-        companies = [{**company, **relation_display(company, company_reviews)} for company in companies]
+        companies = [
+            {**company, **company_evidence_status(company), **relation_display(company, company_reviews)}
+            for company in companies
+        ]
         company_resolution = {
             "status": "mapped" if companies else "excluded_by_context" if not company_eligible else "no_verified_relation",
             "mapped_count": len(companies),
             "direct_count": sum(company["strength"] == "direct" for company in companies),
+            "official_evidence_count": sum(company["verification_status"] == "official_evidence" for company in companies),
+            "industry_observation_count": sum(company["verification_status"] == "industry_structure_only" for company in companies),
+            "team_approved_count": sum(company["team_review_status"] == "approved" for company in companies),
             "role_coverage": sorted({company["company_role"] for company in companies}),
             "tier_counts": {tier: sum(company["relation_tier"] == tier for company in companies)
                             for tier in ("core", "value_chain", "adjacent", "excluded")},
@@ -434,15 +442,20 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
                         "rank": item["source_rank"], "value": item["value"],
                         "provenance": item["provenance"]} for item in observations],
             "keywords": keyword_items,
+            "keyword_candidates": ([] if is_reconstructed else [
+                {"text": keyword, "status": "operator_candidate_not_rank_evidence"}
+                for keyword in keyword_candidates
+                if keyword not in {item["text"] for item in keyword_items}
+            ]),
             "keyword_evidence": {
                 "total": len(keyword_items),
                 "observed_source_count": sum(item["status"] == "observed_source_expression" for item in keyword_items),
-                "candidate_count": sum(item["status"] == "operator_candidate_not_rank_evidence" for item in keyword_items),
+                "candidate_count": 0 if is_reconstructed else len(keyword_candidates) - len(keyword_items),
                 "status": "observed" if any(item["status"] == "observed_source_expression" for item in keyword_items) else "insufficient",
                 "reason": ("관측 원문에서 반복된 관련 표현을 확인"
                            if any(item["status"] == "observed_source_expression" for item in keyword_items)
-                           else "반복 관측된 관련어가 없어 후보어만 표시" if keyword_items
-                           else "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"),
+                           else "2개 이상 독립 관측에서 반복된 관련어가 없어 공개 키워드를 비움"
+                           if keyword_candidates else "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"),
             },
             "companies": companies,
             "company_categories": company_categories,
