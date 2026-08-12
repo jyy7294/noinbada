@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-506f5b46f79243deb1a463ffd8d7e12c",
-  "generated_at": "2026-08-12T17:35:33.561739+00:00",
+  "publication_id": "pub-302cad498b0a42f2990475cd04da4be1",
+  "generated_at": "2026-08-12T17:44:01.596790+00:00",
   "observed_at": "2026-08-12T17:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -48,9 +48,9 @@
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 1,
-    "newly_observed": 1,
-    "reused_company_rows": 30,
+    "requested_stock_codes": 0,
+    "newly_observed": 0,
+    "reused_company_rows": 31,
     "unavailable_company_rows": 0
   },
   "collection_health": {
@@ -90,8 +90,8 @@
       "google_trends": false
     },
     "on_time_within_15m_rate": 0.0,
-    "latest_delay_seconds": 2120,
-    "latest_duration_seconds": 13.96,
+    "latest_delay_seconds": 2635,
+    "latest_duration_seconds": 6.91,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 69,
     "remaining_runs_for_7d": 165,
