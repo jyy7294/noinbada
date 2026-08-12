@@ -18497,7 +18497,7 @@
     "public_eligible_candidates": 8,
     "public_top10_count": 8,
     "excluded_from_public_due_to_context": 84,
-    "top10_with_five_keywords": 1,
+    "top10_with_five_keywords": 0,
     "top10_with_company_mapping": 8,
     "top10_without_forced_company": 0,
     "top10_low_confidence": 1,
@@ -32419,12 +32419,24 @@
       "x": 0.5,
       "google_trends": 1.0
     },
-    "on_time_within_15m_rate": 0.5,
-    "latest_delay_seconds": 828,
-    "latest_duration_seconds": 0.49,
+    "on_time_within_15m_rate": 0.0,
+    "latest_delay_seconds": 1007,
+    "latest_duration_seconds": 0.47,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 70,
     "remaining_runs_for_7d": 166,
     "warning": "GitHub Actions 예약 실행은 정각 시작을 보장하지 않으며 실제 지연시간으로 평가"
+  },
+  "collection_status": {
+    "observed_at": "2026-08-12T09:00:00+00:00",
+    "observed_rows": 10,
+    "source_status": {
+      "x": "unavailable",
+      "google_trends": "observed"
+    },
+    "errors": {
+      "x": "HTTPError: HTTP Error 402: Payment Required"
+    },
+    "partial": true
   }
 }

@@ -1,11 +1,11 @@
 {
   "schema_version": "github-live-data-v1",
-  "generated_at": "2026-08-12T09:13:48.090713+00:00",
+  "generated_at": "2026-08-12T09:16:47.270011+00:00",
   "observed_at": "2026-08-12T09:00:00+00:00",
   "mode": "live",
   "storage": "github-live-data-branch",
   "retention_days": 104,
-  "history_rows_loaded": 180,
+  "history_rows_loaded": 190,
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-12.json",
   "collection": {
@@ -59,9 +59,9 @@
       "x": 0.5,
       "google_trends": 1.0
     },
-    "on_time_within_15m_rate": 0.5,
-    "latest_delay_seconds": 828,
-    "latest_duration_seconds": 0.49,
+    "on_time_within_15m_rate": 0.0,
+    "latest_delay_seconds": 1007,
+    "latest_duration_seconds": 0.47,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 70,
     "remaining_runs_for_7d": 166,
