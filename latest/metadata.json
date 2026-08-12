@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-479ae00d73ef48448ace8b4e68b4d1e6",
-  "generated_at": "2026-08-12T21:38:40.256104+00:00",
+  "publication_id": "pub-de642b793de14189ae055e834e6bf435",
+  "generated_at": "2026-08-12T21:45:06.560578+00:00",
   "observed_at": "2026-08-12T21:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -11,19 +11,17 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-12.json",
   "collection": {
-    "observed": 202,
-    "errors": {
-      "x": "extension_not_ready"
-    },
+    "observed": 232,
+    "errors": {},
     "rank_sources": [
       "x",
       "google_trends"
     ],
     "audit": {
       "x_korea_realtime": {
-        "status": "extension_not_ready",
-        "row_count": 0,
-        "detail": "extension_not_ready"
+        "status": "observed",
+        "row_count": 30,
+        "detail": "verified_current_hour_snapshot"
       },
       "google_geo_kr": {
         "status": "observed",
@@ -40,8 +38,8 @@
     "first_hour": "2026-08-12T13:00:00+00:00",
     "last_hour": "2026-08-12T21:00:00+00:00",
     "hours": 8,
-    "rows": 1572,
-    "observed_rows": 1572,
+    "rows": 1602,
+    "observed_rows": 1602,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
