@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-faa6cc4047464767a30170eafcd6a64f",
-  "generated_at": "2026-08-12T18:08:34.687723+00:00",
+  "publication_id": "pub-96b78bb3e5b24b78badd7221e0886e2e",
+  "generated_at": "2026-08-12T18:25:05.368038+00:00",
   "observed_at": "2026-08-12T18:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -53,6 +53,19 @@
     "reused_company_rows": 31,
     "unavailable_company_rows": 0
   },
+  "company_identity_data": {
+    "provider": "opendart",
+    "requested": 26,
+    "fetched": 26,
+    "reused": 0,
+    "status_counts": {
+      "verified": 26
+    },
+    "verified_ttl_days": 30,
+    "retry_ttl_hours": 24,
+    "ranking_effect": "none",
+    "relationship_evidence": false
+  },
   "collection_health": {
     "measurement_window_hours": 168,
     "recorded_runs": 4,
@@ -89,9 +102,9 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.25,
-    "latest_delay_seconds": 508,
-    "latest_duration_seconds": 7.06,
+    "on_time_within_15m_rate": 0.0,
+    "latest_delay_seconds": 1491,
+    "latest_duration_seconds": 14.32,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 68,
     "remaining_runs_for_7d": 164,
