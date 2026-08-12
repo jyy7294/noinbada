@@ -3,7 +3,7 @@
   "is_live": true,
   "window": {
     "from": "2026-08-12T03:00:00+00:00",
-    "to": "2026-08-12T09:00:00+00:00",
+    "to": "2026-08-12T10:00:00+00:00",
     "hours": 168
   },
   "sources": [
@@ -56,7 +56,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -634,7 +634,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -1212,7 +1212,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -1783,7 +1783,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -2371,7 +2371,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -2942,7 +2942,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -3476,7 +3476,7 @@
       "rank": 6,
       "classification": "일반 트렌드",
       "persistence_rank": 60,
-      "momentum_rank": 74
+      "momentum_rank": 78
     },
     {
       "topic": "삼성전자",
@@ -3513,9 +3513,9 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T09:00:00+00:00",
-      "age_hours": 1,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "age_hours": 2,
+      "lifecycle": "cooling",
+      "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
         "level": "single_source_repeated",
         "label": "단일출처 반복",
@@ -4047,7 +4047,7 @@
       "rank": 7,
       "classification": "일반 트렌드",
       "persistence_rank": 71,
-      "momentum_rank": 76
+      "momentum_rank": 80
     },
     {
       "topic": "불꽃축제",
@@ -4084,7 +4084,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -4614,10 +4614,10 @@
       "momentum_rank": 26
     },
     {
-      "topic": "태풍 찬홈 경로",
-      "display_name": "태풍 찬홈 경로",
+      "topic": "브래드 피트",
+      "display_name": "브래드 피트",
       "raw_terms": [
-        "태풍 찬홈 경로"
+        "브래드 피트"
       ],
       "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
       "context_status": "unresolved",
@@ -4646,8 +4646,8 @@
       "rank_change_by_source": {
         "google_trends": null
       },
-      "first_seen_at": "2026-08-12T09:00:00+00:00",
-      "last_seen_at": "2026-08-12T09:00:00+00:00",
+      "first_seen_at": "2026-08-12T10:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
       "age_hours": 0,
       "lifecycle": "new",
       "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -4661,7 +4661,7 @@
       ],
       "series": [
         {
-          "at": "2026-08-12T09:00:00+00:00",
+          "at": "2026-08-12T10:00:00+00:00",
           "source": "google_trends",
           "rank": 1,
           "value": 100.0,
@@ -4696,7 +4696,7 @@
       },
       "rank": 9,
       "classification": "맥락 확인",
-      "persistence_rank": 86,
+      "persistence_rank": 93,
       "momentum_rank": 27
     },
     {
@@ -4734,7 +4734,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -4800,10 +4800,10 @@
       "momentum_rank": 28
     },
     {
-      "topic": "트로트",
-      "display_name": "트로트",
+      "topic": "김승연",
+      "display_name": "김승연",
       "raw_terms": [
-        "트로트"
+        "김승연"
       ],
       "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
       "context_status": "ambiguous_person",
@@ -4832,8 +4832,8 @@
       "rank_change_by_source": {
         "google_trends": null
       },
-      "first_seen_at": "2026-08-12T09:00:00+00:00",
-      "last_seen_at": "2026-08-12T09:00:00+00:00",
+      "first_seen_at": "2026-08-12T10:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
       "age_hours": 0,
       "lifecycle": "new",
       "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -4847,7 +4847,7 @@
       ],
       "series": [
         {
-          "at": "2026-08-12T09:00:00+00:00",
+          "at": "2026-08-12T10:00:00+00:00",
           "source": "google_trends",
           "rank": 2,
           "value": 99.0,
@@ -4882,14 +4882,14 @@
       },
       "rank": 11,
       "classification": "맥락 확인",
-      "persistence_rank": 87,
+      "persistence_rank": 94,
       "momentum_rank": 29
     },
     {
-      "topic": "유주상",
-      "display_name": "유주상",
+      "topic": "택시",
+      "display_name": "택시",
       "raw_terms": [
-        "유주상"
+        "택시"
       ],
       "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
       "context_status": "ambiguous_person",
@@ -4918,8 +4918,8 @@
       "rank_change_by_source": {
         "google_trends": null
       },
-      "first_seen_at": "2026-08-12T09:00:00+00:00",
-      "last_seen_at": "2026-08-12T09:00:00+00:00",
+      "first_seen_at": "2026-08-12T10:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
       "age_hours": 0,
       "lifecycle": "new",
       "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -4933,7 +4933,7 @@
       ],
       "series": [
         {
-          "at": "2026-08-12T09:00:00+00:00",
+          "at": "2026-08-12T10:00:00+00:00",
           "source": "google_trends",
           "rank": 3,
           "value": 98.0,
@@ -4968,7 +4968,7 @@
       },
       "rank": 12,
       "classification": "맥락 확인",
-      "persistence_rank": 88,
+      "persistence_rank": 95,
       "momentum_rank": 30
     },
     {
@@ -5006,7 +5006,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -5106,7 +5106,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -5172,13 +5172,13 @@
       "momentum_rank": 1
     },
     {
-      "topic": "삼성동 화재",
-      "display_name": "삼성동 화재",
+      "topic": "대우건설",
+      "display_name": "대우건설",
       "raw_terms": [
-        "삼성동 화재"
+        "대우건설"
       ],
       "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
-      "context_status": "unresolved",
+      "context_status": "ambiguous_person",
       "ground_truth_match": false,
       "category": "unclassified",
       "lane": "main",
@@ -5204,8 +5204,8 @@
       "rank_change_by_source": {
         "google_trends": null
       },
-      "first_seen_at": "2026-08-12T09:00:00+00:00",
-      "last_seen_at": "2026-08-12T09:00:00+00:00",
+      "first_seen_at": "2026-08-12T10:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
       "age_hours": 0,
       "lifecycle": "new",
       "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -5219,7 +5219,7 @@
       ],
       "series": [
         {
-          "at": "2026-08-12T09:00:00+00:00",
+          "at": "2026-08-12T10:00:00+00:00",
           "source": "google_trends",
           "rank": 4,
           "value": 97.0,
@@ -5254,7 +5254,7 @@
       },
       "rank": 15,
       "classification": "맥락 확인",
-      "persistence_rank": 89,
+      "persistence_rank": 96,
       "momentum_rank": 32
     },
     {
@@ -5292,7 +5292,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -5378,7 +5378,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -5478,7 +5478,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -5578,7 +5578,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -5630,10 +5630,10 @@
       "momentum_rank": 35
     },
     {
-      "topic": "왕옌청",
-      "display_name": "왕옌청",
+      "topic": "전력",
+      "display_name": "전력",
       "raw_terms": [
-        "왕옌청"
+        "전력"
       ],
       "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
       "context_status": "ambiguous_person",
@@ -5662,8 +5662,8 @@
       "rank_change_by_source": {
         "google_trends": null
       },
-      "first_seen_at": "2026-08-12T09:00:00+00:00",
-      "last_seen_at": "2026-08-12T09:00:00+00:00",
+      "first_seen_at": "2026-08-12T10:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
       "age_hours": 0,
       "lifecycle": "new",
       "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -5677,7 +5677,7 @@
       ],
       "series": [
         {
-          "at": "2026-08-12T09:00:00+00:00",
+          "at": "2026-08-12T10:00:00+00:00",
           "source": "google_trends",
           "rank": 5,
           "value": 96.0,
@@ -5712,7 +5712,7 @@
       },
       "rank": 20,
       "classification": "맥락 확인",
-      "persistence_rank": 90,
+      "persistence_rank": 97,
       "momentum_rank": 36
     },
     {
@@ -5750,7 +5750,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -5850,7 +5850,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -5943,7 +5943,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -6036,9 +6036,9 @@
       },
       "first_seen_at": "2026-08-12T09:00:00+00:00",
       "last_seen_at": "2026-08-12T09:00:00+00:00",
-      "age_hours": 0,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "age_hours": 1,
+      "lifecycle": "cooling",
+      "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
         "level": "low",
         "label": "초기 관찰",
@@ -6122,7 +6122,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -6208,7 +6208,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -6294,9 +6294,9 @@
       },
       "first_seen_at": "2026-08-12T09:00:00+00:00",
       "last_seen_at": "2026-08-12T09:00:00+00:00",
-      "age_hours": 0,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "age_hours": 1,
+      "lifecycle": "cooling",
+      "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
         "level": "low",
         "label": "초기 관찰",
@@ -6346,6 +6346,99 @@
       "momentum_rank": 40
     },
     {
+      "topic": "태풍 찬홈 경로",
+      "display_name": "태풍 찬홈 경로",
+      "raw_terms": [
+        "태풍 찬홈 경로"
+      ],
+      "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+      "context_status": "unresolved",
+      "ground_truth_match": false,
+      "category": "unclassified",
+      "lane": "main",
+      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+      "score_calibration": 0.82,
+      "company_eligible": false,
+      "score": 30.67,
+      "rrf": 15.1515,
+      "momentum": -0.05,
+      "persistence": 0.0119,
+      "score_components": {
+        "rrf_points": 27.73,
+        "momentum_points": 9.5,
+        "persistence_points": 0.18,
+        "cross_source_points": 0.0,
+        "calibration": 0.82
+      },
+      "source_count": 1,
+      "source_badge": "단일출처",
+      "latest_source_ranks": {
+        "google_trends": 6
+      },
+      "rank_change_by_source": {
+        "google_trends": -5
+      },
+      "first_seen_at": "2026-08-12T09:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
+      "age_hours": 1,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "single_source_repeated",
+        "label": "단일출처 반복",
+        "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T09:00:00+00:00",
+          "source": "google_trends",
+          "rank": 1,
+          "value": 100.0,
+          "provenance": "observed"
+        },
+        {
+          "at": "2026-08-12T10:00:00+00:00",
+          "source": "google_trends",
+          "rank": 6,
+          "value": 95.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0,
+        "status": "insufficient",
+        "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 28,
+      "classification": "맥락 확인",
+      "persistence_rank": 86,
+      "momentum_rank": 76
+    },
+    {
       "topic": "탐라 포지션",
       "display_name": "탐라 포지션",
       "raw_terms": [
@@ -6380,7 +6473,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -6440,7 +6533,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 28,
+      "rank": 29,
       "classification": "맥락 확인",
       "persistence_rank": 10,
       "momentum_rank": 14
@@ -6480,7 +6573,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -6533,7 +6626,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 29,
+      "rank": 30,
       "classification": "맥락 확인",
       "persistence_rank": 38,
       "momentum_rank": 69
@@ -6574,7 +6667,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -7147,10 +7240,103 @@
         "minimum_category_met": true,
         "reason": "공식 사업관계 또는 명시적 관찰 근거가 있는 후보만 표시"
       },
-      "rank": 30,
+      "rank": 31,
       "classification": "일반 트렌드",
       "persistence_rank": 11,
-      "momentum_rank": 91
+      "momentum_rank": 96
+    },
+    {
+      "topic": "유주상",
+      "display_name": "유주상",
+      "raw_terms": [
+        "유주상"
+      ],
+      "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+      "context_status": "ambiguous_person",
+      "ground_truth_match": false,
+      "category": "unclassified",
+      "lane": "main",
+      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+      "score_calibration": 0.82,
+      "company_eligible": false,
+      "score": 30.41,
+      "rrf": 14.9254,
+      "momentum": -0.0408,
+      "persistence": 0.0119,
+      "score_components": {
+        "rrf_points": 27.31,
+        "momentum_points": 9.59,
+        "persistence_points": 0.18,
+        "cross_source_points": 0.0,
+        "calibration": 0.82
+      },
+      "source_count": 1,
+      "source_badge": "단일출처",
+      "latest_source_ranks": {
+        "google_trends": 7
+      },
+      "rank_change_by_source": {
+        "google_trends": -4
+      },
+      "first_seen_at": "2026-08-12T09:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
+      "age_hours": 1,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "single_source_repeated",
+        "label": "단일출처 반복",
+        "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T09:00:00+00:00",
+          "source": "google_trends",
+          "rank": 3,
+          "value": 98.0,
+          "provenance": "observed"
+        },
+        {
+          "at": "2026-08-12T10:00:00+00:00",
+          "source": "google_trends",
+          "rank": 7,
+          "value": 94.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0,
+        "status": "insufficient",
+        "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 32,
+      "classification": "맥락 확인",
+      "persistence_rank": 87,
+      "momentum_rank": 73
     },
     {
       "topic": "김지민",
@@ -7187,7 +7373,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -7233,7 +7419,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 31,
+      "rank": 33,
       "classification": "맥락 확인",
       "persistence_rank": 51,
       "momentum_rank": 41
@@ -7273,7 +7459,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -7326,10 +7512,103 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 32,
+      "rank": 34,
       "classification": "맥락 확인",
       "persistence_rank": 39,
       "momentum_rank": 70
+    },
+    {
+      "topic": "삼성동 화재",
+      "display_name": "삼성동 화재",
+      "raw_terms": [
+        "삼성동 화재"
+      ],
+      "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+      "context_status": "unresolved",
+      "ground_truth_match": false,
+      "category": "unclassified",
+      "lane": "main",
+      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+      "score_calibration": 0.82,
+      "company_eligible": false,
+      "score": 30.08,
+      "rrf": 14.7059,
+      "momentum": -0.0412,
+      "persistence": 0.0119,
+      "score_components": {
+        "rrf_points": 26.91,
+        "momentum_points": 9.59,
+        "persistence_points": 0.18,
+        "cross_source_points": 0.0,
+        "calibration": 0.82
+      },
+      "source_count": 1,
+      "source_badge": "단일출처",
+      "latest_source_ranks": {
+        "google_trends": 8
+      },
+      "rank_change_by_source": {
+        "google_trends": -4
+      },
+      "first_seen_at": "2026-08-12T09:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
+      "age_hours": 1,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "single_source_repeated",
+        "label": "단일출처 반복",
+        "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T09:00:00+00:00",
+          "source": "google_trends",
+          "rank": 4,
+          "value": 97.0,
+          "provenance": "observed"
+        },
+        {
+          "at": "2026-08-12T10:00:00+00:00",
+          "source": "google_trends",
+          "rank": 8,
+          "value": 93.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0,
+        "status": "insufficient",
+        "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 35,
+      "classification": "맥락 확인",
+      "persistence_rank": 88,
+      "momentum_rank": 74
     },
     {
       "topic": "이미지 로딩",
@@ -7366,7 +7645,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -7426,7 +7705,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 33,
+      "rank": 36,
       "classification": "맥락 확인",
       "persistence_rank": 12,
       "momentum_rank": 8
@@ -7466,7 +7745,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -7512,7 +7791,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 34,
+      "rank": 37,
       "classification": "맥락 확인",
       "persistence_rank": 52,
       "momentum_rank": 42
@@ -7552,7 +7831,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -7605,7 +7884,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 35,
+      "rank": 38,
       "classification": "맥락 확인",
       "persistence_rank": 40,
       "momentum_rank": 71
@@ -7645,9 +7924,9 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T09:00:00+00:00",
-      "age_hours": 1,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "age_hours": 2,
+      "lifecycle": "cooling",
+      "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
         "level": "single_source_repeated",
         "label": "단일출처 반복",
@@ -7698,10 +7977,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 36,
+      "rank": 39,
       "classification": "맥락 확인",
       "persistence_rank": 72,
-      "momentum_rank": 75
+      "momentum_rank": 79
     },
     {
       "topic": "유부초밥",
@@ -7738,7 +8017,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -8253,10 +8532,10 @@
         "minimum_category_met": true,
         "reason": "공식 사업관계 또는 명시적 관찰 근거가 있는 후보만 표시"
       },
-      "rank": 37,
+      "rank": 40,
       "classification": "일반 트렌드",
       "persistence_rank": 41,
-      "momentum_rank": 89
+      "momentum_rank": 94
     },
     {
       "topic": "은마아파트",
@@ -8293,7 +8572,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -8339,7 +8618,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 38,
+      "rank": 41,
       "classification": "맥락 확인",
       "persistence_rank": 53,
       "momentum_rank": 43
@@ -8379,7 +8658,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -8432,7 +8711,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 39,
+      "rank": 42,
       "classification": "맥락 확인",
       "persistence_rank": 61,
       "momentum_rank": 64
@@ -8472,7 +8751,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -8525,7 +8804,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 40,
+      "rank": 43,
       "classification": "맥락 확인",
       "persistence_rank": 62,
       "momentum_rank": 22
@@ -8565,7 +8844,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -8618,7 +8897,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 41,
+      "rank": 44,
       "classification": "맥락 확인",
       "persistence_rank": 42,
       "momentum_rank": 72
@@ -8658,7 +8937,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -8711,10 +8990,103 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 42,
+      "rank": 45,
       "classification": "맥락 확인",
       "persistence_rank": 63,
-      "momentum_rank": 77
+      "momentum_rank": 81
+    },
+    {
+      "topic": "트로트",
+      "display_name": "트로트",
+      "raw_terms": [
+        "트로트"
+      ],
+      "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+      "context_status": "ambiguous_person",
+      "ground_truth_match": false,
+      "category": "unclassified",
+      "lane": "main",
+      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+      "score_calibration": 0.82,
+      "company_eligible": false,
+      "score": 29.51,
+      "rrf": 14.4928,
+      "momentum": -0.0707,
+      "persistence": 0.0119,
+      "score_components": {
+        "rrf_points": 26.52,
+        "momentum_points": 9.29,
+        "persistence_points": 0.18,
+        "cross_source_points": 0.0,
+        "calibration": 0.82
+      },
+      "source_count": 1,
+      "source_badge": "단일출처",
+      "latest_source_ranks": {
+        "google_trends": 9
+      },
+      "rank_change_by_source": {
+        "google_trends": -7
+      },
+      "first_seen_at": "2026-08-12T09:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
+      "age_hours": 1,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "single_source_repeated",
+        "label": "단일출처 반복",
+        "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T09:00:00+00:00",
+          "source": "google_trends",
+          "rank": 2,
+          "value": 99.0,
+          "provenance": "observed"
+        },
+        {
+          "at": "2026-08-12T10:00:00+00:00",
+          "source": "google_trends",
+          "rank": 9,
+          "value": 92.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0,
+        "status": "insufficient",
+        "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 46,
+      "classification": "맥락 확인",
+      "persistence_rank": 89,
+      "momentum_rank": 82
     },
     {
       "topic": "#smileupforyou",
@@ -8751,7 +9123,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -8811,7 +9183,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 43,
+      "rank": 47,
       "classification": "맥락 확인",
       "persistence_rank": 13,
       "momentum_rank": 13
@@ -8851,7 +9223,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -8911,10 +9283,103 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 44,
+      "rank": 48,
       "classification": "맥락 확인",
       "persistence_rank": 14,
       "momentum_rank": 10
+    },
+    {
+      "topic": "왕옌청",
+      "display_name": "왕옌청",
+      "raw_terms": [
+        "왕옌청"
+      ],
+      "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+      "context_status": "ambiguous_person",
+      "ground_truth_match": false,
+      "category": "unclassified",
+      "lane": "main",
+      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+      "score_calibration": 0.82,
+      "company_eligible": false,
+      "score": 29.36,
+      "rrf": 14.2857,
+      "momentum": -0.0521,
+      "persistence": 0.0119,
+      "score_components": {
+        "rrf_points": 26.14,
+        "momentum_points": 9.48,
+        "persistence_points": 0.18,
+        "cross_source_points": 0.0,
+        "calibration": 0.82
+      },
+      "source_count": 1,
+      "source_badge": "단일출처",
+      "latest_source_ranks": {
+        "google_trends": 10
+      },
+      "rank_change_by_source": {
+        "google_trends": -5
+      },
+      "first_seen_at": "2026-08-12T09:00:00+00:00",
+      "last_seen_at": "2026-08-12T10:00:00+00:00",
+      "age_hours": 1,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "single_source_repeated",
+        "label": "단일출처 반복",
+        "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T09:00:00+00:00",
+          "source": "google_trends",
+          "rank": 5,
+          "value": 96.0,
+          "provenance": "observed"
+        },
+        {
+          "at": "2026-08-12T10:00:00+00:00",
+          "source": "google_trends",
+          "rank": 10,
+          "value": 91.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0,
+        "status": "insufficient",
+        "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 49,
+      "classification": "맥락 확인",
+      "persistence_rank": 90,
+      "momentum_rank": 77
     },
     {
       "topic": "에어 인디아",
@@ -8951,9 +9416,9 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T09:00:00+00:00",
-      "age_hours": 1,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "age_hours": 2,
+      "lifecycle": "cooling",
+      "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
         "level": "single_source_repeated",
         "label": "단일출처 반복",
@@ -9004,10 +9469,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 45,
+      "rank": 50,
       "classification": "맥락 확인",
       "persistence_rank": 73,
-      "momentum_rank": 78
+      "momentum_rank": 83
     },
     {
       "topic": "차상현",
@@ -9044,7 +9509,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -9097,10 +9562,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 46,
+      "rank": 51,
       "classification": "맥락 확인",
       "persistence_rank": 64,
-      "momentum_rank": 79
+      "momentum_rank": 84
     },
     {
       "topic": "이치카 생일",
@@ -9137,7 +9602,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -9678,7 +10143,7 @@
         "minimum_category_met": true,
         "reason": "공식 사업관계 또는 명시적 관찰 근거가 있는 후보만 표시"
       },
-      "rank": 47,
+      "rank": 52,
       "classification": "일반 트렌드",
       "persistence_rank": 65,
       "momentum_rank": 9
@@ -9718,7 +10183,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -9778,7 +10243,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 48,
+      "rank": 53,
       "classification": "맥락 확인",
       "persistence_rank": 15,
       "momentum_rank": 12
@@ -9818,7 +10283,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -9864,7 +10329,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 49,
+      "rank": 54,
       "classification": "맥락 확인",
       "persistence_rank": 79,
       "momentum_rank": 44
@@ -9904,7 +10369,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -9964,7 +10429,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 50,
+      "rank": 55,
       "classification": "맥락 확인",
       "persistence_rank": 16,
       "momentum_rank": 11
@@ -10004,7 +10469,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10057,10 +10522,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 51,
+      "rank": 56,
       "classification": "맥락 확인",
       "persistence_rank": 43,
-      "momentum_rank": 81
+      "momentum_rank": 86
     },
     {
       "topic": "군산 뜽곡",
@@ -10097,7 +10562,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10150,7 +10615,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 52,
+      "rank": 57,
       "classification": "맥락 확인",
       "persistence_rank": 44,
       "momentum_rank": 21
@@ -10190,7 +10655,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10250,10 +10715,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 53,
+      "rank": 58,
       "classification": "맥락 확인",
       "persistence_rank": 17,
-      "momentum_rank": 82
+      "momentum_rank": 87
     },
     {
       "topic": "태닝 포차코",
@@ -10290,7 +10755,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10336,7 +10801,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 54,
+      "rank": 59,
       "classification": "맥락 확인",
       "persistence_rank": 69,
       "momentum_rank": 45
@@ -10376,7 +10841,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10436,7 +10901,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 55,
+      "rank": 60,
       "classification": "맥락 확인",
       "persistence_rank": 18,
       "momentum_rank": 7
@@ -10476,7 +10941,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10536,7 +11001,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 56,
+      "rank": 61,
       "classification": "맥락 확인",
       "persistence_rank": 19,
       "momentum_rank": 19
@@ -10576,7 +11041,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10622,7 +11087,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 57,
+      "rank": 62,
       "classification": "맥락 확인",
       "persistence_rank": 80,
       "momentum_rank": 46
@@ -10662,7 +11127,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10722,7 +11187,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 58,
+      "rank": 63,
       "classification": "맥락 확인",
       "persistence_rank": 20,
       "momentum_rank": 18
@@ -10762,7 +11227,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10822,10 +11287,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 59,
+      "rank": 64,
       "classification": "맥락 확인",
       "persistence_rank": 21,
-      "momentum_rank": 85
+      "momentum_rank": 90
     },
     {
       "topic": "오하용가리",
@@ -10862,7 +11327,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -10908,7 +11373,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 60,
+      "rank": 65,
       "classification": "맥락 확인",
       "persistence_rank": 54,
       "momentum_rank": 47
@@ -10948,7 +11413,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11008,10 +11473,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 61,
+      "rank": 66,
       "classification": "맥락 확인",
       "persistence_rank": 22,
-      "momentum_rank": 83
+      "momentum_rank": 88
     },
     {
       "topic": "현장 대공개",
@@ -11048,7 +11513,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11101,7 +11566,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 62,
+      "rank": 67,
       "classification": "맥락 확인",
       "persistence_rank": 66,
       "momentum_rank": 6
@@ -11141,7 +11606,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11194,7 +11659,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 63,
+      "rank": 68,
       "classification": "맥락 확인",
       "persistence_rank": 67,
       "momentum_rank": 4
@@ -11234,7 +11699,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11287,7 +11752,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 64,
+      "rank": 69,
       "classification": "맥락 확인",
       "persistence_rank": 45,
       "momentum_rank": 5
@@ -11327,7 +11792,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11373,7 +11838,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 65,
+      "rank": 70,
       "classification": "맥락 확인",
       "persistence_rank": 81,
       "momentum_rank": 48
@@ -11413,7 +11878,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11459,7 +11924,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 66,
+      "rank": 71,
       "classification": "맥락 확인",
       "persistence_rank": 55,
       "momentum_rank": 49
@@ -11499,7 +11964,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11552,7 +12017,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 67,
+      "rank": 72,
       "classification": "맥락 확인",
       "persistence_rank": 46,
       "momentum_rank": 50
@@ -11592,7 +12057,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11652,7 +12117,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 68,
+      "rank": 73,
       "classification": "맥락 확인",
       "persistence_rank": 23,
       "momentum_rank": 51
@@ -11692,7 +12157,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11738,7 +12203,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 69,
+      "rank": 74,
       "classification": "맥락 확인",
       "persistence_rank": 82,
       "momentum_rank": 52
@@ -11778,7 +12243,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11824,7 +12289,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 70,
+      "rank": 75,
       "classification": "맥락 확인",
       "persistence_rank": 83,
       "momentum_rank": 53
@@ -11864,7 +12329,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -11910,7 +12375,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 71,
+      "rank": 76,
       "classification": "맥락 확인",
       "persistence_rank": 56,
       "momentum_rank": 54
@@ -11950,7 +12415,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12010,7 +12475,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 72,
+      "rank": 77,
       "classification": "이슈·주의",
       "persistence_rank": 24,
       "momentum_rank": 2
@@ -12050,7 +12515,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12096,7 +12561,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 73,
+      "rank": 78,
       "classification": "맥락 확인",
       "persistence_rank": 57,
       "momentum_rank": 55
@@ -12136,7 +12601,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12182,7 +12647,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 74,
+      "rank": 79,
       "classification": "맥락 확인",
       "persistence_rank": 70,
       "momentum_rank": 56
@@ -12222,7 +12687,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12282,10 +12747,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 75,
+      "rank": 80,
       "classification": "맥락 확인",
       "persistence_rank": 25,
-      "momentum_rank": 84
+      "momentum_rank": 89
     },
     {
       "topic": "태닝포차코",
@@ -12322,7 +12787,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12375,10 +12840,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 76,
+      "rank": 81,
       "classification": "맥락 확인",
       "persistence_rank": 47,
-      "momentum_rank": 87
+      "momentum_rank": 92
     },
     {
       "topic": "날씨 너무",
@@ -12415,7 +12880,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12475,7 +12940,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 77,
+      "rank": 82,
       "classification": "맥락 확인",
       "persistence_rank": 26,
       "momentum_rank": 57
@@ -12515,7 +12980,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12575,10 +13040,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 78,
+      "rank": 83,
       "classification": "맥락 확인",
       "persistence_rank": 27,
-      "momentum_rank": 73
+      "momentum_rank": 75
     },
     {
       "topic": "친일 논란",
@@ -12615,7 +13080,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12675,7 +13140,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 79,
+      "rank": 84,
       "classification": "이슈·주의",
       "persistence_rank": 28,
       "momentum_rank": 3
@@ -12715,7 +13180,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12761,7 +13226,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 80,
+      "rank": 85,
       "classification": "맥락 확인",
       "persistence_rank": 58,
       "momentum_rank": 58
@@ -12801,7 +13266,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12854,7 +13319,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 81,
+      "rank": 86,
       "classification": "맥락 확인",
       "persistence_rank": 68,
       "momentum_rank": 20
@@ -12894,7 +13359,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -12954,7 +13419,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 82,
+      "rank": 87,
       "classification": "맥락 확인",
       "persistence_rank": 29,
       "momentum_rank": 65
@@ -12994,7 +13459,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13040,7 +13505,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 83,
+      "rank": 88,
       "classification": "맥락 확인",
       "persistence_rank": 84,
       "momentum_rank": 59
@@ -13080,7 +13545,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13126,7 +13591,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 84,
+      "rank": 89,
       "classification": "맥락 확인",
       "persistence_rank": 59,
       "momentum_rank": 60
@@ -13166,7 +13631,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13212,7 +13677,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 85,
+      "rank": 90,
       "classification": "맥락 확인",
       "persistence_rank": 85,
       "momentum_rank": 61
@@ -13252,7 +13717,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13305,10 +13770,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 86,
+      "rank": 91,
       "classification": "맥락 확인",
       "persistence_rank": 48,
-      "momentum_rank": 90
+      "momentum_rank": 95
     },
     {
       "topic": "위츄 문진",
@@ -13345,7 +13810,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13398,7 +13863,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 87,
+      "rank": 92,
       "classification": "맥락 확인",
       "persistence_rank": 49,
       "momentum_rank": 62
@@ -13438,7 +13903,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13498,10 +13963,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 88,
+      "rank": 93,
       "classification": "맥락 확인",
       "persistence_rank": 30,
-      "momentum_rank": 86
+      "momentum_rank": 91
     },
     {
       "topic": "지오다노",
@@ -13538,7 +14003,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13598,10 +14063,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 89,
+      "rank": 94,
       "classification": "맥락 확인",
       "persistence_rank": 31,
-      "momentum_rank": 92
+      "momentum_rank": 97
     },
     {
       "topic": "D-100",
@@ -13638,7 +14103,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13691,10 +14156,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 90,
+      "rank": 95,
       "classification": "맥락 확인",
       "persistence_rank": 50,
-      "momentum_rank": 80
+      "momentum_rank": 85
     },
     {
       "topic": "늑대인간",
@@ -13731,7 +14196,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13791,10 +14256,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 91,
+      "rank": 96,
       "classification": "맥락 확인",
       "persistence_rank": 32,
-      "momentum_rank": 88
+      "momentum_rank": 93
     },
     {
       "topic": "친일파 후손",
@@ -13831,7 +14296,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -13891,7 +14356,7 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 92,
+      "rank": 97,
       "classification": "이슈·주의",
       "persistence_rank": 33,
       "momentum_rank": 63
@@ -13933,7 +14398,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -14511,7 +14976,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -15089,7 +15554,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -15660,7 +16125,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -16248,7 +16713,7 @@
       },
       "first_seen_at": "2026-08-12T06:00:00+00:00",
       "last_seen_at": "2026-08-12T07:00:00+00:00",
-      "age_hours": 3,
+      "age_hours": 4,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -16819,7 +17284,7 @@
       },
       "first_seen_at": "2026-08-12T07:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 2,
+      "age_hours": 3,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -17353,7 +17818,7 @@
       "rank": 6,
       "classification": "일반 트렌드",
       "persistence_rank": 60,
-      "momentum_rank": 74
+      "momentum_rank": 78
     },
     {
       "topic": "삼성전자",
@@ -17390,9 +17855,9 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T09:00:00+00:00",
-      "age_hours": 1,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "age_hours": 2,
+      "lifecycle": "cooling",
+      "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
         "level": "single_source_repeated",
         "label": "단일출처 반복",
@@ -17924,7 +18389,7 @@
       "rank": 7,
       "classification": "일반 트렌드",
       "persistence_rank": 71,
-      "momentum_rank": 76
+      "momentum_rank": 80
     },
     {
       "topic": "불꽃축제",
@@ -17961,7 +18426,7 @@
       },
       "first_seen_at": "2026-08-12T08:00:00+00:00",
       "last_seen_at": "2026-08-12T08:00:00+00:00",
-      "age_hours": 1,
+      "age_hours": 2,
       "lifecycle": "cooling",
       "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
       "data_confidence": {
@@ -18492,11 +18957,11 @@
     }
   ],
   "quality_summary": {
-    "total_ranked_candidates": 92,
-    "main_candidates": 89,
+    "total_ranked_candidates": 97,
+    "main_candidates": 94,
     "public_eligible_candidates": 8,
     "public_top10_count": 8,
-    "excluded_from_public_due_to_context": 84,
+    "excluded_from_public_due_to_context": 89,
     "top10_with_five_keywords": 0,
     "top10_with_company_mapping": 8,
     "top10_without_forced_company": 0,
@@ -18511,11 +18976,11 @@
         "status": "changing"
       },
       "google_trends": {
-        "snapshot_count": 4,
-        "unique_snapshot_count": 4,
+        "snapshot_count": 5,
+        "unique_snapshot_count": 5,
         "consecutive_unchanged_count": 0,
         "unchanged_rate": 0.0,
-        "average_top10_overlap": 0.2971,
+        "average_top10_overlap": 0.3062,
         "status": "changing"
       }
     }
@@ -18557,7 +19022,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -19135,7 +19600,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -19713,7 +20178,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -20284,7 +20749,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -20872,7 +21337,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -21443,7 +21908,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -21977,7 +22442,7 @@
         "rank": 6,
         "classification": "일반 트렌드",
         "persistence_rank": 60,
-        "momentum_rank": 74
+        "momentum_rank": 78
       },
       {
         "topic": "삼성전자",
@@ -22014,9 +22479,9 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T09:00:00+00:00",
-        "age_hours": 1,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "age_hours": 2,
+        "lifecycle": "cooling",
+        "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
           "level": "single_source_repeated",
           "label": "단일출처 반복",
@@ -22548,7 +23013,7 @@
         "rank": 7,
         "classification": "일반 트렌드",
         "persistence_rank": 71,
-        "momentum_rank": 76
+        "momentum_rank": 80
       },
       {
         "topic": "불꽃축제",
@@ -22585,7 +23050,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -23115,10 +23580,10 @@
         "momentum_rank": 26
       },
       {
-        "topic": "태풍 찬홈 경로",
-        "display_name": "태풍 찬홈 경로",
+        "topic": "브래드 피트",
+        "display_name": "브래드 피트",
         "raw_terms": [
-          "태풍 찬홈 경로"
+          "브래드 피트"
         ],
         "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
         "context_status": "unresolved",
@@ -23147,8 +23612,8 @@
         "rank_change_by_source": {
           "google_trends": null
         },
-        "first_seen_at": "2026-08-12T09:00:00+00:00",
-        "last_seen_at": "2026-08-12T09:00:00+00:00",
+        "first_seen_at": "2026-08-12T10:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
         "age_hours": 0,
         "lifecycle": "new",
         "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -23162,7 +23627,7 @@
         ],
         "series": [
           {
-            "at": "2026-08-12T09:00:00+00:00",
+            "at": "2026-08-12T10:00:00+00:00",
             "source": "google_trends",
             "rank": 1,
             "value": 100.0,
@@ -23197,7 +23662,7 @@
         },
         "rank": 9,
         "classification": "맥락 확인",
-        "persistence_rank": 86,
+        "persistence_rank": 93,
         "momentum_rank": 27
       },
       {
@@ -23235,7 +23700,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -23301,10 +23766,10 @@
         "momentum_rank": 28
       },
       {
-        "topic": "트로트",
-        "display_name": "트로트",
+        "topic": "김승연",
+        "display_name": "김승연",
         "raw_terms": [
-          "트로트"
+          "김승연"
         ],
         "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
         "context_status": "ambiguous_person",
@@ -23333,8 +23798,8 @@
         "rank_change_by_source": {
           "google_trends": null
         },
-        "first_seen_at": "2026-08-12T09:00:00+00:00",
-        "last_seen_at": "2026-08-12T09:00:00+00:00",
+        "first_seen_at": "2026-08-12T10:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
         "age_hours": 0,
         "lifecycle": "new",
         "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -23348,7 +23813,7 @@
         ],
         "series": [
           {
-            "at": "2026-08-12T09:00:00+00:00",
+            "at": "2026-08-12T10:00:00+00:00",
             "source": "google_trends",
             "rank": 2,
             "value": 99.0,
@@ -23383,14 +23848,14 @@
         },
         "rank": 11,
         "classification": "맥락 확인",
-        "persistence_rank": 87,
+        "persistence_rank": 94,
         "momentum_rank": 29
       },
       {
-        "topic": "유주상",
-        "display_name": "유주상",
+        "topic": "택시",
+        "display_name": "택시",
         "raw_terms": [
-          "유주상"
+          "택시"
         ],
         "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
         "context_status": "ambiguous_person",
@@ -23419,8 +23884,8 @@
         "rank_change_by_source": {
           "google_trends": null
         },
-        "first_seen_at": "2026-08-12T09:00:00+00:00",
-        "last_seen_at": "2026-08-12T09:00:00+00:00",
+        "first_seen_at": "2026-08-12T10:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
         "age_hours": 0,
         "lifecycle": "new",
         "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -23434,7 +23899,7 @@
         ],
         "series": [
           {
-            "at": "2026-08-12T09:00:00+00:00",
+            "at": "2026-08-12T10:00:00+00:00",
             "source": "google_trends",
             "rank": 3,
             "value": 98.0,
@@ -23469,7 +23934,7 @@
         },
         "rank": 12,
         "classification": "맥락 확인",
-        "persistence_rank": 88,
+        "persistence_rank": 95,
         "momentum_rank": 30
       },
       {
@@ -23507,7 +23972,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -23607,7 +24072,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -23673,13 +24138,13 @@
         "momentum_rank": 1
       },
       {
-        "topic": "삼성동 화재",
-        "display_name": "삼성동 화재",
+        "topic": "대우건설",
+        "display_name": "대우건설",
         "raw_terms": [
-          "삼성동 화재"
+          "대우건설"
         ],
         "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
-        "context_status": "unresolved",
+        "context_status": "ambiguous_person",
         "ground_truth_match": false,
         "category": "unclassified",
         "lane": "main",
@@ -23705,8 +24170,8 @@
         "rank_change_by_source": {
           "google_trends": null
         },
-        "first_seen_at": "2026-08-12T09:00:00+00:00",
-        "last_seen_at": "2026-08-12T09:00:00+00:00",
+        "first_seen_at": "2026-08-12T10:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
         "age_hours": 0,
         "lifecycle": "new",
         "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -23720,7 +24185,7 @@
         ],
         "series": [
           {
-            "at": "2026-08-12T09:00:00+00:00",
+            "at": "2026-08-12T10:00:00+00:00",
             "source": "google_trends",
             "rank": 4,
             "value": 97.0,
@@ -23755,7 +24220,7 @@
         },
         "rank": 15,
         "classification": "맥락 확인",
-        "persistence_rank": 89,
+        "persistence_rank": 96,
         "momentum_rank": 32
       },
       {
@@ -23793,7 +24258,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -23879,7 +24344,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -23979,7 +24444,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -24079,7 +24544,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -24131,10 +24596,10 @@
         "momentum_rank": 35
       },
       {
-        "topic": "왕옌청",
-        "display_name": "왕옌청",
+        "topic": "전력",
+        "display_name": "전력",
         "raw_terms": [
-          "왕옌청"
+          "전력"
         ],
         "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
         "context_status": "ambiguous_person",
@@ -24163,8 +24628,8 @@
         "rank_change_by_source": {
           "google_trends": null
         },
-        "first_seen_at": "2026-08-12T09:00:00+00:00",
-        "last_seen_at": "2026-08-12T09:00:00+00:00",
+        "first_seen_at": "2026-08-12T10:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
         "age_hours": 0,
         "lifecycle": "new",
         "lifecycle_reason": "최근 3시간 안에 처음 포착",
@@ -24178,7 +24643,7 @@
         ],
         "series": [
           {
-            "at": "2026-08-12T09:00:00+00:00",
+            "at": "2026-08-12T10:00:00+00:00",
             "source": "google_trends",
             "rank": 5,
             "value": 96.0,
@@ -24213,7 +24678,7 @@
         },
         "rank": 20,
         "classification": "맥락 확인",
-        "persistence_rank": 90,
+        "persistence_rank": 97,
         "momentum_rank": 36
       },
       {
@@ -24251,7 +24716,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -24351,7 +24816,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -24444,7 +24909,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -24537,9 +25002,9 @@
         },
         "first_seen_at": "2026-08-12T09:00:00+00:00",
         "last_seen_at": "2026-08-12T09:00:00+00:00",
-        "age_hours": 0,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "age_hours": 1,
+        "lifecycle": "cooling",
+        "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
           "level": "low",
           "label": "초기 관찰",
@@ -24623,7 +25088,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -24709,7 +25174,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -24795,9 +25260,9 @@
         },
         "first_seen_at": "2026-08-12T09:00:00+00:00",
         "last_seen_at": "2026-08-12T09:00:00+00:00",
-        "age_hours": 0,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "age_hours": 1,
+        "lifecycle": "cooling",
+        "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
           "level": "low",
           "label": "초기 관찰",
@@ -24847,6 +25312,99 @@
         "momentum_rank": 40
       },
       {
+        "topic": "태풍 찬홈 경로",
+        "display_name": "태풍 찬홈 경로",
+        "raw_terms": [
+          "태풍 찬홈 경로"
+        ],
+        "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+        "context_status": "unresolved",
+        "ground_truth_match": false,
+        "category": "unclassified",
+        "lane": "main",
+        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+        "score_calibration": 0.82,
+        "company_eligible": false,
+        "score": 30.67,
+        "rrf": 15.1515,
+        "momentum": -0.05,
+        "persistence": 0.0119,
+        "score_components": {
+          "rrf_points": 27.73,
+          "momentum_points": 9.5,
+          "persistence_points": 0.18,
+          "cross_source_points": 0.0,
+          "calibration": 0.82
+        },
+        "source_count": 1,
+        "source_badge": "단일출처",
+        "latest_source_ranks": {
+          "google_trends": 6
+        },
+        "rank_change_by_source": {
+          "google_trends": -5
+        },
+        "first_seen_at": "2026-08-12T09:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
+        "age_hours": 1,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "single_source_repeated",
+          "label": "단일출처 반복",
+          "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T09:00:00+00:00",
+            "source": "google_trends",
+            "rank": 1,
+            "value": 100.0,
+            "provenance": "observed"
+          },
+          {
+            "at": "2026-08-12T10:00:00+00:00",
+            "source": "google_trends",
+            "rank": 6,
+            "value": 95.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0,
+          "status": "insufficient",
+          "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 28,
+        "classification": "맥락 확인",
+        "persistence_rank": 86,
+        "momentum_rank": 76
+      },
+      {
         "topic": "탐라 포지션",
         "display_name": "탐라 포지션",
         "raw_terms": [
@@ -24881,7 +25439,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -24941,7 +25499,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 28,
+        "rank": 29,
         "classification": "맥락 확인",
         "persistence_rank": 10,
         "momentum_rank": 14
@@ -24981,7 +25539,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -25034,7 +25592,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 29,
+        "rank": 30,
         "classification": "맥락 확인",
         "persistence_rank": 38,
         "momentum_rank": 69
@@ -25075,7 +25633,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -25648,10 +26206,103 @@
           "minimum_category_met": true,
           "reason": "공식 사업관계 또는 명시적 관찰 근거가 있는 후보만 표시"
         },
-        "rank": 30,
+        "rank": 31,
         "classification": "일반 트렌드",
         "persistence_rank": 11,
-        "momentum_rank": 91
+        "momentum_rank": 96
+      },
+      {
+        "topic": "유주상",
+        "display_name": "유주상",
+        "raw_terms": [
+          "유주상"
+        ],
+        "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+        "context_status": "ambiguous_person",
+        "ground_truth_match": false,
+        "category": "unclassified",
+        "lane": "main",
+        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+        "score_calibration": 0.82,
+        "company_eligible": false,
+        "score": 30.41,
+        "rrf": 14.9254,
+        "momentum": -0.0408,
+        "persistence": 0.0119,
+        "score_components": {
+          "rrf_points": 27.31,
+          "momentum_points": 9.59,
+          "persistence_points": 0.18,
+          "cross_source_points": 0.0,
+          "calibration": 0.82
+        },
+        "source_count": 1,
+        "source_badge": "단일출처",
+        "latest_source_ranks": {
+          "google_trends": 7
+        },
+        "rank_change_by_source": {
+          "google_trends": -4
+        },
+        "first_seen_at": "2026-08-12T09:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
+        "age_hours": 1,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "single_source_repeated",
+          "label": "단일출처 반복",
+          "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T09:00:00+00:00",
+            "source": "google_trends",
+            "rank": 3,
+            "value": 98.0,
+            "provenance": "observed"
+          },
+          {
+            "at": "2026-08-12T10:00:00+00:00",
+            "source": "google_trends",
+            "rank": 7,
+            "value": 94.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0,
+          "status": "insufficient",
+          "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 32,
+        "classification": "맥락 확인",
+        "persistence_rank": 87,
+        "momentum_rank": 73
       },
       {
         "topic": "김지민",
@@ -25688,7 +26339,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -25734,7 +26385,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 31,
+        "rank": 33,
         "classification": "맥락 확인",
         "persistence_rank": 51,
         "momentum_rank": 41
@@ -25774,7 +26425,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -25827,10 +26478,103 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 32,
+        "rank": 34,
         "classification": "맥락 확인",
         "persistence_rank": 39,
         "momentum_rank": 70
+      },
+      {
+        "topic": "삼성동 화재",
+        "display_name": "삼성동 화재",
+        "raw_terms": [
+          "삼성동 화재"
+        ],
+        "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+        "context_status": "unresolved",
+        "ground_truth_match": false,
+        "category": "unclassified",
+        "lane": "main",
+        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+        "score_calibration": 0.82,
+        "company_eligible": false,
+        "score": 30.08,
+        "rrf": 14.7059,
+        "momentum": -0.0412,
+        "persistence": 0.0119,
+        "score_components": {
+          "rrf_points": 26.91,
+          "momentum_points": 9.59,
+          "persistence_points": 0.18,
+          "cross_source_points": 0.0,
+          "calibration": 0.82
+        },
+        "source_count": 1,
+        "source_badge": "단일출처",
+        "latest_source_ranks": {
+          "google_trends": 8
+        },
+        "rank_change_by_source": {
+          "google_trends": -4
+        },
+        "first_seen_at": "2026-08-12T09:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
+        "age_hours": 1,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "single_source_repeated",
+          "label": "단일출처 반복",
+          "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T09:00:00+00:00",
+            "source": "google_trends",
+            "rank": 4,
+            "value": 97.0,
+            "provenance": "observed"
+          },
+          {
+            "at": "2026-08-12T10:00:00+00:00",
+            "source": "google_trends",
+            "rank": 8,
+            "value": 93.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0,
+          "status": "insufficient",
+          "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 35,
+        "classification": "맥락 확인",
+        "persistence_rank": 88,
+        "momentum_rank": 74
       },
       {
         "topic": "이미지 로딩",
@@ -25867,7 +26611,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -25927,7 +26671,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 33,
+        "rank": 36,
         "classification": "맥락 확인",
         "persistence_rank": 12,
         "momentum_rank": 8
@@ -25967,7 +26711,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -26013,7 +26757,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 34,
+        "rank": 37,
         "classification": "맥락 확인",
         "persistence_rank": 52,
         "momentum_rank": 42
@@ -26053,7 +26797,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -26106,7 +26850,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 35,
+        "rank": 38,
         "classification": "맥락 확인",
         "persistence_rank": 40,
         "momentum_rank": 71
@@ -26146,9 +26890,9 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T09:00:00+00:00",
-        "age_hours": 1,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "age_hours": 2,
+        "lifecycle": "cooling",
+        "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
           "level": "single_source_repeated",
           "label": "단일출처 반복",
@@ -26199,10 +26943,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 36,
+        "rank": 39,
         "classification": "맥락 확인",
         "persistence_rank": 72,
-        "momentum_rank": 75
+        "momentum_rank": 79
       },
       {
         "topic": "유부초밥",
@@ -26239,7 +26983,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -26754,10 +27498,10 @@
           "minimum_category_met": true,
           "reason": "공식 사업관계 또는 명시적 관찰 근거가 있는 후보만 표시"
         },
-        "rank": 37,
+        "rank": 40,
         "classification": "일반 트렌드",
         "persistence_rank": 41,
-        "momentum_rank": 89
+        "momentum_rank": 94
       },
       {
         "topic": "은마아파트",
@@ -26794,7 +27538,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -26840,7 +27584,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 38,
+        "rank": 41,
         "classification": "맥락 확인",
         "persistence_rank": 53,
         "momentum_rank": 43
@@ -26880,7 +27624,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -26933,7 +27677,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 39,
+        "rank": 42,
         "classification": "맥락 확인",
         "persistence_rank": 61,
         "momentum_rank": 64
@@ -26973,7 +27717,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -27026,7 +27770,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 40,
+        "rank": 43,
         "classification": "맥락 확인",
         "persistence_rank": 62,
         "momentum_rank": 22
@@ -27066,7 +27810,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -27119,7 +27863,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 41,
+        "rank": 44,
         "classification": "맥락 확인",
         "persistence_rank": 42,
         "momentum_rank": 72
@@ -27159,7 +27903,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -27212,10 +27956,103 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 42,
+        "rank": 45,
         "classification": "맥락 확인",
         "persistence_rank": 63,
-        "momentum_rank": 77
+        "momentum_rank": 81
+      },
+      {
+        "topic": "트로트",
+        "display_name": "트로트",
+        "raw_terms": [
+          "트로트"
+        ],
+        "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+        "context_status": "ambiguous_person",
+        "ground_truth_match": false,
+        "category": "unclassified",
+        "lane": "main",
+        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+        "score_calibration": 0.82,
+        "company_eligible": false,
+        "score": 29.51,
+        "rrf": 14.4928,
+        "momentum": -0.0707,
+        "persistence": 0.0119,
+        "score_components": {
+          "rrf_points": 26.52,
+          "momentum_points": 9.29,
+          "persistence_points": 0.18,
+          "cross_source_points": 0.0,
+          "calibration": 0.82
+        },
+        "source_count": 1,
+        "source_badge": "단일출처",
+        "latest_source_ranks": {
+          "google_trends": 9
+        },
+        "rank_change_by_source": {
+          "google_trends": -7
+        },
+        "first_seen_at": "2026-08-12T09:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
+        "age_hours": 1,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "single_source_repeated",
+          "label": "단일출처 반복",
+          "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T09:00:00+00:00",
+            "source": "google_trends",
+            "rank": 2,
+            "value": 99.0,
+            "provenance": "observed"
+          },
+          {
+            "at": "2026-08-12T10:00:00+00:00",
+            "source": "google_trends",
+            "rank": 9,
+            "value": 92.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0,
+          "status": "insufficient",
+          "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 46,
+        "classification": "맥락 확인",
+        "persistence_rank": 89,
+        "momentum_rank": 82
       },
       {
         "topic": "#smileupforyou",
@@ -27252,7 +28089,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -27312,7 +28149,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 43,
+        "rank": 47,
         "classification": "맥락 확인",
         "persistence_rank": 13,
         "momentum_rank": 13
@@ -27352,7 +28189,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -27412,10 +28249,103 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 44,
+        "rank": 48,
         "classification": "맥락 확인",
         "persistence_rank": 14,
         "momentum_rank": 10
+      },
+      {
+        "topic": "왕옌청",
+        "display_name": "왕옌청",
+        "raw_terms": [
+          "왕옌청"
+        ],
+        "phenomenon_summary": "원인 미확인 — Google Trends KR에서 관측",
+        "context_status": "ambiguous_person",
+        "ground_truth_match": false,
+        "category": "unclassified",
+        "lane": "main",
+        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+        "score_calibration": 0.82,
+        "company_eligible": false,
+        "score": 29.36,
+        "rrf": 14.2857,
+        "momentum": -0.0521,
+        "persistence": 0.0119,
+        "score_components": {
+          "rrf_points": 26.14,
+          "momentum_points": 9.48,
+          "persistence_points": 0.18,
+          "cross_source_points": 0.0,
+          "calibration": 0.82
+        },
+        "source_count": 1,
+        "source_badge": "단일출처",
+        "latest_source_ranks": {
+          "google_trends": 10
+        },
+        "rank_change_by_source": {
+          "google_trends": -5
+        },
+        "first_seen_at": "2026-08-12T09:00:00+00:00",
+        "last_seen_at": "2026-08-12T10:00:00+00:00",
+        "age_hours": 1,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "single_source_repeated",
+          "label": "단일출처 반복",
+          "reason": "한 플랫폼에서 2개 시간대 관찰—교차검증 전"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T09:00:00+00:00",
+            "source": "google_trends",
+            "rank": 5,
+            "value": 96.0,
+            "provenance": "observed"
+          },
+          {
+            "at": "2026-08-12T10:00:00+00:00",
+            "source": "google_trends",
+            "rank": 10,
+            "value": 91.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0,
+          "status": "insufficient",
+          "reason": "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 49,
+        "classification": "맥락 확인",
+        "persistence_rank": 90,
+        "momentum_rank": 77
       },
       {
         "topic": "에어 인디아",
@@ -27452,9 +28382,9 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T09:00:00+00:00",
-        "age_hours": 1,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "age_hours": 2,
+        "lifecycle": "cooling",
+        "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
           "level": "single_source_repeated",
           "label": "단일출처 반복",
@@ -27505,10 +28435,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 45,
+        "rank": 50,
         "classification": "맥락 확인",
         "persistence_rank": 73,
-        "momentum_rank": 78
+        "momentum_rank": 83
       },
       {
         "topic": "차상현",
@@ -27545,7 +28475,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -27598,10 +28528,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 46,
+        "rank": 51,
         "classification": "맥락 확인",
         "persistence_rank": 64,
-        "momentum_rank": 79
+        "momentum_rank": 84
       },
       {
         "topic": "이치카 생일",
@@ -27638,7 +28568,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -28179,7 +29109,7 @@
           "minimum_category_met": true,
           "reason": "공식 사업관계 또는 명시적 관찰 근거가 있는 후보만 표시"
         },
-        "rank": 47,
+        "rank": 52,
         "classification": "일반 트렌드",
         "persistence_rank": 65,
         "momentum_rank": 9
@@ -28219,7 +29149,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -28279,7 +29209,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 48,
+        "rank": 53,
         "classification": "맥락 확인",
         "persistence_rank": 15,
         "momentum_rank": 12
@@ -28319,7 +29249,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -28365,7 +29295,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 49,
+        "rank": 54,
         "classification": "맥락 확인",
         "persistence_rank": 79,
         "momentum_rank": 44
@@ -28405,7 +29335,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -28465,7 +29395,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 50,
+        "rank": 55,
         "classification": "맥락 확인",
         "persistence_rank": 16,
         "momentum_rank": 11
@@ -28505,7 +29435,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -28558,10 +29488,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 51,
+        "rank": 56,
         "classification": "맥락 확인",
         "persistence_rank": 43,
-        "momentum_rank": 81
+        "momentum_rank": 86
       },
       {
         "topic": "군산 뜽곡",
@@ -28598,7 +29528,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -28651,7 +29581,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 52,
+        "rank": 57,
         "classification": "맥락 확인",
         "persistence_rank": 44,
         "momentum_rank": 21
@@ -28691,7 +29621,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -28751,10 +29681,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 53,
+        "rank": 58,
         "classification": "맥락 확인",
         "persistence_rank": 17,
-        "momentum_rank": 82
+        "momentum_rank": 87
       },
       {
         "topic": "태닝 포차코",
@@ -28791,7 +29721,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -28837,7 +29767,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 54,
+        "rank": 59,
         "classification": "맥락 확인",
         "persistence_rank": 69,
         "momentum_rank": 45
@@ -28877,7 +29807,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -28937,7 +29867,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 55,
+        "rank": 60,
         "classification": "맥락 확인",
         "persistence_rank": 18,
         "momentum_rank": 7
@@ -28977,7 +29907,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29037,7 +29967,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 56,
+        "rank": 61,
         "classification": "맥락 확인",
         "persistence_rank": 19,
         "momentum_rank": 19
@@ -29077,7 +30007,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29123,7 +30053,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 57,
+        "rank": 62,
         "classification": "맥락 확인",
         "persistence_rank": 80,
         "momentum_rank": 46
@@ -29163,7 +30093,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29223,7 +30153,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 58,
+        "rank": 63,
         "classification": "맥락 확인",
         "persistence_rank": 20,
         "momentum_rank": 18
@@ -29263,7 +30193,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29323,10 +30253,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 59,
+        "rank": 64,
         "classification": "맥락 확인",
         "persistence_rank": 21,
-        "momentum_rank": 85
+        "momentum_rank": 90
       },
       {
         "topic": "오하용가리",
@@ -29363,7 +30293,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29409,7 +30339,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 60,
+        "rank": 65,
         "classification": "맥락 확인",
         "persistence_rank": 54,
         "momentum_rank": 47
@@ -29449,7 +30379,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29509,10 +30439,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 61,
+        "rank": 66,
         "classification": "맥락 확인",
         "persistence_rank": 22,
-        "momentum_rank": 83
+        "momentum_rank": 88
       },
       {
         "topic": "현장 대공개",
@@ -29549,7 +30479,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29602,7 +30532,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 62,
+        "rank": 67,
         "classification": "맥락 확인",
         "persistence_rank": 66,
         "momentum_rank": 6
@@ -29642,7 +30572,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29695,7 +30625,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 63,
+        "rank": 68,
         "classification": "맥락 확인",
         "persistence_rank": 67,
         "momentum_rank": 4
@@ -29735,7 +30665,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29788,7 +30718,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 64,
+        "rank": 69,
         "classification": "맥락 확인",
         "persistence_rank": 45,
         "momentum_rank": 5
@@ -29828,7 +30758,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29874,7 +30804,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 65,
+        "rank": 70,
         "classification": "맥락 확인",
         "persistence_rank": 81,
         "momentum_rank": 48
@@ -29914,7 +30844,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -29960,7 +30890,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 66,
+        "rank": 71,
         "classification": "맥락 확인",
         "persistence_rank": 55,
         "momentum_rank": 49
@@ -30000,7 +30930,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30053,7 +30983,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 67,
+        "rank": 72,
         "classification": "맥락 확인",
         "persistence_rank": 46,
         "momentum_rank": 50
@@ -30093,7 +31023,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30153,7 +31083,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 68,
+        "rank": 73,
         "classification": "맥락 확인",
         "persistence_rank": 23,
         "momentum_rank": 51
@@ -30193,7 +31123,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30239,7 +31169,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 69,
+        "rank": 74,
         "classification": "맥락 확인",
         "persistence_rank": 82,
         "momentum_rank": 52
@@ -30279,7 +31209,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30325,7 +31255,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 70,
+        "rank": 75,
         "classification": "맥락 확인",
         "persistence_rank": 83,
         "momentum_rank": 53
@@ -30365,7 +31295,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30411,7 +31341,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 71,
+        "rank": 76,
         "classification": "맥락 확인",
         "persistence_rank": 56,
         "momentum_rank": 54
@@ -30451,7 +31381,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30497,7 +31427,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 73,
+        "rank": 78,
         "classification": "맥락 확인",
         "persistence_rank": 57,
         "momentum_rank": 55
@@ -30537,7 +31467,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30583,7 +31513,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 74,
+        "rank": 79,
         "classification": "맥락 확인",
         "persistence_rank": 70,
         "momentum_rank": 56
@@ -30623,7 +31553,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30683,10 +31613,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 75,
+        "rank": 80,
         "classification": "맥락 확인",
         "persistence_rank": 25,
-        "momentum_rank": 84
+        "momentum_rank": 89
       },
       {
         "topic": "태닝포차코",
@@ -30723,7 +31653,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30776,10 +31706,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 76,
+        "rank": 81,
         "classification": "맥락 확인",
         "persistence_rank": 47,
-        "momentum_rank": 87
+        "momentum_rank": 92
       },
       {
         "topic": "날씨 너무",
@@ -30816,7 +31746,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30876,7 +31806,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 77,
+        "rank": 82,
         "classification": "맥락 확인",
         "persistence_rank": 26,
         "momentum_rank": 57
@@ -30916,7 +31846,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -30976,10 +31906,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 78,
+        "rank": 83,
         "classification": "맥락 확인",
         "persistence_rank": 27,
-        "momentum_rank": 73
+        "momentum_rank": 75
       },
       {
         "topic": "시노부 하코",
@@ -31016,7 +31946,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31062,7 +31992,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 80,
+        "rank": 85,
         "classification": "맥락 확인",
         "persistence_rank": 58,
         "momentum_rank": 58
@@ -31102,7 +32032,7 @@
         },
         "first_seen_at": "2026-08-12T07:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 2,
+        "age_hours": 3,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31155,7 +32085,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 81,
+        "rank": 86,
         "classification": "맥락 확인",
         "persistence_rank": 68,
         "momentum_rank": 20
@@ -31195,7 +32125,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31255,7 +32185,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 82,
+        "rank": 87,
         "classification": "맥락 확인",
         "persistence_rank": 29,
         "momentum_rank": 65
@@ -31295,7 +32225,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31341,7 +32271,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 83,
+        "rank": 88,
         "classification": "맥락 확인",
         "persistence_rank": 84,
         "momentum_rank": 59
@@ -31381,7 +32311,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31427,7 +32357,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 84,
+        "rank": 89,
         "classification": "맥락 확인",
         "persistence_rank": 59,
         "momentum_rank": 60
@@ -31467,7 +32397,7 @@
         },
         "first_seen_at": "2026-08-12T08:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 1,
+        "age_hours": 2,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31513,7 +32443,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 85,
+        "rank": 90,
         "classification": "맥락 확인",
         "persistence_rank": 85,
         "momentum_rank": 61
@@ -31553,7 +32483,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31606,10 +32536,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 86,
+        "rank": 91,
         "classification": "맥락 확인",
         "persistence_rank": 48,
-        "momentum_rank": 90
+        "momentum_rank": 95
       },
       {
         "topic": "위츄 문진",
@@ -31646,7 +32576,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T07:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31699,7 +32629,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 87,
+        "rank": 92,
         "classification": "맥락 확인",
         "persistence_rank": 49,
         "momentum_rank": 62
@@ -31739,7 +32669,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31799,10 +32729,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 88,
+        "rank": 93,
         "classification": "맥락 확인",
         "persistence_rank": 30,
-        "momentum_rank": 86
+        "momentum_rank": 91
       },
       {
         "topic": "지오다노",
@@ -31839,7 +32769,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31899,10 +32829,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 89,
+        "rank": 94,
         "classification": "맥락 확인",
         "persistence_rank": 31,
-        "momentum_rank": 92
+        "momentum_rank": 97
       },
       {
         "topic": "D-100",
@@ -31939,7 +32869,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -31992,10 +32922,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 90,
+        "rank": 95,
         "classification": "맥락 확인",
         "persistence_rank": 50,
-        "momentum_rank": 80
+        "momentum_rank": 85
       },
       {
         "topic": "늑대인간",
@@ -32032,7 +32962,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -32092,10 +33022,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 91,
+        "rank": 96,
         "classification": "맥락 확인",
         "persistence_rank": 32,
-        "momentum_rank": 88
+        "momentum_rank": 93
       }
     ],
     "issue": [
@@ -32134,7 +33064,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -32194,7 +33124,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 72,
+        "rank": 77,
         "classification": "이슈·주의",
         "persistence_rank": 24,
         "momentum_rank": 2
@@ -32234,7 +33164,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -32294,7 +33224,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 79,
+        "rank": 84,
         "classification": "이슈·주의",
         "persistence_rank": 28,
         "momentum_rank": 3
@@ -32334,7 +33264,7 @@
         },
         "first_seen_at": "2026-08-12T06:00:00+00:00",
         "last_seen_at": "2026-08-12T08:00:00+00:00",
-        "age_hours": 3,
+        "age_hours": 4,
         "lifecycle": "cooling",
         "lifecycle_reason": "현재 시간에는 보이지 않아 둔화·이탈 관찰 중",
         "data_confidence": {
@@ -32394,7 +33324,7 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 92,
+        "rank": 97,
         "classification": "이슈·주의",
         "persistence_rank": 33,
         "momentum_rank": 63
@@ -32412,23 +33342,23 @@
   },
   "collection_health": {
     "measurement_window_hours": 168,
-    "recorded_runs": 2,
+    "recorded_runs": 3,
     "successful_runs": 1,
-    "success_rate": 0.5,
+    "success_rate": 0.3333,
     "source_success_rate": {
-      "x": 0.5,
+      "x": 0.3333,
       "google_trends": 1.0
     },
-    "on_time_within_15m_rate": 0.0,
-    "latest_delay_seconds": 1007,
-    "latest_duration_seconds": 0.47,
+    "on_time_within_15m_rate": 0.3333,
+    "latest_delay_seconds": 366,
+    "latest_duration_seconds": 0.5,
     "status": "collecting_baseline",
-    "remaining_runs_for_3d": 70,
-    "remaining_runs_for_7d": 166,
+    "remaining_runs_for_3d": 69,
+    "remaining_runs_for_7d": 165,
     "warning": "GitHub Actions 예약 실행은 정각 시작을 보장하지 않으며 실제 지연시간으로 평가"
   },
   "collection_status": {
-    "observed_at": "2026-08-12T09:00:00+00:00",
+    "observed_at": "2026-08-12T10:00:00+00:00",
     "observed_rows": 10,
     "source_status": {
       "x": "unavailable",
