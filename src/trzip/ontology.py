@@ -85,6 +85,9 @@ class OntologyGraph:
         self.edges = tuple(deepcopy(list(self._payload.get("edges") or [])))
         self.evidence = tuple(deepcopy(list(self._payload.get("evidence") or [])))
         self.aliases = tuple(deepcopy(list(self._payload.get("aliases") or [])))
+        self.related_terms = tuple(
+            deepcopy(list(self._payload.get("related_terms") or []))
+        )
 
         self._node_by_id = self._unique_map(self.nodes, "node")
         self._edge_by_id = self._unique_map(self.edges, "edge")
@@ -158,10 +161,11 @@ class OntologyGraph:
             merged = json.load(handle)
         merged = deepcopy(dict(merged))
         merged.setdefault("aliases", [])
+        merged.setdefault("related_terms", [])
         overlay_metadata: list[dict[str, Any]] = []
         existing_ids = {
             kind: {str(item.get("id", "")) for item in merged.get(kind) or []}
-            for kind in ("nodes", "edges", "evidence", "aliases")
+            for kind in ("nodes", "edges", "evidence", "aliases", "related_terms")
         }
         for raw_path in overlay_paths:
             path = Path(raw_path)
@@ -169,7 +173,7 @@ class OntologyGraph:
                 raise FileNotFoundError(f"ontology enrichment overlay is missing: {path}")
             with path.open("r", encoding="utf-8") as handle:
                 overlay = json.load(handle)
-            for kind in ("nodes", "edges", "evidence", "aliases"):
+            for kind in ("nodes", "edges", "evidence", "aliases", "related_terms"):
                 for item in overlay.get(kind) or []:
                     item_id = str(item.get("id", "")).strip()
                     if not item_id:
@@ -246,6 +250,40 @@ class OntologyGraph:
                 "review_status": str(alias["review_status"]),
                 "evidence": evidence,
                 "provenance": deepcopy(dict(alias.get("provenance") or {})),
+            })
+        return records
+
+    def reviewed_related_terms(self, label: str) -> list[dict[str, Any]]:
+        """Return reviewed concepts related to a term without making aliases.
+
+        A related concept is display evidence only: it neither resolves to the
+        representative term nor contributes ranking points.  Keeping it
+        separate prevents semantically different concepts such as ``웨이브``
+        from being treated as aliases of ``티빙``.
+        """
+
+        match = self.lookup(label)
+        if match is None:
+            return []
+        target_id = str(match["target_node_id"])
+        records = []
+        for item in sorted(self.related_terms, key=lambda value: str(value["id"])):
+            if str(item.get("target_node_id")) != target_id:
+                continue
+            if str(item.get("review_status")) not in DEFAULT_PUBLISHABLE_REVIEW_STATUSES:
+                continue
+            evidence = [
+                self.evidence_record(str(evidence_id))
+                for evidence_id in item.get("evidence_ids") or []
+            ]
+            records.append({
+                "label": str(item["label"]),
+                "target_node_id": target_id,
+                "target_node_label": str(self._node_by_id[target_id]["label"]),
+                "relation_role": str(item.get("relation_role") or "related_concept"),
+                "review_status": str(item["review_status"]),
+                "evidence": evidence,
+                "provenance": deepcopy(dict(item.get("provenance") or {})),
             })
         return records
 
@@ -370,6 +408,60 @@ class OntologyGraph:
             ):
                 raise OntologyValidationError(
                     f"publishable alias references unreviewed evidence: {alias_id}"
+                )
+
+        related_ids: set[str] = set()
+        for item in self.related_terms:
+            item_id = str(item.get("id", "")).strip()
+            if not item_id:
+                raise OntologyValidationError("related term id is required")
+            if item_id in related_ids:
+                raise OntologyValidationError(f"duplicate related term id: {item_id}")
+            related_ids.add(item_id)
+            if not str(item.get("label", "")).strip():
+                raise OntologyValidationError(
+                    f"related term label is required: {item_id}"
+                )
+            target = str(item.get("target_node_id", ""))
+            if target not in self._node_by_id or self._node_by_id[target].get("type") != "term":
+                raise OntologyValidationError(
+                    f"related term target must be a term node: {item_id} -> {target}"
+                )
+            if not str(item.get("relation_role", "")).strip():
+                raise OntologyValidationError(
+                    f"related term relation_role is required: {item_id}"
+                )
+            evidence_ids = [str(value) for value in item.get("evidence_ids") or []]
+            if not evidence_ids:
+                raise OntologyValidationError(f"related term has no evidence: {item_id}")
+            missing = [value for value in evidence_ids if value not in self._evidence_by_id]
+            if missing:
+                raise OntologyValidationError(
+                    f"related term references missing evidence {missing}: {item_id}"
+                )
+            if not dict(item.get("provenance") or {}):
+                raise OntologyValidationError(
+                    f"related term provenance is required: {item_id}"
+                )
+            status = str(item.get("review_status", ""))
+            if not status:
+                raise OntologyValidationError(
+                    f"related term review_status is required: {item_id}"
+                )
+            if not all(
+                str(self._evidence_by_id[value].get("url", "")).strip()
+                for value in evidence_ids
+            ):
+                raise OntologyValidationError(
+                    f"related term lacks URL evidence: {item_id}"
+                )
+            if status in DEFAULT_PUBLISHABLE_REVIEW_STATUSES and not all(
+                str(self._evidence_by_id[value].get("review_status"))
+                in DEFAULT_PUBLISHABLE_REVIEW_STATUSES
+                for value in evidence_ids
+            ):
+                raise OntologyValidationError(
+                    f"publishable related term references unreviewed evidence: {item_id}"
                 )
 
     def _index_reviewed_aliases(self) -> None:

@@ -717,6 +717,38 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
     assert all(company["relation_type"] != "listed_as" for company in companies.values())
 
 
+def test_tving_exposes_five_reviewed_related_keywords_and_five_companies(tmp_path):
+    target = tmp_path / "tving-enrichment.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert(
+        [HourlyObservation(at.isoformat(), "google_trends", "티빙", 1, 100, "observed")],
+        target,
+    )
+
+    item = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
+
+    assert [keyword["text"] for keyword in item["keywords"]] == [
+        "TVING",
+        "KT 시즌",
+        "NAVER",
+        "삼성 AI TV",
+        "웨이브",
+    ]
+    assert item["keyword_evidence"]["total"] == 5
+    assert item["keyword_evidence"]["reviewed_ontology_count"] == 5
+    assert all(keyword["affects_score"] is False for keyword in item["keywords"])
+    assert all(keyword["evidence_urls"] for keyword in item["keywords"])
+    assert {company["stock_code"] for company in item["companies"]} == {
+        "005930", "030200", "035420", "035760", "402340",
+    }
+    assert item["company_resolution"]["tier_counts"] == {
+        "core": 1,
+        "value_chain": 4,
+        "adjacent": 0,
+        "excluded": 0,
+    }
+
+
 def test_stock_code_has_reviewed_company_and_four_labelled_industry_peers(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 

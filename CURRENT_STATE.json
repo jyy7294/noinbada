@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T17:34:53.4371899+00:00",
+    "updated_at":  "2026-08-12T17:43:30.8174703+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,30 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "c67d20b44dea42e3b8e0a640a4ed1558a7c39930",
+                       "base_remote_main_sha":  "1a7a9485f21c1f4eaef9cec56255b570bc9421bb",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "data/ontology_enrichment.json",
+                                             "src/trzip/intelligence.py",
+                                             "src/trzip/ontology.py",
+                                             "tests/test_intelligence.py",
                                              "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "data/ontology_enrichment.json":  "417021616861299aeeb48de741b5f3697b1c3b7c5df3797e0d870076f493925d",
-                                                    "tests/test_ontology.py":  "d6b0de8b0fb91512c43b06f065003ce89d2017ad74bf4532df1e7ddf6c9b64fc"
+                                                    "data/ontology_enrichment.json":  "0b6a7d5450136d349e08b8037a097ecdff136b878c447bff2fba6d7d4781cf09",
+                                                    "src/trzip/intelligence.py":  "6dce0bb2e2115a1a4ac951207e8b1e739103825309688e2cfc889ca22b82b34d",
+                                                    "src/trzip/ontology.py":  "eea49b0e0c30ec3b442288c66d93687679840aa8c5de98028b4036bd35a34ce3",
+                                                    "tests/test_intelligence.py":  "a31f3ef9f3bdbb86346f352b91060ad75d3371e2dd6d7490aca56eb7ee1d6b15",
+                                                    "tests/test_ontology.py":  "0cc4078db699f5ad19698c98e3d27f94df6c8f2f3902d64609eb33cced484a3a"
                                                 },
-                       "commit_message":  "feat: add evidence-backed TVING ontology",
+                       "commit_message":  "feat: model evidence-backed related concepts",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  156
+                                      "count":  158
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,15 +53,15 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "실제 관측 트렌드 티빙을 임의 유사기업 없이 공식 사업관계와 상장근거로 5개 기업에 연결",
+                    "objective":  "관련 키워드 5개를 임의 생성하지 않고 관측 표현 별칭과 URL 근거 관련 개념으로 분리해 공개",
                     "completed":  [
-                                      "CJ ENM 직접 관계와 KT NAVER SK스퀘어 삼성전자 가치사슬 관계 공식 근거 반영",
-                                      "티빙과 TVING 별칭 모두 5개 상장사 Gold gate 통과",
-                                      "전체 회귀 157개 통과"
+                                      "온톨로지 related_terms 계약과 검증 추가",
+                                      "티빙 관련어 5개에 각 관계 역할과 URL 근거 연결",
+                                      "전체 회귀 159개 통과"
                                   ],
                     "next_actions":  [
-                                         "X Chrome 확장 1회 승인 후 X 30개 포함 실제 통합 수집",
-                                         "다음 실제 상위 트렌드 온톨로지 보강"
+                                         "X Chrome 확장 1회 승인 후 X 30개 포함 통합 순위 실측",
+                                         "상위 트렌드별 관련 개념 온톨로지 확대"
                                      ],
                     "blockers":  [
                                      "Chrome 보안상 압축해제 확장 프로그램 로드는 사용자 1회 승인 필요"

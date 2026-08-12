@@ -1228,6 +1228,44 @@
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     }
   ],
+  "related_terms": [
+    {
+      "id": "related:reviewed:tving-kt-seezn",
+      "label": "KT 시즌",
+      "target_node_id": "term:reviewed:tving",
+      "relation_role": "merged_platform",
+      "evidence_ids": ["evidence:reviewed:cj-tving-ecosystem"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:tving-naver",
+      "label": "NAVER",
+      "target_node_id": "term:reviewed:tving",
+      "relation_role": "investor_and_ip_partner",
+      "evidence_ids": ["evidence:reviewed:cj-tving-ecosystem"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:tving-samsung-ai-tv",
+      "label": "삼성 AI TV",
+      "target_node_id": "term:reviewed:tving",
+      "relation_role": "device_subscription_bundle",
+      "evidence_ids": ["evidence:reviewed:samsung-tving-bundle"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:tving-wavve",
+      "label": "웨이브",
+      "target_node_id": "term:reviewed:tving",
+      "relation_role": "ott_combination_counterparty",
+      "evidence_ids": ["evidence:reviewed:sksquare-tving-negotiation"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    }
+  ],
   "edges": [
     {
       "id": "edge:reviewed:malbok-samgyetang",

@@ -309,7 +309,7 @@ def _merge_reviewed_ontology_keywords(
     representative: str,
     limit: int = 5,
 ) -> list[dict]:
-    """Fill remaining keyword slots only with reviewed alias evidence."""
+    """Fill slots with reviewed aliases and non-alias related concepts."""
 
     selected = list(observed[:limit])
     seen = {
@@ -352,6 +352,32 @@ def _merge_reviewed_ontology_keywords(
         })
         if len(selected) >= limit:
             break
+    if len(selected) < limit:
+        for concept in graph.reviewed_related_terms(representative):
+            text = " ".join(str(concept.get("label") or "").strip().split())
+            key = "".join(text.casefold().split())
+            if not text or key in seen:
+                continue
+            evidence_urls = sorted({
+                str(record.get("url") or "").strip()
+                for record in concept.get("evidence", [])
+                if str(record.get("url") or "").strip()
+            })
+            if not evidence_urls:
+                continue
+            seen.add(key)
+            selected.append({
+                "text": text,
+                "source": ["reviewed_ontology"],
+                "observed_hours": 0,
+                "status": "approved_ontology_related_term",
+                "role": str(concept.get("relation_role") or "related_concept"),
+                "role_status": "reviewed_evidence",
+                "evidence_urls": evidence_urls,
+                "affects_score": False,
+            })
+            if len(selected) >= limit:
+                break
     return selected
 
 
@@ -1114,12 +1140,16 @@ def build_intelligence(
                     for item in keyword_items
                 ),
                 "reviewed_ontology_count": sum(
-                    item["status"] == "approved_ontology_term" for item in keyword_items
+                    item["status"] in {
+                        "approved_ontology_term",
+                        "approved_ontology_related_term",
+                    }
+                    for item in keyword_items
                 ),
                 "candidate_count": 0,
                 "status": "evidence_backed" if keyword_items else "insufficient",
                 "reason": (
-                    "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 검수된 온톨로지 동의어만 표시"
+                    "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
                     if keyword_items
                     else "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
                 ),

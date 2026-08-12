@@ -456,6 +456,27 @@ def test_tving_business_edges_distinguish_control_from_value_chain_without_fille
     }
 
 
+def test_tving_related_terms_are_evidenced_concepts_not_aliases():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    aliases = graph.reviewed_aliases("티빙")
+    related = graph.reviewed_related_terms("티빙")
+
+    assert {item["label"] for item in aliases} == {"TVING"}
+    assert {item["label"] for item in related} == {
+        "KT 시즌",
+        "NAVER",
+        "삼성 AI TV",
+        "웨이브",
+    }
+    assert all(item["relation_role"] != "alias" for item in related)
+    assert all(
+        record["review_status"] == "approved" and record["url"].startswith("https://")
+        for item in related
+        for record in item["evidence"]
+    )
+
+
 def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
 
