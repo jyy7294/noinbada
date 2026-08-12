@@ -1,0 +1,43 @@
+{
+  "schema_version": "github-live-data-v1",
+  "generated_at": "2026-08-12T06:55:59.258395+00:00",
+  "observed_at": "2026-08-12T06:00:00+00:00",
+  "mode": "live",
+  "storage": "github-live-data-branch",
+  "retention_days": 104,
+  "history_rows_loaded": 68,
+  "pruned_observation_files": 0,
+  "daily_file": "observations/2026-08-12.json",
+  "collection": {
+    "observed": 60,
+    "generated": 0,
+    "errors": {},
+    "trends_mcp_used": false,
+    "audit": {
+      "google_geo_kr": {
+        "status": "observed",
+        "row_count": 10,
+        "detail": "Google Trends RSS geo=KR publication gate"
+      },
+      "google_trends_mcp": {
+        "status": "disabled",
+        "row_count": 0,
+        "detail": "one-time probe completed; automatic MCP use disabled"
+      },
+      "x_korea_realtime": {
+        "status": "observed",
+        "row_count": 50,
+        "detail": "Korea realtime trends only; no generated fallback after cutoff"
+      }
+    },
+    "observed_at": "2026-08-12T06:00:00+00:00"
+  },
+  "coverage": {
+    "first_hour": "2026-08-12T06:00:00+00:00",
+    "last_hour": "2026-08-12T06:00:00+00:00",
+    "hours": 1,
+    "rows": 60,
+    "observed_rows": 60,
+    "generated_rows": 0
+  }
+}
