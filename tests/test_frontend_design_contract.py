@@ -9,7 +9,8 @@ def test_deployed_design_shows_one_active_screen_at_a_time():
 
     assert "[data-screen-label] { display:none !important; }" in html
     assert "data-z-active-screen" in html
-    assert "jump(1);" in html
+    assert "jump(requestedIndex);" in html
+    assert "new URLSearchParams(window.location.search).get('screen')" in html
 
 
 def test_meme_portfolio_mock_is_preserved_but_live_company_market_is_bound():
@@ -22,3 +23,12 @@ def test_meme_portfolio_mock_is_preserved_but_live_company_market_is_bound():
     assert "marketSummary.daily_change_pct" in html
     assert "DEFAULT_LIVE_BASE" in adapter
     assert "mode !== 'live'" in adapter
+
+
+def test_live_series_and_hidden_developer_navigation_are_bound():
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    assert "data-z-series-bars" in html
+    assert "renderTrendSeries" in html
+    assert "#zp-nav { display:none !important; }" in html
+    assert "relation_display_type" in html
+    assert "team_review_label" in html

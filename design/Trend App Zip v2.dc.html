@@ -135,7 +135,7 @@
               <div data-z-dial-title="1" style="margin-top:10px; font-weight:900; font-size:17px; color:#4C3627; letter-spacing:-0.01em;">두바이초콜릿</div>
               <div style="margin-top:6px; font-weight:800; font-size:8px; letter-spacing:0.12em; color:#8D705D;">TREND MENTION</div>
               <div data-z-dial-delta="1" style="margin-top:1px; font-weight:900; font-size:22px; color:#E0453C; letter-spacing:-0.01em;">+38%</div>
-              <div data-z-unzip="1" style="margin-top:9px; cursor:pointer;"><svg width="100%" viewBox="0 0 194 52" style="display:block; overflow:visible;"><rect x="1.7" y="1.7" width="190" height="46" rx="23" fill="#FFE99B" stroke="#6F4E37" stroke-width="3.4"></rect><text x="97" y="32" text-anchor="middle" font-size="20" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.1em;">UNZIP</text></svg></div>
+              <form method="get" action="/" style="margin:9px 0 0;"><input type="hidden" name="screen" value="Z2"><input type="hidden" name="dataBase" value="/live"><button type="submit" data-z-unzip="1" style="display:block; width:100%; margin:0; padding:0; border:0; background:transparent; cursor:pointer;"><svg width="100%" viewBox="0 0 194 52" style="display:block; overflow:visible;"><rect x="1.7" y="1.7" width="190" height="46" rx="23" fill="#FFE99B" stroke="#6F4E37" stroke-width="3.4"></rect><text x="97" y="32" text-anchor="middle" font-size="20" font-weight="900" fill="#4C3627" style="font-family:inherit; letter-spacing:0.1em;">UNZIP</text></svg></button></form>
             </div>
           </div>
         </div>
@@ -269,7 +269,7 @@
               <span data-z-detail-delta="1" style="display:inline-block; font-weight:900; font-size:22px; color:#E0453C; letter-spacing:-0.01em; animation:zpCount 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s both;">수집 중</span>
               <span data-z-detail-period="1" style="font-weight:700; font-size:10.5px; color:#87857B;">관측기간</span>
             </div>
-            <div style="margin-top:12px; display:flex; align-items:flex-end; gap:6px; height:84px;">
+            <div data-z-series-bars="1" style="margin-top:12px; display:flex; align-items:flex-end; gap:6px; height:84px;">
               <div style="flex:1; height:32%; background:#FBF7EE; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.18s both;"></div>
               <div style="flex:1; height:44%; background:#FBF7EE; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.25s both;"></div>
               <div style="flex:1; height:39%; background:#FBF7EE; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.32s both;"></div>
@@ -278,7 +278,7 @@
               <div style="flex:1; height:84%; background:#F7FABF; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.53s both;"></div>
               <div style="flex:1; height:100%; background:#CBB6F7; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.60s both;"></div>
             </div>
-            <div style="margin-top:7px; display:flex; gap:6px; font-weight:700; font-size:9.5px; color:#87857B; text-align:center;">
+            <div data-z-series-labels="1" style="margin-top:7px; display:flex; gap:6px; font-weight:700; font-size:9.5px; color:#87857B; text-align:center;">
               <span style="flex:1;">08.02</span>
               <span style="flex:1;"></span>
               <span style="flex:1;">08.04</span>
@@ -795,15 +795,57 @@ class Component extends DCLogic {
     set('[data-z-detail-category]', trend.categoryKo);
     set('[data-z-detail-summary]', trend.summary);
     set('[data-z-detail-state]', trend.lifecycleLabel || trend.lifecycle);
-    set('[data-z-detail-confidence]', trend.confidence && trend.confidence.label);
-    set('[data-z-detail-delta]', trend.delta);
+    var keywordState = trend.keywordEvidence || {};
+    set('[data-z-detail-confidence]', (trend.sourceBadge || '출처 확인') + ' · ' + ((trend.confidence && trend.confidence.label) || '검증 중'));
+    set('[data-z-detail-delta]', '통합 ' + Number(trend.score || 0).toFixed(1) + '점');
     set('[data-z-detail-period]', trend.ageHours + '시간 관측');
-    set('[data-z-detail-source]', 'X ' + (trend.sources.x || '—') + '위 · Google ' + (trend.sources.google_trends || '—') + '위');
+    var sourceParts = [];
+    if (Number.isFinite(trend.sources.x)) sourceParts.push('X ' + trend.sources.x + '위');
+    if (Number.isFinite(trend.sources.google_trends)) sourceParts.push('Google ' + trend.sources.google_trends + '위');
+    if (!sourceParts.length) sourceParts.push('출처 순위 확인 중');
+    set('[data-z-detail-source]', sourceParts.join(' · ') + ' · 키워드 ' + (keywordState.status === 'observed' ? '관측' : '근거 부족'));
+    var scoreTip = document.querySelector('[data-z-srctip]');
+    if (scoreTip) {
+      var sc = trend.scoreComponents || {};
+      scoreTip.textContent = '점수 근거 · 순위 ' + Number(sc.rrf_points || 0).toFixed(1)
+        + ' + 변화 ' + Number(sc.momentum_points || 0).toFixed(1)
+        + ' + 지속 ' + Number(sc.persistence_points || 0).toFixed(1)
+        + ' + 교차출처 ' + Number(sc.cross_source_points || 0).toFixed(1)
+        + ' · ' + (keywordState.reason || '키워드 상태 확인 중');
+    }
+    this.renderTrendSeries(trend.series || []);
     var date = document.querySelector('[data-z-live-date]');
     if (date && this.data) date.textContent = "TODAY'S FILE · " + new Date(this.data.observedAt).toLocaleDateString('ko-KR', { month:'2-digit', day:'2-digit' });
     this.vc(true);
     this.preparePortfolio(trend);
     this.neutralizeUnlinkedMarketData();
+  }
+
+  renderTrendSeries(series) {
+    var barHost = document.querySelector('[data-z-series-bars]');
+    var labelHost = document.querySelector('[data-z-series-labels]');
+    if (!barHost || !labelHost) return;
+    var rows = (series || []).slice().sort(function (a, b) { return String(a.at).localeCompare(String(b.at)); }).slice(-7);
+    if (!rows.length) {
+      barHost.innerHTML = '<div style="margin:auto;font-weight:700;font-size:11px;color:#87857B;">시계열 관측값 없음</div>';
+      labelHost.innerHTML = '';
+      return;
+    }
+    var values = rows.map(function (row) { return Number(row.value || 0); });
+    var min = Math.min.apply(null, values);
+    var max = Math.max.apply(null, values);
+    var span = Math.max(1, max - min);
+    barHost.innerHTML = rows.map(function (row, index) {
+      var height = 28 + ((Number(row.value || 0) - min) / span) * 72;
+      var color = index === rows.length - 1 ? '#CBB6F7' : row.source === 'x' ? '#E4E1D4' : '#F7FABF';
+      return '<div title="' + row.source + ' · ' + row.value + '" style="flex:1;height:' + height.toFixed(1) + '%;background:' + color + ';border:1px solid #D8D4C6;border-radius:5px 5px 0 0;"></div>';
+    }).join('');
+    labelHost.innerHTML = rows.map(function (row, index) {
+      var date = new Date(row.at);
+      var label = String(date.getMonth() + 1).padStart(2, '0') + '.' + String(date.getDate()).padStart(2, '0')
+        + '<br>' + String(date.getHours()).padStart(2, '0') + '시';
+      return '<span style="flex:1;' + (index === rows.length - 1 ? 'font-weight:900;color:#6B554A;' : '') + '">' + label + '</span>';
+    }).join('');
   }
 
   neutralizeUnlinkedMarketData() {
@@ -908,7 +950,7 @@ class Component extends DCLogic {
     if (window.__zpShell) return;
     window.__zpShell = true;
     var st = document.createElement('style');
-    st.textContent = "::-webkit-scrollbar { width:0; height:0; }\n [data-screen-label] { display:none !important; }\n [data-screen-label][data-z-active-screen] { display:flex !important; }\n [data-screen-label=\"Z0 스플래시\"] { display:flex !important; }\n [data-screen-label=\"Z0 스플래시\"] > [data-z-active-screen] { margin-inline:auto; }\n [data-screen-label=\"Z0 스플래시\"]:not([data-z-active-screen]) > :not([data-screen-label]) { display:none !important; }\n #zp-nav { position: fixed; left:50%; bottom:0; transform:translateX(-50%); width:min(393px,100vw); box-sizing:border-box; z-index:60; display:flex; gap:8px; justify-content:flex-start; overflow-x:auto; scrollbar-width:none; padding:12px 14px 16px; background:linear-gradient(180deg, rgba(240,245,216,0) 0%, rgba(240,245,216,0.96) 55%); }\n #zp-nav button { white-space:nowrap; flex:none; border:1px solid #6B554A; border-radius:12px; padding:9px 15px; font-weight:900; font-size:12px; color:#6B554A; background:#FFFFFF; cursor:pointer; font-family:Pretendard, sans-serif; }\n #zp-nav button[data-on] { background:#CBB6F7; color:#FFFFFF; border-color:#CBB6F7; }";
+    st.textContent = "::-webkit-scrollbar { width:0; height:0; }\n [data-screen-label] { display:none !important; }\n [data-screen-label][data-z-active-screen] { display:flex !important; }\n [data-screen-label=\"Z0 스플래시\"] { display:flex !important; }\n [data-screen-label=\"Z0 스플래시\"] > [data-z-active-screen] { margin-inline:auto; }\n [data-screen-label=\"Z0 스플래시\"]:not([data-z-active-screen]) > :not([data-screen-label]) { display:none !important; }\n #zp-nav { display:none !important; }";
     document.head.appendChild(st);
   }
 
@@ -929,7 +971,14 @@ class Component extends DCLogic {
     };
     [].slice.call(nav.children).forEach(function (b, k) { b.onclick = function () { jump(k); }; });
     document.body.appendChild(nav);
-    jump(1);
+    var requestedScreen = new URLSearchParams(window.location.search).get('screen');
+    var requestedIndex = 1;
+    if (requestedScreen) {
+      for (var rs = 0; rs < sc.length; rs++) {
+        if ((sc[rs].getAttribute('data-screen-label') || '').indexOf(requestedScreen) === 0) { requestedIndex = rs; break; }
+      }
+    }
+    jump(requestedIndex);
     this.jump = jump;
     var jl = function (pre) {
       for (var i = 0; i < sc.length; i++) { if (sc[i].getAttribute('data-screen-label').indexOf(pre) === 0) { jump(i); return; } }
@@ -939,8 +988,12 @@ class Component extends DCLogic {
     [].slice.call(document.querySelectorAll('[data-z-go]')).forEach(function (el) {
       el.onclick = function (e) { e.stopPropagation(); jl(el.getAttribute('data-z-go')); };
     });
-    var zip = document.querySelector('[data-z-zip]');
-    if (zip) zip.onclick = function () { jl('Z3'); };
+    [].slice.call(document.querySelectorAll('[data-z-zip]')).forEach(function (zip) {
+      zip.onclick = function (event) {
+        event.stopPropagation();
+        jl(zip.getAttribute('data-z-zip') === 'detail' ? 'Z2' : 'Z3');
+      };
+    });
     var back = document.querySelector('[data-z-back]');
     if (back) back.onclick = function () { jl('Z1'); };
     var back2 = document.querySelector('[data-z-back2]');
@@ -1647,6 +1700,7 @@ class Component extends DCLogic {
       return Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2));
     };
     stage.addEventListener('pointerdown', function (e) {
+      if (e.target.closest && e.target.closest('[data-z-unzip]')) return;
       drag = true; moved = 0; lastAng = angleOf(e);
       stage.style.cursor = 'grabbing';
       try { stage.setPointerCapture(e.pointerId); } catch (err) {}
@@ -1726,7 +1780,7 @@ class Component extends DCLogic {
     if (center) center.addEventListener('click', function () {
       if (moved > 0.08) return;
       var key = title ? title.textContent : '';
-      playUnzip(function () { self.openTrend(key); });
+      self.openTrend(key);
     });
   }
 
@@ -1787,7 +1841,7 @@ class Component extends DCLogic {
           return '<div data-z-live-co="' + rowIndex + '" style="display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid #E4E1D4;cursor:pointer;">'
             + '<span style="display:flex;width:38px;height:38px;align-items:center;justify-content:center;background:#EFE7FD;border-radius:999px;font-weight:900;font-size:13px;color:#7B5BC4;">' + safe(company.company.slice(0,1)) + '</span>'
             + '<div style="flex:1;min-width:0;"><div style="font-weight:900;font-size:14.5px;color:#6B554A;">' + safe(company.company) + '</div>'
-            + '<div style="margin-top:2px;font-weight:700;font-size:10.5px;color:#87857B;">' + safe(company.company_role) + ' · ' + safe(company.relation_tier_label) + '</div></div>'
+            + '<div style="margin-top:2px;font-weight:700;font-size:10.5px;color:#87857B;">' + safe(company.relation_display_type || company.relation_tier_label || '산업 관찰') + ' · ' + safe(company.team_review_label || '팀 미검수') + '</div></div>'
             + '<span style="font-weight:900;font-size:10.5px;color:#7B5BC4;white-space:nowrap;text-align:right;">' + safe(close + changeLabel) + '<br><span style="font-size:9px;color:#87857B;">' + safe(marketSummary.as_of || market.status || '미확인') + '</span></span></div>';
         }).join('');
         [].slice.call(host.querySelectorAll('[data-z-live-co]')).forEach(function (row, rowIndex) {
@@ -1800,7 +1854,7 @@ class Component extends DCLogic {
               : (summary.as_of || '') + ' 종가 ' + Number(summary.close).toLocaleString('ko-KR') + '원 · 거래량 ' + Number(summary.volume || 0).toLocaleString('ko-KR') + '주';
             self.openSheet([
               company.company.slice(0,1), company.company, company.company_role, summary.daily_change_pct == null ? '일별 자료' : ((summary.daily_change_pct > 0 ? '+' : '') + summary.daily_change_pct + '%'),
-              company.relation_tier_label + ' · ' + company.relation_horizon,
+              (company.relation_display_type || company.relation_tier_label || '산업 관찰') + ' · ' + (company.team_review_label || '팀 미검수'),
               company.reason, priceText + ' · ' + company.investment_warning
             ], group.name, '#CDB5F9');
           };

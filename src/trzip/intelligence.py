@@ -9,6 +9,13 @@ from pathlib import Path
 from .curation import CATEGORY_BY_TERM, EVENT_CONTEXT, is_sensitive_context, observed_lane
 from .hourly_store import BACKFILL_END, BACKFILL_START, connect, floor_hour, generated_hour
 from .value_chain import expand_value_chain
+from .event_resolution import (
+    GROUND_TRUTH,
+    evaluate_resolution,
+    load_company_review_overrides,
+    relation_display,
+    resolve_event,
+)
 
 ALIASES = {
     "두쫀쿠": "두바이 초콜릿",
@@ -181,7 +188,8 @@ RELATION_TIER_LABEL = {
 
 def canonical_topic(raw: str) -> str:
     compact = " ".join(raw.strip().split())
-    return ALIASES.get(compact, compact)
+    legacy = ALIASES.get(compact, compact)
+    return resolve_event(legacy, set())["canonical"]
 
 
 def _category(topic: str) -> str:
@@ -244,9 +252,11 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
         grouped[item["canonical_topic"]].append(item)
 
     candidates = []
+    company_reviews = load_company_review_overrides()
     for topic, observations in grouped.items():
         observations.sort(key=lambda item: (item["observed_at"], item["source"], item["source_rank"]))
         sources = {item["source"] for item in observations}
+        event_resolution = resolve_event(topic, sources)
         observed_term_sources: dict[str, set[str]] = defaultdict(set)
         for item in observations:
             if item["provenance"] == "observed":
@@ -308,11 +318,14 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
         lane, reason = observed_lane(raw_term, observed_hours=observed_hours, source_count=len(sources))
         if topic == "말복":
             lane, reason = "main", "원천 대표어는 말복으로 유지하고 소비 현상은 별도 설명"
-        phenomenon_summary = {
+        legacy_phenomenon_summary = {
             "말복": "말복을 앞두고 삼계탕·보양식·외식 관심이 증가",
             "진": "진의 볼티모어 공연 관련 해시태그와 팬덤 검색이 확산",
-        }.get(topic, "원인 미확인 — X·Google 관측 신호 증가")
-        detected_category = _category(topic)
+        }.get(topic)
+        phenomenon_summary = event_resolution["phenomenon_summary"]
+        if legacy_phenomenon_summary and event_resolution["context_status"] == "unresolved":
+            phenomenon_summary = legacy_phenomenon_summary
+        detected_category = event_resolution["category"] or _category(topic)
         score_calibration = 0.70 if lane == "issue" else 0.82 if detected_category == "unclassified" else 1.0
         score *= score_calibration
         keyword_items = []
@@ -323,13 +336,19 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
         elif len(sources) >= 2 and observed_hours >= 6:
             data_confidence = {"level": "high", "label": "높음",
                                "reason": "양 플랫폼과 6개 이상 시간대에서 관찰"}
-        elif len(sources) >= 2 or observed_hours >= 2:
+        elif len(sources) >= 2:
             data_confidence = {"level": "medium", "label": "보통",
-                               "reason": "교차출처 또는 2개 이상 시간대에서 관찰"}
+                               "reason": "X와 Google에서 교차 관찰"}
+        elif observed_hours >= 2:
+            data_confidence = {"level": "single_source_repeated", "label": "단일출처 반복",
+                               "reason": f"한 플랫폼에서 {observed_hours}개 시간대 관찰—교차검증 전"}
         else:
             data_confidence = {"level": "low", "label": "초기 관찰",
                                "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"}
-        for keyword in KEYWORD_REGISTRY.get(topic, [])[:5]:
+        keyword_candidates = list(dict.fromkeys(
+            list(KEYWORD_REGISTRY.get(topic, [])) + event_resolution["keyword_candidates"]
+        ))[:5]
+        for keyword in keyword_candidates:
             observed_sources = sorted(observed_term_sources.get(keyword.casefold(), set()))
             if is_reconstructed:
                 keyword_items.append({"text": keyword, "source": ["reconstructed_demo"],
@@ -370,6 +389,7 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
             company_categories, companies = expand_value_chain(topic, detected_category, companies)
         else:
             company_categories, companies = [], []
+        companies = [{**company, **relation_display(company, company_reviews)} for company in companies]
         company_resolution = {
             "status": "mapped" if companies else "excluded_by_context" if not company_eligible else "no_verified_relation",
             "mapped_count": len(companies),
@@ -385,15 +405,25 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
                        if not company_eligible else "현재 근거로 검증 가능한 기업 관계가 없어 억지 테마주 연결을 보류"),
         }
         candidates.append({
-            "topic": topic, "display_name": topic,
+            "topic": topic, "display_name": event_resolution["canonical"],
             "raw_terms": sorted({item["topic"] for item in observations}),
             "phenomenon_summary": phenomenon_summary,
+            "context_status": event_resolution["context_status"],
+            "ground_truth_match": event_resolution["ground_truth_match"],
             "category": detected_category, "lane": lane, "selection_reason": reason,
             "score_calibration": score_calibration,
             "company_eligible": company_eligible,
             "score": round(score*100, 2), "rrf": round(rrf*1000, 4),
             "momentum": round(momentum, 4), "persistence": round(persistence, 4),
+            "score_components": {
+                "rrf_points": round(60 * min(rrf / (2/61), 1), 2),
+                "momentum_points": round(20 * ((momentum + 1) / 2), 2),
+                "persistence_points": round(15 * persistence, 2),
+                "cross_source_points": round(5 * cross, 2),
+                "calibration": score_calibration,
+            },
             "source_count": len(sources),
+            "source_badge": "교차출처" if len(sources) >= 2 else "단일출처",
             "latest_source_ranks": {source: item["source_rank"] for source,item in latest_by_source.items()},
             "rank_change_by_source": rank_changes,
             "first_seen_at": first_seen, "last_seen_at": last_seen, "age_hours": age_hours,
@@ -408,6 +438,11 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
                 "total": len(keyword_items),
                 "observed_source_count": sum(item["status"] == "observed_source_expression" for item in keyword_items),
                 "candidate_count": sum(item["status"] == "operator_candidate_not_rank_evidence" for item in keyword_items),
+                "status": "observed" if any(item["status"] == "observed_source_expression" for item in keyword_items) else "insufficient",
+                "reason": ("관측 원문에서 반복된 관련 표현을 확인"
+                           if any(item["status"] == "observed_source_expression" for item in keyword_items)
+                           else "반복 관측된 관련어가 없어 후보어만 표시" if keyword_items
+                           else "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"),
             },
             "companies": companies,
             "company_categories": company_categories,
@@ -428,12 +463,22 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
         lanes[item["lane"]].append(item)
     for lane in lanes.values():
         lane.sort(key=lambda item: item["rank"])
+    evaluation_rows = []
+    for item in candidates:
+        expected = GROUND_TRUTH.get(item["topic"])
+        if expected:
+            evaluation_rows.append({
+                "display_name": item["display_name"],
+                "category": item["category"],
+                "ground_truth_expected": {"display_name": expected[0], "category": expected[1]},
+            })
     return {
         "mode": "reconstructed_demo" if demo else "live",
         "is_live": not demo,
         "window": {"from": start.isoformat(), "to": end.isoformat(), "hours": hours},
         "sources": ["x", "google_trends"],
         "score_formula": "60% source-rank RRF + 20% momentum + 15% persistence + 5% cross-source",
+        "normalization_evaluation": evaluate_resolution(evaluation_rows),
         "unified_ranking": candidates,
         "public_top10": candidates[:10],
         "quality_summary": {

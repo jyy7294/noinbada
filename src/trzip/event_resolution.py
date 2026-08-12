@@ -1,0 +1,119 @@
+from __future__ import annotations
+
+import json
+import re
+from pathlib import Path
+
+
+# 수동 정답셋: 이름을 "흥미로운 문장"으로 바꾸는 목록이 아니라
+# 동음이의어의 정체와 안전한 카테고리를 고정하는 회귀 테스트 자료다.
+GROUND_TRUTH = {
+    "피의 게임": ("피의 게임", "screen_content", "서바이벌 예능 '피의 게임' 관련 관심 증가", ("서바이벌 예능", "피의 게임 출연진", "피의 게임 시즌")),
+    "블루레이": ("블루레이", "product_brand", "블루레이 영상매체·한정판 관련 관심 증가", ("블루레이 한정판", "블루레이 플레이어", "4K 블루레이")),
+    "데이즈드": ("데이즈드", "screen_content", "패션·문화 매거진 데이즈드 관련 관심 증가", ("데이즈드 코리아", "데이즈드 화보", "패션 매거진")),
+    "관리 종목": ("관리종목", "investment_market", "증시 관리종목 지정·해제 관련 검색 증가", ("관리종목 지정", "관리종목 해제", "거래정지")),
+    "네이마르": ("네이마르", "sports_participation", "축구선수 네이마르 관련 관심 증가", ("네이마르 경기", "네이마르 이적", "네이마르 부상")),
+    "말복": ("말복", "seasonal_food_ritual", "말복을 앞두고 삼계탕·보양식 관련 관심 증가", ("삼계탕", "보양식", "복날 음식")),
+    "두쫀쿠": ("두쫀쿠", "food_culinary", "두바이 초콜릿 계열 디저트 '두쫀쿠' 관련 관심 증가", ("두바이 초콜릿", "디저트", "두쫀쿠 만들기")),
+    "두바이 초콜릿": ("두바이 초콜릿", "food_culinary", "두바이 초콜릿 제품·레시피 관련 관심 증가", ("카다이프", "피스타치오", "초콜릿 만들기")),
+    "불닭": ("불닭", "food_culinary", "불닭 브랜드·매운 라면 관련 관심 증가", ("불닭볶음면", "불닭 소스", "매운 라면")),
+    "오징어 게임": ("오징어 게임", "screen_content", "넷플릭스 시리즈 '오징어 게임' 관련 관심 증가", ("넷플릭스", "오징어 게임 출연진", "오징어 게임 시즌")),
+    "리센느": ("리센느", "music_performance", "K-pop 그룹 리센느 관련 관심 증가", ("리센느 신곡", "리센느 무대", "리센느 멤버")),
+    "야구 직관": ("야구 직관", "sports_attendance", "프로야구 현장 관람·응원 문화 관련 관심 증가", ("프로야구 예매", "야구장 먹거리", "응원가")),
+    "러닝크루": ("러닝크루", "sports_participation", "도심 러닝 모임·러닝크루 참여 관심 증가", ("러닝화", "러닝 모임", "마라톤")),
+    "포켓몬": ("포켓몬", "gaming_digital", "포켓몬 게임·상품·IP 관련 관심 증가", ("포켓몬 게임", "포켓몬 카드", "포켓몬 굿즈")),
+    "삼성전자": ("삼성전자", "investment_market", "삼성전자 종목·기업 관련 검색 증가", ("삼성전자 주가", "반도체", "실적")),
+    "에코프로비엠": ("에코프로비엠", "investment_market", "에코프로비엠 종목·2차전지 관련 검색 증가", ("에코프로비엠 주가", "2차전지", "양극재")),
+    "수건": ("수건", "lifestyle_behavior", "수건 관련 생활정보 검색 증가—구체 맥락은 추가 확인 필요", ("수건 세탁", "호텔 수건", "수건 관리")),
+    "러닝화": ("러닝화", "fashion_collectible", "러닝화 제품·착화·구매 관련 관심 증가", ("러닝화 추천", "러닝화 브랜드", "러닝화 사이즈")),
+    "한강 수영장": ("한강 수영장", "place_experience", "한강 수영장 이용·예약 관련 관심 증가", ("한강 수영장 예약", "운영시간", "입장료")),
+    "캐릭터 키링": ("캐릭터 키링", "fashion_collectible", "캐릭터 키링·가방 꾸미기 관련 관심 증가", ("키링", "가방 꾸미기", "캐릭터 굿즈")),
+    "로우매치 인트": ("리그 오브 레전드 패치", "gaming_digital", "리그 오브 레전드 패치 관련 관심 증가", ("LoL 패치", "챔피언 패치", "게임 업데이트")),
+    "NCT 시온": ("NCT WISH 시온", "music_performance", "NCT WISH 멤버 시온 관련 관심 증가", ("NCT WISH", "시온", "K-pop")),
+    "JIN LIGHTS UP CHARM CITY": ("BTS 진 볼티모어 공연", "music_performance", "BTS 진의 볼티모어 공연 관련 관심 증가", ("BTS 진", "볼티모어", "진 콘서트")),
+    "#JIN_IN_BALTIMORE_D2": ("BTS 진 볼티모어 공연", "music_performance", "BTS 진의 볼티모어 공연 해시태그 확산", ("BTS 진", "볼티모어", "진 콘서트")),
+    "김지수": ("김지수", "unclassified", "동명이인 가능성이 있어 인물·사건 맥락 확인 필요", ()),
+    "차상현": ("차상현", "unclassified", "인물명 검색 증가—소속·사건 맥락 확인 필요", ()),
+    "스네즈나": ("스네즈나", "unclassified", "고유명사 관련 관심 증가—대상 식별 필요", ()),
+    "챱챱 물개": ("챱챱 물개", "participation_meme", "'챱챱 물개' 표현·밈 관련 관심 증가", ("물개 밈", "챱챱", "밈")),
+    "보답한대요": ("보답한대요", "unclassified", "문장형 표현 확산—원문 맥락 확인 필요", ()),
+    "국가장학금": ("국가장학금", "policy_issue", "국가장학금 신청·지급 관련 검색 증가", ("국가장학금 신청", "소득구간", "지급일")),
+}
+
+ALIASES = {
+    "관리종목": "관리 종목", "두바이초콜릿": "두바이 초콜릿",
+    "오징어게임": "오징어 게임", "러닝 크루": "러닝크루",
+    "nct 시온": "NCT 시온", "에코프로BM": "에코프로비엠",
+}
+
+PERSON_NAME_RE = re.compile(r"^[가-힣]{2,4}$")
+
+
+def resolve_event(raw: str, sources: set[str]) -> dict:
+    compact = " ".join(str(raw).strip().split())
+    key = ALIASES.get(compact, compact)
+    truth = GROUND_TRUTH.get(key)
+    if truth:
+        display, category, context, keyword_candidates = truth
+        context_status = "needs_context" if category == "unclassified" else "resolved_reference"
+    else:
+        display, category, context, keyword_candidates = compact, None, None, ()
+        context_status = "ambiguous_person" if PERSON_NAME_RE.fullmatch(compact) else "unresolved"
+    source_label = source_observation_label(sources)
+    summary = f"{context} · {source_label}" if context else f"원인 미확인 — {source_label}"
+    return {
+        "canonical": display,
+        "category": category,
+        "phenomenon_summary": summary,
+        "context_status": context_status,
+        "keyword_candidates": list(keyword_candidates),
+        "ground_truth_match": bool(truth),
+    }
+
+
+def source_observation_label(sources: set[str]) -> str:
+    if sources == {"x", "google_trends"}:
+        return "X 한국 실시간·Google Trends KR에서 함께 관측"
+    if sources == {"x"}:
+        return "X 한국 실시간에서 관측"
+    if sources == {"google_trends"}:
+        return "Google Trends KR에서 관측"
+    labels = {"x": "X 한국 실시간", "google_trends": "Google Trends KR"}
+    named = [labels.get(source, source) for source in sorted(sources)]
+    return ("·".join(named) + "에서 관측") if named else "관측 출처 확인 필요"
+
+
+def load_company_review_overrides() -> dict[str, str]:
+    path = Path(__file__).resolve().parents[2] / "config" / "company_review_overrides.json"
+    if not path.exists():
+        return {}
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return {str(key): str(value) for key, value in data.items()}
+
+
+def relation_display(company: dict, reviews: dict[str, str]) -> dict:
+    tier = company.get("relation_tier", "adjacent")
+    label = {"core": "직접 관계", "value_chain": "가치사슬", "adjacent": "산업 관찰", "excluded": "연결 제외"}.get(tier, "산업 관찰")
+    key = f"{company.get('company','')}|{company.get('evidence_url') or ''}"
+    review = reviews.get(key, "unreviewed")
+    return {
+        "relation_display_type": label,
+        "team_review_status": review,
+        "team_review_label": {"approved": "팀 검수 승인", "rejected": "팀 검수 제외", "needs_revision": "팀 재검토", "unreviewed": "팀 미검수"}.get(review, "팀 미검수"),
+    }
+
+
+def evaluate_resolution(rows: list[dict]) -> dict:
+    evaluated = [row for row in rows if row.get("ground_truth_expected")]
+    correct_name = sum(row.get("display_name") == row["ground_truth_expected"].get("display_name") for row in evaluated)
+    correct_category = sum(row.get("category") == row["ground_truth_expected"].get("category") for row in evaluated)
+    total = len(evaluated)
+    return {
+        "ground_truth_size": len(GROUND_TRUTH),
+        "evaluated_count": total,
+        "name_accuracy": round(correct_name / total, 4) if total else None,
+        "category_accuracy": round(correct_category / total, 4) if total else None,
+        "status": "measured" if total else "awaiting_ground_truth_overlap",
+        "scope": "reference_overlap_regression_not_holdout",
+        "warning": "규칙에 포함된 수동 정답셋과의 회귀 일치율이며, 미관측 신규어 일반화 정확도가 아닙니다.",
+    }

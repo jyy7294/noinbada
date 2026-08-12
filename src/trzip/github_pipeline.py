@@ -130,6 +130,57 @@ def _prune_observations(root: Path, at: datetime, retention_days: int) -> int:
     return removed
 
 
+def _collection_health(root: Path, at: datetime, collection: dict,
+                       started_at: datetime, finished_at: datetime) -> dict:
+    """Persist up to seven days of scheduler evidence instead of claiming uptime early."""
+    history_path = root / "monitoring" / "run_history.json"
+    history = _read_json(history_path, [])
+    audit = collection.get("audit", {})
+    source_ok = {
+        "x": audit.get("x_korea_realtime", {}).get("status") == "observed",
+        "google_trends": audit.get("google_geo_kr", {}).get("status") == "observed",
+    }
+    success = collection.get("observed", 0) > 0 and not collection.get("errors") and all(source_ok.values())
+    current = {
+        "scheduled_at": at.isoformat(),
+        "started_at": started_at.isoformat(),
+        "finished_at": finished_at.isoformat(),
+        "delay_seconds": max(0, round((started_at - at).total_seconds())),
+        "duration_seconds": max(0, round((finished_at - started_at).total_seconds(), 2)),
+        "success": success,
+        "source_success": source_ok,
+        "observed_rows": collection.get("observed", 0),
+        "errors": collection.get("errors", {}),
+    }
+    history = [row for row in history if row.get("scheduled_at") != at.isoformat()]
+    history.append(current)
+    history = sorted(history, key=lambda row: row["scheduled_at"])[-168:]
+    _write_json(history_path, history)
+    total = len(history)
+    successes = sum(bool(row.get("success")) for row in history)
+    source_rates = {
+        source: round(sum(bool(row.get("source_success", {}).get(source)) for row in history) / total, 4)
+        if total else None for source in ("x", "google_trends")
+    }
+    health = {
+        "measurement_window_hours": 168,
+        "recorded_runs": total,
+        "successful_runs": successes,
+        "success_rate": round(successes / total, 4) if total else None,
+        "source_success_rate": source_rates,
+        "on_time_within_15m_rate": round(sum(row.get("delay_seconds", 999999) <= 900 for row in history) / total, 4)
+        if total else None,
+        "latest_delay_seconds": current["delay_seconds"],
+        "latest_duration_seconds": current["duration_seconds"],
+        "status": "measured_7d" if total >= 168 else "measuring_3_to_7_days" if total >= 72 else "collecting_baseline",
+        "remaining_runs_for_3d": max(0, 72 - total),
+        "remaining_runs_for_7d": max(0, 168 - total),
+        "warning": "GitHub Actions 예약 실행은 정각 시작을 보장하지 않으며 실제 지연시간으로 평가",
+    }
+    _write_json(root / "monitoring" / "latest.json", health)
+    return health
+
+
 def _load_history(root: Path, sqlite_path: Path, at: datetime, retention_days: int) -> int:
     rows: list[HourlyObservation] = []
     for path in _observation_files(root, at, retention_days):
@@ -168,6 +219,7 @@ def _merge_daily(root: Path, rows: list[HourlyObservation], at: datetime) -> Pat
 def run(root: Path, *, retention_days: int = 104) -> dict:
     root.mkdir(parents=True, exist_ok=True)
     at = floor_hour(datetime.now(UTC))
+    started_at = datetime.now(UTC)
     with tempfile.TemporaryDirectory(prefix="trzip-live-") as temporary:
         sqlite_path = Path(temporary) / "pipeline.sqlite3"
         historical_rows = _load_history(root, sqlite_path, at, retention_days)
@@ -185,6 +237,10 @@ def run(root: Path, *, retention_days: int = 104) -> dict:
         )
         stats = coverage(sqlite_path)
 
+    finished_at = datetime.now(UTC)
+    collection_health = _collection_health(root, at, collection, started_at, finished_at)
+    intelligence["collection_health"] = collection_health
+
     metadata = {
         "schema_version": "github-live-data-v1",
         "generated_at": datetime.now(UTC).isoformat(),
@@ -198,6 +254,7 @@ def run(root: Path, *, retention_days: int = 104) -> dict:
         "collection": collection,
         "coverage": stats,
         "market_data": intelligence["market_data_status"],
+        "collection_health": collection_health,
     }
     _validate_contract(intelligence, metadata)
     _write_json(root / "latest" / "intelligence.json", intelligence)
