@@ -120,6 +120,7 @@ Chrome 보안상 내부 확장 관리 화면은 Codex 브라우저 자동화가 
 $runtime = Join-Path $env:USERPROFILE "Documents\Codex\noinbada-runtime"
 powershell -ExecutionPolicy Bypass -File "$runtime\scripts\collect-hourly.ps1" -ProjectRoot $runtime
 Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
+& "$runtime\.venv\Scripts\python.exe" "$runtime\scripts\audit-runtime.py"
 ```
 
 확인 항목:
@@ -130,6 +131,7 @@ Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
 - 세 latest 문서의 `publication_id`, `generated_at`, `observed_at`이 일치합니다.
 - 공개 운영 상태에 사용자명, 로컬 경로, 토큰, 비밀키, 요청 쿼리가 없습니다.
 - `live-data` 로컬 HEAD와 원격 SHA가 같습니다.
+- 운영 감사 `failures`가 비어 있습니다. `blockers`는 X 미연결·통합 순위 미확정·96시간 미성숙을 명시하며, 이 상태를 완료로 표현하지 않습니다.
 
 ## 8. 현재 허용된 외부 보조 데이터
 

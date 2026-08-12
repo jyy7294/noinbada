@@ -109,7 +109,10 @@ powershell -ExecutionPolicy Bypass -File scripts\collect-hourly.ps1
 ```powershell
 Get-ScheduledTask -TaskName "TRZIP X Google Hourly Collector"
 Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
+.venv\Scripts\python.exe scripts\audit-runtime.py
 ```
+
+운영 감사 결과는 `PASS`, `PROVISIONAL`, `FAIL` 중 하나입니다. X 미연결 또는 96시간 미만 누적은 숨기지 않고 `PROVISIONAL` blocker로 표시합니다. 발표·인수인계 전에는 `--require-combined`를 붙여 X·Google 통합과 96시간 누적을 필수 조건으로 검사합니다.
 
 ## 개발과 검증
 

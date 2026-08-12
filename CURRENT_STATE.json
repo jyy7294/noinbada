@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T18:43:27.8042061+00:00",
+    "updated_at":  "2026-08-12T18:50:15.1388342+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,28 +8,30 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "687c884571d7819cb989c89bd95d81d098bfdc10",
+                       "base_remote_main_sha":  "b87d1358817063bfef0e9c5fb28c0520a541c00c",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "src/trzip/intelligence.py",
-                                             "tests/test_intelligence.py"
+                                             "docs/CODEX_CONTINUITY.md",
+                                             "README.md",
+                                             "scripts/audit-runtime.py",
+                                             "src/trzip/runtime_audit.py",
+                                             "tests/test_runtime_audit.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "7085e168ed0c4902d9f4878ba3896da4c81f65772e7922fee3174d76a682bf34",
-                                                    "schemas/intelligence-v3.schema.json":  "ab109b6624230ca3c8ec3d3a1f47d3eebdde180224491d62b0ee446747d1a531",
-                                                    "src/trzip/intelligence.py":  "39d90e74a6bdeff5a1c187a1fa9e379084d9275f356285257a6d62de863b9c29",
-                                                    "tests/test_intelligence.py":  "8c48a22daf8c1d9024e395ab4c398c84337d3948ddcc3782da09c64da3e80536"
+                                                    "docs/CODEX_CONTINUITY.md":  "3d47b94acc2fe6b74c1e973a02c88ef45a63a3a443e49964cfc57ef664d92da3",
+                                                    "README.md":  "2f7c92b19a8362c161a15f19bf5234defbb0b1e3b34a4c6b9745220fb3e65893",
+                                                    "scripts/audit-runtime.py":  "9590d61d32aaca60cae11471a54054db76ee6e51308bee0185a19e21ca837b2e",
+                                                    "src/trzip/runtime_audit.py":  "3aa04825098d18e734b72bf9d99913c6ac87d915c5bb479ddb32b5f2d7e243eb",
+                                                    "tests/test_runtime_audit.py":  "6397d05036f510de1180b914db6e1ca2ad92490cbca0034095a561491c3b6268"
                                                 },
-                       "commit_message":  "fix: reconcile public trend score components",
+                       "commit_message":  "feat: audit actual laptop runtime quality",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  170
+                                      "count":  173
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -51,22 +53,26 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Make every published trend score exactly reproducible from the component values shown to the frontend.",
+                    "objective":  "노트북 정각 수집과 공개 데이터의 실제 품질을 한 명령으로 검증",
                     "completed":  [
-                                      "Changed score rounding to component-first then total",
-                                      "Added formula version and rounding policy to v3 contract",
-                                      "Verified zero mismatches across the 199-item live ranking",
-                                      "Verified 171 tests"
+                                      "세 발행문서 원자성 검사",
+                                      "순위 점수 및 출처 검사",
+                                      "홈 키워드·기업·온톨로지·OpenDART 검사",
+                                      "SQLite 원천 완전성 및 96시간 성숙도 검사",
+                                      "공개 비밀정보·로컬경로 검사"
                                   ],
                     "next_actions":  [
-                                         "Republish laptop live-data and validate all public scores and schemas",
-                                         "Continue source-hour and ontology data-quality audit"
+                                         "찬희 Chrome에 X 현재세션 확장 수동 등록",
+                                         "X 30개와 Google 전체 통합 발행 검증",
+                                         "96시간 및 3~7일 연속 성공률 누적 확인"
                                      ],
                     "blockers":  [
-                                     "Chrome security policy requires manual unpacked-extension approval"
+                                     "X 확장 미등록으로 단일출처 잠정 순위",
+                                     "깨끗한 v3 누적 96시간 미만"
                                  ],
                     "known_limitations":  [
-                                              "Combined ranking remains provisional until X observations arrive"
+                                              "NAVER 보조 검증 키 인증 실패 024",
+                                              "Instagram 보조 검증 미구현"
                                           ]
                 },
     "runtime_contract":  {
