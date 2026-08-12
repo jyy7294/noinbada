@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jyy7294/noinbada/schemas/intelligence-v3.schema.json",
+  "title": "TRZIP intelligence publication v3",
+  "type": "object",
+  "required": [
+    "schema_version", "mode", "publication_id", "generated_at", "window",
+    "sources", "score_policy", "unified_ranking", "public_top10", "ontology_enrichment_queue", "lanes",
+    "collection_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "trzip-intelligence-v3"},
+    "mode": {"const": "live"},
+    "publication_id": {"type": "string", "pattern": "^pub-[0-9a-f]+$"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "window": {
+      "type": "object",
+      "required": ["from", "to", "hours"],
+      "properties": {
+        "from": {"type": "string", "format": "date-time"},
+        "to": {"type": "string", "format": "date-time"},
+        "hours": {"type": "integer", "minimum": 1}
+      }
+    },
+    "sources": {
+      "type": "array",
+      "prefixItems": [{"const": "x"}, {"const": "google_trends"}],
+      "items": false
+    },
+    "score_policy": {"type": "object"},
+    "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
+    "public_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/trend"}},
+    "ontology_enrichment_queue": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rank", "event_key", "representative_term", "observed_terms", "evidence_backed_company_count", "minimum_required", "missing_company_paths", "status", "padding_forbidden", "affects_score"]
+      }
+    },
+    "lanes": {
+      "type": "object",
+      "required": ["main", "issue", "review"],
+      "properties": {
+        "main": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
+        "issue": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
+        "review": {"type": "array", "items": {"$ref": "#/$defs/trend"}}
+      }
+    },
+    "collection_status": {
+      "type": "object",
+      "required": ["observed_at", "observed_rows", "source_status", "errors", "partial"]
+    }
+  },
+  "$defs": {
+    "keyword": {
+      "type": "object",
+      "required": ["text", "source", "observed_hours", "status", "role", "role_status", "affects_score"],
+      "properties": {
+        "text": {"type": "string", "minLength": 1},
+        "source": {"type": "array", "items": {"enum": ["x", "google_trends"]}},
+        "observed_hours": {"type": "integer", "minimum": 1},
+        "status": {"enum": ["observed_ranked_term", "observed_related_query"]},
+        "role": {"enum": ["alias_or_variant", "consumer_or_participation_signal", "component_or_product", "review_required"]},
+        "role_status": {"const": "deterministic_draft"},
+        "affects_score": {"const": false}
+      }
+    },
+    "ontologyEdge": {
+      "type": "object",
+      "required": ["from", "to", "edge_type", "evidence_urls", "evidence_type", "as_of", "review_status"]
+    },
+    "company": {
+      "type": "object",
+      "required": [
+        "company", "stock_code", "relationship_reason", "company_summary",
+        "business_features", "relation_display_type", "verification_status",
+        "ontology_path", "ontology_complete", "evidence_sources"
+      ],
+      "properties": {
+        "company": {"type": "string", "minLength": 1},
+        "stock_code": {"type": "string", "minLength": 6},
+        "relationship_reason": {"type": "string", "minLength": 1},
+        "company_summary": {"type": "string", "minLength": 1},
+        "business_features": {"type": "array", "items": {"type": "string"}},
+        "relation_display_type": {"enum": ["직접 관계", "가치사슬"]},
+        "verification_status": {"const": "ontology_evidence"},
+        "ontology_complete": {"type": "boolean"},
+        "ontology_path": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/ontologyEdge"}},
+        "evidence_sources": {"type": "array", "minItems": 1, "items": {"type": "object"}}
+      }
+    },
+    "trend": {
+      "type": "object",
+      "required": [
+        "rank", "event_key", "display_name", "raw_terms", "broad_category",
+        "lane", "score", "score_components", "latest_source_ranks",
+        "data_confidence", "keywords", "companies", "company_candidates",
+        "company_resolution", "verification_layer", "news_context"
+      ],
+      "properties": {
+        "rank": {"type": "integer", "minimum": 1},
+        "event_key": {"type": "string", "minLength": 1},
+        "display_name": {"type": "string", "minLength": 1},
+        "raw_terms": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "broad_category": {"enum": ["food", "content", "lifestyle", "sports", "culture", "consumer", "technology", "market", "issue", "other"]},
+        "lane": {"enum": ["main", "issue", "review"]},
+        "score": {"type": "number", "minimum": 0, "maximum": 100},
+        "score_components": {"type": "object"},
+        "latest_source_ranks": {"type": "object"},
+        "data_confidence": {"type": "object"},
+        "keywords": {"type": "array", "maxItems": 5, "items": {"$ref": "#/$defs/keyword"}},
+        "companies": {"type": "array", "items": {"$ref": "#/$defs/company"}},
+        "company_candidates": {"type": "array", "items": {"$ref": "#/$defs/company"}},
+        "company_resolution": {"type": "object"},
+        "verification_layer": {"type": "object"},
+        "news_context": {"type": "object"}
+      }
+    }
+  }
+}

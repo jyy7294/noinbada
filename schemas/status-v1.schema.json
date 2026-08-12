@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jyy7294/noinbada/schemas/status-v1.schema.json",
+  "title": "TRZIP runtime status v1",
+  "type": "object",
+  "required": [
+    "schema_version", "publication_id", "generated_at", "observed_at", "mode",
+    "partial", "source_status", "errors", "recorded_runs", "measurement_status"
+  ],
+  "properties": {
+    "schema_version": {"const": "trzip-runtime-status-v1"},
+    "publication_id": {"type": "string"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "mode": {"const": "live"},
+    "partial": {"type": "boolean"},
+    "source_status": {
+      "type": "object",
+      "required": ["x", "google_trends"]
+    },
+    "errors": {"type": "object"},
+    "recorded_runs": {"type": "integer", "minimum": 0},
+    "measurement_status": {"type": "string"}
+  }
+}

@@ -88,7 +88,9 @@ try {
     New-Item -ItemType Directory -Force -Path $PublicationRoot,(Split-Path -Parent $DatabasePath) | Out-Null
 
     Set-Location $ProjectRoot
-    & $Python -m trzip.local_pipeline --output $PublicationRoot --database $DatabasePath --retention-days 104
+    # Raw ledger and published daily aggregates are retained indefinitely by
+    # default. Pruning requires an explicit positive --retention-days value.
+    & $Python -m trzip.local_pipeline --output $PublicationRoot --database $DatabasePath
     if ($LASTEXITCODE -ne 0) { throw "local pipeline exited with code $LASTEXITCODE" }
     Write-RunLog -Phase "pipeline" -Status "ok"
 

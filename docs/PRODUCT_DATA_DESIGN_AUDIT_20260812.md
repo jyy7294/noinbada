@@ -1,7 +1,7 @@
 # TRZIP 제품·데이터·디자인 감사 — 2026-08-12
 
 > 역사적 감사 스냅샷입니다. 아래 GitHub Actions 측정치는 당시 구조의 기록이며,
-> 현재 운영 방식은 `README.md`와 `docs/FREE_PRODUCTION.md`의 Windows 로컬 수집 구조를 따릅니다.
+> 현재 운영 방식은 `README.md`의 Windows 로컬 수집 구조를 따릅니다.
 
 ## 결론
 

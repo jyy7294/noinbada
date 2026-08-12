@@ -15,7 +15,8 @@ def test_bloody_game_is_screen_content_not_digital_game():
 def test_unknown_person_name_is_not_falsely_resolved():
     event = resolve_event("홍길동", {"x"})
     assert event["context_status"] == "ambiguous_person"
-    assert event["phenomenon_summary"].startswith("원인 미확인")
+    assert event["phenomenon_summary"] == '"홍길동" · X 한국 실시간에서 관측'
+    assert "논란" not in event["phenomenon_summary"]
 
 
 def test_company_relation_and_team_review_are_separate():

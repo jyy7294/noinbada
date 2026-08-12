@@ -1,31 +1,35 @@
-from datetime import UTC, datetime
+import json
+from datetime import UTC, date, datetime, timedelta
+
+import pytest
 
 from trzip.hourly_store import (
     HourlyObservation,
     collect_current,
-    demo_topics,
-    generated_hour,
+    collect_google,
+    connect,
+    coverage,
+    daily_aggregates,
+    hourly_rankings,
     latest_audit,
     snapshot,
+    source_hour_quality,
     store_verified_source_snapshot,
     upsert,
 )
 
 
-def test_observed_and_generated_rows_coexist_without_overwrite(tmp_path):
-    target = tmp_path / "coexist.sqlite3"
+def test_production_ledger_rejects_generated_rows(tmp_path):
+    target = tmp_path / "observed-only.sqlite3"
     at = datetime(2026, 8, 12, 2, tzinfo=UTC)
     stamp = at.isoformat()
-    upsert([
-        HourlyObservation(stamp, "google_trends", "말복", 3, 98, "generated"),
-        HourlyObservation(stamp, "google_trends", "말복", 1, 100, "observed"),
-    ], target)
-    rows = snapshot(at, target)
-    assert len(rows) == 2
-    assert {row["provenance"] for row in rows} == {"generated", "observed"}
+    with pytest.raises(ValueError, match="observed rows only"):
+        upsert([
+            HourlyObservation(stamp, "google_trends", "말복", 1, 100, "generated"),
+        ], target)
 
 
-def test_scheduled_collection_never_calls_trends_mcp(tmp_path, monkeypatch):
+def test_scheduled_collection_has_no_trends_mcp_path(tmp_path, monkeypatch):
     at = datetime(2026, 8, 12, 4, tzinfo=UTC)
     stamp = at.isoformat()
     monkeypatch.setenv("TRENDS_MCP_API_KEY", "configured-but-disabled")
@@ -35,42 +39,20 @@ def test_scheduled_collection_never_calls_trends_mcp(tmp_path, monkeypatch):
     )
     monkeypatch.setattr("trzip.hourly_store.collect_x", lambda value: [])
 
-    def forbidden(*args, **kwargs):
-        raise AssertionError("scheduled collection must not call Trends MCP")
+    result = collect_current(tmp_path / "hourly.sqlite3", at)
 
-    monkeypatch.setattr("trzip.hourly_store.collect_trends_mcp", forbidden)
-    result = collect_current(tmp_path / "hourly.sqlite3", at, use_trends_mcp=False)
-
-    assert result["trends_mcp_used"] is False
-    assert result["audit"]["google_trends_mcp"]["status"] == "disabled"
-
-
-def test_explicit_one_time_probe_can_call_trends_mcp(tmp_path, monkeypatch):
-    at = datetime(2026, 8, 12, 4, tzinfo=UTC)
-    stamp = at.isoformat()
-    monkeypatch.setenv("TRENDS_MCP_API_KEY", "configured")
-    monkeypatch.setattr(
-        "trzip.hourly_store.collect_google",
-        lambda value: [HourlyObservation(stamp, "google_trends", "말복", 1, 100, "observed")],
-    )
-    monkeypatch.setattr("trzip.hourly_store.collect_x", lambda value: [])
-    monkeypatch.setattr(
-        "trzip.hourly_store.collect_trends_mcp",
-        lambda *args: [HourlyObservation(stamp, "google_trends", "global probe", 1, 100, "observed")],
-    )
-
-    result = collect_current(tmp_path / "hourly.sqlite3", at, use_trends_mcp=True)
-
-    assert result["trends_mcp_used"] is True
-    assert result["audit"]["google_trends_mcp"]["row_count"] == 1
+    assert result["rank_sources"] == ["x", "google_trends"]
+    assert "trends_mcp_used" not in result
+    assert "generated" not in result
+    assert "google_trends_mcp" not in result["audit"]
+    assert "web full-list" in result["audit"]["google_geo_kr"]["detail"]
+    assert "RSS" not in result["audit"]["google_geo_kr"]["detail"]
 
 
-def test_demo_topics_expire_instead_of_staying_ranked_forever():
-    may = generated_hour(datetime(2026, 5, 15, 3, tzinfo=UTC))
-    august = generated_hour(datetime(2026, 8, 10, 3, tzinfo=UTC))
-    assert any(row.topic == "오징어 게임" for row in may)
-    assert all(row.topic != "오징어 게임" for row in august)
-    assert "말복" in demo_topics(datetime(2026, 8, 10, 3, tzinfo=UTC))
+def test_trends_mcp_collector_symbol_is_removed():
+    import trzip.hourly_store as hourly_store
+
+    assert not hasattr(hourly_store, "collect_trends_mcp")
 
 
 def test_failed_source_does_not_erase_successful_snapshot_for_same_hour(tmp_path, monkeypatch):
@@ -124,3 +106,65 @@ def test_verified_source_snapshot_replaces_rows_and_writes_audit_atomically(tmp_
         "row_count": 2,
         "detail": "user Chrome page; South Korea marker verified",
     }
+
+
+def test_google_web_rows_preserve_source_payload_and_related_terms(monkeypatch):
+    from trzip.google_web_collector import GoogleTrend
+
+    at = datetime(2026, 8, 12, 4, tzinfo=UTC)
+    monkeypatch.setattr(
+        "trzip.google_web_collector.collect_google_page",
+        lambda **kwargs: ([GoogleTrend(
+            1,
+            "말복",
+            "5천+",
+            "1,000%",
+            "2시간 전",
+            ("삼계탕", "보양식"),
+            {"volume_text": "5천+", "growth_text": "1,000%", "page": 1},
+        )], {"row_count": 1, "completion_verified": True}),
+    )
+
+    rows = collect_google(at)
+
+    assert [row.topic for row in rows] == ["말복"]
+    assert json.loads(rows[0].source_payload_json)["volume_text"] == "5천+"
+    assert json.loads(rows[0].related_terms_json) == ["삼계탕", "보양식"]
+
+
+def test_daily_aggregate_uses_only_quality_eligible_source_hours(tmp_path):
+    target = tmp_path / "daily-quality.sqlite3"
+    first = datetime(2026, 8, 12, 0, tzinfo=UTC)
+    second = first + timedelta(hours=1)
+    upsert([
+        HourlyObservation(first.isoformat(), "x", "말복", 1, 100, "observed"),
+        HourlyObservation(second.isoformat(), "x", "말복", 1, 100, "observed"),
+        HourlyObservation(second.isoformat(), "x", "중복 순위", 1, 99, "observed"),
+    ], target)
+
+    quality = source_hour_quality(first, second, target)
+    aggregates = daily_aggregates(date(2026, 8, 12), target)
+
+    assert [row["quality_status"] for row in quality] == [
+        "eligible", "quarantined_duplicate_rank",
+    ]
+    malbok = next(row for row in aggregates if row["topic"] == "말복")
+    assert malbok["hours_present"] == 1
+    assert malbok["observation_count"] == 1
+
+
+def test_pre_v3_observations_are_preserved_but_quarantined_from_rankings(tmp_path):
+    target = tmp_path / "legacy-cutover.sqlite3"
+    at = datetime(2026, 8, 12, 0, tzinfo=UTC)
+    with connect(target) as connection:
+        connection.execute(
+            """INSERT INTO hourly_observations
+               (observed_at,source,topic,source_rank,value,provenance,collector_version)
+               VALUES (?,?,?,?,?,?,NULL)""",
+            (at.isoformat(), "x", "legacy-only", 1, 100, "observed"),
+        )
+
+    assert hourly_rankings(at, target) == []
+    profile = coverage(target)
+    assert profile["rows"] == 0
+    assert profile["legacy_observed_rows"] == 1

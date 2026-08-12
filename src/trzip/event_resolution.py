@@ -85,18 +85,20 @@ def resolve_event(raw: str, sources: set[str]) -> dict:
     key = _lookup_key(compact)
     truth = GROUND_TRUTH.get(key)
     if truth:
-        display, category, context, keyword_candidates = truth
+        display, category, _reference_context, keyword_candidates = truth
         context_status = "needs_context" if category == "unclassified" else "resolved_reference"
     else:
-        display, category, context, keyword_candidates = compact, None, None, ()
+        display, category, keyword_candidates = compact, None, ()
         looks_like_person = (
             bool(PERSON_NAME_RE.fullmatch(compact))
             and len(compact) == 3
             and compact[0] in COMMON_KOREAN_SURNAMES
         )
         context_status = "ambiguous_person" if looks_like_person else "needs_context"
-    source_label = source_observation_label(sources)
-    summary = f"{context} · {source_label}" if context else f"원인 미확인 — {source_label}"
+    # Resolution may classify an entity, but it must never invent a public
+    # event title or causal narrative. The public summary stays anchored to the
+    # exact observed expression; contextual research is a separate workflow.
+    summary = observation_summary(compact, sources)
     return {
         "canonical": display,
         "category": category,
@@ -105,6 +107,12 @@ def resolve_event(raw: str, sources: set[str]) -> dict:
         "keyword_candidates": list(keyword_candidates),
         "ground_truth_match": bool(truth),
     }
+
+
+def observation_summary(raw: str, sources: set[str]) -> str:
+    compact = " ".join(unicodedata.normalize("NFKC", str(raw or "")).strip().split())
+    term = compact or "표현 미확인"
+    return f'"{term}" · {source_observation_label(sources)}'
 
 
 def source_observation_label(sources: set[str]) -> str:

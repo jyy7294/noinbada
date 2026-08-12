@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "TRZIP X 한국 실시간 수집기",
+  "description": "현재 로그인된 Chrome 세션에서 X 한국 실시간 순위 1~30위만 수집합니다.",
+  "version": "1.0.0",
+  "minimum_chrome_version": "120",
+  "permissions": [
+    "alarms",
+    "downloads",
+    "scripting",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://x.com/explore/tabs/trending*"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  },
+  "action": {
+    "default_title": "지금 X 한국 실시간 1~30위 수집"
+  }
+}

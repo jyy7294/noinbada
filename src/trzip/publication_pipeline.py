@@ -14,6 +14,17 @@ from .hourly_store import HourlyObservation, collect_current, coverage, floor_ho
 from .intelligence import build_intelligence
 from .company_adapters import pykrx_stock
 from .normalization_evaluation import evaluate_regression_set
+from .provider_verification import (
+    TrendReference,
+    latest_verification_by_trend,
+    mark_news_candidate_core_observed,
+    persist_news_discovery,
+    read_news_discovery_queue,
+    verify_terms,
+)
+
+
+NEWS_DISCOVERY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "news_discovery_seed.json"
 
 
 def _read_json(path: Path, default):
@@ -27,6 +38,108 @@ def _write_json(path: Path, payload) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     temporary.replace(path)
+
+
+def _refresh_verification_layer(intelligence: dict, database_path: Path, at: datetime) -> dict:
+    """Collect bounded context evidence without changing score or rank.
+
+    Provider failures are recorded as data states and never block publication.
+    Only the main presentation subset is queried to keep quotas bounded.
+    """
+
+    ranking_before = [
+        (item.get("event_key"), item.get("rank"), item.get("score"))
+        for item in intelligence.get("unified_ranking", [])
+    ]
+    references = [
+        TrendReference(
+            trend_key=str(item["event_key"]),
+            representative_term=str(item["display_name"]),
+        )
+        for item in intelligence.get("public_top10", [])[:10]
+        if item.get("event_key") and item.get("display_name")
+    ]
+    run_status = "skipped_no_main_candidates"
+    error = None
+    if references:
+        try:
+            verify_terms(
+                references,
+                path=database_path,
+                at=at,
+                naver_term_limit=10,
+                youtube_term_limit=3,
+            )
+            run_status = "completed"
+        except Exception as exc:  # verification must not take down the core collector
+            run_status = "failed_non_blocking"
+            error = f"{type(exc).__name__}: {exc}"
+
+    latest = latest_verification_by_trend(database_path)
+    for item in intelligence.get("unified_ranking", []):
+        record = latest.get(str(item.get("event_key")), {})
+        providers = record.get("providers", {})
+        item["verification_layer"] = {
+            **record,
+            "status": (
+                "observed"
+                if any(row.get("matched") for row in providers.values())
+                else "unavailable"
+                if providers
+                else "not_run"
+            ),
+            "observed_platforms": sorted(
+                provider for provider, row in providers.items() if row.get("matched")
+            ),
+            "affects_score": False,
+        }
+    ranking_after = [
+        (item.get("event_key"), item.get("rank"), item.get("score"))
+        for item in intelligence.get("unified_ranking", [])
+    ]
+    if ranking_before != ranking_after:
+        raise ValueError("verification must not mutate X+Google ranking")
+    intelligence["verification_run"] = {
+        "status": run_status,
+        "requested_terms": len(references),
+        "providers": ["naver", "youtube", "instagram"],
+        "ranking_effect": "none",
+        "error": error,
+    }
+    return intelligence
+
+
+def _seed_news_discovery(database_path: Path) -> list[dict]:
+    """Idempotently load reviewed article discoveries into the separate queue."""
+
+    records = _read_json(NEWS_DISCOVERY_SEED_PATH, [])
+    if records:
+        persist_news_discovery(records, database_path)
+    return read_news_discovery_queue(database_path)
+
+
+def _refresh_news_core_gate(
+    queue: list[dict],
+    rows: list[HourlyObservation],
+    database_path: Path,
+    at: datetime,
+) -> list[dict]:
+    """Link article discoveries only after the exact term is seen by X/Google."""
+
+    observed_by_term: dict[str, set[str]] = {}
+    for row in rows:
+        key = "".join(row.topic.casefold().split())
+        observed_by_term.setdefault(key, set()).add(row.source)
+    for candidate in queue:
+        key = "".join(str(candidate.get("observed_term") or "").casefold().split())
+        for source in observed_by_term.get(key, set()):
+            mark_news_candidate_core_observed(
+                path=database_path,
+                observed_term=str(candidate["observed_term"]),
+                source=source,
+                observed_at=at,
+            )
+    return read_news_discovery_queue(database_path)
 
 
 def _validate_contract(intelligence: dict, metadata: dict, status: dict | None = None) -> None:
@@ -48,20 +161,35 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
     if None in observed_at or len(observed_at) != 1:
         raise ValueError("All publication documents must describe one observation window")
     collection = metadata["collection"]
-    if collection.get("trends_mcp_used") or collection.get("generated"):
-        raise ValueError("Production collection must not use Trends MCP or generated rows")
+    if collection.get("rank_sources") != ["x", "google_trends"]:
+        raise ValueError("Production rank sources must be X and Google Trends only")
+    if "trends_mcp_used" in collection or "generated" in collection:
+        raise ValueError("Legacy collection flags are not allowed in the v3 contract")
     ranking = intelligence.get("unified_ranking", [])
     if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
         raise ValueError("Unified ranking must have continuous ranks")
     if any("generated" in item.get("provenance", []) for item in ranking):
         raise ValueError("Generated observations cannot enter the live ranking")
     for item in ranking:
-        for company in item.get("companies", []):
+        published_companies = item.get("companies", [])
+        company_status = item.get("company_resolution", {}).get("publish_status")
+        unique_stocks = {
+            str(company.get("stock_code") or "").strip()
+            for company in published_companies
+            if str(company.get("stock_code") or "").strip()
+        }
+        if company_status == "published" and len(unique_stocks) < 5:
+            raise ValueError("Published company Gold requires five unique listed stocks")
+        if published_companies and company_status != "published":
+            raise ValueError("Non-published company status cannot expose Gold companies")
+        if any(not company.get("ontology_complete") for company in published_companies):
+            raise ValueError("Published companies require complete ontology paths")
+        for company in published_companies:
             if not company.get("relation_display_type") or not company.get("team_review_status"):
                 raise ValueError(
                     f"Every company requires relation and review labels: {item.get('display_name')}"
                 )
-        for company in item.get("companies", []):
+        for company in published_companies:
             if (company.get("verification_status") == "pending_evidence"
                     and company.get("opportunity_status") == "confirmed_relationship"):
                 raise ValueError(
@@ -72,7 +200,7 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
 def _previous_market_by_code(payload: dict) -> dict[str, dict]:
     cache: dict[str, dict] = {}
     for trend in payload.get("unified_ranking", []):
-        for company in trend.get("companies", []):
+        for company in trend.get("company_candidates", trend.get("companies", [])):
             code = company.get("stock_code")
             market = company.get("market_reference")
             if code and isinstance(market, dict) and market.get("status") == "observed":
@@ -102,7 +230,7 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
     requested: set[str] = set()
     reused = observed = unavailable = 0
     for trend in intelligence.get("unified_ranking", []):
-        for company in trend.get("companies", []):
+        for company in trend.get("company_candidates", trend.get("companies", [])):
             code = company.get("stock_code")
             if not code or company.get("strength") == "excluded":
                 company["market_reference"] = {
@@ -134,6 +262,8 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
 
 
 def _prune_observations(root: Path, at: datetime, retention_days: int) -> int:
+    if retention_days <= 0:
+        return 0
     cutoff = (at - timedelta(days=retention_days - 1)).date().isoformat()
     removed = 0
     for path in (root / "observations").glob("*.json"):
@@ -245,12 +375,17 @@ def _merge_daily(root: Path, rows: list[HourlyObservation], at: datetime) -> Pat
     stamp = at.isoformat()
     existing = [item for item in _read_json(daily_path, []) if item["observed_at"] != stamp]
     merged = {
-        (item["observed_at"], item["source"], item["topic"], item["provenance"]): item
+        (
+            item["observed_at"], item["source"], item["source_rank"],
+            item["topic"], item["provenance"],
+        ): item
         for item in existing
     }
     for row in rows:
         item = asdict(row)
-        merged[(row.observed_at, row.source, row.topic, row.provenance)] = item
+        merged[
+            (row.observed_at, row.source, row.source_rank, row.topic, row.provenance)
+        ] = item
     ordered = sorted(merged.values(), key=lambda item: (
         item["observed_at"], item["source"], item["source_rank"], item["topic"]
     ))
@@ -258,7 +393,7 @@ def _merge_daily(root: Path, rows: list[HourlyObservation], at: datetime) -> Pat
     return daily_path
 
 
-def run(root: Path, *, retention_days: int = 104, database_path: Path | None = None,
+def run(root: Path, *, retention_days: int = 0, database_path: Path | None = None,
         now: datetime | None = None) -> dict:
     """Run the laptop-owned pipeline and write the static publication contract."""
     root.mkdir(parents=True, exist_ok=True)
@@ -269,7 +404,7 @@ def run(root: Path, *, retention_days: int = 104, database_path: Path | None = N
     # own failure. This keeps the provenance of an already persisted snapshot
     # while still reporting a genuine failure when no usable rows exist.
     persisted_audit = latest_audit(at, database_path)
-    collection = collect_current(database_path, at, use_trends_mcp=False)
+    collection = collect_current(database_path, at)
 
     from .hourly_store import snapshot
     current_rows = [HourlyObservation(**item) for item in snapshot(at, database_path)]
@@ -295,7 +430,25 @@ def run(root: Path, *, retention_days: int = 104, database_path: Path | None = N
     collection["observed"] = sum(persisted_source_counts.values())
     daily_path = _merge_daily(root, current_rows, at)
     pruned_files = _prune_observations(root, at, retention_days)
-    intelligence = build_intelligence(at, hours=168, path=database_path)
+    news_queue = _refresh_news_core_gate(
+        _seed_news_discovery(database_path),
+        current_rows,
+        database_path,
+        at,
+    )
+    news_context_by_term = {
+        str(item["observed_term"]): item
+        for item in news_queue
+        if item.get("core_source_gate") == "satisfied_by_x_or_google"
+    }
+    intelligence = build_intelligence(
+        at,
+        hours=168,
+        path=database_path,
+        news_context_by_term=news_context_by_term,
+    )
+    intelligence = _refresh_verification_layer(intelligence, database_path, at)
+    intelligence["news_discovery_queue"] = news_queue
     normalization_evaluation = evaluate_regression_set()
     intelligence["normalization_regression_evaluation"] = normalization_evaluation
     previous_intelligence = _read_json(root / "latest" / "intelligence.json", {})
@@ -324,13 +477,14 @@ def run(root: Path, *, retention_days: int = 104, database_path: Path | None = N
     intelligence["publication_id"] = publication_id
     intelligence["generated_at"] = generated_at
     metadata = {
-        "schema_version": "trzip-live-data-v2",
+        "schema_version": "trzip-live-data-v3",
         "publication_id": publication_id,
         "generated_at": generated_at,
         "observed_at": at.isoformat(),
         "mode": "live",
         "storage": "local-sqlite-published-to-live-data",
-        "retention_days": retention_days,
+        "retention_days": retention_days if retention_days > 0 else None,
+        "retention_policy": "bounded" if retention_days > 0 else "indefinite",
         "history_rows_loaded": 0,
         "pruned_observation_files": pruned_files,
         "daily_file": daily_path.relative_to(root).as_posix(),
@@ -364,11 +518,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Build TRZIP laptop-owned live data")
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--database", type=Path)
-    parser.add_argument("--retention-days", type=int, default=104)
+    parser.add_argument(
+        "--retention-days", type=int, default=0,
+        help="positive days enables pruning; 0 preserves raw history indefinitely",
+    )
     args = parser.parse_args()
     result = run(
         args.output,
-        retention_days=max(7, args.retention_days),
+        retention_days=max(0, args.retention_days),
         database_path=args.database,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))

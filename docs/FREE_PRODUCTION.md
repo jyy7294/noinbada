@@ -1,56 +1,30 @@
-# 노트북 기반 무비용 운영
+# 노트북 기반 무비용 운영 V3
 
 ## 확정 구조
 
-```text
-Windows 작업 스케줄러(매시 00분)
-  → 로컬 Chrome X 한국 실시간 + Google Trends KR
-  → 로컬 SQLite·분석·계약검증
-  → live-data 브랜치에 JSON만 push
-  → Vercel 정적 프론트가 최신 JSON 조회
-```
-
-GitHub Actions와 상시 유료 서버는 사용하지 않습니다. GitHub는 계산 서버가 아니라 코드 협업과 정적 데이터 전달에만 사용합니다.
-
-## 런타임 위치
+Windows 작업 스케줄러가 매시 정각 `scripts/collect-hourly.ps1`을 실행합니다. 계산과 SQLite는 노트북에만 있고 GitHub는 코드 협업과 검증 완료 JSON 전달에만 사용합니다. GitHub Actions·Render·상시 서버는 없습니다.
 
 ```text
 %LOCALAPPDATA%\TRZIP\
-  chrome-profile\     X 전용 로그인 세션
-  data\                SQLite 원장
-  publication\         검증 완료 JSON
-  live-data\           별도 Git worktree
-  logs\                30일 JSONL 실행 로그
+  data\                실제 SQLite 원장
+  publication\         검증 완료 JSON 준비본
+  live-data\           live-data 전용 Git worktree
+  logs\                최근 30일 JSONL 실행 로그
 ```
 
-개인 기본 Chrome 프로필, 쿠키, SQLite, `.env`는 Git에 올리지 않습니다.
+X 인증은 `ChanHee` Chrome 프로필에 한 번 수동 설치한 MV3 확장이 담당합니다. 확장은 쿠키·저장소 권한이 없고 자신이 연 비활성 탭의 한국 1~30위만 Downloads inbox로 전달합니다. Python은 해당 시간의 완전한 30행만 수락합니다.
 
-## 발행 규칙
+## 안전한 게시
 
-자동 커밋 허용 경로는 다음뿐입니다.
+- 자동 stage 허용: `latest/`, `observations/`, `monitoring/`
+- 원격과 로컬 `live-data`가 갈라지면 중단, force push 금지
+- 한 출처 실패 시 다른 출처 저장
+- 같은 시간의 기존 정상 출처 스냅샷은 재시도 실패로 삭제하지 않음
+- 원시 SQLite는 무기한 보존; 게시 일별 JSON 삭제는 명시적 양수 보존기간 설정 때만 수행
 
-- `latest/`
-- `observations/`
-- `monitoring/`
+## 현실적 한계
 
-원격과 로컬 `live-data`가 갈라지면 force push하지 않고 중단합니다. push가 실패하면 로컬 커밋을 보존하고 다음 실행에서 다시 전송합니다.
-
-## 실패 의미
-
-| 상태 | 의미 |
-|---|---|
-| `browser_authentication` | X 전용 프로필 로그인 필요 |
-| `region_configuration` | 한국 지역 표시 확인 실패 |
-| `browser_page_change` | X 페이지 셀렉터 변경 가능성 |
-| `network` | 네트워크·시간초과 |
-| `partial` | X·Google 중 한 출처만 성공 |
-| `stale` | 마지막 정상 관측이 3시간 초과 |
-
-한 출처 실패는 다른 출처 저장을 막지 않습니다. 같은 시간 재시도 실패가 앞선 정상 스냅샷을 지우지도 않습니다.
-
-## 운영 제약
-
-- 노트북이 켜져 있고 사용자가 로그인된 상태여야 합니다.
-- 잠금 상태에서는 실행할 수 있지만 종료·로그아웃 중에는 실행되지 않습니다.
-- `WakeToRun`은 절전 복귀를 도울 뿐 종료된 노트북을 켜지 못합니다.
-- 성공률은 실제 72회·168회가 쌓이기 전 완료로 표시하지 않습니다.
+- 노트북 종료·로그아웃 중에는 실행되지 않습니다.
+- 절전 복귀 시 지연 실행될 수 있으며 정각 관측을 생성값으로 보정하지 않습니다.
+- X 로그인 만료·지역 변경·화면 구조 변경은 각각 명시적 실패상태로 남습니다.
+- 72회와 168회가 실제로 쌓이기 전에는 3일·7일 안정성을 완료로 표시하지 않습니다.

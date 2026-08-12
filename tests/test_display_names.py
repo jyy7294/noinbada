@@ -14,8 +14,8 @@ def test_source_label_and_interpretation_are_separate(tmp_path):
     trend = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
     assert trend["display_name"] == "말복"
     assert set(trend["raw_terms"]) == {"말복", "삼계탕"}
-    assert "보양식" in trend["phenomenon_summary"]
-    assert trend["display_name"] != trend["phenomenon_summary"]
+    assert trend["phenomenon_summary"].startswith('"말복"')
+    assert "보양식" not in trend["phenomenon_summary"]
 
 
 def test_unknown_cause_is_not_fabricated(tmp_path):
@@ -24,4 +24,5 @@ def test_unknown_cause_is_not_fabricated(tmp_path):
     upsert([HourlyObservation(at.isoformat(), "x", "새로운 표현", 1, 100, "observed")], target)
     trend = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
     assert trend["display_name"] == "새로운 표현"
-    assert trend["phenomenon_summary"].startswith("원인 미확인")
+    assert trend["phenomenon_summary"].startswith('"새로운 표현"')
+    assert "원인" not in trend["phenomenon_summary"]

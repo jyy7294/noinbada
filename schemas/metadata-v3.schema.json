@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jyy7294/noinbada/schemas/metadata-v3.schema.json",
+  "title": "TRZIP publication metadata v3",
+  "type": "object",
+  "required": [
+    "schema_version", "publication_id", "generated_at", "observed_at", "mode",
+    "storage", "collection", "coverage", "collection_health"
+  ],
+  "properties": {
+    "schema_version": {"const": "trzip-live-data-v3"},
+    "publication_id": {"type": "string"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "mode": {"const": "live"},
+    "storage": {"const": "local-sqlite-published-to-live-data"},
+    "collection": {"type": "object"},
+    "coverage": {"type": "object"},
+    "collection_health": {"type": "object"}
+  }
+}
