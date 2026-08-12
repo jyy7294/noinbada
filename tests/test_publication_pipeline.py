@@ -1,5 +1,5 @@
 import json
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -434,6 +434,27 @@ def test_collection_health_deduplicates_hour_and_classifies_source_failures(tmp_
     assert second["source_failure_counts"]["x"]["api_authentication"] == 1
     assert second["remaining_runs_for_3d"] == 71
     assert second["source_targets_met"] == {"x": False, "google_trends": False}
+
+
+def test_collection_health_preserves_first_scheduler_timing_on_manual_retry(tmp_path):
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    collection = {
+        "observed": 100,
+        "errors": {"x": "extension_not_ready"},
+        "audit": {
+            "x_korea_realtime": {"status": "extension_not_ready", "row_count": 0},
+            "google_geo_kr": {"status": "observed", "row_count": 100},
+        },
+    }
+    first = _collection_health(
+        tmp_path, at, collection, at + timedelta(seconds=2), at + timedelta(seconds=10)
+    )
+    second = _collection_health(
+        tmp_path, at, collection, at + timedelta(minutes=20), at + timedelta(minutes=21)
+    )
+
+    assert first["latest_delay_seconds"] == second["latest_delay_seconds"] == 2
+    assert second["recorded_runs"] == 1
 
 
 def test_collection_health_drops_unversioned_legacy_success_rows(tmp_path):

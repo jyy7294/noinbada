@@ -662,8 +662,11 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         "errors": {source: row["detail"] for source, row in source_failures.items()},
         "source_failures": source_failures,
     }
-    history = [row for row in history if row.get("scheduled_at") != at.isoformat()]
-    history.append(current)
+    # The first finished attempt is the scheduler measurement for that hour.
+    # Later manual/recovery publications may enrich missing source data, but
+    # must not rewrite the original start delay or inflate run counts.
+    if not any(row.get("scheduled_at") == at.isoformat() for row in history):
+        history.append(current)
     history = sorted(history, key=lambda row: row["scheduled_at"])[-168:]
     _write_json(history_path, history)
     total = len(history)
@@ -699,8 +702,8 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         },
         "on_time_within_15m_rate": round(sum(row.get("delay_seconds", 999999) <= 900 for row in history) / total, 4)
         if total else None,
-        "latest_delay_seconds": current["delay_seconds"],
-        "latest_duration_seconds": current["duration_seconds"],
+        "latest_delay_seconds": history[-1]["delay_seconds"],
+        "latest_duration_seconds": history[-1]["duration_seconds"],
         "status": "measured_7d" if total >= 168 else "measuring_3_to_7_days" if total >= 72 else "collecting_baseline",
         "remaining_runs_for_3d": max(0, 72 - total),
         "remaining_runs_for_7d": max(0, 168 - total),

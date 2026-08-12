@@ -354,9 +354,82 @@ def store_verified_source_snapshot(
     return len(rows)
 
 
+def _first_verified_snapshot_for_hour(
+    at: datetime,
+    source: str,
+    path: Path | None,
+) -> tuple[list[HourlyObservation], dict] | None:
+    """Return the first complete same-hour snapshot without re-scraping it.
+
+    An hourly ledger is a point-in-time record. Once a source passes its
+    completeness gate, a manual retry must not rewrite that hour with a later
+    web-page state. A source that was missing or invalid remains collectible.
+    """
+
+    stamp = floor_hour(at).isoformat()
+    with connect(path) as connection:
+        stored = connection.execute(
+            """SELECT * FROM hourly_observations
+               WHERE observed_at=? AND source=? AND provenance='observed'
+                 AND collector_version IS NOT NULL
+               ORDER BY source_rank""",
+            (stamp, source),
+        ).fetchall()
+    if not stored:
+        return None
+    ranks = [int(row["source_rank"]) for row in stored]
+    if ranks != list(range(1, len(stored) + 1)):
+        return None
+    rows = [
+        HourlyObservation(
+            observed_at=row["observed_at"],
+            source=row["source"],
+            topic=row["topic"],
+            source_rank=row["source_rank"],
+            value=row["value"],
+            provenance=row["provenance"],
+            seed_observed_at=row["seed_observed_at"],
+            source_payload_json=row["source_payload_json"],
+            related_terms_json=row["related_terms_json"],
+            collector_version=row["collector_version"],
+        )
+        for row in stored
+    ]
+    if source == "x":
+        if len(rows) != 30:
+            return None
+        return rows, {
+            "status": "observed",
+            "row_count": 30,
+            "detail": "first verified same-hour X Korea 1-30 snapshot preserved",
+        }
+    if source == "google_trends":
+        if len(rows) < 100:
+            return None
+        try:
+            evidence = json.loads(rows[0].source_payload_json or "{}")
+        except (TypeError, ValueError, json.JSONDecodeError):
+            return None
+        declared_total = evidence.get("collection_declared_total")
+        page_count = evidence.get("collection_page_count")
+        complete = evidence.get("collection_completion_verified") is True
+        if declared_total != len(rows) or not complete or not isinstance(page_count, int):
+            return None
+        return rows, {
+            "status": "observed",
+            "row_count": len(rows),
+            "declared_total": declared_total,
+            "page_count": page_count,
+            "completion_verified": True,
+            "detail": "first verified same-hour Google Trending Now KR snapshot preserved",
+        }
+    return None
+
+
 def collect_current(path: Path | None = None, now: datetime | None = None) -> dict:
     at = floor_hour(now)
     observed: list[HourlyObservation] = []
+    newly_collected: list[HourlyObservation] = []
     errors: dict[str, str] = {}
     load_local_env()
     # Production collection is deliberately limited to the two approved Korea
@@ -383,11 +456,19 @@ def collect_current(path: Path | None = None, now: datetime | None = None) -> di
         }
         return korea_rows
 
+    audit_keys = {"google_trends": "google_geo_kr", "x": "x_korea_realtime"}
     collectors = (("google_trends", google_korea), ("x", collect_x))
     for source, collector in collectors:
+        existing = _first_verified_snapshot_for_hour(at, source, path)
+        if existing is not None:
+            stored_rows, stored_audit = existing
+            observed.extend(stored_rows)
+            audit[audit_keys[source]] = stored_audit
+            continue
         try:
             rows = collector(at)
             observed.extend(rows)
+            newly_collected.extend(rows)
             if not rows:
                 errors[source] = "approved collector not configured or returned no rows"
         except Exception as exc:  # operational boundary: fallback remains labelled
@@ -415,7 +496,7 @@ def collect_current(path: Path | None = None, now: datetime | None = None) -> di
     with connect(path) as connection:
         # Replace only sources that were collected successfully. A transient
         # failure must not erase a valid snapshot already stored for this hour.
-        for source in sorted({row.source for row in observed}):
+        for source in sorted({row.source for row in newly_collected}):
             connection.execute(
                 "DELETE FROM hourly_observations WHERE observed_at=? AND source=? AND provenance='observed'",
                 (at.isoformat(), source),
@@ -433,7 +514,7 @@ def collect_current(path: Path | None = None, now: datetime | None = None) -> di
               related_terms_json=excluded.related_terms_json,
               collector_version=excluded.collector_version
             """,
-            [asdict(row) for row in observed],
+            [asdict(row) for row in newly_collected],
         )
         connection.executemany(
             """INSERT INTO collection_audit

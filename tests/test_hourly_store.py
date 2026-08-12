@@ -82,6 +82,56 @@ def test_failed_source_does_not_erase_successful_snapshot_for_same_hour(tmp_path
     assert {row["topic"] for row in rows if row["source"] == "google_trends"} == {"삼성전자"}
 
 
+def test_first_complete_same_hour_snapshots_are_not_rewritten(tmp_path, monkeypatch):
+    target = tmp_path / "first-snapshot.sqlite3"
+    at = datetime(2026, 8, 12, 4, tzinfo=UTC)
+    stamp = at.isoformat()
+    google_payload = json.dumps({
+        "collection_declared_total": 100,
+        "collection_page_count": 4,
+        "collection_completion_verified": True,
+    })
+    first_google = [
+        HourlyObservation(
+            stamp, "google_trends", f"첫구글{rank}", rank, 100, "observed",
+            source_payload_json=google_payload,
+            collector_version="google_trending_now_kr_v1",
+        )
+        for rank in range(1, 101)
+    ]
+    first_x = [
+        HourlyObservation(
+            stamp, "x", f"첫X{rank}", rank, 100, "observed",
+            collector_version="x_current_session_kr_v1",
+        )
+        for rank in range(1, 31)
+    ]
+    monkeypatch.setattr("trzip.hourly_store.collect_google", lambda value: first_google)
+    monkeypatch.setattr("trzip.hourly_store.collect_x", lambda value: first_x)
+    first = collect_current(target, at)
+
+    monkeypatch.setattr(
+        "trzip.hourly_store.collect_google",
+        lambda value: (_ for _ in ()).throw(AssertionError("must reuse Google")),
+    )
+    monkeypatch.setattr(
+        "trzip.hourly_store.collect_x",
+        lambda value: (_ for _ in ()).throw(AssertionError("must reuse X")),
+    )
+    second = collect_current(target, at)
+    rows = snapshot(at, target)
+
+    assert first["observed"] == second["observed"] == 130
+    assert second["audit"]["google_geo_kr"]["declared_total"] == 100
+    assert second["audit"]["x_korea_realtime"]["row_count"] == 30
+    assert {row["topic"] for row in rows if row["source"] == "google_trends"} == {
+        f"첫구글{rank}" for rank in range(1, 101)
+    }
+    assert {row["topic"] for row in rows if row["source"] == "x"} == {
+        f"첫X{rank}" for rank in range(1, 31)
+    }
+
+
 def test_verified_source_snapshot_replaces_rows_and_writes_audit_atomically(tmp_path):
     target = tmp_path / "verified.sqlite3"
     at = datetime(2026, 8, 12, 4, tzinfo=UTC)

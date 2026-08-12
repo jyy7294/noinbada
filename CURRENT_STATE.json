@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T19:05:51.2030288+00:00",
+    "updated_at":  "2026-08-12T19:09:46.1059934+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,28 +8,28 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "e04bd81b857bd8f6b0d9ab706b5660c6c1e77a4c",
+                       "base_remote_main_sha":  "dc210e964cc7e38471f557347714df496d50da14",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "src/trzip/intelligence.py",
-                                             "tests/test_intelligence.py"
+                                             "src/trzip/hourly_store.py",
+                                             "src/trzip/publication_pipeline.py",
+                                             "tests/test_hourly_store.py",
+                                             "tests/test_publication_pipeline.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "ab24f521967fb6eaa700a18a44a2d47df6fa7e3ab58d9e5fed9c838e887532c0",
-                                                    "schemas/intelligence-v3.schema.json":  "1799c079610c19ccee8b5fe98769ff7e91775b7ac53ced75c814718bff641d16",
-                                                    "src/trzip/intelligence.py":  "5bac2140695f2ff1163e2fb12f361099293a4010d98d5ec878f791c6f6a26322",
-                                                    "tests/test_intelligence.py":  "52ac23cfcafc83add580c872b555521bbc85695658c9822f03fce0cbdd9bb143"
+                                                    "src/trzip/hourly_store.py":  "e9de2e30aa101bd269950c58b4a12539516060752c0f5c52c1cd9163635c48cc",
+                                                    "src/trzip/publication_pipeline.py":  "2f6f102236e9b4820740d6d14fe7482f98330cd0ec57e21f7f954ebfb0a579ec",
+                                                    "tests/test_hourly_store.py":  "8c0aa8c1ba78982e7fce4ab82fc066eea08024a9847963420d82e3623925f595",
+                                                    "tests/test_publication_pipeline.py":  "580b92d8d71527d83bc33455bd56c9e7471dcb7d66c984ae6d9dfbbfdfaf1509"
                                                 },
-                       "commit_message":  "fix: label verified stock-code trends clearly",
+                       "commit_message":  "fix: preserve first verified hourly snapshot",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  174
+                                      "count":  176
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -51,17 +51,18 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "대표어를 임의 해석하지 않으면서 검수된 종목코드만 이해 가능한 회사명으로 표시",
+                    "objective":  "정각 최초 품질 통과 스냅샷과 실행시각을 같은 시간 재실행이 덮지 못하게 보존",
                     "completed":  [
-                                      "원천 대표어 별도 보존",
-                                      "검수된 6자리 종목코드만 회사명 표시",
-                                      "표시 정책 기계 계약 추가",
-                                      "점수·순위·기업 근거 비영향 회귀 검증"
+                                      "Google 첫 전체 스냅샷 불변",
+                                      "X 첫 1~30 스냅샷 불변",
+                                      "실패했던 출처만 같은 시간 재수집 허용",
+                                      "최초 예약 실행 지연·소요시간 보존",
+                                      "재실행 회귀 테스트"
                                   ],
                     "next_actions":  [
-                                         "실제 정각 발행에서 삼성전자 표시 확인",
-                                         "X 확장 등록 후 양출처 대표어 검증",
-                                         "96시간 후 대표어 안정성 평가"
+                                         "04시 최초 스냅샷 복구",
+                                         "복구 후 최신 계약 재발행",
+                                         "05시 정각 불변성 재검증"
                                      ],
                     "blockers":  [
                                      "X 확장 미등록",
