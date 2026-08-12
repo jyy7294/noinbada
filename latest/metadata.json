@@ -1,8 +1,8 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-8c20fa46f9fa4dbba7f9dfbf94286cc6",
-  "generated_at": "2026-08-12T18:43:57.979975+00:00",
-  "observed_at": "2026-08-12T18:00:00+00:00",
+  "publication_id": "pub-017de6a706c7457ca9913e34d8b67cc6",
+  "generated_at": "2026-08-12T19:00:12.031834+00:00",
+  "observed_at": "2026-08-12T19:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
   "retention_days": null,
@@ -34,14 +34,14 @@
         "completion_verified": true
       }
     },
-    "observed_at": "2026-08-12T18:00:00+00:00"
+    "observed_at": "2026-08-12T19:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T13:00:00+00:00",
-    "last_hour": "2026-08-12T18:00:00+00:00",
-    "hours": 6,
-    "rows": 1169,
-    "observed_rows": 1169,
+    "last_hour": "2026-08-12T19:00:00+00:00",
+    "hours": 7,
+    "rows": 1370,
+    "observed_rows": 1370,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
@@ -68,7 +68,7 @@
   },
   "collection_health": {
     "measurement_window_hours": 168,
-    "recorded_runs": 4,
+    "recorded_runs": 5,
     "successful_runs": 0,
     "success_rate": 0.0,
     "source_success_rate": {
@@ -84,7 +84,7 @@
         "quota_or_rate_limit": 0,
         "network": 0,
         "parser_change": 0,
-        "unknown": 4
+        "unknown": 5
       },
       "google_trends": {
         "browser_authentication": 0,
@@ -102,12 +102,12 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.0,
-    "latest_delay_seconds": 2631,
-    "latest_duration_seconds": 7.31,
+    "on_time_within_15m_rate": 0.2,
+    "latest_delay_seconds": 3,
+    "latest_duration_seconds": 9.32,
     "status": "collecting_baseline",
-    "remaining_runs_for_3d": 68,
-    "remaining_runs_for_7d": 164,
+    "remaining_runs_for_3d": 67,
+    "remaining_runs_for_7d": 163,
     "warning": "Windows 작업 스케줄러 실측 기록이며 노트북 종료·로그아웃 중에는 실행되지 않을 수 있음"
   }
 }
