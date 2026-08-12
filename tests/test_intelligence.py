@@ -596,6 +596,18 @@ def test_rrf_is_normalized_for_available_sources_and_cross_bonus_is_explicit(tmp
     assert single_item["rrf"] == dual_item["rrf"] == 1.0
     assert single_item["score_components"]["cross_source_points"] == 0
     assert dual_item["score_components"]["cross_source_points"] == 5
+    for item in (single_item, dual_item):
+        components = item["score_components"]
+        visible_sum = round(sum(
+            components[key]
+            for key in (
+                "rrf_points", "momentum_points", "persistence_points",
+                "cross_source_points",
+            )
+        ) * components["calibration"], 2)
+        assert item["score"] == components["total_points"] == visible_sum
+        assert components["formula_version"] == "rrf60_momentum20_persistence15_cross5_v1"
+        assert components["rounding_policy"] == "each_component_2dp_then_sum_2dp"
 
 
 def test_unified_ranking_preserves_main_issue_and_review_without_score_calibration(tmp_path):

@@ -45,7 +45,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 원천 표현 | `raw_terms` |
 | 넓은 분류 | `broad_category` |
 | 표시 레인 | `lane`, `selection_reason` |
-| 공정 순위 | `rank`, `score`, `score_components` |
+| 공정 순위 | `rank`, `score`, `score_components` (`total_points`, `formula_version`, `rounding_policy` 포함; 공개 구성점수 합계와 `score`가 항상 일치) |
 | 원천 순위 | `latest_source_ranks`, `source_badge` |
 | 변화·지속 | `rank_change_by_source`, `lifecycle`, `persistence_rank`, `momentum_rank` |
 | 신뢰 상태 | `data_confidence`, `home_context_status` |

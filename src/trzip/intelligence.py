@@ -939,7 +939,28 @@ def build_intelligence(
             lifecycle, lifecycle_reason = "mainstream", "X와 Google에서 반복 관측되어 대중 확산 확인"
         else:
             lifecycle, lifecycle_reason = "sustained", "여러 시간 반복 관측되어 지속성 확인"
-        score = 0.60 * normalized_rrf + 0.20 * ((momentum + 1) / 2) + 0.15 * persistence + 0.05 * cross
+        score_components = {
+            "rrf_points": round(60 * normalized_rrf, 2),
+            "momentum_points": round(20 * ((momentum + 1) / 2), 2),
+            "persistence_points": round(15 * persistence, 2),
+            "cross_source_points": round(5 * cross, 2),
+            "calibration": 1.0,
+            "formula_version": "rrf60_momentum20_persistence15_cross5_v1",
+            "rounding_policy": "each_component_2dp_then_sum_2dp",
+        }
+        score = round(
+            sum(
+                score_components[key]
+                for key in (
+                    "rrf_points",
+                    "momentum_points",
+                    "persistence_points",
+                    "cross_source_points",
+                )
+            ) * score_components["calibration"],
+            2,
+        )
+        score_components["total_points"] = score
         phenomenon_summary = observation_summary(representative_term, sources)
         keyword_items = _merge_reviewed_ontology_keywords(
             _related_term_evidence(observations, representative_term),
@@ -1135,17 +1156,11 @@ def build_intelligence(
             "selection_layer": selection_layer,
             "score_calibration": score_calibration,
             "company_eligible": company_eligible,
-            "score": round(score*100, 2),
+            "score": score,
             "rrf": round(normalized_rrf, 6),
             "rrf_raw": round(rrf_raw, 8),
             "momentum": round(momentum, 4), "persistence": round(persistence, 4),
-            "score_components": {
-                "rrf_points": round(60 * normalized_rrf, 2),
-                "momentum_points": round(20 * ((momentum + 1) / 2), 2),
-                "persistence_points": round(15 * persistence, 2),
-                "cross_source_points": round(5 * cross, 2),
-                "calibration": score_calibration,
-            },
+            "score_components": score_components,
             "source_count": len(sources),
             "current_source_count": len(current_by_source),
             "source_badge": "교차출처" if len(current_by_source) >= 2 else "단일출처",

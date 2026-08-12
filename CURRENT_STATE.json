@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T18:36:19.9247302+00:00",
+    "updated_at":  "2026-08-12T18:43:27.8042061+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,22 +8,22 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "82a8a057f2c79fe0e282bc9269dba696c1714a18",
+                       "base_remote_main_sha":  "687c884571d7819cb989c89bd95d81d098bfdc10",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
+                                             "schemas/intelligence-v3.schema.json",
                                              "src/trzip/intelligence.py",
-                                             "src/trzip/trend_fit.py",
-                                             "tests/test_intelligence.py",
-                                             "tests/test_trend_fit.py"
+                                             "tests/test_intelligence.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/intelligence.py":  "82d083b14744e61a7f0894b7b768350f994c450a52e7c9341d5b93c6e068149e",
-                                                    "src/trzip/trend_fit.py":  "7b8e536d1eee97274352e9107fd93b4575b2efb8b0f7cc69934f68da502698c8",
-                                                    "tests/test_intelligence.py":  "f202750c9765c6843569ec27183333b4a26c1066ef384c66a4eb9252fc73dfa7",
-                                                    "tests/test_trend_fit.py":  "9e86cd6e341188a9667df77a7c1b851553ae7c1cd51735d0d22eae863d7c0553"
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "7085e168ed0c4902d9f4878ba3896da4c81f65772e7922fee3174d76a682bf34",
+                                                    "schemas/intelligence-v3.schema.json":  "ab109b6624230ca3c8ec3d3a1f47d3eebdde180224491d62b0ee446747d1a531",
+                                                    "src/trzip/intelligence.py":  "39d90e74a6bdeff5a1c187a1fa9e379084d9275f356285257a6d62de863b9c29",
+                                                    "tests/test_intelligence.py":  "8c48a22daf8c1d9024e395ab4c398c84337d3948ddcc3782da09c64da3e80536"
                                                 },
-                       "commit_message":  "fix: separate verified legal issues from main trends",
+                       "commit_message":  "fix: reconcile public trend score components",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -51,16 +51,16 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Use exact provider-title context only to demote strong legal or controversy events from the main subset while preserving the source-derived rank.",
+                    "objective":  "Make every published trend score exactly reproducible from the component values shown to the frontend.",
                     "completed":  [
-                                      "Added exact-term provider issue context filter",
-                                      "Separated Samsung Securities legal-event context from ordinary stock trends",
-                                      "Prevented short generic terms from provider-title false matches",
-                                      "Verified actual SQLite ranking and 171 tests"
+                                      "Changed score rounding to component-first then total",
+                                      "Added formula version and rounding policy to v3 contract",
+                                      "Verified zero mismatches across the 199-item live ranking",
+                                      "Verified 171 tests"
                                   ],
                     "next_actions":  [
-                                         "Republish laptop live-data and verify rank stability plus home subset change",
-                                         "Complete X extension manual approval and combined-source acceptance"
+                                         "Republish laptop live-data and validate all public scores and schemas",
+                                         "Continue source-hour and ontology data-quality audit"
                                      ],
                     "blockers":  [
                                      "Chrome security policy requires manual unpacked-extension approval"

@@ -284,6 +284,25 @@
         "relationship_evidence": {"const": false}
       }
     },
+    "score_components": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rrf_points", "momentum_points", "persistence_points",
+        "cross_source_points", "calibration", "total_points",
+        "formula_version", "rounding_policy"
+      ],
+      "properties": {
+        "rrf_points": {"type": "number", "minimum": 0, "maximum": 60},
+        "momentum_points": {"type": "number", "minimum": 0, "maximum": 20},
+        "persistence_points": {"type": "number", "minimum": 0, "maximum": 15},
+        "cross_source_points": {"type": "number", "minimum": 0, "maximum": 5},
+        "calibration": {"const": 1.0},
+        "total_points": {"type": "number", "minimum": 0, "maximum": 100},
+        "formula_version": {"const": "rrf60_momentum20_persistence15_cross5_v1"},
+        "rounding_policy": {"const": "each_component_2dp_then_sum_2dp"}
+      }
+    },
     "trend": {
       "type": "object",
       "required": [
@@ -302,7 +321,7 @@
         "broad_category": {"enum": ["food", "content", "lifestyle", "sports", "culture", "consumer", "technology", "market", "issue", "other"]},
         "lane": {"enum": ["main", "issue", "review"]},
         "score": {"type": "number", "minimum": 0, "maximum": 100},
-        "score_components": {"type": "object"},
+        "score_components": {"$ref": "#/$defs/score_components"},
         "latest_source_ranks": {"type": "object"},
         "data_confidence": {"type": "object"},
         "keywords": {"type": "array", "maxItems": 5, "items": {"$ref": "#/$defs/keyword"}},
