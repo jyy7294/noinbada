@@ -1,4 +1,9 @@
-from trzip.company_adapters import _market_reaction
+from trzip.company_adapters import OHLCV_COLUMNS, _market_reaction
+
+
+def test_pykrx_columns_have_stable_frontend_names():
+    assert OHLCV_COLUMNS["종가"] == "close"
+    assert OHLCV_COLUMNS["거래량"] == "volume"
 
 
 def test_market_reaction_detects_price_or_volume_change():

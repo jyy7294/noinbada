@@ -14,6 +14,17 @@ from functools import lru_cache
 from .hourly_store import load_local_env
 
 
+OHLCV_COLUMNS = {
+    "시가": "open",
+    "고가": "high",
+    "저가": "low",
+    "종가": "close",
+    "거래량": "volume",
+    "거래대금": "trading_value",
+    "등락률": "change_pct",
+}
+
+
 def integration_status() -> dict:
     load_local_env()
     return {
@@ -98,13 +109,31 @@ def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: in
             frame = stock.get_market_ohlcv_by_date(start.strftime("%Y%m%d"), end.strftime("%Y%m%d"), code)
         rows = []
         for at, values in frame.tail(10).iterrows():
-            rows.append({"date": at.strftime("%Y-%m-%d"), **{str(key): _scalar(value) for key, value in values.items()}})
+            normalized = {
+                OHLCV_COLUMNS.get(str(key), str(key)): _scalar(value)
+                for key, value in values.items()
+            }
+            rows.append({"date": at.strftime("%Y-%m-%d"), **normalized})
         if not name and not rows:
             return {"status": "not_found", "stock_code": code, "reason": "pykrx returned no ticker or OHLCV"}
         reaction = _market_reaction(rows)
+        latest = rows[-1] if rows else None
+        previous = rows[-2] if len(rows) > 1 else None
+        close = float(latest.get("close") or 0) if latest else 0
+        previous_close = float(previous.get("close") or 0) if previous else 0
+        daily_change_pct = (
+            round((close / previous_close - 1) * 100, 2)
+            if close and previous_close else None
+        )
         return {"status": "observed", "provider": "pykrx", "stock_code": code,
                 "name": name or None, "daily_ohlcv": rows,
-                "latest_daily": rows[-1] if rows else None,
+                "latest_daily": latest,
+                "summary": {
+                    "as_of": latest.get("date") if latest else None,
+                    "close": int(close) if close else None,
+                    "daily_change_pct": daily_change_pct,
+                    "volume": int(latest.get("volume") or 0) if latest else None,
+                },
                 "market_reaction": reaction,
                 "note": "daily reference data; not realtime, not a forecast, and not relation evidence"}
     except Exception as exc:
@@ -120,11 +149,11 @@ def _market_reaction(rows: list[dict]) -> dict:
         return {"status": "insufficient_history", "label": "시장 반응 판단 보류"}
     recent = rows[-5:]
     previous = rows[-10:-5] or rows[:-5]
-    first_close = float(recent[0].get("종가") or 0)
-    last_close = float(recent[-1].get("종가") or 0)
+    first_close = float(recent[0].get("close", recent[0].get("종가")) or 0)
+    last_close = float(recent[-1].get("close", recent[-1].get("종가")) or 0)
     return_pct = ((last_close / first_close - 1) * 100) if first_close else None
-    recent_volume = sum(float(row.get("거래량") or 0) for row in recent) / len(recent)
-    previous_volume = sum(float(row.get("거래량") or 0) for row in previous) / len(previous) if previous else 0
+    recent_volume = sum(float(row.get("volume", row.get("거래량")) or 0) for row in recent) / len(recent)
+    previous_volume = sum(float(row.get("volume", row.get("거래량")) or 0) for row in previous) / len(previous) if previous else 0
     volume_ratio = recent_volume / previous_volume if previous_volume else None
     active = ((return_pct is not None and abs(return_pct) >= 5) or
               (volume_ratio is not None and volume_ratio >= 1.5))

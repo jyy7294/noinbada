@@ -807,29 +807,10 @@ class Component extends DCLogic {
   }
 
   neutralizeUnlinkedMarketData() {
-    [].slice.call(document.querySelectorAll('[data-z-fd-ret],[data-z-hero-ret],[data-z-sh-ret]')).forEach(function (node) {
+    [].slice.call(document.querySelectorAll('[data-z-sh-ret]')).forEach(function (node) {
       node.textContent = '시장데이터 미연동';
       node.style.color = '#87857B';
       node.style.fontSize = '10.5px';
-    });
-    var values = {
-      price: '—', chg: '시장데이터 미연동', cap: '—', vol: '—', per: '—', band: '—'
-    };
-    Object.keys(values).forEach(function (key) {
-      var node = document.querySelector('[data-z-st-' + key + ']');
-      if (node) node.textContent = values[key];
-    });
-    ['line', 'area', 'dot'].forEach(function (key) {
-      var node = document.querySelector('[data-z-st-' + key + ']');
-      if (node) node.style.display = 'none';
-    });
-    var chartLabel = document.querySelector('[data-z-st-label]');
-    if (chartLabel) chartLabel.textContent = '시세 API 연결 전';
-    [].slice.call(document.querySelectorAll('[data-screen-label^="Z5"] span')).forEach(function (node) {
-      if (!node.children.length && /^[+-]\d+(?:\.\d+)?%/.test(node.textContent.trim())) {
-        node.textContent = '—';
-        node.style.color = '#87857B';
-      }
     });
   }
 
@@ -927,7 +908,7 @@ class Component extends DCLogic {
     if (window.__zpShell) return;
     window.__zpShell = true;
     var st = document.createElement('style');
-    st.textContent = "::-webkit-scrollbar { width:0; height:0; }\n #zp-nav { position: fixed; left:0; right:0; bottom:0; z-index:60; display:flex; gap:8px; justify-content:flex-start; overflow-x:auto; scrollbar-width:none; padding:12px 14px 16px; background:linear-gradient(180deg, rgba(240,245,216,0) 0%, rgba(240,245,216,0.96) 55%); }\n #zp-nav button { white-space:nowrap; flex:none; border:1px solid #6B554A; border-radius:12px; padding:9px 15px; font-weight:900; font-size:12px; color:#6B554A; background:#FFFFFF; cursor:pointer; font-family:Pretendard, sans-serif; }\n #zp-nav button[data-on] { background:#CBB6F7; color:#FFFFFF; border-color:#CBB6F7; }";
+    st.textContent = "::-webkit-scrollbar { width:0; height:0; }\n [data-screen-label] { display:none !important; }\n [data-screen-label][data-z-active-screen] { display:flex !important; }\n [data-screen-label=\"Z0 스플래시\"] { display:flex !important; }\n [data-screen-label=\"Z0 스플래시\"] > [data-z-active-screen] { margin-inline:auto; }\n [data-screen-label=\"Z0 스플래시\"]:not([data-z-active-screen]) > :not([data-screen-label]) { display:none !important; }\n #zp-nav { position: fixed; left:50%; bottom:0; transform:translateX(-50%); width:min(393px,100vw); box-sizing:border-box; z-index:60; display:flex; gap:8px; justify-content:flex-start; overflow-x:auto; scrollbar-width:none; padding:12px 14px 16px; background:linear-gradient(180deg, rgba(240,245,216,0) 0%, rgba(240,245,216,0.96) 55%); }\n #zp-nav button { white-space:nowrap; flex:none; border:1px solid #6B554A; border-radius:12px; padding:9px 15px; font-weight:900; font-size:12px; color:#6B554A; background:#FFFFFF; cursor:pointer; font-family:Pretendard, sans-serif; }\n #zp-nav button[data-on] { background:#CBB6F7; color:#FFFFFF; border-color:#CBB6F7; }";
     document.head.appendChild(st);
   }
 
@@ -939,13 +920,16 @@ class Component extends DCLogic {
     nav.id = 'zp-nav';
     nav.innerHTML = sc.map(function (w) { return '<button type="button">' + w.getAttribute('data-screen-label') + '</button>'; }).join('');
     var jump = function (k) {
-      var r = sc[k].getBoundingClientRect();
-      window.scrollTo({ left: window.scrollX + r.left - 34, top: window.scrollY + r.top - 34, behavior: 'smooth' });
+      sc.forEach(function (screen, i) {
+        if (i === k) screen.setAttribute('data-z-active-screen', '1');
+        else screen.removeAttribute('data-z-active-screen');
+      });
+      window.scrollTo({ left:0, top:0, behavior:'smooth' });
       [].slice.call(nav.children).forEach(function (x, i) { if (i === k) x.setAttribute('data-on', '1'); else x.removeAttribute('data-on'); });
     };
     [].slice.call(nav.children).forEach(function (b, k) { b.onclick = function () { jump(k); }; });
-    nav.children[0].setAttribute('data-on', '1');
     document.body.appendChild(nav);
+    jump(1);
     this.jump = jump;
     var jl = function (pre) {
       for (var i = 0; i < sc.length; i++) { if (sc[i].getAttribute('data-screen-label').indexOf(pre) === 0) { jump(i); return; } }
@@ -1423,7 +1407,11 @@ class Component extends DCLogic {
     var ssheet = document.querySelector('[data-z-ssheet]');
     if (ssheet && !ssheet.__wired) {
       ssheet.__wired = true;
-      var stocks = [];
+      var stocks = [
+        ['롯', '롯데웰푸드', '280360 · KOSPI', '142,300', '+21.4% (+25,100)', '#E0453C', '1조 6,240억', '412,880', '14.2배', '156,000 · 98,400', '#F9BFD8'],
+        ['바', '바인더스', '019570 · KOSDAQ', '18,650', '+15.8% (+2,540)', '#E0453C', '3,180억', '1,204,510', '22.6배', '21,900 · 9,880', '#F7FABF'],
+        ['신', '신라교역', '004970 · KOSPI', '24,900', '-3.1% (-800)', '#2B5FB8', '2,470억', '186,320', '8.4배', '31,450 · 19,600', '#CDB5F9']
+      ];
       var qs = function (k) { return ssheet.querySelector('[data-z-st-' + k + ']'); };
       var series = [
         [42, 46, 41, 48, 55, 51, 58, 64, 60, 68, 74, 71, 79, 84, 81, 88, 93, 96],
@@ -1500,15 +1488,7 @@ class Component extends DCLogic {
         };
       });
       var openStock = function (n) {
-        stocks = ((self.currentTrend && self.currentTrend.companies) || []).slice(0, 3).map(function (company) {
-          return [
-            (company.company || '?').slice(0, 1),
-            company.company || '기업명 미확인',
-            (company.stock_code || '종목코드 미확인') + ' · ' + (company.verification_status || '검증상태 미확인'),
-            '—', '시장데이터 미연동', '#87857B', '—', '—', '—', '—', '#CDB5F9'
-          ];
-        });
-        var d = stocks[n] || stocks[0];
+        var d = stocks[n];
         if (!d) return;
         var lg = qs('logo');
         if (lg) { lg.textContent = d[0]; lg.style.background = d[10]; }
@@ -1523,7 +1503,6 @@ class Component extends DCLogic {
         if (qs('band')) qs('band').textContent = d[9];
         curStock = n;
         paintChart();
-        self.neutralizeUnlinkedMarketData();
         ssheet.style.transform = 'translateY(0)';
         if (sdim) { sdim.style.opacity = '1'; sdim.style.pointerEvents = 'auto'; }
       };
@@ -1800,19 +1779,29 @@ class Component extends DCLogic {
           return;
         }
         host.innerHTML = group.rows.map(function (company, rowIndex) {
+          var market = company.market_reference || {};
+          var marketSummary = market.summary || {};
+          var close = marketSummary.close == null ? '일별 시세 없음' : Number(marketSummary.close).toLocaleString('ko-KR') + '원';
+          var change = marketSummary.daily_change_pct;
+          var changeLabel = change == null ? '' : ' · ' + (change > 0 ? '+' : '') + change + '%';
           return '<div data-z-live-co="' + rowIndex + '" style="display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid #E4E1D4;cursor:pointer;">'
             + '<span style="display:flex;width:38px;height:38px;align-items:center;justify-content:center;background:#EFE7FD;border-radius:999px;font-weight:900;font-size:13px;color:#7B5BC4;">' + safe(company.company.slice(0,1)) + '</span>'
             + '<div style="flex:1;min-width:0;"><div style="font-weight:900;font-size:14.5px;color:#6B554A;">' + safe(company.company) + '</div>'
             + '<div style="margin-top:2px;font-weight:700;font-size:10.5px;color:#87857B;">' + safe(company.company_role) + ' · ' + safe(company.relation_tier_label) + '</div></div>'
-            + '<span style="font-weight:900;font-size:10.5px;color:#7B5BC4;white-space:nowrap;">' + safe(company.verification_status) + '</span></div>';
+            + '<span style="font-weight:900;font-size:10.5px;color:#7B5BC4;white-space:nowrap;text-align:right;">' + safe(close + changeLabel) + '<br><span style="font-size:9px;color:#87857B;">' + safe(marketSummary.as_of || market.status || '미확인') + '</span></span></div>';
         }).join('');
         [].slice.call(host.querySelectorAll('[data-z-live-co]')).forEach(function (row, rowIndex) {
           row.onclick = function () {
             var company = group.rows[rowIndex];
+            var market = company.market_reference || {};
+            var summary = market.summary || {};
+            var priceText = summary.close == null
+              ? '일별 시장자료를 확보하지 못했습니다.'
+              : (summary.as_of || '') + ' 종가 ' + Number(summary.close).toLocaleString('ko-KR') + '원 · 거래량 ' + Number(summary.volume || 0).toLocaleString('ko-KR') + '주';
             self.openSheet([
-              company.company.slice(0,1), company.company, company.company_role, '관찰',
+              company.company.slice(0,1), company.company, company.company_role, summary.daily_change_pct == null ? '일별 자료' : ((summary.daily_change_pct > 0 ? '+' : '') + summary.daily_change_pct + '%'),
               company.relation_tier_label + ' · ' + company.relation_horizon,
-              company.reason, company.investment_warning
+              company.reason, priceText + ' · ' + company.investment_warning
             ], group.name, '#CDB5F9');
           };
         });

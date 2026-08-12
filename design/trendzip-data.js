@@ -1,4 +1,4 @@
-const LIVE_BASE = 'https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest';
+const DEFAULT_LIVE_BASE = 'https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest';
 const CACHE_KEY = 'trzip:latest-intelligence:v1';
 const PORTFOLIO_KEY = 'trzip:portfolios:v1';
 
@@ -17,6 +17,16 @@ const CATEGORY_KO = {
   fashion_collectible: '패션',
   unclassified: '기타',
 };
+
+function liveBase() {
+  const configured = globalThis.TRZIP_DATA_BASE
+    || new URLSearchParams(globalThis.location?.search || '').get('dataBase');
+  if (!configured) return DEFAULT_LIVE_BASE;
+  if (configured.startsWith('/') || configured.startsWith('https://')) {
+    return configured.replace(/\/$/, '');
+  }
+  return DEFAULT_LIVE_BASE;
+}
 
 function readJson(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
@@ -70,7 +80,7 @@ function normalizeTrend(item) {
 export async function loadTrends({ mode = 'live' } = {}) {
   if (mode !== 'live') throw new Error('운영 화면은 live-data만 사용합니다.');
   try {
-    const response = await fetch(`${LIVE_BASE}/intelligence.json?t=${Date.now()}`, { cache: 'no-store' });
+    const response = await fetch(`${liveBase()}/intelligence.json?t=${Date.now()}`, { cache: 'no-store' });
     if (!response.ok) throw new Error(`TRZIP data ${response.status}`);
     const payload = await response.json();
     if (payload.mode !== 'live' || !Array.isArray(payload.unified_ranking)) {
@@ -166,7 +176,7 @@ export function exportPortfoliosCsv() {
 }
 
 export const dataContract = Object.freeze({
-  input: `${LIVE_BASE}/intelligence.json`,
+  input: `${DEFAULT_LIVE_BASE}/intelligence.json`,
   cache: CACHE_KEY,
   portfolios: PORTFOLIO_KEY,
   exportSchema: 'trzip-export-v1',

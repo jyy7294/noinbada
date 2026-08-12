@@ -19,7 +19,8 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/intelligence
 ```
 
 - 운영 화면은 `mode=live`만 허용합니다.
-- 생성·fixture 데이터는 운영 화면에 넣지 않습니다.
+- 트렌드·키워드·관련기업·기업 일별 시장자료에는 생성·fixture 데이터를 넣지 않습니다.
+- Z4·Z5의 밈트폴리오 사용자명·좋아요·수익률·구성 비중은 발표용 목업으로 유지합니다. 이 값은 실제 투자성과나 백엔드 관측값으로 취급하지 않습니다.
 - 네트워크 실패 시 마지막 정상 응답을 `trzip:latest-intelligence:v1`에서 읽고 `stale=true`로 구분합니다.
 - GitHub 토큰이나 API 키를 브라우저에 넣지 않습니다.
 
@@ -39,6 +40,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/intelligence
 | Z2 키워드 | 관측 근거가 있는 최대 5개 | `keywords` |
 | Z2 기업 탭 | 관계 범주별 기업 | `companies[].relation_category` |
 | Z2 기업 카드 | 역할·관계 강도·검증 상태·근거·주의 | `companies[]` |
+| Z2 기업 일별 시장자료 | 기준일·종가·등락률·거래량 | `companies[].market_reference.summary` |
 | Z3 내 폴더 | 이 기기에 저장한 밈트폴리오 | `trzip:portfolios:v1` |
 | Z6 만들기 | 현재 트렌드의 키워드·기업 후보 | 선택한 정규화 트렌드 |
 | Z7 내 데이터 | JSON·CSV 내보내기 | 저장된 밈트폴리오 전체 |
@@ -66,7 +68,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/intelligence
 - 저장 버튼은 현재 화면의 이름, 활성 키워드, 현재 트렌드의 기업 후보를 함께 저장합니다.
 - 같은 `id`를 다시 저장하면 갱신하고, 새 저장은 최신순으로 앞에 배치합니다.
 - 키워드와 기업은 각각 최대 10개입니다.
-- 주가·수익률을 임의 생성해 저장하지 않습니다.
+- 새로 만드는 사용자 밈트폴리오에는 주가·수익률을 임의 생성해 저장하지 않습니다. Z4·Z5의 사전 제작 밈트폴리오 목업은 별도입니다.
 
 ## 5. 내보내기
 
@@ -94,6 +96,7 @@ relation_category,verification_status,created_at
 - `verification_status=industry_structure_only`는 업종 후보로 표시하며 직접 수혜로 표현하지 않습니다.
 - `investment_warning`은 기업 상세에서 항상 함께 표시합니다.
 - 네트워크와 캐시가 모두 없으면 목업으로 대체하지 않고 `데이터 연결 실패`를 표시합니다.
+- Z2 시장자료는 pykrx의 실제 일별 자료가 `observed`일 때만 표시하며 실시간 체결가라고 표현하지 않습니다.
 - 주문 버튼은 실제 증권사 연동 전까지 이동 안내만 제공하며 매매 기능으로 표현하지 않습니다.
 
 ## 7. 파일 구성

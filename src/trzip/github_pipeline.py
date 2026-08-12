@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .hourly_store import HourlyObservation, collect_current, connect, coverage, floor_hour, upsert
 from .intelligence import build_intelligence
+from .company_adapters import pykrx_stock
 
 
 def _read_json(path: Path, default):
@@ -46,6 +47,70 @@ def _validate_contract(intelligence: dict, metadata: dict) -> None:
                 f"Company-eligible trend requires three companies and relation categories: "
                 f"{item.get('display_name')}"
             )
+
+
+def _previous_market_by_code(payload: dict) -> dict[str, dict]:
+    cache: dict[str, dict] = {}
+    for trend in payload.get("unified_ranking", []):
+        for company in trend.get("companies", []):
+            code = company.get("stock_code")
+            market = company.get("market_reference")
+            if code and isinstance(market, dict) and market.get("status") == "observed":
+                cache[code] = market
+    return cache
+
+
+def _fresh_market_reference(market: dict, at: datetime) -> bool:
+    as_of = (market.get("summary") or {}).get("as_of")
+    if not as_of:
+        return False
+    try:
+        age = at.date() - datetime.strptime(as_of, "%Y-%m-%d").date()
+    except ValueError:
+        return False
+    return 0 <= age.days <= 4
+
+
+def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) -> dict:
+    """Attach verified daily market references to every listed company candidate.
+
+    The previous production payload is reused while its latest trading date is
+    fresh, so the hourly trend job does not repeatedly call the daily provider.
+    Provider failures are explicit data states and never abort trend publishing.
+    """
+    cache = _previous_market_by_code(previous)
+    requested: set[str] = set()
+    reused = observed = unavailable = 0
+    for trend in intelligence.get("unified_ranking", []):
+        for company in trend.get("companies", []):
+            code = company.get("stock_code")
+            if not code or company.get("strength") == "excluded":
+                company["market_reference"] = {
+                    "status": "not_applicable",
+                    "reason": "listed stock code unavailable or relation excluded",
+                }
+                continue
+            market = cache.get(code)
+            if market and _fresh_market_reference(market, at):
+                reused += 1
+            else:
+                market = pykrx_stock(code, at.strftime("%Y%m%d"), lookback_days=21)
+                requested.add(code)
+                if market.get("status") == "observed":
+                    cache[code] = market
+                    observed += 1
+                else:
+                    unavailable += 1
+            company["market_reference"] = market
+    intelligence["market_data_status"] = {
+        "provider": "pykrx",
+        "kind": "daily_reference_not_realtime",
+        "requested_stock_codes": len(requested),
+        "newly_observed": observed,
+        "reused_company_rows": reused,
+        "unavailable_company_rows": unavailable,
+    }
+    return intelligence
 
 
 def _observation_files(root: Path, at: datetime, retention_days: int) -> list[Path]:
@@ -114,6 +179,10 @@ def run(root: Path, *, retention_days: int = 104) -> dict:
         daily_path = _merge_daily(root, current_rows, at)
         pruned_files = _prune_observations(root, at, retention_days)
         intelligence = build_intelligence(at, hours=168, path=sqlite_path)
+        previous_intelligence = _read_json(root / "latest" / "intelligence.json", {})
+        intelligence = _enrich_market_references(
+            intelligence, previous_intelligence, at
+        )
         stats = coverage(sqlite_path)
 
     metadata = {
@@ -128,6 +197,7 @@ def run(root: Path, *, retention_days: int = 104) -> dict:
         "daily_file": daily_path.relative_to(root).as_posix(),
         "collection": collection,
         "coverage": stats,
+        "market_data": intelligence["market_data_status"],
     }
     _validate_contract(intelligence, metadata)
     _write_json(root / "latest" / "intelligence.json", intelligence)

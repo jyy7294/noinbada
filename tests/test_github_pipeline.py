@@ -18,6 +18,21 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
         "trzip.hourly_store.collect_x",
         lambda value: [HourlyObservation(stamp, "x", "말복", 1, 100, "observed")],
     )
+    monkeypatch.setattr(
+        "trzip.github_pipeline.pykrx_stock",
+        lambda code, base_date, lookback_days=21: {
+            "status": "observed",
+            "provider": "pykrx",
+            "stock_code": code,
+            "summary": {
+                "as_of": at.date().isoformat(),
+                "close": 10000,
+                "daily_change_pct": 1.25,
+                "volume": 123456,
+            },
+            "daily_ohlcv": [],
+        },
+    )
 
     result = run(tmp_path)
 
@@ -27,6 +42,8 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     intelligence = json.loads((tmp_path / "latest" / "intelligence.json").read_text(encoding="utf-8"))
     assert intelligence["mode"] == "live"
     assert intelligence["unified_ranking"][0]["display_name"] == "말복"
+    assert intelligence["market_data_status"]["provider"] == "pykrx"
+    assert intelligence["unified_ranking"][0]["companies"][0]["market_reference"]["status"] == "observed"
     assert list((tmp_path / "observations").glob("*.json"))
 
     second = run(tmp_path)

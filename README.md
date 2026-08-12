@@ -11,6 +11,8 @@ TRZIP은 대한민국의 X 실시간 트렌드와 Google Trends 신호를 시간
 
 > 비용 0원 운영 정책: GitHub Actions가 매시간 수집·분석하고 `live-data` 브랜치에 결과를 저장합니다. Claude Design 프론트는 Vercel에서 배포하며 최신 JSON을 읽습니다. API 키·쿠키·SQLite DB는 커밋하지 않습니다.
 
+관련기업에는 pykrx 일별 종가·등락률·거래량을 백엔드 파이프라인이 함께 저장합니다. Z4·Z5 밈트폴리오 피드와 수익률은 발표용 목업이며 실제 투자성과와 분리합니다.
+
 - 최종 디자인 데이터 연결: [Trend App Zip v2 데이터 계약](docs/DESIGN_DATA_CONTRACT.md)
 - 프로덕션 화면: https://trzip-x-google.vercel.app
 - 데이터 소스: X 대한민국, Google Trends `geo=KR`
