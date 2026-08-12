@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -12,6 +13,26 @@ from typing import Any, Iterable
 
 
 ALLOWED_RANKING_SOURCES = {"x", "google_trends"}
+ALLOWED_COLLECTOR_VERSIONS = {
+    "x": {"x_current_session_kr_v1"},
+    "google_trends": {"google_trending_now_kr_v1"},
+}
+ALLOWED_X_COLLECTOR_TRANSPORTS = {
+    "codex_chrome_current_session": "codex_browser_snapshot",
+}
+EXPECTED_DELIVERY_SCHEMA = "trzip-frontend-delivery-v1"
+SCORE_FORMULA_CONTRACTS = {
+    "current40_momentum20_persistence20_decay15_cross5_v2": {
+        "components": (
+            ("current_points", 40.0),
+            ("momentum_points", 20.0),
+            ("persistence_points", 20.0),
+            ("decayed_history_points", 15.0),
+            ("cross_source_points", 5.0),
+        ),
+        "freshness_multiplier": True,
+    },
+}
 EXPECTED_SCHEMAS = {
     "intelligence": "trzip-intelligence-v3",
     "metadata": "trzip-live-data-v3",
@@ -83,6 +104,26 @@ def _load_document(path: Path, report: AuditReport, code: str) -> dict[str, Any]
     return value
 
 
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _manifest_child(latest: Path, relative_path: object) -> Path | None:
+    value = str(relative_path or "")
+    if not value:
+        return None
+    candidate = (latest / value).resolve()
+    try:
+        candidate.relative_to(latest.resolve())
+    except ValueError:
+        return None
+    return candidate
+
+
 def _observed_at(document: dict[str, Any], kind: str) -> Any:
     if kind == "intelligence":
         return (document.get("window") or {}).get("to")
@@ -133,6 +174,15 @@ def _audit_bundle(
     x_audit = collection_audit.get("x_korea_realtime") or {}
     if x_audit.get("status") == "observed" and x_audit.get("row_count") != 30:
         report.fail("x_current_collection_not_30")
+    if x_audit.get("status") == "observed":
+        collector = str(x_audit.get("collector") or "")
+        transport = str(x_audit.get("transport") or "")
+        if ALLOWED_X_COLLECTOR_TRANSPORTS.get(collector) != transport:
+            report.fail("x_collector_provenance_invalid")
+        if x_audit.get("profile") != "current_logged_in_chrome":
+            report.fail("x_collector_profile_invalid")
+        if collector == "current_logged_in_chrome_snapshot":
+            report.warn("x_collector_transport_unresolved")
     observed_count = sum(
         int(row.get("row_count") or 0)
         for row in collection_audit.values()
@@ -155,15 +205,163 @@ def _audit_bundle(
         report.fail("public_bundle_contains_secret_or_local_path")
 
 
+def _audit_frontend_delivery(
+    latest: Path,
+    intelligence: dict[str, Any],
+    metadata: dict[str, Any],
+    status: dict[str, Any],
+    report: AuditReport,
+) -> None:
+    manifest = _load_document(
+        latest / "manifest.json", report, "frontend_delivery_manifest"
+    )
+    if not manifest:
+        return
+    if manifest.get("schema_version") != EXPECTED_DELIVERY_SCHEMA:
+        report.fail("frontend_delivery_schema_mismatch")
+    expected_identity = (
+        metadata.get("publication_id"),
+        metadata.get("generated_at"),
+        metadata.get("observed_at"),
+    )
+    if (
+        manifest.get("publication_id"),
+        manifest.get("generated_at"),
+        manifest.get("observed_at"),
+    ) != expected_identity or manifest.get("mode") != "live":
+        report.fail("frontend_delivery_identity_mismatch")
+
+    compatibility = manifest.get("compatibility_documents") or {}
+    compatibility_payloads = {
+        "intelligence": intelligence,
+        "metadata": metadata,
+        "status": status,
+    }
+    for kind, payload in compatibility_payloads.items():
+        entry = compatibility.get(kind) or {}
+        path = _manifest_child(latest, entry.get("path"))
+        if path is None or not path.is_file():
+            report.fail(f"frontend_delivery_{kind}_missing")
+            continue
+        try:
+            digest = _sha256_file(path)
+        except OSError:
+            report.fail(f"frontend_delivery_{kind}_unreadable")
+            continue
+        if digest != entry.get("sha256"):
+            report.fail(f"frontend_delivery_{kind}_hash_mismatch")
+        observed_at = (
+            (payload.get("window") or {}).get("to")
+            if kind == "intelligence"
+            else payload.get("observed_at")
+        )
+        if (
+            payload.get("publication_id"),
+            payload.get("generated_at"),
+            observed_at,
+        ) != expected_identity:
+            report.fail(f"frontend_delivery_{kind}_identity_mismatch")
+
+    bundle = manifest.get("bundle") or {}
+    rankings_entry = bundle.get("rankings") or {}
+    rankings_path = _manifest_child(latest, rankings_entry.get("path"))
+    rankings: dict[str, Any] = {}
+    if rankings_path is None or not rankings_path.is_file():
+        report.fail("frontend_rankings_missing")
+    else:
+        try:
+            rankings = json.loads(rankings_path.read_text(encoding="utf-8"))
+            if _sha256_file(rankings_path) != rankings_entry.get("sha256"):
+                report.fail("frontend_rankings_hash_mismatch")
+        except (OSError, json.JSONDecodeError):
+            report.fail("frontend_rankings_unreadable")
+            rankings = {}
+    if rankings:
+        if rankings.get("schema_version") != "trzip-rankings-v1":
+            report.fail("frontend_rankings_schema_mismatch")
+        if (
+            rankings.get("publication_id"),
+            rankings.get("generated_at"),
+            rankings.get("observed_at"),
+        ) != expected_identity:
+            report.fail("frontend_rankings_identity_mismatch")
+        expected_keys = [
+            str(item.get("event_key") or "")
+            for item in intelligence.get("unified_ranking") or []
+        ]
+        published_keys = [
+            str(item.get("event_key") or "")
+            for item in rankings.get("unified_ranking") or []
+        ]
+        if published_keys != expected_keys:
+            report.fail("frontend_rankings_order_mismatch")
+
+    detail_index = bundle.get("trend_index") or []
+    expected_count = len(intelligence.get("unified_ranking") or [])
+    if (
+        not isinstance(detail_index, list)
+        or bundle.get("trend_count") != expected_count
+        or len(detail_index) != expected_count
+    ):
+        report.fail("frontend_trend_detail_count_mismatch")
+        detail_index = []
+    event_keys: list[str] = []
+    detail_failures = 0
+    for entry in detail_index:
+        event_key = str((entry if isinstance(entry, dict) else {}).get("event_key") or "")
+        path = _manifest_child(
+            latest,
+            (entry if isinstance(entry, dict) else {}).get("path"),
+        )
+        event_keys.append(event_key)
+        if not event_key or path is None or not path.is_file():
+            detail_failures += 1
+            continue
+        try:
+            detail = json.loads(path.read_text(encoding="utf-8"))
+            digest = _sha256_file(path)
+        except (OSError, json.JSONDecodeError):
+            detail_failures += 1
+            continue
+        if (
+            digest != entry.get("sha256")
+            or detail.get("schema_version") != "trzip-trend-detail-v1"
+            or (
+                detail.get("publication_id"),
+                detail.get("generated_at"),
+                detail.get("observed_at"),
+            ) != expected_identity
+            or (detail.get("trend") or {}).get("event_key") != event_key
+        ):
+            detail_failures += 1
+    expected_event_keys = [
+        str(item.get("event_key") or "")
+        for item in intelligence.get("unified_ranking") or []
+    ]
+    if event_keys != expected_event_keys or detail_failures:
+        report.fail("frontend_trend_detail_integrity_error")
+    report.metrics["frontend_delivery"] = {
+        "publication_id": manifest.get("publication_id"),
+        "trend_detail_count": len(detail_index),
+        "detail_failure_count": detail_failures,
+    }
+
+
 def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
     unified = intelligence.get("unified_ranking")
-    home = intelligence.get("public_top10")
-    if not isinstance(unified, list) or not isinstance(home, list):
+    trend_top10 = intelligence.get("trend_top10")
+    public_top10 = intelligence.get("public_top10")
+    company_ready = intelligence.get("company_ready_trends")
+    if not all(
+        isinstance(value, list)
+        for value in (unified, trend_top10, public_top10, company_ready)
+    ):
         report.fail("ranking_not_array")
         return
 
     report.metrics["unified_count"] = len(unified)
-    report.metrics["home_count"] = len(home)
+    report.metrics["home_count"] = len(trend_top10)
+    report.metrics["company_ready_count"] = len(company_ready)
     expected_ranks = list(range(1, len(unified) + 1))
     actual_ranks = [item.get("rank") for item in unified if isinstance(item, dict)]
     if actual_ranks != expected_ranks:
@@ -186,20 +384,49 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         score = float(item.get("score") or 0.0)
         scores.append(score)
         components = item.get("score_components") or {}
-        component_keys = (
-            "rrf_points",
-            "momentum_points",
-            "persistence_points",
-            "cross_source_points",
-        )
-        if not all(isinstance(components.get(key), (int, float)) for key in component_keys):
+        formula_version = components.get("formula_version")
+        formula = SCORE_FORMULA_CONTRACTS.get(formula_version)
+        if formula is None:
             score_mismatch_count += 1
         else:
-            total = round(sum(float(components[key]) for key in component_keys), 2)
-            if total != score or total != float(components.get("total_points", -1)):
+            component_contract = formula["components"]
+            component_values: list[float] = []
+            component_valid = True
+            for key, maximum in component_contract:
+                value = components.get(key)
+                if not isinstance(value, (int, float)) or isinstance(value, bool):
+                    component_valid = False
+                    break
+                numeric = float(value)
+                if numeric < 0 or numeric > maximum:
+                    component_valid = False
+                    break
+                component_values.append(numeric)
+            if not component_valid:
                 score_mismatch_count += 1
-        if components.get("formula_version") != "rrf60_momentum20_persistence15_cross5_v1":
-            score_mismatch_count += 1
+            else:
+                subtotal = round(sum(component_values), 2)
+                total = subtotal
+                if formula["freshness_multiplier"]:
+                    declared_subtotal = components.get("component_subtotal_points")
+                    multiplier = components.get("freshness_multiplier")
+                    if (
+                        not isinstance(declared_subtotal, (int, float))
+                        or isinstance(declared_subtotal, bool)
+                        or float(declared_subtotal) != subtotal
+                        or not isinstance(multiplier, (int, float))
+                        or isinstance(multiplier, bool)
+                        or not 0.0 <= float(multiplier) <= 1.0
+                    ):
+                        component_valid = False
+                    else:
+                        total = round(subtotal * float(multiplier), 2)
+                if (
+                    not component_valid
+                    or total != score
+                    or total != float(components.get("total_points", -1))
+                ):
+                    score_mismatch_count += 1
         if components.get("rounding_policy") != "each_component_2dp_then_sum_2dp":
             score_mismatch_count += 1
 
@@ -232,44 +459,79 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         }
     )
 
+    main_ranking = [item for item in unified if item.get("lane") == "main"]
     home_failures = 0
-    home_company_counts: dict[str, int] = {}
-    for item in home:
+    if [item.get("main_rank") for item in main_ranking] != list(
+        range(1, len(main_ranking) + 1)
+    ):
+        home_failures += 1
+    if any(
+        item.get("main_rank") is not None
+        for item in unified
+        if item.get("lane") != "main"
+    ):
+        home_failures += 1
+    if trend_top10 != main_ranking[:10] or public_top10 != trend_top10:
+        home_failures += 1
+    for item in trend_top10:
         if not isinstance(item, dict):
             home_failures += 1
             continue
-        name = str(item.get("display_name") or item.get("topic") or item.get("event_key"))
         event_key = str(item.get("event_key") or "")
         if event_key not in unified_rank_by_key or unified_rank_by_key[event_key] != item.get("rank"):
             home_failures += 1
+        if item.get("lane") != "main" or item.get("company_card_status") not in {
+            "ready", "enrichment_pending", "not_applicable"
+        }:
+            home_failures += 1
         keywords = item.get("keywords") or []
-        companies = item.get("companies") or []
-        home_company_counts[name] = len(companies)
-        if len(keywords) != 5 or any(keyword.get("affects_score") is not False for keyword in keywords):
+        if len(keywords) > 5 or any(
+            keyword.get("affects_score") is not False for keyword in keywords
+        ):
             home_failures += 1
-        if len(companies) < 5:
-            home_failures += 1
-        resolution = item.get("company_resolution") or {}
-        if resolution.get("publish_status") != "published" or resolution.get("minimum_gold_companies") != 5:
-            home_failures += 1
-        tickers = [str(company.get("stock_code") or "") for company in companies]
-        if not all(tickers) or len(tickers) != len(set(tickers)):
-            home_failures += 1
-        for company in companies:
-            identity = company.get("official_identity") or {}
-            if identity.get("status") != "verified" or identity.get("ranking_effect") != "none":
-                home_failures += 1
-            if company.get("ontology_complete") is not True:
-                home_failures += 1
-            evidence = company.get("evidence_sources") or []
-            path = company.get("ontology_path") or []
-            if not evidence or len(path) < 2:
-                home_failures += 1
-            if any(edge.get("review_status") not in {"observed", "approved"} or not edge.get("evidence_urls") for edge in path):
-                home_failures += 1
+
     if home_failures:
         report.fail("home_quality_gate_failed")
     report.metrics["home_quality_failure_count"] = home_failures
+
+    company_failures = 0
+    expected_company_ready = [
+        item for item in main_ranking
+        if item.get("company_card_status") == "ready"
+    ]
+    if company_ready != expected_company_ready:
+        company_failures += 1
+    home_company_counts: dict[str, int] = {}
+    for item in company_ready:
+        if not isinstance(item, dict):
+            company_failures += 1
+            continue
+        name = str(item.get("display_name") or item.get("topic") or item.get("event_key"))
+        companies = item.get("companies") or []
+        home_company_counts[name] = len(companies)
+        if item.get("lane") != "main" or item.get("company_card_status") != "ready":
+            company_failures += 1
+        resolution = item.get("company_resolution") or {}
+        if resolution.get("publish_status") != "published" or resolution.get("minimum_gold_companies") != 5:
+            company_failures += 1
+        tickers = [str(company.get("stock_code") or "") for company in companies]
+        if len(tickers) < 5 or not all(tickers) or len(tickers) != len(set(tickers)):
+            company_failures += 1
+        for company in companies:
+            identity = company.get("official_identity") or {}
+            if identity.get("status") != "verified" or identity.get("ranking_effect") != "none":
+                company_failures += 1
+            if company.get("ontology_complete") is not True:
+                company_failures += 1
+            evidence = company.get("evidence_sources") or []
+            path = company.get("ontology_path") or []
+            if not evidence or len(path) < 2:
+                company_failures += 1
+            if any(edge.get("review_status") not in {"observed", "approved"} or not edge.get("evidence_urls") for edge in path):
+                company_failures += 1
+    if company_failures:
+        report.fail("company_ready_contract_failed")
+    report.metrics["company_ready_failure_count"] = company_failures
     report.metrics["home_company_counts"] = home_company_counts
 
     verification_policy = intelligence.get("verification_policy") or {}
@@ -344,11 +606,21 @@ def _audit_database(
         ]
         if generated:
             report.fail("sqlite_contains_generated_observations")
-        for _, source, count, minimum, maximum, distinct_count, _ in rows:
+        invalid_collector_pairs: set[tuple[str, str]] = set()
+        for _, source, count, minimum, maximum, distinct_count, collector_version in rows:
             if source not in ALLOWED_RANKING_SOURCES:
                 report.fail("v3_database_contains_disallowed_source")
+            elif collector_version not in ALLOWED_COLLECTOR_VERSIONS[source]:
+                invalid_collector_pairs.add((str(source), str(collector_version)))
             if minimum != 1 or maximum != count or distinct_count != count:
                 report.fail("v3_source_hour_rank_incomplete")
+        invalid_collector_versions = [
+            {"source": source, "collector_version": version}
+            for source, version in sorted(invalid_collector_pairs)
+        ]
+        report.metrics["invalid_collector_versions"] = invalid_collector_versions
+        if invalid_collector_versions:
+            report.fail("collector_version_not_allowlisted")
         current_sources = {row[1] for row in rows}
         if "google_trends" not in current_sources:
             report.fail("google_v3_history_missing")
@@ -509,6 +781,13 @@ def audit_runtime(runtime_root: Path) -> dict[str, Any]:
     status = _load_document(latest / "status.json", report, "status")
     if intelligence and metadata and status:
         _audit_bundle(intelligence, metadata, status, report)
+        _audit_frontend_delivery(
+            latest,
+            intelligence,
+            metadata,
+            status,
+            report,
+        )
         _audit_ranking(intelligence, report)
     _audit_database(
         runtime_root / "data" / "trzip-hourly.sqlite3",

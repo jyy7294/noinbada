@@ -1,6 +1,5 @@
 import json
 from datetime import UTC, datetime
-from pathlib import Path
 
 import pytest
 
@@ -40,7 +39,7 @@ def _payload(observed_at: str, count: int = 30) -> dict:
     return {
         "schema_version": 1,
         "source": "x",
-        "collector": "chrome_extension_current_session",
+        "collector": "codex_chrome_current_session",
         "observed_at": observed_at,
         "scheduled_for": "2026-08-12T12:00:00Z",
         "url": "https://x.com/explore/tabs/trending",
@@ -59,25 +58,9 @@ def test_current_hour_bridge_accepts_complete_rank_1_to_30():
         minimum_rows=10,
     )
     assert len(trends) == 30
-    assert audit["collector"] == "chrome_extension_current_session"
-    assert audit["transport"] == "sanitized_download_inbox"
-    assert audit["schedule_delay_seconds"] == 4
-
-
-def test_current_hour_bridge_accepts_codex_logged_in_chrome_collector():
-    now = datetime(2026, 8, 12, 12, 10, tzinfo=UTC)
-    payload = _payload("2026-08-12T12:00:20Z")
-    payload["collector"] = "codex_chrome_current_session"
-
-    trends, audit = _validate_bridge_payload(
-        payload,
-        now=now,
-        minimum_rows=30,
-    )
-
-    assert len(trends) == 30
     assert audit["collector"] == "codex_chrome_current_session"
     assert audit["transport"] == "codex_browser_snapshot"
+    assert audit["schedule_delay_seconds"] == 4
 
 
 def test_current_hour_bridge_rejects_unknown_collector():
@@ -129,35 +112,11 @@ def test_collect_x_reads_sanitized_inbox_without_launching_browser(tmp_path):
     assert audit["profile"] == "current_logged_in_chrome"
 
 
-def test_missing_extension_inbox_fails_immediately(tmp_path):
+def test_missing_current_session_inbox_fails_immediately(tmp_path):
     with pytest.raises(XCollectionError) as caught:
         collect_x_page(
             inbox_file=tmp_path / "missing.json",
             timeout_ms=120_000,
             pause=lambda _seconds: pytest.fail("missing setup must not sleep"),
         )
-    assert caught.value.code == "extension_not_ready"
-
-
-def test_extension_has_no_cookie_or_storage_permission_and_only_x_trending_host():
-    root = Path(__file__).resolve().parents[1]
-    manifest = json.loads((
-        root / "chrome-extension" / "trzip-x-current-session" / "manifest.json"
-    ).read_text(encoding="utf-8"))
-    assert "cookies" not in manifest["permissions"]
-    assert "storage" not in manifest["permissions"]
-    assert manifest["host_permissions"] == ["https://x.com/explore/tabs/trending*"]
-    worker = (
-        root / "chrome-extension" / "trzip-x-current-session" / "service-worker.js"
-    ).read_text(encoding="utf-8")
-    assert "persistAcrossSessions: true" in worker
-    assert 'const OUTPUT_FILE = "TRZIP/x-current-session.json"' in worker
-
-
-def test_setup_uses_chrome_last_used_profile_by_default():
-    root = Path(__file__).resolve().parents[1]
-    setup = (root / "scripts" / "setup-x-chrome.ps1").read_text(encoding="utf-8")
-
-    assert '[string]$ProfileName = ""' in setup
-    assert "$LocalState.profile.last_used" in setup
-    assert '"--profile-directory=$ProfileDirectory"' in setup
+    assert caught.value.code == "current_session_not_ready"

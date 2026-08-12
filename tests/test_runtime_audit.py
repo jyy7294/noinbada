@@ -6,12 +6,13 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from trzip.runtime_audit import audit_runtime
+from trzip.publication_pipeline import _write_frontend_delivery
 
 
 def _write_runtime(root: Path) -> None:
     latest = root / "publication" / "latest"
     latest.mkdir(parents=True)
-    publication_id = "pub-test"
+    publication_id = "pub-" + ("a" * 32)
     generated_at = "2026-08-12T18:00:01+00:00"
     observed_at = "2026-08-12T18:00:00+00:00"
     company = {
@@ -29,20 +30,26 @@ def _write_runtime(root: Path) -> None:
     item = {
         "event_key": "event:test",
         "rank": 1,
+        "main_rank": 1,
         "display_name": "관측어",
-        "score": 66.0,
+        "score": 72.0,
         "score_components": {
-            "rrf_points": 50.0,
+            "current_points": 40.0,
             "momentum_points": 10.0,
-            "persistence_points": 5.0,
+            "persistence_points": 10.0,
+            "decayed_history_points": 11.0,
             "cross_source_points": 1.0,
-            "total_points": 66.0,
-            "formula_version": "rrf60_momentum20_persistence15_cross5_v1",
+            "component_subtotal_points": 72.0,
+            "freshness_multiplier": 1.0,
+            "total_points": 72.0,
+            "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
             "rounding_policy": "each_component_2dp_then_sum_2dp",
         },
         "latest_source_ranks": {"x": 1, "google_trends": 1},
         "provenance": ["observed"],
         "lane": "main",
+        "company_card_status": "ready",
+        "company_card_reason": "evidence_backed_five_or_more",
         "keywords": [
             {"text": f"관련어{index}", "affects_score": False} for index in range(1, 6)
         ],
@@ -59,7 +66,9 @@ def _write_runtime(root: Path) -> None:
         "generated_at": generated_at,
         "window": {"to": observed_at},
         "unified_ranking": [item],
+        "trend_top10": [item],
         "public_top10": [item],
+        "company_ready_trends": [item],
         "verification_policy": {"verification_affects_score": False},
         "verification_run": {"ranking_effect": "none"},
         "collection_status": {
@@ -82,7 +91,13 @@ def _write_runtime(root: Path) -> None:
         "collection": {
             "observed": 130,
             "audit": {
-                "x_korea_realtime": {"status": "observed", "row_count": 30},
+                "x_korea_realtime": {
+                    "status": "observed",
+                    "row_count": 30,
+                    "collector": "codex_chrome_current_session",
+                    "transport": "codex_browser_snapshot",
+                    "profile": "current_logged_in_chrome",
+                },
                 "google_geo_kr": {
                     "status": "observed",
                     "row_count": 100,
@@ -117,6 +132,12 @@ def _write_runtime(root: Path) -> None:
         (latest / f"{name}.json").write_text(
             json.dumps(value, ensure_ascii=False), encoding="utf-8"
         )
+    _write_frontend_delivery(
+        root / "publication",
+        intelligence,
+        metadata,
+        status,
+    )
 
     db_path = root / "data" / "trzip-hourly.sqlite3"
     db_path.parent.mkdir(parents=True)
@@ -136,7 +157,7 @@ def _write_runtime(root: Path) -> None:
     for offset in range(95, -1, -1):
         observed = (last_hour - timedelta(hours=offset)).isoformat()
         for source, count, version in (
-            ("x", 30, "x_current_session_v1"),
+            ("x", 30, "x_current_session_kr_v1"),
             ("google_trends", 100, "google_trending_now_kr_v1"),
         ):
             for rank in range(1, count + 1):
@@ -146,6 +167,20 @@ def _write_runtime(root: Path) -> None:
                 )
     connection.commit()
     connection.close()
+
+
+def _refresh_frontend_delivery(root: Path) -> None:
+    latest = root / "publication" / "latest"
+    documents = {
+        name: json.loads((latest / f"{name}.json").read_text(encoding="utf-8"))
+        for name in ("intelligence", "metadata", "status")
+    }
+    _write_frontend_delivery(
+        root / "publication",
+        documents["intelligence"],
+        documents["metadata"],
+        documents["status"],
+    )
 
 
 def test_runtime_audit_passes_complete_combined_runtime(tmp_path: Path) -> None:
@@ -169,7 +204,7 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
         "is_combined_rank": False,
     }
     intelligence["collection_status"] = {
-        "source_status": {"x": "extension_not_ready", "google_trends": "observed"},
+        "source_status": {"x": "current_session_not_ready", "google_trends": "observed"},
         "partial": True,
     }
     intelligence_path.write_text(json.dumps(intelligence), encoding="utf-8")
@@ -177,7 +212,7 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     metadata["collection"]["observed"] = 100
     metadata["collection"]["audit"]["x_korea_realtime"] = {
-        "status": "extension_not_ready",
+        "status": "current_session_not_ready",
         "row_count": 0,
     }
     metadata["coverage"]["rows"] = 9600
@@ -186,7 +221,7 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
     status_path = tmp_path / "publication" / "latest" / "status.json"
     status = json.loads(status_path.read_text(encoding="utf-8"))
     status["source_status"] = {
-        "x": "extension_not_ready",
+        "x": "current_session_not_ready",
         "google_trends": "observed",
     }
     status["partial"] = True
@@ -195,6 +230,7 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
     connection.execute("DELETE FROM hourly_observations WHERE source='x'")
     connection.commit()
     connection.close()
+    _refresh_frontend_delivery(tmp_path)
 
     result = audit_runtime(tmp_path)
 
@@ -208,14 +244,17 @@ def test_runtime_audit_rejects_score_and_company_evidence_breakage(tmp_path: Pat
     intelligence_path = tmp_path / "publication" / "latest" / "intelligence.json"
     intelligence = json.loads(intelligence_path.read_text(encoding="utf-8"))
     intelligence["unified_ranking"][0]["score"] = 99.0
-    intelligence["public_top10"][0]["companies"][0]["ontology_path"] = []
+    broken_companies = json.loads(json.dumps(intelligence["company_ready_trends"][0]["companies"]))
+    broken_companies[0]["ontology_path"] = []
+    intelligence["company_ready_trends"][0]["companies"] = broken_companies
     intelligence_path.write_text(json.dumps(intelligence), encoding="utf-8")
+    _refresh_frontend_delivery(tmp_path)
 
     result = audit_runtime(tmp_path)
 
     assert result["status"] == "fail"
     assert "score_component_mismatch" in result["failures"]
-    assert "home_quality_gate_failed" in result["failures"]
+    assert "company_ready_contract_failed" in result["failures"]
 
 
 def test_runtime_audit_rejects_latest_provider_duplicate(tmp_path: Path) -> None:
@@ -249,3 +288,41 @@ def test_runtime_audit_rejects_latest_provider_duplicate(tmp_path: Path) -> None
 
     assert result["status"] == "fail"
     assert "provider_verification_latest_hour_duplicate" in result["failures"]
+
+
+def test_runtime_audit_rejects_non_allowlisted_collector_version(tmp_path: Path) -> None:
+    _write_runtime(tmp_path)
+    connection = sqlite3.connect(tmp_path / "data" / "trzip-hourly.sqlite3")
+    connection.execute(
+        "UPDATE hourly_observations SET collector_version='manual_backfill_v0' "
+        "WHERE source='x' AND source_rank=1"
+    )
+    connection.commit()
+    connection.close()
+
+    result = audit_runtime(tmp_path)
+
+    assert result["status"] == "fail"
+    assert "collector_version_not_allowlisted" in result["failures"]
+    assert result["metrics"]["invalid_collector_versions"] == [{
+        "source": "x",
+        "collector_version": "manual_backfill_v0",
+    }]
+
+
+def test_runtime_audit_rejects_frontend_bundle_tampering(tmp_path: Path) -> None:
+    _write_runtime(tmp_path)
+    manifest_path = tmp_path / "publication" / "latest" / "manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    rankings_path = (
+        tmp_path / "publication" / "latest" / manifest["bundle"]["rankings"]["path"]
+    )
+    rankings = json.loads(rankings_path.read_text(encoding="utf-8"))
+    rankings["unified_ranking"] = []
+    rankings_path.write_text(json.dumps(rankings), encoding="utf-8")
+
+    result = audit_runtime(tmp_path)
+
+    assert result["status"] == "fail"
+    assert "frontend_rankings_hash_mismatch" in result["failures"]
+    assert "frontend_rankings_order_mismatch" in result["failures"]

@@ -4,6 +4,7 @@ from datetime import UTC, datetime, timedelta
 import pytest
 
 from trzip.publication_pipeline import (
+    _annotate_x_collection_provenance,
     _collection_health,
     _failure_class,
     _public_market_reference,
@@ -13,6 +14,7 @@ from trzip.publication_pipeline import (
     _refresh_verification_layer,
     _sanitize_collection_for_public,
     _validate_contract,
+    _validate_frontend_delivery,
     run,
 )
 from trzip.hourly_store import HourlyObservation
@@ -84,6 +86,19 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     assert intelligence["window"]["to"] == status["observed_at"] == result["observed_at"]
     assert result["schema_version"] == "trzip-live-data-v3"
     assert intelligence["verification_run"]["ranking_effect"] == "none"
+    manifest = json.loads(
+        (tmp_path / "latest" / "manifest.json").read_text(encoding="utf-8")
+    )
+    assert manifest["publication_id"] == result["publication_id"]
+    assert manifest["generated_at"] == result["generated_at"]
+    assert manifest["observed_at"] == result["observed_at"]
+    assert manifest["bundle"]["trend_count"] == len(intelligence["unified_ranking"])
+    rankings_path = tmp_path / "latest" / manifest["bundle"]["rankings"]["path"]
+    rankings = json.loads(rankings_path.read_text(encoding="utf-8"))
+    assert [item["event_key"] for item in rankings["unified_ranking"]] == [
+        item["event_key"] for item in intelligence["unified_ranking"]
+    ]
+    _validate_frontend_delivery(tmp_path / "latest", manifest)
     assert intelligence["news_discovery_queue"][0]["observed_term"] == "양즈깐루"
 
     second = run(tmp_path)
@@ -440,9 +455,9 @@ def test_collection_health_preserves_first_scheduler_timing_on_manual_retry(tmp_
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
     collection = {
         "observed": 100,
-        "errors": {"x": "extension_not_ready"},
+        "errors": {"x": "current_session_not_ready"},
         "audit": {
-            "x_korea_realtime": {"status": "extension_not_ready", "row_count": 0},
+            "x_korea_realtime": {"status": "current_session_not_ready", "row_count": 0},
             "google_geo_kr": {"status": "observed", "row_count": 100},
         },
     }
@@ -471,9 +486,9 @@ def test_collection_health_drops_unversioned_legacy_success_rows(tmp_path):
     )
     collection = {
         "observed": 193,
-        "errors": {"x": "extension_not_ready"},
+        "errors": {"x": "current_session_not_ready"},
         "audit": {
-            "x_korea_realtime": {"status": "extension_not_ready", "row_count": 0},
+            "x_korea_realtime": {"status": "current_session_not_ready", "row_count": 0},
             "google_geo_kr": {"status": "observed", "row_count": 193},
         },
     }
@@ -488,7 +503,7 @@ def test_collection_health_drops_unversioned_legacy_success_rows(tmp_path):
 def test_public_collection_and_monitoring_redact_local_paths_urls_and_credentials(tmp_path):
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
     secret_detail = (
-        r"XCollectionError: extension_not_ready: X inbox does not exist: "
+        r"XCollectionError: current_session_not_ready: X inbox does not exist: "
         r"C:\\Users\\person\\Desktop\\TRZIP\\x.json?token=super-secret"
     )
     collection = {
@@ -498,7 +513,7 @@ def test_public_collection_and_monitoring_redact_local_paths_urls_and_credential
         "errors": {"x": secret_detail},
         "audit": {
             "x_korea_realtime": {
-                "status": "extension_not_ready",
+                "status": "current_session_not_ready",
                 "row_count": 0,
                 "detail": secret_detail,
             },
@@ -540,8 +555,8 @@ def test_public_collection_and_monitoring_redact_local_paths_urls_and_credential
     latest = (tmp_path / "monitoring" / "latest.json").read_text(encoding="utf-8")
     serialized = json.dumps({"collection": public, "health": health}) + run_history + latest
 
-    assert public["errors"] == {"x": "extension_not_ready"}
-    assert public["audit"]["x_korea_realtime"]["detail"] == "extension_not_ready"
+    assert public["errors"] == {"x": "current_session_not_ready"}
+    assert public["audit"]["x_korea_realtime"]["detail"] == "current_session_not_ready"
     assert public["audit"]["google_geo_kr"]["detail"] == "verified_current_hour_snapshot"
     assert public["audit"]["google_geo_kr"]["declared_total"] == 185
     assert public["audit"]["google_geo_kr"]["page_count"] == 8
@@ -550,6 +565,53 @@ def test_public_collection_and_monitoring_redact_local_paths_urls_and_credential
     assert "https://" not in serialized
     assert "super-secret" not in serialized
     assert "token=" not in serialized
+
+
+def test_codex_logged_in_chrome_provenance_is_not_relabelled_as_extension(
+    tmp_path, monkeypatch
+):
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    inbox = tmp_path / "x-current-session.json"
+    inbox.write_text(
+        json.dumps({
+            "schema_version": 1,
+            "source": "x",
+            "collector": "codex_chrome_current_session",
+            "url": "https://x.com/explore/tabs/trending",
+            "region": "KR",
+            "region_verified": True,
+            "observed_at": at.isoformat(),
+            "row_count": 30,
+            "trends": [
+                {"rank": index, "topic": f"term {index}"}
+                for index in range(1, 31)
+            ],
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("TRZIP_X_INBOX", str(inbox))
+    collection = {
+        "observed": 30,
+        "observed_at": at.isoformat(),
+        "errors": {},
+        "audit": {
+            "x_korea_realtime": {
+                "status": "observed",
+                "row_count": 30,
+                "detail": "current logged-in Chrome extension",
+            },
+            "google_geo_kr": {"status": "unavailable", "row_count": 0},
+        },
+    }
+
+    annotated = _annotate_x_collection_provenance(collection, at)
+    public = _sanitize_collection_for_public(annotated)
+    x_audit = public["audit"]["x_korea_realtime"]
+
+    assert x_audit["collector"] == "codex_chrome_current_session"
+    assert x_audit["transport"] == "codex_browser_snapshot"
+    assert x_audit["profile"] == "current_logged_in_chrome"
+    assert "extension" not in x_audit["detail"]
 
 
 def test_pipeline_uses_preserved_same_hour_source_after_retry_failure(tmp_path, monkeypatch):

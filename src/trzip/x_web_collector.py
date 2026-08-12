@@ -40,8 +40,9 @@ class XTrend:
 class XPageSnapshot:
     """A sanitized DOM sample used by parser unit tests.
 
-    Production collection happens inside the user's installed Chrome
-    extension.  Python never receives cookies, HTML, or post bodies.
+    Production collection is controlled by Codex in the user's currently
+    logged-in Chrome. Python receives only the sanitized rank/topic snapshot,
+    never cookies, full HTML, or post bodies.
     """
 
     url: str
@@ -139,7 +140,7 @@ def inspect_x_page(
         )
     return trends, {
         "status": "observed",
-        "collector": "chrome_extension_current_session",
+        "collector": "codex_chrome_current_session",
         "url": X_TRENDS_URL,
         "region": "KR",
         "region_verified": True,
@@ -172,7 +173,6 @@ def _validate_bridge_payload(
         raise XCollectionError("snapshot_invalid", "unsupported X snapshot schema")
     collector = str(payload.get("collector") or "")
     supported_collectors = {
-        "chrome_extension_current_session": "sanitized_download_inbox",
         "codex_chrome_current_session": "codex_browser_snapshot",
     }
     if collector not in supported_collectors:
@@ -182,7 +182,7 @@ def _validate_bridge_payload(
     if parsed_url.scheme != "https" or parsed_url.hostname != "x.com" or parsed_url.path != "/explore/tabs/trending":
         raise XCollectionError("snapshot_invalid", "snapshot URL is not the X realtime trends page")
     if payload.get("region") != "KR" or payload.get("region_verified") is not True:
-        raise XCollectionError("region_unverified", "the extension did not verify South Korea")
+        raise XCollectionError("region_unverified", "the current Chrome snapshot did not verify South Korea")
 
     observed_at = _parse_aware_datetime(payload.get("observed_at"), "observed_at")
     current_hour = now.astimezone(UTC).replace(minute=0, second=0, microsecond=0)
@@ -252,7 +252,7 @@ def _read_snapshot(path: Path) -> object:
     try:
         return json.loads(path.read_text(encoding="utf-8-sig"))
     except FileNotFoundError as exc:
-        raise XCollectionError("extension_not_ready", f"X inbox does not exist: {path}") from exc
+        raise XCollectionError("current_session_not_ready", f"X inbox does not exist: {path}") from exc
     except (OSError, UnicodeError, json.JSONDecodeError) as exc:
         raise XCollectionError("snapshot_invalid", f"cannot read X inbox: {type(exc).__name__}") from exc
 
@@ -278,11 +278,11 @@ def collect_x_page(
     target = (inbox_file or default_inbox_file()).resolve()
     if not target.exists():
         raise XCollectionError(
-            "extension_not_ready",
-            f"X inbox does not exist; complete the one-time Chrome extension setup: {target}",
+            "current_session_not_ready",
+            f"X inbox does not exist; the Codex Chrome collection has not completed: {target}",
         )
     deadline = time.monotonic() + max(0.0, timeout_ms / 1_000)
-    last_error = XCollectionError("extension_not_ready", f"waiting for current-hour X snapshot: {target}")
+    last_error = XCollectionError("current_session_not_ready", f"waiting for current-hour X snapshot: {target}")
     while True:
         try:
             payload = _read_snapshot(target)
@@ -293,7 +293,7 @@ def collect_x_page(
             )
         except XCollectionError as exc:
             last_error = exc
-            if exc.code not in {"extension_not_ready", "snapshot_stale", "snapshot_invalid"}:
+            if exc.code not in {"current_session_not_ready", "snapshot_stale", "snapshot_invalid"}:
                 raise
         remaining = deadline - time.monotonic()
         if remaining <= 0:
@@ -301,13 +301,13 @@ def collect_x_page(
         pause(min(1.0, remaining))
 
 
-def wait_for_extension_setup(
+def wait_for_current_session_snapshot(
     *,
     inbox_file: Path | None = None,
     timeout_seconds: int = 600,
 ) -> dict:
     deadline = time.monotonic() + max(1, timeout_seconds)
-    last_error = XCollectionError("extension_not_ready", "waiting for the extension's first snapshot")
+    last_error = XCollectionError("current_session_not_ready", "waiting for the first Codex Chrome snapshot")
     while True:
         try:
             _trends, audit = collect_x_page(
@@ -325,13 +325,13 @@ def wait_for_extension_setup(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="TRZIP current-Chrome X snapshot consumer")
-    parser.add_argument("--setup", action="store_true", help="wait for the installed extension's first snapshot")
+    parser.add_argument("--setup", action="store_true", help="wait for the first Codex Chrome snapshot")
     parser.add_argument("--setup-timeout-seconds", type=int, default=600)
     parser.add_argument("--inbox", type=Path)
     parser.add_argument("--headed", action="store_true", help=argparse.SUPPRESS)
     args = parser.parse_args()
     if args.setup:
-        print(json.dumps(wait_for_extension_setup(
+        print(json.dumps(wait_for_current_session_snapshot(
             inbox_file=args.inbox,
             timeout_seconds=max(1, args.setup_timeout_seconds),
         ), ensure_ascii=False))

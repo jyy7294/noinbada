@@ -5,9 +5,9 @@
   "type": "object",
   "required": [
     "schema_version", "mode", "publication_id", "generated_at", "window",
-    "sources", "ranking_availability", "score_policy", "home_quality_gate",
+    "sources", "ranking_availability", "ranking_data_readiness", "score_formula", "score_policy", "home_quality_gate",
     "company_identity_status",
-    "unified_ranking", "public_top10",
+    "unified_ranking", "trend_top10", "public_top10", "company_ready_trends",
     "ontology_enrichment_queue", "enrichment_work_queue", "provider_keyword_candidate_queue",
     "lanes", "verification_run", "collection_status"
   ],
@@ -31,23 +31,35 @@
       "items": false
     },
     "ranking_availability": {"$ref": "#/$defs/rankingAvailability"},
+    "ranking_data_readiness": {"type": "object"},
+    "score_formula": {"type": "string", "minLength": 1},
     "score_policy": {"type": "object"},
     "home_quality_gate": {
       "type": "object",
       "required": [
         "policy_version", "ranking_effect", "unified_ranking_preserved",
-        "main_lane_total", "minimum_published_companies", "home_eligible_total", "home_excluded_total",
-        "exclusion_reasons", "rule"
+        "main_lane_total", "trend_top10_count", "company_count_affects_home",
+        "minimum_published_companies", "home_eligible_total", "home_excluded_total",
+        "exclusion_reasons", "context_resolved_total", "context_review_total",
+        "context_review_reasons", "rule"
       ],
       "properties": {
-        "policy_version": {"const": "home-context-gate-v1"},
+        "policy_version": {"const": "home-trend-subset-v2"},
         "ranking_effect": {"const": "none"},
         "unified_ranking_preserved": {"const": true},
         "main_lane_total": {"type": "integer", "minimum": 0},
+        "trend_top10_count": {"type": "integer", "minimum": 0, "maximum": 10},
+        "company_count_affects_home": {"const": false},
         "minimum_published_companies": {"const": 5},
         "home_eligible_total": {"type": "integer", "minimum": 0},
         "home_excluded_total": {"type": "integer", "minimum": 0},
         "exclusion_reasons": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 1}
+        },
+        "context_resolved_total": {"type": "integer", "minimum": 0},
+        "context_review_total": {"type": "integer", "minimum": 0},
+        "context_review_reasons": {
           "type": "object",
           "additionalProperties": {"type": "integer", "minimum": 1}
         },
@@ -68,7 +80,9 @@
       }
     },
     "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
+    "trend_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/trend"}},
     "public_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/trend"}},
+    "company_ready_trends": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
     "ontology_enrichment_queue": {
       "type": "array",
       "items": {
@@ -288,34 +302,41 @@
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "rrf_points", "momentum_points", "persistence_points",
-        "cross_source_points", "calibration", "total_points",
+        "current_points", "momentum_points", "persistence_points",
+        "decayed_history_points", "cross_source_points",
+        "component_subtotal_points", "freshness_multiplier", "total_points",
         "formula_version", "rounding_policy"
       ],
       "properties": {
-        "rrf_points": {"type": "number", "minimum": 0, "maximum": 60},
+        "current_points": {"type": "number", "minimum": 0, "maximum": 40},
         "momentum_points": {"type": "number", "minimum": 0, "maximum": 20},
-        "persistence_points": {"type": "number", "minimum": 0, "maximum": 15},
+        "persistence_points": {"type": "number", "minimum": 0, "maximum": 20},
+        "decayed_history_points": {"type": "number", "minimum": 0, "maximum": 15},
         "cross_source_points": {"type": "number", "minimum": 0, "maximum": 5},
-        "calibration": {"const": 1.0},
+        "component_subtotal_points": {"type": "number", "minimum": 0, "maximum": 100},
+        "freshness_multiplier": {"const": 1.0},
         "total_points": {"type": "number", "minimum": 0, "maximum": 100},
-        "formula_version": {"const": "rrf60_momentum20_persistence15_cross5_v1"},
+        "formula_version": {"const": "current40_momentum20_persistence20_decay15_cross5_v2"},
         "rounding_policy": {"const": "each_component_2dp_then_sum_2dp"}
       }
     },
     "trend": {
       "type": "object",
       "required": [
-        "rank", "event_key", "display_name", "observed_representative_term",
+        "rank", "main_rank", "event_key", "display_name", "observed_representative_term",
         "display_name_policy", "raw_terms", "broad_category",
         "lane", "score", "score_components", "latest_source_ranks",
+        "current_source_position", "momentum", "persistence", "score_explanation",
+        "source_metrics", "ranking_data_readiness", "lifecycle", "lifecycle_reason",
+        "lifecycle_baseline", "rank_change_by_source", "first_seen_at", "last_seen_at",
         "data_confidence", "keywords", "companies", "company_candidates",
         "company_resolution", "verification_layer", "news_context",
-        "home_context_status", "home_context_reason",
+        "home_context_status", "home_context_reason", "company_card_status", "company_card_reason",
         "ranking_availability_status"
       ],
       "properties": {
         "rank": {"type": "integer", "minimum": 1},
+        "main_rank": {"type": ["integer", "null"], "minimum": 1},
         "event_key": {"type": "string", "minLength": 1},
         "display_name": {"type": "string", "minLength": 1},
         "observed_representative_term": {"type": "string", "minLength": 1},
@@ -327,6 +348,18 @@
         "lane": {"enum": ["main", "issue", "review"]},
         "score": {"type": "number", "minimum": 0, "maximum": 100},
         "score_components": {"$ref": "#/$defs/score_components"},
+        "current_source_position": {"type": "number", "minimum": 0, "maximum": 1},
+        "momentum": {"type": "number", "minimum": 0, "maximum": 1},
+        "persistence": {"type": "number", "minimum": 0, "maximum": 1},
+        "score_explanation": {"type": "object"},
+        "source_metrics": {"type": "object"},
+        "ranking_data_readiness": {"type": "object"},
+        "lifecycle": {"enum": ["new", "rising", "sustained", "rebounding"]},
+        "lifecycle_reason": {"type": "string", "minLength": 1},
+        "lifecycle_baseline": {"type": "object"},
+        "rank_change_by_source": {"type": "object"},
+        "first_seen_at": {"type": "string", "format": "date-time"},
+        "last_seen_at": {"type": "string", "format": "date-time"},
         "latest_source_ranks": {"type": "object"},
         "data_confidence": {"type": "object"},
         "keywords": {"type": "array", "maxItems": 5, "items": {"$ref": "#/$defs/keyword"}},
@@ -345,8 +378,15 @@
             "not_main_lane", "unclassified", "unresolved", "ambiguous_person",
             "context_resolved", "observed_or_reviewed_related_expression",
             "reviewed_ontology_path", "matched_verification_provider",
-            "linked_news_context", "context_evidence_missing",
-            "company_ontology_incomplete"
+            "linked_news_context", "context_evidence_missing"
+          ]
+        },
+        "company_card_status": {"enum": ["ready", "enrichment_pending", "not_applicable"]},
+        "company_card_reason": {
+          "enum": [
+            "evidence_backed_five_or_more",
+            "fewer_than_five_evidence_backed_companies",
+            "company_linking_not_allowed_for_lane_or_context"
           ]
         },
         "ranking_availability_status": {

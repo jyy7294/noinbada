@@ -29,7 +29,10 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
     )
     trend_required = set(payload["$defs"]["trend"]["required"])
     company_required = set(payload["$defs"]["company"]["required"])
-    assert {"display_name", "score_components", "keywords", "companies"} <= trend_required
+    assert {
+        "display_name", "score_components", "keywords", "companies", "main_rank",
+        "company_card_status", "company_card_reason",
+    } <= trend_required
     assert {
         "relationship_reason", "company_summary", "ontology_path", "evidence_sources"
     } <= company_required
@@ -38,6 +41,7 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
         {"maxItems": 0}, {"minItems": 5}
     ]
     assert "ranking_availability" in payload["required"]
+    assert {"trend_top10", "public_top10", "company_ready_trends"} <= set(payload["required"])
     assert "verification_run" in payload["required"]
     assert "ranking_availability_status" in trend_required
     assert payload["properties"]["verification_run"]["properties"]["ranking_effect"] == {"const": "none"}

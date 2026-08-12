@@ -34,7 +34,8 @@ X 한국 실시간 1~30 + Google Trending Now KR 전체
 | publication | `$env:LOCALAPPDATA\TRZIP\publication` |
 | live-data worktree | `$env:LOCALAPPDATA\TRZIP\live-data` |
 | 로그 | `$env:LOCALAPPDATA\TRZIP\logs` |
-| Windows 작업 | `TRZIP X Google Hourly Collector` |
+| 정각 실행 주체 | Codex 데스크톱 자동화 `trzip` |
+| 자동화 설정 | `$env:USERPROFILE\.codex\automations\trzip\automation.toml` |
 
 환경변수와 API 키는 Windows 사용자 환경 또는 로컬 `.env`에만 둡니다. 값 자체를 문서·로그·커밋·대화에 복사하지 않습니다.
 
@@ -44,14 +45,14 @@ X 한국 실시간 1~30 + Google Trending Now KR 전체
 git status -sb
 git fetch origin
 git log --oneline --decorate -8 --all
-Get-ScheduledTask -TaskName "TRZIP X Google Hourly Collector"
-Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
+$automation = Join-Path $env:USERPROFILE ".codex\automations\trzip\automation.toml"
+Get-Content -Raw -Encoding UTF8 $automation
 git -C "$env:LOCALAPPDATA\TRZIP\live-data" status -sb
 git -C "$env:LOCALAPPDATA\TRZIP\live-data" rev-parse HEAD
 git ls-remote origin refs/heads/main refs/heads/live-data
 ```
 
-그다음 최신 `status.json`의 `partial`, `source_status`, `observed_at`과 SQLite 최신 출처별 행 수를 확인합니다. Windows 작업의 `LastTaskResult=0`은 스크립트가 끝났다는 뜻일 뿐 X와 Google이 모두 관측됐다는 뜻이 아닙니다.
+자동화 설정의 `status = "ACTIVE"`, `rrule = "FREQ=HOURLY;INTERVAL=1;BYMINUTE=0"`, 안정 실행 checkout 경로를 확인합니다. 그다음 최신 `status.json`의 `partial`, `source_status`, `observed_at`과 SQLite 최신 출처별 행 수를 확인합니다. 자동화 실행 성공 표시는 작업이 끝났다는 뜻일 뿐 X와 Google이 모두 관측됐다는 뜻이 아닙니다.
 
 ## 4. 코드 체크포인트와 원격 복구 원칙
 
@@ -59,7 +60,7 @@ git ls-remote origin refs/heads/main refs/heads/live-data
 - 완료된 기능은 전체 회귀검증 후 같은 작업 안에서 `main`까지 병합·푸시합니다. 시간만 지났다는 이유로 깨진 코드를 자동 커밋하지 않습니다.
 - 푸시 후 `git ls-remote origin refs/heads/main`과 로컬 HEAD가 같은지 확인합니다.
 - `main` 갱신 뒤 안정 실행 checkout을 fast-forward합니다.
-- 예약 작업은 코드 저장용이 아닙니다. 매시간 `latest`, `observations`, `monitoring`만 `live-data`에 커밋·푸시합니다.
+- Codex 정각 자동화는 코드 저장용이 아닙니다. 매시간 `latest`, `observations`, `monitoring`만 `live-data`에 커밋·푸시합니다.
 - 토큰·세션 종료가 임박했는데 테스트가 끝나지 않았다면 깨진 코드를 `main`에 넣지 않습니다. 안전한 범위만 별도 `wip/codex-*` 브랜치에 올리고 실패·남은 작업을 명시합니다.
 - 팀 브랜치를 통합할 때 브랜치 전체를 무조건 병합하지 않습니다. 현재 원칙과 겹치는 데이터·규칙만 출처를 보존해 선택 통합하고 전체 회귀검증을 다시 실행합니다.
 
@@ -93,33 +94,26 @@ powershell -ExecutionPolicy Bypass -File scripts\checkpoint-main.ps1 `
 
 ```powershell
 $runtime = Join-Path $env:USERPROFILE "Documents\Codex\noinbada-runtime"
-git -C $runtime fetch origin "+refs/heads/main:refs/remotes/origin/main"
-git -C $runtime merge --ff-only origin/main
-& "$runtime\.venv\Scripts\python.exe" -m pip install -e $runtime
-powershell -ExecutionPolicy Bypass -File "$runtime\scripts\install-hourly-task.ps1" `
-  -ProjectRoot $runtime -ReplaceDifferentProjectRoot
+powershell -ExecutionPolicy Bypass -File scripts\promote-runtime.ps1 -RuntimeCheckout $runtime
 ```
 
-다른 로컬 변경이 있거나 fast-forward가 불가능하면 중단하고 먼저 diff를 검토합니다. 강제 reset이나 force push는 하지 않습니다.
+승격 스크립트는 다른 로컬 변경이나 fast-forward 불가 상태에서 중단하고, 활성화된 Codex 정각 자동화가 매시 0분 규칙과 해당 런타임 경로를 사용하는지 확인합니다. 강제 reset이나 force push는 하지 않습니다.
 
-## 6. X 확장 프로그램 단 한 번의 수동 게이트
+## 6. X 현재 로그인 Chrome 게이트
 
-Chrome 보안상 내부 확장 관리 화면은 Codex 브라우저 자동화가 직접 조작할 수 없습니다. 찬희님이 실제 X에 로그인한 Chrome 프로필에서 한 번만 아래 작업이 필요합니다.
+X는 확장 프로그램이나 전용 프로필을 사용하지 않습니다. Codex 정각 자동화가 찬희님이 현재 로그인해 둔 Chrome 세션에서 한국 실시간 트렌드 페이지를 직접 읽습니다.
 
-1. 평소 X에 로그인해 사용하는 Chrome 프로필에서 `chrome://extensions` 열기
-2. 개발자 모드 켜기
-3. 압축해제된 확장 프로그램 로드
-4. `$env:USERPROFILE\Documents\Codex\noinbada-runtime\chrome-extension\trzip-x-current-session` 선택
-5. 확장 상태가 켜져 있고 X 계정이 로그인됐는지 확인
+1. 평소 사용하는 Chrome에서 X 로그인 상태 확인
+2. `https://x.com/explore/tabs/trending`에서 대한민국 트렌드가 보이는지 확인
+3. Codex 데스크톱 앱과 `trzip` 정각 자동화가 활성 상태인지 확인
 
-확장은 쿠키·저장소 권한 없이 자신이 연 비활성 X 탭의 한국 트렌드 순위와 시각만 저장합니다. inbox가 생기기 전에는 Google 단일 출처 결과만 나오며 반드시 잠정 순위로 표시됩니다.
+자동화가 실제 1~30위를 완전히 읽은 경우에만 해당 정각 X 스냅샷을 저장합니다. 로그인 만료·지역 불명·30개 미달이면 실패로 남기고 이전 시각 데이터를 재사용하지 않습니다.
 
 ## 7. 실제 E2E 확인
 
 ```powershell
 $runtime = Join-Path $env:USERPROFILE "Documents\Codex\noinbada-runtime"
 powershell -ExecutionPolicy Bypass -File "$runtime\scripts\collect-hourly.ps1" -ProjectRoot $runtime
-Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
 & "$runtime\.venv\Scripts\python.exe" "$runtime\scripts\audit-runtime.py"
 ```
 
@@ -143,8 +137,8 @@ Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
 
 ## 9. 알려진 운영 게이트
 
-- X 확장이 실제 로그인 Chrome에 설치되지 않으면 X는 수집되지 않습니다.
-- 노트북 종료·로그아웃·장시간 절전은 예약 작업의 정시 관측을 보장하지 않습니다. 놓친 시간은 결측으로 남깁니다.
+- Codex 데스크톱 앱이 실행되지 않았거나 현재 Chrome의 X 로그인이 만료되면 X는 수집되지 않습니다.
+- 노트북 종료·로그아웃·장시간 절전은 Codex 자동화의 정시 관측을 보장하지 않습니다. 놓친 시간은 결측으로 남깁니다.
 - NAVER 키가 인증 실패 상태면 검증 레이어만 실패하며 핵심 수집과 순위는 계속됩니다.
 - 기업 5개를 증명하지 못한 트렌드는 기업 공개가 보류됩니다. 이는 오류가 아니라 억지 연결을 막는 품질 게이트입니다.
 - 최소 3~7일 연속 성공률이 쌓이기 전에는 운영 안정성을 확정하지 않습니다.

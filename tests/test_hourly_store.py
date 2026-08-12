@@ -226,3 +226,28 @@ def test_pre_v3_observations_are_preserved_but_quarantined_from_rankings(tmp_pat
     profile = coverage(target)
     assert profile["rows"] == 0
     assert profile["legacy_observed_rows"] == 1
+
+
+def test_arbitrary_non_null_collector_version_is_rejected_and_quarantined(tmp_path):
+    target = tmp_path / "collector-cohort.sqlite3"
+    at = datetime(2026, 8, 12, 0, tzinfo=UTC)
+    with pytest.raises(ValueError, match="not approved"):
+        upsert([
+            HourlyObservation(
+                at.isoformat(), "x", "untrusted", 1, 100, "observed",
+                collector_version="manual_backfill_v0",
+            ),
+        ], target)
+
+    # Raw evidence can still be preserved by migrations or explicit audit
+    # tooling, but it cannot enter any production ranking view.
+    with connect(target) as connection:
+        connection.execute(
+            """INSERT INTO hourly_observations
+               (observed_at,source,topic,source_rank,value,provenance,collector_version)
+               VALUES (?,?,?,?,?,?,?)""",
+            (at.isoformat(), "x", "quarantined", 1, 100, "observed", "manual_backfill_v0"),
+        )
+
+    assert hourly_rankings(at, target) == []
+    assert snapshot(at, target) == []

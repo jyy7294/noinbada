@@ -3,8 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
+import re
+import shutil
 from dataclasses import asdict
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -31,6 +34,33 @@ NEWS_DISCOVERY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "news_
 DEFAULT_HOURLY_VERIFICATION_TERM_LIMIT = 3
 MAX_HOURLY_VERIFICATION_TERM_LIMIT = 3
 MONITORING_CONTRACT_VERSION = "trzip-v3-hourly"
+FRONTEND_DELIVERY_SCHEMA_VERSION = "trzip-frontend-delivery-v1"
+FRONTEND_RANKINGS_SCHEMA_VERSION = "trzip-rankings-v1"
+FRONTEND_TREND_SCHEMA_VERSION = "trzip-trend-detail-v1"
+X_COLLECTOR_TRANSPORTS = {
+    "codex_chrome_current_session": "codex_browser_snapshot",
+}
+RANKING_SUMMARY_FIELDS = (
+    "event_key",
+    "display_name",
+    "topic",
+    "rank",
+    "main_rank",
+    "score",
+    "score_components",
+    "lane",
+    "category",
+    "lifecycle",
+    "lifecycle_label",
+    "first_seen_at",
+    "last_seen_at",
+    "latest_source_ranks",
+    "rank_change_by_source",
+    "source_badge",
+    "confidence",
+    "data_confidence",
+    "company_resolution",
+)
 
 
 def _read_json(path: Path, default):
@@ -44,6 +74,83 @@ def _write_json(path: Path, payload) -> None:
     temporary = path.with_suffix(path.suffix + ".tmp")
     temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     temporary.replace(path)
+
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _safe_publication_directory(publication_id: str) -> str:
+    value = str(publication_id or "")
+    if not re.fullmatch(r"pub-[a-f0-9]{32}", value):
+        raise ValueError("publication_id is not safe for a delivery directory")
+    return value
+
+
+def _trend_filename(event_key: str) -> str:
+    return f"trend-{hashlib.sha256(event_key.encode('utf-8')).hexdigest()[:24]}.json"
+
+
+def _ranking_summary(item: dict) -> dict:
+    return {
+        field: item[field]
+        for field in RANKING_SUMMARY_FIELDS
+        if field in item
+    }
+
+
+def _current_x_snapshot_provenance(at: datetime) -> dict[str, str]:
+    """Read only the allowlisted collector identity from the verified inbox.
+
+    X collection is accepted only from Codex-controlled logged-in Chrome. This
+    helper preserves that transport without publishing the inbox path or any
+    browser/session data.
+    """
+
+    fallback = {
+        "collector": "codex_chrome_current_session",
+        "transport": X_COLLECTOR_TRANSPORTS["codex_chrome_current_session"],
+        "profile": "current_logged_in_chrome",
+    }
+    try:
+        from .x_web_collector import default_inbox_file
+
+        payload = _read_json(default_inbox_file(), {})
+        collector = str(payload.get("collector") or "")
+        observed_at = datetime.fromisoformat(
+            str(payload.get("observed_at") or "").replace("Z", "+00:00")
+        )
+        observed_hour = floor_hour(observed_at.astimezone(UTC))
+        if (
+            collector not in X_COLLECTOR_TRANSPORTS
+            or payload.get("source") != "x"
+            or payload.get("region") != "KR"
+            or payload.get("region_verified") is not True
+            or int(payload.get("row_count") or 0) < 30
+            or observed_hour != floor_hour(at)
+        ):
+            return fallback
+        return {
+            "collector": collector,
+            "transport": X_COLLECTOR_TRANSPORTS[collector],
+            "profile": "current_logged_in_chrome",
+        }
+    except (OSError, TypeError, ValueError, json.JSONDecodeError):
+        return fallback
+
+
+def _annotate_x_collection_provenance(collection: dict, at: datetime) -> dict:
+    audit = collection.setdefault("audit", {}).get("x_korea_realtime")
+    if not isinstance(audit, dict) or audit.get("status") != "observed":
+        return collection
+    provenance = _current_x_snapshot_provenance(at)
+    audit.update(provenance)
+    audit["detail"] = "verified_current_hour_snapshot"
+    return collection
 
 
 def _hourly_verification_term_limit(environment: dict[str, str] | None = None) -> int:
@@ -286,6 +393,27 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         raise ValueError("Unified ranking must have continuous ranks")
     if any("generated" in item.get("provenance", []) for item in ranking):
         raise ValueError("Generated observations cannot enter the live ranking")
+
+    main_ranking = [item for item in ranking if item.get("lane") == "main"]
+    if [item.get("main_rank") for item in main_ranking] != list(
+        range(1, len(main_ranking) + 1)
+    ):
+        raise ValueError("Main lane must have continuous score-preserving main ranks")
+    if any(
+        item.get("main_rank") is not None
+        for item in ranking
+        if item.get("lane") != "main"
+    ):
+        raise ValueError("Only main-lane trends may have a main rank")
+
+    trend_top10 = intelligence.get("trend_top10", [])
+    public_top10 = intelligence.get("public_top10", [])
+    expected_trend_top10 = main_ranking[:10]
+    if trend_top10 != expected_trend_top10:
+        raise ValueError("trend_top10 must be the first ten main-lane trends without reranking")
+    if public_top10 != trend_top10:
+        raise ValueError("public_top10 must remain a migration alias of trend_top10")
+
     for item in ranking:
         published_companies = item.get("companies", [])
         company_status = item.get("company_resolution", {}).get("publish_status")
@@ -311,6 +439,240 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
                 raise ValueError(
                     f"Pending evidence cannot be a confirmed relationship: {company.get('company')}"
                 )
+
+
+def _delivery_descriptor(publication_id: str, trend_count: int) -> dict:
+    safe_id = _safe_publication_directory(publication_id)
+    return {
+        "schema_version": FRONTEND_DELIVERY_SCHEMA_VERSION,
+        "manifest_path": "latest/manifest.json",
+        "bundle_path": f"latest/delivery/{safe_id}",
+        "rankings_path": f"latest/delivery/{safe_id}/rankings.json",
+        "trend_detail_count": int(trend_count),
+        "contract": "manifest-last immutable bundle; existing three documents retained",
+    }
+
+
+def _validated_child(root: Path, relative_path: str) -> Path:
+    target = (root / relative_path).resolve()
+    try:
+        target.relative_to(root.resolve())
+    except ValueError as exc:
+        raise ValueError("delivery manifest path escapes latest root") from exc
+    return target
+
+
+def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
+    identity = (
+        manifest.get("publication_id"),
+        manifest.get("generated_at"),
+        manifest.get("observed_at"),
+    )
+    if None in identity or manifest.get("mode") != "live":
+        raise ValueError("frontend delivery identity is incomplete")
+    documents = manifest.get("compatibility_documents") or {}
+    for kind in ("intelligence", "metadata", "status"):
+        entry = documents.get(kind) or {}
+        path = _validated_child(latest, str(entry.get("path") or ""))
+        if not path.is_file() or _sha256_file(path) != entry.get("sha256"):
+            raise ValueError(f"frontend delivery compatibility hash mismatch: {kind}")
+        payload = _read_json(path, {})
+        observed_at = (
+            (payload.get("window") or {}).get("to")
+            if kind == "intelligence"
+            else payload.get("observed_at")
+        )
+        if (
+            payload.get("publication_id"),
+            payload.get("generated_at"),
+            observed_at,
+        ) != identity:
+            raise ValueError(f"frontend delivery compatibility identity mismatch: {kind}")
+
+    bundle = manifest.get("bundle") or {}
+    rankings_entry = bundle.get("rankings") or {}
+    rankings_path = _validated_child(latest, str(rankings_entry.get("path") or ""))
+    if not rankings_path.is_file() or _sha256_file(rankings_path) != rankings_entry.get("sha256"):
+        raise ValueError("frontend rankings hash mismatch")
+    rankings = _read_json(rankings_path, {})
+    if (
+        rankings.get("publication_id"),
+        rankings.get("generated_at"),
+        rankings.get("observed_at"),
+    ) != identity:
+        raise ValueError("frontend rankings identity mismatch")
+
+    detail_index = bundle.get("trend_index") or []
+    if len(detail_index) != int(bundle.get("trend_count") or -1):
+        raise ValueError("frontend trend detail count mismatch")
+    event_keys: set[str] = set()
+    for entry in detail_index:
+        event_key = str(entry.get("event_key") or "")
+        detail_path = _validated_child(latest, str(entry.get("path") or ""))
+        if not event_key or event_key in event_keys:
+            raise ValueError("frontend trend detail event key is missing or duplicated")
+        event_keys.add(event_key)
+        if not detail_path.is_file() or _sha256_file(detail_path) != entry.get("sha256"):
+            raise ValueError(f"frontend trend detail hash mismatch: {event_key}")
+        detail = _read_json(detail_path, {})
+        if (
+            detail.get("publication_id"),
+            detail.get("generated_at"),
+            detail.get("observed_at"),
+        ) != identity or (detail.get("trend") or {}).get("event_key") != event_key:
+            raise ValueError(f"frontend trend detail identity mismatch: {event_key}")
+
+
+def _write_frontend_delivery(
+    root: Path,
+    intelligence: dict,
+    metadata: dict,
+    status: dict,
+    *,
+    retained_bundles: int = 2,
+) -> dict:
+    """Publish a manifest-last immutable bundle for the replacement frontend.
+
+    Existing consumers retain ``latest/intelligence.json``, ``metadata.json``
+    and ``status.json``.  New consumers first read ``latest/manifest.json`` and
+    then immutable versioned ranking/detail files, so an interrupted hourly
+    write cannot combine documents from different observation hours.
+    """
+
+    latest = root / "latest"
+    publication_id = _safe_publication_directory(str(metadata.get("publication_id") or ""))
+    generated_at = str(metadata.get("generated_at") or "")
+    observed_at = str(metadata.get("observed_at") or "")
+    delivery_root = latest / "delivery"
+    delivery_root.mkdir(parents=True, exist_ok=True)
+    stage = delivery_root / f".{publication_id}.tmp"
+    bundle_dir = delivery_root / publication_id
+    for disposable in (stage, bundle_dir):
+        if disposable.exists():
+            shutil.rmtree(disposable)
+    (stage / "trends").mkdir(parents=True)
+
+    ranking = list(intelligence.get("unified_ranking") or [])
+    detail_index: list[dict] = []
+    for item in ranking:
+        event_key = str(item.get("event_key") or "").strip()
+        if not event_key:
+            raise ValueError("frontend delivery requires an event_key for every trend")
+        filename = _trend_filename(event_key)
+        relative = f"delivery/{publication_id}/trends/{filename}"
+        detail_payload = {
+            "schema_version": FRONTEND_TREND_SCHEMA_VERSION,
+            "publication_id": publication_id,
+            "generated_at": generated_at,
+            "observed_at": observed_at,
+            "mode": "live",
+            "trend": item,
+        }
+        stage_path = stage / "trends" / filename
+        _write_json(stage_path, detail_payload)
+        detail_index.append({
+            "event_key": event_key,
+            "path": relative,
+            "sha256": _sha256_file(stage_path),
+        })
+
+    rankings_payload = {
+        "schema_version": FRONTEND_RANKINGS_SCHEMA_VERSION,
+        "publication_id": publication_id,
+        "generated_at": generated_at,
+        "observed_at": observed_at,
+        "mode": "live",
+        "unified_ranking": [_ranking_summary(item) for item in ranking],
+        "public_top10": [
+            _ranking_summary(item) for item in intelligence.get("public_top10") or []
+        ],
+        "trend_top10": [
+            _ranking_summary(item)
+            for item in intelligence.get("trend_top10", intelligence.get("public_top10")) or []
+        ],
+        "company_ready_trends": [
+            _ranking_summary(item)
+            for item in intelligence.get("company_ready_trends") or []
+        ],
+        "trend_detail_index": [
+            {"event_key": entry["event_key"], "path": entry["path"]}
+            for entry in detail_index
+        ],
+    }
+    rankings_stage = stage / "rankings.json"
+    _write_json(rankings_stage, rankings_payload)
+    rankings_sha256 = _sha256_file(rankings_stage)
+    stage.replace(bundle_dir)
+
+    compatibility_documents = {}
+    for kind in ("intelligence", "metadata", "status"):
+        path = latest / f"{kind}.json"
+        compatibility_documents[kind] = {
+            "path": f"{kind}.json",
+            "sha256": _sha256_file(path),
+        }
+    manifest = {
+        "schema_version": FRONTEND_DELIVERY_SCHEMA_VERSION,
+        "publication_id": publication_id,
+        "generated_at": generated_at,
+        "observed_at": observed_at,
+        "mode": "live",
+        "compatibility_documents": compatibility_documents,
+        "bundle": {
+            "path": f"delivery/{publication_id}",
+            "rankings": {
+                "path": f"delivery/{publication_id}/rankings.json",
+                "sha256": rankings_sha256,
+            },
+            "trend_count": len(detail_index),
+            "trend_index": detail_index,
+        },
+    }
+    _write_json(latest / "manifest.json", manifest)
+    _validate_frontend_delivery(latest, manifest)
+
+    bundles = sorted(
+        (
+            path for path in delivery_root.iterdir()
+            if path.is_dir() and not path.name.startswith(".")
+        ),
+        key=lambda path: path.stat().st_mtime_ns,
+        reverse=True,
+    )
+    for old_bundle in bundles[max(1, retained_bundles):]:
+        shutil.rmtree(old_bundle)
+    return manifest
+
+
+def validate_frontend_delivery(root: Path) -> dict:
+    """Validate the persisted manifest and every referenced frontend document."""
+
+    latest = Path(root) / "latest"
+    manifest = _read_json(latest / "manifest.json", {})
+    if not isinstance(manifest, dict) or not manifest:
+        raise ValueError("frontend delivery manifest is missing")
+    _validate_frontend_delivery(latest, manifest)
+    return manifest
+
+    expected_company_ready = [
+        item for item in main_ranking
+        if item.get("company_card_status") == "ready"
+    ]
+    company_ready = intelligence.get("company_ready_trends", [])
+    if company_ready != expected_company_ready:
+        raise ValueError(
+            "company_ready_trends must preserve global order and contain every ready main trend"
+        )
+    for item in company_ready:
+        unique_stocks = {
+            str(company.get("stock_code") or "").strip()
+            for company in item.get("companies") or []
+            if str(company.get("stock_code") or "").strip()
+        }
+        if len(unique_stocks) < 5:
+            raise ValueError("Company-ready trends require five unique listed stocks")
+        if (item.get("company_resolution") or {}).get("publish_status") != "published":
+            raise ValueError("Company-ready trends require a published company resolution")
 
 
 def _previous_market_by_code(payload: dict) -> dict[str, dict]:
@@ -479,7 +841,7 @@ def _failure_class(detail: str) -> str:
 
 
 PUBLIC_SOURCE_FAILURE_CODES = frozenset({
-    "extension_not_ready",
+    "current_session_not_ready",
     "auth_required",
     "selector_changed",
     "empty",
@@ -529,7 +891,7 @@ def _public_source_status(source: str, detail: object, raw_status: object = None
     value = str(detail or "").casefold()
     if source == "x":
         for code in (
-            "extension_not_ready", "auth_required", "selector_changed", "empty",
+            "current_session_not_ready", "auth_required", "selector_changed", "empty",
             "region_unverified", "incomplete_scroll", "snapshot_invalid", "snapshot_stale",
         ):
             if code in value:
@@ -563,6 +925,18 @@ def _sanitize_collection_for_public(collection: dict) -> dict:
             "row_count": row_count,
             "detail": "verified_current_hour_snapshot" if code == "observed" else code,
         }
+        if source == "x" and code == "observed":
+            collector = str(item.get("collector") or "")
+            expected_transport = X_COLLECTOR_TRANSPORTS.get(collector)
+            transport = str(item.get("transport") or "")
+            if expected_transport is None or transport != expected_transport:
+                collector = "codex_chrome_current_session"
+                transport = X_COLLECTOR_TRANSPORTS[collector]
+            public_item.update({
+                "collector": collector,
+                "transport": transport,
+                "profile": "current_logged_in_chrome",
+            })
         if source == "google_trends":
             declared_total = _nonnegative_number(item.get("declared_total"))
             page_count = _nonnegative_number(item.get("page_count"))
@@ -707,7 +1081,7 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         "status": "measured_7d" if total >= 168 else "measuring_3_to_7_days" if total >= 72 else "collecting_baseline",
         "remaining_runs_for_3d": max(0, 72 - total),
         "remaining_runs_for_7d": max(0, 168 - total),
-        "warning": "Windows 작업 스케줄러 실측 기록이며 노트북 종료·로그아웃 중에는 실행되지 않을 수 있음",
+        "warning": "Codex 정각 자동화 실측 기록이며 노트북·Codex·Chrome 종료 또는 로그아웃 중에는 실행되지 않을 수 있음",
     }
     _write_json(root / "monitoring" / "latest.json", health)
     return health
@@ -771,6 +1145,7 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         }
         collection.get("errors", {}).pop(source, None)
     collection["observed"] = sum(persisted_source_counts.values())
+    collection = _annotate_x_collection_provenance(collection, at)
     daily_path = _merge_daily(root, current_rows, at)
     pruned_files = _prune_observations(root, at, retention_days)
     news_queue = _refresh_news_core_gate(
@@ -852,6 +1227,10 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         "market_data": intelligence["market_data_status"],
         "company_identity_data": intelligence["company_identity_status"],
         "collection_health": collection_health,
+        "frontend_delivery": _delivery_descriptor(
+            publication_id,
+            len(intelligence.get("unified_ranking") or []),
+        ),
     }
     status = {
         "schema_version": "trzip-runtime-status-v1",
@@ -864,13 +1243,24 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         "errors": intelligence["collection_status"]["errors"],
         "recorded_runs": collection_health["recorded_runs"],
         "measurement_status": collection_health["status"],
+        "frontend_delivery_manifest": "manifest.json",
     }
     _validate_contract(intelligence, metadata, status)
-    _write_json(root / "latest" / "intelligence.json", intelligence)
     _write_json(root / "latest" / "normalization_evaluation.json", normalization_evaluation)
     _write_json(root / "latest" / "coverage.json", stats)
+    _write_json(root / "latest" / "intelligence.json", intelligence)
     _write_json(root / "latest" / "metadata.json", metadata)
     _write_json(root / "latest" / "status.json", status)
+    persisted_intelligence = _read_json(root / "latest" / "intelligence.json", {})
+    persisted_metadata = _read_json(root / "latest" / "metadata.json", {})
+    persisted_status = _read_json(root / "latest" / "status.json", {})
+    _validate_contract(persisted_intelligence, persisted_metadata, persisted_status)
+    _write_frontend_delivery(
+        root,
+        persisted_intelligence,
+        persisted_metadata,
+        persisted_status,
+    )
     return metadata
 
 

@@ -72,3 +72,31 @@ def test_provider_title_can_demote_legal_event_but_never_promote_a_term():
     assert legal["issue_context_used"] is True
     assert ordinary["selection"] == "main"
     assert ordinary["rank_effect"] == "none"
+
+
+def test_issue_marker_is_not_created_across_whitespace_boundary():
+    result = assess_trend_fit("보고 소원 트렌드")
+
+    assert result["selection"] == "review"
+    assert result["hard_issue"] is False
+
+
+def test_single_soft_provider_title_does_not_demote_the_whole_trend():
+    one_title = assess_trend_fit(
+        "미스코리아",
+        category="screen_content",
+        issue_context_terms=["미스코리아 출연자 사생활 이야기"],
+    )
+    corroborated = assess_trend_fit(
+        "미스코리아",
+        category="screen_content",
+        issue_context_terms=[
+            "미스코리아 출연자 사생활 이야기",
+            "미스코리아 관련 사생활 논란 후속 보도",
+        ],
+    )
+
+    assert one_title["selection"] == "main"
+    assert one_title["provider_soft_issue_match_count"] == 1
+    assert corroborated["selection"] == "issue"
+    assert corroborated["provider_soft_issue_match_count"] == 2

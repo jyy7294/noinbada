@@ -88,7 +88,7 @@
       "properties": {
         "checkout": {"const": "%USERPROFILE%\\Documents\\Codex\\noinbada-runtime"},
         "runtime_root": {"const": "%LOCALAPPDATA%\\TRZIP"},
-        "scheduler": {"const": "TRZIP X Google Hourly Collector"},
+        "scheduler": {"const": "codex_hourly_automation"},
         "required_branch": {"const": "main"}
       }
     },

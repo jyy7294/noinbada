@@ -71,7 +71,7 @@ def test_cpi_release_variant_is_one_event_without_double_counting_source(tmp_pat
     assert event["topic"] == "cpi"
     assert event["raw_terms"] == ["cpi", "cpi 발표"]
     assert event["latest_source_ranks"] == {"google_trends": 1}
-    assert event["rrf"] == 1.0
+    assert event["current_source_position"] == 1.0
 
 
 def test_company_gold_never_fills_missing_companies_with_templates(tmp_path):
@@ -204,6 +204,21 @@ def test_region_name_is_not_misclassified_as_sports_by_substring(tmp_path):
     assert trend["lane"] == "review"
 
 
+def test_drama_director_honorific_is_not_misclassified_as_sports(tmp_path):
+    target = tmp_path / "director-not-sports.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([
+        HourlyObservation(
+            at.isoformat(), "google_trends", "안판석 감독님", 1, 100, "observed"
+        )
+    ], target)
+
+    trend = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
+
+    assert trend["category"] != "sports_participation"
+    assert trend["broad_category"] != "sports"
+
+
 def test_weak_main_filter_covers_typed_market_content_sports_and_technology(tmp_path):
     target = tmp_path / "weak-main-filter.sqlite3"
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
@@ -288,8 +303,9 @@ def test_google_related_queries_can_disambiguate_category_without_renaming_term(
     assert item["category"] == "sports_participation"
     assert item["broad_category"] == "sports"
     assert item["context_status"] == "resolved_by_observed_context"
-    assert item["home_context_status"] == "review_required"
-    assert item["home_context_reason"] == "company_ontology_incomplete"
+    assert item["home_context_status"] == "resolved"
+    assert item["home_context_reason"] == "context_resolved"
+    assert item["company_card_status"] == "enrichment_pending"
 
 
 def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
@@ -308,19 +324,22 @@ def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
     unresolved = next(item for item in result["unified_ranking"] if item["topic"] == "스네즈나")
     assert unresolved["home_context_status"] == "review_required"
     assert unresolved["selection_layer"] == "review_queue"
-    assert unresolved not in result["public_top10"]
+    assert unresolved not in result["trend_top10"]
     assert unresolved["companies"] == []
     generic = next(item for item in result["unified_ranking"] if item["topic"] == "패션 브랜드")
+    assert generic["lane"] == "main"
     assert generic["home_context_status"] == "review_required"
     assert generic["home_context_reason"] == "context_evidence_missing"
     assert generic["company_eligible"] is True
     assert generic["companies"] == []
-    assert generic not in result["public_top10"]
+    assert generic in result["trend_top10"]
+    assert generic["company_card_status"] == "enrichment_pending"
     stock = next(item for item in result["unified_ranking"] if item["topic"] == "005930")
     assert stock["resolved_entity_name"] == "삼성전자"
     assert stock["home_context_status"] == "resolved"
     assert stock["home_context_reason"] == "context_resolved"
-    assert stock in result["public_top10"]
+    assert stock in result["trend_top10"]
+    assert stock["company_card_status"] == "ready"
     assert {company["stock_code"] for company in stock["companies"]} == {
         "000660",
         "005930",
@@ -351,22 +370,21 @@ def test_home_subset_holds_needs_context_term_without_any_disambiguation_evidenc
     result = build_intelligence(at, hours=1, path=target)
     ambiguous = next(item for item in result["unified_ranking"] if item["topic"] == "애니")
 
-    assert ambiguous["lane"] == "main"
+    assert ambiguous["lane"] == "review"
     assert ambiguous["context_status"] == "needs_context"
     assert ambiguous["keywords"] == []
     assert ambiguous["company_candidates"] == []
     assert ambiguous["verification_layer"]["status"] == "not_run"
     assert ambiguous["home_context_status"] == "review_required"
-    assert ambiguous["home_context_reason"] == "context_evidence_missing"
-    assert ambiguous["selection_layer"] == "context_review_queue"
-    assert ambiguous not in result["public_top10"]
-    assert [item["topic"] for item in result["public_top10"]] == ["말복"]
+    assert ambiguous["home_context_reason"] == "not_main_lane"
+    assert ambiguous["selection_layer"] == "review_queue"
+    assert ambiguous not in result["trend_top10"]
+    assert [item["topic"] for item in result["trend_top10"]] == ["말복"]
+    assert result["public_top10"] == result["trend_top10"]
     assert result["home_quality_gate"]["ranking_effect"] == "none"
     assert result["home_quality_gate"]["unified_ranking_preserved"] is True
-    assert result["home_quality_gate"]["home_excluded_total"] == 1
-    assert result["home_quality_gate"]["exclusion_reasons"] == {
-        "context_evidence_missing": 1
-    }
+    assert result["home_quality_gate"]["home_excluded_total"] == 0
+    assert result["home_quality_gate"]["context_review_reasons"] == {}
 
 
 def test_investment_terms_do_not_receive_unrelated_generic_companies(tmp_path):
@@ -588,7 +606,7 @@ def test_hourly_and_daily_derived_rankings_are_exposed(tmp_path):
     assert result["daily_aggregates"][0]["best_rank"] == 1
 
 
-def test_rrf_is_normalized_for_available_sources_and_cross_bonus_is_explicit(tmp_path):
+def test_current_position_is_source_normalized_and_cross_bonus_is_explicit(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
@@ -603,7 +621,7 @@ def test_rrf_is_normalized_for_available_sources_and_cross_bonus_is_explicit(tmp
     single_item = build_intelligence(at, hours=1, path=single)["unified_ranking"][0]
     dual_item = build_intelligence(at, hours=1, path=dual)["unified_ranking"][0]
 
-    assert single_item["rrf"] == dual_item["rrf"] == 1.0
+    assert single_item["current_source_position"] == dual_item["current_source_position"] == 1.0
     assert single_item["score_components"]["cross_source_points"] == 0
     assert dual_item["score_components"]["cross_source_points"] == 5
     for item in (single_item, dual_item):
@@ -611,12 +629,12 @@ def test_rrf_is_normalized_for_available_sources_and_cross_bonus_is_explicit(tmp
         visible_sum = round(sum(
             components[key]
             for key in (
-                "rrf_points", "momentum_points", "persistence_points",
-                "cross_source_points",
+                "current_points", "momentum_points", "persistence_points",
+                "decayed_history_points", "cross_source_points",
             )
-        ) * components["calibration"], 2)
+        ), 2)
         assert item["score"] == components["total_points"] == visible_sum
-        assert components["formula_version"] == "rrf60_momentum20_persistence15_cross5_v1"
+        assert components["formula_version"] == "current40_momentum20_persistence20_decay15_cross5_v2"
         assert components["rounding_policy"] == "each_component_2dp_then_sum_2dp"
 
 
@@ -638,7 +656,8 @@ def test_unified_ranking_preserves_main_issue_and_review_without_score_calibrati
         "main_subset", "issue_context", "review_queue",
     }
     assert all(item["trend_fit"]["affects_score"] is False for item in result["unified_ranking"])
-    assert [item["topic"] for item in result["public_top10"]] == ["말복"]
+    assert [item["topic"] for item in result["trend_top10"]] == ["말복"]
+    assert result["public_top10"] == result["trend_top10"]
 
 
 def test_window_only_history_cannot_reenter_current_ranking(tmp_path):

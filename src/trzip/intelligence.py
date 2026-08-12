@@ -8,6 +8,7 @@ from pathlib import Path
 
 from .curation import CATEGORY_BY_TERM, is_sensitive_context
 from .hourly_store import (
+    ELIGIBLE_COLLECTOR_SQL,
     KST,
     connect,
     default_db_path,
@@ -27,6 +28,7 @@ from .ontology import (
     OntologyGraph,
 )
 from .provider_verification import latest_verification_by_trend
+from .ranking_v2 import build_ranking_v2
 from .trend_fit import assess_trend_fit
 
 
@@ -102,7 +104,8 @@ def _category(topic: str) -> str:
         ), "screen_content"),
         (("콘서트", "공연", "앨범", "노래", "뮤직", "아이돌", "생일"), "music_performance"),
         ((
-            "야구", "축구", "테니스", "농구", "선수", "감독", "타격왕",
+            "야구", "축구", "테니스", "농구", "선수", "야구 감독", "축구 감독",
+            "농구 감독", "스포츠 감독", "타격왕",
             "프로골퍼", " fc", "자이언츠", "레드삭스", "블루제이스",
             "메츠", "브레이브스",
         ), "sports_participation"),
@@ -189,19 +192,13 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
             else:
                 return False, "context_evidence_missing"
 
-    # The product promise is not merely a trend list: every home trend must be
-    # actionable as an evidence-backed company exploration.  A partial
-    # ontology remains visible in the unified ranking and enrichment queue, but
-    # it is never padded with generic companies to fill the home list.
-    if len(item.get("companies") or []) < MINIMUM_PUBLISHED_COMPANIES:
-        return False, "company_ontology_incomplete"
     return True, context_reason
 
 
 def _series_rows(start: datetime, end: datetime, path: Path | None = None) -> list[sqlite3.Row]:
     with connect(path) as connection:
         return connection.execute(
-            """SELECT observation.observed_at,observation.source,observation.topic,
+            f"""SELECT observation.observed_at,observation.source,observation.topic,
                        observation.source_rank,observation.value,observation.provenance,
                        observation.source_payload_json,observation.related_terms_json
                FROM hourly_observations AS observation
@@ -209,7 +206,7 @@ def _series_rows(start: datetime, end: datetime, path: Path | None = None) -> li
                  USING (observed_at, source, provenance)
                WHERE observation.observed_at BETWEEN ? AND ?
                  AND observation.provenance='observed'
-                 AND observation.collector_version IS NOT NULL
+                 AND {ELIGIBLE_COLLECTOR_SQL.replace('source', 'observation.source').replace('collector_version', 'observation.collector_version')}
                  AND quality.quality_status='eligible'
                ORDER BY observation.observed_at,observation.source,
                         observation.source_rank,observation.topic""",
@@ -240,7 +237,7 @@ def _representative_observed_term(
                 "hours": set(),
                 "sources": set(),
                 "current_sources": set(),
-                "rrf": 0.0,
+                "reciprocal_rank_support": 0.0,
                 "best_rank": 10**9,
             },
         )
@@ -248,7 +245,7 @@ def _representative_observed_term(
         bucket["sources"].add(item["source"])
         if current_at is not None and item["observed_at"] == current_at:
             bucket["current_sources"].add(item["source"])
-        bucket["rrf"] += 1.0 / (60.0 + item["source_rank"])
+        bucket["reciprocal_rank_support"] += 1.0 / (60.0 + item["source_rank"])
         bucket["best_rank"] = min(bucket["best_rank"], item["source_rank"])
     representative = min(
         evidence,
@@ -256,19 +253,19 @@ def _representative_observed_term(
             -bool(evidence[term]["current_sources"]),
             -len(evidence[term]["hours"]),
             -len(evidence[term]["sources"]),
-            -evidence[term]["rrf"],
+            -evidence[term]["reciprocal_rank_support"],
             evidence[term]["best_rank"],
             term.casefold(),
         ),
     )
     selected = evidence[representative]
     return representative, {
-        "method": "current_observed_term_then_hours_sources_rrf",
+        "method": "current_observed_term_then_hours_sources_reciprocal_rank",
         "currently_observed": bool(selected["current_sources"]),
         "current_source_count": len(selected["current_sources"]),
         "observed_hours": len(selected["hours"]),
         "source_count": len(selected["sources"]),
-        "rrf_support": round(selected["rrf"], 6),
+        "reciprocal_rank_support": round(selected["reciprocal_rank_support"], 6),
         "best_source_rank": selected["best_rank"],
     }
 
@@ -819,6 +816,23 @@ def build_intelligence(
     start = end - timedelta(hours=max(1, hours) - 1)
     rows = _series_rows(start, end, path)
     rows = [dict(row) for row in rows]
+    # Ranking V2 uses a real 60-day ledger only for lifecycle/baseline
+    # classification. Its score-bearing history remains the most recent 168
+    # hours with a 24-hour half-life. Synthetic/legacy rows are already
+    # excluded by `_series_rows` and Ranking V2 fails closed if provenance is
+    # not observed.
+    lifecycle_start = end - timedelta(days=60)
+    ranking_rows = [dict(row) for row in _series_rows(lifecycle_start, end, path)]
+    for item in ranking_rows:
+        item["event_key"] = canonical_topic(item["topic"])
+    ranking_v2 = build_ranking_v2(
+        ranking_rows,
+        at=end,
+        candidate_policy="current_only",
+    )
+    ranking_v2_by_key = {
+        item["event_key"]: item for item in ranking_v2["ranking"]
+    }
     hourly_ranking, daily_aggregates = _hourly_and_daily_rankings(rows)
     eligible_hours = sorted({row["observed_at"] for row in rows})
     eligible_hour_count = len(eligible_hours)
@@ -878,103 +892,44 @@ def build_intelligence(
         if not current_by_source:
             continue
 
-        rrf_raw = sum(1 / (60 + item["source_rank"]) for item in current_by_source.values())
-        rrf_denominator = max(len(current_available_sources) / 61.0, 1 / 61.0)
-        normalized_rrf = min(rrf_raw / rrf_denominator, 1.0)
-
-        momentum_changes = []
-        for source in sorted(current_available_sources):
-            stamps = source_times[source]
-            if len(stamps) < 2:
-                continue
-            previous_stamp, current_stamp = stamps[-2], stamps[-1]
-            previous_rows = [
-                item for item in history_by_source.get(source, [])
-                if item["observed_at"] == previous_stamp
-            ]
-            current_rows = [
-                item for item in history_by_source.get(source, [])
-                if item["observed_at"] == current_stamp
-            ]
-            if not previous_rows and not current_rows:
-                continue
-
-            def position(items: list[dict], stamp: str) -> float:
-                if not items:
-                    return 0.0
-                best_rank = min(item["source_rank"] for item in items)
-                size = snapshot_sizes[(stamp, source)]
-                return 1.0 if size <= 1 else 1.0 - ((best_rank - 1) / (size - 1))
-
-            momentum_changes.append(
-                position(current_rows, current_stamp) - position(previous_rows, previous_stamp)
-            )
-        momentum = (
-            max(-1.0, min(1.0, sum(momentum_changes) / len(momentum_changes)))
-            if momentum_changes else 0.0
+        # Ranking V2 is the single score owner. There is no legacy score
+        # fallback: historical rows that do not satisfy the live collector
+        # cohort have already been quarantined by `_series_rows`.
+        ranking_contract = ranking_v2_by_key[event_key]
+        score = ranking_contract["score"]
+        score_components = ranking_contract["score_components"]
+        current_signal = ranking_contract["signals"]["current"]
+        momentum = ranking_contract["signals"]["momentum"]
+        persistence = ranking_contract["signals"]["persistence"]
+        lifecycle_contract = ranking_contract["lifecycle"]
+        lifecycle = lifecycle_contract["state"]
+        lifecycle_reason = lifecycle_contract["reason_code"]
+        lifecycle_baseline = ranking_contract["lifecycle_baseline"]
+        maturity_values = [
+            float(values["maturity"])
+            for values in ranking_contract["source_metrics"]["persistence"].values()
+        ]
+        history_maturity = (
+            sum(maturity_values) / len(maturity_values) if maturity_values else 0.0
         )
-        persistence_rate = observed_hours / max(eligible_hour_count, 1)
-        history_maturity = min(eligible_hour_count / 96.0, 1.0)
-        persistence = min(persistence_rate * history_maturity, 1.0)
-        cross = 1.0 if len(current_by_source) >= 2 else 0.0
-        rank_changes = {}
-        for source, history in history_by_source.items():
-            best_rank_by_time = {}
-            for item in history:
-                stamp = item["observed_at"]
-                best_rank_by_time[stamp] = min(best_rank_by_time.get(stamp, item["source_rank"]), item["source_rank"])
-            ranked_times = sorted(best_rank_by_time)
-            if len(ranked_times) >= 2:
-                # Positive means the item moved upward (for example 8th -> 3rd is +5).
-                rank_changes[source] = best_rank_by_time[ranked_times[-2]] - best_rank_by_time[ranked_times[-1]]
-            else:
-                rank_changes[source] = None
-        first_seen = min(item["observed_at"] for item in observations)
-        last_seen = max(item["observed_at"] for item in observations)
+        first_seen = lifecycle_baseline["first_seen_at"]
+        last_seen = lifecycle_baseline["last_seen_at"]
         first_seen_dt = datetime.fromisoformat(first_seen)
-        last_seen_dt = datetime.fromisoformat(last_seen)
-        is_current = last_seen_dt == end
         age_hours = max(0, int((end - first_seen_dt).total_seconds() // 3600))
-        best_change = max((value for value in rank_changes.values() if value is not None), default=0)
-        observed_times = sorted({datetime.fromisoformat(item["observed_at"]) for item in observations})
-        max_gap_hours = max(
-            ((later - earlier).total_seconds() / 3600 for earlier, later in zip(observed_times, observed_times[1:])),
-            default=0,
-        )
-        if not is_current:
-            lifecycle, lifecycle_reason = "cooling", "현재 시간에는 보이지 않아 둔화·이탈 관찰 중"
-        elif age_hours <= 2:
-            lifecycle, lifecycle_reason = "new", "최근 3시간 안에 처음 포착"
-        elif max_gap_hours >= 24:
-            lifecycle, lifecycle_reason = "rebounding", "24시간 이상 관측 공백 뒤 다시 포착"
-        elif momentum >= 0.12 or best_change >= 3:
-            lifecycle, lifecycle_reason = "rising", "관심 지표 또는 플랫폼 순위가 뚜렷하게 상승"
-        elif len(sources) >= 2 and persistence >= 0.35:
-            lifecycle, lifecycle_reason = "mainstream", "X와 Google에서 반복 관측되어 대중 확산 확인"
-        else:
-            lifecycle, lifecycle_reason = "sustained", "여러 시간 반복 관측되어 지속성 확인"
-        score_components = {
-            "rrf_points": round(60 * normalized_rrf, 2),
-            "momentum_points": round(20 * ((momentum + 1) / 2), 2),
-            "persistence_points": round(15 * persistence, 2),
-            "cross_source_points": round(5 * cross, 2),
-            "calibration": 1.0,
-            "formula_version": "rrf60_momentum20_persistence15_cross5_v1",
-            "rounding_policy": "each_component_2dp_then_sum_2dp",
-        }
-        score = round(
-            sum(
-                score_components[key]
-                for key in (
-                    "rrf_points",
-                    "momentum_points",
-                    "persistence_points",
-                    "cross_source_points",
-                )
-            ) * score_components["calibration"],
-            2,
-        )
-        score_components["total_points"] = score
+        previous_hour = (end - timedelta(hours=1)).isoformat()
+        rank_changes = {}
+        for source, current_item in current_by_source.items():
+            previous_items = [
+                item
+                for item in history_by_source.get(source, [])
+                if item["observed_at"] == previous_hour
+            ]
+            rank_changes[source] = (
+                min(item["source_rank"] for item in previous_items)
+                - current_item["source_rank"]
+                if previous_items
+                else None
+            )
         phenomenon_summary = observation_summary(representative_term, sources)
         keyword_items = _merge_reviewed_ontology_keywords(
             _related_term_evidence(observations, representative_term),
@@ -1029,8 +984,32 @@ def build_intelligence(
             # context such as "축구 선수" can resolve the homonym for this
             # snapshot. No generated biography or guessed identity is used.
             context_status = "resolved_by_observed_context"
+        # The home contract is the first ten rows of the main lane, so an
+        # unresolved homonym must not be put in that lane and then removed by
+        # a second hidden filter. Context evidence resolves the term before
+        # this decision; otherwise the observed item remains in the review
+        # lane with its global score and rank unchanged.
+        # A typed category or reviewed ontology/keyword path resolves enough
+        # context for the weak main filter. Only a still-unclassified raw term
+        # or an unresolved person name remains in review.
+        generic_context_word = representative_term.casefold() in {
+            "음식", "제품", "브랜드", "콘텐츠", "생활", "문화", "기술", "애니"
+        }
+        context_evidence_present = bool(
+            detected_category != "unclassified"
+            and not generic_context_word
+            or keyword_items
+        )
+        if lane != "issue" and (
+            (context_status in {"unresolved", "ambiguous_person"} and not context_evidence_present)
+            or (context_status == "needs_context" and not context_evidence_present)
+        ):
+            lane = "review"
+            reason = "원문은 보존하되 대표 사건·현상의 문맥을 아직 확인하지 못함"
         trend_fit = {
             **fit_assessment,
+            "selection": lane,
+            "main_eligible": lane == "main",
             "lane": lane,
             "label": {
                 "main": "메인 트렌드 적합",
@@ -1044,7 +1023,6 @@ def build_intelligence(
             "issue": "issue_context",
             "review": "review_queue",
         }[lane]
-        score_calibration = 1.0
         if eligible_hour_count >= 96 and len(sources) >= 2 and observed_hours >= 6:
             data_confidence = {"level": "high", "label": "높음",
                                "reason": "96시간 이상 원장과 양 플랫폼 반복 관측",
@@ -1187,13 +1165,15 @@ def build_intelligence(
             "selection_reason": reason,
             "trend_fit": trend_fit,
             "selection_layer": selection_layer,
-            "score_calibration": score_calibration,
             "company_eligible": company_eligible,
             "score": score,
-            "rrf": round(normalized_rrf, 6),
-            "rrf_raw": round(rrf_raw, 8),
+            "current_source_position": round(current_signal, 6),
             "momentum": round(momentum, 4), "persistence": round(persistence, 4),
             "score_components": score_components,
+            "score_explanation": ranking_contract["score_explanation"],
+            "source_metrics": ranking_contract["source_metrics"],
+            "ranking_data_readiness": ranking_contract["data_readiness"],
+            "lifecycle_baseline": lifecycle_baseline,
             "source_count": len(sources),
             "current_source_count": len(current_by_source),
             "source_badge": "교차출처" if len(current_by_source) >= 2 else "단일출처",
@@ -1262,6 +1242,10 @@ def build_intelligence(
         lanes[item["lane"]].append(item)
     for lane in lanes.values():
         lane.sort(key=lambda item: item["rank"])
+    for item in candidates:
+        item["main_rank"] = None
+    for main_rank, item in enumerate(lanes["main"], 1):
+        item["main_rank"] = main_rank
     evaluation_rows = []
     for item in candidates:
         expected = GROUND_TRUTH.get(item["event_key"])
@@ -1275,38 +1259,71 @@ def build_intelligence(
         item["event_key"]: _home_context_gate(item)
         for item in candidates
     }
-    resolved_public_candidates = [
-        item for item in candidates
-        if home_gate_results[item["event_key"]][0]
-    ]
-    # The unified list preserves every observed candidate. The home subset is
-    # a non-scoring presentation filter: issue and unresolved review items keep
-    # their global rank but are exposed in their own lanes.
-    home_candidates = [item for item in candidates if item["lane"] == "main"]
+    # ``trend_top10`` is the score-preserving first ten rows of the main lane.
+    # Context resolution and company enrichment are explicit presentation
+    # states, not hidden gates that replace a stronger observed trend with a
+    # lower-ranked ontology-ready item.
+    home_candidates = lanes["main"]
     for item in candidates:
         home_allowed, home_reason = home_gate_results[item["event_key"]]
         item["home_context_status"] = "resolved" if home_allowed else "review_required"
         item["home_context_reason"] = home_reason
         if item["lane"] == "main" and not home_allowed:
             item["selection_layer"] = "context_review_queue"
-    public_top10 = resolved_public_candidates[:10]
+
+        unique_stocks = {
+            str(company.get("stock_code") or "").strip()
+            for company in item.get("companies") or []
+            if str(company.get("stock_code") or "").strip()
+        }
+        company_published = (
+            (item.get("company_resolution") or {}).get("publish_status") == "published"
+            and len(unique_stocks) >= MINIMUM_PUBLISHED_COMPANIES
+        )
+        if company_published:
+            item["company_card_status"] = "ready"
+            item["company_card_reason"] = "evidence_backed_five_or_more"
+        elif item.get("company_eligible"):
+            item["company_card_status"] = "enrichment_pending"
+            item["company_card_reason"] = "fewer_than_five_evidence_backed_companies"
+        else:
+            item["company_card_status"] = "not_applicable"
+            item["company_card_reason"] = "company_linking_not_allowed_for_lane_or_context"
+
+    trend_top10 = home_candidates[:10]
+    # Backwards-compatible alias for the existing frontend. It must remain
+    # value-identical to ``trend_top10`` during the migration period.
+    public_top10 = list(trend_top10)
+    company_ready_trends = [
+        item for item in home_candidates
+        if item["company_card_status"] == "ready"
+    ]
+    context_resolved_candidates = [
+        item for item in home_candidates
+        if item["home_context_status"] == "resolved"
+    ]
     home_quality_gate = {
-        "policy_version": "home-context-gate-v1",
+        "policy_version": "home-trend-subset-v2",
         "ranking_effect": "none",
         "unified_ranking_preserved": True,
         "main_lane_total": len(home_candidates),
+        "trend_top10_count": len(trend_top10),
+        "company_count_affects_home": False,
         "minimum_published_companies": MINIMUM_PUBLISHED_COMPANIES,
-        "home_eligible_total": len(resolved_public_candidates),
-        "home_excluded_total": len(home_candidates) - len(resolved_public_candidates),
-        "exclusion_reasons": dict(sorted(Counter(
+        "home_eligible_total": len(home_candidates),
+        "home_excluded_total": 0,
+        "exclusion_reasons": {},
+        "context_resolved_total": len(context_resolved_candidates),
+        "context_review_total": len(home_candidates) - len(context_resolved_candidates),
+        "context_review_reasons": dict(sorted(Counter(
             home_gate_results[item["event_key"]][1]
             for item in home_candidates
             if not home_gate_results[item["event_key"]][0]
         ).items())),
         "rule": (
-            "맥락 근거를 통과하고 URL 증거가 이어진 국내 상장기업이 최소 "
-            f"{MINIMUM_PUBLISHED_COMPANIES}개인 항목만 홈 후보가 됨; 미달 후보는 "
-            "전체 순위와 온톨로지 보강 큐에 보존하며 기업을 임의로 채우지 않음"
+            "main 레인의 점수 순서를 바꾸지 않고 앞 10개를 홈 트렌드로 사용함; "
+            "맥락 상태와 기업 5개 Gold 준비 상태는 별도 필드로 공개하며 둘 다 "
+            "홈 순위의 포함 여부나 점수에 영향을 주지 않음"
         ),
     }
     ontology_enrichment_queue = [
@@ -1426,17 +1443,21 @@ def build_intelligence(
         "window": {"from": start.isoformat(), "to": end.isoformat(), "hours": hours},
         "sources": ["x", "google_trends"],
         "ranking_availability": ranking_availability,
+        "ranking_data_readiness": ranking_v2["data_readiness"],
         "score_formula": (
-            "60% current-hour normalized RRF + 20% previous-to-current normalized rank-position "
-            "momentum + 15% eligible-hour persistence x 96-hour maturity + 5% current cross-source"
+            "40% current source-normalized position + 20% exact previous-hour momentum + "
+            "20% per-source persistence x 96-hour maturity + 15% 24-hour-half-life "
+            "observed history + 5% current X-Google overlap"
         ),
         "score_policy": {
+            "formula_version": ranking_v2["formula_version"],
             "source_values_used": False,
-            "rrf_k": 60,
-            "rrf_normalization": "sum(1/(60+rank)) / (available_current_sources/61)",
-            "momentum": "mean(current normalized rank position - previous source snapshot position)",
-            "missing_event_position": 0,
-            "persistence": "event observed hours / eligible ledger hours, multiplied by min(eligible hours/96, 1)",
+            "current_position": "mean 0..1 position inside each currently observed source snapshot",
+            "momentum": "same-source exact previous-hour position change; unavailable comparison is neutral",
+            "missing_previous_hour_policy": "neutral_10_of_20_not_rank_zero",
+            "persistence": "mean source-specific presence rate multiplied by source-specific 96-hour maturity",
+            "decayed_history": "eligible observed history only; 24-hour exponential half-life over 168 hours",
+            "lifecycle_baseline": "60-day observed baseline; ranking_effect=none",
             "company_count_affects_rank": False,
             "future_rows_used": False,
             "active_candidate_gate": "present in at least one current eligible source snapshot",
@@ -1459,20 +1480,24 @@ def build_intelligence(
         "daily_aggregates": daily_aggregates,
         "normalization_evaluation": evaluate_resolution(evaluation_rows),
         "unified_ranking": candidates,
+        "trend_top10": trend_top10,
         "public_top10": public_top10,
+        "company_ready_trends": company_ready_trends,
         "ontology_enrichment_queue": ontology_enrichment_queue,
         "quality_summary": {
             "total_ranked_candidates": len(candidates),
             "main_candidates": len(lanes["main"]),
-            "public_eligible_candidates": len(resolved_public_candidates),
-            "resolved_public_candidates": len(resolved_public_candidates),
+            "public_eligible_candidates": len(home_candidates),
+            "resolved_public_candidates": len(context_resolved_candidates),
             "excluded_from_public_due_to_context": (
-                len(home_candidates) - len(resolved_public_candidates)
+                len(home_candidates) - len(context_resolved_candidates)
             ),
             "review_required_in_public_top10": sum(
                 item["home_context_status"] == "review_required" for item in public_top10
             ),
             "public_top10_count": len(public_top10),
+            "trend_top10_count": len(trend_top10),
+            "company_ready_trend_count": len(company_ready_trends),
             "excluded_from_public_due_to_non_main_lane": len(candidates) - len(home_candidates),
             "top10_with_five_keywords": sum(
                 len(item["keywords"]) == 5

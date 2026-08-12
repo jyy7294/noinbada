@@ -210,7 +210,7 @@ try {
         runtime_contract = [ordered]@{
             checkout = "%USERPROFILE%\Documents\Codex\noinbada-runtime"
             runtime_root = "%LOCALAPPDATA%\TRZIP"
-            scheduler = "TRZIP X Google Hourly Collector"
+            scheduler = "codex_hourly_automation"
             required_branch = "main"
         }
         live_state_pointer = [ordered]@{

@@ -28,5 +28,10 @@ CONTROVERSY_CONTEXT_MARKERS = {
 
 
 def is_sensitive_context(term: str) -> bool:
-    compact = term.casefold().replace(" ", "")
-    return any(marker.casefold().replace(" ", "") in compact for marker in CONTROVERSY_CONTEXT_MARKERS)
+    # Preserve token boundaries.  Removing whitespace made unrelated adjacent
+    # words such as ``보고 소원`` look as if they contained ``고소``.
+    normalized = " ".join(str(term or "").casefold().split())
+    return any(
+        " ".join(marker.casefold().split()) in normalized
+        for marker in CONTROVERSY_CONTEXT_MARKERS
+    )

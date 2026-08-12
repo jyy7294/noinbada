@@ -83,7 +83,7 @@ try {
     Write-RunLog -Phase "start" -Status "running" -Detail $ProjectRoot
     if (-not (Test-Path -LiteralPath $Python)) { throw "Python environment missing: $Python" }
     if (-not (Test-Path -LiteralPath (Join-Path $LiveDataRoot ".git"))) {
-        throw "live-data worktree missing; run scripts\install-hourly-task.ps1"
+        throw "live-data worktree missing; run scripts\setup-local-runtime.ps1"
     }
     New-Item -ItemType Directory -Force -Path $PublicationRoot,(Split-Path -Parent $DatabasePath) | Out-Null
 
@@ -92,6 +92,8 @@ try {
     # default. Pruning requires an explicit positive --retention-days value.
     & $Python -m trzip.local_pipeline --output $PublicationRoot --database $DatabasePath
     if ($LASTEXITCODE -ne 0) { throw "local pipeline exited with code $LASTEXITCODE" }
+    & $Python -c "from pathlib import Path; from trzip.publication_pipeline import validate_frontend_delivery; validate_frontend_delivery(Path(r'$PublicationRoot'))"
+    if ($LASTEXITCODE -ne 0) { throw "frontend delivery manifest validation failed" }
     Write-RunLog -Phase "pipeline" -Status "ok"
 
     # Audit the exact publication and SQLite ledger that are about to be

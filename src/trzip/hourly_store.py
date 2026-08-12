@@ -11,6 +11,25 @@ from pathlib import Path
 
 KST = timedelta(hours=9)
 
+# Only these source/collector cohorts have the same sampling frame as the
+# production ranking contract.  ``trzip_v3`` is retained as the explicit
+# deterministic fixture cohort used by unit tests and local replay; arbitrary
+# non-null strings must never become ranking-eligible by accident.
+APPROVED_COLLECTOR_VERSIONS = {
+    "x": frozenset({"x_current_session_kr_v1", "trzip_v3"}),
+    "google_trends": frozenset({"google_trending_now_kr_v1", "trzip_v3"}),
+}
+
+ELIGIBLE_COLLECTOR_SQL = """(
+    (source = 'x' AND collector_version IN ('x_current_session_kr_v1','trzip_v3'))
+    OR
+    (source = 'google_trends' AND collector_version IN ('google_trending_now_kr_v1','trzip_v3'))
+)"""
+
+
+def collector_version_is_approved(source: str, collector_version: str | None) -> bool:
+    return str(collector_version or "") in APPROVED_COLLECTOR_VERSIONS.get(source, ())
+
 
 @dataclass(frozen=True)
 class HourlyObservation:
@@ -116,12 +135,12 @@ def connect(path: Path | None = None) -> Iterator[sqlite3.Connection]:
                 )
         # Views are derived contracts. Recreate them on each schema open so an
         # existing runtime database receives revised quality rules immediately.
-        connection.executescript("""
+        connection.executescript(f"""
             DROP VIEW IF EXISTS daily_source_aggregates;
             DROP VIEW IF EXISTS source_hour_quality;
             DROP VIEW IF EXISTS hourly_source_rankings;
         """)
-        connection.executescript("""
+        connection.executescript(f"""
             CREATE INDEX IF NOT EXISTS hourly_observations_time
               ON hourly_observations(observed_at, source, provenance, source_rank);
             CREATE INDEX IF NOT EXISTS hourly_observations_topic_time
@@ -132,7 +151,7 @@ def connect(path: Path | None = None) -> Iterator[sqlite3.Connection]:
                      collector_version,
                      61.0 / (60.0 + source_rank) AS normalized_rrf
               FROM hourly_observations
-              WHERE collector_version IS NOT NULL;
+              WHERE {ELIGIBLE_COLLECTOR_SQL};
             CREATE VIEW IF NOT EXISTS source_hour_quality AS
               WITH counts AS (
                 SELECT observed_at, source, provenance,
@@ -140,7 +159,7 @@ def connect(path: Path | None = None) -> Iterator[sqlite3.Connection]:
                        COUNT(DISTINCT source_rank) AS distinct_rank_count,
                        COUNT(DISTINCT topic) AS distinct_topic_count
                 FROM hourly_observations
-                WHERE collector_version IS NOT NULL
+                WHERE {ELIGIBLE_COLLECTOR_SQL}
                 GROUP BY observed_at, source, provenance
               )
               SELECT counts.*,
@@ -172,7 +191,8 @@ def connect(path: Path | None = None) -> Iterator[sqlite3.Connection]:
               JOIN source_hour_quality AS quality
                 USING (observed_at, source, provenance)
               WHERE quality.quality_status = 'eligible'
-                AND observation.collector_version IS NOT NULL
+                AND ((observation.source = 'x' AND observation.collector_version IN ('x_current_session_kr_v1','trzip_v3'))
+                  OR (observation.source = 'google_trends' AND observation.collector_version IN ('google_trending_now_kr_v1','trzip_v3')))
               GROUP BY date(observation.observed_at, '+9 hours'),
                        observation.source, observation.topic, observation.provenance;
         """)
@@ -295,6 +315,8 @@ def collect_x(at: datetime) -> list[HourlyObservation]:
 def upsert(rows: list[HourlyObservation], path: Path | None = None) -> int:
     if any(row.provenance != "observed" for row in rows):
         raise ValueError("production ledger accepts observed rows only")
+    if any(not collector_version_is_approved(row.source, row.collector_version) for row in rows):
+        raise ValueError("collector version is not approved for source")
     with connect(path) as connection:
         connection.executemany("""
             INSERT INTO hourly_observations
@@ -325,6 +347,8 @@ def store_verified_source_snapshot(
     stamps = {row.observed_at for row in rows}
     if len(stamps) != 1 or any(row.source != source or row.provenance != "observed" for row in rows):
         raise ValueError("snapshot rows must share one hour, source, and observed provenance")
+    if any(not collector_version_is_approved(row.source, row.collector_version) for row in rows):
+        raise ValueError("collector version is not approved for source")
     ranks = [row.source_rank for row in rows]
     if len(ranks) != len(set(ranks)):
         raise ValueError("snapshot rows must have unique source ranks")
@@ -371,7 +395,8 @@ def _first_verified_snapshot_for_hour(
         stored = connection.execute(
             """SELECT * FROM hourly_observations
                WHERE observed_at=? AND source=? AND provenance='observed'
-                 AND collector_version IS NOT NULL
+                  AND ((source='x' AND collector_version IN ('x_current_session_kr_v1','trzip_v3'))
+                    OR (source='google_trends' AND collector_version IN ('google_trending_now_kr_v1','trzip_v3')))
                ORDER BY source_rank""",
             (stamp, source),
         ).fetchall()
@@ -489,7 +514,7 @@ def collect_current(path: Path | None = None, now: datetime | None = None) -> di
         "status": x_status,
         "row_count": x_rows,
         "detail": (
-            "current logged-in Chrome extension; sanitized rank-only inbox; KR 1-30 completeness verified"
+            "Codex-controlled logged-in Chrome; sanitized rank-only snapshot; KR 1-30 completeness verified"
             if x_rows else x_error or "X realtime page returned no rows"
         ),
     }
@@ -536,7 +561,8 @@ def snapshot(at: datetime, path: Path | None = None) -> list[dict]:
         rows = connection.execute(
             """SELECT * FROM hourly_observations
                WHERE observed_at=? AND provenance='observed'
-                 AND collector_version IS NOT NULL
+                  AND ((source='x' AND collector_version IN ('x_current_session_kr_v1','trzip_v3'))
+                    OR (source='google_trends' AND collector_version IN ('google_trending_now_kr_v1','trzip_v3')))
                ORDER BY source, source_rank""",
             (stamp,),
         ).fetchall()

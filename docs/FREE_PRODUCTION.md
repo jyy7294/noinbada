@@ -2,7 +2,7 @@
 
 ## 확정 구조
 
-Windows 작업 스케줄러가 매시 정각 `scripts/collect-hourly.ps1`을 실행합니다. 계산과 SQLite는 노트북에만 있고 GitHub는 코드 협업과 검증 완료 JSON 전달에만 사용합니다. GitHub Actions·Render·상시 서버는 없습니다.
+Codex 데스크톱 자동화가 매시 정각 로그인된 현재 Chrome에서 X 한국 1~30위를 읽고, 이어서 로컬 파이프라인이 Google Trending Now KR 전체 수집·SQLite 누적·순위 계산·정적 JSON 게시를 실행합니다. 계산과 SQLite는 노트북에만 있고 GitHub는 코드 협업과 검증 완료 JSON 전달에만 사용합니다. GitHub Actions·Render·상시 API 서버는 없습니다.
 
 ```text
 %LOCALAPPDATA%\TRZIP\
@@ -12,7 +12,7 @@ Windows 작업 스케줄러가 매시 정각 `scripts/collect-hourly.ps1`을 실
   logs\                최근 30일 JSONL 실행 로그
 ```
 
-X 인증은 Chrome이 기록한 마지막 사용 로그인 프로필에 한 번 수동 설치한 MV3 확장이 담당합니다. 확장은 쿠키·저장소 권한이 없고 자신이 연 비활성 탭의 한국 1~30위만 Downloads inbox로 전달합니다. Python은 해당 시간의 완전한 30행만 수락합니다.
+X 인증은 별도 확장 프로그램이 아니라 사용자가 현재 로그인해 둔 Chrome 세션을 Codex가 직접 제어하는 방식입니다. Codex는 한국 트렌드 페이지를 끝까지 스크롤해 완전한 30행만 Downloads inbox로 전달하고, Python은 지역·순위 연속성·관측시각을 통과한 스냅샷만 수락합니다.
 
 ## 안전한 게시
 

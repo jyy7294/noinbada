@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T19:09:46.1059934+00:00",
+    "updated_at":  "2026-08-12T22:49:52.0631359+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,28 +8,88 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "dc210e964cc7e38471f557347714df496d50da14",
+                       "base_remote_main_sha":  "16fb1ca57d087c3c26b30f936231fe7377da09f0",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
+                                             "chrome-extension/trzip-x-current-session/manifest.json",
+                                             "chrome-extension/trzip-x-current-session/README.md",
+                                             "chrome-extension/trzip-x-current-session/service-worker.js",
                                              "CURRENT_STATE.json",
+                                             "docs/BACKEND_TEAM_PROMPT.md",
+                                             "docs/CODEX_CONTINUITY.md",
+                                             "docs/FREE_PRODUCTION.md",
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
+                                             "docs/PRODUCT_POLICY.md",
+                                             "README.md",
+                                             "schemas/current-state-v1.schema.json",
+                                             "schemas/intelligence-v3.schema.json",
+                                             "scripts/checkpoint-main.ps1",
+                                             "scripts/collect-hourly.ps1",
+                                             "scripts/install-hourly-task.ps1",
+                                             "scripts/promote-runtime.ps1",
+                                             "scripts/setup-local-runtime.ps1",
+                                             "scripts/setup-x-chrome.ps1",
+                                             "src/trzip/curation.py",
                                              "src/trzip/hourly_store.py",
+                                             "src/trzip/intelligence.py",
                                              "src/trzip/publication_pipeline.py",
+                                             "src/trzip/ranking_v2.py",
+                                             "src/trzip/runtime_audit.py",
+                                             "src/trzip/trend_fit.py",
+                                             "src/trzip/x_web_collector.py",
                                              "tests/test_hourly_store.py",
-                                             "tests/test_publication_pipeline.py"
+                                             "tests/test_intelligence.py",
+                                             "tests/test_local_runtime_contract.py",
+                                             "tests/test_public_contract_schema.py",
+                                             "tests/test_publication_pipeline.py",
+                                             "tests/test_ranking_v2.py",
+                                             "tests/test_runtime_audit.py",
+                                             "tests/test_trend_fit.py",
+                                             "tests/test_x_web_collector.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/hourly_store.py":  "e9de2e30aa101bd269950c58b4a12539516060752c0f5c52c1cd9163635c48cc",
-                                                    "src/trzip/publication_pipeline.py":  "2f6f102236e9b4820740d6d14fe7482f98330cd0ec57e21f7f954ebfb0a579ec",
-                                                    "tests/test_hourly_store.py":  "8c0aa8c1ba78982e7fce4ab82fc066eea08024a9847963420d82e3623925f595",
-                                                    "tests/test_publication_pipeline.py":  "580b92d8d71527d83bc33455bd56c9e7471dcb7d66c984ae6d9dfbbfdfaf1509"
+                                                    "chrome-extension/trzip-x-current-session/manifest.json":  "deleted",
+                                                    "chrome-extension/trzip-x-current-session/README.md":  "deleted",
+                                                    "chrome-extension/trzip-x-current-session/service-worker.js":  "deleted",
+                                                    "docs/BACKEND_TEAM_PROMPT.md":  "4ecd0be2bcf3ace51f809de603f83f26628a83ab9b98481cc71bae920c909066",
+                                                    "docs/CODEX_CONTINUITY.md":  "4082e13128a4f48cb5afbb8e9a65adec632e0ea9656d1251030cb21824d39144",
+                                                    "docs/FREE_PRODUCTION.md":  "186e3ee9ee2dba6c8a3e0dc4ba162a91eff7a02ffc9b92e514fad949232189bf",
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "179b6c4d07a11405367f57575862b540e6a6363a66dad3e0be07cefb3657c76e",
+                                                    "docs/PRODUCT_POLICY.md":  "e2018be5bef286db652d06f4cb3b35c2c1bb3d04dc76729aee632e6afe59c906",
+                                                    "README.md":  "7e5b33b845afb2c41cec2d834e36b55462b178d45501205a9560e21471a12d30",
+                                                    "schemas/current-state-v1.schema.json":  "ae6e5b9b86ab8b61c7d45777f933f2486e6ddec28a0bf2ebea02e1e0e621ee17",
+                                                    "schemas/intelligence-v3.schema.json":  "84c18ed23962d71bd3985821b85cd113e0c9b7bc140b6618559bf75091fcf52e",
+                                                    "scripts/checkpoint-main.ps1":  "ab050d84635b875bc9a4d461c8c678edcbd1b3ae4fa425af372c7d325a3c5df4",
+                                                    "scripts/collect-hourly.ps1":  "0e4035c074ea9930d890b0d0d553d232d852a38868e5ad13f96ef6740ea7ed08",
+                                                    "scripts/install-hourly-task.ps1":  "deleted",
+                                                    "scripts/promote-runtime.ps1":  "f989890c2b0e0923205ef2e542df11177c2a0da7afa125a23987b47509d4668d",
+                                                    "scripts/setup-local-runtime.ps1":  "b44cc47b2b481c40e15bf37bf8932577c5c18c379d337743a37927a462e5923d",
+                                                    "scripts/setup-x-chrome.ps1":  "deleted",
+                                                    "src/trzip/curation.py":  "08e1acee98bb60b66265c2cb7a499bd1196edeac76141d11c2fdd3dc2d10652e",
+                                                    "src/trzip/hourly_store.py":  "d5a2910b2a7969c230d1035d88b9750d282139a790e3c72b72e7f4b7c0c02ab6",
+                                                    "src/trzip/intelligence.py":  "e068421817d6a8e67c2978e9834a11c8700d7fb70c930cac9190af0b6e65e2ac",
+                                                    "src/trzip/publication_pipeline.py":  "fc9db8245e935b1c3f8da328609d7b6ccb0c3e43650a4e9876fe494202115a6e",
+                                                    "src/trzip/ranking_v2.py":  "9503ef12d5f41a913aee48493e1a11839948290a15efff19db745324be8299a5",
+                                                    "src/trzip/runtime_audit.py":  "ffa285775ee7007d3b6bb6af5d1dbefa68f289cc48af82317e6c6f060dfcd158",
+                                                    "src/trzip/trend_fit.py":  "335df603ebc62b955fcc382df6cd1c31fdfddcab06be42368b2b6c8f4e302096",
+                                                    "src/trzip/x_web_collector.py":  "023bd7596be05189bba1aee7209608bab072cf00c4fccf9ad778abbca113b96a",
+                                                    "tests/test_hourly_store.py":  "b1d1db11c7a599e4fffe51482175670de5b98a5a13ed23b134cb241f9d406707",
+                                                    "tests/test_intelligence.py":  "47bc9ce1498b6d10a68741489ac290df461c60c2b48fa0f546d1918460b2d50a",
+                                                    "tests/test_local_runtime_contract.py":  "bd24819fcbfc0c6d7f96ff8d62329a8cf597b3ddefb315e92e2be42036e4a9b1",
+                                                    "tests/test_public_contract_schema.py":  "a5ce8a7b9b498e25199dac9647a821bff57765c726dc9da92773694a41804190",
+                                                    "tests/test_publication_pipeline.py":  "79ffd97d5693ee2c99e1fe3ddde13d36c609b3622e3b6935d5b2590c186c149d",
+                                                    "tests/test_ranking_v2.py":  "8b9fdce1168c3d2b0fa538c6124421cd77d5c00280b5e91a37f1064bd1340886",
+                                                    "tests/test_runtime_audit.py":  "0036f8ddf721b393128f4e8052ddc15f68b57d2545e2e546dc612db65d3a7020",
+                                                    "tests/test_trend_fit.py":  "f8dfe25d6fbca2820a2244da48c3532aaa803a3b029b73941eb637953a16422b",
+                                                    "tests/test_x_web_collector.py":  "ef32c22d4cb5c2904fb9c90cfdf7f5da631e8063b090269952a2d87e10d65cd1"
                                                 },
-                       "commit_message":  "fix: preserve first verified hourly snapshot",
+                       "commit_message":  "feat: finalize laptop trend backend v3",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  176
+                                      "count":  200
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -51,31 +111,33 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "정각 최초 품질 통과 스냅샷과 실행시각을 같은 시간 재실행이 덮지 못하게 보존",
+                    "objective":  "노트북 X·Google 원장부터 공정 순위·Top10·기업 준비도·프런트 정적 전달까지 단일 프로덕션 백엔드로 통합",
                     "completed":  [
-                                      "Google 첫 전체 스냅샷 불변",
-                                      "X 첫 1~30 스냅샷 불변",
-                                      "실패했던 출처만 같은 시간 재수집 허용",
-                                      "최초 예약 실행 지연·소요시간 보존",
-                                      "재실행 회귀 테스트"
+                                      "순위 V2와 60일 생애주기 기준선 구현",
+                                      "트렌드 Top10과 기업 5개 Gold 게이트 분리",
+                                      "manifest-last 프런트 정적 전달 구현",
+                                      "Codex 현재 로그인 Chrome 정각 자동화로 운영 통일",
+                                      "구형 Windows 수집기와 X 확장 코드 제거",
+                                      "전체 회귀검증 완료"
                                   ],
                     "next_actions":  [
-                                         "04시 최초 스냅샷 복구",
-                                         "복구 후 최신 계약 재발행",
-                                         "05시 정각 불변성 재검증"
+                                         "08시 정각 X 30개와 Google 전체 자동수집 실측",
+                                         "96시간 이상 출처별 이력 누적 후 성숙도 재감사",
+                                         "상위 트렌드 온톨로지 기업 근거 보강"
                                      ],
                     "blockers":  [
-                                     "X 확장 미등록",
-                                     "v3 누적 96시간 미만"
+                                     "실제 60일 X·Google 이력은 아직 존재하지 않으며 지금부터 누적",
+                                     "많은 최신 트렌드는 기업 Gold 5개 근거 보강 대기"
                                  ],
                     "known_limitations":  [
-
+                                              "Codex 앱·노트북·현재 Chrome X 로그인 상태가 정각에 필요",
+                                              "NAVER 보조검증 키 인증 실패와 Instagram 미연결은 순위에 영향 없음"
                                           ]
                 },
     "runtime_contract":  {
                              "checkout":  "%USERPROFILE%\\Documents\\Codex\\noinbada-runtime",
                              "runtime_root":  "%LOCALAPPDATA%\\TRZIP",
-                             "scheduler":  "TRZIP X Google Hourly Collector",
+                             "scheduler":  "codex_hourly_automation",
                              "required_branch":  "main"
                          },
     "live_state_pointer":  {

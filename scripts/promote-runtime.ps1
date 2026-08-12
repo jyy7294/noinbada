@@ -1,12 +1,13 @@
 param(
     [string]$RuntimeCheckout = (Join-Path $env:USERPROFILE "Documents\Codex\noinbada-runtime"),
     [string]$ExpectedSha = "",
-    [string]$TaskName = "TRZIP X Google Hourly Collector"
+    [string]$AutomationConfig = (Join-Path $env:USERPROFILE ".codex\automations\trzip\automation.toml")
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 $RuntimeCheckout = [IO.Path]::GetFullPath($RuntimeCheckout)
+$AutomationConfig = [IO.Path]::GetFullPath($AutomationConfig)
 $Mutex = [Threading.Mutex]::new($false, "Global\TRZIP-NOINBADA-HOURLY-V1")
 $HasMutex = $false
 
@@ -51,19 +52,38 @@ try {
     & $python -m pip install -e $RuntimeCheckout --quiet
     if ($LASTEXITCODE -ne 0) { throw "Runtime dependency refresh failed." }
 
-    $task = Get-ScheduledTask -TaskName $TaskName -ErrorAction Stop
-    $script = Join-Path $RuntimeCheckout "scripts\collect-hourly.ps1"
-    $arguments = [string]$task.Actions[0].Arguments
-    if (-not $arguments.Contains("-File `"$script`"") -or
-        -not $arguments.Contains("-ProjectRoot `"$RuntimeCheckout`"")) {
-        throw "Scheduled task does not target the promoted runtime checkout."
+    if (-not (Test-Path -LiteralPath $AutomationConfig -PathType Leaf)) {
+        throw "Codex hourly automation config is missing."
+    }
+    $automationText = [IO.File]::ReadAllText($AutomationConfig, [Text.Encoding]::UTF8)
+    if ($automationText -notmatch '(?m)^\s*status\s*=\s*"ACTIVE"\s*$') {
+        throw "Codex hourly automation is not ACTIVE."
+    }
+    if ($automationText -notmatch '(?m)^\s*rrule\s*=\s*"FREQ=HOURLY;INTERVAL=1;BYMINUTE=0"\s*$') {
+        throw "Codex hourly automation schedule is not the required top-of-hour rule."
+    }
+    $runtimePathCandidates = @(
+        $RuntimeCheckout,
+        $RuntimeCheckout.Replace('\', '/'),
+        $RuntimeCheckout.Replace('\', '\\')
+    )
+    $targetsRuntime = $false
+    foreach ($candidate in $runtimePathCandidates) {
+        if ($automationText.Contains($candidate)) {
+            $targetsRuntime = $true
+            break
+        }
+    }
+    if (-not $targetsRuntime) {
+        throw "Codex hourly automation does not target the promoted runtime checkout."
     }
 
     [ordered]@{
         status = "promoted"
         branch = "main"
         sha = $runtimeSha
-        scheduler = $TaskName
+        scheduler = "codex_hourly_automation"
+        automation_config = "%USERPROFILE%\.codex\automations\trzip\automation.toml"
         scheduler_target_verified = $true
     } | ConvertTo-Json -Compress
 } finally {

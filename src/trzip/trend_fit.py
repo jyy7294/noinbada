@@ -15,6 +15,16 @@ HARD_ISSUE_MARKERS = {
     "배상", "판결", "소송", "재판", "기소", "유죄", "대법원", "법원",
 }
 
+# A single secondary-platform title containing one of these words is not
+# sufficient to classify the whole observed trend as a controversy.  The
+# observed term itself may still be an issue, while provider-only context needs
+# corroboration from at least two separate titles.
+SOFT_PROVIDER_ISSUE_MARKERS = {
+    "사생활", "불륜", "스토커", "논란", "친일",
+}
+
+STRONG_PROVIDER_ISSUE_MARKERS = HARD_ISSUE_MARKERS - SOFT_PROVIDER_ISSUE_MARKERS
+
 HARD_ISSUE_CATEGORIES = {
     "policy_issue", "politics", "incident", "crime", "disaster", "weather_alert",
     "privacy_controversy",
@@ -71,8 +81,13 @@ GENERIC_CATEGORY_WORDS = {
 
 
 def _contains_any(text: str, markers: Iterable[str]) -> bool:
-    compact = text.casefold().replace(" ", "")
-    return any(marker.casefold().replace(" ", "") in compact for marker in markers)
+    # Keep whitespace so a marker cannot be manufactured across two tokens
+    # (for example ``보고 소원`` -> ``고소`` in the old compact matcher).
+    normalized = " ".join(str(text or "").casefold().split())
+    return any(
+        " ".join(marker.casefold().split()) in normalized
+        for marker in markers
+    )
 
 
 def assess_trend_fit(
@@ -98,13 +113,21 @@ def assess_trend_fit(
         for value in issue_context_terms
         if str(value).strip()
     ]
-    issue_context = " ".join([normalized_term, *issue_context_values])
     claim_types = {str(value).strip() for value in news_claim_types if str(value).strip()}
     labels: list[str] = []
 
+    provider_soft_issue_matches = sum(
+        _contains_any(value, SOFT_PROVIDER_ISSUE_MARKERS)
+        for value in issue_context_values
+    )
     hard_issue = (
         category in HARD_ISSUE_CATEGORIES
-        or _contains_any(issue_context, HARD_ISSUE_MARKERS)
+        or _contains_any(normalized_term, HARD_ISSUE_MARKERS)
+        or any(
+            _contains_any(value, STRONG_PROVIDER_ISSUE_MARKERS)
+            for value in issue_context_values
+        )
+        or provider_soft_issue_matches >= 2
     )
     generic_category_word = normalized_term.casefold() in {
         value.casefold() for value in GENERIC_CATEGORY_WORDS
@@ -158,5 +181,6 @@ def assess_trend_fit(
         "reason": reason,
         "news_context_used": bool(claim_types),
         "issue_context_used": bool(issue_context_values),
+        "provider_soft_issue_match_count": provider_soft_issue_matches,
         "rank_effect": "none",
     }
