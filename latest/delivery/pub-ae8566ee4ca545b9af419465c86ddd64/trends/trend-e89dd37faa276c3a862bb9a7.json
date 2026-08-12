@@ -1,0 +1,369 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-ae8566ee4ca545b9af419465c86ddd64",
+  "generated_at": "2026-08-12T23:50:15.250299+00:00",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "kf-21 보라매",
+    "topic": "kf-21 보라매",
+    "display_name": "kf-21 보라매",
+    "observed_representative_term": "kf-21 보라매",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "kf-21 보라매",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 9,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.080257,
+      "best_source_rank": 41
+    },
+    "raw_terms": [
+      "kf-21 보라매"
+    ],
+    "phenomenon_summary": "\"kf-21 보라매\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "unclassified",
+    "broad_category": "other",
+    "lane": "review",
+    "selection_reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "review",
+      "main_eligible": false,
+      "hard_issue": false,
+      "ambiguous": true,
+      "generic_category_word": false,
+      "labels": [],
+      "reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "review",
+      "label": "맥락 검토",
+      "affects_score": false
+    },
+    "selection_layer": "review_queue",
+    "company_eligible": false,
+    "score": 33.21,
+    "current_source_position": 0.477477,
+    "momentum": 0.5,
+    "persistence": 0.0938,
+    "score_components": {
+      "current_points": 19.1,
+      "momentum_points": 10.0,
+      "persistence_points": 1.88,
+      "decayed_history_points": 2.23,
+      "cross_source_points": 0.0,
+      "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "component_subtotal_points": 33.21,
+      "freshness_multiplier": 1.0,
+      "total_points": 33.21
+    },
+    "score_explanation": {
+      "formula": "40 current + 20 exact-hour momentum + 20 per-source persistence + 15 exponentially decayed history + 5 explicit cross-source",
+      "components": [
+        {
+          "key": "current",
+          "points": 19.1,
+          "max_points": 40,
+          "basis": "mean source-normalised current position over observed current sources"
+        },
+        {
+          "key": "momentum",
+          "points": 10.0,
+          "max_points": 20,
+          "basis": "exact previous-hour position change; neutral 10 points when no exact comparison exists"
+        },
+        {
+          "key": "persistence",
+          "points": 1.88,
+          "max_points": 20,
+          "basis": "mean source-specific presence rate multiplied by source-specific history maturity"
+        },
+        {
+          "key": "decayed_history",
+          "points": 2.23,
+          "max_points": 15,
+          "basis": "observed history with 24h exponential half-life"
+        },
+        {
+          "key": "cross_source",
+          "points": 0.0,
+          "max_points": 5,
+          "basis": "5 points only when the event is currently observed by both X and Google"
+        }
+      ],
+      "freshness": {
+        "multiplier": 1.0,
+        "basis": "1 while currently observed; otherwise exponential cooling decay with 6h half-life"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "current_positions": {
+        "google_trends": 0.477477
+      },
+      "momentum_deltas": {},
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 9,
+          "observed_hours": 9,
+          "presence_rate": 1.0,
+          "maturity": 0.09375,
+          "adjusted_signal": 0.09375
+        }
+      },
+      "decayed_history": {
+        "google_trends": {
+          "eligible_past_hours": 8,
+          "observed_past_hours": 8,
+          "coverage": 0.047619,
+          "maturity": 0.047619,
+          "eligible_weight": 6.672123,
+          "weighted_evidence": 5.026023,
+          "weighted_presence": 0.753287,
+          "signal": 0.148433
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "is_ready": false,
+      "momentum": {
+        "status": "unavailable_neutral",
+        "neutral_applied": true,
+        "comparable_sources": [],
+        "unavailable_sources": [
+          "google_trends"
+        ]
+      },
+      "persistence": {
+        "status": "provisional",
+        "maturity_required_hours": 96
+      },
+      "decayed_history": {
+        "status": "provisional"
+      },
+      "warnings": [
+        "single_source_current_observation",
+        "momentum_neutral_due_to_missing_exact_previous_snapshot",
+        "persistence_history_not_mature",
+        "decayed_history_coverage_low"
+      ]
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 9,
+      "observed_days": 1,
+      "seen_before_current_hour": true,
+      "previous_seen_at": "2026-08-12T21:00:00+00:00",
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 117
+    },
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "age_hours": 10,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 9,
+      "history_maturity": 0.0938,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 46,
+        "value": 55.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 21, \"started_text\": \"10시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"공대공 미사일\"]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 47,
+        "value": 54.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 22, \"started_text\": \"11시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"공대공 미사일\"]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 42,
+        "value": 59.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 17, \"started_text\": \"12시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"공대공 미사일\"]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 41,
+        "value": 60.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 16, \"started_text\": \"13시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"공대공 미사일\"]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 41,
+        "value": 60.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 16, \"started_text\": \"14시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"공대공 미사일\"]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 42,
+        "value": 59.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 17, \"started_text\": \"15시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"공대공 미사일\"]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 44,
+        "value": 57.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 19, \"started_text\": \"15시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"공대공 미사일\"]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 87,
+        "value": 14.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 4, \"row_on_page\": 12, \"started_text\": \"17시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"공대공 미사일\"]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 117,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 5, \"row_on_page\": 17, \"started_text\": \"19시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"lig 디펜스 & 에어로 스페이스\", \"공대공 미사일\"]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "공대공 미사일",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 9,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "lig 디펜스 & 에어로 스페이스",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "keyword_evidence": {
+      "total": 2,
+      "observed_source_count": 2,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "excluded_by_context",
+      "publish_status": "excluded_by_context",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 5,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "core": 0,
+        "value_chain": 0,
+        "adjacent": 0,
+        "excluded": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 5,
+        "matched_terms": [],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+    },
+    "rank": 114,
+    "classification": "맥락 확인",
+    "persistence_rank": 49,
+    "momentum_rank": 114,
+    "main_rank": null,
+    "home_context_status": "review_required",
+    "home_context_reason": "not_main_lane",
+    "company_card_status": "not_applicable",
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "ranking_availability_status": "provisional_history"
+  }
+}
