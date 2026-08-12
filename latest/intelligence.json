@@ -188,13 +188,13 @@
       "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
       "score_calibration": 1.0,
       "company_eligible": true,
-      "score": 37.4,
-      "rrf": 14.9254,
+      "score": 37.82,
+      "rrf": 15.1515,
       "momentum": 0.0,
       "persistence": 0.006,
       "source_count": 1,
       "latest_source_ranks": {
-        "x": 7
+        "x": 6
       },
       "rank_change_by_source": {
         "x": null
@@ -216,8 +216,8 @@
         {
           "at": "2026-08-12T06:00:00+00:00",
           "source": "x",
-          "rank": 7,
-          "value": 94.0,
+          "rank": 6,
+          "value": 95.0,
           "provenance": "observed"
         }
       ],
@@ -1049,10 +1049,10 @@
       "momentum_rank": 10
     },
     {
-      "topic": "작가님 쾌차",
-      "display_name": "작가님 쾌차",
+      "topic": "꼬들 1684",
+      "display_name": "꼬들 1684",
       "raw_terms": [
-        "작가님 쾌차"
+        "꼬들 1684"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -1197,80 +1197,6 @@
       "momentum_rank": 12
     },
     {
-      "topic": "꼬들 1684",
-      "display_name": "꼬들 1684",
-      "raw_terms": [
-        "꼬들 1684"
-      ],
-      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-      "category": "unclassified",
-      "lane": "main",
-      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
-      "score_calibration": 0.82,
-      "company_eligible": false,
-      "score": 31.01,
-      "rrf": 15.1515,
-      "momentum": 0.0,
-      "persistence": 0.006,
-      "source_count": 1,
-      "latest_source_ranks": {
-        "x": 6
-      },
-      "rank_change_by_source": {
-        "x": null
-      },
-      "first_seen_at": "2026-08-12T06:00:00+00:00",
-      "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 0,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
-      "data_confidence": {
-        "level": "low",
-        "label": "초기 관찰",
-        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-      },
-      "provenance": [
-        "observed"
-      ],
-      "series": [
-        {
-          "at": "2026-08-12T06:00:00+00:00",
-          "source": "x",
-          "rank": 6,
-          "value": 95.0,
-          "provenance": "observed"
-        }
-      ],
-      "keywords": [],
-      "keyword_evidence": {
-        "total": 0,
-        "observed_source_count": 0,
-        "candidate_count": 0
-      },
-      "companies": [],
-      "company_categories": [],
-      "company_resolution": {
-        "status": "excluded_by_context",
-        "mapped_count": 0,
-        "direct_count": 0,
-        "role_coverage": [],
-        "tier_counts": {
-          "core": 0,
-          "value_chain": 0,
-          "adjacent": 0,
-          "excluded": 0
-        },
-        "category_count": 0,
-        "minimum_category_requirement": 3,
-        "minimum_category_met": false,
-        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-      },
-      "rank": 13,
-      "classification": "맥락 확인",
-      "persistence_rank": 13,
-      "momentum_rank": 13
-    },
-    {
       "topic": "엘리베이터",
       "display_name": "엘리베이터",
       "raw_terms": [
@@ -1339,10 +1265,10 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 14,
+      "rank": 13,
       "classification": "맥락 확인",
-      "persistence_rank": 14,
-      "momentum_rank": 14
+      "persistence_rank": 13,
+      "momentum_rank": 13
     },
     {
       "topic": "업 비트",
@@ -1384,6 +1310,80 @@
         {
           "at": "2026-08-12T06:00:00+00:00",
           "source": "google_trends",
+          "rank": 7,
+          "value": 94.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 14,
+      "classification": "맥락 확인",
+      "persistence_rank": 14,
+      "momentum_rank": 14
+    },
+    {
+      "topic": "티링 로그인",
+      "display_name": "티링 로그인",
+      "raw_terms": [
+        "티링 로그인"
+      ],
+      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+      "category": "unclassified",
+      "lane": "main",
+      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+      "score_calibration": 0.82,
+      "company_eligible": false,
+      "score": 30.67,
+      "rrf": 14.9254,
+      "momentum": 0.0,
+      "persistence": 0.006,
+      "source_count": 1,
+      "latest_source_ranks": {
+        "x": 7
+      },
+      "rank_change_by_source": {
+        "x": null
+      },
+      "first_seen_at": "2026-08-12T06:00:00+00:00",
+      "last_seen_at": "2026-08-12T06:00:00+00:00",
+      "age_hours": 0,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "low",
+        "label": "초기 관찰",
+        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T06:00:00+00:00",
+          "source": "x",
           "rank": 7,
           "value": 94.0,
           "provenance": "observed"
@@ -1493,10 +1493,10 @@
       "momentum_rank": 16
     },
     {
-      "topic": "티링 로그인",
-      "display_name": "티링 로그인",
+      "topic": "리제 오하",
+      "display_name": "리제 오하",
       "raw_terms": [
-        "티링 로그인"
+        "리제 오하"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -1641,10 +1641,10 @@
       "momentum_rank": 18
     },
     {
-      "topic": "리제 오하",
-      "display_name": "리제 오하",
+      "topic": "작가님 쾌차",
+      "display_name": "작가님 쾌차",
       "raw_terms": [
-        "리제 오하"
+        "작가님 쾌차"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -1715,10 +1715,10 @@
       "momentum_rank": 19
     },
     {
-      "topic": "오하욘사",
-      "display_name": "오하욘사",
+      "topic": "덕수엄마",
+      "display_name": "덕수엄마",
       "raw_terms": [
-        "오하욘사"
+        "덕수엄마"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -1863,10 +1863,10 @@
       "momentum_rank": 21
     },
     {
-      "topic": "덕수엄마",
-      "display_name": "덕수엄마",
+      "topic": "오하욘사",
+      "display_name": "오하욘사",
       "raw_terms": [
-        "덕수엄마"
+        "오하욘사"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -2023,13 +2023,13 @@
       "selection_reason": "소비·문화·콘텐츠·제품 또는 참여 행동 맥락",
       "score_calibration": 1.0,
       "company_eligible": true,
-      "score": 28.84,
-      "rrf": 11.6279,
-      "momentum": -0.2533,
+      "score": 29.02,
+      "rrf": 11.9048,
+      "momentum": -0.2857,
       "persistence": 0.006,
       "source_count": 1,
       "latest_source_ranks": {
-        "x": 26
+        "x": 24
       },
       "rank_change_by_source": {
         "x": null
@@ -2051,15 +2051,15 @@
         {
           "at": "2026-08-12T06:00:00+00:00",
           "source": "x",
-          "rank": 26,
-          "value": 75.0,
+          "rank": 24,
+          "value": 77.0,
           "provenance": "observed"
         },
         {
           "at": "2026-08-12T06:00:00+00:00",
           "source": "x",
-          "rank": 45,
-          "value": 56.0,
+          "rank": 46,
+          "value": 55.0,
           "provenance": "observed"
         }
       ],
@@ -2287,10 +2287,10 @@
       "momentum_rank": 24
     },
     {
-      "topic": "사진 로딩",
-      "display_name": "사진 로딩",
+      "topic": "태닝포차코",
+      "display_name": "태닝포차코",
       "raw_terms": [
-        "사진 로딩"
+        "태닝포차코"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -2361,10 +2361,10 @@
       "momentum_rank": 25
     },
     {
-      "topic": "지오다노",
-      "display_name": "지오다노",
+      "topic": "사진 로딩",
+      "display_name": "사진 로딩",
       "raw_terms": [
-        "지오다노"
+        "사진 로딩"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -2509,10 +2509,10 @@
       "momentum_rank": 27
     },
     {
-      "topic": "태닝포차코",
-      "display_name": "태닝포차코",
+      "topic": "지오다노",
+      "display_name": "지오다노",
       "raw_terms": [
-        "태닝포차코"
+        "지오다노"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -2731,80 +2731,6 @@
       "momentum_rank": 30
     },
     {
-      "topic": "#피냐타_내용_궁금해",
-      "display_name": "#피냐타_내용_궁금해",
-      "raw_terms": [
-        "#피냐타_내용_궁금해"
-      ],
-      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-      "category": "unclassified",
-      "lane": "main",
-      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
-      "score_calibration": 0.82,
-      "company_eligible": false,
-      "score": 26.8,
-      "rrf": 12.3457,
-      "momentum": 0.0,
-      "persistence": 0.006,
-      "source_count": 1,
-      "latest_source_ranks": {
-        "x": 21
-      },
-      "rank_change_by_source": {
-        "x": null
-      },
-      "first_seen_at": "2026-08-12T06:00:00+00:00",
-      "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 0,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
-      "data_confidence": {
-        "level": "low",
-        "label": "초기 관찰",
-        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-      },
-      "provenance": [
-        "observed"
-      ],
-      "series": [
-        {
-          "at": "2026-08-12T06:00:00+00:00",
-          "source": "x",
-          "rank": 21,
-          "value": 80.0,
-          "provenance": "observed"
-        }
-      ],
-      "keywords": [],
-      "keyword_evidence": {
-        "total": 0,
-        "observed_source_count": 0,
-        "candidate_count": 0
-      },
-      "companies": [],
-      "company_categories": [],
-      "company_resolution": {
-        "status": "excluded_by_context",
-        "mapped_count": 0,
-        "direct_count": 0,
-        "role_coverage": [],
-        "tier_counts": {
-          "core": 0,
-          "value_chain": 0,
-          "adjacent": 0,
-          "excluded": 0
-        },
-        "category_count": 0,
-        "minimum_category_requirement": 3,
-        "minimum_category_met": false,
-        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-      },
-      "rank": 32,
-      "classification": "맥락 확인",
-      "persistence_rank": 32,
-      "momentum_rank": 31
-    },
-    {
       "topic": "이치카 생일",
       "display_name": "이치카 생일",
       "raw_terms": [
@@ -2816,13 +2742,13 @@
       "selection_reason": "소비·문화·콘텐츠·제품 또는 참여 행동 맥락",
       "score_calibration": 1.0,
       "company_eligible": true,
-      "score": 26.73,
-      "rrf": 9.0909,
+      "score": 26.88,
+      "rrf": 9.1743,
       "momentum": 0.0,
       "persistence": 0.006,
       "source_count": 1,
       "latest_source_ranks": {
-        "x": 50
+        "x": 49
       },
       "rank_change_by_source": {
         "x": null
@@ -2844,8 +2770,8 @@
         {
           "at": "2026-08-12T06:00:00+00:00",
           "source": "x",
-          "rank": 50,
-          "value": 51.0,
+          "rank": 49,
+          "value": 52.0,
           "provenance": "observed"
         }
       ],
@@ -2989,8 +2915,82 @@
         "minimum_category_met": true,
         "reason": "공식 사업관계 또는 명시적 관찰 근거가 있는 후보만 표시"
       },
-      "rank": 33,
+      "rank": 32,
       "classification": "일반 트렌드",
+      "persistence_rank": 32,
+      "momentum_rank": 31
+    },
+    {
+      "topic": "#피냐타_내용_궁금해",
+      "display_name": "#피냐타_내용_궁금해",
+      "raw_terms": [
+        "#피냐타_내용_궁금해"
+      ],
+      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+      "category": "unclassified",
+      "lane": "main",
+      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+      "score_calibration": 0.82,
+      "company_eligible": false,
+      "score": 26.8,
+      "rrf": 12.3457,
+      "momentum": 0.0,
+      "persistence": 0.006,
+      "source_count": 1,
+      "latest_source_ranks": {
+        "x": 21
+      },
+      "rank_change_by_source": {
+        "x": null
+      },
+      "first_seen_at": "2026-08-12T06:00:00+00:00",
+      "last_seen_at": "2026-08-12T06:00:00+00:00",
+      "age_hours": 0,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "low",
+        "label": "초기 관찰",
+        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T06:00:00+00:00",
+          "source": "x",
+          "rank": 21,
+          "value": 80.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 33,
+      "classification": "맥락 확인",
       "persistence_rank": 33,
       "momentum_rank": 32
     },
@@ -3143,80 +3143,6 @@
       "momentum_rank": 34
     },
     {
-      "topic": "하이웨이",
-      "display_name": "하이웨이",
-      "raw_terms": [
-        "하이웨이"
-      ],
-      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-      "category": "unclassified",
-      "lane": "main",
-      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
-      "score_calibration": 0.82,
-      "company_eligible": false,
-      "score": 26.14,
-      "rrf": 11.9048,
-      "momentum": 0.0,
-      "persistence": 0.006,
-      "source_count": 1,
-      "latest_source_ranks": {
-        "x": 24
-      },
-      "rank_change_by_source": {
-        "x": null
-      },
-      "first_seen_at": "2026-08-12T06:00:00+00:00",
-      "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 0,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
-      "data_confidence": {
-        "level": "low",
-        "label": "초기 관찰",
-        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-      },
-      "provenance": [
-        "observed"
-      ],
-      "series": [
-        {
-          "at": "2026-08-12T06:00:00+00:00",
-          "source": "x",
-          "rank": 24,
-          "value": 77.0,
-          "provenance": "observed"
-        }
-      ],
-      "keywords": [],
-      "keyword_evidence": {
-        "total": 0,
-        "observed_source_count": 0,
-        "candidate_count": 0
-      },
-      "companies": [],
-      "company_categories": [],
-      "company_resolution": {
-        "status": "excluded_by_context",
-        "mapped_count": 0,
-        "direct_count": 0,
-        "role_coverage": [],
-        "tier_counts": {
-          "core": 0,
-          "value_chain": 0,
-          "adjacent": 0,
-          "excluded": 0
-        },
-        "category_count": 0,
-        "minimum_category_requirement": 3,
-        "minimum_category_met": false,
-        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-      },
-      "rank": 36,
-      "classification": "맥락 확인",
-      "persistence_rank": 36,
-      "momentum_rank": 35
-    },
-    {
       "topic": "두피토닉",
       "display_name": "두피토닉",
       "raw_terms": [
@@ -3258,6 +3184,80 @@
           "source": "x",
           "rank": 25,
           "value": 76.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 36,
+      "classification": "맥락 확인",
+      "persistence_rank": 36,
+      "momentum_rank": 35
+    },
+    {
+      "topic": "하이웨이",
+      "display_name": "하이웨이",
+      "raw_terms": [
+        "하이웨이"
+      ],
+      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+      "category": "unclassified",
+      "lane": "main",
+      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+      "score_calibration": 0.82,
+      "company_eligible": false,
+      "score": 25.72,
+      "rrf": 11.6279,
+      "momentum": 0.0,
+      "persistence": 0.006,
+      "source_count": 1,
+      "latest_source_ranks": {
+        "x": 26
+      },
+      "rank_change_by_source": {
+        "x": null
+      },
+      "first_seen_at": "2026-08-12T06:00:00+00:00",
+      "last_seen_at": "2026-08-12T06:00:00+00:00",
+      "age_hours": 0,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "low",
+        "label": "초기 관찰",
+        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T06:00:00+00:00",
+          "source": "x",
+          "rank": 26,
+          "value": 75.0,
           "provenance": "observed"
         }
       ],
@@ -3439,10 +3439,10 @@
       "momentum_rank": 38
     },
     {
-      "topic": "작가님 건강",
-      "display_name": "작가님 건강",
+      "topic": "악당주의보 100만",
+      "display_name": "악당주의보 100만",
       "raw_terms": [
-        "작가님 건강"
+        "악당주의보 100만"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -3513,10 +3513,10 @@
       "momentum_rank": 39
     },
     {
-      "topic": "다이소 절대",
-      "display_name": "다이소 절대",
+      "topic": "매력의 소유자",
+      "display_name": "매력의 소유자",
       "raw_terms": [
-        "다이소 절대"
+        "매력의 소유자"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -3587,10 +3587,10 @@
       "momentum_rank": 40
     },
     {
-      "topic": "빠른이동",
-      "display_name": "빠른이동",
+      "topic": "작가님 건강",
+      "display_name": "작가님 건강",
       "raw_terms": [
-        "빠른이동"
+        "작가님 건강"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -3661,10 +3661,10 @@
       "momentum_rank": 41
     },
     {
-      "topic": "악당주의보 100만",
-      "display_name": "악당주의보 100만",
+      "topic": "다이소 절대",
+      "display_name": "다이소 절대",
       "raw_terms": [
-        "악당주의보 100만"
+        "다이소 절대"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -3735,10 +3735,10 @@
       "momentum_rank": 42
     },
     {
-      "topic": "늑대인간",
-      "display_name": "늑대인간",
+      "topic": "#트친에게_궁금했던_점",
+      "display_name": "#트친에게_궁금했던_점",
       "raw_terms": [
-        "늑대인간"
+        "#트친에게_궁금했던_점"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -3883,10 +3883,10 @@
       "momentum_rank": 44
     },
     {
-      "topic": "카우보이 모자",
-      "display_name": "카우보이 모자",
+      "topic": "늑대인간",
+      "display_name": "늑대인간",
       "raw_terms": [
-        "카우보이 모자"
+        "늑대인간"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -3957,10 +3957,10 @@
       "momentum_rank": 45
     },
     {
-      "topic": "#트친에게_궁금했던_점",
-      "display_name": "#트친에게_궁금했던_점",
+      "topic": "카우보이 모자",
+      "display_name": "카우보이 모자",
       "raw_terms": [
-        "#트친에게_궁금했던_점"
+        "카우보이 모자"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -4031,10 +4031,10 @@
       "momentum_rank": 46
     },
     {
-      "topic": "가내밀레",
-      "display_name": "가내밀레",
+      "topic": "계정 굴릴",
+      "display_name": "계정 굴릴",
       "raw_terms": [
-        "가내밀레"
+        "계정 굴릴"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -4042,13 +4042,13 @@
       "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
       "score_calibration": 0.82,
       "company_eligible": false,
-      "score": 23.59,
-      "rrf": 10.2041,
+      "score": 23.74,
+      "rrf": 10.3093,
       "momentum": 0.0,
       "persistence": 0.006,
       "source_count": 1,
       "latest_source_ranks": {
-        "x": 38
+        "x": 37
       },
       "rank_change_by_source": {
         "x": null
@@ -4070,8 +4070,8 @@
         {
           "at": "2026-08-12T06:00:00+00:00",
           "source": "x",
-          "rank": 38,
-          "value": 63.0,
+          "rank": 37,
+          "value": 64.0,
           "provenance": "observed"
         }
       ],
@@ -4327,10 +4327,10 @@
       "momentum_rank": 50
     },
     {
-      "topic": "부키 오하",
-      "display_name": "부키 오하",
+      "topic": "D-100",
+      "display_name": "D-100",
       "raw_terms": [
-        "부키 오하"
+        "D-100"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -4401,10 +4401,10 @@
       "momentum_rank": 51
     },
     {
-      "topic": "D-100",
-      "display_name": "D-100",
+      "topic": "부키 오하",
+      "display_name": "부키 오하",
       "raw_terms": [
-        "D-100"
+        "부키 오하"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -4486,80 +4486,6 @@
       "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
       "score_calibration": 0.82,
       "company_eligible": false,
-      "score": 22.43,
-      "rrf": 9.434,
-      "momentum": 0.0,
-      "persistence": 0.006,
-      "source_count": 1,
-      "latest_source_ranks": {
-        "x": 46
-      },
-      "rank_change_by_source": {
-        "x": null
-      },
-      "first_seen_at": "2026-08-12T06:00:00+00:00",
-      "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 0,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
-      "data_confidence": {
-        "level": "low",
-        "label": "초기 관찰",
-        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-      },
-      "provenance": [
-        "observed"
-      ],
-      "series": [
-        {
-          "at": "2026-08-12T06:00:00+00:00",
-          "source": "x",
-          "rank": 46,
-          "value": 55.0,
-          "provenance": "observed"
-        }
-      ],
-      "keywords": [],
-      "keyword_evidence": {
-        "total": 0,
-        "observed_source_count": 0,
-        "candidate_count": 0
-      },
-      "companies": [],
-      "company_categories": [],
-      "company_resolution": {
-        "status": "excluded_by_context",
-        "mapped_count": 0,
-        "direct_count": 0,
-        "role_coverage": [],
-        "tier_counts": {
-          "core": 0,
-          "value_chain": 0,
-          "adjacent": 0,
-          "excluded": 0
-        },
-        "category_count": 0,
-        "minimum_category_requirement": 3,
-        "minimum_category_met": false,
-        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-      },
-      "rank": 54,
-      "classification": "맥락 확인",
-      "persistence_rank": 54,
-      "momentum_rank": 53
-    },
-    {
-      "topic": "계정 굴릴",
-      "display_name": "계정 굴릴",
-      "raw_terms": [
-        "계정 굴릴"
-      ],
-      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-      "category": "unclassified",
-      "lane": "main",
-      "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
-      "score_calibration": 0.82,
-      "company_eligible": false,
       "score": 22.3,
       "rrf": 9.3458,
       "momentum": 0.0,
@@ -4617,16 +4543,16 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 55,
+      "rank": 54,
       "classification": "맥락 확인",
-      "persistence_rank": 55,
-      "momentum_rank": 54
+      "persistence_rank": 54,
+      "momentum_rank": 53
     },
     {
-      "topic": "복주머니",
-      "display_name": "복주머니",
+      "topic": "빠른이동",
+      "display_name": "빠른이동",
       "raw_terms": [
-        "복주머니"
+        "빠른이동"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -4691,16 +4617,16 @@
         "minimum_category_met": false,
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
-      "rank": 56,
+      "rank": 55,
       "classification": "맥락 확인",
-      "persistence_rank": 56,
-      "momentum_rank": 55
+      "persistence_rank": 55,
+      "momentum_rank": 54
     },
     {
-      "topic": "위츄 문진",
-      "display_name": "위츄 문진",
+      "topic": "가내밀레",
+      "display_name": "가내밀레",
       "raw_terms": [
-        "위츄 문진"
+        "가내밀레"
       ],
       "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
       "category": "unclassified",
@@ -4708,13 +4634,13 @@
       "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
       "score_calibration": 0.82,
       "company_eligible": false,
-      "score": 22.04,
-      "rrf": 9.1743,
+      "score": 21.92,
+      "rrf": 9.0909,
       "momentum": 0.0,
       "persistence": 0.006,
       "source_count": 1,
       "latest_source_ranks": {
-        "x": 49
+        "x": 50
       },
       "rank_change_by_source": {
         "x": null
@@ -4736,8 +4662,82 @@
         {
           "at": "2026-08-12T06:00:00+00:00",
           "source": "x",
-          "rank": 49,
-          "value": 52.0,
+          "rank": 50,
+          "value": 51.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 56,
+      "classification": "맥락 확인",
+      "persistence_rank": 56,
+      "momentum_rank": 55
+    },
+    {
+      "topic": "친일 논란",
+      "display_name": "친일 논란",
+      "raw_terms": [
+        "친일 논란"
+      ],
+      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+      "category": "unclassified",
+      "lane": "issue",
+      "selection_reason": "논란·사생활·범죄·재난 등 주의 맥락으로 기업 연결 제외",
+      "score_calibration": 0.7,
+      "company_eligible": false,
+      "score": 20.13,
+      "rrf": 10.2041,
+      "momentum": 0.0,
+      "persistence": 0.006,
+      "source_count": 1,
+      "latest_source_ranks": {
+        "x": 38
+      },
+      "rank_change_by_source": {
+        "x": null
+      },
+      "first_seen_at": "2026-08-12T06:00:00+00:00",
+      "last_seen_at": "2026-08-12T06:00:00+00:00",
+      "age_hours": 0,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "low",
+        "label": "초기 관찰",
+        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T06:00:00+00:00",
+          "source": "x",
+          "rank": 38,
+          "value": 63.0,
           "provenance": "observed"
         }
       ],
@@ -4766,83 +4766,9 @@
         "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
       },
       "rank": 57,
-      "classification": "맥락 확인",
+      "classification": "이슈·주의",
       "persistence_rank": 57,
       "momentum_rank": 56
-    },
-    {
-      "topic": "친일 논란",
-      "display_name": "친일 논란",
-      "raw_terms": [
-        "친일 논란"
-      ],
-      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-      "category": "unclassified",
-      "lane": "issue",
-      "selection_reason": "논란·사생활·범죄·재난 등 주의 맥락으로 기업 연결 제외",
-      "score_calibration": 0.7,
-      "company_eligible": false,
-      "score": 20.27,
-      "rrf": 10.3093,
-      "momentum": 0.0,
-      "persistence": 0.006,
-      "source_count": 1,
-      "latest_source_ranks": {
-        "x": 37
-      },
-      "rank_change_by_source": {
-        "x": null
-      },
-      "first_seen_at": "2026-08-12T06:00:00+00:00",
-      "last_seen_at": "2026-08-12T06:00:00+00:00",
-      "age_hours": 0,
-      "lifecycle": "new",
-      "lifecycle_reason": "최근 3시간 안에 처음 포착",
-      "data_confidence": {
-        "level": "low",
-        "label": "초기 관찰",
-        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-      },
-      "provenance": [
-        "observed"
-      ],
-      "series": [
-        {
-          "at": "2026-08-12T06:00:00+00:00",
-          "source": "x",
-          "rank": 37,
-          "value": 64.0,
-          "provenance": "observed"
-        }
-      ],
-      "keywords": [],
-      "keyword_evidence": {
-        "total": 0,
-        "observed_source_count": 0,
-        "candidate_count": 0
-      },
-      "companies": [],
-      "company_categories": [],
-      "company_resolution": {
-        "status": "excluded_by_context",
-        "mapped_count": 0,
-        "direct_count": 0,
-        "role_coverage": [],
-        "tier_counts": {
-          "core": 0,
-          "value_chain": 0,
-          "adjacent": 0,
-          "excluded": 0
-        },
-        "category_count": 0,
-        "minimum_category_requirement": 3,
-        "minimum_category_met": false,
-        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-      },
-      "rank": 58,
-      "classification": "이슈·주의",
-      "persistence_rank": 58,
-      "momentum_rank": 57
     },
     {
       "topic": "친일파 후손",
@@ -4886,6 +4812,80 @@
           "source": "x",
           "rank": 41,
           "value": 60.0,
+          "provenance": "observed"
+        }
+      ],
+      "keywords": [],
+      "keyword_evidence": {
+        "total": 0,
+        "observed_source_count": 0,
+        "candidate_count": 0
+      },
+      "companies": [],
+      "company_categories": [],
+      "company_resolution": {
+        "status": "excluded_by_context",
+        "mapped_count": 0,
+        "direct_count": 0,
+        "role_coverage": [],
+        "tier_counts": {
+          "core": 0,
+          "value_chain": 0,
+          "adjacent": 0,
+          "excluded": 0
+        },
+        "category_count": 0,
+        "minimum_category_requirement": 3,
+        "minimum_category_met": false,
+        "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+      },
+      "rank": 58,
+      "classification": "이슈·주의",
+      "persistence_rank": 58,
+      "momentum_rank": 57
+    },
+    {
+      "topic": "증조부 친일",
+      "display_name": "증조부 친일",
+      "raw_terms": [
+        "증조부 친일"
+      ],
+      "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+      "category": "unclassified",
+      "lane": "issue",
+      "selection_reason": "논란·사생활·범죄·재난 등 주의 맥락으로 기업 연결 제외",
+      "score_calibration": 0.7,
+      "company_eligible": false,
+      "score": 19.26,
+      "rrf": 9.5238,
+      "momentum": 0.0,
+      "persistence": 0.006,
+      "source_count": 1,
+      "latest_source_ranks": {
+        "x": 45
+      },
+      "rank_change_by_source": {
+        "x": null
+      },
+      "first_seen_at": "2026-08-12T06:00:00+00:00",
+      "last_seen_at": "2026-08-12T06:00:00+00:00",
+      "age_hours": 0,
+      "lifecycle": "new",
+      "lifecycle_reason": "최근 3시간 안에 처음 포착",
+      "data_confidence": {
+        "level": "low",
+        "label": "초기 관찰",
+        "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+      },
+      "provenance": [
+        "observed"
+      ],
+      "series": [
+        {
+          "at": "2026-08-12T06:00:00+00:00",
+          "source": "x",
+          "rank": 45,
+          "value": 56.0,
           "provenance": "observed"
         }
       ],
@@ -5096,13 +5096,13 @@
       "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
       "score_calibration": 1.0,
       "company_eligible": true,
-      "score": 37.4,
-      "rrf": 14.9254,
+      "score": 37.82,
+      "rrf": 15.1515,
       "momentum": 0.0,
       "persistence": 0.006,
       "source_count": 1,
       "latest_source_ranks": {
-        "x": 7
+        "x": 6
       },
       "rank_change_by_source": {
         "x": null
@@ -5124,8 +5124,8 @@
         {
           "at": "2026-08-12T06:00:00+00:00",
           "source": "x",
-          "rank": 7,
-          "value": 94.0,
+          "rank": 6,
+          "value": 95.0,
           "provenance": "observed"
         }
       ],
@@ -5959,7 +5959,7 @@
   ],
   "quality_summary": {
     "total_ranked_candidates": 59,
-    "main_candidates": 57,
+    "main_candidates": 56,
     "public_top10_count": 10,
     "top10_with_five_keywords": 1,
     "top10_with_company_mapping": 3,
@@ -6144,13 +6144,13 @@
         "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
         "score_calibration": 1.0,
         "company_eligible": true,
-        "score": 37.4,
-        "rrf": 14.9254,
+        "score": 37.82,
+        "rrf": 15.1515,
         "momentum": 0.0,
         "persistence": 0.006,
         "source_count": 1,
         "latest_source_ranks": {
-          "x": 7
+          "x": 6
         },
         "rank_change_by_source": {
           "x": null
@@ -6172,8 +6172,8 @@
           {
             "at": "2026-08-12T06:00:00+00:00",
             "source": "x",
-            "rank": 7,
-            "value": 94.0,
+            "rank": 6,
+            "value": 95.0,
             "provenance": "observed"
           }
         ],
@@ -7005,10 +7005,10 @@
         "momentum_rank": 10
       },
       {
-        "topic": "작가님 쾌차",
-        "display_name": "작가님 쾌차",
+        "topic": "꼬들 1684",
+        "display_name": "꼬들 1684",
         "raw_terms": [
-          "작가님 쾌차"
+          "꼬들 1684"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -7153,80 +7153,6 @@
         "momentum_rank": 12
       },
       {
-        "topic": "꼬들 1684",
-        "display_name": "꼬들 1684",
-        "raw_terms": [
-          "꼬들 1684"
-        ],
-        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-        "category": "unclassified",
-        "lane": "main",
-        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
-        "score_calibration": 0.82,
-        "company_eligible": false,
-        "score": 31.01,
-        "rrf": 15.1515,
-        "momentum": 0.0,
-        "persistence": 0.006,
-        "source_count": 1,
-        "latest_source_ranks": {
-          "x": 6
-        },
-        "rank_change_by_source": {
-          "x": null
-        },
-        "first_seen_at": "2026-08-12T06:00:00+00:00",
-        "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 0,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
-        "data_confidence": {
-          "level": "low",
-          "label": "초기 관찰",
-          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-        },
-        "provenance": [
-          "observed"
-        ],
-        "series": [
-          {
-            "at": "2026-08-12T06:00:00+00:00",
-            "source": "x",
-            "rank": 6,
-            "value": 95.0,
-            "provenance": "observed"
-          }
-        ],
-        "keywords": [],
-        "keyword_evidence": {
-          "total": 0,
-          "observed_source_count": 0,
-          "candidate_count": 0
-        },
-        "companies": [],
-        "company_categories": [],
-        "company_resolution": {
-          "status": "excluded_by_context",
-          "mapped_count": 0,
-          "direct_count": 0,
-          "role_coverage": [],
-          "tier_counts": {
-            "core": 0,
-            "value_chain": 0,
-            "adjacent": 0,
-            "excluded": 0
-          },
-          "category_count": 0,
-          "minimum_category_requirement": 3,
-          "minimum_category_met": false,
-          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-        },
-        "rank": 13,
-        "classification": "맥락 확인",
-        "persistence_rank": 13,
-        "momentum_rank": 13
-      },
-      {
         "topic": "엘리베이터",
         "display_name": "엘리베이터",
         "raw_terms": [
@@ -7295,10 +7221,10 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 14,
+        "rank": 13,
         "classification": "맥락 확인",
-        "persistence_rank": 14,
-        "momentum_rank": 14
+        "persistence_rank": 13,
+        "momentum_rank": 13
       },
       {
         "topic": "업 비트",
@@ -7340,6 +7266,80 @@
           {
             "at": "2026-08-12T06:00:00+00:00",
             "source": "google_trends",
+            "rank": 7,
+            "value": 94.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 14,
+        "classification": "맥락 확인",
+        "persistence_rank": 14,
+        "momentum_rank": 14
+      },
+      {
+        "topic": "티링 로그인",
+        "display_name": "티링 로그인",
+        "raw_terms": [
+          "티링 로그인"
+        ],
+        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+        "category": "unclassified",
+        "lane": "main",
+        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+        "score_calibration": 0.82,
+        "company_eligible": false,
+        "score": 30.67,
+        "rrf": 14.9254,
+        "momentum": 0.0,
+        "persistence": 0.006,
+        "source_count": 1,
+        "latest_source_ranks": {
+          "x": 7
+        },
+        "rank_change_by_source": {
+          "x": null
+        },
+        "first_seen_at": "2026-08-12T06:00:00+00:00",
+        "last_seen_at": "2026-08-12T06:00:00+00:00",
+        "age_hours": 0,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "low",
+          "label": "초기 관찰",
+          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T06:00:00+00:00",
+            "source": "x",
             "rank": 7,
             "value": 94.0,
             "provenance": "observed"
@@ -7449,10 +7449,10 @@
         "momentum_rank": 16
       },
       {
-        "topic": "티링 로그인",
-        "display_name": "티링 로그인",
+        "topic": "리제 오하",
+        "display_name": "리제 오하",
         "raw_terms": [
-          "티링 로그인"
+          "리제 오하"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -7597,10 +7597,10 @@
         "momentum_rank": 18
       },
       {
-        "topic": "리제 오하",
-        "display_name": "리제 오하",
+        "topic": "작가님 쾌차",
+        "display_name": "작가님 쾌차",
         "raw_terms": [
-          "리제 오하"
+          "작가님 쾌차"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -7671,10 +7671,10 @@
         "momentum_rank": 19
       },
       {
-        "topic": "오하욘사",
-        "display_name": "오하욘사",
+        "topic": "덕수엄마",
+        "display_name": "덕수엄마",
         "raw_terms": [
-          "오하욘사"
+          "덕수엄마"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -7819,10 +7819,10 @@
         "momentum_rank": 21
       },
       {
-        "topic": "덕수엄마",
-        "display_name": "덕수엄마",
+        "topic": "오하욘사",
+        "display_name": "오하욘사",
         "raw_terms": [
-          "덕수엄마"
+          "오하욘사"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -7979,13 +7979,13 @@
         "selection_reason": "소비·문화·콘텐츠·제품 또는 참여 행동 맥락",
         "score_calibration": 1.0,
         "company_eligible": true,
-        "score": 28.84,
-        "rrf": 11.6279,
-        "momentum": -0.2533,
+        "score": 29.02,
+        "rrf": 11.9048,
+        "momentum": -0.2857,
         "persistence": 0.006,
         "source_count": 1,
         "latest_source_ranks": {
-          "x": 26
+          "x": 24
         },
         "rank_change_by_source": {
           "x": null
@@ -8007,15 +8007,15 @@
           {
             "at": "2026-08-12T06:00:00+00:00",
             "source": "x",
-            "rank": 26,
-            "value": 75.0,
+            "rank": 24,
+            "value": 77.0,
             "provenance": "observed"
           },
           {
             "at": "2026-08-12T06:00:00+00:00",
             "source": "x",
-            "rank": 45,
-            "value": 56.0,
+            "rank": 46,
+            "value": 55.0,
             "provenance": "observed"
           }
         ],
@@ -8243,10 +8243,10 @@
         "momentum_rank": 24
       },
       {
-        "topic": "사진 로딩",
-        "display_name": "사진 로딩",
+        "topic": "태닝포차코",
+        "display_name": "태닝포차코",
         "raw_terms": [
-          "사진 로딩"
+          "태닝포차코"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -8317,10 +8317,10 @@
         "momentum_rank": 25
       },
       {
-        "topic": "지오다노",
-        "display_name": "지오다노",
+        "topic": "사진 로딩",
+        "display_name": "사진 로딩",
         "raw_terms": [
-          "지오다노"
+          "사진 로딩"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -8465,10 +8465,10 @@
         "momentum_rank": 27
       },
       {
-        "topic": "태닝포차코",
-        "display_name": "태닝포차코",
+        "topic": "지오다노",
+        "display_name": "지오다노",
         "raw_terms": [
-          "태닝포차코"
+          "지오다노"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -8687,80 +8687,6 @@
         "momentum_rank": 30
       },
       {
-        "topic": "#피냐타_내용_궁금해",
-        "display_name": "#피냐타_내용_궁금해",
-        "raw_terms": [
-          "#피냐타_내용_궁금해"
-        ],
-        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-        "category": "unclassified",
-        "lane": "main",
-        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
-        "score_calibration": 0.82,
-        "company_eligible": false,
-        "score": 26.8,
-        "rrf": 12.3457,
-        "momentum": 0.0,
-        "persistence": 0.006,
-        "source_count": 1,
-        "latest_source_ranks": {
-          "x": 21
-        },
-        "rank_change_by_source": {
-          "x": null
-        },
-        "first_seen_at": "2026-08-12T06:00:00+00:00",
-        "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 0,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
-        "data_confidence": {
-          "level": "low",
-          "label": "초기 관찰",
-          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-        },
-        "provenance": [
-          "observed"
-        ],
-        "series": [
-          {
-            "at": "2026-08-12T06:00:00+00:00",
-            "source": "x",
-            "rank": 21,
-            "value": 80.0,
-            "provenance": "observed"
-          }
-        ],
-        "keywords": [],
-        "keyword_evidence": {
-          "total": 0,
-          "observed_source_count": 0,
-          "candidate_count": 0
-        },
-        "companies": [],
-        "company_categories": [],
-        "company_resolution": {
-          "status": "excluded_by_context",
-          "mapped_count": 0,
-          "direct_count": 0,
-          "role_coverage": [],
-          "tier_counts": {
-            "core": 0,
-            "value_chain": 0,
-            "adjacent": 0,
-            "excluded": 0
-          },
-          "category_count": 0,
-          "minimum_category_requirement": 3,
-          "minimum_category_met": false,
-          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-        },
-        "rank": 32,
-        "classification": "맥락 확인",
-        "persistence_rank": 32,
-        "momentum_rank": 31
-      },
-      {
         "topic": "이치카 생일",
         "display_name": "이치카 생일",
         "raw_terms": [
@@ -8772,13 +8698,13 @@
         "selection_reason": "소비·문화·콘텐츠·제품 또는 참여 행동 맥락",
         "score_calibration": 1.0,
         "company_eligible": true,
-        "score": 26.73,
-        "rrf": 9.0909,
+        "score": 26.88,
+        "rrf": 9.1743,
         "momentum": 0.0,
         "persistence": 0.006,
         "source_count": 1,
         "latest_source_ranks": {
-          "x": 50
+          "x": 49
         },
         "rank_change_by_source": {
           "x": null
@@ -8800,8 +8726,8 @@
           {
             "at": "2026-08-12T06:00:00+00:00",
             "source": "x",
-            "rank": 50,
-            "value": 51.0,
+            "rank": 49,
+            "value": 52.0,
             "provenance": "observed"
           }
         ],
@@ -8945,8 +8871,82 @@
           "minimum_category_met": true,
           "reason": "공식 사업관계 또는 명시적 관찰 근거가 있는 후보만 표시"
         },
-        "rank": 33,
+        "rank": 32,
         "classification": "일반 트렌드",
+        "persistence_rank": 32,
+        "momentum_rank": 31
+      },
+      {
+        "topic": "#피냐타_내용_궁금해",
+        "display_name": "#피냐타_내용_궁금해",
+        "raw_terms": [
+          "#피냐타_내용_궁금해"
+        ],
+        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+        "category": "unclassified",
+        "lane": "main",
+        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+        "score_calibration": 0.82,
+        "company_eligible": false,
+        "score": 26.8,
+        "rrf": 12.3457,
+        "momentum": 0.0,
+        "persistence": 0.006,
+        "source_count": 1,
+        "latest_source_ranks": {
+          "x": 21
+        },
+        "rank_change_by_source": {
+          "x": null
+        },
+        "first_seen_at": "2026-08-12T06:00:00+00:00",
+        "last_seen_at": "2026-08-12T06:00:00+00:00",
+        "age_hours": 0,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "low",
+          "label": "초기 관찰",
+          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T06:00:00+00:00",
+            "source": "x",
+            "rank": 21,
+            "value": 80.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 33,
+        "classification": "맥락 확인",
         "persistence_rank": 33,
         "momentum_rank": 32
       },
@@ -9099,80 +9099,6 @@
         "momentum_rank": 34
       },
       {
-        "topic": "하이웨이",
-        "display_name": "하이웨이",
-        "raw_terms": [
-          "하이웨이"
-        ],
-        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-        "category": "unclassified",
-        "lane": "main",
-        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
-        "score_calibration": 0.82,
-        "company_eligible": false,
-        "score": 26.14,
-        "rrf": 11.9048,
-        "momentum": 0.0,
-        "persistence": 0.006,
-        "source_count": 1,
-        "latest_source_ranks": {
-          "x": 24
-        },
-        "rank_change_by_source": {
-          "x": null
-        },
-        "first_seen_at": "2026-08-12T06:00:00+00:00",
-        "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 0,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
-        "data_confidence": {
-          "level": "low",
-          "label": "초기 관찰",
-          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-        },
-        "provenance": [
-          "observed"
-        ],
-        "series": [
-          {
-            "at": "2026-08-12T06:00:00+00:00",
-            "source": "x",
-            "rank": 24,
-            "value": 77.0,
-            "provenance": "observed"
-          }
-        ],
-        "keywords": [],
-        "keyword_evidence": {
-          "total": 0,
-          "observed_source_count": 0,
-          "candidate_count": 0
-        },
-        "companies": [],
-        "company_categories": [],
-        "company_resolution": {
-          "status": "excluded_by_context",
-          "mapped_count": 0,
-          "direct_count": 0,
-          "role_coverage": [],
-          "tier_counts": {
-            "core": 0,
-            "value_chain": 0,
-            "adjacent": 0,
-            "excluded": 0
-          },
-          "category_count": 0,
-          "minimum_category_requirement": 3,
-          "minimum_category_met": false,
-          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-        },
-        "rank": 36,
-        "classification": "맥락 확인",
-        "persistence_rank": 36,
-        "momentum_rank": 35
-      },
-      {
         "topic": "두피토닉",
         "display_name": "두피토닉",
         "raw_terms": [
@@ -9214,6 +9140,80 @@
             "source": "x",
             "rank": 25,
             "value": 76.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 36,
+        "classification": "맥락 확인",
+        "persistence_rank": 36,
+        "momentum_rank": 35
+      },
+      {
+        "topic": "하이웨이",
+        "display_name": "하이웨이",
+        "raw_terms": [
+          "하이웨이"
+        ],
+        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+        "category": "unclassified",
+        "lane": "main",
+        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
+        "score_calibration": 0.82,
+        "company_eligible": false,
+        "score": 25.72,
+        "rrf": 11.6279,
+        "momentum": 0.0,
+        "persistence": 0.006,
+        "source_count": 1,
+        "latest_source_ranks": {
+          "x": 26
+        },
+        "rank_change_by_source": {
+          "x": null
+        },
+        "first_seen_at": "2026-08-12T06:00:00+00:00",
+        "last_seen_at": "2026-08-12T06:00:00+00:00",
+        "age_hours": 0,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "low",
+          "label": "초기 관찰",
+          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T06:00:00+00:00",
+            "source": "x",
+            "rank": 26,
+            "value": 75.0,
             "provenance": "observed"
           }
         ],
@@ -9395,10 +9395,10 @@
         "momentum_rank": 38
       },
       {
-        "topic": "작가님 건강",
-        "display_name": "작가님 건강",
+        "topic": "악당주의보 100만",
+        "display_name": "악당주의보 100만",
         "raw_terms": [
-          "작가님 건강"
+          "악당주의보 100만"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -9469,10 +9469,10 @@
         "momentum_rank": 39
       },
       {
-        "topic": "다이소 절대",
-        "display_name": "다이소 절대",
+        "topic": "매력의 소유자",
+        "display_name": "매력의 소유자",
         "raw_terms": [
-          "다이소 절대"
+          "매력의 소유자"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -9543,10 +9543,10 @@
         "momentum_rank": 40
       },
       {
-        "topic": "빠른이동",
-        "display_name": "빠른이동",
+        "topic": "작가님 건강",
+        "display_name": "작가님 건강",
         "raw_terms": [
-          "빠른이동"
+          "작가님 건강"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -9617,10 +9617,10 @@
         "momentum_rank": 41
       },
       {
-        "topic": "악당주의보 100만",
-        "display_name": "악당주의보 100만",
+        "topic": "다이소 절대",
+        "display_name": "다이소 절대",
         "raw_terms": [
-          "악당주의보 100만"
+          "다이소 절대"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -9691,10 +9691,10 @@
         "momentum_rank": 42
       },
       {
-        "topic": "늑대인간",
-        "display_name": "늑대인간",
+        "topic": "#트친에게_궁금했던_점",
+        "display_name": "#트친에게_궁금했던_점",
         "raw_terms": [
-          "늑대인간"
+          "#트친에게_궁금했던_점"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -9839,10 +9839,10 @@
         "momentum_rank": 44
       },
       {
-        "topic": "카우보이 모자",
-        "display_name": "카우보이 모자",
+        "topic": "늑대인간",
+        "display_name": "늑대인간",
         "raw_terms": [
-          "카우보이 모자"
+          "늑대인간"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -9913,10 +9913,10 @@
         "momentum_rank": 45
       },
       {
-        "topic": "#트친에게_궁금했던_점",
-        "display_name": "#트친에게_궁금했던_점",
+        "topic": "카우보이 모자",
+        "display_name": "카우보이 모자",
         "raw_terms": [
-          "#트친에게_궁금했던_점"
+          "카우보이 모자"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -9987,10 +9987,10 @@
         "momentum_rank": 46
       },
       {
-        "topic": "가내밀레",
-        "display_name": "가내밀레",
+        "topic": "계정 굴릴",
+        "display_name": "계정 굴릴",
         "raw_terms": [
-          "가내밀레"
+          "계정 굴릴"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -9998,13 +9998,13 @@
         "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
         "score_calibration": 0.82,
         "company_eligible": false,
-        "score": 23.59,
-        "rrf": 10.2041,
+        "score": 23.74,
+        "rrf": 10.3093,
         "momentum": 0.0,
         "persistence": 0.006,
         "source_count": 1,
         "latest_source_ranks": {
-          "x": 38
+          "x": 37
         },
         "rank_change_by_source": {
           "x": null
@@ -10026,8 +10026,8 @@
           {
             "at": "2026-08-12T06:00:00+00:00",
             "source": "x",
-            "rank": 38,
-            "value": 63.0,
+            "rank": 37,
+            "value": 64.0,
             "provenance": "observed"
           }
         ],
@@ -10283,10 +10283,10 @@
         "momentum_rank": 50
       },
       {
-        "topic": "부키 오하",
-        "display_name": "부키 오하",
+        "topic": "D-100",
+        "display_name": "D-100",
         "raw_terms": [
-          "부키 오하"
+          "D-100"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -10357,10 +10357,10 @@
         "momentum_rank": 51
       },
       {
-        "topic": "D-100",
-        "display_name": "D-100",
+        "topic": "부키 오하",
+        "display_name": "부키 오하",
         "raw_terms": [
-          "D-100"
+          "부키 오하"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -10442,80 +10442,6 @@
         "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
         "score_calibration": 0.82,
         "company_eligible": false,
-        "score": 22.43,
-        "rrf": 9.434,
-        "momentum": 0.0,
-        "persistence": 0.006,
-        "source_count": 1,
-        "latest_source_ranks": {
-          "x": 46
-        },
-        "rank_change_by_source": {
-          "x": null
-        },
-        "first_seen_at": "2026-08-12T06:00:00+00:00",
-        "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 0,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
-        "data_confidence": {
-          "level": "low",
-          "label": "초기 관찰",
-          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-        },
-        "provenance": [
-          "observed"
-        ],
-        "series": [
-          {
-            "at": "2026-08-12T06:00:00+00:00",
-            "source": "x",
-            "rank": 46,
-            "value": 55.0,
-            "provenance": "observed"
-          }
-        ],
-        "keywords": [],
-        "keyword_evidence": {
-          "total": 0,
-          "observed_source_count": 0,
-          "candidate_count": 0
-        },
-        "companies": [],
-        "company_categories": [],
-        "company_resolution": {
-          "status": "excluded_by_context",
-          "mapped_count": 0,
-          "direct_count": 0,
-          "role_coverage": [],
-          "tier_counts": {
-            "core": 0,
-            "value_chain": 0,
-            "adjacent": 0,
-            "excluded": 0
-          },
-          "category_count": 0,
-          "minimum_category_requirement": 3,
-          "minimum_category_met": false,
-          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-        },
-        "rank": 54,
-        "classification": "맥락 확인",
-        "persistence_rank": 54,
-        "momentum_rank": 53
-      },
-      {
-        "topic": "계정 굴릴",
-        "display_name": "계정 굴릴",
-        "raw_terms": [
-          "계정 굴릴"
-        ],
-        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-        "category": "unclassified",
-        "lane": "main",
-        "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
-        "score_calibration": 0.82,
-        "company_eligible": false,
         "score": 22.3,
         "rrf": 9.3458,
         "momentum": 0.0,
@@ -10573,16 +10499,16 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 55,
+        "rank": 54,
         "classification": "맥락 확인",
-        "persistence_rank": 55,
-        "momentum_rank": 54
+        "persistence_rank": 54,
+        "momentum_rank": 53
       },
       {
-        "topic": "복주머니",
-        "display_name": "복주머니",
+        "topic": "빠른이동",
+        "display_name": "빠른이동",
         "raw_terms": [
-          "복주머니"
+          "빠른이동"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -10647,16 +10573,16 @@
           "minimum_category_met": false,
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
-        "rank": 56,
+        "rank": 55,
         "classification": "맥락 확인",
-        "persistence_rank": 56,
-        "momentum_rank": 55
+        "persistence_rank": 55,
+        "momentum_rank": 54
       },
       {
-        "topic": "위츄 문진",
-        "display_name": "위츄 문진",
+        "topic": "가내밀레",
+        "display_name": "가내밀레",
         "raw_terms": [
-          "위츄 문진"
+          "가내밀레"
         ],
         "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
         "category": "unclassified",
@@ -10664,13 +10590,13 @@
         "selection_reason": "X·Google에서 실제 관측된 항목으로 통합 순위에 포함",
         "score_calibration": 0.82,
         "company_eligible": false,
-        "score": 22.04,
-        "rrf": 9.1743,
+        "score": 21.92,
+        "rrf": 9.0909,
         "momentum": 0.0,
         "persistence": 0.006,
         "source_count": 1,
         "latest_source_ranks": {
-          "x": 49
+          "x": 50
         },
         "rank_change_by_source": {
           "x": null
@@ -10692,8 +10618,84 @@
           {
             "at": "2026-08-12T06:00:00+00:00",
             "source": "x",
-            "rank": 49,
-            "value": 52.0,
+            "rank": 50,
+            "value": 51.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 56,
+        "classification": "맥락 확인",
+        "persistence_rank": 56,
+        "momentum_rank": 55
+      }
+    ],
+    "issue": [
+      {
+        "topic": "친일 논란",
+        "display_name": "친일 논란",
+        "raw_terms": [
+          "친일 논란"
+        ],
+        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+        "category": "unclassified",
+        "lane": "issue",
+        "selection_reason": "논란·사생활·범죄·재난 등 주의 맥락으로 기업 연결 제외",
+        "score_calibration": 0.7,
+        "company_eligible": false,
+        "score": 20.13,
+        "rrf": 10.2041,
+        "momentum": 0.0,
+        "persistence": 0.006,
+        "source_count": 1,
+        "latest_source_ranks": {
+          "x": 38
+        },
+        "rank_change_by_source": {
+          "x": null
+        },
+        "first_seen_at": "2026-08-12T06:00:00+00:00",
+        "last_seen_at": "2026-08-12T06:00:00+00:00",
+        "age_hours": 0,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "low",
+          "label": "초기 관찰",
+          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T06:00:00+00:00",
+            "source": "x",
+            "rank": 38,
+            "value": 63.0,
             "provenance": "observed"
           }
         ],
@@ -10722,85 +10724,9 @@
           "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
         },
         "rank": 57,
-        "classification": "맥락 확인",
+        "classification": "이슈·주의",
         "persistence_rank": 57,
         "momentum_rank": 56
-      }
-    ],
-    "issue": [
-      {
-        "topic": "친일 논란",
-        "display_name": "친일 논란",
-        "raw_terms": [
-          "친일 논란"
-        ],
-        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
-        "category": "unclassified",
-        "lane": "issue",
-        "selection_reason": "논란·사생활·범죄·재난 등 주의 맥락으로 기업 연결 제외",
-        "score_calibration": 0.7,
-        "company_eligible": false,
-        "score": 20.27,
-        "rrf": 10.3093,
-        "momentum": 0.0,
-        "persistence": 0.006,
-        "source_count": 1,
-        "latest_source_ranks": {
-          "x": 37
-        },
-        "rank_change_by_source": {
-          "x": null
-        },
-        "first_seen_at": "2026-08-12T06:00:00+00:00",
-        "last_seen_at": "2026-08-12T06:00:00+00:00",
-        "age_hours": 0,
-        "lifecycle": "new",
-        "lifecycle_reason": "최근 3시간 안에 처음 포착",
-        "data_confidence": {
-          "level": "low",
-          "label": "초기 관찰",
-          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
-        },
-        "provenance": [
-          "observed"
-        ],
-        "series": [
-          {
-            "at": "2026-08-12T06:00:00+00:00",
-            "source": "x",
-            "rank": 37,
-            "value": 64.0,
-            "provenance": "observed"
-          }
-        ],
-        "keywords": [],
-        "keyword_evidence": {
-          "total": 0,
-          "observed_source_count": 0,
-          "candidate_count": 0
-        },
-        "companies": [],
-        "company_categories": [],
-        "company_resolution": {
-          "status": "excluded_by_context",
-          "mapped_count": 0,
-          "direct_count": 0,
-          "role_coverage": [],
-          "tier_counts": {
-            "core": 0,
-            "value_chain": 0,
-            "adjacent": 0,
-            "excluded": 0
-          },
-          "category_count": 0,
-          "minimum_category_requirement": 3,
-          "minimum_category_met": false,
-          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
-        },
-        "rank": 58,
-        "classification": "이슈·주의",
-        "persistence_rank": 58,
-        "momentum_rank": 57
       },
       {
         "topic": "친일파 후손",
@@ -10844,6 +10770,80 @@
             "source": "x",
             "rank": 41,
             "value": 60.0,
+            "provenance": "observed"
+          }
+        ],
+        "keywords": [],
+        "keyword_evidence": {
+          "total": 0,
+          "observed_source_count": 0,
+          "candidate_count": 0
+        },
+        "companies": [],
+        "company_categories": [],
+        "company_resolution": {
+          "status": "excluded_by_context",
+          "mapped_count": 0,
+          "direct_count": 0,
+          "role_coverage": [],
+          "tier_counts": {
+            "core": 0,
+            "value_chain": 0,
+            "adjacent": 0,
+            "excluded": 0
+          },
+          "category_count": 0,
+          "minimum_category_requirement": 3,
+          "minimum_category_met": false,
+          "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
+        },
+        "rank": 58,
+        "classification": "이슈·주의",
+        "persistence_rank": 58,
+        "momentum_rank": 57
+      },
+      {
+        "topic": "증조부 친일",
+        "display_name": "증조부 친일",
+        "raw_terms": [
+          "증조부 친일"
+        ],
+        "phenomenon_summary": "원인 미확인 — X·Google 관측 신호 증가",
+        "category": "unclassified",
+        "lane": "issue",
+        "selection_reason": "논란·사생활·범죄·재난 등 주의 맥락으로 기업 연결 제외",
+        "score_calibration": 0.7,
+        "company_eligible": false,
+        "score": 19.26,
+        "rrf": 9.5238,
+        "momentum": 0.0,
+        "persistence": 0.006,
+        "source_count": 1,
+        "latest_source_ranks": {
+          "x": 45
+        },
+        "rank_change_by_source": {
+          "x": null
+        },
+        "first_seen_at": "2026-08-12T06:00:00+00:00",
+        "last_seen_at": "2026-08-12T06:00:00+00:00",
+        "age_hours": 0,
+        "lifecycle": "new",
+        "lifecycle_reason": "최근 3시간 안에 처음 포착",
+        "data_confidence": {
+          "level": "low",
+          "label": "초기 관찰",
+          "reason": "아직 한 플랫폼·한 시간대 관찰이라 지속성 검증 필요"
+        },
+        "provenance": [
+          "observed"
+        ],
+        "series": [
+          {
+            "at": "2026-08-12T06:00:00+00:00",
+            "source": "x",
+            "rank": 45,
+            "value": 56.0,
             "provenance": "observed"
           }
         ],
