@@ -31,7 +31,13 @@ def test_intelligence_and_integration_routes_exist():
 def test_public_read_api_allows_frontend_cross_origin():
     response = client.options(
         "/api/v1/intelligence",
-        headers={"Origin": "https://frontend.example", "Access-Control-Request-Method": "GET"},
+        headers={"Origin": "http://localhost:3000", "Access-Control-Request-Method": "GET"},
     )
     assert response.status_code == 200
-    assert response.headers["access-control-allow-origin"] == "*"
+    assert response.headers["access-control-allow-origin"] == "http://localhost:3000"
+
+
+def test_health_reports_database_backend():
+    response = client.get("/health")
+    assert response.status_code == 200
+    assert response.json()["database"] in {"sqlite", "postgresql"}

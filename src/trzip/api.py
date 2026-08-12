@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+import os
 from pathlib import Path
 
 from fastapi import FastAPI, Query
@@ -12,10 +13,17 @@ from .intelligence import KEYWORD_REGISTRY, build_intelligence, canonical_topic
 from .company_adapters import company_profile, integration_status, opendart_company, pykrx_stock
 from .related_keywords import x_related_keywords
 
-app = FastAPI(title="TRZIP X + Google", version="0.1.0")
+app = FastAPI(title="TRZIP X + Google", version="0.2.0")
+configured_origins = [
+    origin.strip()
+    for origin in os.environ.get(
+        "TRZIP_CORS_ORIGINS", "http://localhost:3000,http://localhost:5173"
+    ).split(",")
+    if origin.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=configured_origins,
     allow_methods=["GET", "OPTIONS"],
     allow_headers=["*"],
 )
@@ -29,8 +37,15 @@ def index() -> FileResponse:
 
 
 @app.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+def health() -> dict:
+    from .hourly_store import connect
+    with connect() as connection:
+        connection.execute("SELECT 1").fetchone()
+    return {
+        "status": "ok",
+        "database": "postgresql" if os.environ.get("DATABASE_URL") else "sqlite",
+        "version": app.version,
+    }
 
 
 @app.get("/api/v1/hourly/coverage")
@@ -63,7 +78,7 @@ def demo_curated_feed(at: datetime = Query(default=datetime(2026, 7, 31, 14, tzi
 
 
 @app.get("/api/v1/intelligence")
-def intelligence(at: datetime = Query(default=datetime(2026, 8, 12, 2, tzinfo=UTC)),
+def intelligence(at: datetime = Query(default_factory=lambda: datetime.now(UTC)),
                  hours: int = Query(default=24, ge=1, le=2484)) -> dict:
     return build_intelligence(at, hours=hours)
 

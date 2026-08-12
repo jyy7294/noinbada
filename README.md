@@ -4,10 +4,11 @@ TRZIP은 대한민국의 X 실시간 트렌드와 Google Trends 신호를 시간
 
 > 주식도 트렌드가 된 시대, 내가 아는 유행에서 기업을 찾다.
 
-- 배포 서비스: <https://trzip-x-google.vercel.app>
-- API 문서: <https://trzip-x-google.vercel.app/docs>
+- 프로덕트 저장소: <https://github.com/jyy7294/noinbada>
+- 백엔드 배포 대상: Render FastAPI + Render PostgreSQL + Render Cron Job
+- 프론트 배포 대상: Vercel
 
-> 저장소 운영 정책: 이 `jyy7294/noinbada` 저장소는 팀 공유 및 프로덕트 통합용 원본 저장소이며 Vercel 자동 배포에 연결하지 않습니다. 위 주소는 별도 데모 저장소에서 운영되는 API입니다. 이 저장소에는 Vercel 프로젝트 연결 정보와 자동 배포 워크플로를 포함하지 않습니다.
+> 저장소 운영 정책: `backend` 역할의 Python 코드는 Render에서, Claude Design이 만드는 프론트는 Vercel에서 각각 배포합니다. PostgreSQL이 운영 데이터의 단일 원장이고 GitHub에는 실측 DB나 비밀키를 커밋하지 않습니다.
 - 데이터 소스: X 대한민국, Google Trends `geo=KR`
 - 자동 수집에서 Trends MCP 사용: 비활성화
 
@@ -141,6 +142,7 @@ GET /api/v1/intelligence?at=2026-08-12T11:00:00%2B09:00&hours=168
 ## 8. 프로젝트 구조
 
 ```text
+render.yaml                   Render Web·Cron·PostgreSQL Blueprint
 api/index.py                  호스팅 환경 호환용 Python API 진입점
 src/trzip/api.py              FastAPI 라우트
 src/trzip/hourly_store.py     시간별 수집·저장·데모 재생성
@@ -174,6 +176,8 @@ Copy-Item .env.example .env
 X_BEARER_TOKEN=
 X_KOREA_WOEID=23424868
 OPENDART_API_KEY=
+DATABASE_URL=postgresql://...
+TRZIP_CORS_ORIGINS=https://<frontend>.vercel.app
 TRZIP_DB_PATH=data/trzip-hourly.sqlite3
 ```
 
@@ -184,21 +188,21 @@ TRZIP_DB_PATH=data/trzip-hourly.sqlite3
 
 ## 11. 시간별 운영
 
-Windows 작업 스케줄러 설치:
+로컬 대체 실행은 Windows 작업 스케줄러를 사용할 수 있습니다.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\install-hourly-task.ps1
 ```
 
-매시 정각 실행, 누락 시 재실행, 배터리 상태 실행 허용, 최대 실행시간 15분을 설정합니다.
-
-Vercel의 `/tmp` SQLite는 영구 저장소가 아닙니다. 현재 Vercel 배포는 데모·API 확인용이며, 장기 실측 운영에서는 PostgreSQL 또는 외부 영구 DB로 저장소 어댑터를 교체해야 합니다.
+프로덕션에서는 `render.yaml`의 Render Cron Job이 매시 정각 실행하고 `DATABASE_URL`로 연결된 PostgreSQL에 저장합니다. 상세 설정은 [Render 운영 명세](docs/RENDER_PRODUCTION.md)를 따릅니다.
 
 ## 12. 현재 검증 상태
 
-- Python 테스트: 34개 통과
+- Python 테스트: 38개 통과
 - JavaScript 구문검사: 통과
-- Vercel 홈·Health·통합순위 API: HTTP 200
+- PostgreSQL 스키마 생성·upsert·coverage·FastAPI 조회: E2E 통과
+- 실제 현재 회차 수집: X 한국 50건 + Google Trends KR 10건 저장 확인
+- Render Blueprint: Web Service·시간별 Cron Job·PostgreSQL 정의
 - 8월 데모에서 오징어 게임 잔존: 0건
 - 실측과 생성 데이터의 동일 시각 공존: 검증
 - 논란·미분류 항목의 기업 오연결 차단: 검증

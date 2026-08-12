@@ -10,6 +10,7 @@ import xml.etree.ElementTree as ET
 from dataclasses import asdict, dataclass
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from typing import Any
 
 KST = timedelta(hours=9)
 BACKFILL_START = datetime(2026, 5, 1, tzinfo=UTC) - KST
@@ -33,12 +34,102 @@ def default_db_path() -> Path:
     return Path(os.environ.get("TRZIP_DB_PATH", "data/trzip-hourly.sqlite3"))
 
 
-def connect(path: Path | None = None) -> sqlite3.Connection:
+def _postgres_url(path: Path | None) -> str | None:
+    if path is not None:
+        return None
+    value = os.environ.get("DATABASE_URL", "").strip()
+    return value or None
+
+
+class DatabaseConnection:
+    """Small compatibility layer for SQLite locally and PostgreSQL on Render."""
+
+    def __init__(self, raw: Any, dialect: str):
+        self.raw = raw
+        self.dialect = dialect
+
+    def __enter__(self) -> "DatabaseConnection":
+        return self
+
+    def __exit__(self, exc_type, exc, traceback) -> None:
+        if exc_type is None:
+            self.raw.commit()
+        else:
+            self.raw.rollback()
+        self.raw.close()
+
+    def _sql(self, sql: str) -> str:
+        if self.dialect == "sqlite":
+            return sql
+        # The project uses SQLite qmark and named parameters internally.
+        converted = sql.replace("?", "%s")
+        import re
+        return re.sub(r":([A-Za-z_][A-Za-z0-9_]*)", r"%(\1)s", converted)
+
+    def execute(self, sql: str, params: Any = None):
+        return self.raw.execute(self._sql(sql), params or ())
+
+    def executemany(self, sql: str, params: Any):
+        if self.dialect == "sqlite":
+            return self.raw.executemany(sql, params)
+        cursor = self.raw.cursor()
+        cursor.executemany(self._sql(sql), params)
+        return cursor
+
+    def executescript(self, sql: str) -> None:
+        if self.dialect != "sqlite":
+            raise RuntimeError("executescript is only used for SQLite migrations")
+        self.raw.executescript(sql)
+
+
+def _initialize_postgres(connection: DatabaseConnection) -> None:
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS hourly_observations (
+            observed_at TEXT NOT NULL,
+            source TEXT NOT NULL CHECK(source IN ('x','google_trends')),
+            topic TEXT NOT NULL,
+            source_rank INTEGER NOT NULL CHECK(source_rank > 0),
+            value DOUBLE PRECISION NOT NULL CHECK(value >= 0),
+            provenance TEXT NOT NULL CHECK(provenance IN ('observed','generated')),
+            seed_observed_at TEXT,
+            PRIMARY KEY (observed_at, source, topic, provenance)
+        )
+    """)
+    connection.execute(
+        "CREATE INDEX IF NOT EXISTS hourly_observations_time ON hourly_observations(observed_at)"
+    )
+    connection.execute("""
+        CREATE TABLE IF NOT EXISTS collection_audit (
+            observed_at TEXT NOT NULL,
+            collector TEXT NOT NULL,
+            status TEXT NOT NULL,
+            row_count INTEGER NOT NULL,
+            detail TEXT NOT NULL,
+            PRIMARY KEY (observed_at, collector)
+        )
+    """)
+
+
+def connect(path: Path | None = None) -> DatabaseConnection:
+    postgres_url = _postgres_url(path)
+    if postgres_url:
+        try:
+            import psycopg
+            from psycopg.rows import dict_row
+        except ImportError as exc:
+            raise RuntimeError("PostgreSQL requires psycopg[binary]") from exc
+        raw = psycopg.connect(postgres_url, row_factory=dict_row)
+        connection = DatabaseConnection(raw, "postgres")
+        _initialize_postgres(connection)
+        raw.commit()
+        return connection
+
     target = path or default_db_path()
     target.parent.mkdir(parents=True, exist_ok=True)
-    connection = sqlite3.connect(target)
-    connection.row_factory = sqlite3.Row
-    connection.execute("PRAGMA journal_mode=WAL")
+    raw = sqlite3.connect(target)
+    raw.row_factory = sqlite3.Row
+    raw.execute("PRAGMA journal_mode=WAL")
+    connection = DatabaseConnection(raw, "sqlite")
     connection.executescript("""
         CREATE TABLE IF NOT EXISTS hourly_observations (
             observed_at TEXT NOT NULL,
@@ -321,7 +412,10 @@ def collect_current(path: Path | None = None, now: datetime | None = None, *, us
     upsert(generated + observed, path)
     with connect(path) as connection:
         connection.executemany(
-            "INSERT OR REPLACE INTO collection_audit VALUES (?,?,?,?,?)",
+            """INSERT INTO collection_audit
+               (observed_at, collector, status, row_count, detail) VALUES (?,?,?,?,?)
+               ON CONFLICT(observed_at, collector) DO UPDATE SET
+                 status=excluded.status, row_count=excluded.row_count, detail=excluded.detail""",
             [(at.isoformat(), collector, item["status"], item["row_count"], item["detail"])
              for collector, item in audit.items()],
         )
@@ -345,8 +439,8 @@ def coverage(path: Path | None = None) -> dict:
         row = connection.execute("""
           SELECT MIN(observed_at) AS first_hour, MAX(observed_at) AS last_hour,
                  COUNT(DISTINCT observed_at) AS hours, COUNT(*) AS rows,
-                 SUM(provenance='observed') AS observed_rows,
-                 SUM(provenance='generated') AS generated_rows
+                 SUM(CASE WHEN provenance='observed' THEN 1 ELSE 0 END) AS observed_rows,
+                 SUM(CASE WHEN provenance='generated' THEN 1 ELSE 0 END) AS generated_rows
           FROM hourly_observations
         """).fetchone()
     return dict(row)

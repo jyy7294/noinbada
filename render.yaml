@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: trzip-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn trzip.api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: PYTHONPATH
+        value: src
+      - key: DATABASE_URL
+        fromDatabase:
+          name: trzip-db
+          property: connectionString
+      - key: TRZIP_CORS_ORIGINS
+        sync: false
+      - key: X_BEARER_TOKEN
+        sync: false
+      - key: OPENDART_API_KEY
+        sync: false
+
+  - type: cron
+    name: trzip-hourly-collector
+    runtime: python
+    plan: starter
+    schedule: "0 * * * *"
+    buildCommand: pip install -r requirements.txt
+    startCommand: PYTHONPATH=src python -m trzip.hourly_cli collect
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: DATABASE_URL
+        fromDatabase:
+          name: trzip-db
+          property: connectionString
+      - key: X_BEARER_TOKEN
+        sync: false
+      - key: OPENDART_API_KEY
+        sync: false
+
+databases:
+  - name: trzip-db
+    plan: free
+    databaseName: trzip
+    user: trzip
