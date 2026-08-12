@@ -1016,7 +1016,7 @@
       "publisher": "삼성증권",
       "url": "https://www.samsungpop.com/mbw/main/main.do?cmd=main",
       "evidence_type": "official_company_business_page",
-      "summary": "삼성증권이 트레이딩·금융상품·자산관리 서비스를 제공하는 증권사임을 확인한다.",
+      "summary": "삼성증권 공식 서비스 화면에서 트레이딩·금융상품·자산관리와 주식·펀드 메뉴를 확인한다.",
       "published_at": null,
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "term_to_industry"}
@@ -1229,6 +1229,51 @@
     }
   ],
   "related_terms": [
+    {
+      "id": "related:reviewed:samsung-securities-trading",
+      "label": "트레이딩",
+      "target_node_id": "term:reviewed:samsung-securities",
+      "relation_role": "official_service_area",
+      "evidence_ids": ["evidence:reviewed:samsung-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:samsung-securities-financial-products",
+      "label": "금융상품",
+      "target_node_id": "term:reviewed:samsung-securities",
+      "relation_role": "official_service_area",
+      "evidence_ids": ["evidence:reviewed:samsung-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:samsung-securities-wealth-management",
+      "label": "자산관리",
+      "target_node_id": "term:reviewed:samsung-securities",
+      "relation_role": "official_service_area",
+      "evidence_ids": ["evidence:reviewed:samsung-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:samsung-securities-stock-trading",
+      "label": "주식",
+      "target_node_id": "term:reviewed:samsung-securities",
+      "relation_role": "official_product_menu",
+      "evidence_ids": ["evidence:reviewed:samsung-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:samsung-securities-fund",
+      "label": "펀드",
+      "target_node_id": "term:reviewed:samsung-securities",
+      "relation_role": "official_product_menu",
+      "evidence_ids": ["evidence:reviewed:samsung-securities-k21"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
     {
       "id": "related:reviewed:malbok-sambok",
       "label": "삼복",

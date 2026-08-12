@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T17:51:25.4096116+00:00",
+    "updated_at":  "2026-08-12T17:56:53.2208882+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,30 +8,26 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "4c86155befea300b03a341f85c6af89c146243f5",
+                       "base_remote_main_sha":  "816bdf9929743f5eb53794a24d480776743782ae",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "data/ontology_enrichment.json",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "src/trzip/enrichment_queue.py",
+                                             "tests/test_intelligence.py",
                                              "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "data/ontology_enrichment.json":  "762e54814d8fa77d6cd7efac943a9947b85eab59b7390ff68a5e737d0a2e2b6d",
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "a0668edb13ee6961b1490314ca0bc8c38ca52c80ecf064ead1e9d6ff0d236e62",
-                                                    "schemas/intelligence-v3.schema.json":  "ed00954fe25105f4ea0428798cee813e4db531f75842f53241d09c4c56a59528",
-                                                    "src/trzip/enrichment_queue.py":  "427bb888a170f9742603cc2cdb90d7f232b35bf40332c9ea6c6806104c1d8878",
-                                                    "tests/test_ontology.py":  "9b5aa64bce8606f07a58aef4543e37d49b12a3b11bc08c499ba754ac8708c8a9"
+                                                    "data/ontology_enrichment.json":  "ae415632be569856b990a5a0a0023cb4dcfebca84754f2076c1f1598ae549bb5",
+                                                    "tests/test_intelligence.py":  "aa72cb7d712f9149d83352b9eee886d256c0ca938256330bac08452d2998e634",
+                                                    "tests/test_ontology.py":  "023a27418378047a6cba04fd7c55619e3b35fab878d5255edf53940dcbc78d86"
                                                 },
-                       "commit_message":  "feat: add evidence-backed Malbok related concepts",
+                       "commit_message":  "feat: add reviewed Samsung Securities related terms",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  159
+                                      "count":  160
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -53,14 +49,14 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Publish evidence-backed related concepts without inventing keywords",
+                    "objective":  "Publish five evidence-backed related terms for Samsung Securities",
                     "completed":  [
-                                      "Added five reviewed Malbok concepts",
-                                      "Extended the public keyword contract"
+                                      "Reviewed official Samsung Securities service labels",
+                                      "Added ontology and intelligence regression coverage"
                                   ],
                     "next_actions":  [
-                                         "Complete current-session Chrome extension installation",
-                                         "Accumulate 96 eligible hourly observations"
+                                         "Verify the 03:00 scheduled collection",
+                                         "Complete current-session Chrome extension installation"
                                      ],
                     "blockers":  [
                                      "X current-session extension requires one manual Chrome approval"

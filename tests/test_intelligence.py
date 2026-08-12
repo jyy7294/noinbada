@@ -795,6 +795,19 @@ def test_listed_securities_company_has_self_and_four_reviewed_sector_peers(tmp_p
     assert item["companies"] == item["company_candidates"]
     assert item["company_resolution"]["publish_status"] == "published"
     assert item["company_resolution"]["published_count"] == 5
+    assert [keyword["text"] for keyword in item["keywords"]] == [
+        "금융상품",
+        "펀드",
+        "주식",
+        "트레이딩",
+        "자산관리",
+    ]
+    assert all(
+        keyword["status"] == "approved_ontology_related_term"
+        and keyword["affects_score"] is False
+        and keyword["evidence_urls"]
+        for keyword in item["keywords"]
+    )
     assert next(
         company for company in item["companies"] if company["stock_code"] == "016360"
     )["relation_tier"] == "core"

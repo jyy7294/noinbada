@@ -498,6 +498,27 @@ def test_malbok_related_terms_follow_the_reviewed_sambok_calendar_and_custom():
     )
 
 
+def test_samsung_securities_related_terms_are_official_service_labels():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    related = graph.reviewed_related_terms("삼성증권")
+
+    assert {item["label"] for item in related} == {
+        "트레이딩",
+        "금융상품",
+        "자산관리",
+        "주식",
+        "펀드",
+    }
+    assert all(
+        record["id"] == "evidence:reviewed:samsung-securities-k21"
+        and record["review_status"] == "approved"
+        and record["url"].startswith("https://www.samsungpop.com/")
+        for item in related
+        for record in item["evidence"]
+    )
+
+
 def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
 
