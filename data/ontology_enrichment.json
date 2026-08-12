@@ -532,6 +532,41 @@
       "label": "한국거래소 대신증권 상장회사 코드 확인",
       "normalized_label": "한국거래소 대신증권 상장회사 코드 확인",
       "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "term:reviewed:tving",
+      "type": "term",
+      "label": "티빙",
+      "normalized_label": "티빙",
+      "metadata": {"lookup_scope": "observed_product_service_name", "ranking_input": false}
+    },
+    {
+      "id": "evidence:reviewed:cj-tving-ecosystem",
+      "type": "evidence",
+      "label": "CJ 공식 티빙·KT·네이버 사업관계 확인",
+      "normalized_label": "cj 공식 티빙 kt 네이버 사업관계 확인",
+      "metadata": {"publisher": "CJ 뉴스룸"}
+    },
+    {
+      "id": "evidence:reviewed:sksquare-tving-negotiation",
+      "type": "evidence",
+      "label": "SK스퀘어 공식 티빙 협의 확인",
+      "normalized_label": "sk스퀘어 공식 티빙 협의 확인",
+      "metadata": {"publisher": "SK스퀘어"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-tving-bundle",
+      "type": "evidence",
+      "label": "삼성전자 AI TV 티빙 구독권 결합 확인",
+      "normalized_label": "삼성전자 ai tv 티빙 구독권 결합 확인",
+      "metadata": {"publisher": "삼성전자"}
+    },
+    {
+      "id": "evidence:reviewed:naver-035420-listing",
+      "type": "evidence",
+      "label": "NAVER 코스피 종목코드 035420 확인",
+      "normalized_label": "naver 코스피 종목코드 035420 확인",
+      "metadata": {"publisher": "NAVER"}
     }
   ],
   "evidence": [
@@ -1073,6 +1108,50 @@
       "published_at": "2026-02-20",
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:cj-tving-ecosystem",
+      "title": "CJ ENM 티빙·KT 시즌 합병 및 네이버 투자 관계",
+      "publisher": "CJ 뉴스룸",
+      "url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+      "evidence_type": "official_company_partnership_release",
+      "summary": "CJ 공식 보도자료가 티빙의 CJ ENM 분리, KT 시즌과의 합병 계획, 네이버 투자 유치를 각각 명시한다.",
+      "published_at": "2022-07-14",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "tving_to_cjenm_kt_naver"}
+    },
+    {
+      "id": "evidence:reviewed:sksquare-tving-negotiation",
+      "title": "SK스퀘어 콘텐츠웨이브의 티빙 협의",
+      "publisher": "SK스퀘어",
+      "url": "https://www.sksquare.com/assets/download/2025_AGM_Announcement_kr.pdf",
+      "evidence_type": "official_company_filing_ott_negotiation",
+      "summary": "SK스퀘어 주주총회 공고가 포트폴리오사 콘텐츠웨이브와 티빙의 K-OTT 출범 협의를 명시한다.",
+      "published_at": "2025-02-25",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "tving_to_sksquare_portfolio"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-tving-bundle",
+      "title": "삼성전자 2025 AI TV와 티빙 스탠다드 이용권 결합",
+      "publisher": "삼성전자 뉴스룸",
+      "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-2025%EB%85%84%ED%98%95-ai-tv-%EC%8B%A0%EC%A0%9C%ED%92%88-%EC%82%AC%EC%A0%84-%ED%8C%A4%EB%A7%A4",
+      "evidence_type": "official_company_product_bundle_release",
+      "summary": "삼성전자 공식 보도자료가 2025년 OLED TV 사전구매 고객에게 티빙 스탠다드 3개월 이용권을 제공한 결합 프로모션을 명시한다.",
+      "published_at": "2025-03-11",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "tving_to_device_distribution_bundle"}
+    },
+    {
+      "id": "evidence:reviewed:naver-035420-listing",
+      "title": "NAVER 코스피 종목코드 035420",
+      "publisher": "NAVER",
+      "url": "https://www.navercorp.com/investment/stock",
+      "evidence_type": "official_company_stock_information",
+      "summary": "NAVER 공식 주가정보 페이지가 코스피 종목코드 035420과 상장 정보를 명시한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
     }
   ],
   "aliases": [
@@ -1136,6 +1215,15 @@
       "target_node_id": "term:reviewed:gstar",
       "match_type": "reviewed_official_english_name",
       "evidence_ids": ["evidence:reviewed:gstar-2025-program"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "alias:reviewed:tving-english",
+      "label": "TVING",
+      "target_node_id": "term:reviewed:tving",
+      "match_type": "reviewed_official_english_name",
+      "evidence_ids": ["evidence:reviewed:cj-tving-ecosystem"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     }
@@ -1716,6 +1804,65 @@
       "evidence_ids": ["evidence:reviewed:krx-daishin-003540"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:tving-cjenm",
+      "from_node": "term:reviewed:tving",
+      "to_node": "company:kr:kosdaq:035760",
+      "relation_type": "controlled_ott_platform",
+      "evidence_ids": ["evidence:reviewed:cjenm-tving-035760", "evidence:reviewed:cj-tving-ecosystem"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "core", "proof_scope": "CJ ENM에서 분리된 주요 종속 OTT 플랫폼 티빙", "temporal_scope": "공식 공시·보도자료 검토 범위", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:tving-kt",
+      "from_node": "term:reviewed:tving",
+      "to_node": "company:kr:kospi:030200",
+      "relation_type": "merged_telecom_ott_into_platform",
+      "evidence_ids": ["evidence:reviewed:cj-tving-ecosystem"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "value_chain", "proof_scope": "KT OTT 시즌의 티빙 합병 및 통신 사업구조 결합", "temporal_scope": "2022년 공식 합병 발표", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:tving-naver",
+      "from_node": "term:reviewed:tving",
+      "to_node": "company:kr:kospi:035420",
+      "relation_type": "invested_in_ott_platform",
+      "evidence_ids": ["evidence:reviewed:cj-tving-ecosystem"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "value_chain", "proof_scope": "티빙의 네이버 투자 유치와 콘텐츠 IP 협력 기반", "temporal_scope": "2022년 CJ 공식 관계 설명", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-naver-035420",
+      "from_node": "company:kr:kospi:035420",
+      "to_node": "stock:kr:kospi:035420",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:naver-035420-listing"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:tving-sksquare",
+      "from_node": "term:reviewed:tving",
+      "to_node": "company:kr:kospi:402340",
+      "relation_type": "portfolio_company_ott_combination_negotiation",
+      "evidence_ids": ["evidence:reviewed:sksquare-tving-negotiation", "evidence:reviewed:sksquare-wavve"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "value_chain", "proof_scope": "SK스퀘어 포트폴리오사 콘텐츠웨이브와 티빙의 K-OTT 협의", "temporal_scope": "2025년 공식 주주총회 공고 기준", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:tving-samsung-bundle",
+      "from_node": "term:reviewed:tving",
+      "to_node": "company:kr:kospi:005930",
+      "relation_type": "bundles_subscription_with_consumer_device",
+      "evidence_ids": ["evidence:reviewed:samsung-tving-bundle"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "value_chain", "proof_scope": "삼성 OLED TV 구매 혜택에 티빙 스탠다드 이용권 결합", "temporal_scope": "2025년 사전판매 프로모션", "confidence": "high", "not_a_buy_signal": true}
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T17:24:19.5120348+00:00",
+    "updated_at":  "2026-08-12T17:34:53.4371899+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "f4ae4a93c361fef0bbba5123bc0e00cdd9f3c60f",
+                       "base_remote_main_sha":  "c67d20b44dea42e3b8e0a640a4ed1558a7c39930",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
-                                             "chrome-extension/trzip-x-current-session/README.md",
                                              "CURRENT_STATE.json",
-                                             "docs/CODEX_CONTINUITY.md"
+                                             "data/ontology_enrichment.json",
+                                             "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "chrome-extension/trzip-x-current-session/README.md":  "707be56965e835e24923fcd9853f5d0e9f921503ced63388f1e072621b4dfab5",
-                                                    "docs/CODEX_CONTINUITY.md":  "0cb219b7350bbee2a0970258a2a7663995f5cf727ce695c80c791c5559801d26"
+                                                    "data/ontology_enrichment.json":  "417021616861299aeeb48de741b5f3697b1c3b7c5df3797e0d870076f493925d",
+                                                    "tests/test_ontology.py":  "d6b0de8b0fb91512c43b06f065003ce89d2017ad74bf4532df1e7ddf6c9b64fc"
                                                 },
-                       "commit_message":  "docs: target current logged-in Chrome profile",
+                       "commit_message":  "feat: add evidence-backed TVING ontology",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  154
+                                      "count":  156
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,16 +47,18 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "X 확장 설치 대상이 하드코딩된 이름이 아니라 실제 마지막 사용 로그인 프로필임을 정확히 인계",
+                    "objective":  "실제 관측 트렌드 티빙을 임의 유사기업 없이 공식 사업관계와 상장근거로 5개 기업에 연결",
                     "completed":  [
-                                      "현재 로그인 Chrome 프로필 선택 규칙 문서화",
-                                      "전체 회귀 155개 통과"
+                                      "CJ ENM 직접 관계와 KT NAVER SK스퀘어 삼성전자 가치사슬 관계 공식 근거 반영",
+                                      "티빙과 TVING 별칭 모두 5개 상장사 Gold gate 통과",
+                                      "전체 회귀 157개 통과"
                                   ],
                     "next_actions":  [
-                                         "Chrome 확장 1회 수동 등록 후 X 한국 30개 실측"
+                                         "X Chrome 확장 1회 승인 후 X 30개 포함 실제 통합 수집",
+                                         "다음 실제 상위 트렌드 온톨로지 보강"
                                      ],
                     "blockers":  [
-                                     "Chrome 보안상 압축해제 확장 로드는 사용자 1회 승인 필요"
+                                     "Chrome 보안상 압축해제 확장 프로그램 로드는 사용자 1회 승인 필요"
                                  ],
                     "known_limitations":  [
 

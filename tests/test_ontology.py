@@ -407,6 +407,55 @@ def test_gstar_every_company_path_has_separate_official_listing_evidence():
         assert record["url"].startswith("https://kind.krx.co.kr/")
 
 
+def test_reviewed_tving_aliases_publish_five_specific_evidence_backed_companies():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+    expected_tickers = {"005930", "030200", "035420", "035760", "402340"}
+
+    for observed_term in ("티빙", "TVING"):
+        result = graph.resolve_term(observed_term)
+
+        assert result["status"] == "published"
+        assert result["company_count"] == 5
+        assert {
+            company["company"]["metadata"]["ticker"]
+            for company in result["companies"]
+        } == expected_tickers
+        assert all(
+            record["review_status"] == "approved"
+            and record["url"].startswith("https://")
+            for company in result["companies"]
+            for record in company["evidence"]
+        )
+
+
+def test_tving_business_edges_distinguish_control_from_value_chain_without_fillers():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+    relation_edges = [
+        edge
+        for edge in graph.edges
+        if edge["from_node"] == "term:reviewed:tving"
+    ]
+
+    assert len(relation_edges) == 5
+    assert sum(edge["metadata"]["relation_tier"] == "core" for edge in relation_edges) == 1
+    assert sum(
+        edge["metadata"]["relation_tier"] == "value_chain"
+        for edge in relation_edges
+    ) == 4
+    assert all(edge["metadata"]["not_a_buy_signal"] is True for edge in relation_edges)
+    assert all(edge["metadata"]["proof_scope"] for edge in relation_edges)
+    assert all(edge["metadata"]["temporal_scope"] for edge in relation_edges)
+    assert {
+        edge["relation_type"] for edge in relation_edges
+    } == {
+        "controlled_ott_platform",
+        "merged_telecom_ott_into_platform",
+        "invested_in_ott_platform",
+        "portfolio_company_ott_combination_negotiation",
+        "bundles_subscription_with_consumer_device",
+    }
+
+
 def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
 
