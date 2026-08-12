@@ -1,8 +1,8 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-b49f8c4da27c49638e2f2cfa201d9802",
-  "generated_at": "2026-08-12T14:50:04.487310+00:00",
-  "observed_at": "2026-08-12T14:00:00+00:00",
+  "publication_id": "pub-39d79cd0dd5540bca37a70d934c2e45c",
+  "generated_at": "2026-08-12T15:00:10.365503+00:00",
+  "observed_at": "2026-08-12T15:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
   "retention_days": null,
@@ -11,7 +11,7 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-12.json",
   "collection": {
-    "observed": 192,
+    "observed": 193,
     "errors": {
       "x": "extension_not_ready"
     },
@@ -27,18 +27,18 @@
       },
       "google_geo_kr": {
         "status": "observed",
-        "row_count": 192,
+        "row_count": 193,
         "detail": "verified_current_hour_snapshot"
       }
     },
-    "observed_at": "2026-08-12T14:00:00+00:00"
+    "observed_at": "2026-08-12T15:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T13:00:00+00:00",
-    "last_hour": "2026-08-12T14:00:00+00:00",
-    "hours": 2,
-    "rows": 377,
-    "observed_rows": 377,
+    "last_hour": "2026-08-12T15:00:00+00:00",
+    "hours": 3,
+    "rows": 570,
+    "observed_rows": 570,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
@@ -52,11 +52,11 @@
   },
   "collection_health": {
     "measurement_window_hours": 168,
-    "recorded_runs": 4,
+    "recorded_runs": 5,
     "successful_runs": 2,
-    "success_rate": 0.5,
+    "success_rate": 0.4,
     "source_success_rate": {
-      "x": 0.5,
+      "x": 0.4,
       "google_trends": 1.0
     },
     "source_failure_counts": {
@@ -68,7 +68,7 @@
         "quota_or_rate_limit": 0,
         "network": 0,
         "parser_change": 0,
-        "unknown": 2
+        "unknown": 3
       },
       "google_trends": {
         "browser_authentication": 0,
@@ -86,12 +86,12 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.25,
-    "latest_delay_seconds": 2998,
-    "latest_duration_seconds": 6.34,
+    "on_time_within_15m_rate": 0.4,
+    "latest_delay_seconds": 2,
+    "latest_duration_seconds": 8.76,
     "status": "collecting_baseline",
-    "remaining_runs_for_3d": 68,
-    "remaining_runs_for_7d": 164,
+    "remaining_runs_for_3d": 67,
+    "remaining_runs_for_7d": 163,
     "warning": "Windows 작업 스케줄러 실측 기록이며 노트북 종료·로그아웃 중에는 실행되지 않을 수 있음"
   }
 }
