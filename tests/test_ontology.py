@@ -325,6 +325,88 @@ def test_iam_solo_ena_path_separates_program_schedule_from_channel_ownership():
     assert "나는 SOLO 편성 사실은 SBS Plus 공식 편성 페이지로 별도 확인" in channel_evidence["summary"]
 
 
+def test_reviewed_gstar_aliases_publish_exactly_five_officially_evidenced_companies():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+    expected_tickers = {"005930", "036570", "095660", "251270", "259960"}
+
+    for observed_term in ("지스타", "G-STAR"):
+        result = graph.resolve_term(observed_term)
+
+        assert result["status"] == "published"
+        assert result["company_count"] == 5
+        assert {
+            company["company"]["metadata"]["ticker"]
+            for company in result["companies"]
+        } == expected_tickers
+        assert all(
+            record["review_status"] == "approved"
+            and record["url"].startswith("https://")
+            for company in result["companies"]
+            for record in company["evidence"]
+        )
+
+
+def test_gstar_business_edges_are_four_core_and_one_value_chain_without_padding():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+    relation_edges = [
+        edge
+        for edge in graph.edges
+        if edge["from_node"] == "term:reviewed:gstar"
+    ]
+    tier_counts = {
+        tier: sum(edge["metadata"]["relation_tier"] == tier for edge in relation_edges)
+        for tier in ("core", "value_chain", "industry_observation")
+    }
+
+    assert len(relation_edges) == 5
+    assert tier_counts == {"core": 4, "value_chain": 1, "industry_observation": 0}
+    assert {
+        edge["relation_type"]
+        for edge in relation_edges
+        if edge["metadata"]["relation_tier"] == "core"
+    } == {
+        "participates_as_main_sponsor_and_exhibitor",
+        "participates_as_exhibitor",
+    }
+    assert {
+        edge["relation_type"]
+        for edge in relation_edges
+        if edge["metadata"]["relation_tier"] == "value_chain"
+    } == {"provides_demo_hardware_to_exhibitor"}
+    assert all(edge["metadata"]["not_a_buy_signal"] is True for edge in relation_edges)
+    assert all(edge["metadata"]["not_current_edition_claim"] is True for edge in relation_edges)
+    assert all(
+        edge["metadata"]["temporal_scope"] == "G-STAR 2025 completed edition"
+        for edge in relation_edges
+    )
+
+
+def test_gstar_every_company_path_has_separate_official_listing_evidence():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+    company_ids = {
+        "company:kr:kospi:005930",
+        "company:kr:kospi:036570",
+        "company:kr:kosdaq:095660",
+        "company:kr:kospi:251270",
+        "company:kr:kospi:259960",
+    }
+    listing_edges = {
+        edge["from_node"]: edge
+        for edge in graph.edges
+        if edge["relation_type"] == "listed_as"
+        and edge["from_node"] in company_ids
+        and edge["review_status"] == "approved"
+    }
+
+    assert set(listing_edges) == company_ids
+    for edge in listing_edges.values():
+        assert len(edge["evidence_ids"]) == 1
+        record = graph.evidence_record(edge["evidence_ids"][0])
+        assert record["review_status"] == "approved"
+        assert record["evidence_type"] == "official_listing_record"
+        assert record["url"].startswith("https://kind.krx.co.kr/")
+
+
 def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
 

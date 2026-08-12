@@ -6,7 +6,8 @@
   "required": [
     "schema_version", "mode", "publication_id", "generated_at", "window",
     "sources", "ranking_availability", "score_policy", "unified_ranking", "public_top10",
-    "ontology_enrichment_queue", "enrichment_work_queue", "lanes", "verification_run", "collection_status"
+    "ontology_enrichment_queue", "enrichment_work_queue", "provider_keyword_candidate_queue",
+    "lanes", "verification_run", "collection_status"
   ],
   "properties": {
     "schema_version": {"const": "trzip-intelligence-v3"},
@@ -72,6 +73,39 @@
           }
         },
         "ranking_effect": {"const": "none"}
+      }
+    },
+    "provider_keyword_candidate_queue": {
+      "type": "object",
+      "required": [
+        "schema_version", "observed_at", "pending_total", "building_total", "pending_returned",
+        "pending", "approval_policy", "ranking_effect", "source_commit"
+      ],
+      "properties": {
+        "schema_version": {"const": "trzip-provider-keyword-candidates-v1"},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "pending_total": {"type": "integer", "minimum": 0},
+        "building_total": {"type": "integer", "minimum": 0},
+        "pending_returned": {"type": "integer", "minimum": 0, "maximum": 100},
+        "pending": {
+          "type": "array",
+          "maxItems": 100,
+          "items": {
+            "type": "object",
+            "required": [
+              "event_key", "candidate_key", "display_text", "provider_count",
+              "evidence_count", "status", "evidence", "publishable", "affects_score"
+            ],
+            "properties": {
+              "status": {"const": "review_required"},
+              "publishable": {"const": false},
+              "affects_score": {"const": false}
+            }
+          }
+        },
+        "approval_policy": {"const": "human_or_reviewed_ontology_required_before_publication"},
+        "ranking_effect": {"const": "none"},
+        "source_commit": {"const": "jiyu/5e3031c-adapted"}
       }
     },
     "lanes": {

@@ -66,8 +66,9 @@ latest / observations / monitoring JSON을 live-data에 게시
 
 - 화면 제목은 실제 X/Google 표현 중 반복 시간 → 출처 수 → RRF → 최고 순위로 선택합니다.
 - 정규화 사건명은 그룹 키일 뿐 실제 제목을 임의 설명문으로 바꾸지 않습니다.
-- 관련어는 동일 사건의 실제 원천 표현 또는 Google 관련 검색어만 최대 5개입니다.
+- 관련어는 동일 사건의 실제 원천 표현·Google 관련 검색어·URL 근거가 있는 검수 온톨로지 동의어만 최대 5개입니다.
 - 근거가 없으면 0개가 정상입니다.
+- NAVER·YouTube 문서에서 지유님 후보 추출 규칙으로 찾은 표현은 별도 검토 대기열에 누적하며, 승인 전에는 관련어 칩이나 순위에 넣지 않습니다.
 
 ## 관련기업 온톨로지
 
@@ -144,6 +145,7 @@ src/trzip/hourly_store.py                단일 SQLite 원장·시간/일 집계
 src/trzip/intelligence.py                대표어·점수·큐레이션·기업 연결
 src/trzip/ontology.py                    증거 그래프와 5개 공개 게이트
 src/trzip/provider_verification.py       NAVER·YouTube·Instagram·기사 원장
+src/trzip/keyword_candidates.py          보조 문서 키워드 검토 대기열
 src/trzip/publication_pipeline.py        전체 E2E·계약 검증·정적 게시물
 scripts/collect-hourly.ps1               정각 실행·live-data 안전 게시
 ```

@@ -128,6 +128,27 @@
       "metadata": {"market": "KOSPI", "ticker": "402340"}
     },
     {
+      "id": "term:reviewed:gstar",
+      "type": "term",
+      "label": "지스타",
+      "normalized_label": "지스타",
+      "metadata": {"lookup_scope": "observed_event_brand", "ranking_input": false}
+    },
+    {
+      "id": "company:kr:kosdaq:095660",
+      "type": "company",
+      "label": "네오위즈",
+      "normalized_label": "네오위즈",
+      "metadata": {"market": "KOSDAQ", "ticker": "095660"}
+    },
+    {
+      "id": "stock:kr:kosdaq:095660",
+      "type": "stock",
+      "label": "095660 (KOSDAQ)",
+      "normalized_label": "095660 (kosdaq)",
+      "metadata": {"market": "KOSDAQ", "ticker": "095660"}
+    },
+    {
       "id": "evidence:reviewed:mcst-sambok",
       "type": "evidence",
       "label": "문화체육관광부 세시풍속 삼복·삼계탕",
@@ -272,6 +293,76 @@
       "type": "evidence",
       "label": "한국거래소 KT 상장회사 코드 확인",
       "normalized_label": "한국거래소 kt 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:gstar-2025-program",
+      "type": "evidence",
+      "label": "지스타 2025 공식 프로그램",
+      "normalized_label": "지스타 2025 공식 프로그램",
+      "metadata": {"publisher": "지스타조직위원회"}
+    },
+    {
+      "id": "evidence:reviewed:ncsoft-gstar-2025",
+      "type": "evidence",
+      "label": "엔씨소프트 지스타 2025 메인 스폰서 참가",
+      "normalized_label": "엔씨소프트 지스타 2025 메인 스폰서 참가",
+      "metadata": {"publisher": "엔씨소프트"}
+    },
+    {
+      "id": "evidence:reviewed:krafton-gstar-2025",
+      "type": "evidence",
+      "label": "크래프톤 지스타 2025 출품",
+      "normalized_label": "크래프톤 지스타 2025 출품",
+      "metadata": {"publisher": "크래프톤"}
+    },
+    {
+      "id": "evidence:reviewed:netmarble-gstar-2025",
+      "type": "evidence",
+      "label": "넷마블 지스타 2025 출품",
+      "normalized_label": "넷마블 지스타 2025 출품",
+      "metadata": {"publisher": "넷마블"}
+    },
+    {
+      "id": "evidence:reviewed:neowiz-gstar-2025",
+      "type": "evidence",
+      "label": "네오위즈 지스타 2025 단독 부스 참가",
+      "normalized_label": "네오위즈 지스타 2025 단독 부스 참가",
+      "metadata": {"publisher": "네오위즈"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-gstar-2025-hardware",
+      "type": "evidence",
+      "label": "삼성전자 엔씨소프트 지스타 2025 시연장비 협업",
+      "normalized_label": "삼성전자 엔씨소프트 지스타 2025 시연장비 협업",
+      "metadata": {"publisher": "엔씨소프트"}
+    },
+    {
+      "id": "evidence:reviewed:krx-ncsoft-036570",
+      "type": "evidence",
+      "label": "한국거래소 엔씨소프트 상장회사 코드 확인",
+      "normalized_label": "한국거래소 엔씨소프트 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-krafton-259960",
+      "type": "evidence",
+      "label": "한국거래소 크래프톤 상장회사 코드 확인",
+      "normalized_label": "한국거래소 크래프톤 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-netmarble-251270",
+      "type": "evidence",
+      "label": "한국거래소 넷마블 상장회사 코드 확인",
+      "normalized_label": "한국거래소 넷마블 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-neowiz-095660",
+      "type": "evidence",
+      "label": "한국거래소 네오위즈 상장회사 코드 확인",
+      "normalized_label": "한국거래소 네오위즈 상장회사 코드 확인",
       "metadata": {"publisher": "한국거래소"}
     }
   ],
@@ -506,6 +597,116 @@
       "published_at": "2026-05-13",
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:gstar-2025-program",
+      "title": "G-STAR 2025 공식 G-CON 프로그램",
+      "publisher": "지스타조직위원회",
+      "url": "https://www.gstar.or.kr/gstar/gstar_last_conf_list.do?day=3&tab_sub_order=2",
+      "evidence_type": "official_event_program",
+      "summary": "지스타 공식 전년도 행사결과 페이지가 G-STAR 2025와 공식 컨퍼런스 G-CON 2025의 일정·세션·연사를 제시한다.",
+      "published_at": "2025-11-13",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "event_brand_and_official_program"}
+    },
+    {
+      "id": "evidence:reviewed:ncsoft-gstar-2025",
+      "title": "엔씨소프트 지스타 2025 메인 스폰서·300부스 참가",
+      "publisher": "엔씨소프트",
+      "url": "https://about.ncsoft.com/news/article/news_update_250908",
+      "evidence_type": "company_official_event_participation",
+      "summary": "엔씨소프트 공식 보도자료가 지스타 2025 메인 스폰서 참가와 B2C관 단독 300부스 운영을 명시한다.",
+      "published_at": "2025-09-08",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "event_to_direct_sponsor_exhibitor"}
+    },
+    {
+      "id": "evidence:reviewed:krafton-gstar-2025",
+      "title": "크래프톤 지스타 2025 현장 프로그램·부스 참가",
+      "publisher": "크래프톤",
+      "url": "https://www.krafton.com/en/news/press/krafton-announces-on-site-programs-for-g-star-2025/",
+      "evidence_type": "company_official_event_participation",
+      "summary": "크래프톤 공식 보도자료가 지스타 2025 참가, 팰월드 모바일 시연과 BTC관 부스 운영을 명시한다.",
+      "published_at": "2025-11-03",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "event_to_direct_exhibitor"}
+    },
+    {
+      "id": "evidence:reviewed:netmarble-gstar-2025",
+      "title": "넷마블 지스타 2025 출품작·부스 운영",
+      "publisher": "넷마블",
+      "url": "https://ch.netmarble.com/Newsroom/PressRelease/Detail?bbs_code=1014&post_seq=6267&post_tag=%EC%A7%80%EC%8A%A4%ED%83%80+2025",
+      "evidence_type": "company_official_event_participation",
+      "summary": "넷마블 공식 보도자료가 지스타 2025 출품작 5종과 112개 부스·145대 시연대 운영을 명시한다.",
+      "published_at": "2025-11-14",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "event_to_direct_exhibitor"}
+    },
+    {
+      "id": "evidence:reviewed:neowiz-gstar-2025",
+      "title": "네오위즈 산나비 외전 지스타 2025 단독 부스 참가",
+      "publisher": "네오위즈",
+      "url": "https://www.neowiz.com/kr/media/press-release-detail/3401",
+      "evidence_type": "company_official_event_participation",
+      "summary": "네오위즈 공식 보도자료가 지스타 2025 BTC 제1전시장 단독 부스 운영과 산나비 외전 시연을 명시한다.",
+      "published_at": "2025-10-27",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "event_to_direct_exhibitor"}
+    },
+    {
+      "id": "evidence:reviewed:samsung-gstar-2025-hardware",
+      "title": "엔씨소프트 지스타 2025 삼성전자 시연장비 협업",
+      "publisher": "엔씨소프트",
+      "url": "https://about.ncsoft.com/news/article/news_update_251110",
+      "evidence_type": "company_official_event_hardware_partnership",
+      "summary": "엔씨소프트 공식 보도자료가 지스타 2025 부스에서 삼성전자 오디세이 모니터·갤럭시 기기 지원과 게임 최적화 협업을 명시한다.",
+      "published_at": "2025-11-10",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "event_to_value_chain_hardware_partner"}
+    },
+    {
+      "id": "evidence:reviewed:krx-ncsoft-036570",
+      "title": "엔씨소프트 유가증권상장법인 회사코드 036570",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/01/05/000235/20260105000785/00637.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "엔씨소프트의 유가증권상장법인 회사코드가 036570임을 확인한다.",
+      "published_at": "2026-01-05",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-krafton-259960",
+      "title": "크래프톤 유가증권상장법인 회사코드 259960",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/04/01/001022/20260401002423/00637.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "크래프톤의 유가증권상장법인 회사코드가 259960임을 확인한다.",
+      "published_at": "2026-04-01",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-netmarble-251270",
+      "title": "넷마블 유가증권상장법인 회사코드 251270",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2025/09/19/000430/20250919001038/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "넷마블의 유가증권상장법인 회사코드가 251270임을 확인한다.",
+      "published_at": "2025-09-19",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-neowiz-095660",
+      "title": "네오위즈 코스닥상장법인 회사코드 095660",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/06/04/000613/20260604001630/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "네오위즈의 코스닥상장법인 회사코드가 095660임을 확인한다.",
+      "published_at": "2026-06-04",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
     }
   ],
   "aliases": [
@@ -560,6 +761,15 @@
       "target_node_id": "term:reviewed:iam-solo",
       "match_type": "reviewed_common_abbreviation",
       "evidence_ids": ["evidence:reviewed:sbsplus-iam-solo"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "alias:reviewed:gstar-hyphen",
+      "label": "G-STAR",
+      "target_node_id": "term:reviewed:gstar",
+      "match_type": "reviewed_official_english_name",
+      "evidence_ids": ["evidence:reviewed:gstar-2025-program"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     }
@@ -845,6 +1055,127 @@
       "to_node": "stock:kr:kospi:030200",
       "relation_type": "listed_as",
       "evidence_ids": ["evidence:reviewed:krx-kt-030200"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:gstar-ncsoft",
+      "from_node": "term:reviewed:gstar",
+      "to_node": "company:kr:kospi:036570",
+      "relation_type": "participates_as_main_sponsor_and_exhibitor",
+      "evidence_ids": ["evidence:reviewed:ncsoft-gstar-2025"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "core",
+        "proof_scope": "G-STAR 2025 메인 스폰서 및 B2C관 단독 300부스 참가",
+        "temporal_scope": "G-STAR 2025 completed edition",
+        "not_current_edition_claim": true,
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:gstar-krafton",
+      "from_node": "term:reviewed:gstar",
+      "to_node": "company:kr:kospi:259960",
+      "relation_type": "participates_as_exhibitor",
+      "evidence_ids": ["evidence:reviewed:krafton-gstar-2025"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "core",
+        "proof_scope": "G-STAR 2025 BTC관 부스와 체험 프로그램 운영",
+        "temporal_scope": "G-STAR 2025 completed edition",
+        "not_current_edition_claim": true,
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:gstar-netmarble",
+      "from_node": "term:reviewed:gstar",
+      "to_node": "company:kr:kospi:251270",
+      "relation_type": "participates_as_exhibitor",
+      "evidence_ids": ["evidence:reviewed:netmarble-gstar-2025"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "core",
+        "proof_scope": "G-STAR 2025 출품작 5종 및 112개 부스·145대 시연대 운영",
+        "temporal_scope": "G-STAR 2025 completed edition",
+        "not_current_edition_claim": true,
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:gstar-neowiz",
+      "from_node": "term:reviewed:gstar",
+      "to_node": "company:kr:kosdaq:095660",
+      "relation_type": "participates_as_exhibitor",
+      "evidence_ids": ["evidence:reviewed:neowiz-gstar-2025"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "core",
+        "proof_scope": "G-STAR 2025 BTC 제1전시장 단독 부스 및 게임 시연 운영",
+        "temporal_scope": "G-STAR 2025 completed edition",
+        "not_current_edition_claim": true,
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:gstar-samsung-hardware",
+      "from_node": "term:reviewed:gstar",
+      "to_node": "company:kr:kospi:005930",
+      "relation_type": "provides_demo_hardware_to_exhibitor",
+      "evidence_ids": ["evidence:reviewed:samsung-gstar-2025-hardware"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "value_chain",
+        "proof_scope": "엔씨소프트 G-STAR 2025 부스의 삼성전자 모니터·모바일 기기 지원 및 최적화 협업",
+        "temporal_scope": "G-STAR 2025 completed edition",
+        "not_current_edition_claim": true,
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:listing-gstar-ncsoft-036570",
+      "from_node": "company:kr:kospi:036570",
+      "to_node": "stock:kr:kospi:036570",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-ncsoft-036570"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:listing-gstar-krafton-259960",
+      "from_node": "company:kr:kospi:259960",
+      "to_node": "stock:kr:kospi:259960",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-krafton-259960"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:listing-gstar-netmarble-251270",
+      "from_node": "company:kr:kospi:251270",
+      "to_node": "stock:kr:kospi:251270",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-netmarble-251270"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:listing-gstar-neowiz-095660",
+      "from_node": "company:kr:kosdaq:095660",
+      "to_node": "stock:kr:kosdaq:095660",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-neowiz-095660"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     }

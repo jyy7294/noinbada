@@ -14,6 +14,7 @@ from .hourly_store import HourlyObservation, collect_current, coverage, floor_ho
 from .intelligence import build_intelligence
 from .company_adapters import pykrx_stock
 from .enrichment_queue import sync_enrichment_queue
+from .keyword_candidates import sync_provider_keyword_candidates
 from .normalization_evaluation import evaluate_regression_set
 from .provider_verification import (
     TrendReference,
@@ -735,6 +736,11 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         news_context_by_term=news_context_by_term,
     )
     intelligence = _refresh_verification_layer(intelligence, database_path, at)
+    intelligence["provider_keyword_candidate_queue"] = sync_provider_keyword_candidates(
+        intelligence,
+        path=database_path,
+        at=at,
+    )
     intelligence["enrichment_work_queue"] = sync_enrichment_queue(
         intelligence,
         path=database_path,
