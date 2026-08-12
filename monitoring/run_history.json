@@ -44,5 +44,21 @@
     "errors": {
       "x": "HTTPError: HTTP Error 402: Payment Required"
     }
+  },
+  {
+    "scheduled_at": "2026-08-12T11:00:00+00:00",
+    "started_at": "2026-08-12T11:45:59.873333+00:00",
+    "finished_at": "2026-08-12T11:46:00.383691+00:00",
+    "delay_seconds": 2760,
+    "duration_seconds": 0.51,
+    "success": false,
+    "source_success": {
+      "x": false,
+      "google_trends": true
+    },
+    "observed_rows": 10,
+    "errors": {
+      "x": "HTTPError: HTTP Error 402: Payment Required"
+    }
   }
 ]

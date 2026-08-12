@@ -1,17 +1,17 @@
 {
   "measurement_window_hours": 168,
-  "recorded_runs": 3,
+  "recorded_runs": 4,
   "successful_runs": 1,
-  "success_rate": 0.3333,
+  "success_rate": 0.25,
   "source_success_rate": {
-    "x": 0.3333,
+    "x": 0.25,
     "google_trends": 1.0
   },
-  "on_time_within_15m_rate": 0.3333,
-  "latest_delay_seconds": 366,
-  "latest_duration_seconds": 0.5,
+  "on_time_within_15m_rate": 0.25,
+  "latest_delay_seconds": 2760,
+  "latest_duration_seconds": 0.51,
   "status": "collecting_baseline",
-  "remaining_runs_for_3d": 69,
-  "remaining_runs_for_7d": 165,
+  "remaining_runs_for_3d": 68,
+  "remaining_runs_for_7d": 164,
   "warning": "GitHub Actions 예약 실행은 정각 시작을 보장하지 않으며 실제 지연시간으로 평가"
 }
