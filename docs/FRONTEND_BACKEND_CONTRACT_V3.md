@@ -57,6 +57,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 근거 보강 작업상태 | `enrichment_work_queue` (`ranking_effect=none`) |
 | 보조 문서 키워드 후보 | `provider_keyword_candidate_queue` (`publishable=false`, 승인 전 칩 금지) |
 | 기사 맥락 | `news_context` |
+| 공식 기업개황 | `companies[].official_identity` (`provider=opendart`, 순위·관계 근거로 사용 금지) |
 
 ## 빈 상태 규칙
 
@@ -69,6 +70,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 - `ranking_availability.is_combined_rank=false`: 통합 순위라고 표현하지 않고 잠정 배지 표시
 - 데이터 묶음 검증 실패: 목업 트렌드로 대체하지 않음
 - 시장자료는 `market_reference.status=observed`일 때만 일별 참고값으로 표시
+- 공식 기업개황은 `official_identity.status=verified`일 때만 법인명·영문명·설립일·공식 홈페이지를 표시하고, `relationship_evidence=false`를 관계 근거로 오해하지 않음
 - `coverage.legacy_observed_rows`는 구형 수집기 보존행이며 차트·순위에 사용하지 않음
 
 정확한 기계 계약은 `schemas/intelligence-v3.schema.json`, `schemas/metadata-v3.schema.json`, `schemas/status-v1.schema.json`을 따릅니다.

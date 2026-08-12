@@ -5,7 +5,7 @@
   "type": "object",
   "required": [
     "schema_version", "publication_id", "generated_at", "observed_at", "mode",
-    "storage", "collection", "coverage", "collection_health"
+    "storage", "collection", "coverage", "collection_health", "company_identity_data"
   ],
   "properties": {
     "schema_version": {"const": "trzip-live-data-v3"},
@@ -16,6 +16,18 @@
     "storage": {"const": "local-sqlite-published-to-live-data"},
     "collection": {"type": "object"},
     "coverage": {"type": "object"},
-    "collection_health": {"type": "object"}
+    "collection_health": {"type": "object"},
+    "company_identity_data": {
+      "type": "object",
+      "required": ["provider", "requested", "fetched", "reused", "ranking_effect", "relationship_evidence"],
+      "properties": {
+        "provider": {"const": "opendart"},
+        "requested": {"type": "integer", "minimum": 0},
+        "fetched": {"type": "integer", "minimum": 0},
+        "reused": {"type": "integer", "minimum": 0},
+        "ranking_effect": {"const": "none"},
+        "relationship_evidence": {"const": false}
+      }
+    }
   }
 }

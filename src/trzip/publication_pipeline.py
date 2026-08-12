@@ -12,7 +12,7 @@ from uuid import uuid4
 
 from .hourly_store import HourlyObservation, collect_current, coverage, floor_hour, latest_audit
 from .intelligence import build_intelligence
-from .company_adapters import pykrx_stock
+from .company_adapters import enrich_company_identities, pykrx_stock
 from .enrichment_queue import sync_enrichment_queue
 from .keyword_candidates import sync_provider_keyword_candidates
 from .normalization_evaluation import evaluate_regression_set
@@ -404,6 +404,49 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
     return intelligence
 
 
+def _enrich_official_company_identities(
+    intelligence: dict,
+    *,
+    database_path: Path,
+    at: datetime,
+) -> dict:
+    """Attach cached OpenDART identity without changing relationship logic."""
+
+    company_rows: list[dict] = []
+    for item in intelligence.get("unified_ranking", []):
+        company_rows.extend(item.get("company_candidates", []))
+        company_rows.extend(item.get("companies", []))
+    identities, status = enrich_company_identities(
+        company_rows,
+        database_path=database_path,
+        observed_at=at,
+    )
+    for item in intelligence.get("unified_ranking", []):
+        for field in ("company_candidates", "companies"):
+            for company in item.get(field, []):
+                stock_code = str(company.get("stock_code") or "").strip()
+                company["official_identity"] = identities.get(
+                    stock_code,
+                    {
+                        "status": "unavailable",
+                        "provider": "opendart",
+                        "company": str(company.get("company") or ""),
+                        "stock_code": stock_code,
+                        "legal_name": None,
+                        "english_name": None,
+                        "stock_name": None,
+                        "market_class": None,
+                        "homepage": None,
+                        "established_date": None,
+                        "retrieved_at": at.astimezone(UTC).isoformat(),
+                        "ranking_effect": "none",
+                        "relationship_evidence": False,
+                    },
+                )
+    intelligence["company_identity_status"] = status
+    return intelligence
+
+
 def _prune_observations(root: Path, at: datetime, retention_days: int) -> int:
     if retention_days <= 0:
         return 0
@@ -759,6 +802,11 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
     normalization_evaluation = evaluate_regression_set()
     intelligence["normalization_regression_evaluation"] = normalization_evaluation
     previous_intelligence = _read_json(root / "latest" / "intelligence.json", {})
+    intelligence = _enrich_official_company_identities(
+        intelligence,
+        database_path=database_path,
+        at=at,
+    )
     intelligence = _enrich_market_references(intelligence, previous_intelligence, at)
     stats = coverage(database_path)
 
@@ -799,6 +847,7 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         "collection": public_collection,
         "coverage": stats,
         "market_data": intelligence["market_data_status"],
+        "company_identity_data": intelligence["company_identity_status"],
         "collection_health": collection_health,
     }
     status = {

@@ -4,12 +4,14 @@ import io
 import json
 import os
 import re
+import sqlite3
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
 import zipfile
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from functools import lru_cache
+from pathlib import Path
 
 from .hourly_store import load_local_env
 
@@ -46,8 +48,13 @@ def _json_request(url: str, *, method: str = "GET", headers: dict | None = None,
         return json.load(response)
 
 
-def opendart_company(company_name: str) -> dict:
-    """Resolve an exact Korean company name and return OpenDART company overview."""
+def opendart_company(company_name: str, stock_code: str | None = None) -> dict:
+    """Resolve a listed issuer and return its OpenDART company overview.
+
+    A six-digit stock code is the primary key when it is available. Exact
+    issuer-name matching remains as the fallback for callers that only know a
+    company name.
+    """
     load_local_env()
     key = os.environ.get("OPENDART_API_KEY", "").strip()
     if not key:
@@ -57,14 +64,33 @@ def opendart_company(company_name: str) -> dict:
         def normalize_issuer(value: str) -> str:
             compact = re.sub(r"\s+", "", value).casefold()
             return re.sub(r"(?:\(주\)|㈜|주식회사)$", "", compact)
+        requested_stock_code = str(stock_code or "").strip()
+        if requested_stock_code and (
+            len(requested_stock_code) != 6 or not requested_stock_code.isdigit()
+        ):
+            return {
+                "status": "invalid",
+                "company": company_name,
+                "reason": "six-digit stock code required",
+            }
         target = normalize_issuer(company_name)
         matches = []
         for node in root.findall("list"):
             name = (node.findtext("corp_name") or "").strip()
-            if normalize_issuer(name) == target:
+            listed_code = (node.findtext("stock_code") or "").strip()
+            if (
+                requested_stock_code and listed_code == requested_stock_code
+            ) or (
+                not requested_stock_code and normalize_issuer(name) == target
+            ):
                 matches.append({child.tag: (child.text or "").strip() for child in node})
         if not matches:
-            return {"status": "not_found", "company": company_name, "reason": "exact OpenDART issuer name not found"}
+            reason = (
+                "OpenDART stock code not found"
+                if requested_stock_code
+                else "exact OpenDART issuer name not found"
+            )
+            return {"status": "not_found", "company": company_name, "reason": reason}
         match = sorted(matches, key=lambda item: bool(item.get("stock_code")), reverse=True)[0]
         overview_query = urllib.parse.urlencode({"crtfc_key": key, "corp_code": match["corp_code"]})
         overview = _json_request("https://opendart.fss.or.kr/api/company.json?" + overview_query)
@@ -75,6 +101,166 @@ def opendart_company(company_name: str) -> dict:
                 "overview": {key: overview.get(key) for key in ("corp_name", "corp_name_eng", "stock_name", "stock_code", "ceo_nm", "corp_cls", "adres", "hm_url", "est_dt")}}
     except Exception as exc:
         return {"status": "error", "company": company_name, "reason": f"{type(exc).__name__}: {exc}"}
+
+
+def _public_opendart_identity(
+    result: dict,
+    *,
+    company_name: str,
+    stock_code: str,
+    observed_at: datetime,
+) -> dict:
+    """Return a credential-free issuer identity record for the frontend.
+
+    OpenDART is issuer metadata only.  It cannot prove the trend relationship
+    and never changes score, rank, lane, company eligibility, or relation tier.
+    """
+
+    status = str(result.get("status") or "error")
+    overview = result.get("overview") if isinstance(result.get("overview"), dict) else {}
+    returned_code = str(result.get("stock_code") or overview.get("stock_code") or "").strip()
+    if status == "verified" and returned_code != stock_code:
+        status = "stock_code_mismatch"
+        overview = {}
+    homepage = str(overview.get("hm_url") or "").strip()
+    if homepage and not homepage.startswith(("http://", "https://")):
+        homepage = "https://" + homepage.lstrip("/")
+    if homepage and urllib.parse.urlparse(homepage).scheme not in {"http", "https"}:
+        homepage = ""
+    return {
+        "status": status,
+        "provider": "opendart",
+        "company": company_name,
+        "stock_code": stock_code,
+        "legal_name": str(overview.get("corp_name") or "").strip() or None,
+        "english_name": str(overview.get("corp_name_eng") or "").strip() or None,
+        "stock_name": str(overview.get("stock_name") or "").strip() or None,
+        "market_class": str(overview.get("corp_cls") or "").strip() or None,
+        "homepage": homepage or None,
+        "established_date": str(overview.get("est_dt") or "").strip() or None,
+        "retrieved_at": observed_at.astimezone(UTC).isoformat(),
+        "ranking_effect": "none",
+        "relationship_evidence": False,
+    }
+
+
+def enrich_company_identities(
+    companies: list[dict],
+    *,
+    database_path: Path,
+    observed_at: datetime,
+    verified_ttl_days: int = 30,
+    retry_ttl_hours: int = 24,
+) -> tuple[dict[str, dict], dict]:
+    """Resolve and persist unique OpenDART identities with bounded retries."""
+
+    if observed_at.tzinfo is None:
+        raise ValueError("company identity timestamp must be timezone-aware")
+    database_path.parent.mkdir(parents=True, exist_ok=True)
+    requested = {
+        str(company.get("stock_code") or "").strip(): str(company.get("company") or "").strip()
+        for company in companies
+        if str(company.get("stock_code") or "").strip()
+        and str(company.get("company") or "").strip()
+    }
+    external_disabled = os.environ.get(
+        "TRZIP_DISABLE_EXTERNAL_COMPANY_IDENTITY", ""
+    ).strip().casefold() in {"1", "true", "yes"}
+    with sqlite3.connect(database_path) as connection:
+        connection.execute(
+            """CREATE TABLE IF NOT EXISTS company_identity_cache (
+                   stock_code TEXT PRIMARY KEY,
+                   company_name TEXT NOT NULL,
+                   status TEXT NOT NULL,
+                   payload_json TEXT NOT NULL,
+                   observed_at TEXT NOT NULL
+               )"""
+        )
+        rows = {}
+        for row in connection.execute(
+            "SELECT stock_code,company_name,status,payload_json,observed_at "
+            "FROM company_identity_cache"
+        ):
+            try:
+                payload = json.loads(str(row[3]))
+                cached_at = datetime.fromisoformat(str(row[4]))
+                if not isinstance(payload, dict) or cached_at.tzinfo is None:
+                    raise ValueError("invalid cached company identity")
+            except (json.JSONDecodeError, TypeError, ValueError):
+                # A damaged cache row must never stop the hourly publication.
+                # Treat it as a miss and replace it with a fresh lookup below.
+                continue
+            rows[str(row[0])] = {
+                "company_name": str(row[1]),
+                "status": str(row[2]),
+                "payload": payload,
+                "observed_at": cached_at,
+            }
+        resolved: dict[str, dict] = {}
+        fetched = 0
+        reused = 0
+        for stock_code, company_name in sorted(requested.items()):
+            cached = rows.get(stock_code)
+            if cached and cached["company_name"] == company_name:
+                ttl = (
+                    timedelta(days=max(1, verified_ttl_days))
+                    if cached["status"] == "verified"
+                    else timedelta(hours=max(1, retry_ttl_hours))
+                )
+                if observed_at.astimezone(UTC) - cached["observed_at"].astimezone(UTC) < ttl:
+                    resolved[stock_code] = cached["payload"]
+                    reused += 1
+                    continue
+            upstream = (
+                {
+                    "status": "unavailable",
+                    "company": company_name,
+                    "reason": "external_company_identity_disabled",
+                }
+                if external_disabled
+                else opendart_company(company_name, stock_code=stock_code)
+            )
+            payload = _public_opendart_identity(
+                upstream,
+                company_name=company_name,
+                stock_code=stock_code,
+                observed_at=observed_at,
+            )
+            connection.execute(
+                """INSERT INTO company_identity_cache
+                   (stock_code,company_name,status,payload_json,observed_at)
+                   VALUES (?,?,?,?,?)
+                   ON CONFLICT(stock_code) DO UPDATE SET
+                     company_name=excluded.company_name,
+                     status=excluded.status,
+                     payload_json=excluded.payload_json,
+                     observed_at=excluded.observed_at""",
+                (
+                    stock_code,
+                    company_name,
+                    payload["status"],
+                    json.dumps(payload, ensure_ascii=False, sort_keys=True),
+                    observed_at.astimezone(UTC).isoformat(),
+                ),
+            )
+            resolved[stock_code] = payload
+            fetched += 1
+        connection.commit()
+    counts: dict[str, int] = {}
+    for payload in resolved.values():
+        status = str(payload.get("status") or "error")
+        counts[status] = counts.get(status, 0) + 1
+    return resolved, {
+        "provider": "opendart",
+        "requested": len(requested),
+        "fetched": fetched,
+        "reused": reused,
+        "status_counts": counts,
+        "verified_ttl_days": max(1, verified_ttl_days),
+        "retry_ttl_hours": max(1, retry_ttl_hours),
+        "ranking_effect": "none",
+        "relationship_evidence": False,
+    }
 
 
 @lru_cache(maxsize=2)
@@ -166,22 +352,9 @@ def _market_reaction(rows: list[dict]) -> dict:
     }
 
 
-@lru_cache(maxsize=128)
-def company_profile(company_name: str, stock_code: str) -> dict:
-    """Combine issuer identity and daily market reference without forecasting."""
-    dart = opendart_company(company_name)
-    market = pykrx_stock(stock_code)
-    return {
-        "company": company_name,
-        "stock_code": stock_code,
-        "official_identity": dart,
-        "market_reference": market,
-        "evidence_summary": {
-            "dart_verified": dart.get("status") == "verified",
-            "market_observed": market.get("status") == "observed",
-        },
-        "interpretation_policy": {
-            "allowed": ["사업 관계", "상장 여부", "현재 시장지표", "공식 위험요인"],
-            "prohibited": ["확정 수혜", "주가 상승 보장", "근거 없는 테마주 연결"],
-        },
-    }
+__all__ = (
+    "enrich_company_identities",
+    "integration_status",
+    "opendart_company",
+    "pykrx_stock",
+)

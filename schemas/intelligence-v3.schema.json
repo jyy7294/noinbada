@@ -6,6 +6,7 @@
   "required": [
     "schema_version", "mode", "publication_id", "generated_at", "window",
     "sources", "ranking_availability", "score_policy", "home_quality_gate",
+    "company_identity_status",
     "unified_ranking", "public_top10",
     "ontology_enrichment_queue", "enrichment_work_queue", "provider_keyword_candidate_queue",
     "lanes", "verification_run", "collection_status"
@@ -51,6 +52,19 @@
           "additionalProperties": {"type": "integer", "minimum": 1}
         },
         "rule": {"type": "string", "minLength": 1}
+      }
+    },
+    "company_identity_status": {
+      "type": "object",
+      "required": ["provider", "requested", "fetched", "reused", "status_counts", "ranking_effect", "relationship_evidence"],
+      "properties": {
+        "provider": {"const": "opendart"},
+        "requested": {"type": "integer", "minimum": 0},
+        "fetched": {"type": "integer", "minimum": 0},
+        "reused": {"type": "integer", "minimum": 0},
+        "status_counts": {"type": "object", "additionalProperties": {"type": "integer", "minimum": 0}},
+        "ranking_effect": {"const": "none"},
+        "relationship_evidence": {"const": false}
       }
     },
     "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
@@ -230,7 +244,7 @@
       "required": [
         "company", "stock_code", "relationship_reason", "company_summary",
         "business_features", "relation_tier", "relation_display_type", "verification_status",
-        "ontology_path", "ontology_complete", "evidence_sources"
+        "ontology_path", "ontology_complete", "evidence_sources", "official_identity"
       ],
       "properties": {
         "company": {"type": "string", "minLength": 1},
@@ -243,7 +257,31 @@
         "verification_status": {"const": "ontology_evidence"},
         "ontology_complete": {"type": "boolean"},
         "ontology_path": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/ontologyEdge"}},
-        "evidence_sources": {"type": "array", "minItems": 1, "items": {"type": "object"}}
+        "evidence_sources": {"type": "array", "minItems": 1, "items": {"type": "object"}},
+        "official_identity": {"$ref": "#/$defs/officialIdentity"}
+      }
+    },
+    "officialIdentity": {
+      "type": "object",
+      "required": [
+        "status", "provider", "company", "stock_code", "legal_name", "english_name",
+        "stock_name", "market_class", "homepage", "established_date", "retrieved_at",
+        "ranking_effect", "relationship_evidence"
+      ],
+      "properties": {
+        "status": {"enum": ["verified", "unavailable", "not_found", "error", "stock_code_mismatch"]},
+        "provider": {"const": "opendart"},
+        "company": {"type": "string", "minLength": 1},
+        "stock_code": {"type": "string", "pattern": "^[0-9]{6}$"},
+        "legal_name": {"type": ["string", "null"]},
+        "english_name": {"type": ["string", "null"]},
+        "stock_name": {"type": ["string", "null"]},
+        "market_class": {"type": ["string", "null"]},
+        "homepage": {"type": ["string", "null"]},
+        "established_date": {"type": ["string", "null"]},
+        "retrieved_at": {"type": "string", "format": "date-time"},
+        "ranking_effect": {"const": "none"},
+        "relationship_evidence": {"const": false}
       }
     },
     "trend": {
