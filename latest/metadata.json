@@ -1,6 +1,6 @@
 {
   "schema_version": "trzip-live-data-v2",
-  "generated_at": "2026-08-12T12:01:15.451258+00:00",
+  "generated_at": "2026-08-12T12:06:03.502929+00:00",
   "observed_at": "2026-08-12T12:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -27,7 +27,7 @@
       "x_korea_realtime": {
         "status": "observed",
         "row_count": 27,
-        "detail": "User Chrome X realtime page; South Korea marker and numbered ranking cells verified"
+        "detail": "valid same-hour snapshot preserved after collector retry failure"
       }
     },
     "observed_at": "2026-08-12T12:00:00+00:00"
@@ -45,7 +45,7 @@
     "kind": "daily_reference_not_realtime",
     "requested_stock_codes": 0,
     "newly_observed": 0,
-    "reused_company_rows": 39,
+    "reused_company_rows": 34,
     "unavailable_company_rows": 0
   },
   "collection_health": {
@@ -85,8 +85,8 @@
       "google_trends": false
     },
     "on_time_within_15m_rate": 0.5,
-    "latest_delay_seconds": 74,
-    "latest_duration_seconds": 1.06,
+    "latest_delay_seconds": 363,
+    "latest_duration_seconds": 0.67,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 70,
     "remaining_runs_for_7d": 166,
