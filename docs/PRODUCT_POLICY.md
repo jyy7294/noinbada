@@ -37,11 +37,11 @@ OpenDART, 기업 IR, 공식 제품·소유·공급·유통·후원·규제 자�
 
 ## Trends MCP 운영 경계
 
-Trends MCP는 Google freshness 센서로 호출하되 대한민국 `geo=KR` 결과가 최종 공개 게이트다. X에는 Trends MCP를 사용하지 않는다. API 키는 `.env` 또는 운영체제 비밀 환경변수에서만 읽는다.
+Trends MCP 자동 호출은 중지한다. 과거 1회 기능 검증 결과만 참고자료로 남기고 운영 수집·순위·키워드에는 참여시키지 않는다. Google은 대한민국 `geo=KR` 원천을 직접 수집하며 X에도 Trends MCP를 사용하지 않는다. 보관 중인 API 키가 있더라도 코드·문서·로그·Git에는 기록하지 않는다.
 
 ## 대한민국 지역 게이트
 
-공개 후보는 대한민국 지역 파라미터가 증명된 관측만 허용한다. Google은 `geo=KR`, X는 한국 실시간 트렌드 화면 또는 공식 `trends/by/woeid/{woeid}`와 검증한 한국 WOEID를 사용한다. YouTube·NAVER·Instagram은 수집·Top10·키워드·점수에 참여하지 않는다.
+공개 후보는 대한민국 지역이 증명된 관측만 허용한다. Google은 `geo=KR`을 사용하고, X는 설치된 Chrome으로 `https://x.com/explore/tabs/trending`을 직접 열어 화면에 표시된 대한민국 번호 순위를 수집한다. X API·WOEID·추정 데이터는 사용하지 않는다. YouTube·NAVER·Instagram은 수집·Top10·키워드·점수에 참여하지 않는다.
 
 한국 플랫폼 비교 화면은 임의의 Top10 절단을 하지 않고 각 공식 응답이 반환한 마지막 항목까지 표시한다. 종합 순위는 `RRF(k=60)`로 계산하고 원시 검색량·조회수·언급량을 플랫폼 간 합산하지 않는다. 연결 플랫폼이 하나면 반드시 단일 소스 종합 순위로 표시한다.
 

@@ -8,6 +8,7 @@ import os
 from dataclasses import asdict
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from uuid import uuid4
 
 from .hourly_store import HourlyObservation, collect_current, coverage, floor_hour, latest_audit
 from .intelligence import build_intelligence
@@ -28,9 +29,24 @@ def _write_json(path: Path, payload) -> None:
     temporary.replace(path)
 
 
-def _validate_contract(intelligence: dict, metadata: dict) -> None:
-    if intelligence.get("mode") != "live" or metadata.get("mode") != "live":
+def _validate_contract(intelligence: dict, metadata: dict, status: dict | None = None) -> None:
+    documents = [intelligence, metadata] + ([status] if status is not None else [])
+    if any(document.get("mode") != "live" for document in documents):
         raise ValueError("Production output must be marked live")
+    publication_ids = {document.get("publication_id") for document in documents}
+    if None in publication_ids or len(publication_ids) != 1:
+        raise ValueError("All publication documents must share one publication_id")
+    generated_at = {document.get("generated_at") for document in documents}
+    if None in generated_at or len(generated_at) != 1:
+        raise ValueError("All publication documents must share one generated_at")
+    observed_at = {
+        intelligence.get("window", {}).get("to"),
+        metadata.get("observed_at"),
+    }
+    if status is not None:
+        observed_at.add(status.get("observed_at"))
+    if None in observed_at or len(observed_at) != 1:
+        raise ValueError("All publication documents must describe one observation window")
     collection = metadata["collection"]
     if collection.get("trends_mcp_used") or collection.get("generated"):
         raise ValueError("Production collection must not use Trends MCP or generated rows")
@@ -303,9 +319,14 @@ def run(root: Path, *, retention_days: int = 104, database_path: Path | None = N
         ),
     }
 
+    generated_at = datetime.now(UTC).isoformat()
+    publication_id = f"pub-{uuid4().hex}"
+    intelligence["publication_id"] = publication_id
+    intelligence["generated_at"] = generated_at
     metadata = {
         "schema_version": "trzip-live-data-v2",
-        "generated_at": datetime.now(UTC).isoformat(),
+        "publication_id": publication_id,
+        "generated_at": generated_at,
         "observed_at": at.isoformat(),
         "mode": "live",
         "storage": "local-sqlite-published-to-live-data",
@@ -318,14 +339,10 @@ def run(root: Path, *, retention_days: int = 104, database_path: Path | None = N
         "market_data": intelligence["market_data_status"],
         "collection_health": collection_health,
     }
-    _validate_contract(intelligence, metadata)
-    _write_json(root / "latest" / "intelligence.json", intelligence)
-    _write_json(root / "latest" / "normalization_evaluation.json", normalization_evaluation)
-    _write_json(root / "latest" / "coverage.json", stats)
-    _write_json(root / "latest" / "metadata.json", metadata)
-    _write_json(root / "latest" / "status.json", {
+    status = {
         "schema_version": "trzip-runtime-status-v1",
-        "generated_at": metadata["generated_at"],
+        "publication_id": publication_id,
+        "generated_at": generated_at,
         "observed_at": metadata["observed_at"],
         "mode": "live",
         "partial": intelligence["collection_status"]["partial"],
@@ -333,7 +350,13 @@ def run(root: Path, *, retention_days: int = 104, database_path: Path | None = N
         "errors": intelligence["collection_status"]["errors"],
         "recorded_runs": collection_health["recorded_runs"],
         "measurement_status": collection_health["status"],
-    })
+    }
+    _validate_contract(intelligence, metadata, status)
+    _write_json(root / "latest" / "intelligence.json", intelligence)
+    _write_json(root / "latest" / "normalization_evaluation.json", normalization_evaluation)
+    _write_json(root / "latest" / "coverage.json", stats)
+    _write_json(root / "latest" / "metadata.json", metadata)
+    _write_json(root / "latest" / "status.json", status)
     return metadata
 
 

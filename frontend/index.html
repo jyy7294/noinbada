@@ -307,7 +307,7 @@
           </div>
         </div>
 
-        <div data-z-go="Z6" style="margin-top:18px; background:#6B554A; border-radius:16px; padding:17px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
+        <div data-z-go="Z6" data-z-portfolio-cta="1" style="margin-top:18px; background:#6B554A; border-radius:16px; padding:17px 18px; display:flex; align-items:center; justify-content:space-between; cursor:pointer;">
           <div>
             <div style="font-weight:900; font-size:16px; color:#FBF7EE; letter-spacing:-0.01em;">이 기업들로 밈트폴리오 만들기</div>
             <div style="margin-top:3px; font-weight:600; font-size:11px; color:#B9B2A4;">마음에 드는 기업만 골라 담아볼까요?</div>
@@ -317,15 +317,15 @@
       </div>
 
       <div data-z-dim="1" style="position:absolute; inset:0; background:rgba(17,17,17,0.4); opacity:0; pointer-events:none; transition:opacity 0.25s ease; z-index:5;"></div>
-      <div data-z-sheet="1" style="position:absolute; left:0; right:0; bottom:0; background:#FFFFFF; border:1.5px solid #6B554A; border-bottom:0; border-radius:20px 20px 0 0; padding:14px 20px 26px; transform:translateY(105%); transition:transform 0.32s cubic-bezier(0.32,0.72,0.22,1); z-index:6; box-sizing:border-box;">
+      <div data-z-sheet="1" aria-hidden="true" style="position:absolute; left:0; right:0; bottom:0; background:#FFFFFF; border:1.5px solid #6B554A; border-bottom:0; border-radius:20px 20px 0 0; padding:14px 20px 26px; transform:translateY(105%); transition:transform 0.32s cubic-bezier(0.32,0.72,0.22,1); z-index:6; box-sizing:border-box;">
         <div style="width:44px; height:5px; border-radius:999px; background:#E4E1D4; margin:0 auto;"></div>
         <div style="margin-top:18px; display:flex; align-items:center; gap:13px;">
-          <span data-z-sh-logo="1" style="display:flex; flex:none; width:52px; height:52px; align-items:center; justify-content:center; background:#CDB5F9; border:1.5px solid #6B554A; border-radius:999px; font-weight:900; font-size:19px; color:#6B554A;">신</span>
+          <span data-z-sh-logo="1" style="display:flex; flex:none; width:52px; height:52px; align-items:center; justify-content:center; background:#CDB5F9; border:1.5px solid #6B554A; border-radius:999px; font-weight:900; font-size:19px; color:#6B554A;">—</span>
           <div style="flex:1; min-width:0;">
-            <div data-z-sh-name="1" style="font-weight:900; font-size:19px; color:#6B554A; letter-spacing:-0.01em;">신라교역</div>
-            <div data-z-sh-role="1" style="margin-top:3px; font-weight:700; font-size:11.5px; color:#87857B;">원재료 · 카카오 원물 수입</div>
+            <div data-z-sh-name="1" style="font-weight:900; font-size:19px; color:#6B554A; letter-spacing:-0.01em;">기업 선택 전</div>
+            <div data-z-sh-role="1" style="margin-top:3px; font-weight:700; font-size:11.5px; color:#87857B;">검증된 연결기업을 선택해 주세요</div>
           </div>
-          <span data-z-sh-ret="1" style="flex:none; font-weight:900; font-size:16px; color:#E0453C;">+4.2%</span>
+          <span data-z-sh-ret="1" style="flex:none; font-weight:900; font-size:10.5px; color:#87857B;">시장데이터 미연동</span>
         </div>
         <div style="margin-top:16px; background:#F5F8E3; border:1.5px solid #6B554A; border-radius:12px; padding:15px;">
           <div style="font-weight:900; font-size:12.5px; color:#6B554A; letter-spacing:0.02em;">이 트렌드와의 연결고리</div>
@@ -344,7 +344,7 @@
             </div>
           </div>
         </div>
-        <div data-z-sh-buy="1" style="margin-top:16px; display:flex; align-items:center; justify-content:center; gap:8px; background:#F7FABF; border:2px solid #6B554A; border-radius:999px; padding:15px 0; font-weight:900; font-size:14.5px; color:#6B554A; cursor:pointer;">구매하러 가기 →</div>
+        <div data-z-sh-buy="1" style="margin-top:16px; display:none; align-items:center; justify-content:center; gap:8px; background:#F7FABF; border:2px solid #6B554A; border-radius:999px; padding:15px 0; font-weight:900; font-size:14.5px; color:#6B554A; cursor:pointer;">구매하러 가기 →</div>
       </div>
     </div>
   </div>
@@ -988,6 +988,37 @@ class Component extends DCLogic {
       node.style.color = '#87857B';
       node.style.fontSize = '10.5px';
     });
+  }
+
+  setCompanyAvailability(trend) {
+    var companies = trend && Array.isArray(trend.companies) ? trend.companies : [];
+    var hasCompanies = companies.length > 0;
+    var portfolioCta = document.querySelector('[data-z-portfolio-cta]');
+    if (portfolioCta) portfolioCta.style.display = hasCompanies ? 'flex' : 'none';
+
+    var dim = document.querySelector('[data-z-dim]');
+    var sheet = document.querySelector('[data-z-sheet]');
+    if (dim) { dim.style.opacity = '0'; dim.style.pointerEvents = 'none'; }
+    if (sheet) {
+      sheet.style.transform = 'translateY(105%)';
+      sheet.setAttribute('aria-hidden', 'true');
+    }
+    var buy = document.querySelector('[data-z-sh-buy]');
+    if (buy) { buy.style.display = 'none'; buy.style.pointerEvents = 'none'; buy.onclick = null; }
+
+    var reset = function (selector, value) {
+      var node = document.querySelector(selector);
+      if (node) node.textContent = value;
+    };
+    reset('[data-z-sh-logo]', '—');
+    reset('[data-z-sh-name]', hasCompanies ? '기업 선택 전' : '기업 연결 보류');
+    reset('[data-z-sh-role]', hasCompanies ? '검증된 연결기업을 선택해 주세요' : '검증된 연결기업이 없습니다');
+    reset('[data-z-sh-ret]', '시장데이터 미연동');
+    reset('[data-z-sh-role2]', '');
+    reset('[data-z-sh-why]', '');
+    reset('[data-z-sh-impact]', '');
+    var marketState = document.querySelector('[data-z-sh-ret]');
+    if (marketState) { marketState.style.color = '#87857B'; marketState.style.fontSize = '10.5px'; }
   }
 
   labelMemeMocks() {
@@ -2127,6 +2158,7 @@ class Component extends DCLogic {
     if (!host || (host.__w && !force)) return;
     var buttons = [].slice.call(document.querySelectorAll('[data-z-vc]'));
     if (!this.currentTrend) {
+      this.setCompanyAvailability(null);
       buttons.forEach(function (button) { button.style.display = 'none'; });
       host.replaceChildren();
       var waiting = document.createElement('div');
@@ -2137,6 +2169,22 @@ class Component extends DCLogic {
     }
     var self = this;
     var companies = Array.isArray(this.currentTrend.companies) ? this.currentTrend.companies : [];
+    this.setCompanyAvailability(this.currentTrend);
+    if (!companies.length) {
+      buttons.forEach(function (button) { button.style.display = 'none'; });
+      host.replaceChildren();
+      var hold = document.createElement('div');
+      hold.setAttribute('data-z-company-hold', '1');
+      hold.style.cssText = 'padding:16px 2px;font-weight:700;font-size:11.5px;line-height:1.6;color:#87857B;';
+      var resolution = this.currentTrend.companyResolution || {};
+      var reason = resolution.reason || (this.currentTrend.companyEligible
+        ? '검증된 연결기업이 아직 없습니다.'
+        : '이 항목은 기업 연결 대상이 아닙니다.');
+      hold.textContent = reason.indexOf('기업 연결 보류') >= 0 ? reason : '기업 연결 보류 · ' + reason;
+      host.appendChild(hold);
+      host.__w = true;
+      return;
+    }
     var groups = [];
     companies.forEach(function (company) {
       var name = company.relation_category || company.company_role || '연관기업';
@@ -2213,9 +2261,8 @@ class Component extends DCLogic {
   openCompanySheet(company, cat, col) {
     var dim = document.querySelector('[data-z-dim]');
     var sheet = document.querySelector('[data-z-sheet]');
-    if (!dim || !sheet) return;
+    if (!dim || !sheet || !company || !company.company) return;
     var q = function (s) { return document.querySelector(s); };
-    company = company || {};
     var market = company.market_reference || {};
     var summary = market.summary || {};
     var observedMarket = market.status === 'observed';
@@ -2242,13 +2289,15 @@ class Component extends DCLogic {
     if (impact) impact.textContent = priceText + (company.investment_warning ? ' · ' + company.investment_warning : '');
     dim.style.opacity = '1'; dim.style.pointerEvents = 'auto';
     sheet.style.transform = 'translateY(0)';
+    sheet.setAttribute('aria-hidden', 'false');
     var close = function () {
       dim.style.opacity = '0'; dim.style.pointerEvents = 'none';
       sheet.style.transform = 'translateY(105%)';
+      sheet.setAttribute('aria-hidden', 'true');
     };
     dim.onclick = close;
     var buy = q('[data-z-sh-buy]');
-    if (buy) buy.onclick = close;
+    if (buy) { buy.style.display = 'flex'; buy.style.pointerEvents = 'auto'; buy.onclick = close; }
   }
 
   grid(force) {

@@ -114,6 +114,7 @@ function rankDelta(item) {
 }
 
 function normalizeTrend(item) {
+  const companyEligible = Boolean(item.company_eligible);
   return {
     id: item.topic,
     topic: item.topic,
@@ -141,8 +142,8 @@ function normalizeTrend(item) {
       .filter((row) => row.status === 'operator_candidate_not_rank_evidence')
       .slice(0, 5),
     keywordEvidence: item.keyword_evidence || {},
-    companies: Array.isArray(item.companies) ? item.companies : [],
-    companyEligible: Boolean(item.company_eligible),
+    companies: companyEligible && Array.isArray(item.companies) ? item.companies : [],
+    companyEligible,
     companyResolution: item.company_resolution,
     sources: item.latest_source_ranks || {},
     sourceCount: Number(item.source_count || 0),
@@ -157,7 +158,60 @@ function normalizeTrend(item) {
   };
 }
 
-function validatedBundle(payload, metadata, runtimeStatus = null) {
+function sameInstant(values) {
+  const timestamps = values.map((value) => asDate(value)?.getTime());
+  return timestamps.every(Number.isFinite) && new Set(timestamps).size === 1;
+}
+
+function publicationIdentity(payload, metadata, runtimeStatus) {
+  const documents = [payload, metadata].concat(runtimeStatus ? [runtimeStatus] : []);
+  const publicationIds = documents.map((document) => document.publication_id || null);
+  const hasPublicationId = publicationIds.some(Boolean);
+  if (hasPublicationId) {
+    if (!runtimeStatus || publicationIds.some((value) => !value) || new Set(publicationIds).size !== 1) {
+      throw new Error('실시간 게시 묶음의 publication_id가 일치하지 않습니다.');
+    }
+    const generatedAt = documents.map((document) => document.generated_at);
+    if (!sameInstant(generatedAt)) {
+      throw new Error('실시간 게시 묶음의 generated_at이 일치하지 않습니다.');
+    }
+    return {
+      id: publicationIds[0],
+      generatedAt: asDate(generatedAt[0]).toISOString(),
+      validationMode: 'publication_id',
+      legacy: false,
+    };
+  }
+
+  const generatedAt = documents.map((document) => document.generated_at);
+  if (generatedAt.every(Boolean)) {
+    if (!sameInstant(generatedAt)) {
+      throw new Error('기존 게시 묶음의 generated_at이 일치하지 않습니다.');
+    }
+    return {
+      id: null,
+      generatedAt: asDate(generatedAt[0]).toISOString(),
+      validationMode: 'generated_at',
+      legacy: true,
+    };
+  }
+
+  // publication_id 도입 전 데이터는 intelligence.generated_at이 없었다.
+  // 이 경우에만 관측 시각 일치로 읽되 같은 시간대 재게시 혼합까지는 검출할 수 없다.
+  const observedAt = [payload.window?.to, metadata.observed_at]
+    .concat(runtimeStatus ? [runtimeStatus.observed_at] : []);
+  if (!sameInstant(observedAt)) {
+    throw new Error('기존 게시 묶음의 observed_at이 일치하지 않습니다.');
+  }
+  return {
+    id: null,
+    generatedAt: null,
+    validationMode: 'legacy_observed_at',
+    legacy: true,
+  };
+}
+
+export function validatedBundle(payload, metadata, runtimeStatus = null) {
   if (payload?.mode !== 'live' || !Array.isArray(payload.unified_ranking)) {
     throw new Error('실시간 순위 데이터 계약이 올바르지 않습니다.');
   }
@@ -167,11 +221,12 @@ function validatedBundle(payload, metadata, runtimeStatus = null) {
   if (runtimeStatus && (runtimeStatus.mode !== 'live' || !runtimeStatus.observed_at)) {
     throw new Error('실행 상태 데이터 계약이 올바르지 않습니다.');
   }
-  return { payload, metadata, runtimeStatus };
+  const publication = publicationIdentity(payload, metadata, runtimeStatus);
+  return { payload, metadata, runtimeStatus, publication };
 }
 
 function viewModel(bundle, { source, fromCache }) {
-  const { payload, metadata, runtimeStatus } = bundle;
+  const { payload, metadata, runtimeStatus, publication } = bundle;
   const status = dataStatus(payload, metadata, runtimeStatus, { fromCache });
   const rankingByTopic = new Map(payload.unified_ranking.map((item) => [item.topic, item]));
   const publicRows = (payload.public_top10 || [])
@@ -185,6 +240,7 @@ function viewModel(bundle, { source, fromCache }) {
     status,
     trends: payload.unified_ranking.map(normalizeTrend),
     featuredTrends: publicRows.map(normalizeTrend),
+    publication,
     metadata,
     raw: payload,
   };

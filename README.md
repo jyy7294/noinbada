@@ -109,7 +109,7 @@ powershell -ExecutionPolicy Bypass -File scripts\install-hourly-task.ps1
 powershell -ExecutionPolicy Bypass -File scripts\setup-x-chrome.ps1
 ```
 
-마지막 명령은 TRZIP 전용 Chrome 프로필을 엽니다. X에 한 번 로그인하고 `실시간 트렌드` 탭에서 한국 항목 10개 이상이 보이는지 확인한 뒤 Enter를 누릅니다. 개인 기본 Chrome 프로필이나 쿠키를 복사하지 않습니다.
+마지막 명령은 TRZIP 전용 Chrome 프로필로 X의 `실시간 트렌드` 페이지를 직접 엽니다. 로그인이 필요하면 브라우저에서 한 번만 완료하면 되며, 대한민국 항목 10개 이상이 확인되는 순간 자동으로 준비 상태가 저장됩니다. Enter 입력은 필요 없고 개인 기본 Chrome 프로필이나 쿠키도 복사하지 않습니다.
 
 즉시 전체 파이프라인을 시험하려면:
 

@@ -1,4 +1,9 @@
+import json
+import shutil
+import subprocess
 from pathlib import Path
+
+import pytest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,6 +58,23 @@ def test_review_required_trends_are_visibly_labelled_without_company_claims():
     assert "맥락 검토 필요 · 기업 연결 보류" in html
 
 
+def test_company_ineligible_detail_clears_mock_company_and_purchase_cta():
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    adapter = (ROOT / "frontend" / "trendzip-data.js").read_text(encoding="utf-8")
+
+    assert "data-z-portfolio-cta" in html
+    assert "setCompanyAvailability" in html
+    assert "if (!companies.length)" in html
+    assert "data-z-company-hold" in html
+    assert "기업 연결 보류 · " in html
+    assert "portfolioCta.style.display = hasCompanies ? 'flex' : 'none'" in html
+    assert "buy.style.display = 'none'" in html
+    assert "sheet.setAttribute('aria-hidden', 'true')" in html
+    assert "if (!dim || !sheet || !company || !company.company) return;" in html
+    assert "companies: companyEligible && Array.isArray(item.companies) ? item.companies : []" in adapter
+    assert 'data-z-sh-name="1" style="font-weight:900; font-size:19px; color:#6B554A; letter-spacing:-0.01em;">신라교역' not in html
+
+
 def test_live_bundle_exposes_fresh_partial_stale_status_without_snapshot_override():
     adapter = (ROOT / "frontend" / "trendzip-data.js").read_text(encoding="utf-8")
 
@@ -64,7 +86,64 @@ def test_live_bundle_exposes_fresh_partial_stale_status_without_snapshot_overrid
     assert "fromCache || !observedAt" in adapter
     assert "statusResponse" in adapter
     assert "unavailableSources" in adapter
+    assert "publicationIdentity" in adapter
+    assert "validationMode: 'publication_id'" in adapter
+    assert "validationMode: 'legacy_observed_at'" in adapter
     assert "new URLSearchParams" not in adapter
+
+
+@pytest.mark.skipif(shutil.which("node") is None, reason="Node.js is required for adapter contract test")
+def test_frontend_rejects_mixed_publications_and_keeps_legacy_observed_bundle_compatible(tmp_path):
+    adapter = ROOT / "frontend" / "trendzip-data.js"
+    module = tmp_path / "trendzip-data.mjs"
+    module.write_text(adapter.read_text(encoding="utf-8"), encoding="utf-8")
+    module_url = module.resolve().as_uri()
+    script = f"""
+      const {{ validatedBundle }} = await import({json.dumps(module_url)});
+      const observed = '2026-08-12T03:00:00+00:00';
+      const generated = '2026-08-12T03:00:05+00:00';
+      const intelligence = {{
+        mode: 'live', publication_id: 'pub-one', generated_at: generated,
+        window: {{ to: observed }}, unified_ranking: []
+      }};
+      const metadata = {{
+        mode: 'live', publication_id: 'pub-one', generated_at: generated,
+        observed_at: observed
+      }};
+      const status = {{
+        mode: 'live', publication_id: 'pub-one', generated_at: generated,
+        observed_at: observed
+      }};
+      const accepted = validatedBundle(intelligence, metadata, status).publication;
+      let mismatch = null;
+      try {{
+        validatedBundle(intelligence, metadata, {{ ...status, publication_id: 'pub-two' }});
+      }} catch (error) {{ mismatch = String(error.message || error); }}
+      const legacy = validatedBundle(
+        {{ mode: 'live', window: {{ to: observed }}, unified_ranking: [] }},
+        {{ mode: 'live', generated_at: generated, observed_at: observed }},
+        {{ mode: 'live', generated_at: generated, observed_at: observed }}
+      ).publication;
+      console.log(JSON.stringify({{ accepted, mismatch, legacy }}));
+    """
+    completed = subprocess.run(
+        [shutil.which("node"), "--input-type=module", "--eval", script],
+        check=True,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    result = json.loads(completed.stdout)
+
+    assert result["accepted"] == {
+        "id": "pub-one",
+        "generatedAt": "2026-08-12T03:00:05.000Z",
+        "validationMode": "publication_id",
+        "legacy": False,
+    }
+    assert "publication_id" in result["mismatch"]
+    assert result["legacy"]["validationMode"] == "legacy_observed_at"
+    assert result["legacy"]["legacy"] is True
 
 
 def test_empty_or_failed_live_data_clears_mock_trend_and_disables_dial():

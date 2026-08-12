@@ -1,7 +1,9 @@
 import json
 from datetime import UTC, datetime
 
-from trzip.publication_pipeline import _collection_health, _failure_class, run
+import pytest
+
+from trzip.publication_pipeline import _collection_health, _failure_class, _validate_contract, run
 from trzip.hourly_store import HourlyObservation
 
 
@@ -60,11 +62,56 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     status = json.loads((tmp_path / "latest" / "status.json").read_text(encoding="utf-8"))
     assert status["partial"] is False
     assert result["storage"] == "local-sqlite-published-to-live-data"
+    assert intelligence["publication_id"] == status["publication_id"] == result["publication_id"]
+    assert intelligence["generated_at"] == status["generated_at"] == result["generated_at"]
+    assert intelligence["window"]["to"] == status["observed_at"] == result["observed_at"]
 
     second = run(tmp_path)
     daily = json.loads((tmp_path / second["daily_file"]).read_text(encoding="utf-8"))
     assert len(daily) == 2
     assert second["coverage"]["rows"] == 2
+    assert second["publication_id"] != result["publication_id"]
+
+
+@pytest.mark.parametrize(
+    ("changed_document", "field", "value", "message"),
+    [
+        ("status", "publication_id", "pub-other", "publication_id"),
+        ("metadata", "generated_at", "2026-08-12T03:00:01+00:00", "generated_at"),
+        ("status", "observed_at", "2026-08-12T04:00:00+00:00", "observation window"),
+    ],
+)
+def test_publication_contract_rejects_mixed_document_bundle(
+    changed_document, field, value, message
+):
+    observed_at = "2026-08-12T03:00:00+00:00"
+    generated_at = "2026-08-12T03:00:05+00:00"
+    intelligence = {
+        "mode": "live",
+        "publication_id": "pub-one",
+        "generated_at": generated_at,
+        "window": {"to": observed_at},
+        "unified_ranking": [],
+    }
+    metadata = {
+        "mode": "live",
+        "publication_id": "pub-one",
+        "generated_at": generated_at,
+        "observed_at": observed_at,
+        "collection": {"trends_mcp_used": False, "generated": False},
+    }
+    status = {
+        "mode": "live",
+        "publication_id": "pub-one",
+        "generated_at": generated_at,
+        "observed_at": observed_at,
+    }
+    {"intelligence": intelligence, "metadata": metadata, "status": status}[
+        changed_document
+    ][field] = value
+
+    with pytest.raises(ValueError, match=message):
+        _validate_contract(intelligence, metadata, status)
 
 
 def test_collection_health_deduplicates_hour_and_classifies_source_failures(tmp_path):
