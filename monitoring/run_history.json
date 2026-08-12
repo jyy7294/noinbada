@@ -13,12 +13,12 @@
     },
     "observed_rows": 196,
     "errors": {
-      "x": "extension_not_ready"
+      "x": "unknown"
     },
     "source_failures": {
       "x": {
         "class": "unknown",
-        "detail": "extension_not_ready"
+        "detail": "unknown"
       }
     }
   },
@@ -36,12 +36,12 @@
     },
     "observed_rows": 197,
     "errors": {
-      "x": "extension_not_ready"
+      "x": "unknown"
     },
     "source_failures": {
       "x": {
         "class": "unknown",
-        "detail": "extension_not_ready"
+        "detail": "unknown"
       }
     }
   },
@@ -59,12 +59,12 @@
     },
     "observed_rows": 198,
     "errors": {
-      "x": "extension_not_ready"
+      "x": "unknown"
     },
     "source_failures": {
       "x": {
         "class": "unknown",
-        "detail": "extension_not_ready"
+        "detail": "unknown"
       }
     }
   },
@@ -82,12 +82,12 @@
     },
     "observed_rows": 201,
     "errors": {
-      "x": "extension_not_ready"
+      "x": "unknown"
     },
     "source_failures": {
       "x": {
         "class": "unknown",
-        "detail": "extension_not_ready"
+        "detail": "unknown"
       }
     }
   },
@@ -105,12 +105,12 @@
     },
     "observed_rows": 201,
     "errors": {
-      "x": "extension_not_ready"
+      "x": "unknown"
     },
     "source_failures": {
       "x": {
         "class": "unknown",
-        "detail": "extension_not_ready"
+        "detail": "unknown"
       }
     }
   },
@@ -128,13 +128,29 @@
     },
     "observed_rows": 202,
     "errors": {
-      "x": "extension_not_ready"
+      "x": "unknown"
     },
     "source_failures": {
       "x": {
         "class": "unknown",
-        "detail": "extension_not_ready"
+        "detail": "unknown"
       }
     }
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-12T23:00:00+00:00",
+    "started_at": "2026-08-12T23:09:50.167612+00:00",
+    "finished_at": "2026-08-12T23:10:04.609844+00:00",
+    "delay_seconds": 590,
+    "duration_seconds": 14.44,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 253,
+    "errors": {},
+    "source_failures": {}
   }
 ]
