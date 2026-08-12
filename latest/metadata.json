@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-b2b1834fa1384c129cea226332d5a9c0",
-  "generated_at": "2026-08-12T14:04:11.523210+00:00",
+  "publication_id": "pub-d2693fe9914844158cef3347336217ae",
+  "generated_at": "2026-08-12T14:49:36.782023+00:00",
   "observed_at": "2026-08-12T14:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -11,24 +11,24 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-12.json",
   "collection": {
-    "observed": 185,
+    "observed": 192,
     "errors": {
-      "x": "XCollectionError: extension_not_ready: X inbox does not exist; complete the one-time Chrome extension setup: C:\\Users\\lch68\\Desktop\\Downloads\\TRZIP\\x-current-session.json"
+      "x": "extension_not_ready"
     },
     "rank_sources": [
       "x",
       "google_trends"
     ],
     "audit": {
-      "google_geo_kr": {
-        "status": "observed",
-        "row_count": 185,
-        "detail": "Google Trending Now KR web full-list completion gate"
-      },
       "x_korea_realtime": {
         "status": "extension_not_ready",
         "row_count": 0,
-        "detail": "XCollectionError: extension_not_ready: X inbox does not exist; complete the one-time Chrome extension setup: C:\\Users\\lch68\\Desktop\\Downloads\\TRZIP\\x-current-session.json"
+        "detail": "extension_not_ready"
+      },
+      "google_geo_kr": {
+        "status": "observed",
+        "row_count": 192,
+        "detail": "verified_current_hour_snapshot"
       }
     },
     "observed_at": "2026-08-12T14:00:00+00:00"
@@ -37,16 +37,16 @@
     "first_hour": "2026-08-12T13:00:00+00:00",
     "last_hour": "2026-08-12T14:00:00+00:00",
     "hours": 2,
-    "rows": 370,
-    "observed_rows": 370,
+    "rows": 377,
+    "observed_rows": 377,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 0,
-    "newly_observed": 0,
+    "requested_stock_codes": 8,
+    "newly_observed": 8,
     "reused_company_rows": 0,
     "unavailable_company_rows": 0
   },
@@ -86,9 +86,9 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.5,
-    "latest_delay_seconds": 242,
-    "latest_duration_seconds": 9.76,
+    "on_time_within_15m_rate": 0.25,
+    "latest_delay_seconds": 2937,
+    "latest_duration_seconds": 40.05,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 68,
     "remaining_runs_for_7d": 164,
