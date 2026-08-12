@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T18:05:11.6225940+00:00",
+    "updated_at":  "2026-08-12T18:07:50.3381207+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,30 +8,26 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "efe1a1edeb3f29d8f9ee05990b7a3fa6a5d87e0d",
+                       "base_remote_main_sha":  "3b07a6f9ec24fbed461915f23dfefd79d2b8f331",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "data/ontology_enrichment.json",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "src/trzip/intelligence.py",
                                              "tests/test_intelligence.py",
                                              "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "data/ontology_enrichment.json":  "7c3b43cd568f7f18a6719ed38ab7c2b4b0062f0281f6503cf19d31b38743c67e",
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "48c48eb515713e08ce1bbda6eec1a6780efc053b7afd3d573c414a79aa24ae0e",
-                                                    "src/trzip/intelligence.py":  "27343cf1106339f8afaf62d0f8fad2655be9850a89d4e4a0baffc476d05567b8",
-                                                    "tests/test_intelligence.py":  "c106b2b71fe0312424abbe11c2bf05aba44b715fbbf2b5c6529f5e5888aee904",
-                                                    "tests/test_ontology.py":  "c9e2df673e70e0a1eb425838702afa831984cb75216f57e39aba4c858a2d8f40"
+                                                    "data/ontology_enrichment.json":  "3724e5efa09a784faddea5459724113526c0908e9938ca6559ce4120d9f2f34b",
+                                                    "tests/test_intelligence.py":  "64fab7094b677a5545074561a6ee1620553943f202edfda3745787c39f5e0644",
+                                                    "tests/test_ontology.py":  "5102870e0883645cecbdb82813d42102bed4c3ea6ea176f28555374f18fa55dd"
                                                 },
-                       "commit_message":  "feat: strengthen reviewed trend context",
+                       "commit_message":  "feat: complete reviewed home related terms",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  163
+                                      "count":  164
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -53,14 +49,14 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Fill reviewed home keywords while preventing weak company graph expansion",
+                    "objective":  "Give every current home trend five evidence-backed related terms",
                     "completed":  [
-                                      "Added five-keyword NaSol and G-STAR contracts",
-                                      "Blocked approved related concepts from seeding unrelated company expansion"
+                                      "Added Samsung Electronics official semiconductor terms",
+                                      "Verified all current home items have five reviewed keywords and at least five companies"
                                   ],
                     "next_actions":  [
                                          "Complete current-session Chrome extension installation",
-                                         "Build evidence slices for remaining home trends"
+                                         "Accumulate 96 eligible hourly observations"
                                      ],
                     "blockers":  [
                                      "X current-session extension requires one manual Chrome approval"

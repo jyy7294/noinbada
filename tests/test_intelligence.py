@@ -799,6 +799,14 @@ def test_stock_code_has_reviewed_company_and_four_labelled_industry_peers(tmp_pa
     item = result["unified_ranking"][0]
 
     assert item["display_name"] == "005930"
+    assert {keyword["text"] for keyword in item["keywords"]} == {
+        "삼성전자",
+        "삼성전자주식회사",
+        "메모리",
+        "시스템LSI",
+        "파운드리",
+    }
+    assert all(keyword["affects_score"] is False for keyword in item["keywords"])
     assert {company["stock_code"] for company in item["company_candidates"]} == {
         "000660", "005930", "006400", "009150", "066570"
     }

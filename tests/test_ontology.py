@@ -519,6 +519,21 @@ def test_samsung_securities_related_terms_are_official_service_labels():
     )
 
 
+def test_samsung_stock_code_related_terms_are_official_business_areas():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    related = graph.reviewed_related_terms("005930")
+
+    assert {item["label"] for item in related} == {"메모리", "시스템LSI", "파운드리"}
+    assert all(
+        record["id"] == "evidence:reviewed:samsung-electronics-k11"
+        and record["review_status"] == "approved"
+        and record["url"].startswith("https://semiconductor.samsung.com/")
+        for item in related
+        for record in item["evidence"]
+    )
+
+
 def test_iam_solo_related_terms_are_official_broadcast_and_distribution_labels():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
 

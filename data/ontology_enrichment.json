@@ -1275,6 +1275,33 @@
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     },
     {
+      "id": "related:reviewed:005930-memory",
+      "label": "메모리",
+      "target_node_id": "term:reviewed:005930",
+      "relation_role": "official_semiconductor_business_area",
+      "evidence_ids": ["evidence:reviewed:samsung-electronics-k11"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:005930-system-lsi",
+      "label": "시스템LSI",
+      "target_node_id": "term:reviewed:005930",
+      "relation_role": "official_semiconductor_business_area",
+      "evidence_ids": ["evidence:reviewed:samsung-electronics-k11"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:005930-foundry",
+      "label": "파운드리",
+      "target_node_id": "term:reviewed:005930",
+      "relation_role": "official_semiconductor_business_area",
+      "evidence_ids": ["evidence:reviewed:samsung-electronics-k11"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
       "id": "related:reviewed:iam-solo-sbs-plus",
       "label": "SBS Plus",
       "target_node_id": "term:reviewed:iam-solo",
