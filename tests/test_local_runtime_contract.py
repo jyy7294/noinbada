@@ -32,3 +32,20 @@ def test_windows_task_runs_full_local_publication_pipeline():
     assert "New-TimeSpan -Hours 1" in installer
     assert "-WorkingDirectory $ProjectRoot" in installer
     assert "+refs/heads/live-data:refs/remotes/origin/live-data" in installer
+
+
+def test_verified_code_checkpoint_is_explicit_and_non_force():
+    checkpoint = (ROOT / "scripts" / "checkpoint-main.ps1").read_text(encoding="utf-8")
+    promotion = (ROOT / "scripts" / "promote-runtime.ps1").read_text(encoding="utf-8")
+
+    assert "IncludePath" in checkpoint
+    assert "pytest -q" in checkpoint
+    assert "diff --cached --check" in checkpoint
+    assert "+refs/heads/main:refs/remotes/origin/main" in checkpoint
+    assert 'push origin "HEAD:refs/heads/main"' in checkpoint
+    assert "ls-remote origin refs/heads/main" in checkpoint
+    assert "push --force" not in checkpoint
+    assert "--force-with-lease" not in checkpoint
+    assert "reset --hard" not in checkpoint
+    assert "merge --ff-only origin/main" in promotion
+    assert "TRZIP X Google Hourly Collector" in promotion

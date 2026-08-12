@@ -391,10 +391,39 @@ def test_collection_health_deduplicates_hour_and_classifies_source_failures(tmp_
     second = _collection_health(tmp_path, at, collection, at, at)
     history = json.loads((tmp_path / "monitoring" / "run_history.json").read_text(encoding="utf-8"))
     assert len(history) == 1
+    assert history[0]["contract_version"] == "trzip-v3-hourly"
     assert first["status"] == second["status"] == "collecting_baseline"
     assert second["source_failure_counts"]["x"]["api_authentication"] == 1
     assert second["remaining_runs_for_3d"] == 71
     assert second["source_targets_met"] == {"x": False, "google_trends": False}
+
+
+def test_collection_health_drops_unversioned_legacy_success_rows(tmp_path):
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    monitoring = tmp_path / "monitoring"
+    monitoring.mkdir()
+    (monitoring / "run_history.json").write_text(
+        json.dumps([{
+            "scheduled_at": "2026-08-12T02:00:00+00:00",
+            "success": True,
+            "source_success": {"x": True, "google_trends": True},
+        }]),
+        encoding="utf-8",
+    )
+    collection = {
+        "observed": 193,
+        "errors": {"x": "extension_not_ready"},
+        "audit": {
+            "x_korea_realtime": {"status": "extension_not_ready", "row_count": 0},
+            "google_geo_kr": {"status": "observed", "row_count": 193},
+        },
+    }
+
+    health = _collection_health(tmp_path, at, collection, at, at)
+
+    assert health["recorded_runs"] == 1
+    assert health["successful_runs"] == 0
+    assert health["source_success_rate"] == {"x": 0.0, "google_trends": 1.0}
 
 
 def test_public_collection_and_monitoring_redact_local_paths_urls_and_credentials(tmp_path):
@@ -417,6 +446,9 @@ def test_public_collection_and_monitoring_redact_local_paths_urls_and_credential
             "google_geo_kr": {
                 "status": "observed",
                 "row_count": 185,
+                "declared_total": 185,
+                "page_count": 8,
+                "completion_verified": True,
                 "detail": "https://trends.google.com/trending?geo=KR&key=super-secret",
             },
         },
@@ -452,6 +484,9 @@ def test_public_collection_and_monitoring_redact_local_paths_urls_and_credential
     assert public["errors"] == {"x": "extension_not_ready"}
     assert public["audit"]["x_korea_realtime"]["detail"] == "extension_not_ready"
     assert public["audit"]["google_geo_kr"]["detail"] == "verified_current_hour_snapshot"
+    assert public["audit"]["google_geo_kr"]["declared_total"] == 185
+    assert public["audit"]["google_geo_kr"]["page_count"] == 8
+    assert public["audit"]["google_geo_kr"]["completion_verified"] is True
     assert "C:\\Users" not in serialized
     assert "https://" not in serialized
     assert "super-secret" not in serialized

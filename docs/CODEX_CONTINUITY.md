@@ -1,6 +1,6 @@
 # TRZIP Codex 연속 작업·운영 인수인계
 
-이 문서는 새 Codex 작업이 로컬 상황을 추측하지 않고 현재 프로덕트 백엔드를 바로 점검·계속 개발하기 위한 기준입니다. README는 제품 설명, `AGENTS.md`는 강제 원칙, 이 문서는 실제 운영 체크리스트입니다.
+이 문서는 새 Codex 작업이 로컬 상황을 추측하지 않고 현재 프로덕트 백엔드를 바로 점검·계속 개발하기 위한 기준입니다. README는 제품 설명, `AGENTS.md`는 강제 원칙, 이 문서는 실제 운영 체크리스트입니다. 새 작업은 먼저 루트의 `CURRENT_STATE.json`을 읽어 마지막 검증 단위·남은 작업·수동 게이트를 확인합니다.
 
 ## 1. 제품 완료 조건
 
@@ -55,7 +55,8 @@ git ls-remote origin refs/heads/main refs/heads/live-data
 
 ## 4. 코드 체크포인트와 원격 복구 원칙
 
-- 완료된 기능은 전체 회귀검증 후 같은 작업 안에서 `main`까지 병합·푸시합니다.
+- 독립적으로 검증 가능한 기능 단위가 끝날 때마다, 장시간 작업은 늦어도 30~45분마다, 그리고 작업 종료·컨텍스트 소진 전에는 반드시 원격 체크포인트를 만듭니다.
+- 완료된 기능은 전체 회귀검증 후 같은 작업 안에서 `main`까지 병합·푸시합니다. 시간만 지났다는 이유로 깨진 코드를 자동 커밋하지 않습니다.
 - 푸시 후 `git ls-remote origin refs/heads/main`과 로컬 HEAD가 같은지 확인합니다.
 - `main` 갱신 뒤 안정 실행 checkout을 fast-forward합니다.
 - 예약 작업은 코드 저장용이 아닙니다. 매시간 `latest`, `observations`, `monitoring`만 `live-data`에 커밋·푸시합니다.
@@ -70,13 +71,29 @@ git ls-remote origin refs/heads/main refs/heads/live-data
 git diff --check
 ```
 
+체크포인트 전에는 명시한 파일만 스테이징하고, 이미 스테이징된 다른 파일이나 작업 범위 밖 변경이 있으면 중단합니다. 테스트 시작 시점의 `origin/main` SHA와 push 직전 SHA가 달라졌으면 최신 main을 통합한 뒤 전체 검증을 다시 수행합니다. 검증 실패 또는 미완성 작업은 `main`에 올리지 않고 `wip/codex-YYYYMMDD-HHMM-*` 브랜치에 필요한 파일만 백업하며, 실패 검사와 다음 실행 명령을 인수인계에 기록합니다.
+
 PowerShell 스크립트는 파서로 구문검사하고, 실제 publication을 만든 뒤 V3 schema와 공개 정보 누출 검사를 수행합니다.
+
+검증된 단위를 게시할 때는 아래처럼 명시 파일만 전달합니다. 이 스크립트는 전체 테스트·컴파일·PowerShell 구문·비밀/개인경로·원격 경쟁을 검사하고, `CURRENT_STATE.json`을 갱신한 뒤 non-force 방식으로 `main`에 푸시합니다. 성공 후 `origin/main` SHA와 안정 실행 checkout도 같은 SHA인지 확인합니다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\checkpoint-main.ps1 `
+  -IncludePath @("src/trzip/example.py", "tests/test_example.py") `
+  -Message "fix: verify example behavior" `
+  -Objective "설명 가능한 기능 단위를 검증·게시" `
+  -Completed @("구현과 전체 회귀검증 완료") `
+  -NextAction @("다음 독립 작업") `
+  -Blocker @("남은 수동 게이트")
+```
+
+작업 범위 밖 변경이 있거나 원격 main이 검증 도중 바뀌면 스크립트는 커밋하지 않고 중단합니다. 검증되지 않은 WIP는 별도 `wip/codex-*` 브랜치에 필요한 파일만 백업하며 main에는 병합하지 않습니다.
 
 ## 5. main 갱신 뒤 안정 실행 checkout 반영
 
 ```powershell
 $runtime = Join-Path $env:USERPROFILE "Documents\Codex\noinbada-runtime"
-git -C $runtime fetch origin main
+git -C $runtime fetch origin "+refs/heads/main:refs/remotes/origin/main"
 git -C $runtime merge --ff-only origin/main
 & "$runtime\.venv\Scripts\python.exe" -m pip install -e $runtime
 powershell -ExecutionPolicy Bypass -File "$runtime\scripts\install-hourly-task.ps1" `
@@ -108,7 +125,7 @@ Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
 확인 항목:
 
 - SQLite 최신 시각의 X 순위가 정확히 1~30이고 Google 행 수가 페이지 선언 총건수와 같습니다.
-- `collection_status.partial=false`이고 두 핵심 출처가 `observed`입니다.
+- 최신 `status.json`의 `partial=false`이고 두 핵심 출처가 `observed`입니다.
 - 단일 출처면 결과가 발행되더라도 `ranking_availability.is_combined_rank=false`입니다.
 - 세 latest 문서의 `publication_id`, `generated_at`, `observed_at`이 일치합니다.
 - 공개 운영 상태에 사용자명, 로컬 경로, 토큰, 비밀키, 요청 쿼리가 없습니다.

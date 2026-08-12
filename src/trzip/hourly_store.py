@@ -233,7 +233,7 @@ def collect_google(at: datetime) -> list[HourlyObservation]:
     profile_dir = Path(profile_value) if profile_value else None
     headed = os.environ.get("TRZIP_GOOGLE_HEADED", "0").strip() == "1"
     minimum_rows = int(os.environ.get("TRZIP_GOOGLE_MINIMUM_ROWS", "100"))
-    trends, _audit = collect_google_page(
+    trends, page_audit = collect_google_page(
         profile_dir=profile_dir,
         headless=not headed,
         minimum_rows=max(1, minimum_rows),
@@ -248,7 +248,14 @@ def collect_google(at: datetime) -> list[HourlyObservation]:
             float(max(1, 101 - trend.rank)),
             "observed",
             source_payload_json=json.dumps(
-                trend.source_payload,
+                {
+                    **trend.source_payload,
+                    "collection_declared_total": page_audit.get("declared_total"),
+                    "collection_page_count": page_audit.get("page_count"),
+                    "collection_completion_verified": bool(
+                        page_audit.get("completion_verified")
+                    ),
+                },
                 ensure_ascii=False,
                 sort_keys=True,
             ),
@@ -358,9 +365,22 @@ def collect_current(path: Path | None = None, now: datetime | None = None) -> di
 
     def google_korea(value: datetime) -> list[HourlyObservation]:
         korea_rows = collect_google(value)
-        audit["google_geo_kr"] = {"status": "observed" if korea_rows else "empty",
-                                  "row_count": len(korea_rows),
-                                  "detail": "Google Trending Now KR web full-list completion gate"}
+        page_evidence: dict = {}
+        if korea_rows and korea_rows[0].source_payload_json:
+            try:
+                page_evidence = json.loads(korea_rows[0].source_payload_json)
+            except (TypeError, ValueError, json.JSONDecodeError):
+                page_evidence = {}
+        audit["google_geo_kr"] = {
+            "status": "observed" if korea_rows else "empty",
+            "row_count": len(korea_rows),
+            "declared_total": page_evidence.get("collection_declared_total"),
+            "page_count": page_evidence.get("collection_page_count"),
+            "completion_verified": bool(
+                page_evidence.get("collection_completion_verified")
+            ),
+            "detail": "Google Trending Now KR web full-list completion gate",
+        }
         return korea_rows
 
     collectors = (("google_trends", google_korea), ("x", collect_x))

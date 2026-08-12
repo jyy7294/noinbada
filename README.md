@@ -119,7 +119,7 @@ Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
 
 환경변수는 [.env.example](.env.example)을 참고하십시오. 키·Chrome 프로필·SQLite·로그는 Git에 올리지 않습니다.
 
-팀원 workbook과 연관키워드 과제의 선택 통합 근거는 [팀 산출물 통합 결정](docs/TEAM_WORK_INTEGRATION.md)에 기록했습니다. 다른 Codex가 같은 운영 상태를 바로 이어받기 위한 경로·검증·복구 절차는 [Codex 연속 작업·운영 인수인계](docs/CODEX_CONTINUITY.md)를 따릅니다.
+팀원 workbook과 연관키워드 과제의 선택 통합 근거는 [팀 산출물 통합 결정](docs/TEAM_WORK_INTEGRATION.md)에 기록했습니다. 다른 Codex는 먼저 [현재 검증 상태](CURRENT_STATE.json)를 읽고, 같은 운영 상태를 바로 이어받기 위한 경로·검증·복구 절차는 [Codex 연속 작업·운영 인수인계](docs/CODEX_CONTINUITY.md)를 따릅니다.
 
 ## 공개 계약
 

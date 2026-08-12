@@ -122,13 +122,21 @@ def test_google_web_rows_preserve_source_payload_and_related_terms(monkeypatch):
             "2시간 전",
             ("삼계탕", "보양식"),
             {"volume_text": "5천+", "growth_text": "1,000%", "page": 1},
-        )], {"row_count": 1, "completion_verified": True}),
+        )], {
+            "row_count": 1,
+            "declared_total": 1,
+            "page_count": 1,
+            "completion_verified": True,
+        }),
     )
 
     rows = collect_google(at)
 
     assert [row.topic for row in rows] == ["말복"]
     assert json.loads(rows[0].source_payload_json)["volume_text"] == "5천+"
+    assert json.loads(rows[0].source_payload_json)["collection_declared_total"] == 1
+    assert json.loads(rows[0].source_payload_json)["collection_page_count"] == 1
+    assert json.loads(rows[0].source_payload_json)["collection_completion_verified"] is True
     assert json.loads(rows[0].related_terms_json) == ["삼계탕", "보양식"]
 
 

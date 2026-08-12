@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jyy7294/noinbada/schemas/current-state-v1.schema.json",
+  "title": "TRZIP Codex continuity state v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version", "updated_at", "project", "checkpoint", "validation",
+    "handoff", "runtime_contract", "live_state_pointer"
+  ],
+  "properties": {
+    "schema_version": {"const": "trzip-current-state-v1"},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "code_branch", "data_branch"],
+      "properties": {
+        "repository": {"const": "jyy7294/noinbada"},
+        "code_branch": {"const": "main"},
+        "data_branch": {"const": "live-data"}
+      }
+    },
+    "checkpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "describes_commit", "base_remote_main_sha", "validation_target",
+        "changed_paths", "changed_file_digests", "commit_message",
+        "validation_status"
+      ],
+      "properties": {
+        "describes_commit": {"const": "self"},
+        "base_remote_main_sha": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+        "validation_target": {"const": "staged_tree"},
+        "changed_paths": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"type": "string", "minLength": 1}
+        },
+        "changed_file_digests": {
+          "type": "object",
+          "additionalProperties": {
+            "anyOf": [
+              {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+              {"const": "deleted"}
+            ]
+          }
+        },
+        "commit_message": {"type": "string", "minLength": 3},
+        "validation_status": {"const": "passed"}
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pytest", "compileall", "powershell_parse", "diff_check",
+        "secret_scan", "local_path_scan", "state_schema"
+      ],
+      "properties": {
+        "pytest": {"$ref": "#/$defs/testResult"},
+        "compileall": {"$ref": "#/$defs/result"},
+        "powershell_parse": {"$ref": "#/$defs/result"},
+        "diff_check": {"$ref": "#/$defs/result"},
+        "secret_scan": {"$ref": "#/$defs/result"},
+        "local_path_scan": {"$ref": "#/$defs/result"},
+        "state_schema": {"$ref": "#/$defs/result"}
+      }
+    },
+    "handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["objective", "completed", "next_actions", "blockers", "known_limitations"],
+      "properties": {
+        "objective": {"type": "string", "minLength": 1},
+        "completed": {"$ref": "#/$defs/stringList"},
+        "next_actions": {"$ref": "#/$defs/stringList"},
+        "blockers": {"$ref": "#/$defs/stringList"},
+        "known_limitations": {"$ref": "#/$defs/stringList"}
+      }
+    },
+    "runtime_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["checkout", "runtime_root", "scheduler", "required_branch"],
+      "properties": {
+        "checkout": {"const": "%USERPROFILE%\\Documents\\Codex\\noinbada-runtime"},
+        "runtime_root": {"const": "%LOCALAPPDATA%\\TRZIP"},
+        "scheduler": {"const": "TRZIP X Google Hourly Collector"},
+        "required_branch": {"const": "main"}
+      }
+    },
+    "live_state_pointer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["branch", "status_file", "run_history_file"],
+      "properties": {
+        "branch": {"const": "live-data"},
+        "status_file": {"const": "latest/status.json"},
+        "run_history_file": {"const": "monitoring/run_history.json"}
+      }
+    }
+  },
+  "$defs": {
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {"status": {"const": "passed"}}
+    },
+    "testResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "count"],
+      "properties": {
+        "status": {"const": "passed"},
+        "count": {"type": "integer", "minimum": 1}
+      }
+    },
+    "stringList": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1}
+    }
+  }
+}

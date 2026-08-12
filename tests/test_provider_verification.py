@@ -325,7 +325,10 @@ def test_youtube_daily_budget_counts_attempts_not_runs(tmp_path):
     )
     persist_verification_result(result, target)
 
-    assert youtube_search_attempts_on_kst_date(target, NOW) == 2
+    # Quota is charged on the actual request date, not the fixed observation
+    # fixture date. This keeps the test deterministic across a KST midnight.
+    actual_request_time = datetime.fromisoformat(result.attempts[0].started_at)
+    assert youtube_search_attempts_on_kst_date(target, actual_request_time) == 2
 
 
 def test_news_only_term_stays_out_of_ranking_until_core_source_is_observed(tmp_path):

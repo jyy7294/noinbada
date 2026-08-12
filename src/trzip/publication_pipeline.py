@@ -28,6 +28,7 @@ from .provider_verification import (
 NEWS_DISCOVERY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "news_discovery_seed.json"
 DEFAULT_HOURLY_VERIFICATION_TERM_LIMIT = 3
 MAX_HOURLY_VERIFICATION_TERM_LIMIT = 3
+MONITORING_CONTRACT_VERSION = "trzip-v3-hourly"
 
 
 def _read_json(path: Path, default):
@@ -456,11 +457,21 @@ def _sanitize_collection_for_public(collection: dict) -> dict:
         raw_error = (collection.get("errors", {}) or {}).get(source)
         code = _public_source_status(source, raw_error or item.get("detail"), item.get("status"))
         row_count = _nonnegative_number(item.get("row_count"))
-        audit[key] = {
+        public_item = {
             "status": code,
             "row_count": row_count,
             "detail": "verified_current_hour_snapshot" if code == "observed" else code,
         }
+        if source == "google_trends":
+            declared_total = _nonnegative_number(item.get("declared_total"))
+            page_count = _nonnegative_number(item.get("page_count"))
+            completion_verified = bool(item.get("completion_verified"))
+            public_item.update({
+                "declared_total": declared_total,
+                "page_count": page_count,
+                "completion_verified": completion_verified,
+            })
+        audit[key] = public_item
     errors = {
         source: audit[key]["status"]
         for source, key in (("x", "x_korea_realtime"), ("google_trends", "google_geo_kr"))
@@ -493,6 +504,7 @@ def _sanitize_health_history_row(row: dict) -> dict:
         failure_class = raw_class if raw_class in PUBLIC_FAILURE_CLASSES else _failure_class(code)
         failures[source] = {"class": failure_class, "detail": code}
     return {
+        "contract_version": MONITORING_CONTRACT_VERSION,
         "scheduled_at": _public_iso_timestamp(row.get("scheduled_at")),
         "started_at": _public_iso_timestamp(row.get("started_at")),
         "finished_at": _public_iso_timestamp(row.get("finished_at")),
@@ -513,10 +525,14 @@ def _collection_health(root: Path, at: datetime, collection: dict,
                        started_at: datetime, finished_at: datetime) -> dict:
     """Persist up to seven days of scheduler evidence instead of claiming uptime early."""
     history_path = root / "monitoring" / "run_history.json"
+    # A v2 run cannot prove that the current X/Google collectors completed.
+    # Keep the public baseline pure by dropping unversioned legacy rows rather
+    # than carrying their historical success flags into v3 reliability rates.
     history = [
         _sanitize_health_history_row(row)
         for row in _read_json(history_path, [])
         if isinstance(row, dict)
+        and row.get("contract_version") == MONITORING_CONTRACT_VERSION
     ]
     audit = collection.get("audit", {})
     source_ok = {
@@ -533,6 +549,7 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         code = _public_source_status(source, detail, audit.get(audit_key, {}).get("status"))
         source_failures[source] = {"class": _failure_class(detail), "detail": code}
     current = {
+        "contract_version": MONITORING_CONTRACT_VERSION,
         "scheduled_at": at.isoformat(),
         "started_at": started_at.isoformat(),
         "finished_at": finished_at.isoformat(),
