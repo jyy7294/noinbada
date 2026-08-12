@@ -1,6 +1,6 @@
 {
   "measurement_window_hours": 168,
-  "recorded_runs": 1,
+  "recorded_runs": 2,
   "successful_runs": 0,
   "success_rate": 0.0,
   "source_success_rate": {
@@ -16,7 +16,7 @@
       "quota_or_rate_limit": 0,
       "network": 0,
       "parser_change": 0,
-      "unknown": 1
+      "unknown": 2
     },
     "google_trends": {
       "browser_authentication": 0,
@@ -34,11 +34,11 @@
     "x": false,
     "google_trends": false
   },
-  "on_time_within_15m_rate": 0.0,
-  "latest_delay_seconds": 2853,
-  "latest_duration_seconds": 17.85,
+  "on_time_within_15m_rate": 0.5,
+  "latest_delay_seconds": 3,
+  "latest_duration_seconds": 8.87,
   "status": "collecting_baseline",
-  "remaining_runs_for_3d": 71,
-  "remaining_runs_for_7d": 167,
+  "remaining_runs_for_3d": 70,
+  "remaining_runs_for_7d": 166,
   "warning": "Windows 작업 스케줄러 실측 기록이며 노트북 종료·로그아웃 중에는 실행되지 않을 수 있음"
 }
