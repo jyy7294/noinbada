@@ -1,7 +1,7 @@
 {
   "schema_version": "github-live-data-v1",
-  "generated_at": "2026-08-12T06:58:35.936694+00:00",
-  "observed_at": "2026-08-12T06:00:00+00:00",
+  "generated_at": "2026-08-12T07:01:03.491378+00:00",
+  "observed_at": "2026-08-12T07:00:00+00:00",
   "mode": "live",
   "storage": "github-live-data-branch",
   "retention_days": 104,
@@ -30,14 +30,14 @@
         "detail": "Korea realtime trends only; no generated fallback after cutoff"
       }
     },
-    "observed_at": "2026-08-12T06:00:00+00:00"
+    "observed_at": "2026-08-12T07:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T06:00:00+00:00",
-    "last_hour": "2026-08-12T06:00:00+00:00",
-    "hours": 1,
-    "rows": 60,
-    "observed_rows": 60,
+    "last_hour": "2026-08-12T07:00:00+00:00",
+    "hours": 2,
+    "rows": 120,
+    "observed_rows": 120,
     "generated_rows": 0
   }
 }
