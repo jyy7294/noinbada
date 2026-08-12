@@ -94,6 +94,23 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "local pipeline exited with code $LASTEXITCODE" }
     Write-RunLog -Phase "pipeline" -Status "ok"
 
+    # Audit the exact publication and SQLite ledger that are about to be
+    # published. A provisional X/96h state remains publishable and explicit;
+    # contract, score, evidence, secret, or ledger failures stop publication.
+    $AuditScript = Join-Path $ProjectRoot "scripts\audit-runtime.py"
+    $AuditOutput = @(& $Python $AuditScript --runtime-root $RuntimeRoot --json 2>&1)
+    if ($LASTEXITCODE -ne 0) {
+        throw "runtime quality audit failed; publication was not pushed"
+    }
+    try {
+        $Audit = ($AuditOutput -join [Environment]::NewLine) | ConvertFrom-Json
+    } catch {
+        throw "runtime quality audit returned invalid JSON"
+    }
+    $AuditDetail = "status={0} failures={1} blockers={2} warnings={3}" -f `
+        $Audit.status,$Audit.failures.Count,$Audit.blockers.Count,$Audit.warnings.Count
+    Write-RunLog -Phase "audit" -Status $Audit.status -Detail $AuditDetail
+
     $DirtyBefore = @(& git -C $LiveDataRoot status --porcelain)
     if ($LASTEXITCODE -ne 0) { throw "live-data worktree is not readable" }
     if ($DirtyBefore.Count -gt 0) {

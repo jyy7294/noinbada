@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T18:52:58.1084456+00:00",
+    "updated_at":  "2026-08-12T18:55:39.2176713+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,18 +8,18 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "599de724d66bc250cc3c03f43608d190ebeb9b78",
+                       "base_remote_main_sha":  "ded0840665519a6c0d06a8b22c2e9203bcefca44",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "src/trzip/runtime_audit.py",
-                                             "tests/test_runtime_audit.py"
+                                             "scripts/collect-hourly.ps1",
+                                             "tests/test_local_runtime_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/runtime_audit.py":  "286f5c38339f1bc32d16d5db0f3c9dada9299f197160b2ad3084ea3cd75cd34f",
-                                                    "tests/test_runtime_audit.py":  "75320418463d0e534cdfcb28b01e0006903846b71a7719473f5b3ce156eb23ee"
+                                                    "scripts/collect-hourly.ps1":  "eed4397a86bde4e6e7a7658e66c271a757d9ca633f0f9d15a1d537d050aa4930",
+                                                    "tests/test_local_runtime_contract.py":  "d5c157dc0a4c16d440ff02ed1f49d0547a5218012c051d45eb7d57e8000decfb"
                                                 },
-                       "commit_message":  "fix: audit verification ledger integrity",
+                       "commit_message":  "feat: gate hourly publication with runtime audit",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,25 +47,24 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "정시 재실행이 보조 검증 원장을 중복·오염시키지 않는지 자동 판정",
+                    "objective":  "매시 게시 직전 실제 데이터 품질 실패를 차단하고 잠정 상태를 명시",
                     "completed":  [
-                                      "보조 플랫폼 순위 영향 0 검사",
-                                      "최신 시간 중복 검출",
-                                      "참조 무결성 및 시도 횟수 검사",
-                                      "YouTube KST 일일 검색 예산 검사",
-                                      "과거 중복은 경고로 분리"
+                                      "정각 파이프라인 후 최신 발행본 자동 감사",
+                                      "FAIL 원격 게시 차단",
+                                      "PROVISIONAL 게시 및 로그 기록",
+                                      "PowerShell 계약 회귀 테스트"
                                   ],
                     "next_actions":  [
-                                         "04시 정각 신규 실행 실제 검증",
-                                         "찬희 Chrome X 확장 수동 등록",
-                                         "통합 X Google E2E 재검증"
+                                         "04시 정각 실행에서 audit phase 확인",
+                                         "X 확장 수동 등록 후 combined 판정",
+                                         "96시간 누적 성숙 확인"
                                      ],
                     "blockers":  [
                                      "X 확장 미등록",
                                      "v3 누적 96시간 미만"
                                  ],
                     "known_limitations":  [
-                                              "14시 이전 개발 재실행에서 생긴 과거 보조검증 중복 30그룹은 감사 이력으로 보존"
+
                                           ]
                 },
     "runtime_contract":  {

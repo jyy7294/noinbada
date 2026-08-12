@@ -29,6 +29,9 @@ def test_windows_task_runs_full_local_publication_pipeline():
     assert 'push origin "HEAD:refs/heads/live-data"' in runner
     assert "ls-remote origin refs/heads/live-data" in runner
     assert "remote_verified=true" in runner
+    assert "scripts\\audit-runtime.py" in runner
+    assert "runtime quality audit failed; publication was not pushed" in runner
+    assert 'Write-RunLog -Phase "audit"' in runner
     assert "New-TimeSpan -Hours 1" in installer
     assert "-WorkingDirectory $ProjectRoot" in installer
     assert "+refs/heads/live-data:refs/remotes/origin/live-data" in installer
