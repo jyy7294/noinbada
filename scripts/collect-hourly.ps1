@@ -111,7 +111,11 @@ try {
         Write-RunLog -Phase "recovery" -Status "continuing" `
             -Detail "recovering allowed publication files from an interrupted prior run"
     }
-    & git -C $LiveDataRoot fetch origin live-data --quiet
+    # Refresh the remote-tracking ref explicitly. `git fetch origin live-data`
+    # updates FETCH_HEAD only on some worktree configurations, leaving
+    # origin/live-data stale even when the remote branch is current.
+    & git -C $LiveDataRoot fetch origin `
+        "+refs/heads/live-data:refs/remotes/origin/live-data" --quiet
     if ($LASTEXITCODE -ne 0) { throw "failed to fetch origin/live-data" }
     $local = (& git -C $LiveDataRoot rev-parse HEAD).Trim()
     $remote = (& git -C $LiveDataRoot rev-parse origin/live-data).Trim()
@@ -147,10 +151,19 @@ try {
         -c user.email="trzip-local-collector@users.noreply.github.com" `
         commit -m "data: laptop hourly collection $commitStamp"
     if ($LASTEXITCODE -ne 0) { throw "failed to commit live data" }
-    & git -C $LiveDataRoot push origin live-data
+    & git -C $LiveDataRoot push origin "HEAD:refs/heads/live-data"
     if ($LASTEXITCODE -ne 0) { throw "failed to push live-data; local commit retained for retry" }
+    $localPublished = (& git -C $LiveDataRoot rev-parse HEAD).Trim()
+    $remoteLine = @(& git -C $LiveDataRoot ls-remote origin refs/heads/live-data)
+    if ($LASTEXITCODE -ne 0 -or $remoteLine.Count -ne 1) {
+        throw "failed to verify remote live-data after push; local commit retained"
+    }
+    $remotePublished = ($remoteLine[0] -split '\s+')[0].Trim()
+    if ($remotePublished -ne $localPublished) {
+        throw "remote live-data verification mismatch: local=$localPublished remote=$remotePublished"
+    }
     $commit = (& git -C $LiveDataRoot rev-parse --short HEAD).Trim()
-    Write-RunLog -Phase "publish" -Status "ok" -Detail $commit
+    Write-RunLog -Phase "publish" -Status "ok" -Detail "$commit remote_verified=true"
 } catch {
     Write-RunLog -Phase "failed" -Status "error" -Detail $_.Exception.Message
     Write-Error $_
