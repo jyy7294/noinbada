@@ -11,6 +11,7 @@ from pathlib import Path
 from .hourly_store import HourlyObservation, collect_current, connect, coverage, floor_hour, upsert
 from .intelligence import build_intelligence
 from .company_adapters import pykrx_stock
+from .normalization_evaluation import evaluate_holdout
 
 
 def _read_json(path: Path, default):
@@ -38,6 +39,11 @@ def _validate_contract(intelligence: dict, metadata: dict) -> None:
     if any("generated" in item.get("provenance", []) for item in ranking):
         raise ValueError("Generated observations cannot enter the live ranking")
     for item in ranking:
+        for company in item.get("companies", []):
+            if not company.get("relation_display_type") or not company.get("team_review_status"):
+                raise ValueError(
+                    f"Every company requires relation and review labels: {item.get('display_name')}"
+                )
         if not item.get("company_eligible"):
             continue
         companies = item.get("companies", [])
@@ -130,6 +136,19 @@ def _prune_observations(root: Path, at: datetime, retention_days: int) -> int:
     return removed
 
 
+def _failure_class(detail: str) -> str:
+    value = str(detail or "").casefold()
+    if any(marker in value for marker in ("401", "403", "unauthorized", "forbidden", "token", "credential", "not configured")):
+        return "api_authentication"
+    if any(marker in value for marker in ("429", "quota", "rate limit", "too many requests")):
+        return "quota_or_rate_limit"
+    if any(marker in value for marker in ("timeout", "timed out", "dns", "connection", "network", "urlerror")):
+        return "network"
+    if any(marker in value for marker in ("parse", "parser", "jsondecode", "xml", "syntax")):
+        return "parser_change"
+    return "unknown"
+
+
 def _collection_health(root: Path, at: datetime, collection: dict,
                        started_at: datetime, finished_at: datetime) -> dict:
     """Persist up to seven days of scheduler evidence instead of claiming uptime early."""
@@ -141,6 +160,13 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         "google_trends": audit.get("google_geo_kr", {}).get("status") == "observed",
     }
     success = collection.get("observed", 0) > 0 and not collection.get("errors") and all(source_ok.values())
+    source_failures = {}
+    for source, ok in source_ok.items():
+        if ok:
+            continue
+        audit_key = "x_korea_realtime" if source == "x" else "google_geo_kr"
+        detail = collection.get("errors", {}).get(source) or audit.get(audit_key, {}).get("detail") or "unknown"
+        source_failures[source] = {"class": _failure_class(detail), "detail": detail}
     current = {
         "scheduled_at": at.isoformat(),
         "started_at": started_at.isoformat(),
@@ -151,6 +177,7 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         "source_success": source_ok,
         "observed_rows": collection.get("observed", 0),
         "errors": collection.get("errors", {}),
+        "source_failures": source_failures,
     }
     history = [row for row in history if row.get("scheduled_at") != at.isoformat()]
     history.append(current)
@@ -162,12 +189,28 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         source: round(sum(bool(row.get("source_success", {}).get(source)) for row in history) / total, 4)
         if total else None for source in ("x", "google_trends")
     }
+    failure_counts = {
+        source: {
+            failure_class: sum(
+                row.get("source_failures", {}).get(source, {}).get("class") == failure_class
+                for row in history
+            )
+            for failure_class in ("api_authentication", "quota_or_rate_limit", "network", "parser_change", "unknown")
+        }
+        for source in ("x", "google_trends")
+    }
     health = {
         "measurement_window_hours": 168,
         "recorded_runs": total,
         "successful_runs": successes,
         "success_rate": round(successes / total, 4) if total else None,
         "source_success_rate": source_rates,
+        "source_failure_counts": failure_counts,
+        "target_source_success_rate": 0.95,
+        "source_targets_met": {
+            source: bool(rate is not None and total >= 168 and rate >= 0.95)
+            for source, rate in source_rates.items()
+        },
         "on_time_within_15m_rate": round(sum(row.get("delay_seconds", 999999) <= 900 for row in history) / total, 4)
         if total else None,
         "latest_delay_seconds": current["delay_seconds"],
@@ -231,6 +274,8 @@ def run(root: Path, *, retention_days: int = 104) -> dict:
         daily_path = _merge_daily(root, current_rows, at)
         pruned_files = _prune_observations(root, at, retention_days)
         intelligence = build_intelligence(at, hours=168, path=sqlite_path)
+        normalization_evaluation = evaluate_holdout()
+        intelligence["normalization_holdout_evaluation"] = normalization_evaluation
         previous_intelligence = _read_json(root / "latest" / "intelligence.json", {})
         intelligence = _enrich_market_references(
             intelligence, previous_intelligence, at
@@ -271,6 +316,7 @@ def run(root: Path, *, retention_days: int = 104) -> dict:
     }
     _validate_contract(intelligence, metadata)
     _write_json(root / "latest" / "intelligence.json", intelligence)
+    _write_json(root / "latest" / "normalization_evaluation.json", normalization_evaluation)
     _write_json(root / "latest" / "coverage.json", stats)
     _write_json(root / "latest" / "metadata.json", metadata)
     return metadata
