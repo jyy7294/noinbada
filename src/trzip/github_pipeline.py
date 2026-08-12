@@ -25,6 +25,29 @@ def _write_json(path: Path, payload) -> None:
     temporary.replace(path)
 
 
+def _validate_contract(intelligence: dict, metadata: dict) -> None:
+    if intelligence.get("mode") != "live" or metadata.get("mode") != "live":
+        raise ValueError("GitHub production output must be marked live")
+    collection = metadata["collection"]
+    if collection.get("trends_mcp_used") or collection.get("generated"):
+        raise ValueError("Production collection must not use Trends MCP or generated rows")
+    ranking = intelligence.get("unified_ranking", [])
+    if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
+        raise ValueError("Unified ranking must have continuous ranks")
+    if any("generated" in item.get("provenance", []) for item in ranking):
+        raise ValueError("Generated observations cannot enter the live ranking")
+    for item in ranking:
+        if not item.get("company_eligible"):
+            continue
+        companies = item.get("companies", [])
+        categories = {company.get("relation_category") for company in companies}
+        if len(companies) < 3 or len(categories - {None}) < 3:
+            raise ValueError(
+                f"Company-eligible trend requires three companies and relation categories: "
+                f"{item.get('display_name')}"
+            )
+
+
 def _observation_files(root: Path, at: datetime, retention_days: int) -> list[Path]:
     start = (at - timedelta(days=retention_days - 1)).date().isoformat()
     end = at.date().isoformat()
@@ -106,6 +129,7 @@ def run(root: Path, *, retention_days: int = 104) -> dict:
         "collection": collection,
         "coverage": stats,
     }
+    _validate_contract(intelligence, metadata)
     _write_json(root / "latest" / "intelligence.json", intelligence)
     _write_json(root / "latest" / "coverage.json", stats)
     _write_json(root / "latest" / "metadata.json", metadata)
