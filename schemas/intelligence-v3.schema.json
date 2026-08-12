@@ -131,7 +131,7 @@
       "type": "object",
       "required": [
         "company", "stock_code", "relationship_reason", "company_summary",
-        "business_features", "relation_display_type", "verification_status",
+        "business_features", "relation_tier", "relation_display_type", "verification_status",
         "ontology_path", "ontology_complete", "evidence_sources"
       ],
       "properties": {
@@ -140,7 +140,8 @@
         "relationship_reason": {"type": "string", "minLength": 1},
         "company_summary": {"type": "string", "minLength": 1},
         "business_features": {"type": "array", "items": {"type": "string"}},
-        "relation_display_type": {"enum": ["직접 관계", "가치사슬"]},
+        "relation_tier": {"enum": ["core", "value_chain", "adjacent"]},
+        "relation_display_type": {"enum": ["직접 관계", "가치사슬", "산업 관찰"]},
         "verification_status": {"const": "ontology_evidence"},
         "ontology_complete": {"type": "boolean"},
         "ontology_path": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/ontologyEdge"}},

@@ -241,6 +241,49 @@ def test_reviewed_enrichment_preserves_seed_and_publishes_malbok_without_padding
     )
 
 
+def test_reviewed_iam_solo_aliases_publish_exactly_five_officially_evidenced_companies():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+    expected_tickers = {"030200", "034120", "035760", "053210", "402340"}
+
+    for observed_term in ("나는 SOLO", "나는솔로", "나는 솔로", "나솔"):
+        result = graph.resolve_term(observed_term)
+
+        assert result["status"] == "published"
+        assert result["company_count"] == 5
+        assert {
+            company["company"]["metadata"]["ticker"]
+            for company in result["companies"]
+        } == expected_tickers
+        assert all(
+            record["review_status"] == "approved" and record["url"].startswith("https://")
+            for company in result["companies"]
+            for record in company["evidence"]
+        )
+        assert all(
+            "/dst/irReference/" not in record["url"]
+            for company in result["companies"]
+            for record in company["evidence"]
+        )
+
+
+def test_iam_solo_business_edges_are_three_core_and_two_value_chain():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+    relation_edges = [
+        edge
+        for edge in graph.edges
+        if edge["from_node"] == "term:reviewed:iam-solo"
+    ]
+
+    assert len(relation_edges) == 5
+    assert sum(edge["metadata"]["relation_tier"] == "core" for edge in relation_edges) == 3
+    assert sum(
+        edge["metadata"]["relation_tier"] == "value_chain"
+        for edge in relation_edges
+    ) == 2
+    assert all(edge["relation_type"] != "listed_as" for edge in relation_edges)
+    assert all(edge["metadata"]["not_a_buy_signal"] is True for edge in relation_edges)
+
+
 def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
 

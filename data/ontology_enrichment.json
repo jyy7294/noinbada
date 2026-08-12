@@ -2,7 +2,7 @@
   "schema_version": "trzip-ontology-enrichment-v1",
   "metadata": {
     "description": "Reviewed additive lookup paths for current observed expressions. This overlay never changes trend scores or representative display terms.",
-    "reviewed_at": "2026-08-12",
+    "reviewed_at": "2026-08-13",
     "ranking_input": false,
     "padding_forbidden": true,
     "publication_gate": "five unique listed stocks with complete URL-evidenced paths"
@@ -93,6 +93,41 @@
       "metadata": {"market": "KOSPI", "ticker": "016360"}
     },
     {
+      "id": "term:reviewed:iam-solo",
+      "type": "term",
+      "label": "나는 SOLO",
+      "normalized_label": "나는 solo",
+      "metadata": {"lookup_scope": "observed_content_title", "ranking_input": false}
+    },
+    {
+      "id": "company:kr:kospi:053210",
+      "type": "company",
+      "label": "KT스카이라이프",
+      "normalized_label": "kt스카이라이프",
+      "metadata": {"market": "KOSPI", "ticker": "053210"}
+    },
+    {
+      "id": "stock:kr:kospi:053210",
+      "type": "stock",
+      "label": "053210 (KOSPI)",
+      "normalized_label": "053210 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "053210"}
+    },
+    {
+      "id": "company:kr:kospi:402340",
+      "type": "company",
+      "label": "SK스퀘어",
+      "normalized_label": "sk스퀘어",
+      "metadata": {"market": "KOSPI", "ticker": "402340"}
+    },
+    {
+      "id": "stock:kr:kospi:402340",
+      "type": "stock",
+      "label": "402340 (KOSPI)",
+      "normalized_label": "402340 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "402340"}
+    },
+    {
       "id": "evidence:reviewed:mcst-sambok",
       "type": "evidence",
       "label": "문화체육관광부 세시풍속 삼복·삼계탕",
@@ -160,6 +195,83 @@
       "type": "evidence",
       "label": "한국거래소 삼성증권 상장회사 코드 확인",
       "normalized_label": "한국거래소 삼성증권 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:sbsplus-iam-solo",
+      "type": "evidence",
+      "label": "SBS Plus 나는 SOLO 편성 확인",
+      "normalized_label": "sbs plus 나는 solo 편성 확인",
+      "metadata": {"publisher": "SBS Plus"}
+    },
+    {
+      "id": "evidence:reviewed:sbs-studioprism",
+      "type": "evidence",
+      "label": "SBS 스튜디오프리즘·SBS Plus 연결 확인",
+      "normalized_label": "sbs 스튜디오프리즘·sbs plus 연결 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-sbs-034120",
+      "type": "evidence",
+      "label": "한국거래소 SBS 상장회사 코드 확인",
+      "normalized_label": "한국거래소 sbs 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:ktsky-iam-solo",
+      "type": "evidence",
+      "label": "KT스카이라이프 ENA 나는 SOLO 방송 확인",
+      "normalized_label": "kt스카이라이프 ena 나는 solo 방송 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-ktsky-053210",
+      "type": "evidence",
+      "label": "한국거래소 KT스카이라이프 상장·KT 최대주주 확인",
+      "normalized_label": "한국거래소 kt스카이라이프 상장·kt 최대주주 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:tving-iam-solo",
+      "type": "evidence",
+      "label": "TVING 나는 SOLO 콘텐츠 확인",
+      "normalized_label": "tving 나는 solo 콘텐츠 확인",
+      "metadata": {"publisher": "TVING"}
+    },
+    {
+      "id": "evidence:reviewed:cjenm-tving-035760",
+      "type": "evidence",
+      "label": "CJ ENM 티빙 종속회사·상장코드 확인",
+      "normalized_label": "cj enm 티빙 종속회사·상장코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:wavve-iam-solo",
+      "type": "evidence",
+      "label": "Wavve 나는 SOLO 콘텐츠 수급 이력 확인",
+      "normalized_label": "wavve 나는 solo 콘텐츠 수급 이력 확인",
+      "metadata": {"publisher": "Wavve"}
+    },
+    {
+      "id": "evidence:reviewed:sksquare-wavve",
+      "type": "evidence",
+      "label": "SK스퀘어 콘텐츠웨이브 포트폴리오 확인",
+      "normalized_label": "sk스퀘어 콘텐츠웨이브 포트폴리오 확인",
+      "metadata": {"publisher": "SK스퀘어"}
+    },
+    {
+      "id": "evidence:reviewed:krx-sksquare-402340",
+      "type": "evidence",
+      "label": "한국거래소 SK스퀘어 상장회사 코드 확인",
+      "normalized_label": "한국거래소 sk스퀘어 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-kt-030200",
+      "type": "evidence",
+      "label": "한국거래소 KT 상장회사 코드 확인",
+      "normalized_label": "한국거래소 kt 상장회사 코드 확인",
       "metadata": {"publisher": "한국거래소"}
     }
   ],
@@ -273,6 +385,127 @@
       "published_at": "2026-03-31",
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:sbsplus-iam-solo",
+      "title": "SBS Plus 나는 SOLO 편성 페이지",
+      "publisher": "SBS Plus",
+      "url": "https://plus.sbs.co.kr/",
+      "evidence_type": "company_official_program_schedule",
+      "summary": "SBS Plus 공식 페이지가 나는 SOLO를 SBS PLUS X ENA 공동 편성 프로그램으로 표시한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "program_to_broadcast_channel"}
+    },
+    {
+      "id": "evidence:reviewed:sbs-studioprism",
+      "title": "SBS 2026년 1분기보고서 스튜디오프리즘·SBS Plus",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/05/15/001665/20260515003680/11013.htm",
+      "evidence_type": "official_filing_consolidated_broadcast_channel",
+      "summary": "SBS 공시는 종속회사 스튜디오프리즘이 SBS Plus를 운영한다고 명시한다.",
+      "published_at": "2026-05-15",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "broadcast_channel_to_listed_parent"}
+    },
+    {
+      "id": "evidence:reviewed:krx-sbs-034120",
+      "title": "SBS 유가증권상장법인 회사코드 034120",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/05/29/002084/20260529003326/00636.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "SBS의 유가증권상장법인 회사코드가 034120임을 확인한다.",
+      "published_at": "2026-05-29",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:ktsky-iam-solo",
+      "title": "KT스카이라이프 투자설명서 ENA·나는 SOLO",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm",
+      "evidence_type": "official_filing_program_broadcast",
+      "summary": "KT스카이라이프 공시는 연결 방송사업의 ENA가 나는 SOLO를 방영한다고 명시한다.",
+      "published_at": "2026-06-17",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "program_to_broadcasting_group"}
+    },
+    {
+      "id": "evidence:reviewed:krx-ktsky-053210",
+      "title": "KT스카이라이프 회사코드 053210 및 KT 최대주주 확인",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/06/02/000282/20260602000639/00636.htm",
+      "evidence_type": "official_listing_and_control_record",
+      "summary": "KT스카이라이프가 회사코드 053210인 유가증권상장법인이며 KT가 최대주주로 50.33%를 보유한다고 확인한다.",
+      "published_at": "2026-06-02",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock_and_parent"}
+    },
+    {
+      "id": "evidence:reviewed:tving-iam-solo",
+      "title": "TVING 나는 SOLO 몰아보기",
+      "publisher": "TVING",
+      "url": "https://www.tving.com/contents/P001628663",
+      "evidence_type": "company_official_ott_catalog",
+      "summary": "TVING 공식 콘텐츠 페이지가 나는 SOLO 몰아보기를 제공하고 SBS Plus 프로그램임을 표시한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "program_to_ott_distribution"}
+    },
+    {
+      "id": "evidence:reviewed:cjenm-tving-035760",
+      "title": "CJ ENM 사업보고서 티빙 종속회사·종목코드 035760",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/03/18/002094/20260318009785/11011.htm",
+      "evidence_type": "official_filing_controlled_ott_and_listing",
+      "summary": "CJ ENM 공시는 티빙을 주요 종속회사이자 디지털 콘텐츠 제작·유통 사업자로 설명하고 CJ ENM 종목코드 035760을 명시한다.",
+      "published_at": "2026-03-18",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "ott_to_listed_parent_and_stock"}
+    },
+    {
+      "id": "evidence:reviewed:wavve-iam-solo",
+      "title": "Wavve 나는 SOLO 콘텐츠 수급 사례",
+      "publisher": "Wavve",
+      "url": "https://wavve-comm.tistory.com/111",
+      "evidence_type": "company_official_content_procurement_history",
+      "summary": "Wavve 공식 커뮤니케이션 채널이 나는 SOLO를 직접 수급·공급한 이력을 담당자 인터뷰로 설명한다.",
+      "published_at": "2022-02-17",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "program_to_ott_historical_procurement"}
+    },
+    {
+      "id": "evidence:reviewed:sksquare-wavve",
+      "title": "SK스퀘어 콘텐츠웨이브 포트폴리오",
+      "publisher": "SK스퀘어",
+      "url": "https://www.sksquare.com/kor/company/team.do",
+      "evidence_type": "company_official_portfolio_page",
+      "summary": "SK스퀘어 공식 포트폴리오 페이지가 콘텐츠웨이브를 국내 OTT 기업으로 제시한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "ott_to_portfolio_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-sksquare-402340",
+      "title": "SK스퀘어 유가증권상장법인 회사코드 402340",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/06/08/000895/20260608001821/00637.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "SK스퀘어의 유가증권상장법인 회사코드가 402340임을 확인한다.",
+      "published_at": "2026-06-08",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-kt-030200",
+      "title": "KT 유가증권상장법인 회사코드 030200",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "KT의 유가증권상장법인 회사코드가 030200임을 확인한다.",
+      "published_at": "2026-05-13",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
     }
   ],
   "aliases": [
@@ -302,6 +535,33 @@
       "evidence_ids": ["evidence:reviewed:krx-005930"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "alias:reviewed:iam-solo-nospace",
+      "label": "나는솔로",
+      "target_node_id": "term:reviewed:iam-solo",
+      "match_type": "reviewed_literal_alias",
+      "evidence_ids": ["evidence:reviewed:sbsplus-iam-solo"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "alias:reviewed:iam-solo-korean-space",
+      "label": "나는 솔로",
+      "target_node_id": "term:reviewed:iam-solo",
+      "match_type": "reviewed_literal_alias",
+      "evidence_ids": ["evidence:reviewed:sbsplus-iam-solo"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "alias:reviewed:iam-solo-short",
+      "label": "나솔",
+      "target_node_id": "term:reviewed:iam-solo",
+      "match_type": "reviewed_common_abbreviation",
+      "evidence_ids": ["evidence:reviewed:sbsplus-iam-solo"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     }
   ],
   "edges": [
@@ -466,6 +726,127 @@
       "evidence_ids": ["evidence:reviewed:krx-016360"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "edge:reviewed:iam-solo-sbs",
+      "from_node": "term:reviewed:iam-solo",
+      "to_node": "company:kr:kospi:034120",
+      "relation_type": "broadcasts_via_consolidated_channel",
+      "evidence_ids": ["evidence:reviewed:sbsplus-iam-solo", "evidence:reviewed:sbs-studioprism"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "core",
+        "proof_scope": "SBS 종속회사 스튜디오프리즘 운영 SBS Plus의 나는 SOLO 공동 편성",
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:iam-solo-ktsky",
+      "from_node": "term:reviewed:iam-solo",
+      "to_node": "company:kr:kospi:053210",
+      "relation_type": "broadcasts_via_consolidated_channel",
+      "evidence_ids": ["evidence:reviewed:ktsky-iam-solo"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "core",
+        "proof_scope": "KT스카이라이프 연결 방송사업 ENA의 나는 SOLO 방영",
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:iam-solo-cjenm",
+      "from_node": "term:reviewed:iam-solo",
+      "to_node": "company:kr:kosdaq:035760",
+      "relation_type": "distributes_via_controlled_ott",
+      "evidence_ids": ["evidence:reviewed:tving-iam-solo", "evidence:reviewed:cjenm-tving-035760"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "core",
+        "proof_scope": "CJ ENM 주요 종속회사 TVING의 나는 SOLO 공식 유통",
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:iam-solo-sksquare",
+      "from_node": "term:reviewed:iam-solo",
+      "to_node": "company:kr:kospi:402340",
+      "relation_type": "portfolio_exposure_via_ott_content_history",
+      "evidence_ids": ["evidence:reviewed:wavve-iam-solo", "evidence:reviewed:sksquare-wavve"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "value_chain",
+        "proof_scope": "나는 SOLO 수급 이력이 있는 Wavve와 SK스퀘어 포트폴리오 관계",
+        "temporal_scope": "2022년 수급 이력과 2026년 검토한 포트폴리오 페이지",
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:iam-solo-kt",
+      "from_node": "term:reviewed:iam-solo",
+      "to_node": "company:kr:kospi:030200",
+      "relation_type": "parent_company_exposure_via_broadcaster",
+      "evidence_ids": ["evidence:reviewed:ktsky-iam-solo", "evidence:reviewed:krx-ktsky-053210"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {
+        "relation_tier": "value_chain",
+        "proof_scope": "나는 SOLO 방영 연결 방송그룹 KT스카이라이프의 최대주주 KT",
+        "confidence": "high",
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:listing-sbs-034120",
+      "from_node": "company:kr:kospi:034120",
+      "to_node": "stock:kr:kospi:034120",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-sbs-034120"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:listing-ktsky-053210",
+      "from_node": "company:kr:kospi:053210",
+      "to_node": "stock:kr:kospi:053210",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-ktsky-053210"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:listing-cjenm-035760",
+      "from_node": "company:kr:kosdaq:035760",
+      "to_node": "stock:kr:kosdaq:035760",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:cjenm-tving-035760"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:listing-sksquare-402340",
+      "from_node": "company:kr:kospi:402340",
+      "to_node": "stock:kr:kospi:402340",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-sksquare-402340"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:listing-kt-030200",
+      "from_node": "company:kr:kospi:030200",
+      "to_node": "stock:kr:kospi:030200",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-kt-030200"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     }
   ]
 }

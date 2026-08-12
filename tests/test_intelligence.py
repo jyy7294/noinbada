@@ -2,7 +2,7 @@ from datetime import UTC, datetime, timedelta
 
 from trzip.company_adapters import integration_status, opendart_company, pykrx_stock
 from trzip.hourly_store import HourlyObservation, upsert
-from trzip.intelligence import build_intelligence, canonical_topic
+from trzip.intelligence import _path_relation_tier, build_intelligence, canonical_topic
 
 
 def test_aliases_are_normalized_to_events():
@@ -11,6 +11,17 @@ def test_aliases_are_normalized_to_events():
     assert canonical_topic("#JIN_IN_BALTIMORE_D2") == "BTS 진 볼티모어 공연"
     assert canonical_topic("볼티모어") == "볼티모어"
     assert canonical_topic("cpi 발표") == "cpi"
+
+
+def test_listing_edge_alone_never_promotes_a_company_to_direct_relation():
+    assert _path_relation_tier([{"relation_type": "listed_as"}]) == "adjacent"
+    assert _path_relation_tier([
+        {
+            "relation_type": "parent_company_exposure_via_broadcaster",
+            "metadata": {"relation_tier": "value_chain"},
+        },
+        {"relation_type": "listed_as"},
+    ]) == "value_chain"
 
 
 def test_cpi_release_variant_is_one_event_without_double_counting_source(tmp_path):
@@ -587,6 +598,63 @@ def test_malbok_current_expression_reaches_six_reviewed_listed_companies(tmp_pat
         for company in item["companies"]
         for edge in company["ontology_path"]
     )
+
+
+def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path):
+    target = tmp_path / "iam-solo-enrichment.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert(
+        [HourlyObservation(at.isoformat(), "google_trends", "나솔", 1, 100, "observed")],
+        target,
+    )
+
+    item = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
+    companies = {company["stock_code"]: company for company in item["companies"]}
+
+    assert item["display_name"] == "나솔"
+    assert item["company_resolution"]["publish_status"] == "published"
+    assert set(companies) == {"030200", "034120", "035760", "053210", "402340"}
+    assert {
+        stock_code for stock_code, company in companies.items()
+        if company["relation_tier"] == "core"
+    } == {"034120", "035760", "053210"}
+    assert {
+        stock_code for stock_code, company in companies.items()
+        if company["relation_tier"] == "value_chain"
+    } == {"030200", "402340"}
+    assert all(
+        company["relation_display_type"] == "직접 관계"
+        for company in companies.values()
+        if company["relation_tier"] == "core"
+    )
+    assert all(
+        company["relation_display_type"] == "가치사슬"
+        for company in companies.values()
+        if company["relation_tier"] == "value_chain"
+    )
+    assert item["company_resolution"]["direct_count"] == 3
+    assert item["company_resolution"]["tier_counts"] == {
+        "core": 3,
+        "value_chain": 2,
+        "adjacent": 0,
+        "excluded": 0,
+    }
+    assert all(
+        "/dst/irReference/" not in source["url"]
+        for company in companies.values()
+        for source in company["evidence_sources"]
+    )
+    assert all(
+        source["review_status"] == "approved"
+        for company in companies.values()
+        for source in company["evidence_sources"]
+    )
+    assert all(
+        edge["review_status"] in {"observed", "approved"}
+        for company in companies.values()
+        for edge in company["ontology_path"]
+    )
+    assert all(company["relation_type"] != "listed_as" for company in companies.values())
 
 
 def test_stock_code_has_one_real_candidate_but_gold_gate_never_adds_filler(tmp_path):

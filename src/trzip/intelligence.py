@@ -313,6 +313,79 @@ def _hourly_and_daily_rankings(rows: list[dict]) -> tuple[list[dict], list[dict]
     return hourly, daily
 
 
+def _path_relation_tier(path_edges: list[dict]) -> str:
+    """Classify business relevance without treating ``listed_as`` as proof."""
+
+    business_edges = [
+        edge for edge in path_edges if str(edge.get("relation_type")) != "listed_as"
+    ]
+    explicit_tiers = {
+        str((edge.get("metadata") or {}).get("relation_tier") or "").strip()
+        for edge in business_edges
+    }
+    explicit_tiers.discard("")
+    for tier in ("excluded", "adjacent", "value_chain", "core"):
+        if tier in explicit_tiers:
+            return tier
+
+    relation_types = {
+        str(edge.get("relation_type") or "").strip() for edge in business_edges
+    }
+    if relation_types & {
+        "historical_business_link",
+        "documented_business_relationship",
+        "documented_product_market_participant",
+        "denotes_listed_company",
+    }:
+        return "core"
+    if relation_types & {"operates_in_industry", "industry_structure_supply"}:
+        return "adjacent"
+    if business_edges:
+        return "value_chain"
+    return "adjacent"
+
+
+RELATION_TIER_PRESENTATION = {
+    "core": {
+        "strength": "direct",
+        "company_role": "직접 기업",
+        "label": "핵심 사업자",
+        "horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "display_type": "직접 관계",
+    },
+    "value_chain": {
+        "strength": "indirect",
+        "company_role": "플랫폼·채널",
+        "label": "가치사슬 기업",
+        "horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "display_type": "가치사슬",
+    },
+    "adjacent": {
+        "strength": "sector_watch",
+        "company_role": "인프라·서비스",
+        "label": "산업 관찰기업",
+        "horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "display_type": "산업 관찰",
+    },
+}
+
+
+def _candidate_selection_priority(
+    candidate: dict,
+    representative: str,
+) -> tuple[bool, int, int]:
+    path = list(candidate.get("ontology_path") or [])
+    return (
+        str(candidate.get("matched_ontology_term") or "").casefold()
+        == representative.casefold(),
+        sum(step.get("review_status") == "approved" for step in path),
+        -len(path),
+    )
+
+
 def _ontology_company_candidates(
     graph: OntologyGraph,
     *,
@@ -462,19 +535,14 @@ def _ontology_company_candidates(
                 }
                 for edge in ontology_path
             )
-            relation_types = [edge_by_id[edge_id]["relation_type"] for edge_id in path.edge_ids]
-            direct = any(
-                relation
-                in {
-                    "historical_business_link",
-                    "documented_business_relationship",
-                    "documented_product_market_participant",
-                    "denotes_listed_company",
-                }
-                for relation in relation_types
-            )
-            company_role = "직접 기업" if direct else "인프라·서비스"
-            relation_tier = "core" if direct else "value_chain"
+            path_edges = [edge_by_id[edge_id] for edge_id in path.edge_ids]
+            business_edges = [
+                edge for edge in path_edges if str(edge.get("relation_type")) != "listed_as"
+            ]
+            relation_tier = _path_relation_tier(path_edges)
+            if relation_tier == "excluded":
+                continue
+            tier_presentation = RELATION_TIER_PRESENTATION[relation_tier]
             first_evidence_url = next(
                 (record["url"] for record in evidence_records if record.get("url")),
                 None,
@@ -505,8 +573,12 @@ def _ontology_company_candidates(
                 "company": company_node["label"],
                 "stock_code": stock_code,
                 "market": (stock_node.get("metadata") or {}).get("market"),
-                "relation_type": relation_types[0] if relation_types else "ontology_path",
-                "strength": "direct" if direct else "indirect",
+                "relation_type": (
+                    str(business_edges[0]["relation_type"])
+                    if business_edges
+                    else "ontology_path"
+                ),
+                "strength": tier_presentation["strength"],
                 "reason": relation_reason,
                 "relationship_reason": relation_reason,
                 "company_summary": (
@@ -517,22 +589,18 @@ def _ontology_company_candidates(
                 "evidence_kind": "reviewed_ontology_path",
                 "evidence_url": first_evidence_url,
                 "evidence_sources": evidence_sources,
-                "company_role": company_role,
+                "company_role": tier_presentation["company_role"],
                 "relation_tier": relation_tier,
-                "relation_tier_label": "핵심 사업자" if direct else "가치사슬 기업",
+                "relation_tier_label": tier_presentation["label"],
                 # The source observation is current, but an ontology document may
                 # be historical.  Do not turn evidence of a relationship into an
                 # unsupported claim that the relationship is current or that the
                 # stock has high exposure.
-                "relation_horizon": "근거 확인 직접 관계" if direct else "근거 확인 가치사슬 관계",
-                "exposure_status": (
-                    "evidence_backed_direct_relevance"
-                    if direct
-                    else "evidence_backed_value_chain_relevance"
-                ),
+                "relation_horizon": tier_presentation["horizon"],
+                "exposure_status": tier_presentation["exposure_status"],
                 "verification_status": "ontology_evidence",
                 "opportunity_status": "evidence_backed_candidate",
-                "relation_display_type": "직접 관계" if direct else "가치사슬",
+                "relation_display_type": tier_presentation["display_type"],
                 "team_review_status": "ontology_reviewed",
                 "team_review_label": "온톨로지 근거 검수됨",
                 "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
@@ -547,12 +615,8 @@ def _ontology_company_candidates(
             previous = by_stock.get(stock_code)
             if complete and (
                 previous is None
-                or (term.casefold() == representative.casefold(), -len(path.edge_ids))
-                > (
-                    str(previous.get("matched_ontology_term", "")).casefold()
-                    == representative.casefold(),
-                    -len(previous.get("ontology_path", [])),
-                )
+                or _candidate_selection_priority(candidate, representative)
+                > _candidate_selection_priority(previous, representative)
             ):
                 by_stock[stock_code] = candidate
 

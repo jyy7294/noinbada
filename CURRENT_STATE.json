@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T15:31:09.0660227+00:00",
+    "updated_at":  "2026-08-12T15:45:25.2178279+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,50 +8,30 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "9652789ab564481522515732caee773f18f61ee2",
+                       "base_remote_main_sha":  "0ff33f4cf91d3f6e54dea22e8a6fc89ed49bc3d5",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
-                                             ".editorconfig",
-                                             ".gitattributes",
-                                             "AGENTS.md",
                                              "CURRENT_STATE.json",
-                                             "docs/CODEX_CONTINUITY.md",
-                                             "README.md",
-                                             "schemas/current-state-v1.schema.json",
-                                             "scripts/checkpoint-main.ps1",
-                                             "scripts/promote-runtime.ps1",
-                                             "src/trzip/hourly_store.py",
-                                             "src/trzip/publication_pipeline.py",
-                                             "tests/test_current_state.py",
-                                             "tests/test_hourly_store.py",
-                                             "tests/test_local_runtime_contract.py",
-                                             "tests/test_provider_verification.py",
-                                             "tests/test_publication_pipeline.py"
+                                             "data/ontology_enrichment.json",
+                                             "schemas/intelligence-v3.schema.json",
+                                             "src/trzip/intelligence.py",
+                                             "tests/test_intelligence.py",
+                                             "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    ".editorconfig":  "c4c721f21eb258d3528190893233722f37bfc8f59bf181838bfa2f7f2de01f86",
-                                                    ".gitattributes":  "fa055c504821ea878d1e6c191d47d37f62d8a6a536561f2c3b1ece83e5d3c765",
-                                                    "AGENTS.md":  "55de36af477d003d5e59dc5933f40c244d430169bab545506659b5204551e636",
-                                                    "docs/CODEX_CONTINUITY.md":  "cd6101d6cfcc4d5ead04d35e622857406d8d2257b477d3fdf7b367eb136958c6",
-                                                    "README.md":  "542ec0b3cdee7ac49a142565d6b2f295eb2f89b1a612d54d9724f2b3f2cd5977",
-                                                    "schemas/current-state-v1.schema.json":  "93fbb5a563a5293198a2e1c84846104d65358933153e956af00ee1a2a5e60c72",
-                                                    "scripts/checkpoint-main.ps1":  "12f6b139dd196a165fed8d615df9a371f18f7e9f96adb0152a0a7614d4e757a9",
-                                                    "scripts/promote-runtime.ps1":  "f02fb28eb8a4bce49e42d58846e226165eb90fda42eb5d8e0a37f130d941a7ce",
-                                                    "src/trzip/hourly_store.py":  "acfd6957c56c8758c8be93d1f6d4a753c07a94dbf0c6132a71607cc031c41bfa",
-                                                    "src/trzip/publication_pipeline.py":  "100ff2a677f6476e6f209991369a03d1221d7397949c91e18b917ed72c84f643",
-                                                    "tests/test_current_state.py":  "aaff3b801fe466a4e7f89e91dbf4a29ae1d976033aef970590ad96e51a3a80a2",
-                                                    "tests/test_hourly_store.py":  "ad7354103e230d5e4039f744d72f5d4e7ef317ce81c40f8b6f5c22038a12e94f",
-                                                    "tests/test_local_runtime_contract.py":  "abaeb31eb7db3eca0c5f525f58158ab214d9d48da0f3e27ebb50611c656e389d",
-                                                    "tests/test_provider_verification.py":  "431a6eb1712984a30ecf52f4868da115cfe3041cef0c581a9a8b88947e3cb014",
-                                                    "tests/test_publication_pipeline.py":  "2a261b56fc74fba2570204f16b56c8a7bac9ca43187ca6a8d5488c391a64537b"
+                                                    "data/ontology_enrichment.json":  "7f00e22cd6ababfb5f6d5a4b58c4ee8bb36939de27ab04b70f834ca60a263f78",
+                                                    "schemas/intelligence-v3.schema.json":  "164c168f5a85e4cf0f83d8ccf03e614461a65d7235ba245d44f70f6d512b9a8f",
+                                                    "src/trzip/intelligence.py":  "724ed95b212fd7cf767fe0b3b021bbd2abd65486ad27875d0cd2847c5a056bdd",
+                                                    "tests/test_intelligence.py":  "4dc8797b5cd0a56fc5fedf38f6349d760c6ba71fccdce4c25f5a174a75b33e8b",
+                                                    "tests/test_ontology.py":  "15b76e54c314b54ab061c51961605adda14dfeea52015d32935337b740a107f1"
                                                 },
-                       "commit_message":  "chore: make verified main checkpoints recoverable",
+                       "commit_message":  "feat: add evidence-backed content company ontology",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  134
+                                      "count":  138
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -73,21 +53,21 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "검증된 백엔드 작업을 원격 main과 노트북 실행본에 안전하게 연속 게시",
+                    "objective":  "관측 트렌드를 공식 근거 온톨로지로 상장기업까지 연결",
                     "completed":  [
-                                      "Google 전체수집 선언 총건수 증거 보존",
-                                      "v3 수집기 기준 모니터링 초기화",
-                                      "기계 판독 인수인계와 검증 체크포인트 구현"
+                                      "나솔 별칭을 공식 제목 노드로 통합",
+                                      "공식 자료 기반 3개 직접 기업과 2개 가치사슬 기업 연결",
+                                      "상장 edge를 사업 직접관계 판정에서 제외"
                                   ],
                     "next_actions":  [
-                                         "증거 온톨로지 기업 경로 확장",
-                                         "로그인 Chrome X 확장 수동 설치 후 통합 실측"
+                                         "현재 상위 트렌드의 증거 온톨로지 범위 확대",
+                                         "로그인 Chrome X 확장 1회 설치 후 X와 Google 통합 실측"
                                      ],
                     "blockers":  [
                                      "Chrome 내부 확장 관리 화면은 사용자 1회 설치가 필요"
                                  ],
                     "known_limitations":  [
-                                              "X가 없으면 Google 단일출처 잠정 순위로만 발행"
+                                              "증거가 5개 미만인 트렌드는 기업 Gold 공개를 보류"
                                           ]
                 },
     "runtime_contract":  {
