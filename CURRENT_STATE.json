@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T19:03:00.9587020+00:00",
+    "updated_at":  "2026-08-12T19:05:51.2030288+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,18 +8,22 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "c1921e132116936794d819f7d372b53591ffd12d",
+                       "base_remote_main_sha":  "e04bd81b857bd8f6b0d9ab706b5660c6c1e77a4c",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "src/trzip/runtime_audit.py",
-                                             "tests/test_runtime_audit.py"
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
+                                             "schemas/intelligence-v3.schema.json",
+                                             "src/trzip/intelligence.py",
+                                             "tests/test_intelligence.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/runtime_audit.py":  "d7b0bb998c17c5bc57174de33a3b8f9c8d6d029b3724ddb9b1e128b0e9aa1399",
-                                                    "tests/test_runtime_audit.py":  "830225d84d495191176d65a1caab9476b2e35202fe0fa541d22e0602b4dde054"
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "ab24f521967fb6eaa700a18a44a2d47df6fa7e3ab58d9e5fed9c838e887532c0",
+                                                    "schemas/intelligence-v3.schema.json":  "1799c079610c19ccee8b5fe98769ff7e91775b7ac53ced75c814718bff641d16",
+                                                    "src/trzip/intelligence.py":  "5bac2140695f2ff1163e2fb12f361099293a4010d98d5ec878f791c6f6a26322",
+                                                    "tests/test_intelligence.py":  "52ac23cfcafc83add580c872b555521bbc85695658c9822f03fce0cbdd9bb143"
                                                 },
-                       "commit_message":  "fix: verify source completeness before publication",
+                       "commit_message":  "fix: label verified stock-code trends clearly",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,18 +51,17 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Google 전체 수집·X 30개·SQLite 누적·일별 집계가 공개 계약과 일치하는지 자동 검증",
+                    "objective":  "대표어를 임의 해석하지 않으면서 검수된 종목코드만 이해 가능한 회사명으로 표시",
                     "completed":  [
-                                      "Google 선언 총건수와 페이지 완료 확인",
-                                      "X 관측 시 정확히 30개 확인",
-                                      "현재 출처 행수와 SQLite 대조",
-                                      "공개 누적 범위와 v3 원장 대조",
-                                      "일별 집계 키와 수치 무결성 검사"
+                                      "원천 대표어 별도 보존",
+                                      "검수된 6자리 종목코드만 회사명 표시",
+                                      "표시 정책 기계 계약 추가",
+                                      "점수·순위·기업 근거 비영향 회귀 검증"
                                   ],
                     "next_actions":  [
-                                         "X 확장 수동 등록 후 30개 실측",
-                                         "통합 순위 생성 검증",
-                                         "96시간과 3~7일 누적 안정성 확인"
+                                         "실제 정각 발행에서 삼성전자 표시 확인",
+                                         "X 확장 등록 후 양출처 대표어 검증",
+                                         "96시간 후 대표어 안정성 평가"
                                      ],
                     "blockers":  [
                                      "X 확장 미등록",

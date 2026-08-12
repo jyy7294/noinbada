@@ -832,7 +832,9 @@ def test_stock_code_has_reviewed_company_and_four_labelled_industry_peers(tmp_pa
     result = build_intelligence(at, hours=1, path=target)
     item = result["unified_ranking"][0]
 
-    assert item["display_name"] == "005930"
+    assert item["display_name"] == "삼성전자"
+    assert item["observed_representative_term"] == "005930"
+    assert item["display_name_policy"] == "reviewed_stock_code_to_company_name"
     assert {keyword["text"] for keyword in item["keywords"]} == {
         "삼성전자",
         "삼성전자주식회사",

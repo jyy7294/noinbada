@@ -1138,10 +1138,29 @@ def build_intelligence(
                 else "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류"
             ),
         }
+        display_name = representative_term
+        display_name_policy = "observed_representative_term"
+        canonical_name = str(event_resolution["canonical"] or "").strip()
+        compact_representative = "".join(representative_term.split())
+        if (
+            len(compact_representative) == 6
+            and compact_representative.isdigit()
+            and canonical_name
+            and canonical_name != representative_term
+            and event_resolution["ground_truth_match"]
+        ):
+            # A six-digit stock code is still preserved as the observed term,
+            # while a reviewed code-to-company identity is safer for the card
+            # title than presenting an unexplained number. This never changes
+            # event grouping, score, rank, or company relationship evidence.
+            display_name = canonical_name
+            display_name_policy = "reviewed_stock_code_to_company_name"
         candidates.append({
             "event_key": event_key,
             "topic": representative_term,
-            "display_name": representative_term,
+            "display_name": display_name,
+            "observed_representative_term": representative_term,
+            "display_name_policy": display_name_policy,
             "resolved_entity_name": event_resolution["canonical"],
             "representative_evidence": representative_evidence,
             "raw_terms": sorted({item["topic"] for item in observations}),

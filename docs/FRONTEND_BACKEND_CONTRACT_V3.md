@@ -41,6 +41,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 목적 | 필드 |
 |---|---|
 | 실제 제목 | `display_name` |
+| 관측 대표어·표시 정책 | `observed_representative_term`, `display_name_policy` (기본은 관측어 그대로, 검수된 6자리 종목코드만 회사명 표시 허용) |
 | 정규화 그룹 키 | `event_key`, `resolved_entity_name` |
 | 원천 표현 | `raw_terms` |
 | 넓은 분류 | `broad_category` |

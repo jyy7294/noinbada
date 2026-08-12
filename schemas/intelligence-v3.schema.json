@@ -306,7 +306,8 @@
     "trend": {
       "type": "object",
       "required": [
-        "rank", "event_key", "display_name", "raw_terms", "broad_category",
+        "rank", "event_key", "display_name", "observed_representative_term",
+        "display_name_policy", "raw_terms", "broad_category",
         "lane", "score", "score_components", "latest_source_ranks",
         "data_confidence", "keywords", "companies", "company_candidates",
         "company_resolution", "verification_layer", "news_context",
@@ -317,6 +318,10 @@
         "rank": {"type": "integer", "minimum": 1},
         "event_key": {"type": "string", "minLength": 1},
         "display_name": {"type": "string", "minLength": 1},
+        "observed_representative_term": {"type": "string", "minLength": 1},
+        "display_name_policy": {
+          "enum": ["observed_representative_term", "reviewed_stock_code_to_company_name"]
+        },
         "raw_terms": {"type": "array", "minItems": 1, "items": {"type": "string"}},
         "broad_category": {"enum": ["food", "content", "lifestyle", "sports", "culture", "consumer", "technology", "market", "issue", "other"]},
         "lane": {"enum": ["main", "issue", "review"]},
