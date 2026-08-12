@@ -94,16 +94,16 @@
   {
     "contract_version": "trzip-v3-hourly",
     "scheduled_at": "2026-08-12T19:00:00+00:00",
-    "started_at": "2026-08-12T19:06:15.234502+00:00",
-    "finished_at": "2026-08-12T19:06:22.804548+00:00",
-    "delay_seconds": 375,
-    "duration_seconds": 7.57,
+    "started_at": "2026-08-12T19:00:02.693339+00:00",
+    "finished_at": "2026-08-12T19:00:12.013947+00:00",
+    "delay_seconds": 3,
+    "duration_seconds": 9.32,
     "success": false,
     "source_success": {
       "x": false,
       "google_trends": true
     },
-    "observed_rows": 202,
+    "observed_rows": 201,
     "errors": {
       "x": "extension_not_ready"
     },
