@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-ac0341b5ca594325a733107c3f5aa21a",
-  "generated_at": "2026-08-12T16:09:47.980288+00:00",
+  "publication_id": "pub-74163bcfcc694dd69238a5461e6d54e5",
+  "generated_at": "2026-08-12T16:39:06.323196+00:00",
   "observed_at": "2026-08-12T16:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -11,7 +11,7 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-12.json",
   "collection": {
-    "observed": 192,
+    "observed": 195,
     "errors": {
       "x": "extension_not_ready"
     },
@@ -27,9 +27,9 @@
       },
       "google_geo_kr": {
         "status": "observed",
-        "row_count": 192,
+        "row_count": 195,
         "detail": "verified_current_hour_snapshot",
-        "declared_total": 192,
+        "declared_total": 195,
         "page_count": 8,
         "completion_verified": true
       }
@@ -40,17 +40,17 @@
     "first_hour": "2026-08-12T13:00:00+00:00",
     "last_hour": "2026-08-12T16:00:00+00:00",
     "hours": 4,
-    "rows": 765,
-    "observed_rows": 765,
+    "rows": 768,
+    "observed_rows": 768,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 0,
-    "newly_observed": 0,
-    "reused_company_rows": 13,
+    "requested_stock_codes": 4,
+    "newly_observed": 4,
+    "reused_company_rows": 14,
     "unavailable_company_rows": 0
   },
   "collection_health": {
@@ -89,9 +89,9 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.5,
-    "latest_delay_seconds": 581,
-    "latest_duration_seconds": 6.52,
+    "on_time_within_15m_rate": 0.0,
+    "latest_delay_seconds": 2333,
+    "latest_duration_seconds": 13.77,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 70,
     "remaining_runs_for_7d": 166,
