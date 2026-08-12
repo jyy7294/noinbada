@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T18:24:27.9192606+00:00",
+    "updated_at":  "2026-08-12T18:29:49.1767935+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,28 +8,18 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "6bba62598d21701ccdc0ceb887f5ccac2fb02c74",
+                       "base_remote_main_sha":  "475e423a92a73c506a5667d87dc5c7ec44312393",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
+                                             "config/company_review_overrides.json",
                                              "CURRENT_STATE.json",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "schemas/metadata-v3.schema.json",
-                                             "src/trzip/company_adapters.py",
-                                             "src/trzip/publication_pipeline.py",
-                                             "tests/conftest.py",
-                                             "tests/test_company_adapters.py"
+                                             "src/trzip/event_resolution.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "b91a9898c7a40a3227433a1f4871ed7f3d2ddb76c10e9114d322ccfe976519c9",
-                                                    "schemas/intelligence-v3.schema.json":  "87dc1f193d633a05da3cadc2e17db8a14872e56ed909abcad00ea470b3eb65de",
-                                                    "schemas/metadata-v3.schema.json":  "61e857ae02f0da77caf659f623ae4d9016ca5a654a3b9f22ba3caa5bede6c051",
-                                                    "src/trzip/company_adapters.py":  "888b808402d7be83add3cfc9c42ec2569c19d57c8f22959fac6bbc662755d9c6",
-                                                    "src/trzip/publication_pipeline.py":  "a786d9a40a86d10bccc39589b65d87a152269a778433aa85989087cd59be4b95",
-                                                    "tests/conftest.py":  "9fd4f3972a9e83fffd642e0e96d082cc2c71ce545c0c8b64e96907db426711e2",
-                                                    "tests/test_company_adapters.py":  "20ff08c768a04abf3ebf99a03658857d707db200ab2cd3857ac360ba101c3bcc"
+                                                    "config/company_review_overrides.json":  "deleted",
+                                                    "src/trzip/event_resolution.py":  "1f48d82e3dd8363abbb64d4f204081cb33c927a01b75ef482058b5b83e41c69a"
                                                 },
-                       "commit_message":  "feat: publish cached OpenDART company identity",
+                       "commit_message":  "refactor: remove superseded company review helpers",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -57,19 +47,18 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Attach official OpenDART issuer identity to evidence-backed trend-company results without changing ranking or relationship evidence.",
+                    "objective":  "Keep the backend production path singular by removing unused legacy company-review code and its empty configuration.",
                     "completed":  [
-                                      "Added stock-code-first OpenDART lookup and credential-free frontend identity",
-                                      "Added SQLite cache with bounded retry and corrupt-row recovery",
-                                      "Extended v3 schemas and backend contract",
-                                      "Verified actual OpenDART responses and 169 tests"
+                                      "Removed unreachable company review loader and evidence classifier",
+                                      "Removed the empty legacy override file",
+                                      "Verified 169 tests and compile/diff checks"
                                   ],
                     "next_actions":  [
-                                         "Run the promoted laptop runtime once and verify live-data schemas and identity counts",
-                                         "Continue X current-session extension approval and combined-source acceptance"
+                                         "Continue backend contract and scheduler audit",
+                                         "Complete X current-session extension manual approval then run combined-source acceptance"
                                      ],
                     "blockers":  [
-                                     "X current-session extension requires one manual Chrome approval"
+                                     "Chrome security policy requires manual unpacked-extension approval"
                                  ],
                     "known_limitations":  [
                                               "Combined ranking remains provisional until X observations arrive"
