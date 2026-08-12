@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-c4dc898e68d14a7faa91d8d2f6579ade",
-  "generated_at": "2026-08-12T17:00:11.170441+00:00",
+  "publication_id": "pub-e4344b9819944ab38d853597bcadd569",
+  "generated_at": "2026-08-12T17:13:20.665379+00:00",
   "observed_at": "2026-08-12T17:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -11,7 +11,7 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-12.json",
   "collection": {
-    "observed": 197,
+    "observed": 198,
     "errors": {
       "x": "extension_not_ready"
     },
@@ -27,9 +27,9 @@
       },
       "google_geo_kr": {
         "status": "observed",
-        "row_count": 197,
+        "row_count": 198,
         "detail": "verified_current_hour_snapshot",
-        "declared_total": 197,
+        "declared_total": 198,
         "page_count": 8,
         "completion_verified": true
       }
@@ -40,16 +40,16 @@
     "first_hour": "2026-08-12T13:00:00+00:00",
     "last_hour": "2026-08-12T17:00:00+00:00",
     "hours": 5,
-    "rows": 967,
-    "observed_rows": 967,
+    "rows": 968,
+    "observed_rows": 968,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 0,
-    "newly_observed": 0,
+    "requested_stock_codes": 4,
+    "newly_observed": 4,
     "reused_company_rows": 18,
     "unavailable_company_rows": 0
   },
@@ -90,8 +90,8 @@
       "google_trends": false
     },
     "on_time_within_15m_rate": 0.3333,
-    "latest_delay_seconds": 3,
-    "latest_duration_seconds": 8.59,
+    "latest_delay_seconds": 787,
+    "latest_duration_seconds": 13.77,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 69,
     "remaining_runs_for_7d": 165,
