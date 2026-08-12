@@ -116,6 +116,40 @@ def _audit_bundle(
     if any(document.get("mode") != "live" for document in documents.values()):
         report.fail("bundle_not_live")
 
+    collection = metadata.get("collection") or {}
+    collection_audit = collection.get("audit") or {}
+    google = collection_audit.get("google_geo_kr") or {}
+    google_count = google.get("row_count")
+    if (
+        google.get("status") != "observed"
+        or google.get("completion_verified") is not True
+        or not isinstance(google_count, int)
+        or google_count < 100
+        or google_count != google.get("declared_total")
+        or not isinstance(google.get("page_count"), int)
+        or google.get("page_count") < 1
+    ):
+        report.fail("google_full_collection_unverified")
+    x_audit = collection_audit.get("x_korea_realtime") or {}
+    if x_audit.get("status") == "observed" and x_audit.get("row_count") != 30:
+        report.fail("x_current_collection_not_30")
+    observed_count = sum(
+        int(row.get("row_count") or 0)
+        for row in collection_audit.values()
+        if isinstance(row, dict) and row.get("status") == "observed"
+    )
+    if collection.get("observed") != observed_count:
+        report.fail("collection_observed_count_mismatch")
+
+    status_sources = status.get("source_status") or {}
+    intelligence_sources = (intelligence.get("collection_status") or {}).get("source_status") or {}
+    if status_sources != intelligence_sources:
+        report.fail("bundle_source_status_mismatch")
+    status_partial = status.get("partial")
+    intelligence_partial = (intelligence.get("collection_status") or {}).get("partial")
+    if status_partial != intelligence_partial:
+        report.fail("bundle_partial_status_mismatch")
+
     public_text = json.dumps(documents, ensure_ascii=False)
     if any(pattern.search(public_text) for pattern in SECRET_PATTERNS):
         report.fail("public_bundle_contains_secret_or_local_path")
@@ -263,7 +297,12 @@ def _table_exists(connection: sqlite3.Connection, name: str) -> bool:
     return row is not None
 
 
-def _audit_database(db_path: Path, report: AuditReport) -> None:
+def _audit_database(
+    db_path: Path,
+    report: AuditReport,
+    intelligence: dict[str, Any],
+    metadata: dict[str, Any],
+) -> None:
     if not db_path.exists():
         report.fail("sqlite_database_missing")
         return
@@ -317,11 +356,64 @@ def _audit_database(db_path: Path, report: AuditReport) -> None:
             report.block("x_v3_history_missing")
         if report.metrics["clean_history_hours"] < 96:
             report.block("clean_history_under_96_hours")
+        v3_row_count = sum(int(row[2]) for row in rows)
+        coverage = metadata.get("coverage") or {}
+        expected_first = min((row[0] for row in rows), default=None)
+        expected_last = max((row[0] for row in rows), default=None)
+        if (
+            coverage.get("rows") != v3_row_count
+            or coverage.get("observed_rows") != v3_row_count
+            or coverage.get("hours") != report.metrics["clean_history_hours"]
+            or coverage.get("first_hour") != expected_first
+            or coverage.get("last_hour") != expected_last
+        ):
+            report.fail("published_coverage_does_not_match_sqlite")
+        current_observed_at = metadata.get("observed_at")
+        latest_rows = [row for row in rows if row[0] == current_observed_at]
+        latest_counts = {row[1]: int(row[2]) for row in latest_rows}
+        collection_audit = ((metadata.get("collection") or {}).get("audit") or {})
+        if latest_counts.get("google_trends") != (
+            collection_audit.get("google_geo_kr") or {}
+        ).get("row_count"):
+            report.fail("latest_google_count_does_not_match_sqlite")
+        if (collection_audit.get("x_korea_realtime") or {}).get("status") == "observed":
+            if latest_counts.get("x") != 30:
+                report.fail("latest_x_count_does_not_match_sqlite")
+        _audit_daily_aggregates(intelligence, report)
         _audit_provider_ledger(connection, report)
     except sqlite3.Error:
         report.fail("sqlite_audit_query_failed")
     finally:
         connection.close()
+
+
+def _audit_daily_aggregates(intelligence: dict[str, Any], report: AuditReport) -> None:
+    rows = intelligence.get("daily_aggregates")
+    if not isinstance(rows, list):
+        report.fail("daily_aggregates_not_array")
+        return
+    keys: list[tuple[str, str]] = []
+    invalid = 0
+    for row in rows:
+        if not isinstance(row, dict):
+            invalid += 1
+            continue
+        key = (str(row.get("kst_date") or ""), str(row.get("event_key") or ""))
+        keys.append(key)
+        if (
+            not all(key)
+            or not isinstance(row.get("hours_present"), int)
+            or row.get("hours_present") < 1
+            or not isinstance(row.get("best_rank"), int)
+            or row.get("best_rank") < 1
+            or not isinstance(row.get("mean_rank"), (int, float))
+            or row.get("mean_rank") < row.get("best_rank")
+            or row.get("source_count") not in (1, 2)
+        ):
+            invalid += 1
+    if len(keys) != len(set(keys)) or invalid:
+        report.fail("daily_aggregate_integrity_error")
+    report.metrics["daily_aggregate_count"] = len(rows)
 
 
 def _audit_provider_ledger(connection: sqlite3.Connection, report: AuditReport) -> None:
@@ -418,7 +510,12 @@ def audit_runtime(runtime_root: Path) -> dict[str, Any]:
     if intelligence and metadata and status:
         _audit_bundle(intelligence, metadata, status, report)
         _audit_ranking(intelligence, report)
-    _audit_database(runtime_root / "data" / "trzip-hourly.sqlite3", report)
+    _audit_database(
+        runtime_root / "data" / "trzip-hourly.sqlite3",
+        report,
+        intelligence,
+        metadata,
+    )
     return report.finalize()
 
 

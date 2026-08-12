@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T18:55:39.2176713+00:00",
+    "updated_at":  "2026-08-12T19:03:00.9587020+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,18 +8,18 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "ded0840665519a6c0d06a8b22c2e9203bcefca44",
+                       "base_remote_main_sha":  "c1921e132116936794d819f7d372b53591ffd12d",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "scripts/collect-hourly.ps1",
-                                             "tests/test_local_runtime_contract.py"
+                                             "src/trzip/runtime_audit.py",
+                                             "tests/test_runtime_audit.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "scripts/collect-hourly.ps1":  "eed4397a86bde4e6e7a7658e66c271a757d9ca633f0f9d15a1d537d050aa4930",
-                                                    "tests/test_local_runtime_contract.py":  "d5c157dc0a4c16d440ff02ed1f49d0547a5218012c051d45eb7d57e8000decfb"
+                                                    "src/trzip/runtime_audit.py":  "d7b0bb998c17c5bc57174de33a3b8f9c8d6d029b3724ddb9b1e128b0e9aa1399",
+                                                    "tests/test_runtime_audit.py":  "830225d84d495191176d65a1caab9476b2e35202fe0fa541d22e0602b4dde054"
                                                 },
-                       "commit_message":  "feat: gate hourly publication with runtime audit",
+                       "commit_message":  "fix: verify source completeness before publication",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,17 +47,18 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "매시 게시 직전 실제 데이터 품질 실패를 차단하고 잠정 상태를 명시",
+                    "objective":  "Google 전체 수집·X 30개·SQLite 누적·일별 집계가 공개 계약과 일치하는지 자동 검증",
                     "completed":  [
-                                      "정각 파이프라인 후 최신 발행본 자동 감사",
-                                      "FAIL 원격 게시 차단",
-                                      "PROVISIONAL 게시 및 로그 기록",
-                                      "PowerShell 계약 회귀 테스트"
+                                      "Google 선언 총건수와 페이지 완료 확인",
+                                      "X 관측 시 정확히 30개 확인",
+                                      "현재 출처 행수와 SQLite 대조",
+                                      "공개 누적 범위와 v3 원장 대조",
+                                      "일별 집계 키와 수치 무결성 검사"
                                   ],
                     "next_actions":  [
-                                         "04시 정각 실행에서 audit phase 확인",
-                                         "X 확장 수동 등록 후 combined 판정",
-                                         "96시간 누적 성숙 확인"
+                                         "X 확장 수동 등록 후 30개 실측",
+                                         "통합 순위 생성 검증",
+                                         "96시간과 3~7일 누적 안정성 확인"
                                      ],
                     "blockers":  [
                                      "X 확장 미등록",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from trzip.runtime_audit import audit_runtime
@@ -61,6 +62,11 @@ def _write_runtime(root: Path) -> None:
         "public_top10": [item],
         "verification_policy": {"verification_affects_score": False},
         "verification_run": {"ranking_effect": "none"},
+        "collection_status": {
+            "source_status": {"x": "observed", "google_trends": "observed"},
+            "partial": False,
+        },
+        "daily_aggregates": [],
         "ranking_availability": {
             "current_sources": ["x", "google_trends"],
             "missing_sources": [],
@@ -73,6 +79,26 @@ def _write_runtime(root: Path) -> None:
         "publication_id": publication_id,
         "generated_at": generated_at,
         "observed_at": observed_at,
+        "collection": {
+            "observed": 130,
+            "audit": {
+                "x_korea_realtime": {"status": "observed", "row_count": 30},
+                "google_geo_kr": {
+                    "status": "observed",
+                    "row_count": 100,
+                    "declared_total": 100,
+                    "page_count": 4,
+                    "completion_verified": True,
+                },
+            },
+        },
+        "coverage": {
+            "first_hour": "2026-08-08T19:00:00+00:00",
+            "last_hour": observed_at,
+            "hours": 96,
+            "rows": 12480,
+            "observed_rows": 12480,
+        },
     }
     status = {
         "schema_version": "trzip-runtime-status-v1",
@@ -80,6 +106,8 @@ def _write_runtime(root: Path) -> None:
         "publication_id": publication_id,
         "generated_at": generated_at,
         "observed_at": observed_at,
+        "source_status": {"x": "observed", "google_trends": "observed"},
+        "partial": False,
     }
     for name, value in (
         ("intelligence", intelligence),
@@ -104,13 +132,18 @@ def _write_runtime(root: Path) -> None:
         )
         """
     )
-    for hour in range(96):
-        observed = f"2026-08-{8 + hour // 24:02d}T{hour % 24:02d}:00:00+00:00"
-        for source, version in (("x", "x_current_session_v1"), ("google_trends", "google_trending_now_kr_v1")):
-            connection.execute(
-                "INSERT INTO hourly_observations VALUES (?, ?, 1, 'observed', ?)",
-                (observed, source, version),
-            )
+    last_hour = datetime.fromisoformat(observed_at)
+    for offset in range(95, -1, -1):
+        observed = (last_hour - timedelta(hours=offset)).isoformat()
+        for source, count, version in (
+            ("x", 30, "x_current_session_v1"),
+            ("google_trends", 100, "google_trending_now_kr_v1"),
+        ):
+            for rank in range(1, count + 1):
+                connection.execute(
+                    "INSERT INTO hourly_observations VALUES (?, ?, ?, 'observed', ?)",
+                    (observed, source, rank, version),
+                )
     connection.commit()
     connection.close()
 
@@ -135,7 +168,29 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
         "missing_sources": ["x"],
         "is_combined_rank": False,
     }
+    intelligence["collection_status"] = {
+        "source_status": {"x": "extension_not_ready", "google_trends": "observed"},
+        "partial": True,
+    }
     intelligence_path.write_text(json.dumps(intelligence), encoding="utf-8")
+    metadata_path = tmp_path / "publication" / "latest" / "metadata.json"
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata["collection"]["observed"] = 100
+    metadata["collection"]["audit"]["x_korea_realtime"] = {
+        "status": "extension_not_ready",
+        "row_count": 0,
+    }
+    metadata["coverage"]["rows"] = 9600
+    metadata["coverage"]["observed_rows"] = 9600
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+    status_path = tmp_path / "publication" / "latest" / "status.json"
+    status = json.loads(status_path.read_text(encoding="utf-8"))
+    status["source_status"] = {
+        "x": "extension_not_ready",
+        "google_trends": "observed",
+    }
+    status["partial"] = True
+    status_path.write_text(json.dumps(status), encoding="utf-8")
     connection = sqlite3.connect(tmp_path / "data" / "trzip-hourly.sqlite3")
     connection.execute("DELETE FROM hourly_observations WHERE source='x'")
     connection.commit()
