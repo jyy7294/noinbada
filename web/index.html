@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>TRZIP 한국 트렌드</title><link rel="stylesheet" href="/assets/style.css"><link rel="stylesheet" href="/assets/product-direction.css"></head>
+<body><header><div><b>TRZIP</b><span>X + Google · 대한민국</span></div><button id="date">데이터 불러오는 중</button></header><main>
+<section class="hero"><p class="eyebrow">대한민국 트렌드 인텔리전스</p><h1>주식도 트렌드가 된 시대,<br>내가 아는 유행에서 기업을 찾다.</h1><p>모든 관측 트렌드를 숨김없이 한 순위에 모으고, 지속기간·급상승·시장반응을 나눠 보여줍니다. 인물명도 허용하되 사건·논란 맥락은 주의 표시 후 기업 연결에서 제외합니다.</p><p id="mode"></p><div class="dataset"><button id="demoMode" class="active">8월 12일 기준 최근 7일 데모</button><button id="liveMode">실측 라이브</button></div></section>
+<nav><button data-sort="score" class="active">통합 순위</button><button data-sort="persistence">지속기간순</button><button data-sort="momentum">급상승순</button></nav>
+<section><h2 id="laneTitle">모든 트렌드 통합 전체 순위</h2><div class="table-wrap"><table><thead><tr><th>순위</th><th>트렌드</th><th>왜 뜨는가</th><th>분류</th><th>상태</th><th>순위 변화</th><th>카테고리</th><th>점수</th><th>X</th><th>Google</th><th>지속기간</th><th>선정 이유</th></tr></thead><tbody id="rankRows"></tbody></table></div></section>
+<section><h2>관련 키워드 5개</h2><div id="keywords" class="keywords"></div></section>
+<section><h2>시간별 추이</h2><select id="topicSelect"></select><div class="chart" id="chart"></div><p id="seriesSummary" class="muted"></p><div class="table-wrap series-table"><table><thead><tr><th>시간</th><th>소스</th><th>순위</th><th>지표</th><th>구분</th></tr></thead><tbody id="seriesRows"></tbody></table></div></section>
+<section><h2>관련기업 및 가치사슬</h2><p class="muted">기업 관계와 과거 시장반응은 탐색 참고값이며 수익 보장이나 매수 추천이 아닙니다.</p><div class="table-wrap"><table><thead><tr><th>트렌드</th><th>사업 카테고리</th><th>기업</th><th>종목코드</th><th>기업 역할</th><th>연결 단계</th><th>관계 강도</th><th>검증 상태</th><th>기회 상태</th><th>연결 이유</th><th>기업·주가 참고</th></tr></thead><tbody id="companyRows"></tbody></table></div><pre id="companyProfile" class="company-profile">기업을 선택하면 공식 정보와 과거 시장반응을 확인합니다.</pre></section>
+<section><h2>공식 데이터 연결 상태</h2><pre id="integrations"></pre></section>
+</main><script src="/assets/app.js"></script></body></html>
