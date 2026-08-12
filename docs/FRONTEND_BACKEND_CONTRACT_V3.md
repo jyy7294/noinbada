@@ -17,6 +17,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 - 전체 순위: `unified_ranking`
 - 순위 확정도: `ranking_availability` (`단일출처 잠정` / `양출처 잠정` / `성숙 통합`)
 - 홈 최대 10개: `public_top10`
+- 홈 근거 게이트: `home_quality_gate` (`ranking_effect=none`)
 - 이슈·주의: `lanes.issue`
 - 검토 대기: `lanes.review`
 - 시간·일 단위 원천 이력: `hourly_rankings`, `daily_aggregates`
@@ -25,6 +26,12 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 - 보조 플랫폼 문서 후보: `provider_keyword_candidate_queue` (지유님 알고리즘을 운영 원장에 맞게 이식한 검토 대기열, 자동 공개·순위 영향 없음)
 
 프런트는 `unified_ranking`을 재정렬하거나 홈 10개를 자체 계산하지 않습니다.
+`needs_context`인 항목은 관련 표현·검수 온톨로지·일치한 보조 검증·연결 기사 중
+하나도 없으면 전체 순위에는 남지만 `public_top10`에서는 제외됩니다. 프런트는
+`home_context_status`와 `home_context_reason`을 그대로 표시하고 자체 승격하지 않습니다.
+보조 검증 스케줄러는 이 상태를 풀 수 있도록 `public_top10`만이 아니라 현재
+`main` 후보 전체를 순환하며, 한 시간 최대 3개만 조회합니다. 검증 결과는 순위에
+영향을 주지 않습니다.
 
 ## 트렌드 카드 필드
 

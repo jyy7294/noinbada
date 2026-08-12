@@ -7,7 +7,7 @@ from trzip.publication_pipeline import (
     _collection_health,
     _failure_class,
     _public_market_reference,
-    _public_verification_references,
+    _verification_references,
     _hourly_verification_term_limit,
     _prune_observations,
     _refresh_verification_layer,
@@ -110,6 +110,7 @@ def _public_rows(count=5):
                 "event_key": f"event:{index}",
                 "display_name": f"term {index}",
                 "score": 100 - index,
+                "lane": "main",
                 "latest_source_ranks": {"google_trends": index},
             }
             for index in range(1, count + 1)
@@ -121,7 +122,7 @@ def _public_rows(count=5):
     }
 
 
-def test_hourly_verification_uses_only_top_three_public_rows_and_reuses_ledger(
+def test_hourly_verification_uses_three_main_candidates_and_reuses_ledger(
     tmp_path, monkeypatch
 ):
     from trzip.provider_verification import (
@@ -133,7 +134,7 @@ def test_hourly_verification_uses_only_top_three_public_rows_and_reuses_ledger(
     at = datetime(2026, 8, 12, 13, tzinfo=UTC)
     database = tmp_path / "runtime.sqlite3"
     intelligence = _public_rows()
-    selected = _public_verification_references(intelligence, limit=3)
+    selected = _verification_references(intelligence, limit=3)
     assert [item.trend_key for item in selected] == ["event:1", "event:2", "event:3"]
     assert _hourly_verification_term_limit({"TRZIP_PROVIDER_VERIFICATION_TERM_LIMIT": "99"}) == 3
 
@@ -163,7 +164,8 @@ def test_hourly_verification_uses_only_top_three_public_rows_and_reuses_ledger(
         "attempted_terms": 3,
         "hourly_term_limit": 3,
         "selection_policy": "never_verified_then_oldest_verified_then_current_rank",
-        "public_candidate_count": 5,
+        "candidate_count": 5,
+        "selection_scope": "current_main_candidates_including_context_review",
         "providers": ["naver", "youtube", "instagram"],
         "ranking_effect": "none",
         "affects_collection_partial": False,
@@ -235,20 +237,22 @@ def test_verification_failure_is_separate_and_never_marks_core_partial(
     assert result["collection_status"]["partial"] is False
 
 
-def test_provider_verification_uses_public_subset_not_hidden_unified_rows():
+def test_provider_verification_uses_unified_main_candidates_but_skips_issue_lane():
     hidden = {
         "rank": 1,
         "event_key": "hidden-issue",
         "display_name": "hidden issue",
         "latest_source_ranks": {"google_trends": 1},
+        "lane": "issue",
     }
     visible = {
         "rank": 9,
         "event_key": "visible-main",
         "display_name": "visible main",
         "latest_source_ranks": {"google_trends": 9},
+        "lane": "main",
     }
-    selected = _public_verification_references(
+    selected = _verification_references(
         {"unified_ranking": [hidden, visible], "public_top10": [visible]},
         limit=3,
     )

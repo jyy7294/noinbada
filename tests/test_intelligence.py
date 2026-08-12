@@ -278,12 +278,45 @@ def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
     assert unresolved not in result["public_top10"]
     assert unresolved["companies"] == []
     generic = next(item for item in result["unified_ranking"] if item["topic"] == "패션 브랜드")
-    assert generic["home_context_status"] == "resolved"
+    assert generic["home_context_status"] == "review_required"
+    assert generic["home_context_reason"] == "context_evidence_missing"
     assert generic["company_eligible"] is True
     assert generic["companies"] == []
+    assert generic not in result["public_top10"]
     assert any(item["topic"] == "005930" for item in result["public_top10"])
     stock = next(item for item in result["public_top10"] if item["topic"] == "005930")
     assert stock["resolved_entity_name"] == "삼성전자"
+
+
+def test_home_subset_holds_needs_context_term_without_any_disambiguation_evidence(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+
+    target = tmp_path / "home-context-evidence.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([
+        HourlyObservation(at.isoformat(), "google_trends", "애니", 1, 100, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "불닭", 2, 99, "observed"),
+    ], target)
+
+    result = build_intelligence(at, hours=1, path=target)
+    ambiguous = next(item for item in result["unified_ranking"] if item["topic"] == "애니")
+
+    assert ambiguous["lane"] == "main"
+    assert ambiguous["context_status"] == "needs_context"
+    assert ambiguous["keywords"] == []
+    assert ambiguous["company_candidates"] == []
+    assert ambiguous["verification_layer"]["status"] == "not_run"
+    assert ambiguous["home_context_status"] == "review_required"
+    assert ambiguous["home_context_reason"] == "context_evidence_missing"
+    assert ambiguous["selection_layer"] == "context_review_queue"
+    assert ambiguous not in result["public_top10"]
+    assert [item["topic"] for item in result["public_top10"]] == ["불닭"]
+    assert result["home_quality_gate"]["ranking_effect"] == "none"
+    assert result["home_quality_gate"]["unified_ranking_preserved"] is True
+    assert result["home_quality_gate"]["home_excluded_total"] == 1
+    assert result["home_quality_gate"]["exclusion_reasons"] == {
+        "context_evidence_missing": 1
+    }
 
 
 def test_investment_terms_do_not_receive_unrelated_generic_companies(tmp_path):

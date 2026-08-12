@@ -5,7 +5,8 @@
   "type": "object",
   "required": [
     "schema_version", "mode", "publication_id", "generated_at", "window",
-    "sources", "ranking_availability", "score_policy", "unified_ranking", "public_top10",
+    "sources", "ranking_availability", "score_policy", "home_quality_gate",
+    "unified_ranking", "public_top10",
     "ontology_enrichment_queue", "enrichment_work_queue", "provider_keyword_candidate_queue",
     "lanes", "verification_run", "collection_status"
   ],
@@ -30,6 +31,27 @@
     },
     "ranking_availability": {"$ref": "#/$defs/rankingAvailability"},
     "score_policy": {"type": "object"},
+    "home_quality_gate": {
+      "type": "object",
+      "required": [
+        "policy_version", "ranking_effect", "unified_ranking_preserved",
+        "main_lane_total", "home_eligible_total", "home_excluded_total",
+        "exclusion_reasons", "rule"
+      ],
+      "properties": {
+        "policy_version": {"const": "home-context-gate-v1"},
+        "ranking_effect": {"const": "none"},
+        "unified_ranking_preserved": {"const": true},
+        "main_lane_total": {"type": "integer", "minimum": 0},
+        "home_eligible_total": {"type": "integer", "minimum": 0},
+        "home_excluded_total": {"type": "integer", "minimum": 0},
+        "exclusion_reasons": {
+          "type": "object",
+          "additionalProperties": {"type": "integer", "minimum": 1}
+        },
+        "rule": {"type": "string", "minLength": 1}
+      }
+    },
     "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
     "public_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/trend"}},
     "ontology_enrichment_queue": {
@@ -125,13 +147,13 @@
       "type": "object",
       "required": [
         "status", "requested_terms", "attempted_terms", "hourly_term_limit",
-        "selection_policy", "public_candidate_count",
+        "selection_policy", "candidate_count", "selection_scope",
         "providers", "ranking_effect", "affects_collection_partial", "blocks_publication", "error"
       ],
       "properties": {
         "status": {
           "enum": [
-            "completed", "skipped_no_public_candidates",
+            "completed", "skipped_no_candidates",
             "skipped_already_recorded_for_hour", "failed_non_blocking"
           ]
         },
@@ -139,7 +161,8 @@
         "attempted_terms": {"type": "integer", "minimum": 0, "maximum": 3},
         "hourly_term_limit": {"type": "integer", "minimum": 0, "maximum": 3},
         "selection_policy": {"const": "never_verified_then_oldest_verified_then_current_rank"},
-        "public_candidate_count": {"type": "integer", "minimum": 0, "maximum": 10},
+        "candidate_count": {"type": "integer", "minimum": 0},
+        "selection_scope": {"const": "current_main_candidates_including_context_review"},
         "providers": {
           "type": "array",
           "prefixItems": [
@@ -229,6 +252,7 @@
         "lane", "score", "score_components", "latest_source_ranks",
         "data_confidence", "keywords", "companies", "company_candidates",
         "company_resolution", "verification_layer", "news_context",
+        "home_context_status", "home_context_reason",
         "ranking_availability_status"
       ],
       "properties": {
@@ -252,6 +276,15 @@
         "company_resolution": {"type": "object"},
         "verification_layer": {"type": "object"},
         "news_context": {"type": "object"},
+        "home_context_status": {"enum": ["resolved", "review_required"]},
+        "home_context_reason": {
+          "enum": [
+            "not_main_lane", "unclassified", "unresolved", "ambiguous_person",
+            "context_resolved", "observed_or_reviewed_related_expression",
+            "reviewed_ontology_path", "matched_verification_provider",
+            "linked_news_context", "context_evidence_missing"
+          ]
+        },
         "ranking_availability_status": {
           "enum": [
             "unavailable", "provisional_single_source",

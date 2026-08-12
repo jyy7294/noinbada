@@ -125,6 +125,40 @@ def _broad_category(category: str) -> str:
     return mapping.get(category, "other")
 
 
+def _home_context_gate(item: dict) -> tuple[bool, str]:
+    """Apply a non-scoring evidence gate to the home representative subset.
+
+    Every observed term remains in ``unified_ranking``.  The home subset is
+    narrower: a term that still needs context must have at least one observable
+    disambiguation signal (source-related expression, reviewed ontology path,
+    matched verification provider, or linked news context).  This prevents a
+    short homonym such as an unexplained name or noun from being presented as a
+    resolved consumer trend merely because a category classifier chose a main
+    lane.
+    """
+
+    if item.get("lane") != "main":
+        return False, "not_main_lane"
+    if item.get("category") == "unclassified":
+        return False, "unclassified"
+    context_status = str(item.get("context_status") or "")
+    if context_status in {"unresolved", "ambiguous_person"}:
+        return False, context_status
+    if context_status != "needs_context":
+        return True, "context_resolved"
+    if item.get("keywords"):
+        return True, "observed_or_reviewed_related_expression"
+    if int((item.get("company_resolution") or {}).get("candidate_count") or 0) > 0:
+        return True, "reviewed_ontology_path"
+    verification = item.get("verification_layer") or {}
+    if verification.get("status") == "observed" and verification.get("observed_platforms"):
+        return True, "matched_verification_provider"
+    news_context = item.get("news_context") or {}
+    if news_context.get("records"):
+        return True, "linked_news_context"
+    return False, "context_evidence_missing"
+
+
 def _series_rows(start: datetime, end: datetime, path: Path | None = None) -> list[sqlite3.Row]:
     with connect(path) as connection:
         return connection.execute(
@@ -1104,21 +1138,42 @@ def build_intelligence(
                 "category": item["category"],
                 "ground_truth_expected": {"display_name": expected[0], "category": expected[1]},
             })
+    home_gate_results = {
+        item["event_key"]: _home_context_gate(item)
+        for item in candidates
+    }
     resolved_public_candidates = [
         item for item in candidates
-        if item["lane"] == "main"
-        and item["category"] != "unclassified"
-        and item["context_status"] not in {"unresolved", "ambiguous_person"}
+        if home_gate_results[item["event_key"]][0]
     ]
     # The unified list preserves every observed candidate. The home subset is
     # a non-scoring presentation filter: issue and unresolved review items keep
     # their global rank but are exposed in their own lanes.
     home_candidates = [item for item in candidates if item["lane"] == "main"]
     for item in candidates:
-        item["home_context_status"] = (
-            "resolved" if item in resolved_public_candidates else "review_required"
-        )
-    public_top10 = home_candidates[:10]
+        home_allowed, home_reason = home_gate_results[item["event_key"]]
+        item["home_context_status"] = "resolved" if home_allowed else "review_required"
+        item["home_context_reason"] = home_reason
+        if item["lane"] == "main" and not home_allowed:
+            item["selection_layer"] = "context_review_queue"
+    public_top10 = resolved_public_candidates[:10]
+    home_quality_gate = {
+        "policy_version": "home-context-gate-v1",
+        "ranking_effect": "none",
+        "unified_ranking_preserved": True,
+        "main_lane_total": len(home_candidates),
+        "home_eligible_total": len(resolved_public_candidates),
+        "home_excluded_total": len(home_candidates) - len(resolved_public_candidates),
+        "exclusion_reasons": dict(sorted(Counter(
+            home_gate_results[item["event_key"]][1]
+            for item in home_candidates
+            if not home_gate_results[item["event_key"]][0]
+        ).items())),
+        "rule": (
+            "needs_context 항목은 관측·검수 관련어, 검수 온톨로지 경로, "
+            "일치한 보조 검증 또는 연결된 기사 맥락 중 하나가 있어야 홈 후보가 됨"
+        ),
+    }
     ontology_enrichment_queue = [
         {
             "rank": item["rank"],
@@ -1252,6 +1307,7 @@ def build_intelligence(
             "active_candidate_gate": "present in at least one current eligible source snapshot",
             "maturity_gate_hours": 96,
         },
+        "home_quality_gate": home_quality_gate,
         "context_evidence_policy": {
             "news_is_ranking_source": False,
             "news_layers": ["discovery", "context", "company_evidence"],
@@ -1273,13 +1329,16 @@ def build_intelligence(
         "quality_summary": {
             "total_ranked_candidates": len(candidates),
             "main_candidates": len(lanes["main"]),
-            "public_eligible_candidates": len(home_candidates),
+            "public_eligible_candidates": len(resolved_public_candidates),
             "resolved_public_candidates": len(resolved_public_candidates),
+            "excluded_from_public_due_to_context": (
+                len(home_candidates) - len(resolved_public_candidates)
+            ),
             "review_required_in_public_top10": sum(
                 item["home_context_status"] == "review_required" for item in public_top10
             ),
             "public_top10_count": len(public_top10),
-            "excluded_from_public_due_to_issue_lane": len(candidates) - len(home_candidates),
+            "excluded_from_public_due_to_non_main_lane": len(candidates) - len(home_candidates),
             "top10_with_five_keywords": sum(
                 len(item["keywords"]) == 5
                 for item in public_top10

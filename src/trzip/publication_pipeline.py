@@ -56,19 +56,20 @@ def _hourly_verification_term_limit(environment: dict[str, str] | None = None) -
     return min(MAX_HOURLY_VERIFICATION_TERM_LIMIT, max(0, requested))
 
 
-def _public_verification_references(
+def _verification_references(
     intelligence: dict,
     *,
     limit: int,
     verification_by_trend: dict[str, dict] | None = None,
 ) -> list[TrendReference]:
-    """Select a bounded, fair verification batch from the displayed trends.
+    """Select a bounded, fair verification batch from current main candidates.
 
     Rank order is the tie-breaker, not the only scheduling rule.  Trends that
     have never been checked are selected before previously checked trends; the
     oldest checked trend follows after that.  This lets a three-term hourly
-    budget cover the whole public ten instead of repeatedly spending quota on
-    the same top three.
+    budget cover unresolved main candidates as well as the displayed subset.
+    Otherwise the context gate would be circular: an evidence-poor candidate
+    could never receive provider evidence because it was not displayed yet.
     """
 
     if limit <= 0:
@@ -85,7 +86,10 @@ def _public_verification_references(
         return max(observed, default="")
 
     candidates = sorted(
-        intelligence.get("public_top10", []),
+        (
+            item for item in intelligence.get("unified_ranking", [])
+            if item.get("lane", "main") == "main"
+        ),
         key=lambda item: (
             bool(last_observed_at(item)),
             last_observed_at(item),
@@ -113,8 +117,9 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
     """Collect bounded context evidence without changing score or rank.
 
     Provider failures are recorded as data states and never block publication.
-    Only the top three trends displayed in the current public list are queried each hour. A
-    retry of the same observation hour reuses the append-only ledger.
+    Only three current main candidates are queried each hour. Candidates held
+    by the home context gate remain eligible for verification, and a retry of
+    the same observation hour reuses the append-only ledger.
     """
 
     ranking_before = [
@@ -133,9 +138,9 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
     except Exception:
         latest_before_run = {}
     if completed_this_hour:
-        current_references = _public_verification_references(
+        current_references = _verification_references(
             intelligence,
-            limit=len(intelligence.get("public_top10", [])),
+            limit=len(intelligence.get("unified_ranking", [])),
         )
         references = [
             reference for reference in current_references
@@ -143,13 +148,13 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         ][:hourly_limit]
         pending_references: list[TrendReference] = []
     else:
-        references = _public_verification_references(
+        references = _verification_references(
             intelligence,
             limit=hourly_limit,
             verification_by_trend=latest_before_run,
         )
         pending_references = list(references)
-    run_status = "skipped_no_public_candidates"
+    run_status = "skipped_no_candidates"
     attempted_term_count = 0
     error = None
     try:
@@ -206,7 +211,11 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         "attempted_terms": attempted_term_count,
         "hourly_term_limit": hourly_limit,
         "selection_policy": "never_verified_then_oldest_verified_then_current_rank",
-        "public_candidate_count": len(intelligence.get("public_top10", [])),
+        "candidate_count": sum(
+            item.get("lane", "main") == "main"
+            for item in intelligence.get("unified_ranking", [])
+        ),
+        "selection_scope": "current_main_candidates_including_context_review",
         "providers": ["naver", "youtube", "instagram"],
         "ranking_effect": "none",
         "affects_collection_partial": False,

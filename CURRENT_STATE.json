@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T16:38:30.1663277+00:00",
+    "updated_at":  "2026-08-12T16:55:58.3639612+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,36 +8,34 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "22047aa1fa189c04e18eb1d365a397171dc9994a",
+                       "base_remote_main_sha":  "1cabe286618f12c007e9aaef0871196f6dd06a2d",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "data/ontology_enrichment.json",
                                              "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
                                              "README.md",
                                              "schemas/intelligence-v3.schema.json",
-                                             "src/trzip/keyword_candidates.py",
+                                             "src/trzip/intelligence.py",
                                              "src/trzip/publication_pipeline.py",
-                                             "tests/test_keyword_candidates.py",
-                                             "tests/test_ontology.py"
+                                             "tests/test_intelligence.py",
+                                             "tests/test_publication_pipeline.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "data/ontology_enrichment.json":  "9a4f8d3737a82ea824fa887c84d99f085244b2dca2865937d48a11faabf93402",
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "efafbd808e6abd01ddc9bbad1765324fa71e5142c56040f683469b1f9c28b014",
-                                                    "README.md":  "0552c00618aecd5c7b41f921ae5cacccc1eb6644e170f1f99fc3e740c2899b31",
-                                                    "schemas/intelligence-v3.schema.json":  "27866dbe6634c2963aac1b5b727fb2e59672646dc89eb6447c2e5ce65876697b",
-                                                    "src/trzip/keyword_candidates.py":  "f621fba5c638291ee702610507104ebb7981583d0bc83811b2c396888c9d8e79",
-                                                    "src/trzip/publication_pipeline.py":  "e6981041713995c39a93e8f30034297e40664d81fc705c24a2c0d9cb8e1a2d1d",
-                                                    "tests/test_keyword_candidates.py":  "aedf212ffc764a5e3c0af5e64505911f7368225964cac58b9729cd79fd7e7230",
-                                                    "tests/test_ontology.py":  "7b56b8eaf9a56a4c47297c0c9500c07d3b78472cf1b9ebbff8b057ed39997341"
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "96cfb38840f2b3ab95ec3438a6d5929c87eee29ab11ffef542eacecd653f3f1f",
+                                                    "README.md":  "8aef1c0b4344d5669a00d25ef5fd035c2b4df1b758b37b237f9200bb0882de98",
+                                                    "schemas/intelligence-v3.schema.json":  "31bfc26e6b3d5b8a854ba4d97be0a47e4ce053518c3e15e0ff3d376448b8f076",
+                                                    "src/trzip/intelligence.py":  "01e38defffff4c3b072e65c65d4559de28e0cbd6b2264bf4ba3a3f6df95d558c",
+                                                    "src/trzip/publication_pipeline.py":  "f2758e54c111536ded545014cfb72ada24e3420fa7f7dbf57ea0ec8b3a102e42",
+                                                    "tests/test_intelligence.py":  "c735a723fdeda9283ce76ef40435ad4df67a12107ea8e2a24c1e589fcf1ad446",
+                                                    "tests/test_publication_pipeline.py":  "cfadfc98ef107580b2e9faa1f3a585d1f67919643c1bac5cb5f3d9033eb31e6c"
                                                 },
-                       "commit_message":  "feat: queue provider keyword evidence and map G-STAR companies",
+                       "commit_message":  "fix: require context evidence for home trends",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  151
+                                      "count":  152
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -59,27 +57,25 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "보조 플랫폼 문서의 키워드 후보를 검토 전용으로 축적하고 지스타 관련기업 5개를 공식 근거 온톨로지로 연결한다",
+                    "objective":  "Keep every observed term in the fair unified ranking while preventing evidence-free needs_context terms from appearing as resolved home trends, and let provider verification resolve held candidates without changing rank.",
                     "completed":  [
-                                      "지유 브랜치의 명시 표현 추출 규칙을 현행 SQLite 검토 대기열로 이식",
-                                      "서로 다른 URL 근거 2건 전에는 키워드 후보를 공개하지 않음",
-                                      "지스타 상장사 5개를 직접 관계 4개와 가치사슬 1개로 검증",
-                                      "관련어 후보와 기업 연결이 순위에 영향을 주지 않도록 계약 고정"
+                                      "Added a non-scoring home context gate",
+                                      "Preserved the complete unified ranking and score components",
+                                      "Rotated provider verification across all current main candidates",
+                                      "Updated the public JSON schema and frontend contract",
+                                      "Passed the full regression suite and production-database read-only smoke test"
                                   ],
                     "next_actions":  [
-                                         "정시 수집에서 새 계약과 지스타 5개 노출을 실측",
-                                         "X 현재 Chrome 확장 1회 등록 후 30개 완전수집 검증",
-                                         "추가 상위 트렌드 기업 온톨로지 근거 확장"
+                                         "Install the local X current-session extension once in ChanHee Chrome",
+                                         "Run the next production collection and verify X ranks 1 through 30",
+                                         "Continue evidence-backed ontology enrichment until each published home trend has at least five listed companies"
                                      ],
                     "blockers":  [
-                                     "X 현재 Chrome 확장 미등록",
-                                     "NAVER API 인증 024",
-                                     "Instagram MVP collector unavailable"
+                                     "X remains unavailable until the local unpacked extension is installed in the current logged-in Chrome profile"
                                  ],
                     "known_limitations":  [
-                                              "X가 수집되기 전 통합 순위는 Google 단일출처 잠정",
-                                              "관련기업 5개 공개는 공식 근거 온톨로지가 완성된 트렌드에 한함",
-                                              "보조 플랫폼 키워드 후보는 팀 검토 전 공개 금지"
+                                              "Current ranking remains provisional_single_source until an X snapshot is collected",
+                                              "Only evidence-backed ontology slices expose companies; unsupported trends stay incomplete rather than receiving filler companies"
                                           ]
                 },
     "runtime_contract":  {
