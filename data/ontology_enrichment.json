@@ -1275,6 +1275,69 @@
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
     },
     {
+      "id": "related:reviewed:iam-solo-sbs-plus",
+      "label": "SBS Plus",
+      "target_node_id": "term:reviewed:iam-solo",
+      "relation_role": "official_broadcast_channel",
+      "evidence_ids": ["evidence:reviewed:sbsplus-iam-solo"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:iam-solo-ena",
+      "label": "ENA",
+      "target_node_id": "term:reviewed:iam-solo",
+      "relation_role": "official_broadcast_channel",
+      "evidence_ids": ["evidence:reviewed:sbsplus-iam-solo"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:iam-solo-tving",
+      "label": "TVING",
+      "target_node_id": "term:reviewed:iam-solo",
+      "relation_role": "official_ott_distribution",
+      "evidence_ids": ["evidence:reviewed:tving-iam-solo"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:gstar-gcon",
+      "label": "G-CON",
+      "target_node_id": "term:reviewed:gstar",
+      "relation_role": "official_conference_program",
+      "evidence_ids": ["evidence:reviewed:gstar-2025-program"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:gstar-palworld-mobile",
+      "label": "팰월드 모바일",
+      "target_node_id": "term:reviewed:gstar",
+      "relation_role": "official_exhibited_game",
+      "evidence_ids": ["evidence:reviewed:krafton-gstar-2025"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:gstar-sanabi-spinoff",
+      "label": "산나비 외전",
+      "target_node_id": "term:reviewed:gstar",
+      "relation_role": "official_exhibited_game",
+      "evidence_ids": ["evidence:reviewed:neowiz-gstar-2025"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:gstar-odyssey-monitor",
+      "label": "오디세이 모니터",
+      "target_node_id": "term:reviewed:gstar",
+      "relation_role": "official_demo_hardware",
+      "evidence_ids": ["evidence:reviewed:samsung-gstar-2025-hardware"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
       "id": "related:reviewed:malbok-sambok",
       "label": "삼복",
       "target_node_id": "term:reviewed:malbok",

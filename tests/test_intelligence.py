@@ -663,7 +663,7 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
 
     assert item["display_name"] == "나솔"
     assert {keyword["text"] for keyword in item["keywords"]} == {
-        "나는 SOLO", "나는 솔로",
+        "나는 SOLO", "나는 솔로", "SBS Plus", "ENA", "TVING",
     }
     assert all(keyword["affects_score"] is False for keyword in item["keywords"])
     assert any(
@@ -672,6 +672,10 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
         and keyword["evidence_urls"]
         for keyword in item["keywords"]
     )
+    assert sum(
+        keyword["status"] == "approved_ontology_related_term"
+        for keyword in item["keywords"]
+    ) == 3
     assert item["company_resolution"]["publish_status"] == "published"
     assert set(companies) == {"030200", "034120", "035760", "053210", "402340"}
     assert {
@@ -715,6 +719,38 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
         for edge in company["ontology_path"]
     )
     assert all(company["relation_type"] != "listed_as" for company in companies.values())
+
+
+def test_gstar_exposes_five_reviewed_keywords_and_five_companies(tmp_path):
+    target = tmp_path / "gstar-enrichment.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert(
+        [HourlyObservation(at.isoformat(), "google_trends", "지스타", 1, 100, "observed")],
+        target,
+    )
+
+    item = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
+
+    assert {keyword["text"] for keyword in item["keywords"]} == {
+        "G-STAR", "G-CON", "팰월드 모바일", "산나비 외전", "오디세이 모니터",
+    }
+    assert all(keyword["affects_score"] is False for keyword in item["keywords"])
+    assert {company["stock_code"] for company in item["companies"]} == {
+        "005930", "036570", "095660", "251270", "259960",
+    }
+    assert item["company_resolution"]["publish_status"] == "published"
+    assert item["company_resolution"]["direct_count"] == 4
+    assert item["company_resolution"]["tier_counts"] == {
+        "core": 4,
+        "value_chain": 1,
+        "adjacent": 0,
+        "excluded": 0,
+    }
+    assert all(
+        source["review_status"] == "approved" and source["url"].startswith("https://")
+        for company in item["companies"]
+        for source in company["evidence_sources"]
+    )
 
 
 def test_tving_exposes_five_reviewed_related_keywords_and_five_companies(tmp_path):

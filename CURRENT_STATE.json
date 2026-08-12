@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T17:56:53.2208882+00:00",
+    "updated_at":  "2026-08-12T18:05:11.6225940+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,26 +8,30 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "816bdf9929743f5eb53794a24d480776743782ae",
+                       "base_remote_main_sha":  "efe1a1edeb3f29d8f9ee05990b7a3fa6a5d87e0d",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "data/ontology_enrichment.json",
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
+                                             "src/trzip/intelligence.py",
                                              "tests/test_intelligence.py",
                                              "tests/test_ontology.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "data/ontology_enrichment.json":  "ae415632be569856b990a5a0a0023cb4dcfebca84754f2076c1f1598ae549bb5",
-                                                    "tests/test_intelligence.py":  "aa72cb7d712f9149d83352b9eee886d256c0ca938256330bac08452d2998e634",
-                                                    "tests/test_ontology.py":  "023a27418378047a6cba04fd7c55619e3b35fab878d5255edf53940dcbc78d86"
+                                                    "data/ontology_enrichment.json":  "7c3b43cd568f7f18a6719ed38ab7c2b4b0062f0281f6503cf19d31b38743c67e",
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "48c48eb515713e08ce1bbda6eec1a6780efc053b7afd3d573c414a79aa24ae0e",
+                                                    "src/trzip/intelligence.py":  "27343cf1106339f8afaf62d0f8fad2655be9850a89d4e4a0baffc476d05567b8",
+                                                    "tests/test_intelligence.py":  "c106b2b71fe0312424abbe11c2bf05aba44b715fbbf2b5c6529f5e5888aee904",
+                                                    "tests/test_ontology.py":  "c9e2df673e70e0a1eb425838702afa831984cb75216f57e39aba4c858a2d8f40"
                                                 },
-                       "commit_message":  "feat: add reviewed Samsung Securities related terms",
+                       "commit_message":  "feat: strengthen reviewed trend context",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  160
+                                      "count":  163
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -49,14 +53,14 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Publish five evidence-backed related terms for Samsung Securities",
+                    "objective":  "Fill reviewed home keywords while preventing weak company graph expansion",
                     "completed":  [
-                                      "Reviewed official Samsung Securities service labels",
-                                      "Added ontology and intelligence regression coverage"
+                                      "Added five-keyword NaSol and G-STAR contracts",
+                                      "Blocked approved related concepts from seeding unrelated company expansion"
                                   ],
                     "next_actions":  [
-                                         "Verify the 03:00 scheduled collection",
-                                         "Complete current-session Chrome extension installation"
+                                         "Complete current-session Chrome extension installation",
+                                         "Build evidence slices for remaining home trends"
                                      ],
                     "blockers":  [
                                      "X current-session extension requires one manual Chrome approval"

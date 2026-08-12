@@ -519,6 +519,37 @@ def test_samsung_securities_related_terms_are_official_service_labels():
     )
 
 
+def test_iam_solo_related_terms_are_official_broadcast_and_distribution_labels():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    related = graph.reviewed_related_terms("나솔")
+
+    assert {item["label"] for item in related} == {"SBS Plus", "ENA", "TVING"}
+    assert all(
+        record["review_status"] == "approved" and record["url"].startswith("https://")
+        for item in related
+        for record in item["evidence"]
+    )
+
+
+def test_gstar_related_terms_are_official_program_products_and_equipment():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    related = graph.reviewed_related_terms("지스타")
+
+    assert {item["label"] for item in related} == {
+        "G-CON",
+        "팰월드 모바일",
+        "산나비 외전",
+        "오디세이 모니터",
+    }
+    assert all(
+        record["review_status"] == "approved" and record["url"].startswith("https://")
+        for item in related
+        for record in item["evidence"]
+    )
+
+
 def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
 

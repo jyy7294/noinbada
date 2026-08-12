@@ -528,11 +528,22 @@ def _ontology_company_candidates(
         "google_trends": "https://trends.google.com/trending?geo=KR",
     }
     observed_urls = [source_urls[source] for source in sorted(sources) if source in source_urls]
+    # Reviewed related concepts are presentation/enrichment evidence, not new
+    # company-resolution roots.  Expanding companies from a second concept
+    # (for example 나는 SOLO -> TVING -> every TVING partner) creates exactly
+    # the kind of weak multi-hop association the product forbids.  Only source
+    # observations and reviewed aliases may identify the same event root.
+    company_seed_statuses = {
+        "observed_ranked_term",
+        "observed_related_query",
+        "approved_ontology_term",
+    }
     observed_terms = [
         {"text": representative, "status": "observed_representative"},
         *[
             {"text": item["text"], "status": item.get("status", "observed_related_query")}
             for item in related_terms
+            if item.get("status", "observed_related_query") in company_seed_statuses
         ],
     ]
     unique_terms: list[dict] = []
