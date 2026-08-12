@@ -64,6 +64,34 @@ def test_current_hour_bridge_accepts_complete_rank_1_to_30():
     assert audit["schedule_delay_seconds"] == 4
 
 
+def test_current_hour_bridge_accepts_codex_logged_in_chrome_collector():
+    now = datetime(2026, 8, 12, 12, 10, tzinfo=UTC)
+    payload = _payload("2026-08-12T12:00:20Z")
+    payload["collector"] = "codex_chrome_current_session"
+
+    trends, audit = _validate_bridge_payload(
+        payload,
+        now=now,
+        minimum_rows=30,
+    )
+
+    assert len(trends) == 30
+    assert audit["collector"] == "codex_chrome_current_session"
+    assert audit["transport"] == "codex_browser_snapshot"
+
+
+def test_current_hour_bridge_rejects_unknown_collector():
+    payload = _payload("2026-08-12T12:00:20Z")
+    payload["collector"] = "unknown"
+
+    with pytest.raises(XCollectionError, match="unsupported X snapshot collector"):
+        _validate_bridge_payload(
+            payload,
+            now=datetime(2026, 8, 12, 12, 10, tzinfo=UTC),
+            minimum_rows=30,
+        )
+
+
 def test_previous_hour_bridge_is_rejected_as_stale():
     with pytest.raises(XCollectionError) as caught:
         _validate_bridge_payload(

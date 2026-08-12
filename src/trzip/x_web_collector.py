@@ -170,6 +170,13 @@ def _validate_bridge_payload(
         raise XCollectionError("snapshot_invalid", "snapshot root must be an object")
     if payload.get("schema_version") != 1 or payload.get("source") != "x":
         raise XCollectionError("snapshot_invalid", "unsupported X snapshot schema")
+    collector = str(payload.get("collector") or "")
+    supported_collectors = {
+        "chrome_extension_current_session": "sanitized_download_inbox",
+        "codex_chrome_current_session": "codex_browser_snapshot",
+    }
+    if collector not in supported_collectors:
+        raise XCollectionError("snapshot_invalid", "unsupported X snapshot collector")
     url = str(payload.get("url") or "")
     parsed_url = urlparse(url)
     if parsed_url.scheme != "https" or parsed_url.hostname != "x.com" or parsed_url.path != "/explore/tabs/trending":
@@ -215,7 +222,7 @@ def _validate_bridge_payload(
     if len(trends) < required_rows or not required_ranks.issubset(seen_ranks):
         raise XCollectionError(
             "incomplete_scroll",
-            f"extension observed {len(trends)} rows but ranks 1-{required_rows} are required",
+            f"collector observed {len(trends)} rows but ranks 1-{required_rows} are required",
         )
     declared_count = payload.get("row_count")
     if declared_count != len(trends):
@@ -228,7 +235,7 @@ def _validate_bridge_payload(
         delay_seconds = max(0.0, (observed_at - scheduled_at).total_seconds())
     return trends, {
         "status": "observed",
-        "collector": "chrome_extension_current_session",
+        "collector": collector,
         "url": X_TRENDS_URL,
         "region": "KR",
         "region_verified": True,
@@ -237,7 +244,7 @@ def _validate_bridge_payload(
         "observed_at": observed_at.isoformat(),
         "scheduled_for": scheduled_at.isoformat() if scheduled_at else None,
         "schedule_delay_seconds": delay_seconds,
-        "transport": "sanitized_download_inbox",
+        "transport": supported_collectors[collector],
     }
 
 
