@@ -1,8 +1,8 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-8e8f1f1055af4c7ca93228293ede4a1d",
-  "generated_at": "2026-08-12T13:58:49.152549+00:00",
-  "observed_at": "2026-08-12T13:00:00+00:00",
+  "publication_id": "pub-7608f9d3166041d8a65378a5c9773249",
+  "generated_at": "2026-08-12T14:00:11.663172+00:00",
+  "observed_at": "2026-08-12T14:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
   "retention_days": null,
@@ -31,14 +31,14 @@
         "detail": "XCollectionError: extension_not_ready: X inbox does not exist; complete the one-time Chrome extension setup: C:\\Users\\lch68\\Desktop\\Downloads\\TRZIP\\x-current-session.json"
       }
     },
-    "observed_at": "2026-08-12T13:00:00+00:00"
+    "observed_at": "2026-08-12T14:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T13:00:00+00:00",
-    "last_hour": "2026-08-12T13:00:00+00:00",
-    "hours": 1,
-    "rows": 185,
-    "observed_rows": 185,
+    "last_hour": "2026-08-12T14:00:00+00:00",
+    "hours": 2,
+    "rows": 370,
+    "observed_rows": 370,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
@@ -52,11 +52,11 @@
   },
   "collection_health": {
     "measurement_window_hours": 168,
-    "recorded_runs": 3,
+    "recorded_runs": 4,
     "successful_runs": 2,
-    "success_rate": 0.6667,
+    "success_rate": 0.5,
     "source_success_rate": {
-      "x": 0.6667,
+      "x": 0.5,
       "google_trends": 1.0
     },
     "source_failure_counts": {
@@ -68,7 +68,7 @@
         "quota_or_rate_limit": 0,
         "network": 0,
         "parser_change": 0,
-        "unknown": 1
+        "unknown": 2
       },
       "google_trends": {
         "browser_authentication": 0,
@@ -86,12 +86,12 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.3333,
-    "latest_delay_seconds": 3515,
-    "latest_duration_seconds": 14.51,
+    "on_time_within_15m_rate": 0.5,
+    "latest_delay_seconds": 2,
+    "latest_duration_seconds": 9.46,
     "status": "collecting_baseline",
-    "remaining_runs_for_3d": 69,
-    "remaining_runs_for_7d": 165,
+    "remaining_runs_for_3d": 68,
+    "remaining_runs_for_7d": 164,
     "warning": "Windows 작업 스케줄러 실측 기록이며 노트북 종료·로그아웃 중에는 실행되지 않을 수 있음"
   }
 }

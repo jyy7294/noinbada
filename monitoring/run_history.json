@@ -50,5 +50,27 @@
         "detail": "XCollectionError: extension_not_ready: X inbox does not exist; complete the one-time Chrome extension setup: C:\\Users\\lch68\\Desktop\\Downloads\\TRZIP\\x-current-session.json"
       }
     }
+  },
+  {
+    "scheduled_at": "2026-08-12T14:00:00+00:00",
+    "started_at": "2026-08-12T14:00:02.183000+00:00",
+    "finished_at": "2026-08-12T14:00:11.647786+00:00",
+    "delay_seconds": 2,
+    "duration_seconds": 9.46,
+    "success": false,
+    "source_success": {
+      "x": false,
+      "google_trends": true
+    },
+    "observed_rows": 185,
+    "errors": {
+      "x": "XCollectionError: extension_not_ready: X inbox does not exist; complete the one-time Chrome extension setup: C:\\Users\\lch68\\Desktop\\Downloads\\TRZIP\\x-current-session.json"
+    },
+    "source_failures": {
+      "x": {
+        "class": "unknown",
+        "detail": "XCollectionError: extension_not_ready: X inbox does not exist; complete the one-time Chrome extension setup: C:\\Users\\lch68\\Desktop\\Downloads\\TRZIP\\x-current-session.json"
+      }
+    }
   }
 ]
