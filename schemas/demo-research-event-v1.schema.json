@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jyy7294/noinbada/schemas/demo-research-event-v1.schema.json",
+  "title": "TRZIP non-ranking reconstructed event reference v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "event_id", "representative_term", "aliases",
+    "category", "active_from", "active_to", "peak_hint", "provenance",
+    "measurement_status", "rank_eligible", "confidence", "evidence",
+    "research_input_line", "mode", "live_eligible", "ranking_eligible",
+    "ranking_effect", "reference_kind", "replay_window"
+  ],
+  "properties": {
+    "schema_version": {"const": "trzip-reconstructed-event-v1"},
+    "event_id": {"type": "string", "minLength": 1},
+    "representative_term": {"type": "string", "minLength": 1},
+    "aliases": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "active_from": {"type": "string", "format": "date"},
+    "active_to": {"type": "string", "format": "date"},
+    "peak_hint": {"type": "string", "format": "date"},
+    "provenance": {"const": "research_reconstructed"},
+    "measurement_status": {"const": "event_timing_evidence_only"},
+    "rank_eligible": {"const": false},
+    "ranking_eligible": {"const": false},
+    "mode": {"const": "demo_replay"},
+    "live_eligible": {"const": false},
+    "ranking_effect": {"const": "none"},
+    "reference_kind": {"const": "research_event_timing_catalog"},
+    "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "evidence": {"type": "array", "minItems": 1},
+    "replay_window": {
+      "type": "object",
+      "required": ["from", "to", "overlaps"],
+      "properties": {
+        "from": {"type": "string", "format": "date"},
+        "to": {"type": "string", "format": "date"},
+        "overlaps": {"type": "boolean"}
+      }
+    }
+  },
+  "not": {
+    "anyOf": [
+      {"required": ["search_volume"]},
+      {"required": ["platform_rank"]},
+      {"required": ["attention_index"]}
+    ]
+  }
+}

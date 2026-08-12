@@ -1,0 +1,533 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.90991,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 9,
+        "synthetic_backfill": 11
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "혼탕",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "혼탕",
+    "first_seen_at": "2026-07-02T23:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/trends/trend-d2022b8db5fdd0cc56f3e623.json",
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 21
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-07-02T23:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_days": 10,
+      "observed_hours": 19,
+      "previous_seen_at": "2026-08-12T21:00:00+00:00",
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "seen_before_current_hour": true,
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 45,
+    "momentum": 0.954955,
+    "observed_representative_term": "혼탕",
+    "persistence": 0.071429,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed",
+      "synthetic_backfill"
+    ],
+    "rank": 45,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "decayed_history": {
+        "status": "ready"
+      },
+      "is_ready": false,
+      "momentum": {
+        "comparable_sources": [
+          "google_trends"
+        ],
+        "neutral_applied": false,
+        "status": "ready",
+        "unavailable_sources": []
+      },
+      "persistence": {
+        "maturity_required_hours": 96,
+        "status": "ready"
+      },
+      "status": "provisional",
+      "warnings": [
+        "single_source_current_observation"
+      ]
+    },
+    "ranking_views": {
+      "daily": {
+        "display_name": "혼탕",
+        "event_key": "혼탕",
+        "main_rank": 16,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 16,
+        "rank_change": null,
+        "score": 62.82,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 62.82,
+          "cross_source_points": 0.0,
+          "current_points": 36.4,
+          "decayed_history_points": 5.44,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 19.1,
+          "persistence_points": 1.88,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 62.82
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "display_name": "혼탕",
+        "event_key": "혼탕",
+        "main_rank": 45,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 45,
+        "rank_change": null,
+        "score": 60.0,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 60.0,
+          "cross_source_points": 0.0,
+          "current_points": 36.4,
+          "decayed_history_points": 2.72,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 19.1,
+          "persistence_points": 1.78,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 60.0
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "display_name": "혼탕",
+        "event_key": "혼탕",
+        "main_rank": 45,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 45,
+        "rank_change": null,
+        "score": 59.67,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 59.67,
+          "cross_source_points": 0.0,
+          "current_points": 36.4,
+          "decayed_history_points": 2.74,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 19.1,
+          "persistence_points": 1.43,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 59.67
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "혼탕"
+    ],
+    "score": 59.67,
+    "score_change": null,
+    "score_components": {
+      "component_subtotal_points": 59.67,
+      "cross_source_points": 0.0,
+      "current_points": 36.4,
+      "decayed_history_points": 2.74,
+      "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+      "freshness_multiplier": 1.0,
+      "momentum_points": 19.1,
+      "persistence_points": 1.43,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 59.67
+    },
+    "score_explanation": {
+      "components": [
+        {
+          "basis": "mean source-normalised current position over observed current sources",
+          "key": "current",
+          "max_points": 40,
+          "points": 36.4
+        },
+        {
+          "basis": "exact previous-hour position change; neutral 10 points when no exact comparison exists",
+          "key": "momentum",
+          "max_points": 20,
+          "points": 19.1
+        },
+        {
+          "basis": "mean source-specific presence rate multiplied by source-specific history maturity",
+          "key": "persistence",
+          "max_points": 20,
+          "points": 1.43
+        },
+        {
+          "basis": "observed history with 24h exponential half-life",
+          "key": "decayed_history",
+          "max_points": 15,
+          "points": 2.74
+        },
+        {
+          "basis": "5 points only when the event is currently observed by both X and Google",
+          "key": "cross_source",
+          "max_points": 5,
+          "points": 0.0
+        }
+      ],
+      "formula": "40 current + 20 exact-hour momentum + 20 per-source persistence + 15 exponentially decayed history + 5 explicit cross-source",
+      "freshness": {
+        "basis": "1 while currently observed; otherwise exponential cooling decay with 6h half-life",
+        "multiplier": 1.0
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-02T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 25,
+        "source": "google_trends",
+        "source_rank": 25,
+        "topic": "혼탕",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-03T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 22,
+        "source": "google_trends",
+        "source_rank": 22,
+        "topic": "혼탕",
+        "value": 9.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-20T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "혼탕",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-21T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 25,
+        "source": "google_trends",
+        "source_rank": 25,
+        "topic": "혼탕",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-26T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 18,
+        "source": "google_trends",
+        "source_rank": 18,
+        "topic": "혼탕",
+        "value": 13.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-26T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "x",
+        "source_rank": 29,
+        "topic": "혼탕",
+        "value": 2.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-31T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 27,
+        "source": "google_trends",
+        "source_rank": 27,
+        "topic": "혼탕",
+        "value": 4.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-01T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "혼탕",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T17:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "google_trends",
+        "source_rank": 30,
+        "topic": "혼탕",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "google_trends",
+        "source_rank": 29,
+        "topic": "혼탕",
+        "value": 2.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-08T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 27,
+        "source": "google_trends",
+        "source_rank": 27,
+        "topic": "혼탕",
+        "value": 4.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 21,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 21,
+        "source": "google_trends",
+        "source_rank": 21,
+        "topic": "혼탕",
+        "value": 80.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 20,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 20,
+        "source": "google_trends",
+        "source_rank": 20,
+        "topic": "혼탕",
+        "value": 81.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 19,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 19,
+        "source": "google_trends",
+        "source_rank": 19,
+        "topic": "혼탕",
+        "value": 82.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 14,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 14,
+        "source": "google_trends",
+        "source_rank": 14,
+        "topic": "혼탕",
+        "value": 87.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 9,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 9,
+        "source": "google_trends",
+        "source_rank": 9,
+        "topic": "혼탕",
+        "value": 92.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 10,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 10,
+        "source": "google_trends",
+        "source_rank": 10,
+        "topic": "혼탕",
+        "value": 91.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 10,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 10,
+        "source": "google_trends",
+        "source_rank": 10,
+        "topic": "혼탕",
+        "value": 91.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 19,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 19,
+        "source": "google_trends",
+        "source_rank": 19,
+        "topic": "혼탕",
+        "value": 82.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 21,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 21,
+        "source": "google_trends",
+        "source_rank": 21,
+        "topic": "혼탕",
+        "value": 80.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "current_positions": {
+        "google_trends": 0.90991
+      },
+      "decayed_history": {
+        "google_trends": {
+          "coverage": 1.0,
+          "eligible_past_hours": 168,
+          "eligible_weight": 33.86047,
+          "maturity": 1.0,
+          "observed_past_hours": 10,
+          "signal": 0.182964,
+          "weighted_evidence": 6.195245,
+          "weighted_presence": 0.182964
+        }
+      },
+      "momentum_deltas": {
+        "google_trends": 0.90991
+      },
+      "persistence": {
+        "google_trends": {
+          "adjusted_signal": 0.071429,
+          "eligible_hours": 168,
+          "maturity": 1.0,
+          "observed_hours": 12,
+          "presence_rate": 0.071429
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "혼탕"
+  }
+}

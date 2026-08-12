@@ -28,7 +28,7 @@ from .ontology import (
     OntologyGraph,
 )
 from .provider_verification import latest_verification_by_trend
-from .ranking_v2 import build_ranking_v2
+from .ranking_v2 import build_period_rankings_v2
 from .trend_fit import assess_trend_fit
 
 
@@ -805,6 +805,81 @@ def _ontology_company_candidates(
     }
 
 
+def _build_period_views(
+    period_contract: dict,
+    candidates: list[dict],
+) -> tuple[list[dict], dict[str, dict]]:
+    """Hydrate period scores with shared trend identity/classification only.
+
+    Company, keyword, news and ontology payloads remain in the existing shared
+    trend detail selected by ``detail_event_key``. Period views never rerun or
+    duplicate company enrichment and company count cannot affect their rank.
+    """
+
+    base_by_key = {item["event_key"]: item for item in candidates}
+    period_views: dict[str, dict] = {}
+    periods = list(period_contract["periods"])
+    for period in periods:
+        key = period["key"]
+        raw_view = period_contract["views"][key]
+        ranking: list[dict] = []
+        for raw_item in raw_view["unified_ranking"]:
+            event_key = raw_item["event_key"]
+            base = base_by_key.get(event_key)
+            if base is None:
+                raise ValueError(
+                    f"period ranking event is absent from current candidate set: {event_key}"
+                )
+            lifecycle = raw_item["lifecycle"]
+            ranking.append({
+                "rank": raw_item["rank"],
+                "main_rank": None,
+                "event_key": event_key,
+                "display_name": base["display_name"],
+                "topic": base["topic"],
+                "broad_category": base["broad_category"],
+                "category": base["category"],
+                "lane": base["lane"],
+                "score": raw_item["score"],
+                "score_components": raw_item["score_components"],
+                "current_source_position": raw_item["signals"]["current"],
+                "momentum": raw_item["signals"]["momentum"],
+                "persistence": raw_item["signals"]["persistence"],
+                "lifecycle": lifecycle["state"],
+                "lifecycle_reason": lifecycle["reason_code"],
+                "first_seen_at": raw_item["lifecycle_baseline"]["first_seen_at"],
+                "last_seen_at": raw_item["last_seen_at"],
+                "latest_source_ranks": base["latest_source_ranks"],
+                "rank_change_by_source": base["rank_change_by_source"],
+                "source_badge": base["source_badge"],
+                "data_confidence": base["data_confidence"],
+                "ranking_data_readiness": raw_item["data_readiness"],
+                "company_card_status": base["company_card_status"],
+                "detail_event_key": event_key,
+                "shared_detail_fields": [
+                    "keywords", "companies", "company_candidates",
+                    "company_resolution", "verification_layer", "news_context",
+                ],
+            })
+        ranking.sort(key=lambda item: item["rank"])
+        main_ranking = [item for item in ranking if item["lane"] == "main"]
+        for main_rank, item in enumerate(main_ranking, 1):
+            item["main_rank"] = main_rank
+        period_views[key] = {
+            "key": key,
+            "label": raw_view["label"],
+            "default": raw_view["default"],
+            "window": raw_view["window"],
+            "formula_version": raw_view["formula_version"],
+            "data_readiness": raw_view["data_readiness"],
+            "company_detail_policy": "shared_by_detail_event_key",
+            "company_count_affects_rank": False,
+            "unified_ranking": ranking,
+            "trend_top10": main_ranking[:10],
+        }
+    return periods, period_views
+
+
 def build_intelligence(
     at: datetime,
     *,
@@ -825,11 +900,17 @@ def build_intelligence(
     ranking_rows = [dict(row) for row in _series_rows(lifecycle_start, end, path)]
     for item in ranking_rows:
         item["event_key"] = canonical_topic(item["topic"])
-    ranking_v2 = build_ranking_v2(
+    period_ranking_contract = build_period_rankings_v2(
         ranking_rows,
         at=end,
-        candidate_policy="current_only",
     )
+    weekly_ranking_contract = period_ranking_contract["views"]["weekly"]
+    ranking_v2 = {
+        "formula_version": weekly_ranking_contract["formula_version"],
+        "data_readiness": weekly_ranking_contract["data_readiness"],
+        "parameters": weekly_ranking_contract["parameters"],
+        "ranking": weekly_ranking_contract["unified_ranking"],
+    }
     ranking_v2_by_key = {
         item["event_key"]: item for item in ranking_v2["ranking"]
     }
@@ -1227,7 +1308,9 @@ def build_intelligence(
             "candidate_company_categories": candidate_company_categories,
             "company_resolution": company_resolution,
         })
-    candidates.sort(key=lambda item: (-item["score"], item["topic"]))
+    # Ranking V2 owns score order and deterministic tie-breaking.  The
+    # hydrated contract must not apply a second lexical re-sort.
+    candidates.sort(key=lambda item: ranking_v2_by_key[item["event_key"]]["rank"])
     for rank, item in enumerate(candidates, 1):
         item["rank"] = rank
         item["classification"] = "이슈·주의" if item["lane"] == "issue" else "일반 트렌드" if item["company_eligible"] else "맥락 확인"
@@ -1298,6 +1381,21 @@ def build_intelligence(
         item for item in home_candidates
         if item["company_card_status"] == "ready"
     ]
+    ranking_periods, ranking_views = _build_period_views(
+        period_ranking_contract,
+        candidates,
+    )
+    weekly_view = ranking_views[period_ranking_contract["default_period"]]
+    if [item["event_key"] for item in weekly_view["unified_ranking"]] != [
+        item["event_key"] for item in candidates
+    ] or [item["score"] for item in weekly_view["unified_ranking"]] != [
+        item["score"] for item in candidates
+    ]:
+        raise ValueError("top-level ranking must remain the hydrated weekly alias")
+    if [item["event_key"] for item in weekly_view["trend_top10"]] != [
+        item["event_key"] for item in trend_top10
+    ]:
+        raise ValueError("top-level trend_top10 must remain the hydrated weekly alias")
     context_resolved_candidates = [
         item for item in home_candidates
         if item["home_context_status"] == "resolved"
@@ -1479,6 +1577,14 @@ def build_intelligence(
         "hourly_rankings": hourly_ranking,
         "daily_aggregates": daily_aggregates,
         "normalization_evaluation": evaluate_resolution(evaluation_rows),
+        "ranking_default_period": period_ranking_contract["default_period"],
+        "ranking_periods": ranking_periods,
+        "ranking_views": ranking_views,
+        "ranking_top_level_alias": {
+            "period": "weekly",
+            "unified_ranking": "hydrated_weekly_view",
+            "trend_top10": "hydrated_weekly_view",
+        },
         "unified_ranking": candidates,
         "trend_top10": trend_top10,
         "public_top10": public_top10,

@@ -50,7 +50,12 @@ RANKING_SUMMARY_FIELDS = (
     "score_components",
     "lane",
     "category",
+    "broad_category",
+    "current_source_position",
+    "momentum",
+    "persistence",
     "lifecycle",
+    "lifecycle_reason",
     "lifecycle_label",
     "first_seen_at",
     "last_seen_at",
@@ -59,7 +64,10 @@ RANKING_SUMMARY_FIELDS = (
     "source_badge",
     "confidence",
     "data_confidence",
+    "ranking_data_readiness",
     "company_resolution",
+    "company_card_status",
+    "detail_event_key",
 )
 
 
@@ -365,6 +373,78 @@ def _refresh_news_core_gate(
     return read_news_discovery_queue(database_path)
 
 
+def _validate_period_views(intelligence: dict) -> None:
+    expected_periods = [("daily", 24), ("weekly", 168), ("monthly", 720)]
+    if intelligence.get("ranking_default_period") != "weekly":
+        raise ValueError("weekly must remain the default ranking period")
+    periods = intelligence.get("ranking_periods")
+    views = intelligence.get("ranking_views")
+    if not isinstance(periods, list) or not isinstance(views, dict):
+        raise ValueError("ranking periods and views are required")
+    if [
+        (period.get("key"), (period.get("window") or {}).get("hours"))
+        for period in periods
+    ] != expected_periods or set(views) != {key for key, _ in expected_periods}:
+        raise ValueError("ranking periods must be daily=24h, weekly=7d and monthly=30d")
+    observed_at = (intelligence.get("window") or {}).get("to")
+    for key, hours in expected_periods:
+        view = views[key]
+        window = view.get("window") or {}
+        if (
+            view.get("key") != key
+            or view.get("default") is not (key == "weekly")
+            or window.get("to") != observed_at
+            or window.get("hours") != hours
+            or window.get("score_history_hours") != hours
+            or window.get("lifecycle_baseline_days") != 60
+            or view.get("company_count_affects_rank") is not False
+            or view.get("company_detail_policy") != "shared_by_detail_event_key"
+        ):
+            raise ValueError(f"invalid ranking period metadata: {key}")
+        ranking = view.get("unified_ranking")
+        trend_top10 = view.get("trend_top10")
+        if not isinstance(ranking, list) or not isinstance(trend_top10, list):
+            raise ValueError(f"ranking view arrays are required: {key}")
+        if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
+            raise ValueError(f"ranking view ranks must be continuous: {key}")
+        if [item.get("score") for item in ranking] != sorted(
+            (item.get("score") for item in ranking), reverse=True
+        ):
+            raise ValueError(f"ranking view scores must be descending: {key}")
+        if any(
+            item.get("detail_event_key") != item.get("event_key")
+            or not item.get("latest_source_ranks")
+            or "companies" in item
+            or "company_candidates" in item
+            for item in ranking
+        ):
+            raise ValueError(f"period views must use shared current trend details: {key}")
+        main = [item for item in ranking if item.get("lane") == "main"]
+        if [item.get("main_rank") for item in main] != list(range(1, len(main) + 1)):
+            raise ValueError(f"period main ranks must be continuous: {key}")
+        if any(
+            item.get("main_rank") is not None
+            for item in ranking
+            if item.get("lane") != "main"
+        ) or trend_top10 != main[:10]:
+            raise ValueError(f"period trend_top10 must be main-lane score order: {key}")
+
+    weekly = views["weekly"]
+    top_level = intelligence.get("unified_ranking") or []
+    if [
+        (item.get("event_key"), item.get("rank"), item.get("score"))
+        for item in weekly["unified_ranking"]
+    ] != [
+        (item.get("event_key"), item.get("rank"), item.get("score"))
+        for item in top_level
+    ]:
+        raise ValueError("top-level unified ranking must be the hydrated weekly alias")
+    if [item.get("event_key") for item in weekly["trend_top10"]] != [
+        item.get("event_key") for item in intelligence.get("trend_top10") or []
+    ]:
+        raise ValueError("top-level trend_top10 must be the hydrated weekly alias")
+
+
 def _validate_contract(intelligence: dict, metadata: dict, status: dict | None = None) -> None:
     documents = [intelligence, metadata] + ([status] if status is not None else [])
     if any(document.get("mode") != "live" for document in documents):
@@ -388,6 +468,7 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         raise ValueError("Production rank sources must be X and Google Trends only")
     if "trends_mcp_used" in collection or "generated" in collection:
         raise ValueError("Legacy collection flags are not allowed in the v3 contract")
+    _validate_period_views(intelligence)
     ranking = intelligence.get("unified_ranking", [])
     if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
         raise ValueError("Unified ranking must have continuous ranks")
@@ -501,6 +582,14 @@ def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
         rankings.get("observed_at"),
     ) != identity:
         raise ValueError("frontend rankings identity mismatch")
+    _validate_period_views({
+        "window": {"to": rankings.get("observed_at")},
+        "ranking_default_period": rankings.get("ranking_default_period"),
+        "ranking_periods": rankings.get("ranking_periods"),
+        "ranking_views": rankings.get("ranking_views"),
+        "unified_ranking": rankings.get("unified_ranking"),
+        "trend_top10": rankings.get("trend_top10"),
+    })
 
     detail_index = bundle.get("trend_index") or []
     if len(detail_index) != int(bundle.get("trend_count") or -1):
@@ -582,6 +671,30 @@ def _write_frontend_delivery(
         "generated_at": generated_at,
         "observed_at": observed_at,
         "mode": "live",
+        "ranking_default_period": intelligence.get("ranking_default_period"),
+        "ranking_periods": intelligence.get("ranking_periods") or [],
+        "ranking_views": {
+            key: {
+                "key": view.get("key"),
+                "label": view.get("label"),
+                "default": view.get("default"),
+                "window": view.get("window"),
+                "formula_version": view.get("formula_version"),
+                "data_readiness": view.get("data_readiness"),
+                "company_detail_policy": view.get("company_detail_policy"),
+                "company_count_affects_rank": view.get("company_count_affects_rank"),
+                "unified_ranking": [
+                    _ranking_summary(item)
+                    for item in view.get("unified_ranking") or []
+                ],
+                "trend_top10": [
+                    _ranking_summary(item)
+                    for item in view.get("trend_top10") or []
+                ],
+            }
+            for key, view in (intelligence.get("ranking_views") or {}).items()
+        },
+        "ranking_top_level_alias": intelligence.get("ranking_top_level_alias"),
         "unified_ranking": [_ranking_summary(item) for item in ranking],
         "public_top10": [
             _ranking_summary(item) for item in intelligence.get("public_top10") or []

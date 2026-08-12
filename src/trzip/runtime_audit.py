@@ -295,6 +295,7 @@ def _audit_frontend_delivery(
         ]
         if published_keys != expected_keys:
             report.fail("frontend_rankings_order_mismatch")
+        _audit_period_rankings(rankings, report)
 
     detail_index = bundle.get("trend_index") or []
     expected_count = len(intelligence.get("unified_ranking") or [])
@@ -347,7 +348,85 @@ def _audit_frontend_delivery(
     }
 
 
+def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) -> None:
+    expected = [("daily", 24), ("weekly", 168), ("monthly", 720)]
+    periods = intelligence.get("ranking_periods")
+    views = intelligence.get("ranking_views")
+    failures = 0
+    if (
+        intelligence.get("ranking_default_period") != "weekly"
+        or not isinstance(periods, list)
+        or not isinstance(views, dict)
+        or [
+            (item.get("key"), (item.get("window") or {}).get("hours"))
+            for item in (periods or [])
+        ] != expected
+        or set(views or {}) != {key for key, _ in expected}
+    ):
+        report.fail("ranking_period_contract_invalid")
+        return
+    period_counts: dict[str, int] = {}
+    for key, hours in expected:
+        view = views[key]
+        ranking = view.get("unified_ranking")
+        top10 = view.get("trend_top10")
+        window = view.get("window") or {}
+        if (
+            not isinstance(ranking, list)
+            or not isinstance(top10, list)
+            or window.get("hours") != hours
+            or window.get("score_history_hours") != hours
+            or window.get("lifecycle_baseline_days") != 60
+            or view.get("company_count_affects_rank") is not False
+            or view.get("company_detail_policy") != "shared_by_detail_event_key"
+        ):
+            failures += 1
+            continue
+        if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
+            failures += 1
+        if [item.get("score") for item in ranking] != sorted(
+            (item.get("score") for item in ranking), reverse=True
+        ):
+            failures += 1
+        if any(
+            item.get("detail_event_key") != item.get("event_key")
+            or not item.get("latest_source_ranks")
+            or "companies" in item
+            or "company_candidates" in item
+            for item in ranking
+        ):
+            failures += 1
+        main = [item for item in ranking if item.get("lane") == "main"]
+        if (
+            [item.get("main_rank") for item in main] != list(range(1, len(main) + 1))
+            or top10 != main[:10]
+        ):
+            failures += 1
+        period_counts[key] = len(ranking)
+    weekly = views["weekly"]
+    if [
+        (item.get("event_key"), item.get("rank"), item.get("score"))
+        for item in weekly.get("unified_ranking") or []
+    ] != [
+        (item.get("event_key"), item.get("rank"), item.get("score"))
+        for item in intelligence.get("unified_ranking") or []
+    ]:
+        failures += 1
+    if [item.get("event_key") for item in weekly.get("trend_top10") or []] != [
+        item.get("event_key") for item in intelligence.get("trend_top10") or []
+    ]:
+        failures += 1
+    if failures:
+        report.fail("ranking_period_integrity_error")
+    report.metrics["ranking_periods"] = {
+        "default": "weekly",
+        "counts": period_counts,
+        "failure_count": failures,
+    }
+
+
 def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
+    _audit_period_rankings(intelligence, report)
     unified = intelligence.get("unified_ranking")
     trend_top10 = intelligence.get("trend_top10")
     public_top10 = intelligence.get("public_top10")

@@ -1000,3 +1000,43 @@ def test_unresearched_person_expression_stays_zero_candidate_and_enters_queue(tm
     queue = result["ontology_enrichment_queue"][0]
     assert queue["lookup_status"] == "no_reviewed_ontology_match"
     assert queue["research_stages"][-1] == "team_review"
+
+
+def test_intelligence_exposes_daily_weekly_monthly_current_only_views(tmp_path):
+    target = tmp_path / "period-ranking-views.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    rows = []
+    for age in range(30):
+        stamp = (at - timedelta(hours=age)).isoformat()
+        rows.extend([
+            HourlyObservation(stamp, "x", "말복", 1, 100, "observed"),
+            HourlyObservation(stamp, "google_trends", "말복", 1, 100, "observed"),
+        ])
+    upsert(rows, target)
+
+    result = build_intelligence(at, hours=1, path=target)
+
+    assert result["ranking_default_period"] == "weekly"
+    assert [period["key"] for period in result["ranking_periods"]] == [
+        "daily", "weekly", "monthly",
+    ]
+    assert [period["window"]["hours"] for period in result["ranking_periods"]] == [
+        24, 168, 720,
+    ]
+    assert set(result["ranking_views"]) == {"daily", "weekly", "monthly"}
+    for key, view in result["ranking_views"].items():
+        assert view["key"] == key
+        assert view["company_count_affects_rank"] is False
+        assert view["company_detail_policy"] == "shared_by_detail_event_key"
+        assert view["unified_ranking"][0]["detail_event_key"] == "말복"
+        assert "companies" not in view["unified_ranking"][0]
+        assert view["trend_top10"] == [view["unified_ranking"][0]]
+    weekly = result["ranking_views"]["weekly"]
+    assert [item["event_key"] for item in weekly["unified_ranking"]] == [
+        item["event_key"] for item in result["unified_ranking"]
+    ]
+    assert [item["score"] for item in weekly["unified_ranking"]] == [
+        item["score"] for item in result["unified_ranking"]
+    ]
+    assert result["ranking_views"]["daily"]["data_readiness"]["status"] == "ready"
+    assert result["ranking_views"]["monthly"]["data_readiness"]["status"] == "provisional_history"

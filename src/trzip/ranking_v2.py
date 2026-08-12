@@ -23,6 +23,28 @@ from typing import Any, Iterable, Mapping, Sequence
 
 FORMULA_VERSION = "current40_momentum20_persistence20_decay15_cross5_v2"
 DEFAULT_SOURCES = ("x", "google_trends")
+DEFAULT_RANKING_PERIOD = "weekly"
+RANKING_PERIODS = (
+    {
+        "key": "daily",
+        "label": "24시간",
+        "window_hours": 24,
+        "persistence_maturity_hours": 24,
+    },
+    {
+        "key": "weekly",
+        "label": "7일",
+        "window_hours": 168,
+        # This preserves the approved V2 top-level default contract.
+        "persistence_maturity_hours": 96,
+    },
+    {
+        "key": "monthly",
+        "label": "30일",
+        "window_hours": 720,
+        "persistence_maturity_hours": 720,
+    },
+)
 SOURCE_ALIASES = {
     "x": "x",
     "google": "google_trends",
@@ -490,6 +512,69 @@ def build_ranking_v2(
             "lifecycle_baseline_days": lifecycle_baseline_days,
             "ranking_mode": ranking_mode,
         },
+    }
+
+
+def build_period_rankings_v2(
+    observations: Iterable[Mapping[str, Any]],
+    *,
+    at: datetime,
+    expected_sources: Sequence[str] = DEFAULT_SOURCES,
+) -> dict[str, Any]:
+    """Build 24-hour, 7-day and 30-day current-only ranking views.
+
+    Every view reads the same materialised quality-eligible live ledger and
+    uses the same V2 formula.  Only its score-bearing persistence/history
+    window changes.  The 60-day baseline remains lifecycle-only in every view.
+    ``weekly`` is the compatibility/default period used by top-level output.
+    """
+
+    rows = [dict(row) for row in observations]
+    current_at = _floor_utc_hour(at)
+    views: dict[str, dict[str, Any]] = {}
+    periods: list[dict[str, Any]] = []
+    for definition in RANKING_PERIODS:
+        period_key = str(definition["key"])
+        window_hours = int(definition["window_hours"])
+        result = build_ranking_v2(
+            rows,
+            at=current_at,
+            expected_sources=expected_sources,
+            candidate_policy="current_only",
+            persistence_window_hours=window_hours,
+            persistence_maturity_hours=int(
+                definition["persistence_maturity_hours"]
+            ),
+            history_window_hours=window_hours,
+            history_half_life_hours=24.0,
+            lifecycle_baseline_days=60,
+            ranking_mode="live_observed",
+        )
+        window = {
+            "from": (current_at - timedelta(hours=window_hours - 1)).isoformat(),
+            "to": current_at.isoformat(),
+            "hours": window_hours,
+            "score_history_hours": window_hours,
+            "lifecycle_baseline_days": 60,
+        }
+        period = {
+            "key": period_key,
+            "label": str(definition["label"]),
+            "default": period_key == DEFAULT_RANKING_PERIOD,
+            "window": window,
+        }
+        periods.append(period)
+        views[period_key] = {
+            **period,
+            "formula_version": result["formula_version"],
+            "data_readiness": result["data_readiness"],
+            "parameters": result["parameters"],
+            "unified_ranking": result["ranking"],
+        }
+    return {
+        "default_period": DEFAULT_RANKING_PERIOD,
+        "periods": periods,
+        "views": views,
     }
 
 

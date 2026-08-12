@@ -42,6 +42,16 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
     ]
     assert "ranking_availability" in payload["required"]
     assert {"trend_top10", "public_top10", "company_ready_trends"} <= set(payload["required"])
+    assert {
+        "ranking_default_period", "ranking_periods", "ranking_views",
+        "ranking_top_level_alias",
+    } <= set(payload["required"])
+    assert set(payload["properties"]["ranking_views"]["required"]) == {
+        "daily", "weekly", "monthly",
+    }
+    assert payload["$defs"]["rankingView"]["properties"]["company_count_affects_rank"] == {
+        "const": False
+    }
     assert "verification_run" in payload["required"]
     assert "ranking_availability_status" in trend_required
     assert payload["properties"]["verification_run"]["properties"]["ranking_effect"] == {"const": "none"}

@@ -98,6 +98,19 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     assert [item["event_key"] for item in rankings["unified_ranking"]] == [
         item["event_key"] for item in intelligence["unified_ranking"]
     ]
+    assert rankings["ranking_default_period"] == "weekly"
+    assert [period["key"] for period in rankings["ranking_periods"]] == [
+        "daily", "weekly", "monthly",
+    ]
+    assert set(rankings["ranking_views"]) == {"daily", "weekly", "monthly"}
+    assert [
+        item["event_key"] for item in rankings["ranking_views"]["weekly"]["unified_ranking"]
+    ] == [item["event_key"] for item in rankings["unified_ranking"]]
+    assert all(
+        "companies" not in item
+        for view in rankings["ranking_views"].values()
+        for item in view["unified_ranking"]
+    )
     _validate_frontend_delivery(tmp_path / "latest", manifest)
     assert intelligence["news_discovery_queue"][0]["observed_term"] == "양즈깐루"
 

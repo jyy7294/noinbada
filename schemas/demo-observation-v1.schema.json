@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jyy7294/noinbada/schemas/demo-observation-v1.schema.json",
+  "title": "TRZIP common demo observation v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "observed_at", "source", "region", "topic",
+    "event_key", "raw_rank", "source_rank", "resolved_rank", "value",
+    "provenance", "reference_kind", "measurement_status",
+    "collector_version", "seed_observed_at", "source_payload", "related_terms",
+    "rank_resolution", "ranking_eligible", "mode", "live_eligible",
+    "ranking_effect", "quality_status", "seed_version", "field_lineage"
+  ],
+  "properties": {
+    "schema_version": {"const": "trzip-observation-v1"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "source": {"enum": ["x", "google_trends"]},
+    "region": {"const": "KR"},
+    "topic": {"type": "string", "minLength": 1},
+    "event_key": {"type": "string", "minLength": 1},
+    "raw_rank": {"type": ["integer", "null"], "minimum": 1},
+    "source_rank": {"type": "integer", "minimum": 1},
+    "resolved_rank": {"type": "integer", "minimum": 1},
+    "value": {"type": ["number", "null"]},
+    "provenance": {
+      "enum": [
+        "observed", "historical_reference", "reconstructed_reference",
+        "synthetic_backfill"
+      ]
+    },
+    "measurement_status": {
+      "enum": [
+        "measured", "measured_legacy_asset", "reconstructed_not_measured",
+        "synthetic_not_measured"
+      ]
+    },
+    "collector_version": {"type": ["string", "null"]},
+    "seed_observed_at": {"type": ["string", "null"]},
+    "source_payload": {"$ref": "#/$defs/statusValue"},
+    "related_terms": {"$ref": "#/$defs/statusValue"},
+    "ranking_eligible": {"const": true},
+    "mode": {"const": "demo_replay"},
+    "live_eligible": {"const": false},
+    "ranking_effect": {"const": "demo_replay_only"},
+    "quality_status": {"const": "eligible"},
+    "field_lineage": {
+      "type": "object",
+      "required": [
+        "observed_at", "source", "region", "topic", "event_key",
+        "raw_rank", "source_rank", "value", "collector_version",
+        "seed_observed_at", "source_payload", "related_terms"
+      ],
+      "additionalProperties": {
+        "enum": [
+          "observed", "derived", "unknown", "not_collected", "synthetic",
+          "reconstructed", "derived_from_metric_order",
+          "observed_pending_tie_resolution",
+          "reconstructed_pending_tie_resolution"
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "statusValue": {
+      "type": "object",
+      "required": ["status", "value"],
+      "properties": {
+        "status": {"enum": ["observed", "reconstructed", "unknown", "not_collected"]}
+      }
+    }
+  }
+}

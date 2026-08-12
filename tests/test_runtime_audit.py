@@ -59,12 +59,71 @@ def _write_runtime(root: Path) -> None:
             "minimum_gold_companies": 5,
         },
     }
+    period_item = {
+        key: value
+        for key, value in item.items()
+        if key not in {"companies"}
+    }
+    period_item.update({
+        "topic": "관측어",
+        "broad_category": "culture",
+        "category": "culture",
+        "current_source_position": 1.0,
+        "momentum": 0.5,
+        "persistence": 0.5,
+        "lifecycle": "sustained",
+        "lifecycle_reason": "repeated_observation",
+        "first_seen_at": "2026-08-08T19:00:00+00:00",
+        "last_seen_at": observed_at,
+        "rank_change_by_source": {"x": 0, "google_trends": 0},
+        "source_badge": "교차출처",
+        "data_confidence": {"level": "high"},
+        "ranking_data_readiness": {"status": "ready"},
+        "detail_event_key": "event:test",
+        "shared_detail_fields": ["keywords", "companies"],
+    })
+    period_definitions = [("daily", "24시간", 24), ("weekly", "7일", 168), ("monthly", "30일", 720)]
+    ranking_periods = [
+        {
+            "key": key,
+            "label": label,
+            "default": key == "weekly",
+            "window": {
+                "from": observed_at,
+                "to": observed_at,
+                "hours": hours,
+                "score_history_hours": hours,
+                "lifecycle_baseline_days": 60,
+            },
+        }
+        for key, label, hours in period_definitions
+    ]
+    ranking_views = {
+        period["key"]: {
+            **period,
+            "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+            "data_readiness": {"status": "ready"},
+            "company_detail_policy": "shared_by_detail_event_key",
+            "company_count_affects_rank": False,
+            "unified_ranking": [dict(period_item)],
+            "trend_top10": [dict(period_item)],
+        }
+        for period in ranking_periods
+    }
     intelligence = {
         "schema_version": "trzip-intelligence-v3",
         "mode": "live",
         "publication_id": publication_id,
         "generated_at": generated_at,
         "window": {"to": observed_at},
+        "ranking_default_period": "weekly",
+        "ranking_periods": ranking_periods,
+        "ranking_views": ranking_views,
+        "ranking_top_level_alias": {
+            "period": "weekly",
+            "unified_ranking": "hydrated_weekly_view",
+            "trend_top10": "hydrated_weekly_view",
+        },
         "unified_ranking": [item],
         "trend_top10": [item],
         "public_top10": [item],
@@ -244,6 +303,8 @@ def test_runtime_audit_rejects_score_and_company_evidence_breakage(tmp_path: Pat
     intelligence_path = tmp_path / "publication" / "latest" / "intelligence.json"
     intelligence = json.loads(intelligence_path.read_text(encoding="utf-8"))
     intelligence["unified_ranking"][0]["score"] = 99.0
+    intelligence["ranking_views"]["weekly"]["unified_ranking"][0]["score"] = 99.0
+    intelligence["ranking_views"]["weekly"]["trend_top10"][0]["score"] = 99.0
     broken_companies = json.loads(json.dumps(intelligence["company_ready_trends"][0]["companies"]))
     broken_companies[0]["ontology_path"] = []
     intelligence["company_ready_trends"][0]["companies"] = broken_companies

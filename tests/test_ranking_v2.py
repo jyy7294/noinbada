@@ -5,7 +5,9 @@ from datetime import UTC, datetime, timedelta
 import pytest
 
 from trzip.ranking_v2 import (
+    DEFAULT_RANKING_PERIOD,
     FORMULA_VERSION,
+    build_period_rankings_v2,
     build_ranking_v2,
     classify_lifecycle_v2,
     normalize_source_position,
@@ -260,3 +262,72 @@ def test_score_contract_is_explainable_and_component_sum_is_exact():
         5,
     ]
     assert result["data_readiness"]["status"] == "provisional_history"
+
+
+def test_period_rankings_use_one_live_ledger_and_weekly_is_default():
+    rows: list[dict] = []
+    for age in range(48):
+        stamp = AT - timedelta(hours=age)
+        rows += _snapshot(stamp, "x", "target", f"x filler {age}")
+        rows += _snapshot(stamp, "google_trends", "target", f"g filler {age}")
+
+    result = build_period_rankings_v2(rows, at=AT)
+
+    assert result["default_period"] == DEFAULT_RANKING_PERIOD == "weekly"
+    assert [period["key"] for period in result["periods"]] == [
+        "daily", "weekly", "monthly",
+    ]
+    assert [period["window"]["hours"] for period in result["periods"]] == [
+        24, 168, 720,
+    ]
+    assert all(
+        view["unified_ranking"][0]["event_key"] == "target"
+        for view in result["views"].values()
+    )
+    assert result["views"]["daily"]["data_readiness"]["status"] == "ready"
+    assert result["views"]["monthly"]["data_readiness"]["status"] == "provisional_history"
+    assert all(
+        view["parameters"]["candidate_policy"] == "current_only"
+        and view["parameters"]["lifecycle_baseline_days"] == 60
+        and view["parameters"]["ranking_mode"] == "live_observed"
+        for view in result["views"].values()
+    )
+
+
+def test_period_windows_change_score_bearing_history_but_not_current_gate():
+    rows = [
+        *_snapshot(AT, "x", "target", "current filler"),
+        *_snapshot(AT, "google_trends", "target", "current g filler"),
+        *_snapshot(AT - timedelta(days=20), "x", "target", "old filler"),
+        *_snapshot(AT - timedelta(days=20), "google_trends", "target", "old g filler"),
+        *_snapshot(AT - timedelta(hours=1), "x", "expired", "hour filler"),
+        *_snapshot(AT - timedelta(hours=1), "google_trends", "expired", "hour g filler"),
+    ]
+
+    result = build_period_rankings_v2(rows, at=AT)
+    views = result["views"]
+
+    assert all(
+        "target" in {item["event_key"] for item in view["unified_ranking"]}
+        and "expired" not in {item["event_key"] for item in view["unified_ranking"]}
+        for view in views.values()
+    )
+    daily_target = next(
+        item for item in views["daily"]["unified_ranking"]
+        if item["event_key"] == "target"
+    )
+    assert daily_target["lifecycle"]["state"] == "rebounding"
+    assert all(
+        view["unified_ranking"][0]["lifecycle_baseline"]["ranking_effect"] == "none"
+        for view in views.values()
+    )
+
+
+def test_period_rankings_reject_generated_rows_for_every_view():
+    rows = [
+        *_snapshot(AT, "x", "target"),
+        _row(AT - timedelta(hours=1), "x", "demo", 1, provenance="generated"),
+    ]
+
+    with pytest.raises(ValueError, match="generated/demo/fixture"):
+        build_period_rankings_v2(rows, at=AT)

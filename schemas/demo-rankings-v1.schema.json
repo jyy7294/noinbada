@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jyy7294/noinbada/schemas/demo-rankings-v1.schema.json",
+  "title": "TRZIP frontend demo rankings v1",
+  "type": "object",
+  "required": [
+    "schema_version", "publication_id", "generated_at", "observed_at",
+    "mode", "live_eligible", "ranking_effect", "data_window",
+    "score_window", "lifecycle_baseline", "default_view", "views",
+    "unified_ranking", "trend_top10", "public_top10", "research_event_catalog",
+    "company_ready_trends", "daily_snapshots", "trend_detail_index"
+  ],
+  "properties": {
+    "schema_version": {"const": "trzip-rankings-v1"},
+    "mode": {"const": "demo_replay"},
+    "live_eligible": {"const": false},
+    "ranking_effect": {"const": "none"},
+    "default_view": {"const": "weekly"},
+    "research_event_catalog": {
+      "type": "object",
+      "required": ["path", "row_count", "ranking_eligible", "ranking_effect"],
+      "properties": {
+        "row_count": {"type": "integer", "minimum": 0},
+        "ranking_eligible": {"const": false},
+        "ranking_effect": {"const": "none"}
+      }
+    },
+    "views": {
+      "type": "object",
+      "required": ["daily", "weekly", "monthly"],
+      "properties": {
+        "daily": {"$ref": "#/$defs/view24"},
+        "weekly": {"$ref": "#/$defs/view168"},
+        "monthly": {"$ref": "#/$defs/view720"}
+      }
+    },
+    "daily_snapshots": {"type": "array", "minItems": 60, "maxItems": 60}
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": [
+        "event_key", "display_name", "rank", "main_rank", "score",
+        "score_components", "previous_period_rank", "previous_period_score",
+        "rank_change", "score_change", "status"
+      ]
+    },
+    "view": {
+      "type": "object",
+      "required": [
+        "window_hours", "window_days", "comparison", "formula_version",
+        "data_readiness", "unified_ranking", "trend_top10"
+      ],
+      "properties": {
+        "formula_version": {"const": "current40_momentum20_persistence20_decay15_cross5_v2"},
+        "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/entry"}},
+        "trend_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/entry"}}
+      }
+    },
+    "view24": {
+      "allOf": [
+        {"$ref": "#/$defs/view"},
+        {"properties": {"window_hours": {"const": 24}, "window_days": {"const": 1}}}
+      ]
+    },
+    "view168": {
+      "allOf": [
+        {"$ref": "#/$defs/view"},
+        {"properties": {"window_hours": {"const": 168}, "window_days": {"const": 7}}}
+      ]
+    },
+    "view720": {
+      "allOf": [
+        {"$ref": "#/$defs/view"},
+        {"properties": {"window_hours": {"const": 720}, "window_days": {"const": 30}}}
+      ]
+    }
+  }
+}

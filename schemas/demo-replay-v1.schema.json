@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jyy7294/noinbada/schemas/demo-replay-v1.schema.json",
+  "title": "TRZIP isolated 60-day demo replay v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema_version", "publication_id", "generated_at", "observed_at",
+    "mode", "demo_label", "live_eligible", "ranking_effect",
+    "rank_sources", "data_window_days", "score_window_days",
+    "lifecycle_baseline_days", "provenance_policy", "data_lineage",
+    "research_event_catalog", "frontend_delivery"
+  ],
+  "properties": {
+    "schema_version": {"const": "trzip-demo-replay-v1"},
+    "publication_id": {"type": "string", "pattern": "^demo-[0-9a-f]{32}$"},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "observed_at": {"type": "string", "format": "date-time"},
+    "mode": {"const": "demo_replay"},
+    "demo_label": {"const": "7일 순위 시뮬레이션 데모"},
+    "live_eligible": {"const": false},
+    "ranking_effect": {"const": "none"},
+    "rank_sources": {
+      "type": "array",
+      "prefixItems": [{"const": "x"}, {"const": "google_trends"}],
+      "items": false
+    },
+    "data_window_days": {"const": 60},
+    "score_window_days": {"const": 7},
+    "lifecycle_baseline_days": {"const": 60},
+    "provenance_policy": {
+      "type": "object",
+      "required": ["allowed", "row_level_provenance_preserved", "live_rank_insertion"],
+      "properties": {
+        "allowed": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["observed", "historical_reference", "reconstructed_reference", "synthetic_backfill"]}
+        },
+        "row_level_provenance_preserved": {"const": true},
+        "live_rank_insertion": {"const": "forbidden"}
+      }
+    },
+    "data_lineage": {
+      "type": "object",
+      "required": [
+        "row_count", "by_provenance", "by_source",
+        "by_source_and_provenance", "measured_rows_are_not_synthetic",
+        "synthetic_rows_are_not_claimed_as_measured"
+      ],
+      "properties": {
+        "row_count": {"type": "integer", "minimum": 1},
+        "measured_rows_are_not_synthetic": {"const": true},
+        "synthetic_rows_are_not_claimed_as_measured": {"const": true},
+        "legacy_operational_observed_rows": {
+          "type": "object",
+          "required": ["total", "by_source", "values_preserved", "raw_rank_preserved", "duplicate_rank_policy"],
+          "properties": {
+            "total": {"type": "integer", "minimum": 0},
+            "values_preserved": {"const": true},
+            "raw_rank_preserved": {"const": true}
+          }
+        }
+      }
+    },
+    "research_event_catalog": {
+      "type": "object",
+      "required": [
+        "path", "row_count", "provenance", "measurement_status",
+        "ranking_eligible", "ranking_effect"
+      ],
+      "properties": {
+        "row_count": {"type": "integer", "minimum": 0},
+        "provenance": {"const": "research_reconstructed"},
+        "measurement_status": {"const": "event_timing_evidence_only"},
+        "ranking_eligible": {"const": false},
+        "ranking_effect": {"const": "none"}
+      }
+    }
+  }
+}

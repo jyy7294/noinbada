@@ -1,0 +1,410 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.207207,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 8
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "kbo 리그",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "kbo 리그",
+    "first_seen_at": "2026-08-12T14:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/trends/trend-780eef2691534843c701f1b4.json",
+    "keywords": [
+      {
+        "affects_score": false,
+        "observed_hours": 6,
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "source": [
+          "google_trends"
+        ],
+        "status": "observed_related_query",
+        "text": "오카다"
+      },
+      {
+        "affects_score": false,
+        "observed_hours": 1,
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "source": [
+          "google_trends"
+        ],
+        "status": "observed_related_query",
+        "text": "염경엽"
+      }
+    ],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 177
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T14:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_days": 1,
+      "observed_hours": 8,
+      "previous_seen_at": "2026-08-12T21:00:00+00:00",
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "seen_before_current_hour": true,
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 197,
+    "momentum": 0.603604,
+    "observed_representative_term": "kbo 리그",
+    "persistence": 0.047619,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed"
+    ],
+    "rank": 197,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "decayed_history": {
+        "status": "ready"
+      },
+      "is_ready": false,
+      "momentum": {
+        "comparable_sources": [
+          "google_trends"
+        ],
+        "neutral_applied": false,
+        "status": "ready",
+        "unavailable_sources": []
+      },
+      "persistence": {
+        "maturity_required_hours": 96,
+        "status": "ready"
+      },
+      "status": "provisional",
+      "warnings": [
+        "single_source_current_observation"
+      ]
+    },
+    "ranking_views": {
+      "daily": {
+        "display_name": "kbo 리그",
+        "event_key": "kbo 리그",
+        "main_rank": 197,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 197,
+        "rank_change": null,
+        "score": 24.6,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 24.6,
+          "cross_source_points": 0.0,
+          "current_points": 8.29,
+          "decayed_history_points": 2.57,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 12.07,
+          "persistence_points": 1.67,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 24.6
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "display_name": "kbo 리그",
+        "event_key": "kbo 리그",
+        "main_rank": 197,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 197,
+        "rank_change": null,
+        "score": 22.48,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 22.48,
+          "cross_source_points": 0.0,
+          "current_points": 8.29,
+          "decayed_history_points": 1.28,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 12.07,
+          "persistence_points": 0.84,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 22.48
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "display_name": "kbo 리그",
+        "event_key": "kbo 리그",
+        "main_rank": 197,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 197,
+        "rank_change": null,
+        "score": 22.6,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 22.6,
+          "cross_source_points": 0.0,
+          "current_points": 8.29,
+          "decayed_history_points": 1.29,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 12.07,
+          "persistence_points": 0.95,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 22.6
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "kbo 리그"
+    ],
+    "score": 22.6,
+    "score_change": null,
+    "score_components": {
+      "component_subtotal_points": 22.6,
+      "cross_source_points": 0.0,
+      "current_points": 8.29,
+      "decayed_history_points": 1.29,
+      "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+      "freshness_multiplier": 1.0,
+      "momentum_points": 12.07,
+      "persistence_points": 0.95,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 22.6
+    },
+    "score_explanation": {
+      "components": [
+        {
+          "basis": "mean source-normalised current position over observed current sources",
+          "key": "current",
+          "max_points": 40,
+          "points": 8.29
+        },
+        {
+          "basis": "exact previous-hour position change; neutral 10 points when no exact comparison exists",
+          "key": "momentum",
+          "max_points": 20,
+          "points": 12.07
+        },
+        {
+          "basis": "mean source-specific presence rate multiplied by source-specific history maturity",
+          "key": "persistence",
+          "max_points": 20,
+          "points": 0.95
+        },
+        {
+          "basis": "observed history with 24h exponential half-life",
+          "key": "decayed_history",
+          "max_points": 15,
+          "points": 1.29
+        },
+        {
+          "basis": "5 points only when the event is currently observed by both X and Google",
+          "key": "cross_source",
+          "max_points": 5,
+          "points": 0.0
+        }
+      ],
+      "formula": "40 current + 20 exact-hour momentum + 20 per-source persistence + 15 exponentially decayed history + 5 explicit cross-source",
+      "freshness": {
+        "basis": "1 while currently observed; otherwise exponential cooling decay with 6h half-life",
+        "multiplier": 1.0
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 68,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 68,
+        "source": "google_trends",
+        "source_rank": 68,
+        "topic": "kbo 리그",
+        "value": 33.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 81,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 81,
+        "source": "google_trends",
+        "source_rank": 81,
+        "topic": "kbo 리그",
+        "value": 20.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 98,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 98,
+        "source": "google_trends",
+        "source_rank": 98,
+        "topic": "kbo 리그",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 104,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 104,
+        "source": "google_trends",
+        "source_rank": 104,
+        "topic": "kbo 리그",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 106,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 106,
+        "source": "google_trends",
+        "source_rank": 106,
+        "topic": "kbo 리그",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 110,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 110,
+        "source": "google_trends",
+        "source_rank": 110,
+        "topic": "kbo 리그",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 133,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 133,
+        "source": "google_trends",
+        "source_rank": 133,
+        "topic": "kbo 리그",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 177,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 177,
+        "source": "google_trends",
+        "source_rank": 177,
+        "topic": "kbo 리그",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "current_positions": {
+        "google_trends": 0.207207
+      },
+      "decayed_history": {
+        "google_trends": {
+          "coverage": 1.0,
+          "eligible_past_hours": 168,
+          "eligible_weight": 33.86047,
+          "maturity": 1.0,
+          "observed_past_hours": 7,
+          "signal": 0.086327,
+          "weighted_evidence": 2.923085,
+          "weighted_presence": 0.086327
+        }
+      },
+      "momentum_deltas": {
+        "google_trends": 0.207207
+      },
+      "persistence": {
+        "google_trends": {
+          "adjusted_signal": 0.047619,
+          "eligible_hours": 168,
+          "maturity": 1.0,
+          "observed_hours": 8,
+          "presence_rate": 0.047619
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "kbo 리그"
+  }
+}

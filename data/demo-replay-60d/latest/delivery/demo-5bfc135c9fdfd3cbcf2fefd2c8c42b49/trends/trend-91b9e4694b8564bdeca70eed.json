@@ -1,0 +1,387 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.527027,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 8
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "총장",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "총장",
+    "first_seen_at": "2026-08-12T14:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/trends/trend-91b9e4694b8564bdeca70eed.json",
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 106
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T14:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_days": 1,
+      "observed_hours": 8,
+      "previous_seen_at": "2026-08-12T21:00:00+00:00",
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "seen_before_current_hour": true,
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 113,
+    "momentum": 0.763514,
+    "observed_representative_term": "총장",
+    "persistence": 0.047619,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed"
+    ],
+    "rank": 113,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "decayed_history": {
+        "status": "ready"
+      },
+      "is_ready": false,
+      "momentum": {
+        "comparable_sources": [
+          "google_trends"
+        ],
+        "neutral_applied": false,
+        "status": "ready",
+        "unavailable_sources": []
+      },
+      "persistence": {
+        "maturity_required_hours": 96,
+        "status": "ready"
+      },
+      "status": "provisional",
+      "warnings": [
+        "single_source_current_observation"
+      ]
+    },
+    "ranking_views": {
+      "daily": {
+        "display_name": "총장",
+        "event_key": "총장",
+        "main_rank": 110,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 110,
+        "rank_change": null,
+        "score": 40.89,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 40.89,
+          "cross_source_points": 0.0,
+          "current_points": 21.08,
+          "decayed_history_points": 2.87,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 15.27,
+          "persistence_points": 1.67,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 40.89
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "display_name": "총장",
+        "event_key": "총장",
+        "main_rank": 114,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 114,
+        "rank_change": null,
+        "score": 38.62,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 38.62,
+          "cross_source_points": 0.0,
+          "current_points": 21.08,
+          "decayed_history_points": 1.43,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 15.27,
+          "persistence_points": 0.84,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 38.62
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "display_name": "총장",
+        "event_key": "총장",
+        "main_rank": 113,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 113,
+        "rank_change": null,
+        "score": 38.74,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 38.74,
+          "cross_source_points": 0.0,
+          "current_points": 21.08,
+          "decayed_history_points": 1.44,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 15.27,
+          "persistence_points": 0.95,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 38.74
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "총장"
+    ],
+    "score": 38.74,
+    "score_change": null,
+    "score_components": {
+      "component_subtotal_points": 38.74,
+      "cross_source_points": 0.0,
+      "current_points": 21.08,
+      "decayed_history_points": 1.44,
+      "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+      "freshness_multiplier": 1.0,
+      "momentum_points": 15.27,
+      "persistence_points": 0.95,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 38.74
+    },
+    "score_explanation": {
+      "components": [
+        {
+          "basis": "mean source-normalised current position over observed current sources",
+          "key": "current",
+          "max_points": 40,
+          "points": 21.08
+        },
+        {
+          "basis": "exact previous-hour position change; neutral 10 points when no exact comparison exists",
+          "key": "momentum",
+          "max_points": 20,
+          "points": 15.27
+        },
+        {
+          "basis": "mean source-specific presence rate multiplied by source-specific history maturity",
+          "key": "persistence",
+          "max_points": 20,
+          "points": 0.95
+        },
+        {
+          "basis": "observed history with 24h exponential half-life",
+          "key": "decayed_history",
+          "max_points": 15,
+          "points": 1.44
+        },
+        {
+          "basis": "5 points only when the event is currently observed by both X and Google",
+          "key": "cross_source",
+          "max_points": 5,
+          "points": 0.0
+        }
+      ],
+      "formula": "40 current + 20 exact-hour momentum + 20 per-source persistence + 15 exponentially decayed history + 5 explicit cross-source",
+      "freshness": {
+        "basis": "1 while currently observed; otherwise exponential cooling decay with 6h half-life",
+        "multiplier": 1.0
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 65,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 65,
+        "source": "google_trends",
+        "source_rank": 65,
+        "topic": "총장",
+        "value": 36.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 80,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 80,
+        "source": "google_trends",
+        "source_rank": 80,
+        "topic": "총장",
+        "value": 21.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 86,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 86,
+        "source": "google_trends",
+        "source_rank": 86,
+        "topic": "총장",
+        "value": 15.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 95,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 95,
+        "source": "google_trends",
+        "source_rank": 95,
+        "topic": "총장",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 104,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 104,
+        "source": "google_trends",
+        "source_rank": 104,
+        "topic": "총장",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 106,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 106,
+        "source": "google_trends",
+        "source_rank": 106,
+        "topic": "총장",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 89,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 89,
+        "source": "google_trends",
+        "source_rank": 89,
+        "topic": "총장",
+        "value": 12.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 106,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 106,
+        "source": "google_trends",
+        "source_rank": 106,
+        "topic": "총장",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "current_positions": {
+        "google_trends": 0.527027
+      },
+      "decayed_history": {
+        "google_trends": {
+          "coverage": 1.0,
+          "eligible_past_hours": 168,
+          "eligible_weight": 33.86047,
+          "maturity": 1.0,
+          "observed_past_hours": 7,
+          "signal": 0.096301,
+          "weighted_evidence": 3.260794,
+          "weighted_presence": 0.096301
+        }
+      },
+      "momentum_deltas": {
+        "google_trends": 0.527027
+      },
+      "persistence": {
+        "google_trends": {
+          "adjusted_signal": 0.047619,
+          "eligible_hours": 168,
+          "maturity": 1.0,
+          "observed_hours": 8,
+          "presence_rate": 0.047619
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "총장"
+  }
+}

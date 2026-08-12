@@ -1,0 +1,2353 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "content",
+    "category": "screen_content",
+    "companies": [
+      {
+        "business_features": [],
+        "company": "CJ ENM",
+        "company_role": "직접 기업",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 035760",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "company_official_ott_catalog",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "TVING 나는 SOLO 몰아보기",
+            "url": "https://www.tving.com/contents/P001628663"
+          },
+          {
+            "evidence_type": "official_filing_controlled_ott_and_listing",
+            "published_at": "2026-03-18",
+            "review_status": "approved",
+            "title": "CJ ENM 사업보고서 티빙 종속회사·종목코드 035760",
+            "url": "https://kind.krx.co.kr/external/2026/03/18/002094/20260318009785/11011.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSDAQ",
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "CJ ENM",
+          "english_name": "CJ ENM CO., Ltd.",
+          "established_date": "19941216",
+          "homepage": "https://www.cjmall.com",
+          "legal_name": "(주)씨제이이엔엠",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "035760",
+          "stock_name": "CJ ENM"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2026-03-18",
+            "edge_type": "distributes_via_controlled_ott",
+            "evidence_type": [
+              "company_official_ott_catalog",
+              "official_filing_controlled_ott_and_listing"
+            ],
+            "evidence_urls": [
+              "https://www.tving.com/contents/P001628663",
+              "https://kind.krx.co.kr/external/2026/03/18/002094/20260318009785/11011.htm"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "CJ ENM"
+          },
+          {
+            "as_of": "2026-03-18",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_filing_controlled_ott_and_listing"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/18/002094/20260318009785/11011.htm"
+            ],
+            "from": "CJ ENM",
+            "review_status": "approved",
+            "to": "035760 (KOSDAQ)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → CJ ENM → 035760 (KOSDAQ)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "직접 제조·브랜드·IP",
+        "relation_display_type": "직접 관계",
+        "relation_horizon": "근거 확인 직접 관계",
+        "relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_type": "distributes_via_controlled_ott",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → CJ ENM → 035760 (KOSDAQ)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "035760",
+        "strength": "direct",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "core",
+        "verification_status": "ontology_evidence"
+      },
+      {
+        "business_features": [],
+        "company": "KT",
+        "company_role": "플랫폼·채널",
+        "company_summary": "KOSPI 상장기업, 종목코드 030200",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "official_filing_broadcast_channel_operation",
+            "published_at": "2026-06-17",
+            "review_status": "approved",
+            "title": "KT스카이라이프 투자설명서 ENA 채널 운영",
+            "url": "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm"
+          },
+          {
+            "evidence_type": "official_listing_and_control_record",
+            "published_at": "2026-06-02",
+            "review_status": "approved",
+            "title": "KT스카이라이프 회사코드 053210 및 KT 최대주주 확인",
+            "url": "https://kind.krx.co.kr/external/2026/06/02/000282/20260602000639/00636.htm"
+          },
+          {
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-13",
+            "review_status": "approved",
+            "title": "KT 유가증권상장법인 회사코드 030200",
+            "url": "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSPI",
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "KT",
+          "english_name": "KT CORPORATION",
+          "established_date": "19811210",
+          "homepage": "https://www.kt.com",
+          "legal_name": "(주)케이티",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "030200",
+          "stock_name": "케이티"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2026-06-17",
+            "edge_type": "parent_company_exposure_via_broadcaster",
+            "evidence_type": [
+              "company_official_program_schedule",
+              "official_filing_broadcast_channel_operation",
+              "official_listing_and_control_record"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/",
+              "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm",
+              "https://kind.krx.co.kr/external/2026/06/02/000282/20260602000639/00636.htm"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "KT"
+          },
+          {
+            "as_of": "2026-05-13",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm"
+            ],
+            "from": "KT",
+            "review_status": "approved",
+            "to": "030200 (KOSPI)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "유통·플랫폼·채널",
+        "relation_display_type": "가치사슬",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_type": "parent_company_exposure_via_broadcaster",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "030200",
+        "strength": "indirect",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "downstream",
+        "verification_status": "ontology_evidence"
+      },
+      {
+        "business_features": [],
+        "company": "KT스카이라이프",
+        "company_role": "직접 기업",
+        "company_summary": "KOSPI 상장기업, 종목코드 053210",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "official_filing_broadcast_channel_operation",
+            "published_at": "2026-06-17",
+            "review_status": "approved",
+            "title": "KT스카이라이프 투자설명서 ENA 채널 운영",
+            "url": "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm"
+          },
+          {
+            "evidence_type": "official_listing_and_control_record",
+            "published_at": "2026-06-02",
+            "review_status": "approved",
+            "title": "KT스카이라이프 회사코드 053210 및 KT 최대주주 확인",
+            "url": "https://kind.krx.co.kr/external/2026/06/02/000282/20260602000639/00636.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSPI",
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "KT스카이라이프",
+          "english_name": "KT Skylife Co.,Ltd.",
+          "established_date": "20010112",
+          "homepage": "https://www.ktskylife.co.kr",
+          "legal_name": "(주)케이티스카이라이프",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "053210",
+          "stock_name": "케이티스카이라이프"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2026-06-17",
+            "edge_type": "broadcasts_via_consolidated_channel",
+            "evidence_type": [
+              "company_official_program_schedule",
+              "official_filing_broadcast_channel_operation"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/",
+              "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "KT스카이라이프"
+          },
+          {
+            "as_of": "2026-06-02",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_listing_and_control_record"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/06/02/000282/20260602000639/00636.htm"
+            ],
+            "from": "KT스카이라이프",
+            "review_status": "approved",
+            "to": "053210 (KOSPI)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → KT스카이라이프 → 053210 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "직접 제조·브랜드·IP",
+        "relation_display_type": "직접 관계",
+        "relation_horizon": "근거 확인 직접 관계",
+        "relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_type": "broadcasts_via_consolidated_channel",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → KT스카이라이프 → 053210 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "053210",
+        "strength": "direct",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "core",
+        "verification_status": "ontology_evidence"
+      },
+      {
+        "business_features": [],
+        "company": "SBS",
+        "company_role": "직접 기업",
+        "company_summary": "KOSPI 상장기업, 종목코드 034120",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "official_filing_consolidated_broadcast_channel",
+            "published_at": "2026-05-15",
+            "review_status": "approved",
+            "title": "SBS 2026년 1분기보고서 스튜디오프리즘·SBS Plus",
+            "url": "https://kind.krx.co.kr/external/2026/05/15/001665/20260515003680/11013.htm"
+          },
+          {
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-29",
+            "review_status": "approved",
+            "title": "SBS 유가증권상장법인 회사코드 034120",
+            "url": "https://kind.krx.co.kr/external/2026/05/29/002084/20260529003326/00636.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSPI",
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "SBS",
+          "english_name": "SEOUL BROADCASTING SYSTEM",
+          "established_date": "19901114",
+          "homepage": "https://www.sbs.co.kr",
+          "legal_name": "(주)SBS",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "034120",
+          "stock_name": "SBS"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2026-05-15",
+            "edge_type": "broadcasts_via_consolidated_channel",
+            "evidence_type": [
+              "company_official_program_schedule",
+              "official_filing_consolidated_broadcast_channel"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/",
+              "https://kind.krx.co.kr/external/2026/05/15/001665/20260515003680/11013.htm"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "SBS"
+          },
+          {
+            "as_of": "2026-05-29",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/29/002084/20260529003326/00636.htm"
+            ],
+            "from": "SBS",
+            "review_status": "approved",
+            "to": "034120 (KOSPI)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → SBS → 034120 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "직접 제조·브랜드·IP",
+        "relation_display_type": "직접 관계",
+        "relation_horizon": "근거 확인 직접 관계",
+        "relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_type": "broadcasts_via_consolidated_channel",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → SBS → 034120 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "034120",
+        "strength": "direct",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "core",
+        "verification_status": "ontology_evidence"
+      },
+      {
+        "business_features": [],
+        "company": "SK스퀘어",
+        "company_role": "플랫폼·채널",
+        "company_summary": "KOSPI 상장기업, 종목코드 402340",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "company_official_content_procurement_history",
+            "published_at": "2022-02-17",
+            "review_status": "approved",
+            "title": "Wavve 나는 SOLO 콘텐츠 수급 사례",
+            "url": "https://wavve-comm.tistory.com/111"
+          },
+          {
+            "evidence_type": "company_official_portfolio_page",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SK스퀘어 콘텐츠웨이브 포트폴리오",
+            "url": "https://www.sksquare.com/kor/company/team.do"
+          },
+          {
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-06-08",
+            "review_status": "approved",
+            "title": "SK스퀘어 유가증권상장법인 회사코드 402340",
+            "url": "https://kind.krx.co.kr/external/2026/06/08/000895/20260608001821/00637.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSPI",
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "SK스퀘어",
+          "english_name": "SK Square Co., Ltd.",
+          "established_date": "20211102",
+          "homepage": "https://www.sksquare.com",
+          "legal_name": "에스케이스퀘어 주식회사",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "402340",
+          "stock_name": "SK스퀘어"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2022-02-17",
+            "edge_type": "portfolio_exposure_via_ott_content_history",
+            "evidence_type": [
+              "company_official_content_procurement_history",
+              "company_official_portfolio_page"
+            ],
+            "evidence_urls": [
+              "https://wavve-comm.tistory.com/111",
+              "https://www.sksquare.com/kor/company/team.do"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "SK스퀘어"
+          },
+          {
+            "as_of": "2026-06-08",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/06/08/000895/20260608001821/00637.htm"
+            ],
+            "from": "SK스퀘어",
+            "review_status": "approved",
+            "to": "402340 (KOSPI)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "유통·플랫폼·채널",
+        "relation_display_type": "가치사슬",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_type": "portfolio_exposure_via_ott_content_history",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "402340",
+        "strength": "indirect",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "downstream",
+        "verification_status": "ontology_evidence"
+      }
+    ],
+    "company_candidates": [
+      {
+        "business_features": [],
+        "company": "CJ ENM",
+        "company_role": "직접 기업",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 035760",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "company_official_ott_catalog",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "TVING 나는 SOLO 몰아보기",
+            "url": "https://www.tving.com/contents/P001628663"
+          },
+          {
+            "evidence_type": "official_filing_controlled_ott_and_listing",
+            "published_at": "2026-03-18",
+            "review_status": "approved",
+            "title": "CJ ENM 사업보고서 티빙 종속회사·종목코드 035760",
+            "url": "https://kind.krx.co.kr/external/2026/03/18/002094/20260318009785/11011.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSDAQ",
+        "market_reference": {
+          "daily_ohlcv": [
+            {
+              "change_pct": 2.356902356902357,
+              "close": 30400.0,
+              "date": "2026-07-30",
+              "high": 31250.0,
+              "low": 28700.0,
+              "open": 28700.0,
+              "volume": 92710.0
+            },
+            {
+              "change_pct": 3.125,
+              "close": 31350.0,
+              "date": "2026-07-31",
+              "high": 31650.0,
+              "low": 30200.0,
+              "open": 30900.0,
+              "volume": 51049.0
+            },
+            {
+              "change_pct": -0.9569377990430622,
+              "close": 31050.0,
+              "date": "2026-08-03",
+              "high": 32200.0,
+              "low": 30300.0,
+              "open": 30600.0,
+              "volume": 67238.0
+            },
+            {
+              "change_pct": 9.178743961352657,
+              "close": 33900.0,
+              "date": "2026-08-04",
+              "high": 34250.0,
+              "low": 31300.0,
+              "open": 31300.0,
+              "volume": 140470.0
+            },
+            {
+              "change_pct": -5.162241887905605,
+              "close": 32150.0,
+              "date": "2026-08-05",
+              "high": 34200.0,
+              "low": 32100.0,
+              "open": 33500.0,
+              "volume": 124755.0
+            },
+            {
+              "change_pct": 6.065318818040436,
+              "close": 34100.0,
+              "date": "2026-08-06",
+              "high": 34550.0,
+              "low": 31800.0,
+              "open": 32200.0,
+              "volume": 134523.0
+            },
+            {
+              "change_pct": 3.9589442815249267,
+              "close": 35450.0,
+              "date": "2026-08-07",
+              "high": 36700.0,
+              "low": 34400.0,
+              "open": 34450.0,
+              "volume": 130066.0
+            },
+            {
+              "change_pct": 3.80818053596615,
+              "close": 36800.0,
+              "date": "2026-08-10",
+              "high": 37250.0,
+              "low": 35350.0,
+              "open": 35800.0,
+              "volume": 64620.0
+            },
+            {
+              "change_pct": 1.0869565217391304,
+              "close": 37200.0,
+              "date": "2026-08-11",
+              "high": 37350.0,
+              "low": 35750.0,
+              "open": 36350.0,
+              "volume": 66640.0
+            },
+            {
+              "change_pct": -4.166666666666666,
+              "close": 35650.0,
+              "date": "2026-08-12",
+              "high": 37000.0,
+              "low": 35600.0,
+              "open": 36750.0,
+              "volume": 54052.0
+            }
+          ],
+          "latest_daily": {
+            "change_pct": -4.166666666666666,
+            "close": 35650.0,
+            "date": "2026-08-12",
+            "high": 37000.0,
+            "low": 35600.0,
+            "open": 36750.0,
+            "volume": 54052.0
+          },
+          "market_reaction": {
+            "five_session_return_pct": 4.55,
+            "five_vs_previous_volume_ratio": 0.94,
+            "label": "최근 시장 반응 제한적",
+            "status": "limited_reaction",
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "name": "CJ ENM",
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence",
+          "provider": "pykrx",
+          "status": "observed",
+          "stock_code": "035760",
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 35650,
+            "daily_change_pct": -4.17,
+            "volume": 54052
+          }
+        },
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "CJ ENM",
+          "english_name": "CJ ENM CO., Ltd.",
+          "established_date": "19941216",
+          "homepage": "https://www.cjmall.com",
+          "legal_name": "(주)씨제이이엔엠",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "035760",
+          "stock_name": "CJ ENM"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2026-03-18",
+            "edge_type": "distributes_via_controlled_ott",
+            "evidence_type": [
+              "company_official_ott_catalog",
+              "official_filing_controlled_ott_and_listing"
+            ],
+            "evidence_urls": [
+              "https://www.tving.com/contents/P001628663",
+              "https://kind.krx.co.kr/external/2026/03/18/002094/20260318009785/11011.htm"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "CJ ENM"
+          },
+          {
+            "as_of": "2026-03-18",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_filing_controlled_ott_and_listing"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/18/002094/20260318009785/11011.htm"
+            ],
+            "from": "CJ ENM",
+            "review_status": "approved",
+            "to": "035760 (KOSDAQ)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → CJ ENM → 035760 (KOSDAQ)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "직접 제조·브랜드·IP",
+        "relation_display_type": "직접 관계",
+        "relation_horizon": "근거 확인 직접 관계",
+        "relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_type": "distributes_via_controlled_ott",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → CJ ENM → 035760 (KOSDAQ)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "035760",
+        "strength": "direct",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "core",
+        "verification_status": "ontology_evidence"
+      },
+      {
+        "business_features": [],
+        "company": "KT",
+        "company_role": "플랫폼·채널",
+        "company_summary": "KOSPI 상장기업, 종목코드 030200",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "official_filing_broadcast_channel_operation",
+            "published_at": "2026-06-17",
+            "review_status": "approved",
+            "title": "KT스카이라이프 투자설명서 ENA 채널 운영",
+            "url": "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm"
+          },
+          {
+            "evidence_type": "official_listing_and_control_record",
+            "published_at": "2026-06-02",
+            "review_status": "approved",
+            "title": "KT스카이라이프 회사코드 053210 및 KT 최대주주 확인",
+            "url": "https://kind.krx.co.kr/external/2026/06/02/000282/20260602000639/00636.htm"
+          },
+          {
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-13",
+            "review_status": "approved",
+            "title": "KT 유가증권상장법인 회사코드 030200",
+            "url": "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSPI",
+        "market_reference": {
+          "daily_ohlcv": [
+            {
+              "change_pct": -1.858736059479554,
+              "close": 52800.0,
+              "date": "2026-07-30",
+              "high": 54800.0,
+              "low": 52600.0,
+              "open": 54500.0,
+              "volume": 336632.0
+            },
+            {
+              "change_pct": -1.7045454545454544,
+              "close": 51900.0,
+              "date": "2026-07-31",
+              "high": 53300.0,
+              "low": 51400.0,
+              "open": 52800.0,
+              "volume": 577545.0
+            },
+            {
+              "change_pct": 0.5780346820809248,
+              "close": 52200.0,
+              "date": "2026-08-03",
+              "high": 52500.0,
+              "low": 51300.0,
+              "open": 51400.0,
+              "volume": 312474.0
+            },
+            {
+              "change_pct": 0.19157088122605362,
+              "close": 52300.0,
+              "date": "2026-08-04",
+              "high": 52600.0,
+              "low": 51600.0,
+              "open": 51700.0,
+              "volume": 233152.0
+            },
+            {
+              "change_pct": 0.3824091778202677,
+              "close": 52500.0,
+              "date": "2026-08-05",
+              "high": 53200.0,
+              "low": 52100.0,
+              "open": 52200.0,
+              "volume": 556321.0
+            },
+            {
+              "change_pct": 1.9047619047619049,
+              "close": 53500.0,
+              "date": "2026-08-06",
+              "high": 53500.0,
+              "low": 52500.0,
+              "open": 52900.0,
+              "volume": 307060.0
+            },
+            {
+              "change_pct": -0.3738317757009346,
+              "close": 53300.0,
+              "date": "2026-08-07",
+              "high": 53600.0,
+              "low": 52700.0,
+              "open": 53000.0,
+              "volume": 230928.0
+            },
+            {
+              "change_pct": -1.6885553470919326,
+              "close": 52400.0,
+              "date": "2026-08-10",
+              "high": 53200.0,
+              "low": 52400.0,
+              "open": 53000.0,
+              "volume": 237652.0
+            },
+            {
+              "change_pct": 0.7633587786259541,
+              "close": 52800.0,
+              "date": "2026-08-11",
+              "high": 53500.0,
+              "low": 52300.0,
+              "open": 52700.0,
+              "volume": 252302.0
+            },
+            {
+              "change_pct": -0.1893939393939394,
+              "close": 52700.0,
+              "date": "2026-08-12",
+              "high": 53600.0,
+              "low": 52600.0,
+              "open": 52800.0,
+              "volume": 296276.0
+            }
+          ],
+          "latest_daily": {
+            "change_pct": -0.1893939393939394,
+            "close": 52700.0,
+            "date": "2026-08-12",
+            "high": 53600.0,
+            "low": 52600.0,
+            "open": 52800.0,
+            "volume": 296276.0
+          },
+          "market_reaction": {
+            "five_session_return_pct": -1.5,
+            "five_vs_previous_volume_ratio": 0.66,
+            "label": "최근 시장 반응 제한적",
+            "status": "limited_reaction",
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "name": "KT",
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence",
+          "provider": "pykrx",
+          "status": "observed",
+          "stock_code": "030200",
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 52700,
+            "daily_change_pct": -0.19,
+            "volume": 296276
+          }
+        },
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "KT",
+          "english_name": "KT CORPORATION",
+          "established_date": "19811210",
+          "homepage": "https://www.kt.com",
+          "legal_name": "(주)케이티",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "030200",
+          "stock_name": "케이티"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2026-06-17",
+            "edge_type": "parent_company_exposure_via_broadcaster",
+            "evidence_type": [
+              "company_official_program_schedule",
+              "official_filing_broadcast_channel_operation",
+              "official_listing_and_control_record"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/",
+              "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm",
+              "https://kind.krx.co.kr/external/2026/06/02/000282/20260602000639/00636.htm"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "KT"
+          },
+          {
+            "as_of": "2026-05-13",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm"
+            ],
+            "from": "KT",
+            "review_status": "approved",
+            "to": "030200 (KOSPI)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "유통·플랫폼·채널",
+        "relation_display_type": "가치사슬",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_type": "parent_company_exposure_via_broadcaster",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "030200",
+        "strength": "indirect",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "downstream",
+        "verification_status": "ontology_evidence"
+      },
+      {
+        "business_features": [],
+        "company": "KT스카이라이프",
+        "company_role": "직접 기업",
+        "company_summary": "KOSPI 상장기업, 종목코드 053210",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "official_filing_broadcast_channel_operation",
+            "published_at": "2026-06-17",
+            "review_status": "approved",
+            "title": "KT스카이라이프 투자설명서 ENA 채널 운영",
+            "url": "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm"
+          },
+          {
+            "evidence_type": "official_listing_and_control_record",
+            "published_at": "2026-06-02",
+            "review_status": "approved",
+            "title": "KT스카이라이프 회사코드 053210 및 KT 최대주주 확인",
+            "url": "https://kind.krx.co.kr/external/2026/06/02/000282/20260602000639/00636.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSPI",
+        "market_reference": {
+          "daily_ohlcv": [
+            {
+              "change_pct": 1.2547051442910917,
+              "close": 4035.0,
+              "date": "2026-07-30",
+              "high": 4035.0,
+              "low": 3925.0,
+              "open": 3985.0,
+              "volume": 34540.0
+            },
+            {
+              "change_pct": -0.12391573729863693,
+              "close": 4030.0,
+              "date": "2026-07-31",
+              "high": 4050.0,
+              "low": 3975.0,
+              "open": 4045.0,
+              "volume": 45309.0
+            },
+            {
+              "change_pct": 0.49627791563275436,
+              "close": 4050.0,
+              "date": "2026-08-03",
+              "high": 4055.0,
+              "low": 4005.0,
+              "open": 4015.0,
+              "volume": 14684.0
+            },
+            {
+              "change_pct": 1.3580246913580247,
+              "close": 4105.0,
+              "date": "2026-08-04",
+              "high": 4120.0,
+              "low": 4020.0,
+              "open": 4060.0,
+              "volume": 33696.0
+            },
+            {
+              "change_pct": 0.9744214372716199,
+              "close": 4145.0,
+              "date": "2026-08-05",
+              "high": 4170.0,
+              "low": 4110.0,
+              "open": 4135.0,
+              "volume": 24019.0
+            },
+            {
+              "change_pct": 0.0,
+              "close": 4145.0,
+              "date": "2026-08-06",
+              "high": 4150.0,
+              "low": 4085.0,
+              "open": 4130.0,
+              "volume": 39249.0
+            },
+            {
+              "change_pct": 2.0506634499396865,
+              "close": 4230.0,
+              "date": "2026-08-07",
+              "high": 4230.0,
+              "low": 4120.0,
+              "open": 4160.0,
+              "volume": 85022.0
+            },
+            {
+              "change_pct": 0.7092198581560284,
+              "close": 4260.0,
+              "date": "2026-08-10",
+              "high": 4290.0,
+              "low": 4170.0,
+              "open": 4190.0,
+              "volume": 45740.0
+            },
+            {
+              "change_pct": -0.35211267605633806,
+              "close": 4245.0,
+              "date": "2026-08-11",
+              "high": 4275.0,
+              "low": 4235.0,
+              "open": 4250.0,
+              "volume": 19990.0
+            },
+            {
+              "change_pct": 0.35335689045936397,
+              "close": 4260.0,
+              "date": "2026-08-12",
+              "high": 4295.0,
+              "low": 4190.0,
+              "open": 4245.0,
+              "volume": 27789.0
+            }
+          ],
+          "latest_daily": {
+            "change_pct": 0.35335689045936397,
+            "close": 4260.0,
+            "date": "2026-08-12",
+            "high": 4295.0,
+            "low": 4190.0,
+            "open": 4245.0,
+            "volume": 27789.0
+          },
+          "market_reaction": {
+            "five_session_return_pct": 2.77,
+            "five_vs_previous_volume_ratio": 1.43,
+            "label": "최근 시장 반응 제한적",
+            "status": "limited_reaction",
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "name": "스카이라이프",
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence",
+          "provider": "pykrx",
+          "status": "observed",
+          "stock_code": "053210",
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 4260,
+            "daily_change_pct": 0.35,
+            "volume": 27789
+          }
+        },
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "KT스카이라이프",
+          "english_name": "KT Skylife Co.,Ltd.",
+          "established_date": "20010112",
+          "homepage": "https://www.ktskylife.co.kr",
+          "legal_name": "(주)케이티스카이라이프",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "053210",
+          "stock_name": "케이티스카이라이프"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2026-06-17",
+            "edge_type": "broadcasts_via_consolidated_channel",
+            "evidence_type": [
+              "company_official_program_schedule",
+              "official_filing_broadcast_channel_operation"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/",
+              "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "KT스카이라이프"
+          },
+          {
+            "as_of": "2026-06-02",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_listing_and_control_record"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/06/02/000282/20260602000639/00636.htm"
+            ],
+            "from": "KT스카이라이프",
+            "review_status": "approved",
+            "to": "053210 (KOSPI)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → KT스카이라이프 → 053210 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "직접 제조·브랜드·IP",
+        "relation_display_type": "직접 관계",
+        "relation_horizon": "근거 확인 직접 관계",
+        "relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_type": "broadcasts_via_consolidated_channel",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → KT스카이라이프 → 053210 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "053210",
+        "strength": "direct",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "core",
+        "verification_status": "ontology_evidence"
+      },
+      {
+        "business_features": [],
+        "company": "SBS",
+        "company_role": "직접 기업",
+        "company_summary": "KOSPI 상장기업, 종목코드 034120",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "official_filing_consolidated_broadcast_channel",
+            "published_at": "2026-05-15",
+            "review_status": "approved",
+            "title": "SBS 2026년 1분기보고서 스튜디오프리즘·SBS Plus",
+            "url": "https://kind.krx.co.kr/external/2026/05/15/001665/20260515003680/11013.htm"
+          },
+          {
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-29",
+            "review_status": "approved",
+            "title": "SBS 유가증권상장법인 회사코드 034120",
+            "url": "https://kind.krx.co.kr/external/2026/05/29/002084/20260529003326/00636.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSPI",
+        "market_reference": {
+          "daily_ohlcv": [
+            {
+              "change_pct": -1.6544117647058825,
+              "close": 10700.0,
+              "date": "2026-07-30",
+              "high": 11000.0,
+              "low": 10570.0,
+              "open": 10570.0,
+              "volume": 12039.0
+            },
+            {
+              "change_pct": 2.803738317757009,
+              "close": 11000.0,
+              "date": "2026-07-31",
+              "high": 11000.0,
+              "low": 10800.0,
+              "open": 10800.0,
+              "volume": 13831.0
+            },
+            {
+              "change_pct": 1.5454545454545454,
+              "close": 11170.0,
+              "date": "2026-08-03",
+              "high": 11230.0,
+              "low": 10900.0,
+              "open": 10990.0,
+              "volume": 6125.0
+            },
+            {
+              "change_pct": 0.6266786034019696,
+              "close": 11240.0,
+              "date": "2026-08-04",
+              "high": 11490.0,
+              "low": 11110.0,
+              "open": 11110.0,
+              "volume": 7203.0
+            },
+            {
+              "change_pct": 2.224199288256228,
+              "close": 11490.0,
+              "date": "2026-08-05",
+              "high": 11520.0,
+              "low": 11280.0,
+              "open": 11340.0,
+              "volume": 5463.0
+            },
+            {
+              "change_pct": 0.6962576153176675,
+              "close": 11570.0,
+              "date": "2026-08-06",
+              "high": 11650.0,
+              "low": 11400.0,
+              "open": 11470.0,
+              "volume": 10697.0
+            },
+            {
+              "change_pct": 1.1235955056179776,
+              "close": 11700.0,
+              "date": "2026-08-07",
+              "high": 11730.0,
+              "low": 11610.0,
+              "open": 11650.0,
+              "volume": 8108.0
+            },
+            {
+              "change_pct": 0.5128205128205128,
+              "close": 11760.0,
+              "date": "2026-08-10",
+              "high": 11770.0,
+              "low": 11560.0,
+              "open": 11680.0,
+              "volume": 11862.0
+            },
+            {
+              "change_pct": 0.3401360544217687,
+              "close": 11800.0,
+              "date": "2026-08-11",
+              "high": 11810.0,
+              "low": 11670.0,
+              "open": 11700.0,
+              "volume": 3935.0
+            },
+            {
+              "change_pct": 0.5932203389830508,
+              "close": 11870.0,
+              "date": "2026-08-12",
+              "high": 11880.0,
+              "low": 11760.0,
+              "open": 11800.0,
+              "volume": 6329.0
+            }
+          ],
+          "latest_daily": {
+            "change_pct": 0.5932203389830508,
+            "close": 11870.0,
+            "date": "2026-08-12",
+            "high": 11880.0,
+            "low": 11760.0,
+            "open": 11800.0,
+            "volume": 6329.0
+          },
+          "market_reaction": {
+            "five_session_return_pct": 2.59,
+            "five_vs_previous_volume_ratio": 0.92,
+            "label": "최근 시장 반응 제한적",
+            "status": "limited_reaction",
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "name": "SBS",
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence",
+          "provider": "pykrx",
+          "status": "observed",
+          "stock_code": "034120",
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 11870,
+            "daily_change_pct": 0.59,
+            "volume": 6329
+          }
+        },
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "SBS",
+          "english_name": "SEOUL BROADCASTING SYSTEM",
+          "established_date": "19901114",
+          "homepage": "https://www.sbs.co.kr",
+          "legal_name": "(주)SBS",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "034120",
+          "stock_name": "SBS"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2026-05-15",
+            "edge_type": "broadcasts_via_consolidated_channel",
+            "evidence_type": [
+              "company_official_program_schedule",
+              "official_filing_consolidated_broadcast_channel"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/",
+              "https://kind.krx.co.kr/external/2026/05/15/001665/20260515003680/11013.htm"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "SBS"
+          },
+          {
+            "as_of": "2026-05-29",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/29/002084/20260529003326/00636.htm"
+            ],
+            "from": "SBS",
+            "review_status": "approved",
+            "to": "034120 (KOSPI)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → SBS → 034120 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "직접 제조·브랜드·IP",
+        "relation_display_type": "직접 관계",
+        "relation_horizon": "근거 확인 직접 관계",
+        "relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_type": "broadcasts_via_consolidated_channel",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → SBS → 034120 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "034120",
+        "strength": "direct",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "core",
+        "verification_status": "ontology_evidence"
+      },
+      {
+        "business_features": [],
+        "company": "SK스퀘어",
+        "company_role": "플랫폼·채널",
+        "company_summary": "KOSPI 상장기업, 종목코드 402340",
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_sources": [
+          {
+            "evidence_type": "company_official_program_schedule",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SBS Plus 나는 SOLO 편성 페이지",
+            "url": "https://plus.sbs.co.kr/"
+          },
+          {
+            "evidence_type": "company_official_content_procurement_history",
+            "published_at": "2022-02-17",
+            "review_status": "approved",
+            "title": "Wavve 나는 SOLO 콘텐츠 수급 사례",
+            "url": "https://wavve-comm.tistory.com/111"
+          },
+          {
+            "evidence_type": "company_official_portfolio_page",
+            "published_at": null,
+            "review_status": "approved",
+            "title": "SK스퀘어 콘텐츠웨이브 포트폴리오",
+            "url": "https://www.sksquare.com/kor/company/team.do"
+          },
+          {
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-06-08",
+            "review_status": "approved",
+            "title": "SK스퀘어 유가증권상장법인 회사코드 402340",
+            "url": "https://kind.krx.co.kr/external/2026/06/08/000895/20260608001821/00637.htm"
+          }
+        ],
+        "evidence_url": "https://plus.sbs.co.kr/",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "market": "KOSPI",
+        "market_reference": {
+          "daily_ohlcv": [
+            {
+              "change_pct": -6.0,
+              "close": 799000.0,
+              "date": "2026-07-30",
+              "high": 872000.0,
+              "low": 770000.0,
+              "open": 826000.0,
+              "volume": 1364135.0
+            },
+            {
+              "change_pct": 29.912390488110134,
+              "close": 1038000.0,
+              "date": "2026-07-31",
+              "high": 1038000.0,
+              "low": 944000.0,
+              "open": 995000.0,
+              "volume": 1039044.0
+            },
+            {
+              "change_pct": -1.2524084778420037,
+              "close": 1025000.0,
+              "date": "2026-08-03",
+              "high": 1070000.0,
+              "low": 992000.0,
+              "open": 1070000.0,
+              "volume": 831890.0
+            },
+            {
+              "change_pct": 3.414634146341464,
+              "close": 1060000.0,
+              "date": "2026-08-04",
+              "high": 1096000.0,
+              "low": 999000.0,
+              "open": 1096000.0,
+              "volume": 984406.0
+            },
+            {
+              "change_pct": 5.566037735849057,
+              "close": 1119000.0,
+              "date": "2026-08-05",
+              "high": 1157000.0,
+              "low": 1105000.0,
+              "open": 1143000.0,
+              "volume": 675010.0
+            },
+            {
+              "change_pct": -13.315460232350313,
+              "close": 970000.0,
+              "date": "2026-08-06",
+              "high": 1088000.0,
+              "low": 968000.0,
+              "open": 1088000.0,
+              "volume": 808124.0
+            },
+            {
+              "change_pct": -3.1958762886597936,
+              "close": 939000.0,
+              "date": "2026-08-07",
+              "high": 1006000.0,
+              "low": 925000.0,
+              "open": 996000.0,
+              "volume": 646939.0
+            },
+            {
+              "change_pct": 1.0649627263045793,
+              "close": 949000.0,
+              "date": "2026-08-10",
+              "high": 977000.0,
+              "low": 931000.0,
+              "open": 951000.0,
+              "volume": 410049.0
+            },
+            {
+              "change_pct": -0.42149631190727077,
+              "close": 945000.0,
+              "date": "2026-08-11",
+              "high": 960000.0,
+              "low": 901000.0,
+              "open": 929000.0,
+              "volume": 494514.0
+            },
+            {
+              "change_pct": 8.35978835978836,
+              "close": 1024000.0,
+              "date": "2026-08-12",
+              "high": 1053000.0,
+              "low": 970000.0,
+              "open": 982000.0,
+              "volume": 708475.0
+            }
+          ],
+          "latest_daily": {
+            "change_pct": 8.35978835978836,
+            "close": 1024000.0,
+            "date": "2026-08-12",
+            "high": 1053000.0,
+            "low": 970000.0,
+            "open": 982000.0,
+            "volume": 708475.0
+          },
+          "market_reaction": {
+            "five_session_return_pct": 5.57,
+            "five_vs_previous_volume_ratio": 0.63,
+            "label": "최근 시장 반응 관찰",
+            "status": "reaction_observed",
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "name": "SK스퀘어",
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence",
+          "provider": "pykrx",
+          "status": "observed",
+          "stock_code": "402340",
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 1024000,
+            "daily_change_pct": 8.36,
+            "volume": 708475
+          }
+        },
+        "matched_ontology_node": "나는 SOLO",
+        "matched_ontology_term": "나는솔로",
+        "official_identity": {
+          "company": "SK스퀘어",
+          "english_name": "SK Square Co., Ltd.",
+          "established_date": "20211102",
+          "homepage": "https://www.sksquare.com",
+          "legal_name": "에스케이스퀘어 주식회사",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "402340",
+          "stock_name": "SK스퀘어"
+        },
+        "ontology_complete": true,
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_path": [
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "observed_term_exact_match",
+            "evidence_type": "source_page_observation",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "from": "나는솔로",
+            "review_status": "observed",
+            "to": "나는솔로"
+          },
+          {
+            "as_of": "2026-08-12T23:00:00+00:00",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_type": [
+              "company_official_program_schedule"
+            ],
+            "evidence_urls": [
+              "https://plus.sbs.co.kr/"
+            ],
+            "from": "나는솔로",
+            "review_status": "approved",
+            "to": "나는 SOLO"
+          },
+          {
+            "as_of": "2022-02-17",
+            "edge_type": "portfolio_exposure_via_ott_content_history",
+            "evidence_type": [
+              "company_official_content_procurement_history",
+              "company_official_portfolio_page"
+            ],
+            "evidence_urls": [
+              "https://wavve-comm.tistory.com/111",
+              "https://www.sksquare.com/kor/company/team.do"
+            ],
+            "from": "나는 SOLO",
+            "review_status": "approved",
+            "to": "SK스퀘어"
+          },
+          {
+            "as_of": "2026-06-08",
+            "edge_type": "listed_as",
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/06/08/000895/20260608001821/00637.htm"
+            ],
+            "from": "SK스퀘어",
+            "review_status": "approved",
+            "to": "402340 (KOSPI)"
+          }
+        ],
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_status": "complete",
+        "opportunity_status": "evidence_backed_candidate",
+        "reason": "관측어 '나는솔로'에서 나는 SOLO → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relation_category": "유통·플랫폼·채널",
+        "relation_display_type": "가치사슬",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_type": "portfolio_exposure_via_ott_content_history",
+        "relationship_reason": "관측어 '나는솔로'에서 나는 SOLO → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "stock_code": "402340",
+        "strength": "indirect",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "team_review_status": "ontology_reviewed",
+        "value_chain_stage": "downstream",
+        "verification_status": "ontology_evidence"
+      }
+    ],
+    "company_card_reason": "evidence_backed_five_or_more",
+    "company_card_status": "ready",
+    "company_resolution": {
+      "candidate_category_count": 2,
+      "candidate_count": 5,
+      "category_count": 2,
+      "direct_count": 3,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 5,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [
+          {
+            "lookup_match": {
+              "alias_id": "alias:reviewed:iam-solo-nospace",
+              "evidence": [
+                {
+                  "evidence_type": "company_official_program_schedule",
+                  "id": "evidence:reviewed:sbsplus-iam-solo",
+                  "provenance": {
+                    "method": "manual_url_review",
+                    "reviewed_at": "2026-08-13",
+                    "scope": "program_to_broadcast_channel"
+                  },
+                  "published_at": null,
+                  "publisher": "SBS Plus",
+                  "review_status": "approved",
+                  "summary": "SBS Plus 공식 페이지가 나는 SOLO를 SBS PLUS X ENA 공동 편성 프로그램으로 표시한다.",
+                  "title": "SBS Plus 나는 SOLO 편성 페이지",
+                  "url": "https://plus.sbs.co.kr/"
+                }
+              ],
+              "match_type": "reviewed_literal_alias",
+              "matched_label": "나는솔로",
+              "provenance": {
+                "method": "manual_url_review",
+                "reviewed_at": "2026-08-13"
+              },
+              "review_status": "approved",
+              "target_node_id": "term:reviewed:iam-solo",
+              "target_node_label": "나는 SOLO"
+            },
+            "observation_status": "observed_representative",
+            "ontology_company_count": 5,
+            "ontology_status": "published",
+            "term": "나는솔로"
+          },
+          {
+            "lookup_match": {
+              "evidence": [],
+              "match_type": "exact_term",
+              "matched_label": "나는 SOLO",
+              "review_status": "node_label",
+              "target_node_id": "term:reviewed:iam-solo",
+              "target_node_label": "나는 SOLO"
+            },
+            "observation_status": "approved_ontology_term",
+            "ontology_company_count": 5,
+            "ontology_status": "published",
+            "term": "나는 SOLO"
+          },
+          {
+            "lookup_match": {
+              "alias_id": "alias:reviewed:iam-solo-short",
+              "evidence": [
+                {
+                  "evidence_type": "company_official_program_schedule",
+                  "id": "evidence:reviewed:sbsplus-iam-solo",
+                  "provenance": {
+                    "method": "manual_url_review",
+                    "reviewed_at": "2026-08-13",
+                    "scope": "program_to_broadcast_channel"
+                  },
+                  "published_at": null,
+                  "publisher": "SBS Plus",
+                  "review_status": "approved",
+                  "summary": "SBS Plus 공식 페이지가 나는 SOLO를 SBS PLUS X ENA 공동 편성 프로그램으로 표시한다.",
+                  "title": "SBS Plus 나는 SOLO 편성 페이지",
+                  "url": "https://plus.sbs.co.kr/"
+                }
+              ],
+              "match_type": "reviewed_common_abbreviation",
+              "matched_label": "나솔",
+              "provenance": {
+                "method": "manual_url_review",
+                "reviewed_at": "2026-08-13"
+              },
+              "review_status": "approved",
+              "target_node_id": "term:reviewed:iam-solo",
+              "target_node_label": "나는 SOLO"
+            },
+            "observation_status": "approved_ontology_term",
+            "ontology_company_count": 5,
+            "ontology_status": "published",
+            "term": "나솔"
+          }
+        ],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "published",
+      "published_count": 5,
+      "reason": "증거 온톨로지 경로가 완결된 고유 상장기업 5개 이상을 Gold로 공개",
+      "role_coverage": [
+        "직접 기업",
+        "플랫폼·채널"
+      ],
+      "score_independent_of_company_count": true,
+      "status": "published",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 3,
+        "excluded": 0,
+        "value_chain": 2
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.121622,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 2
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "나는솔로",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "나는솔로",
+    "first_seen_at": "2026-08-12T21:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/trends/trend-bca68f0ec21df4ee88595a49.json",
+    "keywords": [
+      {
+        "affects_score": false,
+        "evidence_urls": [
+          "https://plus.sbs.co.kr/"
+        ],
+        "observed_hours": 0,
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "status": "approved_ontology_term",
+        "text": "나는 SOLO"
+      },
+      {
+        "affects_score": false,
+        "evidence_urls": [
+          "https://plus.sbs.co.kr/"
+        ],
+        "observed_hours": 0,
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "status": "approved_ontology_term",
+        "text": "나솔"
+      },
+      {
+        "affects_score": false,
+        "evidence_urls": [
+          "https://plus.sbs.co.kr/"
+        ],
+        "observed_hours": 0,
+        "role": "official_broadcast_channel",
+        "role_status": "reviewed_evidence",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "status": "approved_ontology_related_term",
+        "text": "ENA"
+      },
+      {
+        "affects_score": false,
+        "evidence_urls": [
+          "https://plus.sbs.co.kr/"
+        ],
+        "observed_hours": 0,
+        "role": "official_broadcast_channel",
+        "role_status": "reviewed_evidence",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "status": "approved_ontology_related_term",
+        "text": "SBS Plus"
+      },
+      {
+        "affects_score": false,
+        "evidence_urls": [
+          "https://www.tving.com/contents/P001628663"
+        ],
+        "observed_hours": 0,
+        "role": "official_ott_distribution",
+        "role_status": "reviewed_evidence",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "status": "approved_ontology_related_term",
+        "text": "TVING"
+      }
+    ],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 196
+    },
+    "lifecycle": "new",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T21:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_days": 1,
+      "observed_hours": 2,
+      "previous_seen_at": "2026-08-12T21:00:00+00:00",
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "seen_before_current_hour": true,
+      "window_days": 60
+    },
+    "lifecycle_label": "new",
+    "lifecycle_reason": "first_observed_within_new_window",
+    "main_rank": 227,
+    "momentum": 0.560811,
+    "observed_representative_term": "나는솔로",
+    "persistence": 0.011905,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed"
+    ],
+    "rank": 227,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "decayed_history": {
+        "status": "ready"
+      },
+      "is_ready": false,
+      "momentum": {
+        "comparable_sources": [
+          "google_trends"
+        ],
+        "neutral_applied": false,
+        "status": "ready",
+        "unavailable_sources": []
+      },
+      "persistence": {
+        "maturity_required_hours": 96,
+        "status": "ready"
+      },
+      "status": "provisional",
+      "warnings": [
+        "single_source_current_observation"
+      ]
+    },
+    "ranking_views": {
+      "daily": {
+        "display_name": "나는솔로",
+        "event_key": "나는솔로",
+        "main_rank": 233,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 233,
+        "rank_change": null,
+        "score": 16.69,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 16.69,
+          "cross_source_points": 0.0,
+          "current_points": 4.86,
+          "decayed_history_points": 0.19,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 11.22,
+          "persistence_points": 0.42,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 16.69
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "display_name": "나는솔로",
+        "event_key": "나는솔로",
+        "main_rank": 227,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 227,
+        "rank_change": null,
+        "score": 16.38,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 16.38,
+          "cross_source_points": 0.0,
+          "current_points": 4.86,
+          "decayed_history_points": 0.09,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 11.22,
+          "persistence_points": 0.21,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 16.38
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "display_name": "나는솔로",
+        "event_key": "나는솔로",
+        "main_rank": 227,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 227,
+        "rank_change": null,
+        "score": 16.42,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 16.42,
+          "cross_source_points": 0.0,
+          "current_points": 4.86,
+          "decayed_history_points": 0.1,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 11.22,
+          "persistence_points": 0.24,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 16.42
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "나는솔로"
+    ],
+    "score": 16.42,
+    "score_change": null,
+    "score_components": {
+      "component_subtotal_points": 16.42,
+      "cross_source_points": 0.0,
+      "current_points": 4.86,
+      "decayed_history_points": 0.1,
+      "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+      "freshness_multiplier": 1.0,
+      "momentum_points": 11.22,
+      "persistence_points": 0.24,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 16.42
+    },
+    "score_explanation": {
+      "components": [
+        {
+          "basis": "mean source-normalised current position over observed current sources",
+          "key": "current",
+          "max_points": 40,
+          "points": 4.86
+        },
+        {
+          "basis": "exact previous-hour position change; neutral 10 points when no exact comparison exists",
+          "key": "momentum",
+          "max_points": 20,
+          "points": 11.22
+        },
+        {
+          "basis": "mean source-specific presence rate multiplied by source-specific history maturity",
+          "key": "persistence",
+          "max_points": 20,
+          "points": 0.24
+        },
+        {
+          "basis": "observed history with 24h exponential half-life",
+          "key": "decayed_history",
+          "max_points": 15,
+          "points": 0.1
+        },
+        {
+          "basis": "5 points only when the event is currently observed by both X and Google",
+          "key": "cross_source",
+          "max_points": 5,
+          "points": 0.0
+        }
+      ],
+      "formula": "40 current + 20 exact-hour momentum + 20 per-source persistence + 15 exponentially decayed history + 5 explicit cross-source",
+      "freshness": {
+        "basis": "1 while currently observed; otherwise exponential cooling decay with 6h half-life",
+        "multiplier": 1.0
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 156,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 156,
+        "source": "google_trends",
+        "source_rank": 156,
+        "topic": "나는솔로",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 196,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 196,
+        "source": "google_trends",
+        "source_rank": 196,
+        "topic": "나는솔로",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "current_positions": {
+        "google_trends": 0.121622
+      },
+      "decayed_history": {
+        "google_trends": {
+          "coverage": 1.0,
+          "eligible_past_hours": 168,
+          "eligible_weight": 33.86047,
+          "maturity": 1.0,
+          "observed_past_hours": 1,
+          "signal": 0.006379,
+          "weighted_evidence": 0.216011,
+          "weighted_presence": 0.006379
+        }
+      },
+      "momentum_deltas": {
+        "google_trends": 0.121622
+      },
+      "persistence": {
+        "google_trends": {
+          "adjusted_signal": 0.011905,
+          "eligible_hours": 168,
+          "maturity": 1.0,
+          "observed_hours": 2,
+          "presence_rate": 0.011905
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "나는솔로"
+  }
+}

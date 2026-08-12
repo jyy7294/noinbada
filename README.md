@@ -143,6 +143,10 @@ powershell -ExecutionPolicy Bypass -File scripts\collect-hourly.ps1
 
 새 프런트는 `latest/manifest.json`을 먼저 읽고, manifest가 가리키는 불변 `delivery/{publication_id}` 묶음만 사용합니다. manifest는 모든 파일 작성과 해시 검증이 끝난 뒤 마지막에 교체되므로 실행 중단 때 서로 다른 시간의 파일이 섞이지 않습니다. 기존 프런트 호환을 위해 `intelligence.json`, `metadata.json`, `status.json`도 유지하며 세 문서의 `publication_id`, `generated_at`, 관측시각은 항상 같아야 합니다. 상세 명세는 [프런트 연동 계약](docs/FRONTEND_BACKEND_CONTRACT_V3.md), 기계 계약은 [schemas](schemas/)를 사용합니다.
 
+### 60일 MVP 데모 리플레이
+
+실제 새 원장이 60일 쌓이기 전 프런트의 순위·등락·지속성·상세 차트를 시험할 때는 `data/demo-replay-60d/latest/manifest.json`을 별도 데이터 원본으로 사용합니다. 전체 모드는 `demo_replay`, 화면 표시는 `7일 순위 시뮬레이션 데모`이며 최근 7일만 운영 Ranking V2와 같은 공식으로 점수를 계산하고 60일은 라이프사이클 기준선으로만 사용합니다. 행별 `observed`·`historical_reference`·`reconstructed_reference`·`synthetic_backfill`을 보존하며 라이브 SQLite와 `live-data/latest`에는 삽입하지 않습니다. 사건 시점만 복원한 `research_reconstructed` seed는 별도 비순위 `research-events.ndjson`으로 전달합니다. 생성·연동 규칙은 [60일 MVP 데모 리플레이](docs/DEMO_REPLAY_60D.md)를 따릅니다.
+
 ## 현재 기술 스택
 
 | 영역 | 기술 | 역할 |

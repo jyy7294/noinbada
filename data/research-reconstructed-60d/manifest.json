@@ -1,0 +1,44 @@
+{
+  "schema_version": "trzip-reconstructed-seed-manifest-v1",
+  "dataset_id": "kr-trend-research-reconstructed-2026-06-01_2026-07-31",
+  "window": {
+    "from": "2026-06-01",
+    "to": "2026-07-31",
+    "calendar_days": 61
+  },
+  "event_count": 52,
+  "source_file": "events.jsonl",
+  "provenance": "research_reconstructed",
+  "measurement_status": "event_timing_evidence_only",
+  "rank_eligible": false,
+  "allowed_evidence": [
+    "official_release_or_schedule",
+    "published_chart_or_statistics",
+    "dated_reputable_media_report",
+    "first_party_product_or_event_page"
+  ],
+  "policy": {
+    "representative_term_is_evidence_name": true,
+    "aliases_max": 5,
+    "evidence_url_required": true,
+    "active_window_must_overlap_dataset_window": true,
+    "synthetic_search_volume_present": false,
+    "measured_platform_rank_present": false,
+    "may_be_transformed_to_replay_reference": true,
+    "may_be_relabelled_as_observed": false
+  },
+  "category_counts": {
+    "K-pop": 14,
+    "게임": 4,
+    "기술·제품": 2,
+    "문화·생활": 4,
+    "소비": 3,
+    "스포츠": 3,
+    "여행": 2,
+    "음식·식품": 8,
+    "주식·기업": 1,
+    "콘텐츠": 7,
+    "패션": 4
+  },
+  "usage_note": "MVP 시계열의 사건 발생 시점과 대표어 카탈로그를 보강하는 조사 재구성 자료다. X·Google의 실측 순위나 검색량으로 간주하지 않는다."
+}

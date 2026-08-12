@@ -1,0 +1,413 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.45045,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 1,
+        "observed": 9
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "안철수",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "안철수",
+    "first_seen_at": "2026-08-12T06:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/trends/trend-fa3db6d9c9c0b5496561a423.json",
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 123
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T06:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_days": 1,
+      "observed_hours": 10,
+      "previous_seen_at": "2026-08-12T21:00:00+00:00",
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "seen_before_current_hour": true,
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 127,
+    "momentum": 0.725225,
+    "observed_representative_term": "안철수",
+    "persistence": 0.059524,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference",
+      "observed"
+    ],
+    "rank": 127,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "decayed_history": {
+        "status": "ready"
+      },
+      "is_ready": false,
+      "momentum": {
+        "comparable_sources": [
+          "google_trends"
+        ],
+        "neutral_applied": false,
+        "status": "ready",
+        "unavailable_sources": []
+      },
+      "persistence": {
+        "maturity_required_hours": 96,
+        "status": "ready"
+      },
+      "status": "provisional",
+      "warnings": [
+        "single_source_current_observation"
+      ]
+    },
+    "ranking_views": {
+      "daily": {
+        "display_name": "안철수",
+        "event_key": "안철수",
+        "main_rank": 118,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 118,
+        "rank_change": null,
+        "score": 39.21,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 39.21,
+          "cross_source_points": 0.0,
+          "current_points": 18.02,
+          "decayed_history_points": 4.61,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 14.5,
+          "persistence_points": 2.08,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 39.21
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "display_name": "안철수",
+        "event_key": "안철수",
+        "main_rank": 127,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 127,
+        "rank_change": null,
+        "score": 35.88,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 35.88,
+          "cross_source_points": 0.0,
+          "current_points": 18.02,
+          "decayed_history_points": 2.31,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 14.5,
+          "persistence_points": 1.05,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 35.88
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "display_name": "안철수",
+        "event_key": "안철수",
+        "main_rank": 127,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 127,
+        "rank_change": null,
+        "score": 36.04,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 36.04,
+          "cross_source_points": 0.0,
+          "current_points": 18.02,
+          "decayed_history_points": 2.33,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 14.5,
+          "persistence_points": 1.19,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 36.04
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "안철수"
+    ],
+    "score": 36.04,
+    "score_change": null,
+    "score_components": {
+      "component_subtotal_points": 36.04,
+      "cross_source_points": 0.0,
+      "current_points": 18.02,
+      "decayed_history_points": 2.33,
+      "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+      "freshness_multiplier": 1.0,
+      "momentum_points": 14.5,
+      "persistence_points": 1.19,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 36.04
+    },
+    "score_explanation": {
+      "components": [
+        {
+          "basis": "mean source-normalised current position over observed current sources",
+          "key": "current",
+          "max_points": 40,
+          "points": 18.02
+        },
+        {
+          "basis": "exact previous-hour position change; neutral 10 points when no exact comparison exists",
+          "key": "momentum",
+          "max_points": 20,
+          "points": 14.5
+        },
+        {
+          "basis": "mean source-specific presence rate multiplied by source-specific history maturity",
+          "key": "persistence",
+          "max_points": 20,
+          "points": 1.19
+        },
+        {
+          "basis": "observed history with 24h exponential half-life",
+          "key": "decayed_history",
+          "max_points": 15,
+          "points": 2.33
+        },
+        {
+          "basis": "5 points only when the event is currently observed by both X and Google",
+          "key": "cross_source",
+          "max_points": 5,
+          "points": 0.0
+        }
+      ],
+      "formula": "40 current + 20 exact-hour momentum + 20 per-source persistence + 15 exponentially decayed history + 5 explicit cross-source",
+      "freshness": {
+        "basis": "1 while currently observed; otherwise exponential cooling decay with 6h half-life",
+        "multiplier": 1.0
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T06:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 10,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 10,
+        "source": "google_trends",
+        "source_rank": 10,
+        "topic": "안철수",
+        "value": 91.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 52,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 52,
+        "source": "google_trends",
+        "source_rank": 52,
+        "topic": "안철수",
+        "value": 49.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 53,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 53,
+        "source": "google_trends",
+        "source_rank": 53,
+        "topic": "안철수",
+        "value": 48.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 51,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 51,
+        "source": "google_trends",
+        "source_rank": 51,
+        "topic": "안철수",
+        "value": 50.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 46,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 46,
+        "source": "google_trends",
+        "source_rank": 46,
+        "topic": "안철수",
+        "value": 55.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 48,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 48,
+        "source": "google_trends",
+        "source_rank": 48,
+        "topic": "안철수",
+        "value": 53.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 47,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 47,
+        "source": "google_trends",
+        "source_rank": 47,
+        "topic": "안철수",
+        "value": 54.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 50,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 50,
+        "source": "google_trends",
+        "source_rank": 50,
+        "topic": "안철수",
+        "value": 51.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 90,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 90,
+        "source": "google_trends",
+        "source_rank": 90,
+        "topic": "안철수",
+        "value": 11.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 123,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 123,
+        "source": "google_trends",
+        "source_rank": 123,
+        "topic": "안철수",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "current_positions": {
+        "google_trends": 0.45045
+      },
+      "decayed_history": {
+        "google_trends": {
+          "coverage": 1.0,
+          "eligible_past_hours": 168,
+          "eligible_weight": 33.86047,
+          "maturity": 1.0,
+          "observed_past_hours": 9,
+          "signal": 0.155038,
+          "weighted_evidence": 5.249653,
+          "weighted_presence": 0.155038
+        }
+      },
+      "momentum_deltas": {
+        "google_trends": 0.45045
+      },
+      "persistence": {
+        "google_trends": {
+          "adjusted_signal": 0.059524,
+          "eligible_hours": 168,
+          "maturity": 1.0,
+          "observed_hours": 10,
+          "presence_rate": 0.059524
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "안철수"
+  }
+}

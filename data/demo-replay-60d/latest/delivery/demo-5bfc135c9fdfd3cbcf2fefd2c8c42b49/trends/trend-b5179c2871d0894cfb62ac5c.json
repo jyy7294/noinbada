@@ -1,0 +1,458 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "content",
+    "category": "gaming_digital",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [
+          {
+            "lookup_match": null,
+            "observation_status": "observed_representative",
+            "ontology_company_count": 0,
+            "ontology_status": "ontology_incomplete",
+            "term": "롤 패치 노트"
+          },
+          {
+            "lookup_match": null,
+            "observation_status": "observed_related_query",
+            "ontology_company_count": 0,
+            "ontology_status": "ontology_incomplete",
+            "term": "롤 점검"
+          },
+          {
+            "lookup_match": null,
+            "observation_status": "observed_related_query",
+            "ontology_company_count": 0,
+            "ontology_status": "ontology_incomplete",
+            "term": "롤 패치노트"
+          }
+        ],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "ontology_incomplete",
+      "published_count": 0,
+      "reason": "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "ontology_incomplete",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.193694,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 1,
+        "observed": 9
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "롤 패치 노트",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "롤 패치 노트",
+    "first_seen_at": "2026-08-12T03:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/trends/trend-b5179c2871d0894cfb62ac5c.json",
+    "keywords": [
+      {
+        "affects_score": false,
+        "observed_hours": 7,
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "source": [
+          "google_trends"
+        ],
+        "status": "observed_related_query",
+        "text": "롤 점검"
+      },
+      {
+        "affects_score": false,
+        "observed_hours": 6,
+        "role": "alias_or_variant",
+        "role_status": "deterministic_draft",
+        "source": [
+          "google_trends"
+        ],
+        "status": "observed_related_query",
+        "text": "롤 패치노트"
+      }
+    ],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 180
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T03:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_days": 1,
+      "observed_hours": 10,
+      "previous_seen_at": "2026-08-12T21:00:00+00:00",
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "seen_before_current_hour": true,
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 201,
+    "momentum": 0.596847,
+    "observed_representative_term": "롤 패치 노트",
+    "persistence": 0.059524,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference",
+      "observed"
+    ],
+    "rank": 201,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "decayed_history": {
+        "status": "ready"
+      },
+      "is_ready": false,
+      "momentum": {
+        "comparable_sources": [
+          "google_trends"
+        ],
+        "neutral_applied": false,
+        "status": "ready",
+        "unavailable_sources": []
+      },
+      "persistence": {
+        "maturity_required_hours": 96,
+        "status": "ready"
+      },
+      "status": "provisional",
+      "warnings": [
+        "single_source_current_observation"
+      ]
+    },
+    "ranking_views": {
+      "daily": {
+        "display_name": "롤 패치 노트",
+        "event_key": "롤 패치 노트",
+        "main_rank": 199,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 199,
+        "rank_change": null,
+        "score": 24.18,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 24.18,
+          "cross_source_points": 0.0,
+          "current_points": 7.75,
+          "decayed_history_points": 2.41,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 11.94,
+          "persistence_points": 2.08,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 24.18
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "display_name": "롤 패치 노트",
+        "event_key": "롤 패치 노트",
+        "main_rank": 201,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 201,
+        "rank_change": null,
+        "score": 21.95,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 21.95,
+          "cross_source_points": 0.0,
+          "current_points": 7.75,
+          "decayed_history_points": 1.21,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 11.94,
+          "persistence_points": 1.05,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 21.95
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "display_name": "롤 패치 노트",
+        "event_key": "롤 패치 노트",
+        "main_rank": 201,
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 201,
+        "rank_change": null,
+        "score": 22.1,
+        "score_change": null,
+        "score_components": {
+          "component_subtotal_points": 22.1,
+          "cross_source_points": 0.0,
+          "current_points": 7.75,
+          "decayed_history_points": 1.22,
+          "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+          "freshness_multiplier": 1.0,
+          "momentum_points": 11.94,
+          "persistence_points": 1.19,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 22.1
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "롤 패치 노트"
+    ],
+    "score": 22.1,
+    "score_change": null,
+    "score_components": {
+      "component_subtotal_points": 22.1,
+      "cross_source_points": 0.0,
+      "current_points": 7.75,
+      "decayed_history_points": 1.22,
+      "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+      "freshness_multiplier": 1.0,
+      "momentum_points": 11.94,
+      "persistence_points": 1.19,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 22.1
+    },
+    "score_explanation": {
+      "components": [
+        {
+          "basis": "mean source-normalised current position over observed current sources",
+          "key": "current",
+          "max_points": 40,
+          "points": 7.75
+        },
+        {
+          "basis": "exact previous-hour position change; neutral 10 points when no exact comparison exists",
+          "key": "momentum",
+          "max_points": 20,
+          "points": 11.94
+        },
+        {
+          "basis": "mean source-specific presence rate multiplied by source-specific history maturity",
+          "key": "persistence",
+          "max_points": 20,
+          "points": 1.19
+        },
+        {
+          "basis": "observed history with 24h exponential half-life",
+          "key": "decayed_history",
+          "max_points": 15,
+          "points": 1.22
+        },
+        {
+          "basis": "5 points only when the event is currently observed by both X and Google",
+          "key": "cross_source",
+          "max_points": 5,
+          "points": 0.0
+        }
+      ],
+      "formula": "40 current + 20 exact-hour momentum + 20 per-source persistence + 15 exponentially decayed history + 5 explicit cross-source",
+      "freshness": {
+        "basis": "1 while currently observed; otherwise exponential cooling decay with 6h half-life",
+        "multiplier": 1.0
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T03:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 8,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 11,
+        "source": "google_trends",
+        "source_rank": 11,
+        "topic": "롤 패치 노트",
+        "value": 93.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 117,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 117,
+        "source": "google_trends",
+        "source_rank": 117,
+        "topic": "롤 패치 노트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 123,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 123,
+        "source": "google_trends",
+        "source_rank": 123,
+        "topic": "롤 패치 노트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 130,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 130,
+        "source": "google_trends",
+        "source_rank": 130,
+        "topic": "롤 패치 노트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 125,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 125,
+        "source": "google_trends",
+        "source_rank": 125,
+        "topic": "롤 패치 노트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 127,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 127,
+        "source": "google_trends",
+        "source_rank": 127,
+        "topic": "롤 패치 노트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 126,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 126,
+        "source": "google_trends",
+        "source_rank": 126,
+        "topic": "롤 패치 노트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 125,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 125,
+        "source": "google_trends",
+        "source_rank": 125,
+        "topic": "롤 패치 노트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 141,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 141,
+        "source": "google_trends",
+        "source_rank": 141,
+        "topic": "롤 패치 노트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 180,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 180,
+        "source": "google_trends",
+        "source_rank": 180,
+        "topic": "롤 패치 노트",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "current_positions": {
+        "google_trends": 0.193694
+      },
+      "decayed_history": {
+        "google_trends": {
+          "coverage": 1.0,
+          "eligible_past_hours": 168,
+          "eligible_weight": 33.86047,
+          "maturity": 1.0,
+          "observed_past_hours": 9,
+          "signal": 0.081053,
+          "weighted_evidence": 2.744506,
+          "weighted_presence": 0.081053
+        }
+      },
+      "momentum_deltas": {
+        "google_trends": 0.193694
+      },
+      "persistence": {
+        "google_trends": {
+          "adjusted_signal": 0.059524,
+          "eligible_hours": 168,
+          "maturity": 1.0,
+          "observed_hours": 10,
+          "presence_rate": 0.059524
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "롤 패치 노트"
+  }
+}

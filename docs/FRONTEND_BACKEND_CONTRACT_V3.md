@@ -98,4 +98,17 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 - 공식 기업개황은 `official_identity.status=verified`일 때만 법인명·영문명·설립일·공식 홈페이지를 표시하고, `relationship_evidence=false`를 관계 근거로 오해하지 않음
 - `coverage.legacy_observed_rows`는 구형 수집기 보존행이며 차트·순위에 사용하지 않음
 
+## 기간별 순위 계약
+
+- 기본 기간: `ranking_default_period=weekly`
+- 기간 목록: `ranking_periods`를 `daily(24h)`, `weekly(168h)`, `monthly(720h)` 순서로 제공
+- 기간별 결과: `ranking_views.{period}.unified_ranking`, `trend_top10`, `window`, `data_readiness`
+- 기존 최상위 `unified_ranking`, `trend_top10`, `public_top10`은 7일(`weekly`) 결과의 상세정보 결합 호환 별칭
+- 모든 기간은 동일한 현재 적격 `observed` X·Google 원장을 사용하며 현재 시각에 관측된 사건만 순위 후보가 됨
+- 60일 이력은 `new`·`rebounding` 생애주기 판별에만 사용하고 점수에는 반영하지 않음
+- 기간 항목의 `detail_event_key`로 기존 트렌드 상세를 조회하며 기업·관련어·기사·검증 정보를 기간마다 복제하지 않음
+- 기업 수와 기업 준비상태는 어떤 기간의 점수·순위·Top 10에도 영향을 주지 않음
+
+프런트는 사용자가 기간 탭을 바꾸면 해당 `ranking_views`를 그대로 표시하고 자체 재계산하지 않습니다. `data_readiness.status`가 잠정이면 기간명 옆에 잠정 배지를 표시합니다.
+
 정확한 기계 계약은 `schemas/intelligence-v3.schema.json`, `schemas/metadata-v3.schema.json`, `schemas/status-v1.schema.json`을 따릅니다.

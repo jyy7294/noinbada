@@ -6,6 +6,7 @@
   "required": [
     "schema_version", "mode", "publication_id", "generated_at", "window",
     "sources", "ranking_availability", "ranking_data_readiness", "score_formula", "score_policy", "home_quality_gate",
+    "ranking_default_period", "ranking_periods", "ranking_views", "ranking_top_level_alias",
     "company_identity_status",
     "unified_ranking", "trend_top10", "public_top10", "company_ready_trends",
     "ontology_enrichment_queue", "enrichment_work_queue", "provider_keyword_candidate_queue",
@@ -34,6 +35,33 @@
     "ranking_data_readiness": {"type": "object"},
     "score_formula": {"type": "string", "minLength": 1},
     "score_policy": {"type": "object"},
+    "ranking_default_period": {"const": "weekly"},
+    "ranking_periods": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {"$ref": "#/$defs/rankingPeriod"}
+    },
+    "ranking_views": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["daily", "weekly", "monthly"],
+      "properties": {
+        "daily": {"$ref": "#/$defs/rankingView"},
+        "weekly": {"$ref": "#/$defs/rankingView"},
+        "monthly": {"$ref": "#/$defs/rankingView"}
+      }
+    },
+    "ranking_top_level_alias": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["period", "unified_ranking", "trend_top10"],
+      "properties": {
+        "period": {"const": "weekly"},
+        "unified_ranking": {"const": "hydrated_weekly_view"},
+        "trend_top10": {"const": "hydrated_weekly_view"}
+      }
+    },
     "home_quality_gate": {
       "type": "object",
       "required": [
@@ -207,6 +235,99 @@
     }
   },
   "$defs": {
+    "rankingWindow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to", "hours", "score_history_hours", "lifecycle_baseline_days"],
+      "properties": {
+        "from": {"type": "string", "format": "date-time"},
+        "to": {"type": "string", "format": "date-time"},
+        "hours": {"enum": [24, 168, 720]},
+        "score_history_hours": {"enum": [24, 168, 720]},
+        "lifecycle_baseline_days": {"const": 60}
+      }
+    },
+    "rankingPeriod": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["key", "label", "default", "window"],
+      "properties": {
+        "key": {"enum": ["daily", "weekly", "monthly"]},
+        "label": {"type": "string", "minLength": 1},
+        "default": {"type": "boolean"},
+        "window": {"$ref": "#/$defs/rankingWindow"}
+      }
+    },
+    "periodTrend": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rank", "main_rank", "event_key", "display_name", "topic",
+        "broad_category", "category", "lane", "score", "score_components",
+        "current_source_position", "momentum", "persistence", "lifecycle",
+        "lifecycle_reason", "first_seen_at", "last_seen_at", "latest_source_ranks",
+        "rank_change_by_source", "source_badge", "data_confidence",
+        "ranking_data_readiness", "company_card_status", "detail_event_key",
+        "shared_detail_fields"
+      ],
+      "properties": {
+        "rank": {"type": "integer", "minimum": 1},
+        "main_rank": {"type": ["integer", "null"], "minimum": 1},
+        "event_key": {"type": "string", "minLength": 1},
+        "display_name": {"type": "string", "minLength": 1},
+        "topic": {"type": "string", "minLength": 1},
+        "broad_category": {"enum": ["food", "content", "lifestyle", "sports", "culture", "consumer", "technology", "market", "issue", "other"]},
+        "category": {"type": "string", "minLength": 1},
+        "lane": {"enum": ["main", "issue", "review"]},
+        "score": {"type": "number", "minimum": 0, "maximum": 100},
+        "score_components": {"$ref": "#/$defs/score_components"},
+        "current_source_position": {"type": "number", "minimum": 0, "maximum": 1},
+        "momentum": {"type": "number", "minimum": 0, "maximum": 1},
+        "persistence": {"type": "number", "minimum": 0, "maximum": 1},
+        "lifecycle": {"enum": ["new", "rising", "sustained", "rebounding"]},
+        "lifecycle_reason": {"type": "string", "minLength": 1},
+        "first_seen_at": {"type": "string", "format": "date-time"},
+        "last_seen_at": {"type": "string", "format": "date-time"},
+        "latest_source_ranks": {"type": "object"},
+        "rank_change_by_source": {"type": "object"},
+        "source_badge": {"type": "string", "minLength": 1},
+        "data_confidence": {"type": "object"},
+        "ranking_data_readiness": {"type": "object"},
+        "company_card_status": {"enum": ["ready", "enrichment_pending", "not_applicable"]},
+        "detail_event_key": {"type": "string", "minLength": 1},
+        "shared_detail_fields": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "keywords", "companies", "company_candidates", "company_resolution",
+              "verification_layer", "news_context"
+            ]
+          }
+        }
+      }
+    },
+    "rankingView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key", "label", "default", "window", "formula_version",
+        "data_readiness", "company_detail_policy", "company_count_affects_rank",
+        "unified_ranking", "trend_top10"
+      ],
+      "properties": {
+        "key": {"enum": ["daily", "weekly", "monthly"]},
+        "label": {"type": "string", "minLength": 1},
+        "default": {"type": "boolean"},
+        "window": {"$ref": "#/$defs/rankingWindow"},
+        "formula_version": {"const": "current40_momentum20_persistence20_decay15_cross5_v2"},
+        "data_readiness": {"type": "object"},
+        "company_detail_policy": {"const": "shared_by_detail_event_key"},
+        "company_count_affects_rank": {"const": false},
+        "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/periodTrend"}},
+        "trend_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/periodTrend"}}
+      }
+    },
     "rankingAvailability": {
       "type": "object",
       "required": [
