@@ -1,90 +1,17 @@
 [
   {
-    "scheduled_at": "2026-08-12T11:00:00+00:00",
-    "started_at": "2026-08-12T11:59:03.937794+00:00",
-    "finished_at": "2026-08-12T11:59:05.872184+00:00",
-    "delay_seconds": 3544,
-    "duration_seconds": 1.93,
-    "success": true,
-    "source_success": {
-      "x": true,
-      "google_trends": true
-    },
-    "observed_rows": 37,
-    "errors": {},
-    "source_failures": {}
-  },
-  {
-    "scheduled_at": "2026-08-12T12:00:00+00:00",
-    "started_at": "2026-08-12T12:06:02.810743+00:00",
-    "finished_at": "2026-08-12T12:06:03.479830+00:00",
-    "delay_seconds": 363,
-    "duration_seconds": 0.67,
-    "success": true,
-    "source_success": {
-      "x": true,
-      "google_trends": true
-    },
-    "observed_rows": 37,
-    "errors": {},
-    "source_failures": {}
-  },
-  {
-    "scheduled_at": "2026-08-12T13:00:00+00:00",
-    "started_at": "2026-08-12T13:58:34.621015+00:00",
-    "finished_at": "2026-08-12T13:58:49.126983+00:00",
-    "delay_seconds": 3515,
-    "duration_seconds": 14.51,
-    "success": false,
-    "source_success": {
-      "x": false,
-      "google_trends": true
-    },
-    "observed_rows": 185,
-    "errors": {
-      "x": "extension_not_ready"
-    },
-    "source_failures": {
-      "x": {
-        "class": "unknown",
-        "detail": "extension_not_ready"
-      }
-    }
-  },
-  {
-    "scheduled_at": "2026-08-12T14:00:00+00:00",
-    "started_at": "2026-08-12T14:49:58.127162+00:00",
-    "finished_at": "2026-08-12T14:50:04.467649+00:00",
-    "delay_seconds": 2998,
-    "duration_seconds": 6.34,
-    "success": false,
-    "source_success": {
-      "x": false,
-      "google_trends": true
-    },
-    "observed_rows": 192,
-    "errors": {
-      "x": "extension_not_ready"
-    },
-    "source_failures": {
-      "x": {
-        "class": "unknown",
-        "detail": "extension_not_ready"
-      }
-    }
-  },
-  {
+    "contract_version": "trzip-v3-hourly",
     "scheduled_at": "2026-08-12T15:00:00+00:00",
-    "started_at": "2026-08-12T15:00:01.591132+00:00",
-    "finished_at": "2026-08-12T15:00:10.347748+00:00",
-    "delay_seconds": 2,
-    "duration_seconds": 8.76,
+    "started_at": "2026-08-12T15:47:33.003821+00:00",
+    "finished_at": "2026-08-12T15:47:50.851358+00:00",
+    "delay_seconds": 2853,
+    "duration_seconds": 17.85,
     "success": false,
     "source_success": {
       "x": false,
       "google_trends": true
     },
-    "observed_rows": 193,
+    "observed_rows": 196,
     "errors": {
       "x": "extension_not_ready"
     },
