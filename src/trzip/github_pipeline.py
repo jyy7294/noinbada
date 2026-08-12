@@ -240,6 +240,19 @@ def run(root: Path, *, retention_days: int = 104) -> dict:
     finished_at = datetime.now(UTC)
     collection_health = _collection_health(root, at, collection, started_at, finished_at)
     intelligence["collection_health"] = collection_health
+    intelligence["collection_status"] = {
+        "observed_at": collection.get("observed_at"),
+        "observed_rows": collection.get("observed", 0),
+        "source_status": {
+            "x": collection.get("audit", {}).get("x_korea_realtime", {}).get("status", "unknown"),
+            "google_trends": collection.get("audit", {}).get("google_geo_kr", {}).get("status", "unknown"),
+        },
+        "errors": collection.get("errors", {}),
+        "partial": bool(collection.get("errors")) or any(
+            collection.get("audit", {}).get(key, {}).get("status") != "observed"
+            for key in ("x_korea_realtime", "google_geo_kr")
+        ),
+    }
 
     metadata = {
         "schema_version": "github-live-data-v1",

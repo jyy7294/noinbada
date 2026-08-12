@@ -43,6 +43,10 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     assert intelligence["mode"] == "live"
     assert intelligence["unified_ranking"][0]["display_name"] == "말복"
     assert intelligence["market_data_status"]["provider"] == "pykrx"
+    assert intelligence["collection_status"]["partial"] is False
+    assert intelligence["collection_status"]["source_status"] == {
+        "x": "observed", "google_trends": "observed"
+    }
     assert intelligence["unified_ranking"][0]["companies"][0]["market_reference"]["status"] == "observed"
     assert list((tmp_path / "observations").glob("*.json"))
 

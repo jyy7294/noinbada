@@ -821,7 +821,14 @@ class Component extends DCLogic {
     }
     this.renderTrendSeries(trend.series || []);
     var date = document.querySelector('[data-z-live-date]');
-    if (date && this.data) date.textContent = "TODAY'S FILE · " + new Date(this.data.observedAt).toLocaleDateString('ko-KR', { month:'2-digit', day:'2-digit' });
+    if (date && this.data) {
+      var collectionStatus = (this.data.raw && this.data.raw.collection_status) || {};
+      var sourceStatus = collectionStatus.source_status || {};
+      var sourceNote = collectionStatus.partial
+        ? ' · 부분 수집' + (sourceStatus.x !== 'observed' ? ' (X 실패)' : '') + (sourceStatus.google_trends !== 'observed' ? ' (Google 실패)' : '')
+        : ' · X+Google 정상';
+      date.textContent = "TODAY'S FILE · " + new Date(this.data.observedAt).toLocaleDateString('ko-KR', { month:'2-digit', day:'2-digit' }) + sourceNote;
+    }
     this.vc(true);
     this.preparePortfolio(trend);
     this.neutralizeUnlinkedMarketData();

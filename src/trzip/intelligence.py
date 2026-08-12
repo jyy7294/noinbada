@@ -530,7 +530,10 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
             "public_eligible_candidates": len(public_candidates),
             "public_top10_count": len(public_top10),
             "excluded_from_public_due_to_context": len(candidates) - len(public_candidates),
-            "top10_with_five_keywords": sum(len(item["keywords"]) == 5 for item in public_top10),
+            "top10_with_five_keywords": sum(
+                sum(keyword["status"] == "observed_source_expression" for keyword in item["keywords"]) == 5
+                for item in public_top10
+            ),
             "top10_with_company_mapping": sum(bool(item["companies"]) for item in public_top10),
             "top10_without_forced_company": sum(not item["companies"] for item in public_top10),
             "top10_low_confidence": sum(item["data_confidence"]["level"] == "low" for item in public_top10),

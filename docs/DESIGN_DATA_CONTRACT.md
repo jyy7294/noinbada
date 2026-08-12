@@ -97,6 +97,7 @@ relation_category,verification_status,created_at
 - `verification_status=industry_structure_only`는 업종 후보로 표시하며 직접 수혜로 표현하지 않습니다.
 - `investment_warning`은 기업 상세에서 항상 함께 표시합니다.
 - 네트워크와 캐시가 모두 없으면 목업으로 대체하지 않고 `데이터 연결 실패`를 표시합니다.
+- X 또는 Google 한쪽 수집이 실패하면 `collection_status.partial=true`를 전달하고 홈 기준일에 `부분 수집 (X 실패)`처럼 표시합니다.
 - Z2 시장자료는 pykrx의 실제 일별 자료가 `observed`일 때만 표시하며 실시간 체결가라고 표현하지 않습니다.
 - Z3·Z4·Z5의 좋아요·수익률·사용자 구성은 목업임을 화면 안에서 명시합니다.
 - 주문 버튼은 실제 증권사 연동 전까지 이동 안내만 제공하며 매매 기능으로 표현하지 않습니다.
