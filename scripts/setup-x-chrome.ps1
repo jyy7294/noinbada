@@ -1,6 +1,6 @@
-param(
+﻿param(
     [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot),
-    [string]$ProfileName = "ChanHee",
+    [string]$ProfileName = "",
     [int]$TimeoutSeconds = 600
 )
 
@@ -27,15 +27,23 @@ if (-not (Test-Path -LiteralPath $LocalStatePath)) {
 # Only non-secret profile metadata is read. Cookies, storage, and passwords are
 # never inspected, copied, or passed to the collector.
 $LocalState = Get-Content -LiteralPath $LocalStatePath -Raw -Encoding UTF8 | ConvertFrom-Json
-$ProfileEntry = $LocalState.profile.info_cache.PSObject.Properties |
-    Where-Object { [string]$_.Value.name -ieq $ProfileName } |
-    Select-Object -First 1
+$ProfileEntry = if ($ProfileName) {
+    $LocalState.profile.info_cache.PSObject.Properties |
+        Where-Object { [string]$_.Value.name -ieq $ProfileName } |
+        Select-Object -First 1
+} else {
+    $LastUsedDirectory = [string]$LocalState.profile.last_used
+    $LocalState.profile.info_cache.PSObject.Properties |
+        Where-Object { [string]$_.Name -eq $LastUsedDirectory } |
+        Select-Object -First 1
+}
 if (-not $ProfileEntry) {
     $KnownProfiles = @(
         $LocalState.profile.info_cache.PSObject.Properties |
             ForEach-Object { [string]$_.Value.name }
     ) -join ", "
-    throw "Chrome 프로필 '$ProfileName'을 찾을 수 없습니다. 확인된 프로필: $KnownProfiles"
+    $Requested = if ($ProfileName) { "표시 이름 '$ProfileName'" } else { "Chrome의 마지막 사용 프로필" }
+    throw "$Requested 을(를) 찾을 수 없습니다. 확인된 프로필: $KnownProfiles"
 }
 $ProfileDirectory = [string]$ProfileEntry.Name
 $ResolvedProfileName = [string]$ProfileEntry.Value.name

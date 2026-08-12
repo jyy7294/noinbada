@@ -12,7 +12,7 @@ TRZIP 백엔드는 찬희님 Windows 노트북에서 매시 정각 한국 X 실�
 
 ```text
 매시 00분 Windows 작업 스케줄러
-  ├─ ChanHee Chrome 프로필의 MV3 확장 → X 한국 1~30위
+  ├─ 마지막으로 사용한 로그인 Chrome 프로필의 MV3 확장 → X 한국 1~30위
   └─ 공개 Chrome 자동화 → Google Trending Now KR 전체 페이지
           ↓
 로컬 SQLite 실제 원장 (무기한 누적)
@@ -90,10 +90,10 @@ Python 3.13과 Google Chrome이 설치된 Windows 기준입니다.
 py -3.13 -m venv .venv
 .venv\Scripts\python.exe -m pip install -e ".[dev]"
 powershell -ExecutionPolicy Bypass -File scripts\install-hourly-task.ps1
-powershell -ExecutionPolicy Bypass -File scripts\setup-x-chrome.ps1 -ProfileName "ChanHee"
+powershell -ExecutionPolicy Bypass -File scripts\setup-x-chrome.ps1
 ```
 
-마지막 명령은 `ChanHee` Chrome 프로필의 `chrome://extensions`와 확장 폴더를 엽니다. 개발자 모드 → 압축해제된 확장 프로그램 로드 → `chrome-extension/trzip-x-current-session` 선택을 한 번만 수행합니다. 확장은 쿠키·저장소 권한 없이 자신이 연 비활성 X 탭의 1~30위만 저장합니다.
+마지막 명령은 Chrome이 기록한 마지막 사용 로그인 프로필의 `chrome://extensions`와 확장 폴더를 엽니다. 개발자 모드 → 압축해제된 확장 프로그램 로드 → `chrome-extension/trzip-x-current-session` 선택을 한 번만 수행합니다. 특정 표시 이름을 명시해야 할 때만 `-ProfileName "이름"`을 붙입니다. 확장은 쿠키·저장소 권한 없이 자신이 연 비활성 X 탭의 1~30위만 저장합니다.
 
 즉시 실행:
 
@@ -150,7 +150,7 @@ scripts/collect-hourly.ps1               정각 실행·live-data 안전 게시
 
 ## 아직 코드만으로 확정할 수 없는 것
 
-- `ChanHee` 프로필에 확장을 한 번 수동 설치해야 X 자동수집이 시작됩니다.
+- 마지막으로 사용한 로그인 Chrome 프로필에 확장을 한 번 수동 설치해야 X 자동수집이 시작됩니다.
 - NAVER 기존 키는 실제 인증 오류 상태이며 재발급 또는 애플리케이션 설정 확인이 필요합니다.
 - Instagram 토큰이 없어 현재 `unavailable`입니다.
 - 72회·168회 실측이 쌓이기 전에는 3일·7일 성공률을 완료로 표현하지 않습니다.

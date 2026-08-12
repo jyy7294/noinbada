@@ -221,8 +221,8 @@
     {
       "id": "evidence:reviewed:ktsky-iam-solo",
       "type": "evidence",
-      "label": "KT스카이라이프 ENA 나는 SOLO 방송 확인",
-      "normalized_label": "kt스카이라이프 ena 나는 solo 방송 확인",
+      "label": "KT스카이라이프 ENA 채널 운영 확인",
+      "normalized_label": "kt스카이라이프 ena 채널 운영 확인",
       "metadata": {"publisher": "한국거래소"}
     },
     {
@@ -421,14 +421,14 @@
     },
     {
       "id": "evidence:reviewed:ktsky-iam-solo",
-      "title": "KT스카이라이프 투자설명서 ENA·나는 SOLO",
+      "title": "KT스카이라이프 투자설명서 ENA 채널 운영",
       "publisher": "한국거래소 KIND",
       "url": "https://kind.krx.co.kr/external/2026/06/17/000061/20260617000085/10601.htm",
-      "evidence_type": "official_filing_program_broadcast",
-      "summary": "KT스카이라이프 공시는 연결 방송사업의 ENA가 나는 SOLO를 방영한다고 명시한다.",
+      "evidence_type": "official_filing_broadcast_channel_operation",
+      "summary": "KT스카이라이프 공시는 연결 방송사업이 ENA 등 채널을 직접 운영한다고 명시한다. 나는 SOLO 편성 사실은 SBS Plus 공식 편성 페이지로 별도 확인한다.",
       "published_at": "2026-06-17",
       "review_status": "approved",
-      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "program_to_broadcasting_group"}
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "broadcast_channel_to_listed_group"}
     },
     {
       "id": "evidence:reviewed:krx-ktsky-053210",
@@ -747,7 +747,7 @@
       "from_node": "term:reviewed:iam-solo",
       "to_node": "company:kr:kospi:053210",
       "relation_type": "broadcasts_via_consolidated_channel",
-      "evidence_ids": ["evidence:reviewed:ktsky-iam-solo"],
+      "evidence_ids": ["evidence:reviewed:sbsplus-iam-solo", "evidence:reviewed:ktsky-iam-solo"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
       "metadata": {
@@ -793,7 +793,7 @@
       "from_node": "term:reviewed:iam-solo",
       "to_node": "company:kr:kospi:030200",
       "relation_type": "parent_company_exposure_via_broadcaster",
-      "evidence_ids": ["evidence:reviewed:ktsky-iam-solo", "evidence:reviewed:krx-ktsky-053210"],
+      "evidence_ids": ["evidence:reviewed:sbsplus-iam-solo", "evidence:reviewed:ktsky-iam-solo", "evidence:reviewed:krx-ktsky-053210"],
       "review_status": "approved",
       "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
       "metadata": {

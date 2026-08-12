@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T16:09:02.1323996+00:00",
+    "updated_at":  "2026-08-12T16:18:03.4148514+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,32 +8,32 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "9ca2b7b8b97e8365dc70de9c231a655b7e79b469",
+                       "base_remote_main_sha":  "8a6128f474a87ea0d1c258bbe59a29a43a22e2a6",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "src/trzip/intelligence.py",
-                                             "src/trzip/ontology.py",
-                                             "tests/test_intelligence.py",
-                                             "tests/test_ontology.py"
+                                             "data/ontology_enrichment.json",
+                                             "docs/FREE_PRODUCTION.md",
+                                             "README.md",
+                                             "scripts/setup-x-chrome.ps1",
+                                             "tests/test_ontology.py",
+                                             "tests/test_x_web_collector.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "1d47a7f7d0b3010424d5f604989b0c74f8bfc1eb009f1fd4e2eb592e5a7f1b72",
-                                                    "schemas/intelligence-v3.schema.json":  "a968c4f79cfcb3f4eadb239c3e7b7250916c3289f05b7a80f18b1c988711aee1",
-                                                    "src/trzip/intelligence.py":  "7447092cc8bfc6e34d0aabd8527d7e8dbec4a7ee240e908ed5437d363cac03a8",
-                                                    "src/trzip/ontology.py":  "bae4b3d2b02979a86fae62b9456e724f14d5de9694ffdaa163f8c585c22f2346",
-                                                    "tests/test_intelligence.py":  "1d349a1b0daaef9536d3c2050c977126487c8c8edbbf7998a198cc84ad2e9f53",
-                                                    "tests/test_ontology.py":  "67a053f38d523dfac5922ba8d92ae69860ff713390c938735b200dbaadff1078"
+                                                    "data/ontology_enrichment.json":  "9508d08f097db1cf3afdfaf6b257558c997511fecc3c46466fbb94ca20deaa33",
+                                                    "docs/FREE_PRODUCTION.md":  "469a3d80b2ec438289c430931749b106a227bef973accd4835f4958d170d7a3b",
+                                                    "README.md":  "ba12131c051064505dd35b634435c6c47b2ef344aa51de249f4a845923735341",
+                                                    "scripts/setup-x-chrome.ps1":  "0111a6c91dc89aa2135f66a9a298e06786aa0e2bed89f19d943d058e8776f74e",
+                                                    "tests/test_ontology.py":  "65b95ccdf5b57ba582613e6e3f79ebdb40bed86d6ebfb7bbab2cb5056552b00c",
+                                                    "tests/test_x_web_collector.py":  "0f935672186be246ccade8b5179c75bc1b7855361e6ed7ac22d1957ec238a08a"
                                                 },
-                       "commit_message":  "feat: derive related terms from reviewed ontology",
+                       "commit_message":  "fix: select active Chrome profile and tighten ontology evidence",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  143
+                                      "count":  145
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -55,22 +55,21 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "원천 관측과 검수된 온톨로지 근거만으로 관련어를 생성하고 프런트 계약에 증거를 전달한다.",
+                    "objective":  "X 확장 설치 대상을 실제 마지막 사용 로그인 Chrome 프로필로 고정하고 콘텐츠 기업 경로의 공식 근거 범위를 정확히 분리한다.",
                     "completed":  [
-                                      "검수된 동일 사건 동의어를 최대 5개 범위에서 병합",
-                                      "띄어쓰기 중복 제거와 evidence URL 강제",
-                                      "관련어가 순위 점수에 영향을 주지 않는 계약과 테스트 추가"
+                                      "Chrome Local State의 last_used 프로필을 기본 선택",
+                                      "프로필 표시 이름 수동 지정은 선택 옵션으로 유지",
+                                      "나는 SOLO 편성과 ENA 운영 증거를 분리해 5개 기업 경로 재검증"
                                   ],
                     "next_actions":  [
-                                         "찬희 Chrome 확장 설치 후 X 한국 트렌드 30개 실측 연결",
-                                         "온톨로지 기업·관련어 커버리지를 증거 기반으로 확대"
+                                         "열린 Chrome 확장 화면에서 사용자 1회 설치 완료 후 X 30개 수집 확인",
+                                         "다음 정각에 X와 Google 양출처 잠정 순위 실측"
                                      ],
                     "blockers":  [
-                                     "Chrome 보안 정책상 현재 로그인 세션 확장은 사용자 1회 설치가 필요",
-                                     "Naver API 인증 024와 Instagram 수집기 미지원"
+                                     "Chrome 내부 보안 화면과 폴더 선택은 원격 브라우저 제어로 대신 클릭할 수 없음"
                                  ],
                     "known_limitations":  [
-                                              "대부분의 신규 트렌드는 아직 검수된 온톨로지 관계가 없어 관련어와 기업이 비어 있을 수 있음"
+                                              "X 확장 설치 전 공개 순위는 Google 단일출처 잠정 상태"
                                           ]
                 },
     "runtime_contract":  {

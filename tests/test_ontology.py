@@ -296,6 +296,35 @@ def test_iam_solo_business_edges_are_three_core_and_two_value_chain():
     assert all(edge["metadata"]["not_a_buy_signal"] is True for edge in relation_edges)
 
 
+def test_iam_solo_ena_path_separates_program_schedule_from_channel_ownership():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+    relation_edges = {
+        edge["to_node"]: edge
+        for edge in graph.edges
+        if edge["from_node"] == "term:reviewed:iam-solo"
+    }
+
+    ktsky_edge = relation_edges["company:kr:kospi:053210"]
+    kt_edge = relation_edges["company:kr:kospi:030200"]
+    assert ktsky_edge["evidence_ids"] == [
+        "evidence:reviewed:sbsplus-iam-solo",
+        "evidence:reviewed:ktsky-iam-solo",
+    ]
+    assert kt_edge["evidence_ids"] == [
+        "evidence:reviewed:sbsplus-iam-solo",
+        "evidence:reviewed:ktsky-iam-solo",
+        "evidence:reviewed:krx-ktsky-053210",
+    ]
+
+    channel_evidence = next(
+        record
+        for record in graph.evidence
+        if record["id"] == "evidence:reviewed:ktsky-iam-solo"
+    )
+    assert channel_evidence["evidence_type"] == "official_filing_broadcast_channel_operation"
+    assert "나는 SOLO 편성 사실은 SBS Plus 공식 편성 페이지로 별도 확인" in channel_evidence["summary"]
+
+
 def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
     graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
 

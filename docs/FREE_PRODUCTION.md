@@ -12,7 +12,7 @@ Windows 작업 스케줄러가 매시 정각 `scripts/collect-hourly.ps1`을 실
   logs\                최근 30일 JSONL 실행 로그
 ```
 
-X 인증은 `ChanHee` Chrome 프로필에 한 번 수동 설치한 MV3 확장이 담당합니다. 확장은 쿠키·저장소 권한이 없고 자신이 연 비활성 탭의 한국 1~30위만 Downloads inbox로 전달합니다. Python은 해당 시간의 완전한 30행만 수락합니다.
+X 인증은 Chrome이 기록한 마지막 사용 로그인 프로필에 한 번 수동 설치한 MV3 확장이 담당합니다. 확장은 쿠키·저장소 권한이 없고 자신이 연 비활성 탭의 한국 1~30위만 Downloads inbox로 전달합니다. Python은 해당 시간의 완전한 30행만 수락합니다.
 
 ## 안전한 게시
 

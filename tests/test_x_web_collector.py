@@ -124,3 +124,12 @@ def test_extension_has_no_cookie_or_storage_permission_and_only_x_trending_host(
     ).read_text(encoding="utf-8")
     assert "persistAcrossSessions: true" in worker
     assert 'const OUTPUT_FILE = "TRZIP/x-current-session.json"' in worker
+
+
+def test_setup_uses_chrome_last_used_profile_by_default():
+    root = Path(__file__).resolve().parents[1]
+    setup = (root / "scripts" / "setup-x-chrome.ps1").read_text(encoding="utf-8")
+
+    assert '[string]$ProfileName = ""' in setup
+    assert "$LocalState.profile.last_used" in setup
+    assert '"--profile-directory=$ProfileDirectory"' in setup
