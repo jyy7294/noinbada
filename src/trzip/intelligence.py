@@ -34,6 +34,13 @@ ONTOLOGY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "ontology_se
 ONTOLOGY_ENRICHMENT_PATH = (
     Path(__file__).resolve().parents[2] / "data" / "ontology_enrichment.json"
 )
+ONTOLOGY_HUMANOID_ENRICHMENT_PATH = (
+    Path(__file__).resolve().parents[2] / "data" / "ontology_humanoid_enrichment.json"
+)
+ONTOLOGY_ENRICHMENT_PATHS = (
+    ONTOLOGY_ENRICHMENT_PATH,
+    ONTOLOGY_HUMANOID_ENRICHMENT_PATH,
+)
 
 
 ALIASES = {
@@ -469,6 +476,13 @@ def _path_relation_tier(path_edges: list[dict]) -> str:
         for edge in business_edges
     }
     explicit_tiers.discard("")
+    # Ontology authors use the product-facing name ``industry_observation``;
+    # the public contract historically calls the same tier ``adjacent``.
+    # Normalize it here so an explicitly cautious industry observation can
+    # never be promoted to the stronger value-chain tier by the fallback.
+    if "industry_observation" in explicit_tiers:
+        explicit_tiers.remove("industry_observation")
+        explicit_tiers.add("adjacent")
     for tier in ("excluded", "adjacent", "value_chain", "core"):
         if tier in explicit_tiers:
             return tier
@@ -786,7 +800,7 @@ def _ontology_company_candidates(
     candidates = sorted(by_stock.values(), key=lambda item: (item["company"], item["stock_code"]))
     return candidates, {
         "seed_path": ONTOLOGY_SEED_PATH.name,
-        "enrichment_path": ONTOLOGY_ENRICHMENT_PATH.name,
+        "enrichment_paths": [path.name for path in ONTOLOGY_ENRICHMENT_PATHS],
         "minimum_gold_companies": MINIMUM_PUBLISHED_COMPANIES,
         "matched_terms": term_diagnostics,
         "padding_forbidden": True,
@@ -826,7 +840,7 @@ def build_intelligence(
     verification_by_trend = latest_verification_by_trend(path or default_db_path())
     ontology_graph = OntologyGraph.load_merged(
         ONTOLOGY_SEED_PATH,
-        ONTOLOGY_ENRICHMENT_PATH,
+        *ONTOLOGY_ENRICHMENT_PATHS,
     )
     news_context_by_term = news_context_by_term or {}
     grouped: dict[str, list[dict]] = defaultdict(list)
@@ -1089,7 +1103,7 @@ def build_intelligence(
             candidate_company_categories = []
             ontology_diagnostics = {
                 "seed_path": ONTOLOGY_SEED_PATH.name,
-                "enrichment_path": ONTOLOGY_ENRICHMENT_PATH.name,
+                "enrichment_paths": [path.name for path in ONTOLOGY_ENRICHMENT_PATHS],
                 "minimum_gold_companies": MINIMUM_PUBLISHED_COMPANIES,
                 "matched_terms": [],
                 "padding_forbidden": True,

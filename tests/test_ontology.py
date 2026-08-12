@@ -17,6 +17,7 @@ from trzip.ontology import (
 ROOT = Path(__file__).resolve().parents[1]
 SEED_PATH = ROOT / "data" / "ontology_seed.json"
 ENRICHMENT_PATH = ROOT / "data" / "ontology_enrichment.json"
+HUMANOID_ENRICHMENT_PATH = ROOT / "data" / "ontology_humanoid_enrichment.json"
 SOURCE_JSON = (
     ROOT.parents[1] / "work" / "spreadsheet-audit" / "ontology-source.json"
 )
@@ -715,3 +716,112 @@ def test_reviewed_samsung_securities_peer_ontology_has_five_listed_brokers():
         for path in paths
     }
     assert {"003540", "005940", "006800", "016360", "039490"} <= tickers
+
+
+def test_humanoid_overlay_publishes_five_evidenced_listed_companies_without_padding():
+    graph = OntologyGraph.load_merged(
+        SEED_PATH,
+        ENRICHMENT_PATH,
+        HUMANOID_ENRICHMENT_PATH,
+    )
+    expected_tickers = {"005380", "005930", "035420", "066570", "454910"}
+
+    for observed_term in ("휴머노이드 로봇", "휴머노이드"):
+        result = graph.resolve_term(observed_term)
+
+        assert result["status"] == "published"
+        assert result["publishable"] is True
+        assert result["company_count"] == 5
+        assert {
+            company["company"]["metadata"]["ticker"]
+            for company in result["companies"]
+        } == expected_tickers
+        assert all(
+            edge["review_status"] == "approved"
+            and edge["metadata"]["not_a_buy_signal"] is True
+            for company in result["companies"]
+            for edge in company["edges"]
+            if edge["relation_type"] != "listed_as"
+        )
+        assert all(
+            record["review_status"] == "approved"
+            and record["url"].startswith("https://")
+            for company in result["companies"]
+            for record in company["evidence"]
+        )
+
+
+def test_humanoid_business_edges_separate_direct_and_industry_observation_paths():
+    graph = OntologyGraph.load_merged(
+        SEED_PATH,
+        ENRICHMENT_PATH,
+        HUMANOID_ENRICHMENT_PATH,
+    )
+    relation_edges = [
+        edge
+        for edge in graph.edges
+        if edge["from_node"] == "term:reviewed:humanoid-robot"
+    ]
+    tier_counts = {
+        tier: sum(edge["metadata"]["relation_tier"] == tier for edge in relation_edges)
+        for tier in ("core", "value_chain", "industry_observation")
+    }
+
+    assert len(relation_edges) == 5
+    assert tier_counts == {"core": 3, "value_chain": 0, "industry_observation": 2}
+    assert all(edge["metadata"]["proof_scope"] for edge in relation_edges)
+    assert all(edge["metadata"]["temporal_scope"] for edge in relation_edges)
+    assert all(edge["metadata"]["not_a_buy_signal"] is True for edge in relation_edges)
+
+
+def test_humanoid_related_terms_are_exactly_five_reviewed_product_or_robot_labels():
+    graph = OntologyGraph.load_merged(
+        SEED_PATH,
+        ENRICHMENT_PATH,
+        HUMANOID_ENRICHMENT_PATH,
+    )
+
+    related = graph.reviewed_related_terms("휴머노이드 로봇")
+
+    assert {item["label"] for item in related} == {
+        "아틀라스",
+        "미래로봇",
+        "실용적 휴머노이드",
+        "LG 클로이드",
+        "AMBIDEX",
+    }
+    assert all(
+        item["relation_role"] != "alias"
+        and all(
+            record["review_status"] == "approved"
+            and record["url"].startswith("https://")
+            for record in item["evidence"]
+        )
+        for item in related
+    )
+
+
+def test_humanoid_overlay_has_separate_official_listing_evidence_for_new_companies():
+    graph = OntologyGraph.load_merged(
+        SEED_PATH,
+        ENRICHMENT_PATH,
+        HUMANOID_ENRICHMENT_PATH,
+    )
+    expected_company_ids = {
+        "company:kr:kospi:005380",
+        "company:kr:kospi:454910",
+    }
+    listing_edges = {
+        edge["from_node"]: edge
+        for edge in graph.edges
+        if edge["relation_type"] == "listed_as"
+        and edge["from_node"] in expected_company_ids
+    }
+
+    assert set(listing_edges) == expected_company_ids
+    for edge in listing_edges.values():
+        assert edge["review_status"] == "approved"
+        assert len(edge["evidence_ids"]) == 1
+        record = graph.evidence_record(edge["evidence_ids"][0])
+        assert record["evidence_type"] == "official_listing_record"
+        assert record["url"].startswith("https://kind.krx.co.kr/")

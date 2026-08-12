@@ -29,6 +29,16 @@ def test_listing_edge_alone_never_promotes_a_company_to_direct_relation():
     ]) == "value_chain"
 
 
+def test_product_facing_industry_observation_tier_stays_cautious_in_public_contract():
+    assert _path_relation_tier([
+        {
+            "relation_type": "develops_adjacent_robot",
+            "metadata": {"relation_tier": "industry_observation"},
+        },
+        {"relation_type": "listed_as"},
+    ]) == "adjacent"
+
+
 def test_provider_issue_titles_require_specific_exact_term_match():
     providers = {
         "youtube": {
@@ -815,6 +825,60 @@ def test_tving_exposes_five_reviewed_related_keywords_and_five_companies(tmp_pat
         "core": 1,
         "value_chain": 4,
         "adjacent": 0,
+        "excluded": 0,
+    }
+
+
+def test_humanoid_robot_exposes_five_keywords_and_three_core_two_industry_observations(
+    tmp_path,
+):
+    target = tmp_path / "humanoid-enrichment.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert(
+        [
+            HourlyObservation(
+                at.isoformat(),
+                "google_trends",
+                "휴머노이드 로봇",
+                1,
+                100,
+                "observed",
+            )
+        ],
+        target,
+    )
+
+    item = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
+    companies = {company["stock_code"]: company for company in item["companies"]}
+
+    assert len(item["keywords"]) == 5
+    assert {keyword["text"] for keyword in item["keywords"]} <= {
+        "휴머노이드",
+        "아틀라스",
+        "미래로봇",
+        "실용적 휴머노이드",
+        "LG 클로이드",
+        "AMBIDEX",
+    }
+    assert all(keyword["affects_score"] is False for keyword in item["keywords"])
+    assert set(companies) == {"005380", "005930", "035420", "066570", "454910"}
+    assert {
+        ticker for ticker, company in companies.items() if company["relation_tier"] == "core"
+    } == {"005380", "005930", "454910"}
+    assert {
+        ticker
+        for ticker, company in companies.items()
+        if company["relation_tier"] == "adjacent"
+    } == {"035420", "066570"}
+    assert all(
+        company["relation_display_type"] == "산업 관찰"
+        for company in companies.values()
+        if company["relation_tier"] == "adjacent"
+    )
+    assert item["company_resolution"]["tier_counts"] == {
+        "core": 3,
+        "value_chain": 0,
+        "adjacent": 2,
         "excluded": 0,
     }
 

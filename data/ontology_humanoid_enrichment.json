@@ -1,0 +1,293 @@
+{
+  "schema_version": "trzip-ontology-enrichment-v1",
+  "metadata": {
+    "description": "Reviewed humanoid-robot business paths. This overlay is presentation enrichment only and never changes ranking.",
+    "reviewed_at": "2026-08-13",
+    "ranking_input": false,
+    "padding_forbidden": true,
+    "publication_gate": "five unique listed stocks with complete URL-evidenced paths"
+  },
+  "nodes": [
+    {
+      "id": "term:reviewed:humanoid-robot",
+      "type": "term",
+      "label": "휴머노이드 로봇",
+      "normalized_label": "휴머노이드 로봇",
+      "metadata": {"lookup_scope": "observed_term", "ranking_input": false}
+    },
+    {
+      "id": "evidence:reviewed:samsung-humanoid",
+      "type": "evidence",
+      "label": "삼성전자 미래로봇추진단·휴머노이드 개발",
+      "normalized_label": "삼성전자 미래로봇추진단 휴머노이드 개발",
+      "metadata": {"publisher": "삼성전자"}
+    },
+    {
+      "id": "evidence:reviewed:hyundai-atlas",
+      "type": "evidence",
+      "label": "현대자동차 보스턴다이내믹스 아틀라스 사업",
+      "normalized_label": "현대자동차 보스턴다이내믹스 아틀라스 사업",
+      "metadata": {"publisher": "현대자동차"}
+    },
+    {
+      "id": "evidence:reviewed:doosan-practical-humanoid",
+      "type": "evidence",
+      "label": "두산로보틱스 실용적 휴머노이드 개발",
+      "normalized_label": "두산로보틱스 실용적 휴머노이드 개발",
+      "metadata": {"publisher": "두산로보틱스"}
+    },
+    {
+      "id": "evidence:reviewed:lge-cloid",
+      "type": "evidence",
+      "label": "LG전자 양팔 홈로봇 LG 클로이드",
+      "normalized_label": "lg전자 양팔 홈로봇 lg 클로이드",
+      "metadata": {"publisher": "LG전자"}
+    },
+    {
+      "id": "evidence:reviewed:naver-ambidex",
+      "type": "evidence",
+      "label": "NAVER LABS 양팔 로봇 AMBIDEX",
+      "normalized_label": "naver labs 양팔 로봇 ambidex",
+      "metadata": {"publisher": "NAVER LABS"}
+    },
+    {
+      "id": "evidence:reviewed:naver-labs-subsidiary",
+      "type": "evidence",
+      "label": "NAVER 공식 네이버랩스 연구개발 자회사 확인",
+      "normalized_label": "naver 공식 네이버랩스 연구개발 자회사 확인",
+      "metadata": {"publisher": "NAVER"}
+    },
+    {
+      "id": "evidence:reviewed:krx-hyundai-005380",
+      "type": "evidence",
+      "label": "현대자동차 유가증권상장법인·회사코드 005380",
+      "normalized_label": "현대자동차 유가증권상장법인 회사코드 005380",
+      "metadata": {"publisher": "한국거래소 KIND"}
+    },
+    {
+      "id": "evidence:reviewed:krx-doosan-robotics-454910",
+      "type": "evidence",
+      "label": "두산로보틱스 유가증권상장법인·회사코드 454910",
+      "normalized_label": "두산로보틱스 유가증권상장법인 회사코드 454910",
+      "metadata": {"publisher": "한국거래소 KIND"}
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence:reviewed:samsung-humanoid",
+      "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+      "publisher": "삼성전자",
+      "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+      "evidence_type": "company_official_humanoid_development",
+      "summary": "삼성전자는 미래로봇추진단을 신설하고 레인보우로보틱스 기술과 자사 AI·소프트웨어를 결합해 지능형 첨단 휴머노이드 개발을 가속한다고 밝혔다.",
+      "published_at": "2024-12-31",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "trend_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:hyundai-atlas",
+      "title": "Hyundai Motor Brings Atlas Humanoid Robot to FIFA World Cup 2026",
+      "publisher": "Hyundai Motor Company",
+      "url": "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html",
+      "evidence_type": "company_official_humanoid_deployment",
+      "summary": "현대자동차는 보스턴다이내믹스의 휴머노이드 로봇 아틀라스를 2026 FIFA 월드컵 실제 경기 환경에 통합했다고 밝혔다.",
+      "published_at": "2026-07-06",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "trend_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:doosan-practical-humanoid",
+      "title": "두산로보틱스, AI 로봇 출시 및 휴머노이드 개발 가속",
+      "publisher": "두산로보틱스",
+      "url": "https://v3-origin-robotics.doosan.com/kr/about/promotion/news/",
+      "evidence_type": "company_official_humanoid_rnd",
+      "summary": "두산로보틱스는 실용적 휴머노이드 사업 진출과 멀티암 동시제어·충돌회피·장기 작업계획 기술 개발 계획을 공식 발표했다.",
+      "published_at": "2025-04-14",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "trend_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:lge-cloid",
+      "title": "LG전자, CES 2026서 홈로봇 LG 클로이드 공개",
+      "publisher": "LG전자",
+      "url": "https://www.lge.co.kr/story/newsroom/234937",
+      "evidence_type": "company_official_adjacent_home_robot_product",
+      "summary": "LG전자는 두 개의 관절형 팔과 손가락을 갖추고 집안일을 수행하는 홈로봇 LG 클로이드를 공개했다. 휴머노이드 완제품과 동일하다고 단정하지 않고 인접 양팔 로봇 플랫폼으로 분류한다.",
+      "published_at": "2026-01-06",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "trend_to_adjacent_company"}
+    },
+    {
+      "id": "evidence:reviewed:naver-ambidex",
+      "title": "NAVER LABS AMBIDEX",
+      "publisher": "NAVER LABS",
+      "url": "https://www.naverlabs.com/en/ambidex",
+      "evidence_type": "company_official_adjacent_dual_arm_robot_platform",
+      "summary": "NAVER LABS는 사람의 힘과 제어를 학습해 일상 작업을 수행하는 양팔 로봇 AMBIDEX를 연구한다. 휴머노이드 완제품이 아닌 인접 로봇 플랫폼으로 분류한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "trend_to_adjacent_platform"}
+    },
+    {
+      "id": "evidence:reviewed:naver-labs-subsidiary",
+      "title": "NAVER Digital Ecosystem Report 2022",
+      "publisher": "NAVER",
+      "url": "https://www.navercorp.com/media/naverReportsDetail?seq=1663",
+      "evidence_type": "company_official_subsidiary_relationship",
+      "summary": "NAVER는 공식 보고서에서 NAVER LABS를 로보틱스 등을 연구하는 자사 R&D 자회사로 설명한다.",
+      "published_at": "2022-09-14",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "subsidiary_to_listed_parent"}
+    },
+    {
+      "id": "evidence:reviewed:krx-hyundai-005380",
+      "title": "현대자동차 유가증권상장법인 회사코드 005380",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/04/08/000901/20260408002762/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "한국거래소 공시는 현대자동차를 유가증권상장법인, 회사코드 005380으로 명시한다.",
+      "published_at": "2026-04-08",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-doosan-robotics-454910",
+      "title": "두산로보틱스 유가증권상장법인 회사코드 454910",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/06/09/000726/20260609001680/00636.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "한국거래소 공시는 두산로보틱스를 유가증권상장법인, 회사코드 454910으로 명시한다.",
+      "published_at": "2026-06-09",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13", "scope": "company_to_stock"}
+    }
+  ],
+  "aliases": [
+    {
+      "id": "alias:reviewed:humanoid",
+      "label": "휴머노이드",
+      "target_node_id": "term:reviewed:humanoid-robot",
+      "match_type": "reviewed_literal_alias",
+      "evidence_ids": ["evidence:reviewed:samsung-humanoid"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    }
+  ],
+  "related_terms": [
+    {
+      "id": "related:reviewed:humanoid-atlas",
+      "label": "아틀라스",
+      "target_node_id": "term:reviewed:humanoid-robot",
+      "relation_role": "named_humanoid_product",
+      "evidence_ids": ["evidence:reviewed:hyundai-atlas"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:humanoid-future-robot",
+      "label": "미래로봇",
+      "target_node_id": "term:reviewed:humanoid-robot",
+      "relation_role": "official_company_program",
+      "evidence_ids": ["evidence:reviewed:samsung-humanoid"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:humanoid-practical",
+      "label": "실용적 휴머노이드",
+      "target_node_id": "term:reviewed:humanoid-robot",
+      "relation_role": "official_company_program",
+      "evidence_ids": ["evidence:reviewed:doosan-practical-humanoid"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:humanoid-cloid",
+      "label": "LG 클로이드",
+      "target_node_id": "term:reviewed:humanoid-robot",
+      "relation_role": "adjacent_dual_arm_home_robot",
+      "evidence_ids": ["evidence:reviewed:lge-cloid"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "related:reviewed:humanoid-ambidex",
+      "label": "AMBIDEX",
+      "target_node_id": "term:reviewed:humanoid-robot",
+      "relation_role": "adjacent_dual_arm_robot_platform",
+      "evidence_ids": ["evidence:reviewed:naver-ambidex"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:reviewed:humanoid-samsung",
+      "from_node": "term:reviewed:humanoid-robot",
+      "to_node": "company:kr:kospi:005930",
+      "relation_type": "develops_humanoid_robot_platform",
+      "evidence_ids": ["evidence:reviewed:samsung-humanoid"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "core", "proof_scope": "미래로봇추진단과 지능형 첨단 휴머노이드 개발", "temporal_scope": "2024-12-31 공식 발표 기준", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:humanoid-hyundai",
+      "from_node": "term:reviewed:humanoid-robot",
+      "to_node": "company:kr:kospi:005380",
+      "relation_type": "deploys_subsidiary_humanoid_robot",
+      "evidence_ids": ["evidence:reviewed:hyundai-atlas"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "core", "proof_scope": "보스턴다이내믹스 아틀라스의 실제 경기 환경 통합", "temporal_scope": "2026-07-06 공식 발표 기준", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-hyundai-005380",
+      "from_node": "company:kr:kospi:005380",
+      "to_node": "stock:kr:kospi:005380",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-hyundai-005380"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:humanoid-doosan-robotics",
+      "from_node": "term:reviewed:humanoid-robot",
+      "to_node": "company:kr:kospi:454910",
+      "relation_type": "develops_practical_humanoid_technology",
+      "evidence_ids": ["evidence:reviewed:doosan-practical-humanoid"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "core", "proof_scope": "실용적 휴머노이드 사업과 멀티암·충돌회피·장기 작업계획 기술", "temporal_scope": "2025-04-14 공식 발표 기준", "confidence": "high", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:listing-doosan-robotics-454910",
+      "from_node": "company:kr:kospi:454910",
+      "to_node": "stock:kr:kospi:454910",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-doosan-robotics-454910"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"}
+    },
+    {
+      "id": "edge:reviewed:humanoid-lge",
+      "from_node": "term:reviewed:humanoid-robot",
+      "to_node": "company:kr:kospi:066570",
+      "relation_type": "develops_adjacent_dual_arm_home_robot",
+      "evidence_ids": ["evidence:reviewed:lge-cloid"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "industry_observation", "proof_scope": "양팔과 손가락을 갖춘 가정용 로봇 LG 클로이드", "temporal_scope": "2026-01-06 공식 발표 기준", "confidence": "high", "not_exact_humanoid_claim": true, "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:humanoid-naver",
+      "from_node": "term:reviewed:humanoid-robot",
+      "to_node": "company:kr:kospi:035420",
+      "relation_type": "owns_adjacent_dual_arm_robot_rnd_subsidiary",
+      "evidence_ids": ["evidence:reviewed:naver-ambidex", "evidence:reviewed:naver-labs-subsidiary"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-13"},
+      "metadata": {"relation_tier": "industry_observation", "proof_scope": "R&D 자회사 NAVER LABS의 사람 물리 지능 학습 양팔 로봇 AMBIDEX", "temporal_scope": "공식 제품·자회사 자료 검토 범위", "confidence": "high", "not_exact_humanoid_claim": true, "not_a_buy_signal": true}
+    }
+  ]
+}
