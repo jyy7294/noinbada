@@ -1,11 +1,11 @@
 {
   "schema_version": "github-live-data-v1",
-  "generated_at": "2026-08-12T07:01:03.491378+00:00",
+  "generated_at": "2026-08-12T07:35:07.500877+00:00",
   "observed_at": "2026-08-12T07:00:00+00:00",
   "mode": "live",
   "storage": "github-live-data-branch",
   "retention_days": 104,
-  "history_rows_loaded": 60,
+  "history_rows_loaded": 120,
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-12.json",
   "collection": {
@@ -39,5 +39,13 @@
     "rows": 120,
     "observed_rows": 120,
     "generated_rows": 0
+  },
+  "market_data": {
+    "provider": "pykrx",
+    "kind": "daily_reference_not_realtime",
+    "requested_stock_codes": 11,
+    "newly_observed": 11,
+    "reused_company_rows": 4,
+    "unavailable_company_rows": 0
   }
 }
