@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-12T15:45:25.2178279+00:00",
+    "updated_at":  "2026-08-12T16:01:37.5393896+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,30 +8,32 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "0ff33f4cf91d3f6e54dea22e8a6fc89ed49bc3d5",
+                       "base_remote_main_sha":  "466155473d99f5168a14f15164de34ba2c963249",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "data/ontology_enrichment.json",
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
                                              "schemas/intelligence-v3.schema.json",
-                                             "src/trzip/intelligence.py",
-                                             "tests/test_intelligence.py",
-                                             "tests/test_ontology.py"
+                                             "src/trzip/enrichment_queue.py",
+                                             "src/trzip/publication_pipeline.py",
+                                             "tests/test_enrichment_queue.py",
+                                             "tests/test_publication_pipeline.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "data/ontology_enrichment.json":  "7f00e22cd6ababfb5f6d5a4b58c4ee8bb36939de27ab04b70f834ca60a263f78",
-                                                    "schemas/intelligence-v3.schema.json":  "164c168f5a85e4cf0f83d8ccf03e614461a65d7235ba245d44f70f6d512b9a8f",
-                                                    "src/trzip/intelligence.py":  "724ed95b212fd7cf767fe0b3b021bbd2abd65486ad27875d0cd2847c5a056bdd",
-                                                    "tests/test_intelligence.py":  "4dc8797b5cd0a56fc5fedf38f6349d760c6ba71fccdce4c25f5a174a75b33e8b",
-                                                    "tests/test_ontology.py":  "15b76e54c314b54ab061c51961605adda14dfeea52015d32935337b740a107f1"
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "6342f56bb0356cde6dc4bbd0358da19105cb4e83520d8b2f1cf6484bc37f3331",
+                                                    "schemas/intelligence-v3.schema.json":  "deef022ac1c6113a7a57041044fbd603361bfa891f9d0b6e096ea53b247d96b1",
+                                                    "src/trzip/enrichment_queue.py":  "a7afbf23c3057c18551023c0999a877dbce80cab331bf63c532d9bfb05f39fef",
+                                                    "src/trzip/publication_pipeline.py":  "4abffaa6d23c52bf5bc42b15bf323d750d490ce6dad3ef9e033f3e1f2edb7fa7",
+                                                    "tests/test_enrichment_queue.py":  "1d5153aeded48e1411571b8bfccb0400ddc188688c32aa0d3e27b8425e38b2c7",
+                                                    "tests/test_publication_pipeline.py":  "96742351fadd030bad1ebc2ff9d78005fa5173932c9e08aeb33e7fda59c1e6fb"
                                                 },
-                       "commit_message":  "feat: add evidence-backed content company ontology",
+                       "commit_message":  "feat: persist fair evidence enrichment work",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  138
+                                      "count":  142
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -53,21 +55,24 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "관측 트렌드를 공식 근거 온톨로지로 상장기업까지 연결",
+                    "objective":  "모든 실측 트렌드의 관련어와 기업 근거 부족을 누적 관리하고 검증 비용을 공정하게 순환",
                     "completed":  [
-                                      "나솔 별칭을 공식 제목 노드로 통합",
-                                      "공식 자료 기반 3개 직접 기업과 2개 가치사슬 기업 연결",
-                                      "상장 edge를 사업 직접관계 판정에서 제외"
+                                      "상위 10개 보조 검증을 미검증 우선 순환 방식으로 변경",
+                                      "같은 관측시간 재실행의 추가 API 소비 차단",
+                                      "모든 순위 항목의 관련어 및 기업 근거 작업을 SQLite에 영구 누적",
+                                      "프론트용 근거 작업대기열 계약과 스키마 추가"
                                   ],
                     "next_actions":  [
-                                         "현재 상위 트렌드의 증거 온톨로지 범위 확대",
+                                         "실행본에서 실제 작업대기열 생성과 보조 검증 순환 실측",
+                                         "근거 대기열을 활용한 온톨로지 커버리지 확대",
                                          "로그인 Chrome X 확장 1회 설치 후 X와 Google 통합 실측"
                                      ],
                     "blockers":  [
                                      "Chrome 내부 확장 관리 화면은 사용자 1회 설치가 필요"
                                  ],
                     "known_limitations":  [
-                                              "증거가 5개 미만인 트렌드는 기업 Gold 공개를 보류"
+                                              "근거가 5개 미만인 트렌드는 관련어 또는 기업 Gold 공개를 보류",
+                                              "NAVER API 인증 024와 Instagram 미구성은 보조 검증 실패 상태로 저장"
                                           ]
                 },
     "runtime_contract":  {

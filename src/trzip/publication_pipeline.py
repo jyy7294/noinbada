@@ -13,6 +13,7 @@ from uuid import uuid4
 from .hourly_store import HourlyObservation, collect_current, coverage, floor_hour, latest_audit
 from .intelligence import build_intelligence
 from .company_adapters import pykrx_stock
+from .enrichment_queue import sync_enrichment_queue
 from .normalization_evaluation import evaluate_regression_set
 from .provider_verification import (
     TrendReference,
@@ -58,14 +59,37 @@ def _public_verification_references(
     intelligence: dict,
     *,
     limit: int,
+    verification_by_trend: dict[str, dict] | None = None,
 ) -> list[TrendReference]:
-    """Select the highest displayed X/Google trends without inventing terms."""
+    """Select a bounded, fair verification batch from the displayed trends.
+
+    Rank order is the tie-breaker, not the only scheduling rule.  Trends that
+    have never been checked are selected before previously checked trends; the
+    oldest checked trend follows after that.  This lets a three-term hourly
+    budget cover the whole public ten instead of repeatedly spending quota on
+    the same top three.
+    """
 
     if limit <= 0:
         return []
+    history = verification_by_trend or {}
+
+    def last_observed_at(item: dict) -> str:
+        record = history.get(str(item.get("event_key") or ""), {})
+        observed = [
+            str(provider.get("observed_at") or "")
+            for provider in (record.get("providers") or {}).values()
+            if provider.get("observed_at")
+        ]
+        return max(observed, default="")
+
     candidates = sorted(
         intelligence.get("public_top10", []),
-        key=lambda item: int(item.get("rank") or 10**9),
+        key=lambda item: (
+            bool(last_observed_at(item)),
+            last_observed_at(item),
+            int(item.get("rank") or 10**9),
+        ),
     )
     references: list[TrendReference] = []
     seen: set[str] = set()
@@ -97,18 +121,40 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         for item in intelligence.get("unified_ranking", [])
     ]
     hourly_limit = _hourly_verification_term_limit()
-    references = _public_verification_references(intelligence, limit=hourly_limit)
-    pending_references = list(references)
+    completed_this_hour: set[str] = set()
+    ledger_read_error = False
+    try:
+        completed_this_hour = verification_trend_keys_at(database_path, at)
+    except Exception:
+        ledger_read_error = True
+    try:
+        latest_before_run = latest_verification_by_trend(database_path)
+    except Exception:
+        latest_before_run = {}
+    if completed_this_hour:
+        current_references = _public_verification_references(
+            intelligence,
+            limit=len(intelligence.get("public_top10", [])),
+        )
+        references = [
+            reference for reference in current_references
+            if reference.trend_key in completed_this_hour
+        ][:hourly_limit]
+        pending_references: list[TrendReference] = []
+    else:
+        references = _public_verification_references(
+            intelligence,
+            limit=hourly_limit,
+            verification_by_trend=latest_before_run,
+        )
+        pending_references = list(references)
     run_status = "skipped_no_public_candidates"
     attempted_term_count = 0
     error = None
     try:
-        completed_this_hour = verification_trend_keys_at(database_path, at)
-        pending_references = [
-            reference for reference in references
-            if reference.trend_key not in completed_this_hour
-        ]
-        if references and not pending_references:
+        if ledger_read_error:
+            raise RuntimeError("provider verification ledger unavailable")
+        if completed_this_hour:
             run_status = "skipped_already_recorded_for_hour"
         elif pending_references:
             attempted_term_count = len(pending_references)
@@ -158,6 +204,8 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         "requested_terms": len(references),
         "attempted_terms": attempted_term_count,
         "hourly_term_limit": hourly_limit,
+        "selection_policy": "never_verified_then_oldest_verified_then_current_rank",
+        "public_candidate_count": len(intelligence.get("public_top10", [])),
         "providers": ["naver", "youtube", "instagram"],
         "ranking_effect": "none",
         "affects_collection_partial": False,
@@ -687,6 +735,11 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         news_context_by_term=news_context_by_term,
     )
     intelligence = _refresh_verification_layer(intelligence, database_path, at)
+    intelligence["enrichment_work_queue"] = sync_enrichment_queue(
+        intelligence,
+        path=database_path,
+        at=at,
+    )
     intelligence["news_discovery_queue"] = news_queue
     normalization_evaluation = evaluate_regression_set()
     intelligence["normalization_regression_evaluation"] = normalization_evaluation

@@ -21,6 +21,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 - 검토 대기: `lanes.review`
 - 시간·일 단위 원천 이력: `hourly_rankings`, `daily_aggregates`
 - 기업 근거 보강 대기열: `ontology_enrichment_queue` (운영·검수 화면용, 순위 영향 없음)
+- 전체 근거 작업 대기열: `enrichment_work_queue` (관련어·기업 각각 5개 충족 상태와 우선순위, 순위 영향 없음)
 
 프런트는 `unified_ranking`을 재정렬하거나 홈 10개를 자체 계산하지 않습니다.
 
@@ -42,6 +43,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 기업 후보 감사 | `company_candidates`, `company_resolution` |
 | 보조 검증 | `verification_layer` |
 | 보조 검증 실행상태 | `verification_run` (`ranking_effect=none`) |
+| 근거 보강 작업상태 | `enrichment_work_queue` (`ranking_effect=none`) |
 | 기사 맥락 | `news_context` |
 
 ## 빈 상태 규칙

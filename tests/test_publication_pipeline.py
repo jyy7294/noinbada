@@ -162,6 +162,8 @@ def test_hourly_verification_uses_only_top_three_public_rows_and_reuses_ledger(
         "requested_terms": 3,
         "attempted_terms": 3,
         "hourly_term_limit": 3,
+        "selection_policy": "never_verified_then_oldest_verified_then_current_rank",
+        "public_candidate_count": 5,
         "providers": ["naver", "youtube", "instagram"],
         "ranking_effect": "none",
         "affects_collection_partial": False,
@@ -180,6 +182,38 @@ def test_hourly_verification_uses_only_top_three_public_rows_and_reuses_ledger(
     assert len(read_verification_ledger(database)) == 9
     assert second["verification_run"]["status"] == "skipped_already_recorded_for_hour"
     assert second["verification_run"]["attempted_terms"] == 0
+
+
+def test_hourly_verification_rotates_across_public_ten_before_rechecking_old_rows(
+    tmp_path, monkeypatch
+):
+    from datetime import timedelta
+    from trzip.provider_verification import ProviderCredentials, verify_terms as actual_verify_terms
+
+    database = tmp_path / "runtime.sqlite3"
+    intelligence = _public_rows(10)
+    at = datetime(2026, 8, 12, 13, tzinfo=UTC)
+    batches = []
+
+    def offline_verify(references, **kwargs):
+        batches.append([item.trend_key for item in references])
+        return actual_verify_terms(
+            references,
+            path=kwargs["path"],
+            at=kwargs["at"],
+            credentials=ProviderCredentials(),
+        )
+
+    monkeypatch.setattr("trzip.publication_pipeline.verify_terms", offline_verify)
+    for offset in range(4):
+        _refresh_verification_layer(intelligence, database, at + timedelta(hours=offset))
+
+    assert batches == [
+        ["event:1", "event:2", "event:3"],
+        ["event:4", "event:5", "event:6"],
+        ["event:7", "event:8", "event:9"],
+        ["event:10", "event:1", "event:2"],
+    ]
 
 
 def test_verification_failure_is_separate_and_never_marks_core_partial(
