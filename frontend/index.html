@@ -786,7 +786,7 @@ class Component extends DCLogic {
           el.style.display = '';
           el.setAttribute('data-z-active-trend', '1');
           el.setAttribute('data-label', t.displayName);
-          el.setAttribute('data-cat', t.categoryKo);
+          el.setAttribute('data-cat', t.categoryKo + (t.reviewRequired ? ' · 검토 필요' : ''));
           el.setAttribute('data-delta', t.delta);
           el.setAttribute('data-rank', t.rankLabel);
           el.setAttribute('data-topic', t.topic);
@@ -913,11 +913,13 @@ class Component extends DCLogic {
       if (node) node.textContent = value == null ? '' : String(value);
     };
     set('[data-z-ttitle]', trend.displayName);
-    set('[data-z-detail-category]', trend.categoryKo);
+    set('[data-z-detail-category]', trend.categoryKo + (trend.reviewRequired ? ' · 검토 필요' : ''));
     set('[data-z-detail-summary]', trend.summary);
     set('[data-z-detail-state]', trend.lifecycleLabel || trend.lifecycle);
     var keywordState = trend.keywordEvidence || {};
-    set('[data-z-detail-confidence]', (trend.sourceBadge || '출처 확인') + ' · ' + ((trend.confidence && trend.confidence.label) || '검증 중'));
+    set('[data-z-detail-confidence]', trend.reviewRequired
+      ? '맥락 검토 필요 · 기업 연결 보류'
+      : (trend.sourceBadge || '출처 확인') + ' · ' + ((trend.confidence && trend.confidence.label) || '검증 중'));
     set('[data-z-detail-delta]', '통합 ' + Number(trend.score || 0).toFixed(1) + '점');
     set('[data-z-detail-period]', trend.ageHours + '시간 관측');
     var sourceParts = [];

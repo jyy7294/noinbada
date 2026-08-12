@@ -129,6 +129,8 @@ function normalizeTrend(item) {
     selectionReason: item.selection_reason,
     confidence: item.data_confidence,
     contextStatus: item.context_status,
+    homeContextStatus: item.home_context_status || 'resolved',
+    reviewRequired: item.home_context_status === 'review_required',
     sourceBadge: item.source_badge,
     scoreComponents: item.score_components || {},
     // 공개 키워드는 X/Google 원천에서 실제 관측된 표현만 허용한다.

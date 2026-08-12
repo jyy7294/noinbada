@@ -43,6 +43,16 @@ def test_live_series_and_hidden_developer_navigation_are_bound():
     assert "team_review_label" in html
 
 
+def test_review_required_trends_are_visibly_labelled_without_company_claims():
+    html = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
+    adapter = (ROOT / "frontend" / "trendzip-data.js").read_text(encoding="utf-8")
+
+    assert "homeContextStatus: item.home_context_status || 'resolved'" in adapter
+    assert "reviewRequired: item.home_context_status === 'review_required'" in adapter
+    assert "t.reviewRequired ? ' · 검토 필요' : ''" in html
+    assert "맥락 검토 필요 · 기업 연결 보류" in html
+
+
 def test_live_bundle_exposes_fresh_partial_stale_status_without_snapshot_override():
     adapter = (ROOT / "frontend" / "trendzip-data.js").read_text(encoding="utf-8")
 

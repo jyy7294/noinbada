@@ -15,6 +15,13 @@ def test_runtime_database_path_uses_sqlite_environment(monkeypatch, tmp_path):
     assert target.is_file()
 
 
+def test_default_database_path_uses_laptop_runtime_root(monkeypatch, tmp_path):
+    monkeypatch.delenv("TRZIP_DB_PATH", raising=False)
+    monkeypatch.setenv("TRZIP_RUNTIME_ROOT", str(tmp_path / "runtime"))
+
+    assert default_db_path() == tmp_path / "runtime" / "data" / "trzip-hourly.sqlite3"
+
+
 def test_explicit_sqlite_path_wins_over_runtime_default(monkeypatch, tmp_path):
     configured = tmp_path / "configured.sqlite3"
     explicit = tmp_path / "explicit.sqlite3"

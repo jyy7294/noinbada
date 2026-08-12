@@ -29,7 +29,15 @@ class HourlyObservation:
 
 
 def default_db_path() -> Path:
-    return Path(os.environ.get("TRZIP_DB_PATH", "data/trzip-hourly.sqlite3"))
+    explicit = os.environ.get("TRZIP_DB_PATH", "").strip()
+    if explicit:
+        return Path(explicit)
+    runtime = os.environ.get("TRZIP_RUNTIME_ROOT", "").strip()
+    if runtime:
+        return Path(runtime) / "data" / "trzip-hourly.sqlite3"
+    local_app_data = os.environ.get("LOCALAPPDATA", "").strip()
+    base = Path(local_app_data) if local_app_data else Path.home() / ".local" / "share"
+    return base / "TRZIP" / "data" / "trzip-hourly.sqlite3"
 
 
 @contextmanager
