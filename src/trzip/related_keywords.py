@@ -68,7 +68,11 @@ def x_related_keywords(query: str, limit: int = 5, candidates: list[str] | None 
         # When an event-specific vocabulary is available, only promote terms
         # from that vocabulary. Unrestricted co-occurrence often captures an
         # unrelated realtime hashtag that happened to share one post.
-        source_rows = verified if candidates else fallback
+        # `None` is reserved for explicit exploratory use.  The product API
+        # always supplies an event vocabulary; an empty vocabulary therefore
+        # means "insufficient evidence", not permission to publish arbitrary
+        # co-occurring words from the realtime feed.
+        source_rows = verified if candidates is not None else fallback
         for text, count in source_rows:
             key = text.casefold().lstrip("#")
             if key in seen or count < 2:
@@ -82,7 +86,9 @@ def x_related_keywords(query: str, limit: int = 5, candidates: list[str] | None 
             "post_count": len(payload.get("data", [])),
             "keywords": [{"text": text, "count": count, "status": "observed_x_cooccurrence"}
                          for text, count in ranked],
-            "note": "aggregate co-occurrence only; raw posts are not returned and ranking is unchanged",
+            "candidate_vocabulary_size": len(candidates or []),
+            "evidence_status": "verified_candidates" if ranked else "insufficient",
+            "note": "event-vocabulary co-occurrence only; raw posts are not returned and ranking is unchanged",
         }
     except Exception as exc:
         return {"status": "error", "source": "x", "query": clean_query, "keywords": [],

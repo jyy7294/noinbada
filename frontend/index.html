@@ -739,7 +739,7 @@
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1360,&quot;height&quot;:960}}">
 class Component extends DCLogic {
   componentDidMount() {
-    setTimeout(() => { this.shell(); this.grid(); this.nav(); this.dial(); this.neutralizeUnlinkedMarketData(); this.hydrate(); }, 60);
+    setTimeout(() => { this.shell(); this.grid(); this.nav(); this.dial(); this.labelMemeMocks(); this.neutralizeUnlinkedMarketData(); this.hydrate(); }, 60);
   }
 
   // GitHub live-data → 화면 표시 / localStorage → 저장 / JSON·CSV → 내보내기.
@@ -750,8 +750,14 @@ class Component extends DCLogic {
       return api.loadTrends({ mode: 'live' }).then(function (res) {
         self.data = res;
         self.savedPortfolios = api.listPortfolios();
-        var list = api.sortTrends(res.trends, 'score').slice(0, 10);
-        if (!list.length) return;
+        // 홈은 전체 순위의 앞 10개가 아니라 맥락 품질 게이트를 통과한
+        // public_top10만 사용한다. 전체 순위는 res.trends에 그대로 보존한다.
+        var list = api.sortTrends(res.featuredTrends || [], 'score').slice(0, 10);
+        if (!list.length) {
+          var emptyLabel = document.querySelector('[data-z-dial-title]');
+          if (emptyLabel) emptyLabel.textContent = '공개 가능한 트렌드 검증 중';
+          return;
+        }
         self.trends = res.trends;
         var sats = [].slice.call(document.querySelectorAll('[data-z-dial]'));
         sats.forEach(function (el, i) {
@@ -853,6 +859,20 @@ class Component extends DCLogic {
       node.textContent = '시장데이터 미연동';
       node.style.color = '#87857B';
       node.style.fontSize = '10.5px';
+    });
+  }
+
+  labelMemeMocks() {
+    [].slice.call(document.querySelectorAll('[data-screen-label]')).forEach(function (screen) {
+      var name = screen.getAttribute('data-screen-label') || '';
+      if (!/^Z[345]/.test(name) || screen.querySelector('[data-z-mock-label]')) return;
+      var phone = screen.querySelector('[style*="width:390px"]');
+      if (!phone) return;
+      var label = document.createElement('div');
+      label.setAttribute('data-z-mock-label', '1');
+      label.textContent = '밈트폴리오 예시 화면 · 수익률/좋아요는 목업';
+      label.style.cssText = 'position:absolute;left:16px;right:16px;top:58px;z-index:40;padding:7px 10px;border:1px solid #6B554A;border-radius:999px;background:#FFF8D8;color:#6B554A;font-weight:900;font-size:9.5px;text-align:center;box-shadow:0 2px 0 rgba(107,85,74,.18);';
+      phone.appendChild(label);
     });
   }
 
@@ -1803,6 +1823,10 @@ class Component extends DCLogic {
   vc(force) {
     var host = document.querySelector('[data-z-vclist]');
     if (!host || (host.__w && !force)) return;
+    if (!this.currentTrend) {
+      host.innerHTML = '<div style="padding:16px 2px;font-weight:700;font-size:11.5px;line-height:1.6;color:#87857B;">실측 트렌드와 기업 관계를 불러오는 중입니다.</div>';
+      return;
+    }
     if (this.currentTrend) {
       var self = this;
       var companies = this.currentTrend.companies || [];

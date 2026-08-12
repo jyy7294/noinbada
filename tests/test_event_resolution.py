@@ -23,3 +23,13 @@ def test_company_relation_and_team_review_are_separate():
     display = relation_display(company, {})
     assert display["relation_display_type"] == "산업 관찰"
     assert display["team_review_status"] == "unreviewed"
+
+
+def test_stock_code_and_fireworks_are_resolved_without_invented_event_names():
+    stock = resolve_event("005930", {"google_trends"})
+    festival = resolve_event("불꽃축제", {"x"})
+
+    assert stock["canonical"] == "삼성전자"
+    assert stock["category"] == "investment_market"
+    assert festival["canonical"] == "불꽃축제"
+    assert festival["category"] == "place_experience"

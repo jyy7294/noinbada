@@ -28,7 +28,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/intelligence
 
 | 화면 | 표시 내용 | 원본 필드 |
 |---|---|---|
-| Z1 홈 다이얼 | 상위 10개 대표명 | `unified_ranking[].display_name` |
+| Z1 홈 다이얼 | 맥락 품질 게이트를 통과한 최대 10개 대표명 | `public_top10[].display_name` |
 | Z1 순위 | 통합 순위 | `rank` |
 | Z1 분류 | 넓은 트렌드 분류 | `category` |
 | Z1 변화 | 소스별 이전 순위 대비 변화 | `rank_change_by_source` |
@@ -45,7 +45,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/intelligence
 | Z6 만들기 | 현재 트렌드의 키워드·기업 후보 | 선택한 정규화 트렌드 |
 | Z7 내 데이터 | JSON·CSV 내보내기 | 저장된 밈트폴리오 전체 |
 
-홈은 디자인 구조상 상위 10개를 보여주지만 `loadTrends()`는 제한 없는 전체 순위를 유지합니다. 다른 전체목록 화면을 추가할 때 같은 배열을 그대로 사용합니다.
+홈은 디자인 구조상 `public_top10`을 보여주며, 미해결·동음이의·맥락부족 항목으로 10칸을 억지로 채우지 않습니다. `loadTrends()`의 `trends`에는 제한 없는 `unified_ranking`, `featuredTrends`에는 공개 품질 게이트를 통과한 목록을 유지합니다.
 
 ## 4. 저장 스키마
 
@@ -92,11 +92,13 @@ relation_category,verification_status,created_at
 ## 6. 표시 금지와 실패 상태
 
 - 실측되지 않은 관련 키워드는 채우지 않고 빈 상태로 둡니다.
+- `operator_candidate_not_rank_evidence`는 감사 데이터에만 남기고 화면 키워드 칩과 저장 데이터에서는 제외합니다.
 - `company_eligible=false`인 트렌드는 기업을 억지로 붙이지 않습니다.
 - `verification_status=industry_structure_only`는 업종 후보로 표시하며 직접 수혜로 표현하지 않습니다.
 - `investment_warning`은 기업 상세에서 항상 함께 표시합니다.
 - 네트워크와 캐시가 모두 없으면 목업으로 대체하지 않고 `데이터 연결 실패`를 표시합니다.
 - Z2 시장자료는 pykrx의 실제 일별 자료가 `observed`일 때만 표시하며 실시간 체결가라고 표현하지 않습니다.
+- Z3·Z4·Z5의 좋아요·수익률·사용자 구성은 목업임을 화면 안에서 명시합니다.
 - 주문 버튼은 실제 증권사 연동 전까지 이동 안내만 제공하며 매매 기능으로 표현하지 않습니다.
 
 ## 7. 파일 구성

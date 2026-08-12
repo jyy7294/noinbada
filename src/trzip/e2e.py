@@ -23,8 +23,14 @@ def run_e2e(*, collect: bool = True, hours: int = 24,
         keyword_result = None
         if live_keywords:
             query = item["raw_terms"][0] if item["raw_terms"] else item["topic"]
+            event_vocabulary = [
+                row["text"] for row in item.get("keywords", [])
+                if row.get("text") and row.get("status") == "operator_candidate_not_rank_evidence"
+            ]
             keyword_result = x_related_keywords(
-                query, candidates=KEYWORD_REGISTRY.get(item["topic"], [])
+                query, candidates=list(dict.fromkeys(
+                    KEYWORD_REGISTRY.get(item["topic"], []) + event_vocabulary
+                ))
             )
         observed_keywords = (
             keyword_result.get("keywords", [])
@@ -33,6 +39,8 @@ def run_e2e(*, collect: bool = True, hours: int = 24,
         keyword_rows = list(observed_keywords[:5])
         keyword_seen = {row.get("text", "").casefold() for row in keyword_rows}
         for stored in item["keywords"]:
+            if stored.get("status") not in {"observed_source_expression", "reconstructed_demo"}:
+                continue
             if stored.get("text", "").casefold() in keyword_seen:
                 continue
             keyword_rows.append(stored)
@@ -51,7 +59,12 @@ def run_e2e(*, collect: bool = True, hours: int = 24,
             "data_confidence": item["data_confidence"],
             "source_ranks": item["latest_source_ranks"], "persistence": item["persistence"],
             "selection_reason": item["selection_reason"], "keywords": keyword_rows,
+            "keyword_candidate_count": item.get("keyword_evidence", {}).get("candidate_count", 0),
             "keyword_source_status": keyword_result.get("status") if keyword_result else "stored_context",
+            "keyword_evidence_status": (
+                keyword_result.get("evidence_status", "insufficient")
+                if keyword_result else item.get("keyword_evidence", {}).get("status", "insufficient")
+            ),
             "company_count": len(item["companies"]),
             "company_categories": item["company_categories"],
             "minimum_category_met": item["company_resolution"]["minimum_category_met"],
@@ -76,7 +89,8 @@ def run_e2e(*, collect: bool = True, hours: int = 24,
                 "market_reaction": profile["market_reference"].get("market_reaction") if profile else None,
             })
 
-    public_top10 = intelligence["public_top10"]
+    public_topics = {item["topic"] for item in intelligence["public_top10"]}
+    public_top10 = [item for item in topics if item["topic"] in public_topics]
     eligible_ranked = [item for item in intelligence["unified_ranking"] if item["company_eligible"]]
     category_quality = {
         "required_categories_per_trend": 3,
@@ -116,7 +130,7 @@ def run_e2e(*, collect: bool = True, hours: int = 24,
         },
         "quality_summary": {**intelligence["quality_summary"], **category_quality},
         "ranking": topics,
-        "top10": topics[:10],
+        "top10": public_top10,
         "companies": company_rows,
         "other_lanes": {
             lane: [{

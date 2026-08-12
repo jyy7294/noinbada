@@ -441,7 +441,7 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
                 "status": "observed" if any(item["status"] == "observed_source_expression" for item in keyword_items) else "insufficient",
                 "reason": ("관측 원문에서 반복된 관련 표현을 확인"
                            if any(item["status"] == "observed_source_expression" for item in keyword_items)
-                           else "반복 관측된 관련어가 없어 후보어만 표시" if keyword_items
+                           else "반복 관측된 관련어가 없어 공개 키워드는 비워 둠" if keyword_items
                            else "관련어 원문·후보 사전이 없어 키워드를 확정하지 못함"),
             },
             "companies": companies,
@@ -472,6 +472,49 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
                 "category": item["category"],
                 "ground_truth_expected": {"display_name": expected[0], "category": expected[1]},
             })
+    public_candidates = [
+        item for item in candidates
+        if item["lane"] == "main"
+        and item["category"] != "unclassified"
+        and item["context_status"] not in {"unresolved", "needs_context", "ambiguous_person"}
+    ]
+    public_top10 = public_candidates[:10]
+
+    snapshot_quality = {}
+    for source in ("x", "google_trends"):
+        by_time = defaultdict(list)
+        for row in rows:
+            if row["source"] == source and row["provenance"] == "observed":
+                by_time[row["observed_at"]].append((row["source_rank"], row["topic"]))
+        fingerprints = [tuple(sorted(values)) for _, values in sorted(by_time.items())]
+        top_sets = [
+            {topic for rank, topic in values if rank <= 10}
+            for _, values in sorted(by_time.items())
+        ]
+        unique_count = len(set(fingerprints))
+        consecutive_unchanged = sum(
+            left == right for left, right in zip(fingerprints, fingerprints[1:])
+        )
+        top10_overlaps = [
+            len(left & right) / max(len(left | right), 1)
+            for left, right in zip(top_sets, top_sets[1:])
+        ]
+        average_top10_overlap = (
+            sum(top10_overlaps) / len(top10_overlaps) if top10_overlaps else 0.0
+        )
+        snapshot_quality[source] = {
+            "snapshot_count": len(fingerprints),
+            "unique_snapshot_count": unique_count,
+            "consecutive_unchanged_count": consecutive_unchanged,
+            "unchanged_rate": round(consecutive_unchanged / max(len(fingerprints) - 1, 1), 4),
+            "average_top10_overlap": round(average_top10_overlap, 4),
+            "status": (
+                "insufficient_history" if len(fingerprints) < 3
+                else "stale_or_static_feed" if consecutive_unchanged == len(fingerprints) - 1
+                else "low_churn_needs_source_review" if average_top10_overlap >= 0.9
+                else "changing"
+            ),
+        }
     return {
         "mode": "reconstructed_demo" if demo else "live",
         "is_live": not demo,
@@ -480,15 +523,18 @@ def build_intelligence(at: datetime, *, hours: int = 24, path: Path | None = Non
         "score_formula": "60% source-rank RRF + 20% momentum + 15% persistence + 5% cross-source",
         "normalization_evaluation": evaluate_resolution(evaluation_rows),
         "unified_ranking": candidates,
-        "public_top10": candidates[:10],
+        "public_top10": public_top10,
         "quality_summary": {
             "total_ranked_candidates": len(candidates),
             "main_candidates": len(lanes["main"]),
-            "public_top10_count": min(10, len(candidates)),
-            "top10_with_five_keywords": sum(len(item["keywords"]) == 5 for item in candidates[:10]),
-            "top10_with_company_mapping": sum(bool(item["companies"]) for item in candidates[:10]),
-            "top10_without_forced_company": sum(not item["companies"] for item in candidates[:10]),
-            "top10_low_confidence": sum(item["data_confidence"]["level"] == "low" for item in candidates[:10]),
+            "public_eligible_candidates": len(public_candidates),
+            "public_top10_count": len(public_top10),
+            "excluded_from_public_due_to_context": len(candidates) - len(public_candidates),
+            "top10_with_five_keywords": sum(len(item["keywords"]) == 5 for item in public_top10),
+            "top10_with_company_mapping": sum(bool(item["companies"]) for item in public_top10),
+            "top10_without_forced_company": sum(not item["companies"] for item in public_top10),
+            "top10_low_confidence": sum(item["data_confidence"]["level"] == "low" for item in public_top10),
+            "source_snapshot_quality": snapshot_quality,
         },
         "lanes": lanes,
     }

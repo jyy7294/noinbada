@@ -155,3 +155,54 @@ def test_observed_related_expression_is_distinguished_from_operator_candidate(tm
     assert event["company_resolution"]["status"] == "mapped"
     assert event["latest_source_ranks"]["x"] == 4
     assert event["rank_change_by_source"]["x"] is None
+
+
+def test_public_top10_excludes_unresolved_context_but_keeps_full_ranking(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+    target = tmp_path / "public-quality-gate.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([
+        HourlyObservation(at.isoformat(), "x", "스네즈나", 1, 100, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "005930", 2, 99, "observed"),
+    ], target)
+
+    result = build_intelligence(at, hours=1, path=target)
+
+    assert any(item["topic"] == "스네즈나" for item in result["unified_ranking"])
+    assert all(item["topic"] != "스네즈나" for item in result["public_top10"])
+    assert any(item["display_name"] == "삼성전자" for item in result["public_top10"])
+
+
+def test_quality_summary_detects_unchanged_source_snapshots(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+    target = tmp_path / "snapshot-quality.sqlite3"
+    rows = []
+    for hour in range(3, 6):
+        stamp = datetime(2026, 8, 12, hour, tzinfo=UTC).isoformat()
+        rows.append(HourlyObservation(stamp, "x", "불꽃축제", 1, 100, "observed"))
+    upsert(rows, target)
+
+    result = build_intelligence(datetime(2026, 8, 12, 5, tzinfo=UTC), hours=3, path=target)
+    quality = result["quality_summary"]["source_snapshot_quality"]["x"]
+
+    assert quality["snapshot_count"] == 3
+    assert quality["unchanged_rate"] == 1.0
+    assert quality["status"] == "stale_or_static_feed"
+
+
+def test_quality_summary_flags_low_churn_top10_even_when_lower_ranks_change(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+    target = tmp_path / "low-churn.sqlite3"
+    rows = []
+    for hour in range(3, 6):
+        stamp = datetime(2026, 8, 12, hour, tzinfo=UTC).isoformat()
+        for rank in range(1, 11):
+            rows.append(HourlyObservation(stamp, "x", f"고정{rank}", rank, 101-rank, "observed"))
+        rows.append(HourlyObservation(stamp, "x", f"변경{hour}", 11, 80, "observed"))
+    upsert(rows, target)
+
+    result = build_intelligence(datetime(2026, 8, 12, 5, tzinfo=UTC), hours=3, path=target)
+    quality = result["quality_summary"]["source_snapshot_quality"]["x"]
+
+    assert quality["average_top10_overlap"] == 1.0
+    assert quality["status"] == "low_churn_needs_source_review"

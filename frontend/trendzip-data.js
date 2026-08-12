@@ -63,7 +63,14 @@ function normalizeTrend(item) {
     contextStatus: item.context_status,
     sourceBadge: item.source_badge,
     scoreComponents: item.score_components || {},
-    keywords: (item.keywords || []).slice(0, 5),
+    // 운영 화면에는 실제 X/Google 원천에서 관측된 표현만 노출한다.
+    // 운영자 후보어는 품질 감사용 raw에 남기되 관련 키워드처럼 보이지 않는다.
+    keywords: (item.keywords || [])
+      .filter((row) => row.status === 'observed_source_expression')
+      .slice(0, 5),
+    keywordCandidates: (item.keywords || [])
+      .filter((row) => row.status === 'operator_candidate_not_rank_evidence')
+      .slice(0, 5),
     keywordEvidence: item.keyword_evidence || {},
     companies: item.companies || [],
     companyEligible: Boolean(item.company_eligible),
@@ -96,6 +103,7 @@ export async function loadTrends({ mode = 'live' } = {}) {
       stale: false,
       observedAt: payload.window?.to || payload.generated_at,
       trends: payload.unified_ranking.map(normalizeTrend),
+      featuredTrends: (payload.public_top10 || []).map(normalizeTrend),
       raw: payload,
     };
   } catch (error) {
@@ -107,6 +115,7 @@ export async function loadTrends({ mode = 'live' } = {}) {
       error: String(error),
       observedAt: cached.window?.to || cached.generated_at,
       trends: cached.unified_ranking.map(normalizeTrend),
+      featuredTrends: (cached.public_top10 || []).map(normalizeTrend),
       raw: cached,
     };
   }
