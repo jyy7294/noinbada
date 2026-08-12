@@ -1,0 +1,471 @@
+{
+  "schema_version": "trzip-ontology-enrichment-v1",
+  "metadata": {
+    "description": "Reviewed additive lookup paths for current observed expressions. This overlay never changes trend scores or representative display terms.",
+    "reviewed_at": "2026-08-12",
+    "ranking_input": false,
+    "padding_forbidden": true,
+    "publication_gate": "five unique listed stocks with complete URL-evidenced paths"
+  },
+  "nodes": [
+    {
+      "id": "term:reviewed:malbok",
+      "type": "term",
+      "label": "말복",
+      "normalized_label": "말복",
+      "metadata": {"lookup_scope": "observed_term", "ranking_input": false}
+    },
+    {
+      "id": "product:reviewed:samgyetang",
+      "type": "product_service",
+      "label": "삼계탕",
+      "normalized_label": "삼계탕",
+      "metadata": {"category": "seasonal_food", "ranking_input": false}
+    },
+    {
+      "id": "term:reviewed:005930",
+      "type": "term",
+      "label": "005930",
+      "normalized_label": "005930",
+      "metadata": {"lookup_scope": "listed_stock_identifier", "ranking_input": false}
+    },
+    {
+      "id": "company:kr:kospi:001680",
+      "type": "company",
+      "label": "대상",
+      "normalized_label": "대상",
+      "metadata": {"market": "KOSPI", "ticker": "001680"}
+    },
+    {
+      "id": "stock:kr:kospi:001680",
+      "type": "stock",
+      "label": "001680 (KOSPI)",
+      "normalized_label": "001680 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "001680"}
+    },
+    {
+      "id": "company:kr:kospi:139480",
+      "type": "company",
+      "label": "이마트",
+      "normalized_label": "이마트",
+      "metadata": {"market": "KOSPI", "ticker": "139480"}
+    },
+    {
+      "id": "stock:kr:kospi:139480",
+      "type": "stock",
+      "label": "139480 (KOSPI)",
+      "normalized_label": "139480 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "139480"}
+    },
+    {
+      "id": "company:kr:kospi:003680",
+      "type": "company",
+      "label": "한성기업",
+      "normalized_label": "한성기업",
+      "metadata": {"market": "KOSPI", "ticker": "003680"}
+    },
+    {
+      "id": "stock:kr:kospi:003680",
+      "type": "stock",
+      "label": "003680 (KOSPI)",
+      "normalized_label": "003680 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "003680"}
+    },
+    {
+      "id": "term:reviewed:samsung-securities",
+      "type": "term",
+      "label": "삼성증권",
+      "normalized_label": "삼성증권",
+      "metadata": {"lookup_scope": "listed_company_name", "ranking_input": false}
+    },
+    {
+      "id": "company:kr:kospi:016360",
+      "type": "company",
+      "label": "삼성증권",
+      "normalized_label": "삼성증권",
+      "metadata": {"market": "KOSPI", "ticker": "016360"}
+    },
+    {
+      "id": "stock:kr:kospi:016360",
+      "type": "stock",
+      "label": "016360 (KOSPI)",
+      "normalized_label": "016360 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "016360"}
+    },
+    {
+      "id": "evidence:reviewed:mcst-sambok",
+      "type": "evidence",
+      "label": "문화체육관광부 세시풍속 삼복·삼계탕",
+      "normalized_label": "문화체육관광부 세시풍속 삼복·삼계탕",
+      "metadata": {"publisher": "문화체육관광부"}
+    },
+    {
+      "id": "evidence:reviewed:ftc-samgyetang-market",
+      "type": "evidence",
+      "label": "공정거래위원회 즉석삼계탕 비교 조사",
+      "normalized_label": "공정거래위원회 즉석삼계탕 비교 조사",
+      "metadata": {"publisher": "공정거래위원회"}
+    },
+    {
+      "id": "evidence:reviewed:krx-005930",
+      "type": "evidence",
+      "label": "한국거래소 삼성전자 상장회사 코드 확인",
+      "normalized_label": "한국거래소 삼성전자 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-001680",
+      "type": "evidence",
+      "label": "한국거래소 대상 상장회사 코드 확인",
+      "normalized_label": "한국거래소 대상 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-027740",
+      "type": "evidence",
+      "label": "한국거래소 마니커 상장회사 코드 확인",
+      "normalized_label": "한국거래소 마니커 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-031440",
+      "type": "evidence",
+      "label": "한국거래소 신세계푸드 상장회사 코드 확인",
+      "normalized_label": "한국거래소 신세계푸드 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-139480",
+      "type": "evidence",
+      "label": "한국거래소 이마트 상장회사 코드 확인",
+      "normalized_label": "한국거래소 이마트 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-136480",
+      "type": "evidence",
+      "label": "한국거래소 하림 상장회사 코드 확인",
+      "normalized_label": "한국거래소 하림 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-003680",
+      "type": "evidence",
+      "label": "한국거래소 한성기업 상장회사 코드 확인",
+      "normalized_label": "한국거래소 한성기업 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    },
+    {
+      "id": "evidence:reviewed:krx-016360",
+      "type": "evidence",
+      "label": "한국거래소 삼성증권 상장회사 코드 확인",
+      "normalized_label": "한국거래소 삼성증권 상장회사 코드 확인",
+      "metadata": {"publisher": "한국거래소"}
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence:reviewed:mcst-sambok",
+      "title": "세시풍속 - 삼복",
+      "publisher": "문화체육관광부",
+      "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+      "evidence_type": "official_cultural_definition",
+      "summary": "초복·중복·말복을 삼복으로 설명하고 대표 복달임 음식으로 삼계탕을 명시한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "term_to_product"}
+    },
+    {
+      "id": "evidence:reviewed:ftc-samgyetang-market",
+      "title": "즉석삼계탕 비교정보 생산 결과",
+      "publisher": "공정거래위원회",
+      "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+      "evidence_type": "government_product_market_test",
+      "summary": "공정위 비교 조사에 대상, 마니커, 신세계푸드, 이마트, 하림, 한성기업의 즉석삼계탕 제품이 명시된다.",
+      "published_at": "2019-07-25",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "product_to_company"}
+    },
+    {
+      "id": "evidence:reviewed:krx-005930",
+      "title": "삼성전자 유가증권상장법인 회사코드 005930",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "삼성전자주식회사의 유가증권상장법인 회사코드가 005930임을 확인한다.",
+      "published_at": "2026-05-26",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-001680",
+      "title": "대상 유가증권상장법인 회사코드 001680",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2024/07/02/000240/20240702000603/00637.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "대상(주)의 유가증권상장법인 회사코드가 001680임을 확인한다.",
+      "published_at": "2024-07-01",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-027740",
+      "title": "마니커 유가증권상장법인 회사코드 027740",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "(주)마니커의 유가증권상장법인 회사코드가 027740임을 확인한다.",
+      "published_at": "2026-03-18",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-031440",
+      "title": "신세계푸드 유가증권상장법인 회사코드 031440",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/01/07/000327/20260107001105/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "(주)신세계푸드의 유가증권상장법인 회사코드가 031440임을 확인한다.",
+      "published_at": "2026-01-07",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-139480",
+      "title": "이마트 유가증권상장법인 회사코드 139480",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/01/28/000318/20260128001057/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "(주)이마트의 유가증권상장법인 회사코드가 139480임을 확인한다.",
+      "published_at": "2026-01-27",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-136480",
+      "title": "하림 코스닥상장법인 회사코드 136480",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "(주)하림의 코스닥상장법인 회사코드가 136480임을 확인한다.",
+      "published_at": "2026-02-25",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-003680",
+      "title": "한성기업 유가증권상장법인 회사코드 003680",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2025/03/24/000127/20250324000721/00636.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "한성기업의 유가증권상장법인 회사코드가 003680임을 확인한다.",
+      "published_at": "2025-03-24",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "company_to_stock"}
+    },
+    {
+      "id": "evidence:reviewed:krx-016360",
+      "title": "삼성증권 유가증권상장법인 회사코드 016360",
+      "publisher": "한국거래소 KIND",
+      "url": "https://kind.krx.co.kr/external/2026/04/02/000489/20260402001176/00634.htm",
+      "evidence_type": "official_listing_record",
+      "summary": "삼성증권(주)의 유가증권상장법인 회사코드가 016360임을 확인한다.",
+      "published_at": "2026-03-31",
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12", "scope": "company_to_stock"}
+    }
+  ],
+  "aliases": [
+    {
+      "id": "alias:reviewed:malbok-hanja",
+      "label": "末伏",
+      "target_node_id": "term:reviewed:malbok",
+      "match_type": "reviewed_literal_alias",
+      "evidence_ids": ["evidence:reviewed:mcst-sambok"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "alias:reviewed:samsung-name",
+      "label": "삼성전자",
+      "target_node_id": "term:reviewed:005930",
+      "match_type": "reviewed_company_identifier_alias",
+      "evidence_ids": ["evidence:reviewed:krx-005930"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "alias:reviewed:samsung-legal-name",
+      "label": "삼성전자주식회사",
+      "target_node_id": "term:reviewed:005930",
+      "match_type": "reviewed_company_identifier_alias",
+      "evidence_ids": ["evidence:reviewed:krx-005930"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:reviewed:malbok-samgyetang",
+      "from_node": "term:reviewed:malbok",
+      "to_node": "product:reviewed:samgyetang",
+      "relation_type": "associated_consumption_occasion",
+      "evidence_ids": ["evidence:reviewed:mcst-sambok"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"},
+      "metadata": {"scope": "말복에서 삼계탕으로의 문화·소비 연결", "not_a_buy_signal": true}
+    },
+    {
+      "id": "edge:reviewed:samgyetang-daesang",
+      "from_node": "product:reviewed:samgyetang",
+      "to_node": "company:kr:kospi:001680",
+      "relation_type": "documented_product_market_participant",
+      "evidence_ids": ["evidence:reviewed:ftc-samgyetang-market"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"},
+      "metadata": {"proof_scope": "공정위 조사 대상 즉석삼계탕 제품 사업자"}
+    },
+    {
+      "id": "edge:reviewed:samgyetang-maniker",
+      "from_node": "product:reviewed:samgyetang",
+      "to_node": "company:kr:kospi:027740",
+      "relation_type": "documented_product_market_participant",
+      "evidence_ids": ["evidence:reviewed:ftc-samgyetang-market"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"},
+      "metadata": {"proof_scope": "공정위 조사 대상 즉석삼계탕 제품 사업자"}
+    },
+    {
+      "id": "edge:reviewed:samgyetang-shinsegaefood",
+      "from_node": "product:reviewed:samgyetang",
+      "to_node": "company:kr:kospi:031440",
+      "relation_type": "documented_product_market_participant",
+      "evidence_ids": ["evidence:reviewed:ftc-samgyetang-market"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"},
+      "metadata": {"proof_scope": "공정위 조사 대상 즉석삼계탕 제품 사업자"}
+    },
+    {
+      "id": "edge:reviewed:samgyetang-emart",
+      "from_node": "product:reviewed:samgyetang",
+      "to_node": "company:kr:kospi:139480",
+      "relation_type": "documented_product_market_participant",
+      "evidence_ids": ["evidence:reviewed:ftc-samgyetang-market"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"},
+      "metadata": {"proof_scope": "공정위 조사 대상 즉석삼계탕 제품 사업자"}
+    },
+    {
+      "id": "edge:reviewed:samgyetang-harim",
+      "from_node": "product:reviewed:samgyetang",
+      "to_node": "company:kr:kosdaq:136480",
+      "relation_type": "documented_product_market_participant",
+      "evidence_ids": ["evidence:reviewed:ftc-samgyetang-market"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"},
+      "metadata": {"proof_scope": "공정위 조사 대상 즉석삼계탕 제품 사업자"}
+    },
+    {
+      "id": "edge:reviewed:samgyetang-hansung",
+      "from_node": "product:reviewed:samgyetang",
+      "to_node": "company:kr:kospi:003680",
+      "relation_type": "documented_product_market_participant",
+      "evidence_ids": ["evidence:reviewed:ftc-samgyetang-market"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"},
+      "metadata": {"proof_scope": "공정위 조사 대상 즉석삼계탕 제품 사업자"}
+    },
+    {
+      "id": "edge:reviewed:005930-samsung",
+      "from_node": "term:reviewed:005930",
+      "to_node": "company:kr:kospi:005930",
+      "relation_type": "denotes_listed_company",
+      "evidence_ids": ["evidence:reviewed:krx-005930"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"},
+      "metadata": {"proof_scope": "회사코드 식별자"}
+    },
+    {
+      "id": "edge:reviewed:listing-005930",
+      "from_node": "company:kr:kospi:005930",
+      "to_node": "stock:kr:kospi:005930",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-005930"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "edge:reviewed:listing-001680",
+      "from_node": "company:kr:kospi:001680",
+      "to_node": "stock:kr:kospi:001680",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-001680"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "edge:reviewed:listing-027740",
+      "from_node": "company:kr:kospi:027740",
+      "to_node": "stock:kr:kospi:027740",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-027740"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "edge:reviewed:listing-031440",
+      "from_node": "company:kr:kospi:031440",
+      "to_node": "stock:kr:kospi:031440",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-031440"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "edge:reviewed:listing-139480",
+      "from_node": "company:kr:kospi:139480",
+      "to_node": "stock:kr:kospi:139480",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-139480"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "edge:reviewed:listing-136480",
+      "from_node": "company:kr:kosdaq:136480",
+      "to_node": "stock:kr:kosdaq:136480",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-136480"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "edge:reviewed:listing-003680",
+      "from_node": "company:kr:kospi:003680",
+      "to_node": "stock:kr:kospi:003680",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-003680"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    },
+    {
+      "id": "edge:reviewed:samsung-securities-company",
+      "from_node": "term:reviewed:samsung-securities",
+      "to_node": "company:kr:kospi:016360",
+      "relation_type": "denotes_listed_company",
+      "evidence_ids": ["evidence:reviewed:krx-016360"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"},
+      "metadata": {"proof_scope": "상장회사명 식별자"}
+    },
+    {
+      "id": "edge:reviewed:listing-016360",
+      "from_node": "company:kr:kospi:016360",
+      "to_node": "stock:kr:kospi:016360",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:krx-016360"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-12"}
+    }
+  ]
+}

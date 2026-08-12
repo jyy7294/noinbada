@@ -60,6 +60,14 @@ PRODUCTIZATION_MARKERS = {
     "시즌", "한정판", "편의점", "카페",
 }
 
+# Broad taxonomy words are valid raw observations, but the word alone does not
+# identify a reproducible product, content, behaviour, or market phenomenon.
+# Keep them in the unified ranking and ask for context instead of promoting a
+# circular "category matched, therefore named object" conclusion.
+GENERIC_CATEGORY_WORDS = {
+    "음식", "제품", "브랜드", "콘텐츠", "생활", "문화", "기술",
+}
+
 
 def _contains_any(text: str, markers: Iterable[str]) -> bool:
     compact = text.casefold().replace(" ", "")
@@ -87,7 +95,19 @@ def assess_trend_fit(
     labels: list[str] = []
 
     hard_issue = category in HARD_ISSUE_CATEGORIES or _contains_any(context, HARD_ISSUE_MARKERS)
-    if category in TREND_CATEGORIES or _contains_any(context, NAMED_OBJECT_MARKERS):
+    generic_category_word = normalized_term.casefold() in {
+        value.casefold() for value in GENERIC_CATEGORY_WORDS
+    }
+    has_specific_context = any((
+        _contains_any(context, NAMED_OBJECT_MARKERS),
+        _contains_any(context, REPEATABLE_BEHAVIOR_MARKERS),
+        _contains_any(context, CONSUMER_ACTION_MARKERS),
+        _contains_any(context, PRODUCTIZATION_MARKERS),
+    ))
+    if (
+        (category in TREND_CATEGORIES and not generic_category_word)
+        or _contains_any(context, NAMED_OBJECT_MARKERS)
+    ):
         labels.append("named_object")
     if _contains_any(context, REPEATABLE_BEHAVIOR_MARKERS) or "consumer_behavior" in claim_types:
         labels.append("repeatable_behavior")
@@ -100,12 +120,16 @@ def assess_trend_fit(
 
     labels = list(dict.fromkeys(labels))
     short_or_generic = len(normalized_term.replace(" ", "")) <= 2
-    ambiguous = not labels or (short_or_generic and category == "unclassified")
+    ambiguous = (
+        not labels
+        or (short_or_generic and category == "unclassified")
+        or (generic_category_word and not has_specific_context)
+    )
 
     if hard_issue:
         selection = "issue"
         reason = "정치·사건사고·재난·단순 기상특보·사생활 논란 맥락"
-    elif labels:
+    elif labels and not (generic_category_word and not has_specific_context):
         selection = "main"
         reason = "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호"
     else:
@@ -118,6 +142,7 @@ def assess_trend_fit(
         "main_eligible": selection == "main",
         "hard_issue": hard_issue,
         "ambiguous": ambiguous,
+        "generic_category_word": generic_category_word,
         "labels": labels,
         "reason": reason,
         "news_context_used": bool(claim_types),

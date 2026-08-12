@@ -31,6 +31,9 @@ from .trend_fit import assess_trend_fit
 
 
 ONTOLOGY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "ontology_seed.json"
+ONTOLOGY_ENRICHMENT_PATH = (
+    Path(__file__).resolve().parents[2] / "data" / "ontology_enrichment.json"
+)
 
 
 ALIASES = {
@@ -40,6 +43,11 @@ ALIASES = {
     # decision: the observed display term still comes from the source rows.
     "삼계탕": "말복",
     "보양식": "말복",
+    # A release-query suffix does not create a second macro event. Both raw
+    # expressions remain in raw_terms/keywords and the current observed form
+    # still owns the public representative label.
+    "cpi 발표": "cpi",
+    "CPI 발표": "cpi",
 }
 
 def canonical_topic(raw: str) -> str:
@@ -57,13 +65,30 @@ def _category(topic: str) -> str:
     lowered = topic.casefold()
     heuristic_categories = (
         (("밥", "초밥", "치킨", "라면", "빵", "쿠키", "초콜릿", "커피", "맛집", "음식", "삼계탕", "디저트"), "food_culinary"),
-        (("영화", "드라마", "예능", "웹툰", "애니", "극장", "방송"), "screen_content"),
+        ((
+            "영화", "드라마", "예능", "웹툰", "애니", "극장", "방송",
+            "티빙", "넷플릭스", "ott", "시리즈", "사건반장", "블랙박스 리뷰",
+            "건축탐구", "나솔", "미스코리아", "트로트",
+        ), "screen_content"),
         (("콘서트", "공연", "앨범", "노래", "뮤직", "아이돌", "생일"), "music_performance"),
-        (("야구", "축구", "테니스", "농구", "선수"), "sports_participation"),
-        (("게임", "패치", "롤 ", "오버워치", "스팀"), "gaming_digital"),
+        ((
+            "야구", "축구", "테니스", "농구", "선수", "감독", "타격왕",
+            "프로골퍼", " fc", "자이언츠", "레드삭스", "블루제이스",
+            "메츠", "브레이브스",
+        ), "sports_participation"),
+        ((
+            "게임", "패치", "롤 ", "오버워치", "스팀", "리그 오브 레전드",
+            "검은사막", "지스타", "펄어비스", "펍지",
+        ), "gaming_digital"),
         (("패션", "유니폼", "가방", "신발", "화장품"), "fashion_collectible"),
         (("여행", "호텔", "축제", "팝업", "전시"), "place_experience"),
-        (("주식", "증시", "코스피", "코스닥", "채권", "금리"), "investment_market"),
+        ((
+            "주식", "증시", "코스피", "코스닥", "채권", "금리", "증권",
+            "상장폐지", "가상자산", "나스닥", "다우 존스", "cpi", "국채",
+            "업비트", "미래에셋",
+        ), "investment_market"),
+        (("아이폰", "스마트폰", "폴더블", "메르세데스-amg"), "product_brand"),
+        (("휴머노이드 로봇", "광 통신", "광통신", "smr"), "technology_tool"),
     )
     for markers, category in heuristic_categories:
         if any(marker in lowered for marker in markers):
@@ -119,24 +144,43 @@ def _series_rows(start: datetime, end: datetime, path: Path | None = None) -> li
         ).fetchall()
 
 
-def _representative_observed_term(observations: list[dict]) -> tuple[str, dict]:
+def _representative_observed_term(
+    observations: list[dict],
+    *,
+    current_at: str | None = None,
+) -> tuple[str, dict]:
     """Choose a representative only from observed source expressions.
 
-    The deterministic order is repeated hours, number of sources, reciprocal
-    rank evidence, best rank, then normalized lexical order. No hand-written
-    narrative or entity label can replace the source expression.
+    Current source expressions take precedence for a current ranking. Within
+    that set the deterministic order is repeated hours, number of sources,
+    reciprocal-rank evidence, best rank, then normalized lexical order. This
+    prevents an expired historical alias from replacing what users can see in
+    the latest source page. No hand-written narrative or entity label can
+    replace the source expression.
     """
     evidence: dict[str, dict] = {}
     for item in observations:
         raw = " ".join(str(item["topic"]).strip().split())
-        bucket = evidence.setdefault(raw, {"hours": set(), "sources": set(), "rrf": 0.0, "best_rank": 10**9})
+        bucket = evidence.setdefault(
+            raw,
+            {
+                "hours": set(),
+                "sources": set(),
+                "current_sources": set(),
+                "rrf": 0.0,
+                "best_rank": 10**9,
+            },
+        )
         bucket["hours"].add(item["observed_at"])
         bucket["sources"].add(item["source"])
+        if current_at is not None and item["observed_at"] == current_at:
+            bucket["current_sources"].add(item["source"])
         bucket["rrf"] += 1.0 / (60.0 + item["source_rank"])
         bucket["best_rank"] = min(bucket["best_rank"], item["source_rank"])
     representative = min(
         evidence,
         key=lambda term: (
+            -bool(evidence[term]["current_sources"]),
             -len(evidence[term]["hours"]),
             -len(evidence[term]["sources"]),
             -evidence[term]["rrf"],
@@ -146,7 +190,9 @@ def _representative_observed_term(observations: list[dict]) -> tuple[str, dict]:
     )
     selected = evidence[representative]
     return representative, {
-        "method": "observed_term_hours_then_sources_then_rrf",
+        "method": "current_observed_term_then_hours_sources_rrf",
+        "currently_observed": bool(selected["current_sources"]),
+        "current_source_count": len(selected["current_sources"]),
         "observed_hours": len(selected["hours"]),
         "source_count": len(selected["sources"]),
         "rrf_support": round(selected["rrf"], 6),
@@ -227,7 +273,10 @@ def _hourly_and_daily_rankings(rows: list[dict]) -> tuple[list[dict], list[dict]
             grouped[canonical_topic(row["topic"])].append(row)
         ranked = []
         for event_key, event_rows in grouped.items():
-            representative, representative_evidence = _representative_observed_term(event_rows)
+            representative, representative_evidence = _representative_observed_term(
+                event_rows,
+                current_at=stamp,
+            )
             best_by_source = {
                 source: min((row for row in event_rows if row["source"] == source), key=lambda row: row["source_rank"])
                 for source in {row["source"] for row in event_rows}
@@ -315,11 +364,13 @@ def _ontology_company_candidates(
                 "observation_status": observed["status"],
                 "ontology_status": resolution["status"],
                 "ontology_company_count": resolution["company_count"],
+                "lookup_match": resolution.get("match"),
             }
         )
-        start_node_id = graph.term_node_id(term)
-        if start_node_id is None:
+        lookup_match = resolution.get("match")
+        if lookup_match is None:
             continue
+        start_node_id = str(lookup_match["target_node_id"])
         paths = graph.trace_paths(
             start_node_id,
             target_types=("stock",),
@@ -352,6 +403,32 @@ def _ontology_company_candidates(
                 }
             ]
             evidence_records: list[dict] = []
+            if lookup_match.get("match_type") != "exact_term":
+                alias_records = list(lookup_match.get("evidence") or [])
+                evidence_records.extend(alias_records)
+                ontology_path.append(
+                    {
+                        "from": term,
+                        "to": lookup_match["target_node_label"],
+                        "edge_type": lookup_match["match_type"],
+                        "evidence_urls": [record["url"] for record in alias_records],
+                        "evidence_type": sorted(
+                            {
+                                str(record.get("evidence_type") or "documented_source")
+                                for record in alias_records
+                            }
+                        ),
+                        "as_of": next(
+                            (
+                                str(record.get("published_at"))
+                                for record in alias_records
+                                if record.get("published_at")
+                            ),
+                            as_of,
+                        ),
+                        "review_status": lookup_match["review_status"],
+                    }
+                )
             for edge_id in path.edge_ids:
                 edge = edge_by_id[edge_id]
                 records = [
@@ -387,7 +464,13 @@ def _ontology_company_candidates(
             )
             relation_types = [edge_by_id[edge_id]["relation_type"] for edge_id in path.edge_ids]
             direct = any(
-                relation in {"historical_business_link", "documented_business_relationship"}
+                relation
+                in {
+                    "historical_business_link",
+                    "documented_business_relationship",
+                    "documented_product_market_participant",
+                    "denotes_listed_company",
+                }
                 for relation in relation_types
             )
             company_role = "직접 기업" if direct else "인프라·서비스"
@@ -437,8 +520,16 @@ def _ontology_company_candidates(
                 "company_role": company_role,
                 "relation_tier": relation_tier,
                 "relation_tier_label": "핵심 사업자" if direct else "가치사슬 기업",
-                "relation_horizon": "현재 직접 연결" if direct else "현재 가치사슬 연결",
-                "exposure_status": "high_relevance" if direct else "value_chain_relevance",
+                # The source observation is current, but an ontology document may
+                # be historical.  Do not turn evidence of a relationship into an
+                # unsupported claim that the relationship is current or that the
+                # stock has high exposure.
+                "relation_horizon": "근거 확인 직접 관계" if direct else "근거 확인 가치사슬 관계",
+                "exposure_status": (
+                    "evidence_backed_direct_relevance"
+                    if direct
+                    else "evidence_backed_value_chain_relevance"
+                ),
                 "verification_status": "ontology_evidence",
                 "opportunity_status": "evidence_backed_candidate",
                 "relation_display_type": "직접 관계" if direct else "가치사슬",
@@ -446,7 +537,9 @@ def _ontology_company_candidates(
                 "team_review_label": "온톨로지 근거 검수됨",
                 "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
                 "matched_ontology_term": term,
-                "ontology_source": "reviewed_seed",
+                "matched_ontology_node": lookup_match["target_node_label"],
+                "ontology_lookup_match_type": lookup_match["match_type"],
+                "ontology_source": "reviewed_seed_plus_enrichment",
                 "ontology_path": ontology_path,
                 "ontology_complete": complete,
                 "ontology_status": "complete" if complete else "incomplete",
@@ -466,6 +559,7 @@ def _ontology_company_candidates(
     candidates = sorted(by_stock.values(), key=lambda item: (item["company"], item["stock_code"]))
     return candidates, {
         "seed_path": ONTOLOGY_SEED_PATH.name,
+        "enrichment_path": ONTOLOGY_ENRICHMENT_PATH.name,
         "minimum_gold_companies": MINIMUM_PUBLISHED_COMPANIES,
         "matched_terms": term_diagnostics,
         "padding_forbidden": True,
@@ -503,7 +597,10 @@ def build_intelligence(
         row for row in quality_rows if row["quality_status"] != "eligible"
     ]
     verification_by_trend = latest_verification_by_trend(path or default_db_path())
-    ontology_graph = OntologyGraph.load(ONTOLOGY_SEED_PATH)
+    ontology_graph = OntologyGraph.load_merged(
+        ONTOLOGY_SEED_PATH,
+        ONTOLOGY_ENRICHMENT_PATH,
+    )
     news_context_by_term = news_context_by_term or {}
     grouped: dict[str, list[dict]] = defaultdict(list)
     for row in rows:
@@ -515,7 +612,10 @@ def build_intelligence(
     for event_key, observations in grouped.items():
         observations.sort(key=lambda item: (item["observed_at"], item["source"], item["source_rank"]))
         sources = {item["source"] for item in observations}
-        representative_term, representative_evidence = _representative_observed_term(observations)
+        representative_term, representative_evidence = _representative_observed_term(
+            observations,
+            current_at=end.isoformat(),
+        )
         event_resolution = resolve_event(event_key, sources)
         observed_hours = len({item["observed_at"] for item in observations})
         history_by_source: dict[str, list[dict]] = defaultdict(list)
@@ -646,6 +746,16 @@ def build_intelligence(
         )
         lane = fit_assessment["selection"]
         reason = fit_assessment["reason"]
+        context_status = event_resolution["context_status"]
+        if (
+            context_status == "ambiguous_person"
+            and detected_category != "unclassified"
+            and keyword_items
+        ):
+            # A person's raw name remains unchanged, but observed Google/X
+            # context such as "축구 선수" can resolve the homonym for this
+            # snapshot. No generated biography or guessed identity is used.
+            context_status = "resolved_by_observed_context"
         trend_fit = {
             **fit_assessment,
             "lane": lane,
@@ -722,6 +832,7 @@ def build_intelligence(
             candidate_company_categories = []
             ontology_diagnostics = {
                 "seed_path": ONTOLOGY_SEED_PATH.name,
+                "enrichment_path": ONTOLOGY_ENRICHMENT_PATH.name,
                 "minimum_gold_companies": MINIMUM_PUBLISHED_COMPANIES,
                 "matched_terms": [],
                 "padding_forbidden": True,
@@ -778,7 +889,7 @@ def build_intelligence(
             "representative_evidence": representative_evidence,
             "raw_terms": sorted({item["topic"] for item in observations}),
             "phenomenon_summary": phenomenon_summary,
-            "context_status": event_resolution["context_status"],
+            "context_status": context_status,
             "ground_truth_match": event_resolution["ground_truth_match"],
             "category": detected_category,
             "broad_category": _broad_category(detected_category),
@@ -897,6 +1008,18 @@ def build_intelligence(
                 MINIMUM_PUBLISHED_COMPANIES - item["company_resolution"]["candidate_count"],
             ),
             "status": "evidence_research_required",
+            "lookup_status": (
+                "reviewed_match_below_gold_gate"
+                if item["company_resolution"]["candidate_count"]
+                else "no_reviewed_ontology_match"
+            ),
+            "research_stages": [
+                "representative_or_related_term_lookup",
+                "entity_product_or_industry_bridge",
+                "company_relationship_evidence",
+                "listed_stock_identity_evidence",
+                "team_review",
+            ],
             "allowed_evidence": ["company_official", "regulatory_filing", "reputable_news", "reviewed_industry_structure"],
             "padding_forbidden": True,
             "affects_score": False,
@@ -940,12 +1063,55 @@ def build_intelligence(
                 else "changing"
             ),
         }
+    expected_rank_sources = {"x", "google_trends"}
+    missing_current_sources = sorted(expected_rank_sources - current_available_sources)
+    if not current_available_sources:
+        ranking_availability = {
+            "status": "unavailable",
+            "label": "현재 순위 없음",
+            "is_combined_rank": False,
+            "current_sources": [],
+            "missing_sources": sorted(expected_rank_sources),
+            "reason": "현재 시간에 품질 게이트를 통과한 X·Google 원장이 없음",
+        }
+    elif missing_current_sources:
+        ranking_availability = {
+            "status": "provisional_single_source",
+            "label": "단일출처 잠정 순위",
+            "is_combined_rank": False,
+            "current_sources": sorted(current_available_sources),
+            "missing_sources": missing_current_sources,
+            "reason": "X와 Google 중 한 출처만 현재 시간에 관측되어 통합 순위로 확정할 수 없음",
+        }
+    elif eligible_hour_count < 96:
+        ranking_availability = {
+            "status": "provisional_history",
+            "label": "양출처 잠정 순위",
+            "is_combined_rank": True,
+            "current_sources": sorted(current_available_sources),
+            "missing_sources": [],
+            "reason": "X·Google은 모두 관측됐지만 96시간 성숙 게이트 전",
+        }
+    else:
+        ranking_availability = {
+            "status": "mature_combined",
+            "label": "양출처 성숙 순위",
+            "is_combined_rank": True,
+            "current_sources": sorted(current_available_sources),
+            "missing_sources": [],
+            "reason": "X·Google 현재 관측과 96시간 원장 성숙 게이트 충족",
+        }
+
+    for item in candidates:
+        item["ranking_availability_status"] = ranking_availability["status"]
+
     return {
         "schema_version": "trzip-intelligence-v3",
         "mode": "live",
         "is_live": True,
         "window": {"from": start.isoformat(), "to": end.isoformat(), "hours": hours},
         "sources": ["x", "google_trends"],
+        "ranking_availability": ranking_availability,
         "score_formula": (
             "60% current-hour normalized RRF + 20% previous-to-current normalized rank-position "
             "momentum + 15% eligible-hour persistence x 96-hour maturity + 5% current cross-source"
@@ -1002,6 +1168,8 @@ def build_intelligence(
             ),
             "eligible_ledger_hours": eligible_hour_count,
             "current_available_sources": sorted(current_available_sources),
+            "missing_current_sources": missing_current_sources,
+            "ranking_availability_status": ranking_availability["status"],
             "ranking_maturity_status": "mature" if eligible_hour_count >= 96 else "provisional",
             "quarantined_source_hour_count": len(quarantined_source_hours),
             "quarantined_source_hours": quarantined_source_hours,

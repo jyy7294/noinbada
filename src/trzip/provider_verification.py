@@ -175,10 +175,14 @@ def resolve_provider_credentials(
         "NAVER_CLIENT_ID",
         "NAVER_CLIENT_SECRET",
         "YOUTUBE_API_KEY",
+        "YOUTUBE_DATA_API_KEY",
+        "GOOGLE_YOUTUBE_API_KEY",
+        "GOOGLE_API_KEY",
         "INSTAGRAM_ACCESS_TOKEN",
         "KIWOOM_TRZIP_NAVER_CLIENT_ID",
         "KIWOOM_TRZIP_NAVER_CLIENT_SECRET",
         "KIWOOM_TRZIP_YOUTUBE_API_KEY",
+        "TRZIP_YOUTUBE_API_KEY",
         "KIWOOM_TRZIP_INSTAGRAM_ACCESS_TOKEN",
     }
     if environment is None:
@@ -197,7 +201,14 @@ def resolve_provider_credentials(
         naver_client_secret=first(
             "NAVER_CLIENT_SECRET", "KIWOOM_TRZIP_NAVER_CLIENT_SECRET"
         ),
-        youtube_api_key=first("YOUTUBE_API_KEY", "KIWOOM_TRZIP_YOUTUBE_API_KEY"),
+        youtube_api_key=first(
+            "YOUTUBE_API_KEY",
+            "YOUTUBE_DATA_API_KEY",
+            "GOOGLE_YOUTUBE_API_KEY",
+            "TRZIP_YOUTUBE_API_KEY",
+            "KIWOOM_TRZIP_YOUTUBE_API_KEY",
+            "GOOGLE_API_KEY",
+        ),
         instagram_access_token=first(
             "INSTAGRAM_ACCESS_TOKEN", "KIWOOM_TRZIP_INSTAGRAM_ACCESS_TOKEN"
         ),
@@ -223,14 +234,14 @@ def provider_readiness(environment: dict[str, str] | None = None) -> dict[str, d
             "daily_search_budget": DEFAULT_YOUTUBE_DAILY_SEARCH_BUDGET,
         },
         "instagram": {
-            "status": "configured_unverified"
-            if credentials.instagram_access_token
-            else "unavailable",
+            "status": "unavailable",
             "role": "context_and_verification_only",
             "ranking_effect": RANKING_EFFECT,
-            "reason": None
-            if credentials.instagram_access_token
-            else "authorized Meta/Instagram access token is not configured",
+            "reason": (
+                "authorized collector is not enabled in this MVP"
+                if credentials.instagram_access_token
+                else "authorized Meta/Instagram access token is not configured"
+            ),
         },
     }
 
@@ -900,6 +911,26 @@ def youtube_search_attempts_on_kst_date(path: Path, at: datetime) -> int:
     return int(row[0])
 
 
+def verification_trend_keys_at(path: Path, at: datetime) -> set[str]:
+    """Return terms already recorded for this exact scheduled observation hour.
+
+    Every provider state, including unavailable and failed, counts as a completed
+    hourly ledger decision. This prevents a retry of the same publication hour
+    from spending the provider budget again while retaining append-only history.
+    """
+
+    initialize_verification_ledger(path)
+    with sqlite3.connect(path) as connection:
+        rows = connection.execute(
+            """SELECT trend_key FROM provider_verification_runs
+               WHERE observed_at=?
+               GROUP BY trend_key
+               HAVING COUNT(DISTINCT provider)=3""",
+            (_iso(at),),
+        ).fetchall()
+    return {str(row[0]) for row in rows}
+
+
 def verify_terms(
     references: list[TrendReference],
     *,
@@ -960,19 +991,17 @@ def verify_terms(
         persist_verification_result(youtube, path)
         output.append(youtube)
 
+        instagram_reason = (
+            "authorized collector is not enabled in this MVP"
+            if resolved.instagram_access_token
+            else "authorized Meta/Instagram data access is not configured"
+        )
         instagram = _unavailable(
             reference,
             "instagram",
             at,
-            "authorized Meta/Instagram data access is not configured",
+            instagram_reason,
         )
-        if resolved.instagram_access_token:
-            instagram = deferred_result(
-                reference,
-                "instagram",
-                at,
-                "authorized collector is not enabled in this MVP",
-            )
         persist_verification_result(instagram, path)
         output.append(instagram)
     return output

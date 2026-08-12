@@ -1,0 +1,131 @@
+# TRZIP Codex 연속 작업·운영 인수인계
+
+이 문서는 새 Codex 작업이 로컬 상황을 추측하지 않고 현재 프로덕트 백엔드를 바로 점검·계속 개발하기 위한 기준입니다. README는 제품 설명, `AGENTS.md`는 강제 원칙, 이 문서는 실제 운영 체크리스트입니다.
+
+## 1. 제품 완료 조건
+
+매시 정각 찬희님 노트북이 아래 한 사이클을 끝내야 합니다.
+
+```text
+X 한국 실시간 1~30 + Google Trending Now KR 전체
+  → append-only SQLite 원장
+  → 실제 표현 정규화·사건 그룹
+  → 출처 순위만 이용한 전체 결정론적 순위
+  → 약한 표시 적합성 분류
+  → 실제 관련어 0~5
+  → 증거 온톨로지·국내 상장기업 공개 게이트
+  → 보조 플랫폼 검증(순위 영향 0)
+  → V3 JSON 계약 검증
+  → origin/live-data 게시 및 원격 SHA 확인
+```
+
+프런트 화면 성공은 이 백엔드 완료 조건에 포함하지 않습니다. 프런트는 V3 JSON 묶음을 소비하는 별도 클라이언트입니다.
+
+## 2. 저장소·로컬 경로
+
+| 용도 | 기준 |
+|---|---|
+| GitHub | `jyy7294/noinbada` |
+| 검증된 코드 | `main` |
+| 매시간 공개 관측 | `live-data` |
+| 안정 실행 checkout | `$env:USERPROFILE\Documents\Codex\noinbada-runtime` |
+| 런타임 루트 | `$env:LOCALAPPDATA\TRZIP` |
+| SQLite | `$env:LOCALAPPDATA\TRZIP\data\trzip-hourly.sqlite3` |
+| publication | `$env:LOCALAPPDATA\TRZIP\publication` |
+| live-data worktree | `$env:LOCALAPPDATA\TRZIP\live-data` |
+| 로그 | `$env:LOCALAPPDATA\TRZIP\logs` |
+| Windows 작업 | `TRZIP X Google Hourly Collector` |
+
+환경변수와 API 키는 Windows 사용자 환경 또는 로컬 `.env`에만 둡니다. 값 자체를 문서·로그·커밋·대화에 복사하지 않습니다.
+
+## 3. 새 Codex가 먼저 확인할 것
+
+```powershell
+git status -sb
+git fetch origin
+git log --oneline --decorate -8 --all
+Get-ScheduledTask -TaskName "TRZIP X Google Hourly Collector"
+Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
+git -C "$env:LOCALAPPDATA\TRZIP\live-data" status -sb
+git -C "$env:LOCALAPPDATA\TRZIP\live-data" rev-parse HEAD
+git ls-remote origin refs/heads/main refs/heads/live-data
+```
+
+그다음 최신 `status.json`의 `partial`, `source_status`, `observed_at`과 SQLite 최신 출처별 행 수를 확인합니다. Windows 작업의 `LastTaskResult=0`은 스크립트가 끝났다는 뜻일 뿐 X와 Google이 모두 관측됐다는 뜻이 아닙니다.
+
+## 4. 코드 체크포인트와 원격 복구 원칙
+
+- 완료된 기능은 전체 회귀검증 후 같은 작업 안에서 `main`까지 병합·푸시합니다.
+- 푸시 후 `git ls-remote origin refs/heads/main`과 로컬 HEAD가 같은지 확인합니다.
+- `main` 갱신 뒤 안정 실행 checkout을 fast-forward합니다.
+- 예약 작업은 코드 저장용이 아닙니다. 매시간 `latest`, `observations`, `monitoring`만 `live-data`에 커밋·푸시합니다.
+- 토큰·세션 종료가 임박했는데 테스트가 끝나지 않았다면 깨진 코드를 `main`에 넣지 않습니다. 안전한 범위만 별도 `wip/codex-*` 브랜치에 올리고 실패·남은 작업을 명시합니다.
+- 팀 브랜치를 통합할 때 브랜치 전체를 무조건 병합하지 않습니다. 현재 원칙과 겹치는 데이터·규칙만 출처를 보존해 선택 통합하고 전체 회귀검증을 다시 실행합니다.
+
+권장 검증:
+
+```powershell
+.venv\Scripts\python.exe -m pytest -q
+.venv\Scripts\python.exe -m compileall -q src tests
+git diff --check
+```
+
+PowerShell 스크립트는 파서로 구문검사하고, 실제 publication을 만든 뒤 V3 schema와 공개 정보 누출 검사를 수행합니다.
+
+## 5. main 갱신 뒤 안정 실행 checkout 반영
+
+```powershell
+$runtime = Join-Path $env:USERPROFILE "Documents\Codex\noinbada-runtime"
+git -C $runtime fetch origin main
+git -C $runtime merge --ff-only origin/main
+& "$runtime\.venv\Scripts\python.exe" -m pip install -e $runtime
+powershell -ExecutionPolicy Bypass -File "$runtime\scripts\install-hourly-task.ps1" `
+  -ProjectRoot $runtime -ReplaceDifferentProjectRoot
+```
+
+다른 로컬 변경이 있거나 fast-forward가 불가능하면 중단하고 먼저 diff를 검토합니다. 강제 reset이나 force push는 하지 않습니다.
+
+## 6. X 확장 프로그램 단 한 번의 수동 게이트
+
+Chrome 보안상 내부 확장 관리 화면은 Codex 브라우저 자동화가 직접 조작할 수 없습니다. 찬희님이 실제 X에 로그인한 Chrome 프로필에서 한 번만 아래 작업이 필요합니다.
+
+1. `chrome://extensions` 열기
+2. 개발자 모드 켜기
+3. 압축해제된 확장 프로그램 로드
+4. `$env:USERPROFILE\Documents\Codex\noinbada-runtime\chrome-extension\trzip-x-current-session` 선택
+5. 확장 상태가 켜져 있고 X 계정이 로그인됐는지 확인
+
+확장은 쿠키·저장소 권한 없이 자신이 연 비활성 X 탭의 한국 트렌드 순위와 시각만 저장합니다. inbox가 생기기 전에는 Google 단일 출처 결과만 나오며 반드시 잠정 순위로 표시됩니다.
+
+## 7. 실제 E2E 확인
+
+```powershell
+$runtime = Join-Path $env:USERPROFILE "Documents\Codex\noinbada-runtime"
+powershell -ExecutionPolicy Bypass -File "$runtime\scripts\collect-hourly.ps1" -ProjectRoot $runtime
+Get-ScheduledTaskInfo -TaskName "TRZIP X Google Hourly Collector"
+```
+
+확인 항목:
+
+- SQLite 최신 시각의 X 순위가 정확히 1~30이고 Google 행 수가 페이지 선언 총건수와 같습니다.
+- `collection_status.partial=false`이고 두 핵심 출처가 `observed`입니다.
+- 단일 출처면 결과가 발행되더라도 `ranking_availability.is_combined_rank=false`입니다.
+- 세 latest 문서의 `publication_id`, `generated_at`, `observed_at`이 일치합니다.
+- 공개 운영 상태에 사용자명, 로컬 경로, 토큰, 비밀키, 요청 쿼리가 없습니다.
+- `live-data` 로컬 HEAD와 원격 SHA가 같습니다.
+
+## 8. 현재 허용된 외부 보조 데이터
+
+- YouTube Data API: 최근 한국어 콘텐츠 관측 증거. 순위 영향 없음.
+- NAVER 뉴스·블로그: 국내 기사·문맥 증거. 인증 실패는 비차단 상태로 기록.
+- Instagram: 구현·토큰이 없으면 `unavailable`. 성공한 것처럼 표현하지 않음.
+- pykrx: 공개된 기업의 일별 시장 참고 정보. 투자 추천이나 상승 예측이 아님.
+- 공식 기관·기업 자료·검증 기사: 온톨로지 edge의 근거. URL·기준일·검수상태 필수.
+
+## 9. 알려진 운영 게이트
+
+- X 확장이 실제 로그인 Chrome에 설치되지 않으면 X는 수집되지 않습니다.
+- 노트북 종료·로그아웃·장시간 절전은 예약 작업의 정시 관측을 보장하지 않습니다. 놓친 시간은 결측으로 남깁니다.
+- NAVER 키가 인증 실패 상태면 검증 레이어만 실패하며 핵심 수집과 순위는 계속됩니다.
+- 기업 5개를 증명하지 못한 트렌드는 기업 공개가 보류됩니다. 이는 오류가 아니라 억지 연결을 막는 품질 게이트입니다.
+- 최소 3~7일 연속 성공률이 쌓이기 전에는 운영 안정성을 확정하지 않습니다.

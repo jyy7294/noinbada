@@ -5,8 +5,8 @@
   "type": "object",
   "required": [
     "schema_version", "mode", "publication_id", "generated_at", "window",
-    "sources", "score_policy", "unified_ranking", "public_top10", "ontology_enrichment_queue", "lanes",
-    "collection_status"
+    "sources", "ranking_availability", "score_policy", "unified_ranking", "public_top10",
+    "ontology_enrichment_queue", "lanes", "verification_run", "collection_status"
   ],
   "properties": {
     "schema_version": {"const": "trzip-intelligence-v3"},
@@ -27,6 +27,7 @@
       "prefixItems": [{"const": "x"}, {"const": "google_trends"}],
       "items": false
     },
+    "ranking_availability": {"$ref": "#/$defs/rankingAvailability"},
     "score_policy": {"type": "object"},
     "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
     "public_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/trend"}},
@@ -49,9 +50,66 @@
     "collection_status": {
       "type": "object",
       "required": ["observed_at", "observed_rows", "source_status", "errors", "partial"]
+    },
+    "verification_run": {
+      "type": "object",
+      "required": [
+        "status", "requested_terms", "attempted_terms", "hourly_term_limit",
+        "providers", "ranking_effect", "affects_collection_partial", "blocks_publication", "error"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "completed", "skipped_no_public_candidates",
+            "skipped_already_recorded_for_hour", "failed_non_blocking"
+          ]
+        },
+        "requested_terms": {"type": "integer", "minimum": 0, "maximum": 3},
+        "attempted_terms": {"type": "integer", "minimum": 0, "maximum": 3},
+        "hourly_term_limit": {"type": "integer", "minimum": 0, "maximum": 3},
+        "providers": {
+          "type": "array",
+          "prefixItems": [
+            {"const": "naver"}, {"const": "youtube"}, {"const": "instagram"}
+          ],
+          "items": false
+        },
+        "ranking_effect": {"const": "none"},
+        "affects_collection_partial": {"const": false},
+        "blocks_publication": {"const": false},
+        "error": {"type": ["string", "null"]}
+      }
     }
   },
   "$defs": {
+    "rankingAvailability": {
+      "type": "object",
+      "required": [
+        "status", "label", "is_combined_rank", "current_sources",
+        "missing_sources", "reason"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "unavailable", "provisional_single_source",
+            "provisional_history", "mature_combined"
+          ]
+        },
+        "label": {"type": "string", "minLength": 1},
+        "is_combined_rank": {"type": "boolean"},
+        "current_sources": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["x", "google_trends"]}
+        },
+        "missing_sources": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["x", "google_trends"]}
+        },
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
     "keyword": {
       "type": "object",
       "required": ["text", "source", "observed_hours", "status", "role", "role_status", "affects_score"],
@@ -95,7 +153,8 @@
         "rank", "event_key", "display_name", "raw_terms", "broad_category",
         "lane", "score", "score_components", "latest_source_ranks",
         "data_confidence", "keywords", "companies", "company_candidates",
-        "company_resolution", "verification_layer", "news_context"
+        "company_resolution", "verification_layer", "news_context",
+        "ranking_availability_status"
       ],
       "properties": {
         "rank": {"type": "integer", "minimum": 1},
@@ -109,11 +168,21 @@
         "latest_source_ranks": {"type": "object"},
         "data_confidence": {"type": "object"},
         "keywords": {"type": "array", "maxItems": 5, "items": {"$ref": "#/$defs/keyword"}},
-        "companies": {"type": "array", "items": {"$ref": "#/$defs/company"}},
+        "companies": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/company"},
+          "oneOf": [{"maxItems": 0}, {"minItems": 5}]
+        },
         "company_candidates": {"type": "array", "items": {"$ref": "#/$defs/company"}},
         "company_resolution": {"type": "object"},
         "verification_layer": {"type": "object"},
-        "news_context": {"type": "object"}
+        "news_context": {"type": "object"},
+        "ranking_availability_status": {
+          "enum": [
+            "unavailable", "provisional_single_source",
+            "provisional_history", "mature_combined"
+          ]
+        }
       }
     }
   }

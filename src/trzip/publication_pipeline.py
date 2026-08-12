@@ -20,11 +20,14 @@ from .provider_verification import (
     mark_news_candidate_core_observed,
     persist_news_discovery,
     read_news_discovery_queue,
+    verification_trend_keys_at,
     verify_terms,
 )
 
 
 NEWS_DISCOVERY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "news_discovery_seed.json"
+DEFAULT_HOURLY_VERIFICATION_TERM_LIMIT = 3
+MAX_HOURLY_VERIFICATION_TERM_LIMIT = 3
 
 
 def _read_json(path: Path, default):
@@ -40,42 +43,92 @@ def _write_json(path: Path, payload) -> None:
     temporary.replace(path)
 
 
+def _hourly_verification_term_limit(environment: dict[str, str] | None = None) -> int:
+    source = os.environ if environment is None else environment
+    raw = str(source.get("TRZIP_PROVIDER_VERIFICATION_TERM_LIMIT", "")).strip()
+    try:
+        requested = int(raw) if raw else DEFAULT_HOURLY_VERIFICATION_TERM_LIMIT
+    except ValueError:
+        requested = DEFAULT_HOURLY_VERIFICATION_TERM_LIMIT
+    return min(MAX_HOURLY_VERIFICATION_TERM_LIMIT, max(0, requested))
+
+
+def _public_verification_references(
+    intelligence: dict,
+    *,
+    limit: int,
+) -> list[TrendReference]:
+    """Select the highest displayed X/Google trends without inventing terms."""
+
+    if limit <= 0:
+        return []
+    candidates = sorted(
+        intelligence.get("public_top10", []),
+        key=lambda item: int(item.get("rank") or 10**9),
+    )
+    references: list[TrendReference] = []
+    seen: set[str] = set()
+    for item in candidates:
+        source_ranks = item.get("latest_source_ranks") or {}
+        if not any(source in source_ranks for source in ("x", "google_trends")):
+            continue
+        event_key = str(item.get("event_key") or "").strip()
+        representative_term = str(item.get("display_name") or "").strip()
+        if not event_key or not representative_term or event_key in seen:
+            continue
+        seen.add(event_key)
+        references.append(TrendReference(event_key, representative_term))
+        if len(references) >= limit:
+            break
+    return references
+
+
 def _refresh_verification_layer(intelligence: dict, database_path: Path, at: datetime) -> dict:
     """Collect bounded context evidence without changing score or rank.
 
     Provider failures are recorded as data states and never block publication.
-    Only the main presentation subset is queried to keep quotas bounded.
+    Only the top three trends displayed in the current public list are queried each hour. A
+    retry of the same observation hour reuses the append-only ledger.
     """
 
     ranking_before = [
         (item.get("event_key"), item.get("rank"), item.get("score"))
         for item in intelligence.get("unified_ranking", [])
     ]
-    references = [
-        TrendReference(
-            trend_key=str(item["event_key"]),
-            representative_term=str(item["display_name"]),
-        )
-        for item in intelligence.get("public_top10", [])[:10]
-        if item.get("event_key") and item.get("display_name")
-    ]
-    run_status = "skipped_no_main_candidates"
+    hourly_limit = _hourly_verification_term_limit()
+    references = _public_verification_references(intelligence, limit=hourly_limit)
+    pending_references = list(references)
+    run_status = "skipped_no_public_candidates"
+    attempted_term_count = 0
     error = None
-    if references:
-        try:
+    try:
+        completed_this_hour = verification_trend_keys_at(database_path, at)
+        pending_references = [
+            reference for reference in references
+            if reference.trend_key not in completed_this_hour
+        ]
+        if references and not pending_references:
+            run_status = "skipped_already_recorded_for_hour"
+        elif pending_references:
+            attempted_term_count = len(pending_references)
             verify_terms(
-                references,
+                pending_references,
                 path=database_path,
                 at=at,
-                naver_term_limit=10,
-                youtube_term_limit=3,
+                naver_term_limit=len(pending_references),
+                youtube_term_limit=len(pending_references),
             )
             run_status = "completed"
-        except Exception as exc:  # verification must not take down the core collector
-            run_status = "failed_non_blocking"
-            error = f"{type(exc).__name__}: {exc}"
+    except Exception as exc:  # verification must not take down the core collector
+        run_status = "failed_non_blocking"
+        error = "provider_verification_failed"
 
-    latest = latest_verification_by_trend(database_path)
+    try:
+        latest = latest_verification_by_trend(database_path)
+    except Exception as exc:  # a provider-ledger read is non-critical too
+        latest = {}
+        run_status = "failed_non_blocking"
+        error = "provider_verification_ledger_unavailable"
     for item in intelligence.get("unified_ranking", []):
         record = latest.get(str(item.get("event_key")), {})
         providers = record.get("providers", {})
@@ -102,8 +155,12 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
     intelligence["verification_run"] = {
         "status": run_status,
         "requested_terms": len(references),
+        "attempted_terms": attempted_term_count,
+        "hourly_term_limit": hourly_limit,
         "providers": ["naver", "youtube", "instagram"],
         "ranking_effect": "none",
+        "affects_collection_partial": False,
+        "blocks_publication": False,
         "error": error,
     }
     return intelligence
@@ -219,6 +276,33 @@ def _fresh_market_reference(market: dict, at: datetime) -> bool:
     return 0 <= age.days <= 4
 
 
+def _public_market_reference(market: object, stock_code: str) -> dict:
+    """Allowlist pykrx output and replace exception text with stable codes."""
+
+    value = market if isinstance(market, dict) else {}
+    status = str(value.get("status") or "unavailable")
+    if status != "observed":
+        safe_status = status if status in {
+            "invalid", "not_found", "error", "unavailable", "not_applicable"
+        } else "unavailable"
+        return {
+            "status": safe_status,
+            "stock_code": str(value.get("stock_code") or stock_code),
+            "reason": f"market_reference_{safe_status}",
+        }
+    return {
+        "status": "observed",
+        "provider": "pykrx",
+        "stock_code": str(value.get("stock_code") or stock_code),
+        "name": value.get("name"),
+        "daily_ohlcv": list(value.get("daily_ohlcv") or []),
+        "latest_daily": value.get("latest_daily"),
+        "summary": dict(value.get("summary") or {}),
+        "market_reaction": dict(value.get("market_reaction") or {}),
+        "note": "daily reference data; not realtime, not a forecast, and not relation evidence",
+    }
+
+
 def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) -> dict:
     """Attach verified daily market references to every listed company candidate.
 
@@ -249,7 +333,7 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
                     observed += 1
                 else:
                     unavailable += 1
-            company["market_reference"] = market
+            company["market_reference"] = _public_market_reference(market, code)
     intelligence["market_data_status"] = {
         "provider": "pykrx",
         "kind": "daily_reference_not_realtime",
@@ -292,11 +376,148 @@ def _failure_class(detail: str) -> str:
     return "unknown"
 
 
+PUBLIC_SOURCE_FAILURE_CODES = frozenset({
+    "extension_not_ready",
+    "auth_required",
+    "selector_changed",
+    "empty",
+    "region_unverified",
+    "incomplete_scroll",
+    "snapshot_invalid",
+    "snapshot_stale",
+    "unavailable",
+    "api_authentication",
+    "quota_or_rate_limit",
+    "network",
+    "parser_change",
+    "unknown",
+})
+PUBLIC_FAILURE_CLASSES = frozenset({
+    "browser_authentication", "region_configuration", "browser_page_change",
+    "api_authentication", "quota_or_rate_limit", "network", "parser_change", "unknown",
+})
+
+
+def _public_iso_timestamp(value: object) -> str:
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+    except (TypeError, ValueError):
+        return ""
+    if parsed.tzinfo is None:
+        return ""
+    return parsed.astimezone(UTC).isoformat()
+
+
+def _nonnegative_number(value: object, *, floating: bool = False) -> int | float:
+    try:
+        parsed = float(value) if floating else int(value)
+    except (TypeError, ValueError):
+        return 0.0 if floating else 0
+    return max(0.0, parsed) if floating else max(0, parsed)
+
+
+def _public_source_status(source: str, detail: object, raw_status: object = None) -> str:
+    """Reduce operational exceptions to an allowlisted public status code."""
+
+    status = str(raw_status or "").strip().casefold()
+    if status == "observed":
+        return "observed"
+    if status in PUBLIC_SOURCE_FAILURE_CODES:
+        return status
+    value = str(detail or "").casefold()
+    if source == "x":
+        for code in (
+            "extension_not_ready", "auth_required", "selector_changed", "empty",
+            "region_unverified", "incomplete_scroll", "snapshot_invalid", "snapshot_stale",
+        ):
+            if code in value:
+                return code
+    failure_class = _failure_class(value)
+    if failure_class != "unknown":
+        return failure_class
+    if "not configured" in value or "no rows" in value:
+        return "unavailable"
+    return "unknown"
+
+
+def _sanitize_collection_for_public(collection: dict) -> dict:
+    """Build an allowlist-only collection block for JSON publication.
+
+    Raw exception details remain in SQLite ``collection_audit``. Public static
+    files expose only stable status codes and counts, never laptop paths,
+    request URLs/query strings, credentials, or arbitrary exception text.
+    """
+
+    raw_audit = collection.get("audit", {}) if isinstance(collection, dict) else {}
+    audit: dict[str, dict] = {}
+    for source, key in (("x", "x_korea_realtime"), ("google_trends", "google_geo_kr")):
+        item = raw_audit.get(key, {}) if isinstance(raw_audit, dict) else {}
+        item = item if isinstance(item, dict) else {}
+        raw_error = (collection.get("errors", {}) or {}).get(source)
+        code = _public_source_status(source, raw_error or item.get("detail"), item.get("status"))
+        row_count = _nonnegative_number(item.get("row_count"))
+        audit[key] = {
+            "status": code,
+            "row_count": row_count,
+            "detail": "verified_current_hour_snapshot" if code == "observed" else code,
+        }
+    errors = {
+        source: audit[key]["status"]
+        for source, key in (("x", "x_korea_realtime"), ("google_trends", "google_geo_kr"))
+        if audit[key]["status"] != "observed"
+    }
+    return {
+        "observed": _nonnegative_number(collection.get("observed")),
+        "errors": errors,
+        "rank_sources": ["x", "google_trends"],
+        "audit": audit,
+        "observed_at": _public_iso_timestamp(collection.get("observed_at")),
+    }
+
+
+def _sanitize_health_history_row(row: dict) -> dict:
+    source_success = row.get("source_success", {}) if isinstance(row, dict) else {}
+    source_success = source_success if isinstance(source_success, dict) else {}
+    raw_failures = row.get("source_failures", {}) if isinstance(row, dict) else {}
+    failures = {}
+    for source in ("x", "google_trends"):
+        failure = raw_failures.get(source, {}) if isinstance(raw_failures, dict) else {}
+        if bool(source_success.get(source)):
+            continue
+        code = _public_source_status(
+            source,
+            (failure if isinstance(failure, dict) else {}).get("detail"),
+            (failure if isinstance(failure, dict) else {}).get("detail"),
+        )
+        raw_class = str((failure if isinstance(failure, dict) else {}).get("class") or "")
+        failure_class = raw_class if raw_class in PUBLIC_FAILURE_CLASSES else _failure_class(code)
+        failures[source] = {"class": failure_class, "detail": code}
+    return {
+        "scheduled_at": _public_iso_timestamp(row.get("scheduled_at")),
+        "started_at": _public_iso_timestamp(row.get("started_at")),
+        "finished_at": _public_iso_timestamp(row.get("finished_at")),
+        "delay_seconds": _nonnegative_number(row.get("delay_seconds")),
+        "duration_seconds": _nonnegative_number(row.get("duration_seconds"), floating=True),
+        "success": bool(row.get("success")),
+        "source_success": {
+            source: bool(source_success.get(source))
+            for source in ("x", "google_trends")
+        },
+        "observed_rows": _nonnegative_number(row.get("observed_rows")),
+        "errors": {source: failure["detail"] for source, failure in failures.items()},
+        "source_failures": failures,
+    }
+
+
 def _collection_health(root: Path, at: datetime, collection: dict,
                        started_at: datetime, finished_at: datetime) -> dict:
     """Persist up to seven days of scheduler evidence instead of claiming uptime early."""
     history_path = root / "monitoring" / "run_history.json"
-    history = _read_json(history_path, [])
+    history = [
+        _sanitize_health_history_row(row)
+        for row in _read_json(history_path, [])
+        if isinstance(row, dict)
+    ]
     audit = collection.get("audit", {})
     source_ok = {
         "x": audit.get("x_korea_realtime", {}).get("status") == "observed",
@@ -309,7 +530,8 @@ def _collection_health(root: Path, at: datetime, collection: dict,
             continue
         audit_key = "x_korea_realtime" if source == "x" else "google_geo_kr"
         detail = collection.get("errors", {}).get(source) or audit.get(audit_key, {}).get("detail") or "unknown"
-        source_failures[source] = {"class": _failure_class(detail), "detail": detail}
+        code = _public_source_status(source, detail, audit.get(audit_key, {}).get("status"))
+        source_failures[source] = {"class": _failure_class(detail), "detail": code}
     current = {
         "scheduled_at": at.isoformat(),
         "started_at": started_at.isoformat(),
@@ -319,7 +541,7 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         "success": success,
         "source_success": source_ok,
         "observed_rows": collection.get("observed", 0),
-        "errors": collection.get("errors", {}),
+        "errors": {source: row["detail"] for source, row in source_failures.items()},
         "source_failures": source_failures,
     }
     history = [row for row in history if row.get("scheduled_at") != at.isoformat()]
@@ -457,17 +679,18 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
 
     finished_at = datetime.now(UTC)
     collection_health = _collection_health(root, at, collection, started_at, finished_at)
+    public_collection = _sanitize_collection_for_public(collection)
     intelligence["collection_health"] = collection_health
     intelligence["collection_status"] = {
-        "observed_at": collection.get("observed_at"),
-        "observed_rows": collection.get("observed", 0),
+        "observed_at": public_collection.get("observed_at"),
+        "observed_rows": public_collection.get("observed", 0),
         "source_status": {
-            "x": collection.get("audit", {}).get("x_korea_realtime", {}).get("status", "unknown"),
-            "google_trends": collection.get("audit", {}).get("google_geo_kr", {}).get("status", "unknown"),
+            "x": public_collection["audit"]["x_korea_realtime"]["status"],
+            "google_trends": public_collection["audit"]["google_geo_kr"]["status"],
         },
-        "errors": collection.get("errors", {}),
-        "partial": bool(collection.get("errors")) or any(
-            collection.get("audit", {}).get(key, {}).get("status") != "observed"
+        "errors": public_collection.get("errors", {}),
+        "partial": bool(public_collection.get("errors")) or any(
+            public_collection.get("audit", {}).get(key, {}).get("status") != "observed"
             for key in ("x_korea_realtime", "google_geo_kr")
         ),
     }
@@ -488,7 +711,7 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         "history_rows_loaded": 0,
         "pruned_observation_files": pruned_files,
         "daily_file": daily_path.relative_to(root).as_posix(),
-        "collection": collection,
+        "collection": public_collection,
         "coverage": stats,
         "market_data": intelligence["market_data_status"],
         "collection_health": collection_health,

@@ -15,6 +15,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 ## 목록
 
 - 전체 순위: `unified_ranking`
+- 순위 확정도: `ranking_availability` (`단일출처 잠정` / `양출처 잠정` / `성숙 통합`)
 - 홈 최대 10개: `public_top10`
 - 이슈·주의: `lanes.issue`
 - 검토 대기: `lanes.review`
@@ -40,6 +41,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 기업 Gold | `companies` (0 또는 5개 이상) |
 | 기업 후보 감사 | `company_candidates`, `company_resolution` |
 | 보조 검증 | `verification_layer` |
+| 보조 검증 실행상태 | `verification_run` (`ranking_effect=none`) |
 | 기사 맥락 | `news_context` |
 
 ## 빈 상태 규칙
@@ -47,6 +49,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 - 관련어 0개: 임의 키워드 칩을 만들지 않음
 - `companies=[]`: 기업 CTA를 숨기고 `company_resolution.reason` 표시
 - `partial=true`: 실패한 출처와 마지막 관측시각 표시
+- `ranking_availability.is_combined_rank=false`: 통합 순위라고 표현하지 않고 잠정 배지 표시
 - 데이터 묶음 검증 실패: 목업 트렌드로 대체하지 않음
 - 시장자료는 `market_reference.status=observed`일 때만 일별 참고값으로 표시
 - `coverage.legacy_observed_rows`는 구형 수집기 보존행이며 차트·순위에 사용하지 않음

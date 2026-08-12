@@ -84,6 +84,7 @@ class OntologyGraph:
         self.nodes = tuple(deepcopy(list(self._payload.get("nodes") or [])))
         self.edges = tuple(deepcopy(list(self._payload.get("edges") or [])))
         self.evidence = tuple(deepcopy(list(self._payload.get("evidence") or [])))
+        self.aliases = tuple(deepcopy(list(self._payload.get("aliases") or [])))
 
         self._node_by_id = self._unique_map(self.nodes, "node")
         self._edge_by_id = self._unique_map(self.edges, "edge")
@@ -95,13 +96,32 @@ class OntologyGraph:
             edges.sort(key=lambda item: str(item.get("id", "")))
 
         self._term_by_key: dict[str, str] = {}
+        self._lookup_by_key: dict[str, dict[str, Any]] = {}
         for node in self.nodes:
             if node.get("type") != "term":
                 continue
             key = str(node.get("normalized_label") or normalize_label(node.get("label", "")))
-            self._term_by_key.setdefault(key, str(node["id"]))
+            existing_term_id = self._term_by_key.get(key)
+            if existing_term_id is not None and existing_term_id != str(node["id"]):
+                raise OntologyValidationError(
+                    f"ambiguous normalized term {node['label']!r}: "
+                    f"{existing_term_id} vs {node['id']}"
+                )
+            self._term_by_key[key] = str(node["id"])
+            self._lookup_by_key.setdefault(
+                key,
+                {
+                    "match_type": "exact_term",
+                    "matched_label": str(node["label"]),
+                    "target_node_id": str(node["id"]),
+                    "target_node_label": str(node["label"]),
+                    "review_status": "node_label",
+                    "evidence": [],
+                },
+            )
 
         self._validate()
+        self._index_reviewed_aliases()
 
     @staticmethod
     def _unique_map(items: Iterable[Mapping[str, Any]], kind: str) -> dict[str, dict[str, Any]]:
@@ -120,6 +140,58 @@ class OntologyGraph:
         with Path(path).open("r", encoding="utf-8") as handle:
             return cls(json.load(handle))
 
+    @classmethod
+    def load_merged(
+        cls,
+        base_path: str | Path,
+        *overlay_paths: str | Path,
+    ) -> "OntologyGraph":
+        """Load an immutable seed plus reviewed, additive enrichment overlays.
+
+        Overlays may refer to existing nodes but cannot redefine them.  This
+        preserves the workbook-derived seed byte-for-byte while allowing
+        evidence-backed aliases and current entity/product/company paths to be
+        reviewed independently.
+        """
+
+        with Path(base_path).open("r", encoding="utf-8") as handle:
+            merged = json.load(handle)
+        merged = deepcopy(dict(merged))
+        merged.setdefault("aliases", [])
+        overlay_metadata: list[dict[str, Any]] = []
+        existing_ids = {
+            kind: {str(item.get("id", "")) for item in merged.get(kind) or []}
+            for kind in ("nodes", "edges", "evidence", "aliases")
+        }
+        for raw_path in overlay_paths:
+            path = Path(raw_path)
+            if not path.exists():
+                raise FileNotFoundError(f"ontology enrichment overlay is missing: {path}")
+            with path.open("r", encoding="utf-8") as handle:
+                overlay = json.load(handle)
+            for kind in ("nodes", "edges", "evidence", "aliases"):
+                for item in overlay.get(kind) or []:
+                    item_id = str(item.get("id", "")).strip()
+                    if not item_id:
+                        raise OntologyValidationError(
+                            f"overlay {kind[:-1]} id is required: {path.name}"
+                        )
+                    if item_id in existing_ids[kind]:
+                        raise OntologyValidationError(
+                            f"overlay redefines {kind[:-1]} id {item_id}: {path.name}"
+                        )
+                    merged.setdefault(kind, []).append(deepcopy(item))
+                    existing_ids[kind].add(item_id)
+            overlay_metadata.append(
+                {
+                    "path": path.name,
+                    "schema_version": overlay.get("schema_version"),
+                    "metadata": deepcopy(dict(overlay.get("metadata") or {})),
+                }
+            )
+        merged.setdefault("metadata", {})["enrichment_overlays"] = overlay_metadata
+        return cls(merged)
+
     def to_payload(self) -> dict[str, Any]:
         return deepcopy(self._payload)
 
@@ -136,7 +208,14 @@ class OntologyGraph:
             raise KeyError(f"unknown ontology evidence: {evidence_id}") from exc
 
     def term_node_id(self, label: str) -> str | None:
-        return self._term_by_key.get(normalize_label(label))
+        match = self.lookup(label)
+        return None if match is None else str(match["target_node_id"])
+
+    def lookup(self, label: str) -> dict[str, Any] | None:
+        """Resolve only an exact normalized term or an explicitly reviewed alias."""
+
+        match = self._lookup_by_key.get(normalize_label(label))
+        return None if match is None else deepcopy(match)
 
     def _validate(self) -> None:
         evidence_node_ids = {
@@ -203,6 +282,91 @@ class OntologyGraph:
                 raise OntologyValidationError(
                     f"company or stock edge lacks URL evidence: {edge_id}"
                 )
+            if (
+                str(edge.get("review_status")) in DEFAULT_PUBLISHABLE_REVIEW_STATUSES
+                and not all(
+                    str(self._evidence_by_id[value].get("review_status"))
+                    in DEFAULT_PUBLISHABLE_REVIEW_STATUSES
+                    for value in evidence_ids
+                )
+            ):
+                raise OntologyValidationError(
+                    f"publishable edge references unreviewed evidence: {edge_id}"
+                )
+
+        alias_ids: set[str] = set()
+        for alias in self.aliases:
+            alias_id = str(alias.get("id", "")).strip()
+            if not alias_id:
+                raise OntologyValidationError("alias id is required")
+            if alias_id in alias_ids:
+                raise OntologyValidationError(f"duplicate alias id: {alias_id}")
+            alias_ids.add(alias_id)
+            if not str(alias.get("label", "")).strip():
+                raise OntologyValidationError(f"alias label is required: {alias_id}")
+            target = str(alias.get("target_node_id", ""))
+            if target not in self._node_by_id:
+                raise OntologyValidationError(
+                    f"alias target node is missing: {alias_id} -> {target}"
+                )
+            evidence_ids = [str(value) for value in alias.get("evidence_ids") or []]
+            if not evidence_ids:
+                raise OntologyValidationError(f"alias has no evidence: {alias_id}")
+            missing = [value for value in evidence_ids if value not in self._evidence_by_id]
+            if missing:
+                raise OntologyValidationError(
+                    f"alias references missing evidence {missing}: {alias_id}"
+                )
+            if not str(alias.get("review_status", "")).strip():
+                raise OntologyValidationError(
+                    f"alias review_status is required: {alias_id}"
+                )
+            if not dict(alias.get("provenance") or {}):
+                raise OntologyValidationError(f"alias provenance is required: {alias_id}")
+            if not all(
+                str(self._evidence_by_id[value].get("url", "")).strip()
+                for value in evidence_ids
+            ):
+                raise OntologyValidationError(f"alias lacks URL evidence: {alias_id}")
+            if (
+                str(alias.get("review_status")) in DEFAULT_PUBLISHABLE_REVIEW_STATUSES
+                and not all(
+                    str(self._evidence_by_id[value].get("review_status"))
+                    in DEFAULT_PUBLISHABLE_REVIEW_STATUSES
+                    for value in evidence_ids
+                )
+            ):
+                raise OntologyValidationError(
+                    f"publishable alias references unreviewed evidence: {alias_id}"
+                )
+
+    def _index_reviewed_aliases(self) -> None:
+        for alias in sorted(self.aliases, key=lambda item: str(item["id"])):
+            status = str(alias["review_status"])
+            if status not in DEFAULT_PUBLISHABLE_REVIEW_STATUSES:
+                continue
+            key = normalize_label(alias["label"])
+            target_id = str(alias["target_node_id"])
+            existing = self._lookup_by_key.get(key)
+            if existing and existing["target_node_id"] != target_id:
+                raise OntologyValidationError(
+                    f"ambiguous reviewed alias {alias['label']!r}: "
+                    f"{existing['target_node_id']} vs {target_id}"
+                )
+            records = [
+                self.evidence_record(str(value))
+                for value in alias.get("evidence_ids") or []
+            ]
+            self._lookup_by_key[key] = {
+                "match_type": str(alias.get("match_type") or "reviewed_alias"),
+                "alias_id": str(alias["id"]),
+                "matched_label": str(alias["label"]),
+                "target_node_id": target_id,
+                "target_node_label": str(self._node_by_id[target_id]["label"]),
+                "review_status": status,
+                "evidence": records,
+                "provenance": deepcopy(dict(alias.get("provenance") or {})),
+            }
 
     def trace_paths(
         self,
@@ -311,8 +475,8 @@ class OntologyGraph:
         min_companies: int = MINIMUM_PUBLISHED_COMPANIES,
         max_hops: int = 5,
     ) -> dict[str, Any]:
-        node_id = self.term_node_id(label)
-        if node_id is None:
+        match = self.lookup(label)
+        if match is None:
             return {
                 "status": "ontology_incomplete",
                 "publishable": False,
@@ -320,11 +484,14 @@ class OntologyGraph:
                 "company_count": 0,
                 "companies": [],
                 "reason": "representative term is not present in the reviewed ontology",
+                "match": None,
             }
+        node_id = str(match["target_node_id"])
         result = self.resolve_companies(
             node_id,
             min_companies=min_companies,
             max_hops=max_hops,
         )
         result["term_node_id"] = node_id
+        result["match"] = match
         return result

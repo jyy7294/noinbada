@@ -24,6 +24,24 @@ def test_unknown_generic_term_is_preserved_for_review():
     assert result["ambiguous"] is True
 
 
+def test_broad_taxonomy_word_needs_specific_context_before_main():
+    generic = assess_trend_fit(
+        "음식",
+        category="food_culinary",
+        context_terms=["습관"],
+    )
+    contextualized = assess_trend_fit(
+        "음식",
+        category="food_culinary",
+        context_terms=["치킨 신메뉴 출시"],
+    )
+
+    assert generic["selection"] == "review"
+    assert generic["generic_category_word"] is True
+    assert generic["rank_effect"] == "none"
+    assert contextualized["selection"] == "main"
+
+
 def test_person_name_containing_phone_syllable_is_not_a_product_signal():
     result = assess_trend_fit("코디 폰세")
 

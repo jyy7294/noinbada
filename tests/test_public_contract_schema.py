@@ -34,6 +34,13 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
         "relationship_reason", "company_summary", "ontology_path", "evidence_sources"
     } <= company_required
     assert payload["$defs"]["trend"]["properties"]["keywords"]["maxItems"] == 5
+    assert payload["$defs"]["trend"]["properties"]["companies"]["oneOf"] == [
+        {"maxItems": 0}, {"minItems": 5}
+    ]
+    assert "ranking_availability" in payload["required"]
+    assert "verification_run" in payload["required"]
+    assert "ranking_availability_status" in trend_required
+    assert payload["properties"]["verification_run"]["properties"]["ranking_effect"] == {"const": "none"}
 
 
 def test_latest_generated_publication_conforms_to_all_public_schemas(tmp_path, monkeypatch):

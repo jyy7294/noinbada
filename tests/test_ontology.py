@@ -16,6 +16,7 @@ from trzip.ontology import (
 
 ROOT = Path(__file__).resolve().parents[1]
 SEED_PATH = ROOT / "data" / "ontology_seed.json"
+ENRICHMENT_PATH = ROOT / "data" / "ontology_enrichment.json"
 SOURCE_JSON = (
     ROOT.parents[1] / "work" / "spreadsheet-audit" / "ontology-source.json"
 )
@@ -214,3 +215,131 @@ def test_real_seed_with_three_companies_fails_new_five_company_gate():
     assert result["status"] == "ontology_incomplete"
     assert result["publishable"] is False
 
+
+def test_reviewed_enrichment_preserves_seed_and_publishes_malbok_without_padding():
+    seed_before = SEED_PATH.read_bytes()
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    result = graph.resolve_term("말복")
+
+    assert SEED_PATH.read_bytes() == seed_before
+    assert result["status"] == "published"
+    assert result["company_count"] == 6
+    assert {
+        company["company"]["metadata"]["ticker"]
+        for company in result["companies"]
+    } == {"001680", "003680", "027740", "031440", "136480", "139480"}
+    assert all(
+        record["url"].startswith("https://")
+        for company in result["companies"]
+        for record in company["evidence"]
+    )
+    assert all(
+        edge["review_status"] == "approved"
+        for company in result["companies"]
+        for edge in company["edges"]
+    )
+
+
+def test_alias_lookup_is_evidenced_and_never_changes_the_matched_input_label():
+    graph = OntologyGraph.load_merged(SEED_PATH, ENRICHMENT_PATH)
+
+    match = graph.lookup("  삼성전자  ")
+    resolution = graph.resolve_term("삼성전자")
+
+    assert match is not None
+    assert match["matched_label"] == "삼성전자"
+    assert match["target_node_label"] == "005930"
+    assert match["match_type"] == "reviewed_company_identifier_alias"
+    assert match["review_status"] == "approved"
+    assert all(record["url"].startswith("https://") for record in match["evidence"])
+    assert resolution["company_count"] == 1
+    assert resolution["publishable"] is False
+
+
+def test_unreviewed_alias_is_validated_but_not_used_for_lookup():
+    payload = _tiny_graph(1).to_payload()
+    payload["aliases"] = [
+        {
+            "id": "alias:pending",
+            "label": "미검수 별칭",
+            "target_node_id": "term:t",
+            "evidence_ids": ["evidence:e0"],
+            "review_status": "review_required",
+            "provenance": {"source": "test"},
+        }
+    ]
+    graph = OntologyGraph(payload)
+
+    assert graph.lookup("미검수 별칭") is None
+
+
+def test_alias_without_url_evidence_is_rejected():
+    payload = _tiny_graph(1).to_payload()
+    payload["evidence"][0]["url"] = ""
+    payload["aliases"] = [
+        {
+            "id": "alias:bad",
+            "label": "위험한 별칭",
+            "target_node_id": "term:t",
+            "evidence_ids": ["evidence:e0"],
+            "review_status": "approved",
+            "provenance": {"source": "test"},
+        }
+    ]
+
+    with pytest.raises(OntologyValidationError, match="evidence URL is required"):
+        OntologyGraph(payload)
+
+
+def test_publishable_alias_cannot_use_unreviewed_evidence():
+    payload = _tiny_graph(1).to_payload()
+    payload["nodes"].append(
+        {
+            "id": "evidence:alias-pending",
+            "type": "evidence",
+            "label": "미검수 별칭 근거",
+            "metadata": {},
+        }
+    )
+    payload["evidence"].append(
+        {
+            "id": "evidence:alias-pending",
+            "url": "https://example.com/pending-alias",
+            "title": "미검수 별칭 근거",
+            "review_status": "review_required",
+            "provenance": {"source": "test"},
+        }
+    )
+    payload["aliases"] = [
+        {
+            "id": "alias:bad-review",
+            "label": "검수되지 않은 근거의 별칭",
+            "target_node_id": "term:t",
+            "evidence_ids": ["evidence:alias-pending"],
+            "review_status": "approved",
+            "provenance": {"source": "test"},
+        }
+    ]
+
+    with pytest.raises(
+        OntologyValidationError,
+        match="publishable alias references unreviewed evidence",
+    ):
+        OntologyGraph(payload)
+
+
+def test_publishable_company_edge_cannot_use_unreviewed_evidence():
+    payload = _tiny_graph(1).to_payload()
+    payload["evidence"][0]["review_status"] = "review_required"
+
+    with pytest.raises(
+        OntologyValidationError,
+        match="publishable edge references unreviewed evidence",
+    ):
+        OntologyGraph(payload)
+
+
+def test_missing_enrichment_overlay_fails_loudly(tmp_path):
+    with pytest.raises(FileNotFoundError, match="enrichment overlay is missing"):
+        OntologyGraph.load_merged(SEED_PATH, tmp_path / "missing.json")

@@ -18,6 +18,7 @@ from trzip.provider_verification import (
     read_verification_ledger,
     resolve_provider_credentials,
     verify_terms,
+    verification_trend_keys_at,
     youtube_search_attempts_on_kst_date,
 )
 
@@ -61,6 +62,27 @@ def test_existing_windows_aliases_are_recognized_without_exposure():
     assert readiness["instagram"]["status"] == "unavailable"
     assert all(row["ranking_effect"] == "none" for row in readiness.values())
     assert "secret" not in repr(credentials)
+    assert "secret" not in json.dumps(readiness)
+
+
+def test_youtube_api_key_aliases_and_instagram_mvp_state_are_explicit():
+    credentials = resolve_provider_credentials(
+        {
+            "YOUTUBE_DATA_API_KEY": "youtube-alias-secret",
+            "INSTAGRAM_ACCESS_TOKEN": "meta-secret",
+        }
+    )
+    readiness = provider_readiness(
+        {
+            "YOUTUBE_DATA_API_KEY": "youtube-alias-secret",
+            "INSTAGRAM_ACCESS_TOKEN": "meta-secret",
+        }
+    )
+
+    assert credentials.youtube_api_key == "youtube-alias-secret"
+    assert readiness["youtube"]["status"] == "configured_unverified"
+    assert readiness["instagram"]["status"] == "unavailable"
+    assert "not enabled" in readiness["instagram"]["reason"]
     assert "secret" not in json.dumps(readiness)
 
 
@@ -237,6 +259,24 @@ def test_verify_terms_persists_unavailable_instead_of_fabricated_zero(tmp_path):
     assert len(read_verification_ledger(target)) == 3
 
 
+def test_instagram_remains_unavailable_when_token_exists_but_collector_does_not(tmp_path):
+    target = tmp_path / "ledger.sqlite3"
+
+    results = verify_terms(
+        [TrendReference("event:malbok", "malbok")],
+        path=target,
+        at=NOW,
+        credentials=ProviderCredentials("", "", "", "meta-token"),
+        transport=RoutingTransport({}),
+        sleeper=lambda _: None,
+    )
+
+    instagram = next(row for row in results if row.provider == "instagram")
+    assert instagram.status == "unavailable"
+    assert instagram.error_code == "not_configured"
+    assert "not enabled" in instagram.error_detail
+
+
 def test_naver_auth_failure_opens_hourly_circuit_and_defers_remaining_terms(tmp_path):
     target = tmp_path / "ledger.sqlite3"
     auth_error = lambda: ProviderRequestError(
@@ -334,6 +374,30 @@ def test_provider_ledger_is_append_only_for_repeated_hourly_runs(tmp_path):
 
     with sqlite3.connect(target) as connection:
         assert connection.execute("SELECT COUNT(*) FROM provider_verification_runs").fetchone()[0] == 2
+
+
+def test_hourly_completed_term_requires_all_three_provider_states(tmp_path):
+    target = tmp_path / "ledger.sqlite3"
+    reference = TrendReference("event:malbok", "malbok")
+    youtube = collect_youtube_context(
+        reference,
+        at=NOW,
+        credentials=ProviderCredentials(),
+        transport=RoutingTransport({}),
+    )
+    persist_verification_result(youtube, target)
+
+    assert verification_trend_keys_at(target, NOW) == set()
+
+    verify_terms(
+        [reference],
+        path=target,
+        at=NOW,
+        credentials=ProviderCredentials(),
+        transport=RoutingTransport({}),
+    )
+
+    assert verification_trend_keys_at(target, NOW) == {"event:malbok"}
 
 
 def test_frontend_safe_verification_block_has_no_ranking_score(tmp_path):

@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 from trzip.company_adapters import integration_status, opendart_company, pykrx_stock
 from trzip.hourly_store import HourlyObservation, upsert
@@ -10,6 +10,25 @@ def test_aliases_are_normalized_to_events():
     assert canonical_topic("말복") == "말복"
     assert canonical_topic("#JIN_IN_BALTIMORE_D2") == "BTS 진 볼티모어 공연"
     assert canonical_topic("볼티모어") == "볼티모어"
+    assert canonical_topic("cpi 발표") == "cpi"
+
+
+def test_cpi_release_variant_is_one_event_without_double_counting_source(tmp_path):
+    target = tmp_path / "cpi-variant.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([
+        HourlyObservation(at.isoformat(), "google_trends", "cpi", 1, 100, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "cpi 발표", 2, 99, "observed"),
+    ], target)
+
+    result = build_intelligence(at, hours=1, path=target)
+
+    assert len(result["unified_ranking"]) == 1
+    event = result["unified_ranking"][0]
+    assert event["topic"] == "cpi"
+    assert event["raw_terms"] == ["cpi", "cpi 발표"]
+    assert event["latest_source_ranks"] == {"google_trends": 1}
+    assert event["rrf"] == 1.0
 
 
 def test_company_gold_never_fills_missing_companies_with_templates(tmp_path):
@@ -142,6 +161,30 @@ def test_region_name_is_not_misclassified_as_sports_by_substring(tmp_path):
     assert trend["lane"] == "review"
 
 
+def test_weak_main_filter_covers_typed_market_content_sports_and_technology(tmp_path):
+    target = tmp_path / "weak-main-filter.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([
+        HourlyObservation(at.isoformat(), "google_trends", "삼성증권", 1, 100, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "티빙", 2, 99, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "롯데 자이언츠", 3, 98, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "휴머노이드 로봇", 4, 97, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "음식", 5, 96, "observed"),
+    ], target)
+
+    result = build_intelligence(at, hours=1, path=target)
+    by_topic = {item["topic"]: item for item in result["unified_ranking"]}
+
+    assert by_topic["삼성증권"]["broad_category"] == "market"
+    assert by_topic["티빙"]["broad_category"] == "content"
+    assert by_topic["롯데 자이언츠"]["broad_category"] == "sports"
+    assert by_topic["휴머노이드 로봇"]["broad_category"] == "technology"
+    assert all(by_topic[topic]["lane"] == "main" for topic in (
+        "삼성증권", "티빙", "롯데 자이언츠", "휴머노이드 로봇",
+    ))
+    assert by_topic["음식"]["lane"] == "review"
+
+
 def test_intelligence_exposes_lifecycle_and_rank_movement(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
     target = tmp_path / "movement.sqlite3"
@@ -201,6 +244,8 @@ def test_google_related_queries_can_disambiguate_category_without_renaming_term(
     assert item["display_name"] == "홍길동"
     assert item["category"] == "sports_participation"
     assert item["broad_category"] == "sports"
+    assert item["context_status"] == "resolved_by_observed_context"
+    assert item["home_context_status"] == "resolved"
 
 
 def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
@@ -246,8 +291,11 @@ def test_investment_terms_do_not_receive_unrelated_generic_companies(tmp_path):
     assert generic["company_eligible"] is False
     assert generic["companies"] == []
     assert samsung["companies"] == []
-    assert samsung["company_candidates"] == []
-    assert samsung["candidate_company_categories"] == []
+    assert [
+        company["stock_code"] for company in samsung["company_candidates"]
+    ] == ["005930"]
+    assert samsung["company_resolution"]["publish_status"] == "ontology_incomplete"
+    assert samsung["company_resolution"]["published_count"] == 0
 
 
 def test_quality_summary_detects_unchanged_source_snapshots(tmp_path):
@@ -328,6 +376,22 @@ def test_representative_prefers_repeated_observed_term_before_best_rank(tmp_path
     assert item["representative_evidence"]["observed_hours"] == 2
 
 
+def test_current_observed_expression_beats_expired_historical_alias(tmp_path):
+    target = tmp_path / "current-representative.sqlite3"
+    first = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    current = datetime(2026, 8, 12, 4, tzinfo=UTC)
+    upsert([
+        HourlyObservation(first.isoformat(), "x", "삼계탕", 1, 100, "observed"),
+        HourlyObservation(current.isoformat(), "x", "말복", 2, 99, "observed"),
+    ], target)
+
+    item = build_intelligence(current, hours=2, path=target)["unified_ranking"][0]
+
+    assert item["event_key"] == "말복"
+    assert item["topic"] == "말복"
+    assert item["representative_evidence"]["currently_observed"] is True
+
+
 def test_future_rows_do_not_leak_into_past_ranking(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 
@@ -358,6 +422,40 @@ def test_low_history_is_explicit_and_does_not_block_ranking(tmp_path):
     assert result["unified_ranking"]
     assert result["unified_ranking"][0]["data_confidence"]["level"] == "very_low"
     assert result["quality_summary"]["eligible_ledger_hours"] == 1
+    assert result["ranking_availability"] == {
+        "status": "provisional_single_source",
+        "label": "단일출처 잠정 순위",
+        "is_combined_rank": False,
+        "current_sources": ["x"],
+        "missing_sources": ["google_trends"],
+        "reason": "X와 Google 중 한 출처만 현재 시간에 관측되어 통합 순위로 확정할 수 없음",
+    }
+    assert result["unified_ranking"][0]["ranking_availability_status"] == "provisional_single_source"
+
+
+def test_persistence_matures_linearly_until_96_eligible_hours(tmp_path):
+    target = tmp_path / "maturity.sqlite3"
+    start = datetime(2026, 8, 8, 0, tzinfo=UTC)
+    rows = [
+        HourlyObservation(
+            (start + timedelta(hours=offset)).isoformat(),
+            "x",
+            "불닭",
+            1,
+            100,
+            "observed",
+        )
+        for offset in range(96)
+    ]
+    upsert(rows, target)
+
+    halfway = build_intelligence(start + timedelta(hours=47), hours=48, path=target)
+    mature = build_intelligence(start + timedelta(hours=95), hours=96, path=target)
+
+    assert halfway["unified_ranking"][0]["persistence"] == 0.5
+    assert halfway["quality_summary"]["ranking_maturity_status"] == "provisional"
+    assert mature["unified_ranking"][0]["persistence"] == 1.0
+    assert mature["quality_summary"]["ranking_maturity_status"] == "mature"
 
 
 def test_duplicate_rank_source_hour_is_quarantined_not_deleted(tmp_path):
@@ -457,3 +555,97 @@ def test_window_only_history_cannot_reenter_current_ranking(tmp_path):
     }
     assert "오징어 게임" in historical
     assert result["quality_summary"]["ranking_maturity_status"] == "provisional"
+
+
+def test_malbok_current_expression_reaches_six_reviewed_listed_companies(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+
+    target = tmp_path / "malbok-enrichment.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert(
+        [HourlyObservation(at.isoformat(), "google_trends", "말복", 1, 100, "observed")],
+        target,
+    )
+
+    item = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
+
+    assert item["display_name"] == "말복"
+    assert item["company_resolution"]["publish_status"] == "published"
+    assert {company["stock_code"] for company in item["companies"]} == {
+        "001680",
+        "003680",
+        "027740",
+        "031440",
+        "136480",
+        "139480",
+    }
+    assert all(company["ontology_complete"] for company in item["companies"])
+    assert all(
+        edge["evidence_urls"]
+        for company in item["companies"]
+        for edge in company["ontology_path"]
+    )
+
+
+def test_stock_code_has_one_real_candidate_but_gold_gate_never_adds_filler(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+
+    target = tmp_path / "stock-code-enrichment.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert(
+        [HourlyObservation(at.isoformat(), "google_trends", "005930", 1, 100, "observed")],
+        target,
+    )
+
+    result = build_intelligence(at, hours=1, path=target)
+    item = result["unified_ranking"][0]
+
+    assert item["display_name"] == "005930"
+    assert [company["stock_code"] for company in item["company_candidates"]] == ["005930"]
+    assert item["companies"] == []
+    assert item["company_resolution"]["publish_status"] == "ontology_incomplete"
+    queue = result["ontology_enrichment_queue"][0]
+    assert queue["lookup_status"] == "reviewed_match_below_gold_gate"
+    assert queue["missing_company_paths"] == 4
+    assert queue["padding_forbidden"] is True
+
+
+def test_listed_company_name_has_one_verified_stock_without_industry_filler(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+
+    target = tmp_path / "listed-company-name-enrichment.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert(
+        [HourlyObservation(at.isoformat(), "google_trends", "삼성증권", 1, 100, "observed")],
+        target,
+    )
+
+    result = build_intelligence(at, hours=1, path=target)
+    item = result["unified_ranking"][0]
+
+    assert item["display_name"] == "삼성증권"
+    assert [company["stock_code"] for company in item["company_candidates"]] == ["016360"]
+    assert item["companies"] == []
+    assert item["company_resolution"]["publish_status"] == "ontology_incomplete"
+    assert result["ontology_enrichment_queue"][0]["missing_company_paths"] == 4
+
+
+def test_unresearched_person_expression_stays_zero_candidate_and_enters_queue(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+
+    target = tmp_path / "person-no-filler.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert(
+        [HourlyObservation(at.isoformat(), "google_trends", "지드래곤", 1, 100, "observed")],
+        target,
+    )
+
+    result = build_intelligence(at, hours=1, path=target)
+    item = result["unified_ranking"][0]
+
+    assert item["display_name"] == "지드래곤"
+    assert item["company_candidates"] == []
+    assert item["companies"] == []
+    queue = result["ontology_enrichment_queue"][0]
+    assert queue["lookup_status"] == "no_reviewed_ontology_match"
+    assert queue["research_stages"][-1] == "team_review"
