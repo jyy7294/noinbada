@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-fa61bb2b491c4a3e803bd765eb5e5fe7",
-  "generated_at": "2026-08-13T01:19:47.713839+00:00",
+  "publication_id": "pub-9e7e6713f4b54528a01883550c026edb",
+  "generated_at": "2026-08-13T01:40:22.736317+00:00",
   "observed_at": "2026-08-13T01:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -61,6 +61,9 @@
     "reused": 23,
     "status_counts": {
       "verified": 23
+    },
+    "financial_status_counts": {
+      "unavailable": 23
     },
     "verified_ttl_days": 30,
     "retry_ttl_hours": 24,
@@ -130,8 +133,8 @@
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-fa61bb2b491c4a3e803bd765eb5e5fe7",
-    "rankings_path": "latest/delivery/pub-fa61bb2b491c4a3e803bd765eb5e5fe7/rankings.json",
+    "bundle_path": "latest/delivery/pub-9e7e6713f4b54528a01883550c026edb",
+    "rankings_path": "latest/delivery/pub-9e7e6713f4b54528a01883550c026edb/rankings.json",
     "trend_detail_count": 357,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }
