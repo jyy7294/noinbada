@@ -18,6 +18,27 @@ def _trend(rank, key, keywords=0, companies=0, lane="main"):
     }
 
 
+def test_queue_uses_frontend_related_keywords_before_raw_candidates(tmp_path):
+    trend = _trend(1, "reviewed-ready", keywords=2, companies=6)
+    trend["related_keywords"] = [
+        {"text": f"reviewed-{index}", "source": ["reviewed_ontology"]}
+        for index in range(5)
+    ]
+
+    result = sync_enrichment_queue(
+        {"unified_ranking": [trend], "public_top10": [trend]},
+        path=tmp_path / "queue.sqlite3",
+        at=datetime(2026, 8, 13, tzinfo=UTC),
+    )
+
+    assert result["counts"]["related_keywords"] == {"pending": 0, "complete": 1}
+    assert not any(
+        item["event_key"] == "reviewed-ready"
+        and item["task_kind"] == "related_keywords"
+        for item in result["pending"]
+    )
+
+
 def test_queue_persists_all_ranked_gaps_without_changing_intelligence(tmp_path):
     at = datetime(2026, 8, 13, tzinfo=UTC)
     trends = [_trend(1, "complete", 5, 6), _trend(2, "gap", 1, 0)]
@@ -73,6 +94,25 @@ def test_queue_is_idempotent_per_hour_and_keeps_history_across_hours(tmp_path):
         assert connection.execute(
             "SELECT COUNT(*) FROM enrichment_task_observations"
         ).fetchone()[0] == 4
+
+
+def test_pending_output_only_contains_candidates_seen_in_current_hour(tmp_path):
+    path = tmp_path / "queue.sqlite3"
+    first_at = datetime(2026, 8, 13, tzinfo=UTC)
+    sync_enrichment_queue(
+        {"unified_ranking": [_trend(1, "old-gap")], "public_top10": []},
+        path=path,
+        at=first_at,
+    )
+
+    result = sync_enrichment_queue(
+        {"unified_ranking": [_trend(2, "current-gap")], "public_top10": []},
+        path=path,
+        at=first_at + timedelta(hours=1),
+    )
+
+    assert {item["event_key"] for item in result["pending"]} == {"current-gap"}
+    assert result["pending_total"] == 2
 
 
 def test_six_complete_companies_close_company_task(tmp_path):

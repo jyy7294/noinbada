@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T17:48:08.2489913+00:00",
+    "updated_at":  "2026-08-13T18:11:59.5531571+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,26 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "0b24319f2e9aeede52ceb34f26768574203a28cc",
+                       "base_remote_main_sha":  "c5069119c8c135758be548bfa245b5c58221d46e",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "docs/BACKEND_TEAM_HANDOFF.md",
-                                             "docs/BACKEND_TEAM_PROMPT.md",
-                                             "README.md"
+                                             "src/trzip/enrichment_queue.py",
+                                             "tests/test_enrichment_queue.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/BACKEND_TEAM_HANDOFF.md":  "d00f72aaeb38016662bb387a8f095ea447a29ec1f11d54272a321e541485665e",
-                                                    "docs/BACKEND_TEAM_PROMPT.md":  "cab250210942b8e8fbfb6312b40c25a28b6aabbbe0586b8faaea1e38bdc944f1",
-                                                    "README.md":  "cd95f5e5c3412ff30d98a348c48362ad0539106adf3f056ec456d9461ed620ef"
+                                                    "src/trzip/enrichment_queue.py":  "b19b2545077933217425e76e7740d52af2c5cc9b64f1d0b218985b600fadabc2",
+                                                    "tests/test_enrichment_queue.py":  "bd3c4cd7d31d26bd72eb7cc5846ae8aaf84cd7b415c3ab965e05dece1f3cecc0"
                                                 },
-                       "commit_message":  "docs: align backend handoff with final contract",
+                       "commit_message":  "fix: prioritize current frontend enrichment gaps",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  278
+                                      "count":  280
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -49,18 +47,20 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Prevent other computers and team members from implementing obsolete three-company or neutral-momentum rules.",
+                    "objective":  "Keep hourly enrichment work aligned with current observed candidates without changing rank or UI.",
                     "completed":  [
-                                      "Align README and backend handoff documents with six companies, five sourced keywords, source-v2, frontend-v2, and eight-hour proof."
+                                      "Count reviewed frontend related keywords before raw candidates.",
+                                      "Exclude stale prior-hour tasks from the current pending queue.",
+                                      "Validated 280 passed and 1 skipped."
                                   ],
                     "next_actions":  [
-                                         "Accumulate 8 consecutive exact-hour live receipts under the fixed policies."
+                                         "Validate the next exact-hour publication under fixed source and frontend policies."
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "Eight-hour live validation is still awaiting the first new exact-hour receipt."
+                                              "Eight consecutive exact-hour live results remain required."
                                           ]
                 },
     "runtime_contract":  {

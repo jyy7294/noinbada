@@ -136,7 +136,13 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
             ],
         })
         counts = {
-            "related_keywords": len(item.get("keywords", [])),
+            # The frontend consumes the reviewed ``related_keywords`` field.
+            # Falling back to raw ``keywords`` keeps pre-enrichment candidates
+            # visible, while preventing an already complete trend from being
+            # queued again merely because the raw provider list is shorter.
+            "related_keywords": len(
+                item.get("related_keywords") or item.get("keywords") or []
+            ),
             "company_ontology": int(
                 item.get("frontend_company_count")
                 if item.get("frontend_company_count") is not None
@@ -252,15 +258,19 @@ def sync_enrichment_queue(
         connection.row_factory = sqlite3.Row
         summary_rows = connection.execute(
             """SELECT task_kind,status,COUNT(*) AS count
-               FROM enrichment_tasks GROUP BY task_kind,status"""
+               FROM enrichment_tasks
+               WHERE last_seen_at=?
+               GROUP BY task_kind,status""",
+            (stamp,),
         ).fetchall()
         pending_rows = connection.execute(
             """SELECT event_key,task_kind,representative_term,last_seen_at,latest_rank,
                       latest_lane,priority,current_count,required_count,missing_count,
                       observed_terms_json,evidence_policy_json
-               FROM enrichment_tasks WHERE status='pending'
+               FROM enrichment_tasks
+               WHERE status='pending' AND last_seen_at=?
                ORDER BY priority DESC,last_seen_at DESC,event_key,task_kind LIMIT ?""",
-            (max(0, pending_limit),),
+            (stamp, max(0, pending_limit)),
         ).fetchall()
         total_observations = connection.execute(
             "SELECT COUNT(*) FROM enrichment_task_observations"
