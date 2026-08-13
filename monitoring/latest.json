@@ -1,10 +1,10 @@
 {
   "measurement_window_hours": 168,
-  "recorded_runs": 13,
+  "recorded_runs": 14,
   "successful_runs": 5,
-  "success_rate": 0.3846,
+  "success_rate": 0.3571,
   "source_success_rate": {
-    "x": 0.3846,
+    "x": 0.3571,
     "google_trends": 1.0
   },
   "source_failure_counts": {
@@ -16,7 +16,7 @@
       "quota_or_rate_limit": 0,
       "network": 0,
       "parser_change": 0,
-      "unknown": 8
+      "unknown": 9
     },
     "google_trends": {
       "browser_authentication": 0,
@@ -34,27 +34,27 @@
     "x": false,
     "google_trends": false
   },
-  "on_time_within_15m_rate": 0.3846,
-  "latest_delay_seconds": 256,
-  "latest_duration_seconds": 10.18,
-  "current_publication_scheduled_at": "2026-08-13T12:00:00+00:00",
-  "current_publication_attempt_type": "scheduled",
-  "current_publication_status": "scheduled_complete",
+  "on_time_within_15m_rate": 0.4286,
+  "latest_delay_seconds": 2,
+  "latest_duration_seconds": 148.58,
+  "current_publication_scheduled_at": "2026-08-13T16:00:00+00:00",
+  "current_publication_attempt_type": "recovery",
+  "current_publication_status": "recovered_complete",
   "current_publication_success": true,
   "current_publication_source_success": {
     "x": true,
     "google_trends": true
   },
-  "current_schedule_initial_attempt_success": true,
-  "latest_scheduled_at": "2026-08-13T12:00:00+00:00",
-  "latest_scheduled_attempt_success": true,
+  "current_schedule_initial_attempt_success": false,
+  "latest_scheduled_at": "2026-08-13T16:00:00+00:00",
+  "latest_scheduled_attempt_success": false,
   "latest_scheduled_attempt_source_success": {
-    "x": true,
+    "x": false,
     "google_trends": true
   },
-  "recovered_from_scheduled_failure": false,
+  "recovered_from_scheduled_failure": true,
   "status": "collecting_baseline",
-  "remaining_runs_for_3d": 59,
-  "remaining_runs_for_7d": 155,
+  "remaining_runs_for_3d": 58,
+  "remaining_runs_for_7d": 154,
   "warning": "Codex 정각 자동화 실측 기록이며 노트북·Codex·Chrome 종료 또는 로그아웃 중에는 실행되지 않을 수 있음"
 }

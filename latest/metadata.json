@@ -1,8 +1,8 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-8ea8d9f4686c4032a8cb8b2dffa004e3",
-  "generated_at": "2026-08-13T12:04:25.850128+00:00",
-  "observed_at": "2026-08-13T12:00:00+00:00",
+  "publication_id": "pub-ce91dd3ecc7a4052b34961b949f82319",
+  "generated_at": "2026-08-13T16:10:41.518439+00:00",
+  "observed_at": "2026-08-13T16:00:00+00:00",
   "mode": "live",
   "publishable": true,
   "storage": "local-sqlite-published-to-live-data",
@@ -12,7 +12,7 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-13.json",
   "collection": {
-    "observed": 272,
+    "observed": 259,
     "errors": {},
     "rank_sources": [
       "x",
@@ -29,42 +29,45 @@
       },
       "google_geo_kr": {
         "status": "observed",
-        "row_count": 242,
+        "row_count": 229,
         "detail": "verified_current_hour_snapshot",
-        "declared_total": 242,
+        "declared_total": 229,
         "page_count": 10,
         "completion_verified": true
       }
     },
-    "observed_at": "2026-08-13T12:00:00+00:00"
+    "observed_at": "2026-08-13T16:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T13:00:00+00:00",
-    "last_hour": "2026-08-13T12:00:00+00:00",
-    "hours": 15,
-    "rows": 3435,
-    "observed_rows": 3435,
+    "last_hour": "2026-08-13T16:00:00+00:00",
+    "hours": 17,
+    "rows": 3932,
+    "observed_rows": 3932,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 0,
-    "newly_observed": 0,
-    "reused_company_rows": 31,
-    "unavailable_company_rows": 0
+    "requested_stock_codes": 36,
+    "newly_observed": 1,
+    "reused_company_rows": 42,
+    "unavailable_company_rows": 38
   },
   "company_identity_data": {
     "provider": "opendart",
-    "requested": 20,
+    "requested": 67,
     "fetched": 0,
-    "reused": 20,
+    "reused": 67,
     "status_counts": {
-      "verified": 20
+      "verified": 29,
+      "unavailable": 6,
+      "invalid": 32
     },
     "financial_status_counts": {
-      "unavailable": 20
+      "observed": 12,
+      "unavailable": 55
     },
     "verified_ttl_days": 30,
     "retry_ttl_hours": 24,
@@ -73,11 +76,11 @@
   },
   "collection_health": {
     "measurement_window_hours": 168,
-    "recorded_runs": 13,
+    "recorded_runs": 14,
     "successful_runs": 5,
-    "success_rate": 0.3846,
+    "success_rate": 0.3571,
     "source_success_rate": {
-      "x": 0.3846,
+      "x": 0.3571,
       "google_trends": 1.0
     },
     "source_failure_counts": {
@@ -89,7 +92,7 @@
         "quota_or_rate_limit": 0,
         "network": 0,
         "parser_change": 0,
-        "unknown": 8
+        "unknown": 9
       },
       "google_trends": {
         "browser_authentication": 0,
@@ -107,36 +110,36 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.3846,
-    "latest_delay_seconds": 256,
-    "latest_duration_seconds": 10.18,
-    "current_publication_scheduled_at": "2026-08-13T12:00:00+00:00",
-    "current_publication_attempt_type": "scheduled",
-    "current_publication_status": "scheduled_complete",
+    "on_time_within_15m_rate": 0.4286,
+    "latest_delay_seconds": 2,
+    "latest_duration_seconds": 148.58,
+    "current_publication_scheduled_at": "2026-08-13T16:00:00+00:00",
+    "current_publication_attempt_type": "recovery",
+    "current_publication_status": "recovered_complete",
     "current_publication_success": true,
     "current_publication_source_success": {
       "x": true,
       "google_trends": true
     },
-    "current_schedule_initial_attempt_success": true,
-    "latest_scheduled_at": "2026-08-13T12:00:00+00:00",
-    "latest_scheduled_attempt_success": true,
+    "current_schedule_initial_attempt_success": false,
+    "latest_scheduled_at": "2026-08-13T16:00:00+00:00",
+    "latest_scheduled_attempt_success": false,
     "latest_scheduled_attempt_source_success": {
-      "x": true,
+      "x": false,
       "google_trends": true
     },
-    "recovered_from_scheduled_failure": false,
+    "recovered_from_scheduled_failure": true,
     "status": "collecting_baseline",
-    "remaining_runs_for_3d": 59,
-    "remaining_runs_for_7d": 155,
+    "remaining_runs_for_3d": 58,
+    "remaining_runs_for_7d": 154,
     "warning": "Codex 정각 자동화 실측 기록이며 노트북·Codex·Chrome 종료 또는 로그아웃 중에는 실행되지 않을 수 있음"
   },
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-8ea8d9f4686c4032a8cb8b2dffa004e3",
-    "rankings_path": "latest/delivery/pub-8ea8d9f4686c4032a8cb8b2dffa004e3/rankings.json",
-    "trend_detail_count": 530,
+    "bundle_path": "latest/delivery/pub-ce91dd3ecc7a4052b34961b949f82319",
+    "rankings_path": "latest/delivery/pub-ce91dd3ecc7a4052b34961b949f82319/rankings.json",
+    "trend_detail_count": 569,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }
 }

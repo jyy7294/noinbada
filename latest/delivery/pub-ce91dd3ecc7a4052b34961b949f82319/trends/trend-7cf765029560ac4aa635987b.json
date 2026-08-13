@@ -1,0 +1,2249 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-ce91dd3ecc7a4052b34961b949f82319",
+  "generated_at": "2026-08-13T16:10:41.518439+00:00",
+  "observed_at": "2026-08-13T16:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "휴머노이드 로봇",
+    "topic": "휴머노이드 로봇",
+    "display_name": "휴머노이드 로봇",
+    "observed_representative_term": "휴머노이드 로봇",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "휴머노이드 로봇",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 7,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.028634,
+      "best_source_rank": 175
+    },
+    "raw_terms": [
+      "휴머노이드 로봇"
+    ],
+    "phenomenon_summary": "\"휴머노이드 로봇\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "technology_tool",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "technology",
+    "category_label": "기술·도구",
+    "trend_definition": "'휴머노이드 로봇' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 기술·도구 트렌드입니다. 함께 나타난 관련 표현은 휴머노이드, AMBIDEX입니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 4.56,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 0.297302,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 21.0
+    },
+    "hours_since_last_seen": 21.0,
+    "previous_period_rank": 199,
+    "rank_change": -355,
+    "rank_change_status": "measured",
+    "period_strength": 0.027718,
+    "current_source_position": 0.027718,
+    "momentum": 0.0,
+    "persistence": 0.0625,
+    "momentum_delta": -0.005675,
+    "score_components": {
+      "period_strength_points": 0.97,
+      "momentum_points": 0.0,
+      "persistence_points": 0.62,
+      "recency_points": 2.97,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 4.56
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.055436
+      },
+      "momentum_deltas": {
+        "google_trends": -0.005675
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 3,
+          "comparison": 4
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 9,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 3,
+          "presence_rate": 0.125,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.375,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-12T19:00:00+00:00",
+      "observed_hours": 7,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 190
+    },
+    "rank_change_by_source": {
+      "google_trends": 0
+    },
+    "source_rank_change": {
+      "google_trends": 0
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-12T19:00:00+00:00",
+    "age_hours": 27,
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 17,
+      "history_maturity": 0.4583,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 175,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"300%\", \"page\": 7, \"row_on_page\": 25, \"started_text\": \"16시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 180,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"300%\", \"page\": 8, \"row_on_page\": 5, \"started_text\": \"17시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 186,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"300%\", \"page\": 8, \"row_on_page\": 11, \"started_text\": \"18시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 184,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"300%\", \"page\": 8, \"row_on_page\": 9, \"started_text\": \"19시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 187,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"300%\", \"page\": 8, \"row_on_page\": 12, \"started_text\": \"20시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 190,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"300%\", \"page\": 8, \"row_on_page\": 15, \"started_text\": \"21시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 190,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"300%\", \"page\": 8, \"row_on_page\": 15, \"started_text\": \"21시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "휴머노이드",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "AMBIDEX",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "adjacent_dual_arm_robot_platform",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.naverlabs.com/en/ambidex"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "아틀라스",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "named_humanoid_product",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "LG 클로이드",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "adjacent_dual_arm_home_robot",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.lge.co.kr/story/newsroom/234937"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "미래로봇",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_company_program",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+        ],
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "휴머노이드",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "AMBIDEX",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "adjacent_dual_arm_robot_platform",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.naverlabs.com/en/ambidex"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "아틀라스",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "named_humanoid_product",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "LG 클로이드",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "adjacent_dual_arm_home_robot",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.lge.co.kr/story/newsroom/234937"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "미래로봇",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_company_program",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+        ],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 5,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 5,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [
+      {
+        "company": "Tesla",
+        "stock_code": "TSLA",
+        "ticker": "TSLA",
+        "market": "NASDAQ",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Tesla AI 사업에서 Optimus 휴머노이드를 직접 개발",
+        "relationship_reason": "Tesla AI 사업에서 Optimus 휴머노이드를 직접 개발",
+        "company_summary": "범용 휴머노이드 Optimus를 개발하는 전기차·AI 기업",
+        "company_description": "범용 휴머노이드 Optimus를 개발하는 전기차·AI 기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_product_page",
+        "evidence_url": "https://www.tesla.com/AI",
+        "evidence_sources": [
+          {
+            "url": "https://www.tesla.com/AI",
+            "title": "Tesla",
+            "evidence_type": "official_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.tesla.com/AI"
+            ],
+            "evidence_type": "official_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "Tesla",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.tesla.com/AI"
+            ],
+            "evidence_type": "official_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Tesla",
+          "stock_code": "TSLA",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NASDAQ",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "TSLA",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "NVIDIA",
+        "stock_code": "NVDA",
+        "ticker": "NVDA",
+        "market": "NASDAQ",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "NVIDIA가 휴머노이드 범용 기반모델 Project GR00T를 공식 발표",
+        "relationship_reason": "NVIDIA가 휴머노이드 범용 기반모델 Project GR00T를 공식 발표",
+        "company_summary": "휴머노이드용 GR00T 모델과 Isaac 로봇 플랫폼을 제공하는 AI 반도체기업",
+        "company_description": "휴머노이드용 GR00T 모델과 Isaac 로봇 플랫폼을 제공하는 AI 반도체기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_technology_release",
+        "evidence_url": "https://nvidianews.nvidia.com/_gallery/download_pdf/65f8b9913d63321e2b746105/",
+        "evidence_sources": [
+          {
+            "url": "https://nvidianews.nvidia.com/_gallery/download_pdf/65f8b9913d63321e2b746105/",
+            "title": "NVIDIA",
+            "evidence_type": "official_technology_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://nvidianews.nvidia.com/_gallery/download_pdf/65f8b9913d63321e2b746105/"
+            ],
+            "evidence_type": "official_technology_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "NVIDIA",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://nvidianews.nvidia.com/_gallery/download_pdf/65f8b9913d63321e2b746105/"
+            ],
+            "evidence_type": "official_technology_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "NVIDIA",
+          "stock_code": "NVDA",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NASDAQ",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "NVDA",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "현대자동차",
+        "stock_code": "005380",
+        "ticker": "005380",
+        "market": "KRX",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "현대차그룹과 Boston Dynamics가 전기식 Atlas의 산업 적용을 공동 추진",
+        "relationship_reason": "현대차그룹과 Boston Dynamics가 전기식 Atlas의 산업 적용을 공동 추진",
+        "company_summary": "Boston Dynamics의 Atlas를 제조현장에 적용하는 자동차·로보틱스 기업",
+        "company_description": "Boston Dynamics의 Atlas를 제조현장에 적용하는 자동차·로보틱스 기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_company_release",
+        "evidence_url": "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/uniting-humans-and-robots--hyundai-motor-group-and-boston-dynamics%E2%80%99-vision-for-the-future-of-work-and-hr-evolution-0000000983.html",
+        "evidence_sources": [
+          {
+            "url": "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/uniting-humans-and-robots--hyundai-motor-group-and-boston-dynamics%E2%80%99-vision-for-the-future-of-work-and-hr-evolution-0000000983.html",
+            "title": "Hyundai Motor Group",
+            "evidence_type": "official_company_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/uniting-humans-and-robots--hyundai-motor-group-and-boston-dynamics%E2%80%99-vision-for-the-future-of-work-and-hr-evolution-0000000983.html"
+            ],
+            "evidence_type": "official_company_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "현대자동차",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/uniting-humans-and-robots--hyundai-motor-group-and-boston-dynamics%E2%80%99-vision-for-the-future-of-work-and-hr-evolution-0000000983.html"
+            ],
+            "evidence_type": "official_company_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "현대자동차",
+          "corp_code": "00164742",
+          "english_name": "HYUNDAI MOTOR CO",
+          "established_date": "19671229",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 383834207000000,
+                "label": "자산총계",
+                "previous": 368844849000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 132226735000000,
+                "label": "자본총계",
+                "previous": 127648237000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 251607472000000,
+                "label": "부채총계",
+                "previous": 241196612000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 2584926000000,
+                "label": "당기순이익(손실)",
+                "previous": 3382174000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 2514686000000,
+                "label": "영업이익",
+                "previous": 3633609000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 45938886000000,
+                "label": "매출액",
+                "previous": 44407761000000
+              }
+            },
+            "business_year": 2026,
+            "company": "현대자동차",
+            "corp_code": "00164742",
+            "filing_receipt_no": "20260515002418",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002418",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:17.230906+00:00",
+            "status": "observed",
+            "stock_code": "005380"
+          },
+          "homepage": "https://www.hyundai.com",
+          "legal_name": "현대자동차(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005380",
+          "stock_name": "현대자동차"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "005380",
+          "name": "현대차",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 370000.0,
+              "high": 391500.0,
+              "low": 366000.0,
+              "close": 388000.0,
+              "volume": 1085656.0,
+              "change_pct": 10.541310541310542
+            },
+            {
+              "date": "2026-08-03",
+              "open": 383000.0,
+              "high": 401500.0,
+              "low": 376000.0,
+              "close": 393000.0,
+              "volume": 826843.0,
+              "change_pct": 1.2886597938144329
+            },
+            {
+              "date": "2026-08-04",
+              "open": 395500.0,
+              "high": 396500.0,
+              "low": 376000.0,
+              "close": 392500.0,
+              "volume": 680354.0,
+              "change_pct": -0.1272264631043257
+            },
+            {
+              "date": "2026-08-05",
+              "open": 401500.0,
+              "high": 411000.0,
+              "low": 400500.0,
+              "close": 404500.0,
+              "volume": 545657.0,
+              "change_pct": 3.0573248407643314
+            },
+            {
+              "date": "2026-08-06",
+              "open": 401000.0,
+              "high": 415000.0,
+              "low": 390000.0,
+              "close": 400000.0,
+              "volume": 527513.0,
+              "change_pct": -1.1124845488257107
+            },
+            {
+              "date": "2026-08-07",
+              "open": 401000.0,
+              "high": 406000.0,
+              "low": 387000.0,
+              "close": 395500.0,
+              "volume": 415672.0,
+              "change_pct": -1.125
+            },
+            {
+              "date": "2026-08-10",
+              "open": 396000.0,
+              "high": 410500.0,
+              "low": 392500.0,
+              "close": 408000.0,
+              "volume": 458584.0,
+              "change_pct": 3.16055625790139
+            },
+            {
+              "date": "2026-08-11",
+              "open": 406000.0,
+              "high": 411000.0,
+              "low": 400500.0,
+              "close": 403000.0,
+              "volume": 327064.0,
+              "change_pct": -1.2254901960784315
+            },
+            {
+              "date": "2026-08-12",
+              "open": 403000.0,
+              "high": 413000.0,
+              "low": 400500.0,
+              "close": 409500.0,
+              "volume": 411565.0,
+              "change_pct": 1.6129032258064515
+            },
+            {
+              "date": "2026-08-13",
+              "open": 419500.0,
+              "high": 431500.0,
+              "low": 419500.0,
+              "close": 425500.0,
+              "volume": 117168.0,
+              "change_pct": 3.907203907203907
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 419500.0,
+            "high": 431500.0,
+            "low": 419500.0,
+            "close": 425500.0,
+            "volume": 117168.0,
+            "change_pct": 3.907203907203907
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 425500,
+            "daily_change_pct": 3.91,
+            "volume": 117168
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 7.59,
+            "five_vs_previous_volume_ratio": 0.47,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "UBTECH Robotics",
+        "stock_code": "9880",
+        "ticker": "9880",
+        "market": "HKEX",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "UBTECH 공식 제품 페이지가 Walker 휴머노이드 로봇과 산업 적용을 직접 소개",
+        "relationship_reason": "UBTECH 공식 제품 페이지가 Walker 휴머노이드 로봇과 산업 적용을 직접 소개",
+        "company_summary": "Walker 시리즈 산업용 휴머노이드 로봇을 개발하는 홍콩 상장 로봇기업",
+        "company_description": "Walker 시리즈 산업용 휴머노이드 로봇을 개발하는 홍콩 상장 로봇기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_humanoid_product_page",
+        "evidence_url": "https://www.ubtrobot.com/en/humanoid/products/walker-s2",
+        "evidence_sources": [
+          {
+            "url": "https://www.ubtrobot.com/en/humanoid/products/walker-s2",
+            "title": "UBTECH Robotics",
+            "evidence_type": "official_humanoid_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.ubtrobot.com/en/humanoid/products/walker-s2"
+            ],
+            "evidence_type": "official_humanoid_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "UBTECH Robotics",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.ubtrobot.com/en/humanoid/products/walker-s2"
+            ],
+            "evidence_type": "official_humanoid_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "UBTECH Robotics",
+          "stock_code": "9880",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "HKEX",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9880",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "XPeng",
+        "stock_code": "9868",
+        "ticker": "9868",
+        "market": "HKEX",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "XPeng 공식 기술 행사 자료가 자사 IRON 휴머노이드 로봇을 직접 공개",
+        "relationship_reason": "XPeng 공식 기술 행사 자료가 자사 IRON 휴머노이드 로봇을 직접 공개",
+        "company_summary": "IRON 휴머노이드 로봇을 개발하는 홍콩 상장 전기차·AI기업",
+        "company_description": "IRON 휴머노이드 로봇을 개발하는 홍콩 상장 전기차·AI기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_humanoid_release",
+        "evidence_url": "https://www.xpeng.com/news/019301d2135392fa562d8a0282200016",
+        "evidence_sources": [
+          {
+            "url": "https://www.xpeng.com/news/019301d2135392fa562d8a0282200016",
+            "title": "XPeng",
+            "evidence_type": "official_humanoid_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.xpeng.com/news/019301d2135392fa562d8a0282200016"
+            ],
+            "evidence_type": "official_humanoid_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "XPeng",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.xpeng.com/news/019301d2135392fa562d8a0282200016"
+            ],
+            "evidence_type": "official_humanoid_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "XPeng",
+          "stock_code": "9868",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "HKEX",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9868",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "레인보우로보틱스",
+        "stock_code": "277810",
+        "ticker": "277810",
+        "market": "KOSDAQ",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "레인보우로보틱스 공식 기업 소개가 휴머노이드 로봇 HUBO 개발 이력을 명시",
+        "relationship_reason": "레인보우로보틱스 공식 기업 소개가 휴머노이드 로봇 HUBO 개발 이력을 명시",
+        "company_summary": "이족보행 휴머노이드 기술과 협동로봇을 개발하는 국내 상장 로봇기업",
+        "company_description": "이족보행 휴머노이드 기술과 협동로봇을 개발하는 국내 상장 로봇기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_listed_company_filing",
+        "evidence_url": "https://kind.krx.co.kr/external/2023/11/14/002431/20231114005368/11013.htm",
+        "evidence_sources": [
+          {
+            "url": "https://kind.krx.co.kr/external/2023/11/14/002431/20231114005368/11013.htm",
+            "title": "KRX KIND",
+            "evidence_type": "official_listed_company_filing",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2023/11/14/002431/20231114005368/11013.htm"
+            ],
+            "evidence_type": "official_listed_company_filing",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "레인보우로보틱스",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2023/11/14/002431/20231114005368/11013.htm"
+            ],
+            "evidence_type": "official_listed_company_filing",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "레인보우로보틱스",
+          "corp_code": "01261644",
+          "english_name": "Rainbow Robotics",
+          "established_date": "20110210",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 140465877868,
+                "label": "자산총계",
+                "previous": 143305317623
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 132904272858,
+                "label": "자본총계",
+                "previous": 133830651193
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 7561605010,
+                "label": "부채총계",
+                "previous": 9474666430
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": -1567079346,
+                "label": "영업이익",
+                "previous": -1403140484
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 9062504268,
+                "label": "매출액",
+                "previous": 4184771298
+              }
+            },
+            "business_year": 2026,
+            "company": "레인보우로보틱스",
+            "corp_code": "01261644",
+            "filing_receipt_no": "20260515002401",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002401",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:20.226911+00:00",
+            "status": "observed",
+            "stock_code": "277810"
+          },
+          "homepage": "https://www.rainbow-robotics.com/new/index_ko.php",
+          "legal_name": "(주)레인보우로보틱스",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "277810",
+          "stock_name": "레인보우로보틱스"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "277810",
+          "name": "레인보우로보틱스",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 401000.0,
+              "high": 445000.0,
+              "low": 394500.0,
+              "close": 433000.0,
+              "volume": 266975.0,
+              "change_pct": 16.0857908847185
+            },
+            {
+              "date": "2026-08-03",
+              "open": 442000.0,
+              "high": 485000.0,
+              "low": 429000.0,
+              "close": 458500.0,
+              "volume": 294073.0,
+              "change_pct": 5.8891454965357966
+            },
+            {
+              "date": "2026-08-04",
+              "open": 454000.0,
+              "high": 468000.0,
+              "low": 444500.0,
+              "close": 467000.0,
+              "volume": 146293.0,
+              "change_pct": 1.8538713195201746
+            },
+            {
+              "date": "2026-08-05",
+              "open": 477000.0,
+              "high": 485000.0,
+              "low": 455500.0,
+              "close": 484000.0,
+              "volume": 143565.0,
+              "change_pct": 3.640256959314775
+            },
+            {
+              "date": "2026-08-06",
+              "open": 509000.0,
+              "high": 513000.0,
+              "low": 471000.0,
+              "close": 489500.0,
+              "volume": 196311.0,
+              "change_pct": 1.1363636363636365
+            },
+            {
+              "date": "2026-08-07",
+              "open": 485000.0,
+              "high": 488000.0,
+              "low": 446250.0,
+              "close": 465000.0,
+              "volume": 135918.0,
+              "change_pct": -5.005107252298264
+            },
+            {
+              "date": "2026-08-10",
+              "open": 465000.0,
+              "high": 489500.0,
+              "low": 454000.0,
+              "close": 489000.0,
+              "volume": 129085.0,
+              "change_pct": 5.161290322580645
+            },
+            {
+              "date": "2026-08-11",
+              "open": 494000.0,
+              "high": 497000.0,
+              "low": 470500.0,
+              "close": 480000.0,
+              "volume": 132422.0,
+              "change_pct": -1.8404907975460123
+            },
+            {
+              "date": "2026-08-12",
+              "open": 478000.0,
+              "high": 494000.0,
+              "low": 468000.0,
+              "close": 490000.0,
+              "volume": 102971.0,
+              "change_pct": 2.083333333333333
+            },
+            {
+              "date": "2026-08-13",
+              "open": 495000.0,
+              "high": 505000.0,
+              "low": 484250.0,
+              "close": 497000.0,
+              "volume": 111372.0,
+              "change_pct": 1.4285714285714286
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 495000.0,
+            "high": 505000.0,
+            "low": 484250.0,
+            "close": 497000.0,
+            "volume": 111372.0,
+            "change_pct": 1.4285714285714286
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 497000,
+            "daily_change_pct": 1.43,
+            "volume": 111372
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 6.88,
+            "five_vs_previous_volume_ratio": 0.58,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "Tesla",
+        "stock_code": "TSLA",
+        "ticker": "TSLA",
+        "market": "NASDAQ",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Tesla AI 사업에서 Optimus 휴머노이드를 직접 개발",
+        "relationship_reason": "Tesla AI 사업에서 Optimus 휴머노이드를 직접 개발",
+        "company_summary": "범용 휴머노이드 Optimus를 개발하는 전기차·AI 기업",
+        "company_description": "범용 휴머노이드 Optimus를 개발하는 전기차·AI 기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_product_page",
+        "evidence_url": "https://www.tesla.com/AI",
+        "evidence_sources": [
+          {
+            "url": "https://www.tesla.com/AI",
+            "title": "Tesla",
+            "evidence_type": "official_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.tesla.com/AI"
+            ],
+            "evidence_type": "official_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "Tesla",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.tesla.com/AI"
+            ],
+            "evidence_type": "official_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Tesla",
+          "stock_code": "TSLA",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NASDAQ",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "TSLA",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "NVIDIA",
+        "stock_code": "NVDA",
+        "ticker": "NVDA",
+        "market": "NASDAQ",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "NVIDIA가 휴머노이드 범용 기반모델 Project GR00T를 공식 발표",
+        "relationship_reason": "NVIDIA가 휴머노이드 범용 기반모델 Project GR00T를 공식 발표",
+        "company_summary": "휴머노이드용 GR00T 모델과 Isaac 로봇 플랫폼을 제공하는 AI 반도체기업",
+        "company_description": "휴머노이드용 GR00T 모델과 Isaac 로봇 플랫폼을 제공하는 AI 반도체기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_technology_release",
+        "evidence_url": "https://nvidianews.nvidia.com/_gallery/download_pdf/65f8b9913d63321e2b746105/",
+        "evidence_sources": [
+          {
+            "url": "https://nvidianews.nvidia.com/_gallery/download_pdf/65f8b9913d63321e2b746105/",
+            "title": "NVIDIA",
+            "evidence_type": "official_technology_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://nvidianews.nvidia.com/_gallery/download_pdf/65f8b9913d63321e2b746105/"
+            ],
+            "evidence_type": "official_technology_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "NVIDIA",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://nvidianews.nvidia.com/_gallery/download_pdf/65f8b9913d63321e2b746105/"
+            ],
+            "evidence_type": "official_technology_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "NVIDIA",
+          "stock_code": "NVDA",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NASDAQ",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "NVDA",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "현대자동차",
+        "stock_code": "005380",
+        "ticker": "005380",
+        "market": "KRX",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "현대차그룹과 Boston Dynamics가 전기식 Atlas의 산업 적용을 공동 추진",
+        "relationship_reason": "현대차그룹과 Boston Dynamics가 전기식 Atlas의 산업 적용을 공동 추진",
+        "company_summary": "Boston Dynamics의 Atlas를 제조현장에 적용하는 자동차·로보틱스 기업",
+        "company_description": "Boston Dynamics의 Atlas를 제조현장에 적용하는 자동차·로보틱스 기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_company_release",
+        "evidence_url": "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/uniting-humans-and-robots--hyundai-motor-group-and-boston-dynamics%E2%80%99-vision-for-the-future-of-work-and-hr-evolution-0000000983.html",
+        "evidence_sources": [
+          {
+            "url": "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/uniting-humans-and-robots--hyundai-motor-group-and-boston-dynamics%E2%80%99-vision-for-the-future-of-work-and-hr-evolution-0000000983.html",
+            "title": "Hyundai Motor Group",
+            "evidence_type": "official_company_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/uniting-humans-and-robots--hyundai-motor-group-and-boston-dynamics%E2%80%99-vision-for-the-future-of-work-and-hr-evolution-0000000983.html"
+            ],
+            "evidence_type": "official_company_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "현대자동차",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/uniting-humans-and-robots--hyundai-motor-group-and-boston-dynamics%E2%80%99-vision-for-the-future-of-work-and-hr-evolution-0000000983.html"
+            ],
+            "evidence_type": "official_company_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "현대자동차",
+          "corp_code": "00164742",
+          "english_name": "HYUNDAI MOTOR CO",
+          "established_date": "19671229",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 383834207000000,
+                "label": "자산총계",
+                "previous": 368844849000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 132226735000000,
+                "label": "자본총계",
+                "previous": 127648237000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 251607472000000,
+                "label": "부채총계",
+                "previous": 241196612000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 2584926000000,
+                "label": "당기순이익(손실)",
+                "previous": 3382174000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 2514686000000,
+                "label": "영업이익",
+                "previous": 3633609000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 45938886000000,
+                "label": "매출액",
+                "previous": 44407761000000
+              }
+            },
+            "business_year": 2026,
+            "company": "현대자동차",
+            "corp_code": "00164742",
+            "filing_receipt_no": "20260515002418",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002418",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:17.230906+00:00",
+            "status": "observed",
+            "stock_code": "005380"
+          },
+          "homepage": "https://www.hyundai.com",
+          "legal_name": "현대자동차(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005380",
+          "stock_name": "현대자동차"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "005380",
+          "name": "현대차",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 370000.0,
+              "high": 391500.0,
+              "low": 366000.0,
+              "close": 388000.0,
+              "volume": 1085656.0,
+              "change_pct": 10.541310541310542
+            },
+            {
+              "date": "2026-08-03",
+              "open": 383000.0,
+              "high": 401500.0,
+              "low": 376000.0,
+              "close": 393000.0,
+              "volume": 826843.0,
+              "change_pct": 1.2886597938144329
+            },
+            {
+              "date": "2026-08-04",
+              "open": 395500.0,
+              "high": 396500.0,
+              "low": 376000.0,
+              "close": 392500.0,
+              "volume": 680354.0,
+              "change_pct": -0.1272264631043257
+            },
+            {
+              "date": "2026-08-05",
+              "open": 401500.0,
+              "high": 411000.0,
+              "low": 400500.0,
+              "close": 404500.0,
+              "volume": 545657.0,
+              "change_pct": 3.0573248407643314
+            },
+            {
+              "date": "2026-08-06",
+              "open": 401000.0,
+              "high": 415000.0,
+              "low": 390000.0,
+              "close": 400000.0,
+              "volume": 527513.0,
+              "change_pct": -1.1124845488257107
+            },
+            {
+              "date": "2026-08-07",
+              "open": 401000.0,
+              "high": 406000.0,
+              "low": 387000.0,
+              "close": 395500.0,
+              "volume": 415672.0,
+              "change_pct": -1.125
+            },
+            {
+              "date": "2026-08-10",
+              "open": 396000.0,
+              "high": 410500.0,
+              "low": 392500.0,
+              "close": 408000.0,
+              "volume": 458584.0,
+              "change_pct": 3.16055625790139
+            },
+            {
+              "date": "2026-08-11",
+              "open": 406000.0,
+              "high": 411000.0,
+              "low": 400500.0,
+              "close": 403000.0,
+              "volume": 327064.0,
+              "change_pct": -1.2254901960784315
+            },
+            {
+              "date": "2026-08-12",
+              "open": 403000.0,
+              "high": 413000.0,
+              "low": 400500.0,
+              "close": 409500.0,
+              "volume": 411565.0,
+              "change_pct": 1.6129032258064515
+            },
+            {
+              "date": "2026-08-13",
+              "open": 419500.0,
+              "high": 431500.0,
+              "low": 419500.0,
+              "close": 425500.0,
+              "volume": 117168.0,
+              "change_pct": 3.907203907203907
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 419500.0,
+            "high": 431500.0,
+            "low": 419500.0,
+            "close": 425500.0,
+            "volume": 117168.0,
+            "change_pct": 3.907203907203907
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 425500,
+            "daily_change_pct": 3.91,
+            "volume": 117168
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 7.59,
+            "five_vs_previous_volume_ratio": 0.47,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "UBTECH Robotics",
+        "stock_code": "9880",
+        "ticker": "9880",
+        "market": "HKEX",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "UBTECH 공식 제품 페이지가 Walker 휴머노이드 로봇과 산업 적용을 직접 소개",
+        "relationship_reason": "UBTECH 공식 제품 페이지가 Walker 휴머노이드 로봇과 산업 적용을 직접 소개",
+        "company_summary": "Walker 시리즈 산업용 휴머노이드 로봇을 개발하는 홍콩 상장 로봇기업",
+        "company_description": "Walker 시리즈 산업용 휴머노이드 로봇을 개발하는 홍콩 상장 로봇기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_humanoid_product_page",
+        "evidence_url": "https://www.ubtrobot.com/en/humanoid/products/walker-s2",
+        "evidence_sources": [
+          {
+            "url": "https://www.ubtrobot.com/en/humanoid/products/walker-s2",
+            "title": "UBTECH Robotics",
+            "evidence_type": "official_humanoid_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.ubtrobot.com/en/humanoid/products/walker-s2"
+            ],
+            "evidence_type": "official_humanoid_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "UBTECH Robotics",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.ubtrobot.com/en/humanoid/products/walker-s2"
+            ],
+            "evidence_type": "official_humanoid_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "UBTECH Robotics",
+          "stock_code": "9880",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "HKEX",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9880",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "XPeng",
+        "stock_code": "9868",
+        "ticker": "9868",
+        "market": "HKEX",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "XPeng 공식 기술 행사 자료가 자사 IRON 휴머노이드 로봇을 직접 공개",
+        "relationship_reason": "XPeng 공식 기술 행사 자료가 자사 IRON 휴머노이드 로봇을 직접 공개",
+        "company_summary": "IRON 휴머노이드 로봇을 개발하는 홍콩 상장 전기차·AI기업",
+        "company_description": "IRON 휴머노이드 로봇을 개발하는 홍콩 상장 전기차·AI기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_humanoid_release",
+        "evidence_url": "https://www.xpeng.com/news/019301d2135392fa562d8a0282200016",
+        "evidence_sources": [
+          {
+            "url": "https://www.xpeng.com/news/019301d2135392fa562d8a0282200016",
+            "title": "XPeng",
+            "evidence_type": "official_humanoid_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.xpeng.com/news/019301d2135392fa562d8a0282200016"
+            ],
+            "evidence_type": "official_humanoid_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "XPeng",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.xpeng.com/news/019301d2135392fa562d8a0282200016"
+            ],
+            "evidence_type": "official_humanoid_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "XPeng",
+          "stock_code": "9868",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "HKEX",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9868",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "레인보우로보틱스",
+        "stock_code": "277810",
+        "ticker": "277810",
+        "market": "KOSDAQ",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "레인보우로보틱스 공식 기업 소개가 휴머노이드 로봇 HUBO 개발 이력을 명시",
+        "relationship_reason": "레인보우로보틱스 공식 기업 소개가 휴머노이드 로봇 HUBO 개발 이력을 명시",
+        "company_summary": "이족보행 휴머노이드 기술과 협동로봇을 개발하는 국내 상장 로봇기업",
+        "company_description": "이족보행 휴머노이드 기술과 협동로봇을 개발하는 국내 상장 로봇기업",
+        "business_features": [
+          "로보틱스/AI모델/산업자동화"
+        ],
+        "evidence_kind": "official_listed_company_filing",
+        "evidence_url": "https://kind.krx.co.kr/external/2023/11/14/002431/20231114005368/11013.htm",
+        "evidence_sources": [
+          {
+            "url": "https://kind.krx.co.kr/external/2023/11/14/002431/20231114005368/11013.htm",
+            "title": "KRX KIND",
+            "evidence_type": "official_listed_company_filing",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "로보틱스/AI모델/산업자동화",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드 로봇",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "휴머노이드 로봇",
+            "to": "로보틱스/AI모델/산업자동화",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2023/11/14/002431/20231114005368/11013.htm"
+            ],
+            "evidence_type": "official_listed_company_filing",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "로보틱스/AI모델/산업자동화",
+            "to": "레인보우로보틱스",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2023/11/14/002431/20231114005368/11013.htm"
+            ],
+            "evidence_type": "official_listed_company_filing",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "레인보우로보틱스",
+          "corp_code": "01261644",
+          "english_name": "Rainbow Robotics",
+          "established_date": "20110210",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 140465877868,
+                "label": "자산총계",
+                "previous": 143305317623
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 132904272858,
+                "label": "자본총계",
+                "previous": 133830651193
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 7561605010,
+                "label": "부채총계",
+                "previous": 9474666430
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": -1567079346,
+                "label": "영업이익",
+                "previous": -1403140484
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 9062504268,
+                "label": "매출액",
+                "previous": 4184771298
+              }
+            },
+            "business_year": 2026,
+            "company": "레인보우로보틱스",
+            "corp_code": "01261644",
+            "filing_receipt_no": "20260515002401",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002401",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:20.226911+00:00",
+            "status": "observed",
+            "stock_code": "277810"
+          },
+          "homepage": "https://www.rainbow-robotics.com/new/index_ko.php",
+          "legal_name": "(주)레인보우로보틱스",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "277810",
+          "stock_name": "레인보우로보틱스"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "277810",
+          "name": "레인보우로보틱스",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 401000.0,
+              "high": 445000.0,
+              "low": 394500.0,
+              "close": 433000.0,
+              "volume": 266975.0,
+              "change_pct": 16.0857908847185
+            },
+            {
+              "date": "2026-08-03",
+              "open": 442000.0,
+              "high": 485000.0,
+              "low": 429000.0,
+              "close": 458500.0,
+              "volume": 294073.0,
+              "change_pct": 5.8891454965357966
+            },
+            {
+              "date": "2026-08-04",
+              "open": 454000.0,
+              "high": 468000.0,
+              "low": 444500.0,
+              "close": 467000.0,
+              "volume": 146293.0,
+              "change_pct": 1.8538713195201746
+            },
+            {
+              "date": "2026-08-05",
+              "open": 477000.0,
+              "high": 485000.0,
+              "low": 455500.0,
+              "close": 484000.0,
+              "volume": 143565.0,
+              "change_pct": 3.640256959314775
+            },
+            {
+              "date": "2026-08-06",
+              "open": 509000.0,
+              "high": 513000.0,
+              "low": 471000.0,
+              "close": 489500.0,
+              "volume": 196311.0,
+              "change_pct": 1.1363636363636365
+            },
+            {
+              "date": "2026-08-07",
+              "open": 485000.0,
+              "high": 488000.0,
+              "low": 446250.0,
+              "close": 465000.0,
+              "volume": 135918.0,
+              "change_pct": -5.005107252298264
+            },
+            {
+              "date": "2026-08-10",
+              "open": 465000.0,
+              "high": 489500.0,
+              "low": 454000.0,
+              "close": 489000.0,
+              "volume": 129085.0,
+              "change_pct": 5.161290322580645
+            },
+            {
+              "date": "2026-08-11",
+              "open": 494000.0,
+              "high": 497000.0,
+              "low": 470500.0,
+              "close": 480000.0,
+              "volume": 132422.0,
+              "change_pct": -1.8404907975460123
+            },
+            {
+              "date": "2026-08-12",
+              "open": 478000.0,
+              "high": 494000.0,
+              "low": 468000.0,
+              "close": 490000.0,
+              "volume": 102971.0,
+              "change_pct": 2.083333333333333
+            },
+            {
+              "date": "2026-08-13",
+              "open": 495000.0,
+              "high": 505000.0,
+              "low": 484250.0,
+              "close": 497000.0,
+              "volume": 111372.0,
+              "change_pct": 1.4285714285714286
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 495000.0,
+            "high": 505000.0,
+            "low": 484250.0,
+            "close": 497000.0,
+            "volume": 111372.0,
+            "change_pct": 1.4285714285714286
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 497000,
+            "daily_change_pct": 1.43,
+            "volume": 111372
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 6.88,
+            "five_vs_previous_volume_ratio": 0.58,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "LG전자",
+          "NAVER",
+          "두산로보틱스",
+          "삼성전자",
+          "현대차"
+        ],
+        "candidate_count": 5,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "candidate_company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "LG전자",
+          "NAVER",
+          "두산로보틱스",
+          "삼성전자",
+          "현대차"
+        ],
+        "candidate_count": 5,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 6,
+      "score_independent_of_company_count": true,
+      "direct_count": 5,
+      "role_coverage": [
+        "로보틱스/AI모델/산업자동화"
+      ],
+      "tier_counts": {
+        "direct": 5,
+        "value_chain": 1,
+        "industry_watch": 0
+      },
+      "category_count": 2,
+      "candidate_category_count": 2,
+      "role_category_counts": {
+        "manufacturing_development": 5,
+        "platform_service": 1
+      },
+      "ontology_diagnostics": {
+        "source": "term_specific_enrichment_cache",
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "용어별 근거 URL과 상장 식별자가 완비된 6개 이상 기업을 공개"
+    },
+    "rank": 554,
+    "observed_rank": 554,
+    "home_rank": 32,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 175,
+    "momentum_rank": 555,
+    "main_rank": 52,
+    "home_context_status": "resolved",
+    "home_context_reason": "specific_observed_expression",
+    "home_eligible": true,
+    "company_card_status": "ready",
+    "company_card_reason": "evidence_backed_three_or_more",
+    "company_status": "ready",
+    "frontend_readiness_status": "ready",
+    "frontend_readiness_missing": [],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 6,
+    "publication_rank": 11,
+    "ranking_availability_status": "provisional_history"
+  }
+}

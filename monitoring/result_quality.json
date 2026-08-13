@@ -1,0 +1,1251 @@
+{
+  "policy_version": "consecutive-actual-result-v1",
+  "required_consecutive_hours": 8,
+  "passed": false,
+  "current_consecutive_success_count": 1,
+  "remaining_success_hours": 7,
+  "evaluations": [
+    {
+      "observed_at": "2026-08-13T09:00:00+00:00",
+      "passed": true,
+      "source_gate": {
+        "passed": true,
+        "sources": {
+          "google_trends": {
+            "row_count": 245,
+            "unique_topics": 245,
+            "minimum_rank": 1,
+            "maximum_rank": 245,
+            "observed_rows": 245
+          },
+          "x": {
+            "row_count": 30,
+            "unique_topics": 30,
+            "minimum_rank": 1,
+            "maximum_rank": 30,
+            "observed_rows": 30
+          }
+        }
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v1",
+        "passed": true,
+        "trend_count": 10,
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": 6,
+        "failures": [],
+        "trends": [
+          {
+            "publication_rank": 1,
+            "display_name": "개기일식",
+            "observed_rank": 1,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 2,
+            "display_name": "커피믹스",
+            "observed_rank": 7,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 3,
+            "display_name": "페르세우스 유성우",
+            "observed_rank": 105,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 4,
+            "display_name": "말복",
+            "observed_rank": 139,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 5,
+            "display_name": "불꽃축제",
+            "observed_rank": 183,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "industry_adjacent",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 6,
+            "display_name": "광 통신",
+            "observed_rank": 205,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "platform_service",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 7,
+            "display_name": "지스타",
+            "observed_rank": 239,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "event_sponsorship",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 8,
+            "display_name": "롤 패치 노트",
+            "observed_rank": 355,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "manufacturing_development",
+              "ownership_investment"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "삼계탕",
+            "observed_rank": 363,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "manufacturing_development",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "코난 극장판",
+            "observed_rank": 420,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "content_production",
+              "distribution",
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          }
+        ],
+        "ranking_effect": "none"
+      }
+    },
+    {
+      "observed_at": "2026-08-13T10:00:00+00:00",
+      "passed": true,
+      "source_gate": {
+        "passed": true,
+        "sources": {
+          "google_trends": {
+            "row_count": 237,
+            "unique_topics": 237,
+            "minimum_rank": 1,
+            "maximum_rank": 237,
+            "observed_rows": 237
+          },
+          "x": {
+            "row_count": 30,
+            "unique_topics": 30,
+            "minimum_rank": 1,
+            "maximum_rank": 30,
+            "observed_rows": 30
+          }
+        }
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v1",
+        "passed": true,
+        "trend_count": 10,
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": 6,
+        "failures": [],
+        "trends": [
+          {
+            "publication_rank": 1,
+            "display_name": "개기일식",
+            "observed_rank": 1,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 2,
+            "display_name": "커피믹스",
+            "observed_rank": 7,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 3,
+            "display_name": "페르세우스 유성우",
+            "observed_rank": 109,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 4,
+            "display_name": "말복",
+            "observed_rank": 154,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 5,
+            "display_name": "불꽃축제",
+            "observed_rank": 205,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "industry_adjacent",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 6,
+            "display_name": "광 통신",
+            "observed_rank": 230,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "platform_service",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 7,
+            "display_name": "지스타",
+            "observed_rank": 255,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "event_sponsorship",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 8,
+            "display_name": "롤 패치 노트",
+            "observed_rank": 377,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "manufacturing_development",
+              "ownership_investment"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "삼계탕",
+            "observed_rank": 389,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "manufacturing_development",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "코난 극장판",
+            "observed_rank": 436,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "content_production",
+              "distribution",
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          }
+        ],
+        "ranking_effect": "none"
+      }
+    },
+    {
+      "observed_at": "2026-08-13T11:00:00+00:00",
+      "passed": false,
+      "source_gate": {
+        "passed": false,
+        "sources": {}
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v1",
+        "passed": true,
+        "trend_count": 10,
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": 6,
+        "failures": [],
+        "trends": [
+          {
+            "publication_rank": 1,
+            "display_name": "개기일식",
+            "observed_rank": 1,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 2,
+            "display_name": "커피믹스",
+            "observed_rank": 6,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 3,
+            "display_name": "페르세우스 유성우",
+            "observed_rank": 85,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 4,
+            "display_name": "불꽃축제",
+            "observed_rank": 185,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "industry_adjacent",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 5,
+            "display_name": "말복",
+            "observed_rank": 207,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 6,
+            "display_name": "광 통신",
+            "observed_rank": 232,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "platform_service",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 7,
+            "display_name": "지스타",
+            "observed_rank": 234,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "event_sponsorship",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 8,
+            "display_name": "롤 패치 노트",
+            "observed_rank": 372,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "manufacturing_development",
+              "ownership_investment"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "삼계탕",
+            "observed_rank": 387,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "manufacturing_development",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "코난 극장판",
+            "observed_rank": 435,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "content_production",
+              "distribution",
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          }
+        ],
+        "ranking_effect": "none"
+      }
+    },
+    {
+      "observed_at": "2026-08-13T12:00:00+00:00",
+      "passed": true,
+      "source_gate": {
+        "passed": true,
+        "sources": {
+          "google_trends": {
+            "row_count": 242,
+            "unique_topics": 242,
+            "minimum_rank": 1,
+            "maximum_rank": 242,
+            "observed_rows": 242
+          },
+          "x": {
+            "row_count": 30,
+            "unique_topics": 30,
+            "minimum_rank": 1,
+            "maximum_rank": 30,
+            "observed_rows": 30
+          }
+        }
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v1",
+        "passed": true,
+        "trend_count": 10,
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": 6,
+        "failures": [],
+        "trends": [
+          {
+            "publication_rank": 1,
+            "display_name": "개기일식",
+            "observed_rank": 1,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 2,
+            "display_name": "커피믹스",
+            "observed_rank": 17,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 3,
+            "display_name": "페르세우스 유성우",
+            "observed_rank": 119,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 4,
+            "display_name": "아시안 게임",
+            "observed_rank": 202,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "event_sponsorship"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 5,
+            "display_name": "불꽃축제",
+            "observed_rank": 230,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "industry_adjacent",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 6,
+            "display_name": "말복",
+            "observed_rank": 256,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 7,
+            "display_name": "광 통신",
+            "observed_rank": 263,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "platform_service",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 8,
+            "display_name": "지스타",
+            "observed_rank": 285,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "event_sponsorship",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "롤 패치 노트",
+            "observed_rank": 422,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "manufacturing_development",
+              "ownership_investment"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "삼계탕",
+            "observed_rank": 431,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "manufacturing_development",
+              "retail_sales"
+            ],
+            "passed": true
+          }
+        ],
+        "ranking_effect": "none"
+      }
+    },
+    {
+      "observed_at": "2026-08-13T13:00:00+00:00",
+      "passed": false,
+      "source_gate": {
+        "passed": false,
+        "sources": {
+          "google_trends": {
+            "row_count": 238,
+            "unique_topics": 238,
+            "minimum_rank": 1,
+            "maximum_rank": 238,
+            "observed_rows": 238
+          }
+        }
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v1",
+        "passed": true,
+        "trend_count": 10,
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": 6,
+        "failures": [],
+        "trends": [
+          {
+            "publication_rank": 1,
+            "display_name": "개기일식",
+            "observed_rank": 1,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 2,
+            "display_name": "커피믹스",
+            "observed_rank": 80,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 3,
+            "display_name": "아시안 게임",
+            "observed_rank": 203,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "event_sponsorship"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 4,
+            "display_name": "불꽃축제",
+            "observed_rank": 237,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "industry_adjacent",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 5,
+            "display_name": "말복",
+            "observed_rank": 262,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 6,
+            "display_name": "광 통신",
+            "observed_rank": 269,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "platform_service",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 7,
+            "display_name": "지스타",
+            "observed_rank": 299,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "event_sponsorship",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 8,
+            "display_name": "롤 패치 노트",
+            "observed_rank": 431,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "manufacturing_development",
+              "ownership_investment"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "삼계탕",
+            "observed_rank": 441,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "manufacturing_development",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "코난 극장판",
+            "observed_rank": 479,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "content_production",
+              "distribution",
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          }
+        ],
+        "ranking_effect": "none"
+      }
+    },
+    {
+      "observed_at": "2026-08-13T14:00:00+00:00",
+      "passed": false,
+      "source_gate": {
+        "passed": false,
+        "sources": {}
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v1",
+        "passed": true,
+        "trend_count": 10,
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": 6,
+        "failures": [],
+        "trends": [
+          {
+            "publication_rank": 1,
+            "display_name": "개기일식",
+            "observed_rank": 1,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 2,
+            "display_name": "페르세우스 유성우",
+            "observed_rank": 2,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 3,
+            "display_name": "커피믹스",
+            "observed_rank": 80,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 4,
+            "display_name": "아시안 게임",
+            "observed_rank": 206,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "event_sponsorship"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 5,
+            "display_name": "불꽃축제",
+            "observed_rank": 237,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "industry_adjacent",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 6,
+            "display_name": "말복",
+            "observed_rank": 255,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 7,
+            "display_name": "광 통신",
+            "observed_rank": 274,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "platform_service",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 8,
+            "display_name": "지스타",
+            "observed_rank": 298,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "event_sponsorship",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "롤 패치 노트",
+            "observed_rank": 431,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "manufacturing_development",
+              "ownership_investment"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "삼계탕",
+            "observed_rank": 442,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "manufacturing_development",
+              "retail_sales"
+            ],
+            "passed": true
+          }
+        ],
+        "ranking_effect": "none"
+      }
+    },
+    {
+      "observed_at": "2026-08-13T15:00:00+00:00",
+      "passed": false,
+      "source_gate": {
+        "passed": false,
+        "sources": {}
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v1",
+        "passed": true,
+        "trend_count": 10,
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": 6,
+        "failures": [],
+        "trends": [
+          {
+            "publication_rank": 1,
+            "display_name": "개기일식",
+            "observed_rank": 1,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 2,
+            "display_name": "페르세우스 유성우",
+            "observed_rank": 2,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 3,
+            "display_name": "커피믹스",
+            "observed_rank": 23,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 4,
+            "display_name": "말복",
+            "observed_rank": 254,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 5,
+            "display_name": "아시안 게임",
+            "observed_rank": 260,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "event_sponsorship"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 6,
+            "display_name": "불꽃축제",
+            "observed_rank": 280,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "industry_adjacent",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 7,
+            "display_name": "광 통신",
+            "observed_rank": 311,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "platform_service",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 8,
+            "display_name": "지스타",
+            "observed_rank": 328,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "event_sponsorship",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "롤 패치 노트",
+            "observed_rank": 437,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "manufacturing_development",
+              "ownership_investment"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "삼계탕",
+            "observed_rank": 444,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "manufacturing_development",
+              "retail_sales"
+            ],
+            "passed": true
+          }
+        ],
+        "ranking_effect": "none"
+      }
+    },
+    {
+      "observed_at": "2026-08-13T16:00:00+00:00",
+      "passed": true,
+      "source_gate": {
+        "passed": true,
+        "sources": {
+          "google_trends": {
+            "row_count": 229,
+            "unique_topics": 229,
+            "minimum_rank": 1,
+            "maximum_rank": 229,
+            "observed_rows": 229
+          },
+          "x": {
+            "row_count": 30,
+            "unique_topics": 30,
+            "minimum_rank": 1,
+            "maximum_rank": 30,
+            "observed_rows": 30
+          }
+        }
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v1",
+        "passed": true,
+        "trend_count": 10,
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": 6,
+        "failures": [],
+        "trends": [
+          {
+            "publication_rank": 1,
+            "display_name": "개기일식",
+            "observed_rank": 1,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 2,
+            "display_name": "커피믹스",
+            "observed_rank": 26,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 3,
+            "display_name": "아시안 게임",
+            "observed_rank": 101,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "event_sponsorship"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 4,
+            "display_name": "불꽃축제",
+            "observed_rank": 295,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "industry_adjacent",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 5,
+            "display_name": "말복",
+            "observed_rank": 298,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 6,
+            "display_name": "광 통신",
+            "observed_rank": 317,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "platform_service",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 7,
+            "display_name": "지스타",
+            "observed_rank": 365,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "event_sponsorship",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 8,
+            "display_name": "롤 패치 노트",
+            "observed_rank": 472,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "manufacturing_development",
+              "ownership_investment"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "삼계탕",
+            "observed_rank": 484,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "manufacturing_development",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "코난 극장판",
+            "observed_rank": 508,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "content_production",
+              "distribution",
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          }
+        ],
+        "ranking_effect": "none"
+      }
+    }
+  ],
+  "ranking_effect": "none"
+}
