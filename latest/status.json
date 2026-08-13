@@ -1,16 +1,18 @@
 {
   "schema_version": "trzip-runtime-status-v1",
-  "publication_id": "pub-ae8566ee4ca545b9af419465c86ddd64",
-  "generated_at": "2026-08-12T23:50:15.250299+00:00",
-  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "pub-6d6fb74771594943842b5753b5f1b60b",
+  "generated_at": "2026-08-13T00:31:57.473221+00:00",
+  "observed_at": "2026-08-13T00:00:00+00:00",
   "mode": "live",
-  "partial": false,
+  "partial": true,
   "source_status": {
-    "x": "observed",
+    "x": "snapshot_stale",
     "google_trends": "observed"
   },
-  "errors": {},
-  "recorded_runs": 7,
+  "errors": {
+    "x": "snapshot_stale"
+  },
+  "recorded_runs": 8,
   "measurement_status": "collecting_baseline",
   "frontend_delivery_manifest": "manifest.json"
 }

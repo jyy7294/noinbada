@@ -152,5 +152,28 @@
     "observed_rows": 253,
     "errors": {},
     "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-13T00:00:00+00:00",
+    "started_at": "2026-08-13T00:29:29.039332+00:00",
+    "finished_at": "2026-08-13T00:31:57.466671+00:00",
+    "delay_seconds": 1769,
+    "duration_seconds": 148.43,
+    "success": false,
+    "source_success": {
+      "x": false,
+      "google_trends": true
+    },
+    "observed_rows": 222,
+    "errors": {
+      "x": "snapshot_stale"
+    },
+    "source_failures": {
+      "x": {
+        "class": "unknown",
+        "detail": "snapshot_stale"
+      }
+    }
   }
 ]

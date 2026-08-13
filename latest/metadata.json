@@ -1,66 +1,65 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-ae8566ee4ca545b9af419465c86ddd64",
-  "generated_at": "2026-08-12T23:50:15.250299+00:00",
-  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "pub-6d6fb74771594943842b5753b5f1b60b",
+  "generated_at": "2026-08-13T00:31:57.473221+00:00",
+  "observed_at": "2026-08-13T00:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
   "retention_days": null,
   "retention_policy": "indefinite",
   "history_rows_loaded": 0,
   "pruned_observation_files": 0,
-  "daily_file": "observations/2026-08-12.json",
+  "daily_file": "observations/2026-08-13.json",
   "collection": {
-    "observed": 253,
-    "errors": {},
+    "observed": 222,
+    "errors": {
+      "x": "snapshot_stale"
+    },
     "rank_sources": [
       "x",
       "google_trends"
     ],
     "audit": {
       "x_korea_realtime": {
-        "status": "observed",
-        "row_count": 30,
-        "detail": "verified_current_hour_snapshot",
-        "collector": "codex_chrome_current_session",
-        "transport": "codex_browser_snapshot",
-        "profile": "current_logged_in_chrome"
+        "status": "snapshot_stale",
+        "row_count": 0,
+        "detail": "snapshot_stale"
       },
       "google_geo_kr": {
         "status": "observed",
-        "row_count": 223,
+        "row_count": 222,
         "detail": "verified_current_hour_snapshot",
-        "declared_total": 223,
+        "declared_total": 222,
         "page_count": 9,
         "completion_verified": true
       }
     },
-    "observed_at": "2026-08-12T23:00:00+00:00"
+    "observed_at": "2026-08-13T00:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T13:00:00+00:00",
-    "last_hour": "2026-08-12T23:00:00+00:00",
-    "hours": 9,
-    "rows": 1855,
-    "observed_rows": 1855,
+    "last_hour": "2026-08-13T00:00:00+00:00",
+    "hours": 10,
+    "rows": 2077,
+    "observed_rows": 2077,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 0,
-    "newly_observed": 0,
-    "reused_company_rows": 26,
+    "requested_stock_codes": 2,
+    "newly_observed": 2,
+    "reused_company_rows": 34,
     "unavailable_company_rows": 0
   },
   "company_identity_data": {
     "provider": "opendart",
-    "requested": 21,
-    "fetched": 0,
+    "requested": 23,
+    "fetched": 2,
     "reused": 21,
     "status_counts": {
-      "verified": 21
+      "verified": 23
     },
     "verified_ttl_days": 30,
     "retry_ttl_hours": 24,
@@ -69,11 +68,11 @@
   },
   "collection_health": {
     "measurement_window_hours": 168,
-    "recorded_runs": 7,
+    "recorded_runs": 8,
     "successful_runs": 1,
-    "success_rate": 0.1429,
+    "success_rate": 0.125,
     "source_success_rate": {
-      "x": 0.1429,
+      "x": 0.125,
       "google_trends": 1.0
     },
     "source_failure_counts": {
@@ -85,7 +84,7 @@
         "quota_or_rate_limit": 0,
         "network": 0,
         "parser_change": 0,
-        "unknown": 6
+        "unknown": 7
       },
       "google_trends": {
         "browser_authentication": 0,
@@ -103,20 +102,20 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.2857,
-    "latest_delay_seconds": 590,
-    "latest_duration_seconds": 14.44,
+    "on_time_within_15m_rate": 0.25,
+    "latest_delay_seconds": 1769,
+    "latest_duration_seconds": 148.43,
     "status": "collecting_baseline",
-    "remaining_runs_for_3d": 65,
-    "remaining_runs_for_7d": 161,
+    "remaining_runs_for_3d": 64,
+    "remaining_runs_for_7d": 160,
     "warning": "Codex 정각 자동화 실측 기록이며 노트북·Codex·Chrome 종료 또는 로그아웃 중에는 실행되지 않을 수 있음"
   },
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-ae8566ee4ca545b9af419465c86ddd64",
-    "rankings_path": "latest/delivery/pub-ae8566ee4ca545b9af419465c86ddd64/rankings.json",
-    "trend_detail_count": 251,
+    "bundle_path": "latest/delivery/pub-6d6fb74771594943842b5753b5f1b60b",
+    "rankings_path": "latest/delivery/pub-6d6fb74771594943842b5753b5f1b60b/rankings.json",
+    "trend_detail_count": 339,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }
 }
