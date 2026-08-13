@@ -1,4 +1,7 @@
-from trzip.result_quality import evaluate_frontend_result
+from pathlib import Path
+
+from trzip.hourly_store import HourlyObservation, upsert
+from trzip.result_quality import _source_gate, evaluate_frontend_result
 
 
 def _company(index: int) -> dict:
@@ -66,3 +69,21 @@ def test_quality_gate_rejects_more_than_one_food_trend():
 
     assert result["passed"] is False
     assert "food_category_count:2" in result["failures"]
+
+
+def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):
+    database = tmp_path / "runtime.sqlite3"
+    stamp = "2026-08-13T17:00:00+00:00"
+    rows = [
+        HourlyObservation(stamp, "x", f"x-{rank}", rank, 100 - rank, "observed")
+        for rank in range(1, 31)
+    ] + [
+        HourlyObservation(stamp, "google_trends", f"g-{rank}", rank, 100 - rank, "observed")
+        for rank in (1, 2, 4)
+    ]
+    upsert(rows, database)
+
+    result = _source_gate(database, stamp)
+    assert result["passed"] is False
+    assert result["sources"]["google_trends"]["row_count"] == 3
+    assert result["sources"]["google_trends"]["maximum_rank"] == 4

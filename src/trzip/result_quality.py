@@ -218,6 +218,7 @@ def _source_gate(path: Path, observed_at: str) -> dict:
         and int(google.get("row_count") or 0) > 0
         and google.get("row_count") == google.get("unique_topics") == google.get("observed_rows")
         and google.get("minimum_rank") == 1
+        and google.get("maximum_rank") == google.get("row_count")
     )
     return {"passed": passed, "sources": sources}
 
