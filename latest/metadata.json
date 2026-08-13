@@ -1,8 +1,8 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-67db299ef8154cc09602dd8b408a2eca",
-  "generated_at": "2026-08-13T00:47:20.341507+00:00",
-  "observed_at": "2026-08-13T00:00:00+00:00",
+  "publication_id": "pub-e9d3edc87c2345c8bfe3e3d4cc8392ae",
+  "generated_at": "2026-08-13T01:18:30.618422+00:00",
+  "observed_at": "2026-08-13T01:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
   "retention_days": null,
@@ -11,7 +11,7 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-13.json",
   "collection": {
-    "observed": 252,
+    "observed": 258,
     "errors": {},
     "rank_sources": [
       "x",
@@ -28,21 +28,21 @@
       },
       "google_geo_kr": {
         "status": "observed",
-        "row_count": 222,
+        "row_count": 228,
         "detail": "verified_current_hour_snapshot",
-        "declared_total": 222,
-        "page_count": 9,
+        "declared_total": 228,
+        "page_count": 10,
         "completion_verified": true
       }
     },
-    "observed_at": "2026-08-13T00:00:00+00:00"
+    "observed_at": "2026-08-13T01:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T13:00:00+00:00",
-    "last_hour": "2026-08-13T00:00:00+00:00",
-    "hours": 10,
-    "rows": 2107,
-    "observed_rows": 2107,
+    "last_hour": "2026-08-13T01:00:00+00:00",
+    "hours": 11,
+    "rows": 2365,
+    "observed_rows": 2365,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
@@ -69,11 +69,11 @@
   },
   "collection_health": {
     "measurement_window_hours": 168,
-    "recorded_runs": 8,
-    "successful_runs": 1,
-    "success_rate": 0.125,
+    "recorded_runs": 9,
+    "successful_runs": 2,
+    "success_rate": 0.2222,
     "source_success_rate": {
-      "x": 0.125,
+      "x": 0.2222,
       "google_trends": 1.0
     },
     "source_failure_counts": {
@@ -103,36 +103,36 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.25,
-    "latest_delay_seconds": 1769,
-    "latest_duration_seconds": 148.43,
-    "current_publication_scheduled_at": "2026-08-13T00:00:00+00:00",
-    "current_publication_attempt_type": "recovery",
-    "current_publication_status": "recovered_complete",
+    "on_time_within_15m_rate": 0.2222,
+    "latest_delay_seconds": 1098,
+    "latest_duration_seconds": 12.44,
+    "current_publication_scheduled_at": "2026-08-13T01:00:00+00:00",
+    "current_publication_attempt_type": "scheduled",
+    "current_publication_status": "scheduled_complete",
     "current_publication_success": true,
     "current_publication_source_success": {
       "x": true,
       "google_trends": true
     },
-    "current_schedule_initial_attempt_success": false,
-    "latest_scheduled_at": "2026-08-13T00:00:00+00:00",
-    "latest_scheduled_attempt_success": false,
+    "current_schedule_initial_attempt_success": true,
+    "latest_scheduled_at": "2026-08-13T01:00:00+00:00",
+    "latest_scheduled_attempt_success": true,
     "latest_scheduled_attempt_source_success": {
-      "x": false,
+      "x": true,
       "google_trends": true
     },
-    "recovered_from_scheduled_failure": true,
+    "recovered_from_scheduled_failure": false,
     "status": "collecting_baseline",
-    "remaining_runs_for_3d": 64,
-    "remaining_runs_for_7d": 160,
+    "remaining_runs_for_3d": 63,
+    "remaining_runs_for_7d": 159,
     "warning": "Codex 정각 자동화 실측 기록이며 노트북·Codex·Chrome 종료 또는 로그아웃 중에는 실행되지 않을 수 있음"
   },
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-67db299ef8154cc09602dd8b408a2eca",
-    "rankings_path": "latest/delivery/pub-67db299ef8154cc09602dd8b408a2eca/rankings.json",
-    "trend_detail_count": 345,
+    "bundle_path": "latest/delivery/pub-e9d3edc87c2345c8bfe3e3d4cc8392ae",
+    "rankings_path": "latest/delivery/pub-e9d3edc87c2345c8bfe3e3d4cc8392ae/rankings.json",
+    "trend_detail_count": 357,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }
 }

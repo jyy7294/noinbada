@@ -1,0 +1,471 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-e9d3edc87c2345c8bfe3e3d4cc8392ae",
+  "generated_at": "2026-08-13T01:18:30.618422+00:00",
+  "observed_at": "2026-08-13T01:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "이찬원",
+    "topic": "이찬원",
+    "display_name": "이찬원",
+    "observed_representative_term": "이찬원",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "이찬원",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 8,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.100414,
+      "best_source_rank": 5
+    },
+    "raw_terms": [
+      "이찬원"
+    ],
+    "phenomenon_summary": "\"이찬원\" · Google Trends KR에서 관측",
+    "context_status": "ambiguous_person",
+    "ground_truth_match": false,
+    "category": "unclassified",
+    "broad_category": "other",
+    "lane": "main",
+    "selection_reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "consumer_action",
+        "productization",
+        "cross_context"
+      ],
+      "reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "context_review_queue",
+    "company_eligible": true,
+    "score": 76.66,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.92769,
+    "current_source_position": 0.92769,
+    "momentum": 0.5,
+    "persistence": 0.7273,
+    "score_components": {
+      "period_strength_points": 37.11,
+      "momentum_points": 10.0,
+      "persistence_points": 14.55,
+      "recency_points": 15.0,
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 76.66
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "momentum_status": "neutral_no_comparable_window",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.92769
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 11,
+          "observed_hours": 8,
+          "presence_rate": 0.727273
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.02381,
+        "google_trends": 0.065476
+      },
+      "momentum_status": "neutral_no_comparable_window"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T16:00:00+00:00",
+      "last_seen_at": "2026-08-13T01:00:00+00:00",
+      "observed_hours": 8,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 5
+    },
+    "rank_change_by_source": {
+      "google_trends": 5
+    },
+    "first_seen_at": "2026-08-12T16:00:00+00:00",
+    "last_seen_at": "2026-08-13T01:00:00+00:00",
+    "age_hours": 9,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 11,
+      "history_maturity": 0.0446,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "이찬원",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T01:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T01:00:00+00:00",
+          "status": "failed",
+          "matched": null,
+          "error_code": "024",
+          "metrics": {
+            "blog_total_reported": null,
+            "news_total_reported": null,
+            "partial_provider_error_count": 2,
+            "stored_evidence_count": 0
+          },
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T01:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 41812,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "8GYVb8xRaQM",
+              "title": "편스토랑 #이찬원 본방사수",
+              "url": "https://www.youtube.com/watch?v=8GYVb8xRaQM",
+              "published_at": "2026-08-11T18:11:21Z",
+              "publisher": "만병통치약",
+              "metrics": {
+                "commentCount": 7,
+                "likeCount": 2115,
+                "viewCount": 29226
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T01:00:00Z",
+                "query_term": "이찬원",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "8Zkrf_HUPic",
+              "title": "편스토랑 #이찬원 본방사수",
+              "url": "https://www.youtube.com/watch?v=8Zkrf_HUPic",
+              "published_at": "2026-08-12T04:02:29Z",
+              "publisher": "만병통치약",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 1228,
+                "viewCount": 7747
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T01:00:00Z",
+                "query_term": "이찬원",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "hc5d0Iaorx8",
+              "title": "이찬원 꽉 낀 청바지 갈아입고 '너는내남자' 행사장에서 처음으로 부르는 텐션 무엇 ㅋㅋ",
+              "url": "https://www.youtube.com/watch?v=hc5d0Iaorx8",
+              "published_at": "2026-08-11T13:51:46Z",
+              "publisher": "Rock Music",
+              "metrics": {
+                "commentCount": 31,
+                "likeCount": 3323,
+                "viewCount": 72628
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T01:00:00Z",
+                "query_term": "이찬원",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "qAkEtoXiXVw",
+              "title": "12년 절친이 폭로한 이찬원의 인성 수준!! #이찬원",
+              "url": "https://www.youtube.com/watch?v=qAkEtoXiXVw",
+              "published_at": "2026-08-12T10:00:17Z",
+              "publisher": "트로트통신",
+              "metrics": {
+                "commentCount": 5,
+                "likeCount": 1830,
+                "viewCount": 16923
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T01:00:00Z",
+                "query_term": "이찬원",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "-LNrFNiQ8oQ",
+              "title": "가수 이찬원, 조만간 큰 사건 터진다?!🔥애기무당이 바라본 이찬원 사주 속 충격공수! / 이찬원 사주풀이 신점",
+              "url": "https://www.youtube.com/watch?v=-LNrFNiQ8oQ",
+              "published_at": "2026-08-07T11:00:06Z",
+              "publisher": "금녀당 애기씨",
+              "metrics": {
+                "commentCount": 23,
+                "likeCount": 520,
+                "viewCount": 15481
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T01:00:00Z",
+                "query_term": "이찬원",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 4, \"started_text\": \"1시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 28,
+        "value": 73.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 3, \"started_text\": \"2시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 26,
+        "value": 75.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 1, \"started_text\": \"3시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 25,
+        "value": 76.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 25, \"started_text\": \"3시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 25,
+        "value": 76.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 25, \"started_text\": \"5시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 17,
+        "value": 84.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 17, \"started_text\": \"7시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 10,
+        "value": 91.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 10, \"started_text\": \"8시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 5,
+        "value": 96.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 5, \"started_text\": \"9시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[\"신상출시 편스토랑\"]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "신상출시 편스토랑",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "keyword_evidence": {
+      "total": 1,
+      "observed_source_count": 1,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 5,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "core": 0,
+        "value_chain": 0,
+        "adjacent": 0,
+        "excluded": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 5,
+        "matched_terms": [
+          {
+            "term": "이찬원",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "신상출시 편스토랑",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류"
+    },
+    "rank": 40,
+    "classification": "일반 트렌드",
+    "persistence_rank": 208,
+    "momentum_rank": 40,
+    "main_rank": 5,
+    "home_context_status": "review_required",
+    "home_context_reason": "unclassified",
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "ranking_availability_status": "provisional_history"
+  }
+}
