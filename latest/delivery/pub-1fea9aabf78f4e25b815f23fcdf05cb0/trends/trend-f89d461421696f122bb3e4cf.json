@@ -1,0 +1,275 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-1fea9aabf78f4e25b815f23fcdf05cb0",
+  "generated_at": "2026-08-13T01:53:18.679250+00:00",
+  "observed_at": "2026-08-13T01:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "야구순위",
+    "topic": "야구순위",
+    "display_name": "야구순위",
+    "observed_representative_term": "야구순위",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "야구순위",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 6,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.025661,
+      "best_source_rank": 151
+    },
+    "raw_terms": [
+      "야구순위"
+    ],
+    "phenomenon_summary": "\"야구순위\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "sports_participation",
+    "broad_category": "sports",
+    "lane": "main",
+    "selection_reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "context_review_queue",
+    "company_eligible": true,
+    "score": 41.64,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 0.967532,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 4.0
+    },
+    "hours_since_last_seen": 4.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.155597,
+    "current_source_position": 0.155597,
+    "momentum": 0.5,
+    "persistence": 0.5455,
+    "score_components": {
+      "period_strength_points": 6.22,
+      "momentum_points": 10.0,
+      "persistence_points": 10.91,
+      "recency_points": 14.51,
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 41.64
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "momentum_status": "neutral_no_comparable_window",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.155597
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 11,
+          "observed_hours": 6,
+          "presence_rate": 0.545455
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.02381,
+        "google_trends": 0.065476
+      },
+      "momentum_status": "neutral_no_comparable_window"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T15:00:00+00:00",
+      "last_seen_at": "2026-08-12T21:00:00+00:00",
+      "observed_hours": 6,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 191
+    },
+    "rank_change_by_source": {
+      "google_trends": -6
+    },
+    "first_seen_at": "2026-08-12T15:00:00+00:00",
+    "last_seen_at": "2026-08-12T21:00:00+00:00",
+    "age_hours": 10,
+    "lifecycle": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 11,
+      "history_maturity": 0.0446,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 151,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"200%\", \"page\": 7, \"row_on_page\": 1, \"started_text\": \"1시간 전\", \"status_text\": \"20분 동안 지속됨\", \"volume_text\": \"100+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 163,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"200%\", \"page\": 7, \"row_on_page\": 13, \"started_text\": \"2시간 전\", \"status_text\": \"20분 동안 지속됨\", \"volume_text\": \"100+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 174,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"200%\", \"page\": 7, \"row_on_page\": 24, \"started_text\": \"3시간 전\", \"status_text\": \"20분 동안 지속됨\", \"volume_text\": \"100+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 184,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"200%\", \"page\": 8, \"row_on_page\": 9, \"started_text\": \"4시간 전\", \"status_text\": \"20분 동안 지속됨\", \"volume_text\": \"100+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 185,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"200%\", \"page\": 8, \"row_on_page\": 10, \"started_text\": \"5시간 전\", \"status_text\": \"20분 동안 지속됨\", \"volume_text\": \"100+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 191,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"200%\", \"page\": 8, \"row_on_page\": 16, \"started_text\": \"7시간 전\", \"status_text\": \"20분 동안 지속됨\", \"volume_text\": \"100+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 5,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "core": 0,
+        "value_chain": 0,
+        "adjacent": 0,
+        "excluded": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 5,
+        "matched_terms": [
+          {
+            "term": "야구순위",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류"
+    },
+    "rank": 322,
+    "classification": "일반 트렌드",
+    "persistence_rank": 205,
+    "momentum_rank": 322,
+    "main_rank": 51,
+    "home_context_status": "review_required",
+    "home_context_reason": "context_evidence_missing",
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "ranking_availability_status": "provisional_history"
+  }
+}
