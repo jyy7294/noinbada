@@ -20,6 +20,11 @@ PUBLIC_BROAD_CATEGORIES = {
 PUBLIC_RELATION_TIERS = {"direct", "value_chain", "industry_watch"}
 
 
+def _is_git_or_sha256_hex(value: object, lengths: set[int]) -> bool:
+    text = str(value or "").strip().casefold()
+    return len(text) in lengths and all(char in "0123456789abcdef" for char in text)
+
+
 def _valid_public_url(value: str) -> bool:
     parsed = urlparse(value)
     return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
@@ -47,6 +52,13 @@ def record_publication_receipt(
     manifest_sha256: str | None = None, remote_manifest_blob: str | None = None,
 ) -> None:
     """Persist proof that the exact hourly publication reached the remote."""
+
+    if not _is_git_or_sha256_hex(remote_sha, {40, 64}):
+        raise ValueError("remote_sha must be a Git object id")
+    if not _is_git_or_sha256_hex(manifest_sha256, {64}):
+        raise ValueError("manifest_sha256 must be a SHA-256 digest")
+    if not _is_git_or_sha256_hex(remote_manifest_blob, {40, 64}):
+        raise ValueError("remote_manifest_blob must be a Git object id")
 
     connection = sqlite3.connect(path)
     try:
@@ -136,11 +148,11 @@ def _publication_receipt(path: Path, observed_at: str) -> dict:
     remote_manifest_blob = row[6]
     return {
         "passed": bool(
-            row[0] and row[1]
+            row[0] and _is_git_or_sha256_hex(row[1], {40, 64})
             and contract and contract.get("passed") is True
             and source_gate and source_gate.get("passed") is True
-            and isinstance(manifest_sha256, str) and len(manifest_sha256) == 64
-            and isinstance(remote_manifest_blob, str) and len(remote_manifest_blob) in {40, 64}
+            and _is_git_or_sha256_hex(manifest_sha256, {64})
+            and _is_git_or_sha256_hex(remote_manifest_blob, {40, 64})
         ),
         "publication_id": row[0],
         "remote_sha": row[1],

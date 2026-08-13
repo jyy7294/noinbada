@@ -1,5 +1,8 @@
 from datetime import UTC, datetime
 from pathlib import Path
+import sqlite3
+
+import pytest
 
 from trzip.result_quality import _publication_receipt, record_publication_receipt
 
@@ -68,9 +71,60 @@ def test_receipt_is_immutable_for_the_same_hour(tmp_path: Path):
     record_publication_receipt(database, **kwargs)
     record_publication_receipt(database, **kwargs)
 
-    import pytest
     with pytest.raises(ValueError, match="immutable publication receipt"):
         record_publication_receipt(
             database,
             **{**kwargs, "publication_id": "pub-replacement", "remote_sha": "b" * 40},
         )
+
+
+def test_receipt_rejects_non_hex_remote_and_manifest_proof(tmp_path: Path):
+    database = tmp_path / "invalid-proof.sqlite3"
+    common = {
+        "observed_at": "2026-08-13T16:00:00+00:00",
+        "publication_id": "pub-invalid",
+        "contract": {"passed": True},
+        "source_gate": {"passed": True},
+    }
+
+    with pytest.raises(ValueError, match="remote_sha"):
+        record_publication_receipt(
+            database,
+            **common,
+            remote_sha="not-a-git-sha",
+            manifest_sha256="c" * 64,
+            remote_manifest_blob="d" * 40,
+        )
+    with pytest.raises(ValueError, match="manifest_sha256"):
+        record_publication_receipt(
+            database,
+            **common,
+            remote_sha="a" * 40,
+            manifest_sha256="not-a-sha256",
+            remote_manifest_blob="d" * 40,
+        )
+
+
+def test_existing_receipt_with_non_hex_proof_cannot_pass(tmp_path: Path):
+    database = tmp_path / "tampered-proof.sqlite3"
+    connection = sqlite3.connect(database)
+    connection.execute(
+        "CREATE TABLE publication_receipts ("
+        "observed_at TEXT PRIMARY KEY, publication_id TEXT NOT NULL, "
+        "remote_sha TEXT NOT NULL, verified_at TEXT NOT NULL, contract_json TEXT, "
+        "source_gate_json TEXT, manifest_sha256 TEXT, remote_manifest_blob TEXT)"
+    )
+    connection.execute(
+        "INSERT INTO publication_receipts VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        (
+            "2026-08-13T16:00:00+00:00", "pub-tampered", "z" * 40,
+            datetime.now(UTC).isoformat(), '{"passed":true}', '{"passed":true}',
+            "c" * 64, "d" * 40,
+        ),
+    )
+    connection.commit()
+    connection.close()
+
+    assert _publication_receipt(
+        database, "2026-08-13T16:00:00+00:00"
+    )["passed"] is False

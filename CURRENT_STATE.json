@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T18:41:44.1835452+00:00",
+    "updated_at":  "2026-08-13T18:49:14.3726469+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,34 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "c5dc21f492e84e89f1ffc87bcbcc6ff6dde86200",
+                       "base_remote_main_sha":  "f4a9279106b07d0e111e9e5b3f0ae1c05a7215e7",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
-                                             "config/codex-automation/trzip-prompt.ko.txt",
                                              "CURRENT_STATE.json",
-                                             "docs/BACKEND_TEAM_PROMPT.md",
-                                             "scripts/collect-hourly.ps1",
                                              "src/trzip/result_quality.py",
-                                             "tests/test_local_runtime_contract.py",
-                                             "tests/test_publication_receipts.py",
-                                             "tests/test_result_quality.py"
+                                             "tests/test_publication_receipts.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "config/codex-automation/trzip-prompt.ko.txt":  "dc2ecd7f5668f4330186fed00b91651c094b8effc808a6caf9321293e36351b4",
-                                                    "docs/BACKEND_TEAM_PROMPT.md":  "91ee867c210e9067d23c5cd7b884cd9246a77d2771cbf3816f6ac2b3a1bf7710",
-                                                    "scripts/collect-hourly.ps1":  "634f2513a604f72b93900001f0f713cee9aa76ba713493dee63d20e7a3edd50e",
-                                                    "src/trzip/result_quality.py":  "d2db2754714f5ce1861f025b09ca8ce4c13c37064702108c701bb5703cc80b8b",
-                                                    "tests/test_local_runtime_contract.py":  "fc7a5bc5995d970f0a24305d2f2f4506fc26f72eb2b59339896f071878a4104e",
-                                                    "tests/test_publication_receipts.py":  "92f2d845df5a3e9598b06af69009f97442f22f0a174b4f0e63641e255323746f",
-                                                    "tests/test_result_quality.py":  "767ffd645cd80bc0d2b36f17fa90b259805f7425118ff27fda188263504b0eeb"
+                                                    "src/trzip/result_quality.py":  "da5e6271822f8e2b987ae388ac6b5327fd24f76fa11fdce02cd19658f31c5832",
+                                                    "tests/test_publication_receipts.py":  "4d5e8911928efe292bb6a8d9fcdfc6f24989d139a3d5cfef8ace055e6a3946e8"
                                                 },
-                       "commit_message":  "fix: validate company evidence and ontology destinations",
+                       "commit_message":  "fix: validate immutable remote publication proofs",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  285
+                                      "count":  287
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -59,15 +49,14 @@
     "handoff":  {
                     "objective":  "Validate eight consecutive exact-hour TRZIP publications with product-fit Top10, five sourced keywords, six evidence-backed companies, valid ontology relations, and verified remote delivery",
                     "completed":  [
-                                      "Upgraded frontend quality policy to v4",
-                                      "Validated HTTP(S) evidence URLs and fixed public relation tiers",
-                                      "Required ontology paths to terminate at the published company",
-                                      "Updated runtime automation and regression tests",
-                                      "Verified 285 passed and 1 skipped"
+                                      "Rejected malformed remote commit and manifest proof values",
+                                      "Made stored receipt validation fail closed for non-hex proof",
+                                      "Added immutable receipt regression coverage",
+                                      "Verified 287 passed and 1 skipped"
                                   ],
                     "next_actions":  [
                                          "Run and audit the next exact-hour v4 publication",
-                                         "Inspect product-fit Top10 and enrichment content",
+                                         "Verify remote SHA and manifest proof",
                                          "Continue eight consecutive exact-hour validations"
                                      ],
                     "blockers":  [
