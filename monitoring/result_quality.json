@@ -6,186 +6,15 @@
   "remaining_success_hours": 7,
   "evaluations": [
     {
-      "observed_at": "2026-08-13T10:00:00+00:00",
-      "passed": false,
-      "source_gate": {
-        "passed": true,
-        "sources": {
-          "google_trends": {
-            "row_count": 237,
-            "unique_topics": 237,
-            "unique_ranks": 237,
-            "minimum_rank": 1,
-            "maximum_rank": 237,
-            "observed_rows": 237
-          },
-          "x": {
-            "row_count": 30,
-            "unique_topics": 30,
-            "unique_ranks": 30,
-            "minimum_rank": 1,
-            "maximum_rank": 30,
-            "observed_rows": 30
-          }
-        }
-      },
-      "contract": {
-        "policy_version": "frontend-result-quality-v1",
-        "passed": true,
-        "trend_count": 10,
-        "required_trend_count": 10,
-        "required_keyword_count": 5,
-        "minimum_company_count": 6,
-        "failures": [],
-        "trends": [
-          {
-            "publication_rank": 1,
-            "display_name": "개기일식",
-            "observed_rank": 1,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "industry_adjacent",
-              "manufacturing_development",
-              "platform_service"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 2,
-            "display_name": "커피믹스",
-            "observed_rank": 7,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "ownership_investment",
-              "retail_sales"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 3,
-            "display_name": "페르세우스 유성우",
-            "observed_rank": 109,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "industry_adjacent",
-              "manufacturing_development",
-              "platform_service"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 4,
-            "display_name": "불꽃축제",
-            "observed_rank": 205,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "distribution",
-              "industry_adjacent",
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 5,
-            "display_name": "광 통신",
-            "observed_rank": 230,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "ownership_investment",
-              "platform_service",
-              "raw_materials_components"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 6,
-            "display_name": "지스타",
-            "observed_rank": 255,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "event_sponsorship",
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 7,
-            "display_name": "용인반도체클러스터",
-            "observed_rank": 279,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "industry_adjacent",
-              "manufacturing_development",
-              "raw_materials_components"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 8,
-            "display_name": "롤 패치 노트",
-            "observed_rank": 377,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "brand_marketing",
-              "manufacturing_development",
-              "ownership_investment"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 9,
-            "display_name": "코난 극장판",
-            "observed_rank": 436,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "brand_marketing",
-              "content_production",
-              "distribution",
-              "ownership_investment",
-              "retail_sales"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 10,
-            "display_name": "휴머노이드 로봇",
-            "observed_rank": 478,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "manufacturing_development",
-              "platform_service"
-            ],
-            "passed": true
-          }
-        ],
-        "ranking_effect": "none"
-      },
-      "publication": {
-        "passed": false,
-        "publication_id": null,
-        "remote_sha": null,
-        "verified_at": null
-      }
-    },
-    {
       "observed_at": "2026-08-13T11:00:00+00:00",
       "passed": false,
       "source_gate": {
+        "policy_version": "hourly-source-proof-v2",
         "passed": false,
         "sources": {}
       },
       "contract": {
-        "policy_version": "frontend-result-quality-v1",
+        "policy_version": "frontend-result-quality-v2",
         "passed": true,
         "trend_count": 10,
         "required_trend_count": 10,
@@ -336,7 +165,8 @@
       "observed_at": "2026-08-13T12:00:00+00:00",
       "passed": false,
       "source_gate": {
-        "passed": true,
+        "policy_version": "hourly-source-proof-v2",
+        "passed": false,
         "sources": {
           "google_trends": {
             "row_count": 242,
@@ -352,12 +182,25 @@
             "unique_ranks": 30,
             "minimum_rank": 1,
             "maximum_rank": 30,
-            "observed_rows": 30
+            "observed_rows": 30,
+            "collection_evidence": {
+              "collector": null,
+              "transport": null,
+              "profile": null,
+              "region": null,
+              "region_verified": null,
+              "observed_at": null,
+              "scheduled_for": null,
+              "schedule_delay_seconds": null,
+              "evidence_row_count": 30,
+              "evidence_consistent": true,
+              "timing_verified": false
+            }
           }
         }
       },
       "contract": {
-        "policy_version": "frontend-result-quality-v1",
+        "policy_version": "frontend-result-quality-v2",
         "passed": true,
         "trend_count": 10,
         "required_trend_count": 10,
@@ -508,6 +351,7 @@
       "observed_at": "2026-08-13T13:00:00+00:00",
       "passed": false,
       "source_gate": {
+        "policy_version": "hourly-source-proof-v2",
         "passed": false,
         "sources": {
           "google_trends": {
@@ -521,7 +365,7 @@
         }
       },
       "contract": {
-        "policy_version": "frontend-result-quality-v1",
+        "policy_version": "frontend-result-quality-v2",
         "passed": true,
         "trend_count": 10,
         "required_trend_count": 10,
@@ -671,11 +515,12 @@
       "observed_at": "2026-08-13T14:00:00+00:00",
       "passed": false,
       "source_gate": {
+        "policy_version": "hourly-source-proof-v2",
         "passed": false,
         "sources": {}
       },
       "contract": {
-        "policy_version": "frontend-result-quality-v1",
+        "policy_version": "frontend-result-quality-v2",
         "passed": true,
         "trend_count": 10,
         "required_trend_count": 10,
@@ -826,11 +671,12 @@
       "observed_at": "2026-08-13T15:00:00+00:00",
       "passed": false,
       "source_gate": {
+        "policy_version": "hourly-source-proof-v2",
         "passed": false,
         "sources": {}
       },
       "contract": {
-        "policy_version": "frontend-result-quality-v1",
+        "policy_version": "frontend-result-quality-v2",
         "passed": true,
         "trend_count": 10,
         "required_trend_count": 10,
@@ -981,7 +827,8 @@
       "observed_at": "2026-08-13T16:00:00+00:00",
       "passed": false,
       "source_gate": {
-        "passed": true,
+        "policy_version": "hourly-source-proof-v2",
+        "passed": false,
         "sources": {
           "google_trends": {
             "row_count": 229,
@@ -997,13 +844,26 @@
             "unique_ranks": 30,
             "minimum_rank": 1,
             "maximum_rank": 30,
-            "observed_rows": 30
+            "observed_rows": 30,
+            "collection_evidence": {
+              "collector": null,
+              "transport": null,
+              "profile": null,
+              "region": null,
+              "region_verified": null,
+              "observed_at": null,
+              "scheduled_for": null,
+              "schedule_delay_seconds": null,
+              "evidence_row_count": 30,
+              "evidence_consistent": true,
+              "timing_verified": false
+            }
           }
         }
       },
       "contract": {
         "policy_version": "frontend-result-quality-v1",
-        "passed": true,
+        "passed": false,
         "trend_count": 10,
         "required_trend_count": 10,
         "required_keyword_count": 5,
@@ -1139,7 +999,8 @@
             "passed": true
           }
         ],
-        "ranking_effect": "none"
+        "ranking_effect": "none",
+        "failure": "legacy_frontend_result_policy"
       },
       "publication": {
         "passed": false,
@@ -1293,9 +1154,9 @@
     },
     {
       "observed_at": "2026-08-13T17:00:00+00:00",
-      "passed": true,
+      "passed": false,
       "source_gate": {
-        "passed": true,
+        "passed": false,
         "sources": {
           "google_trends": {
             "row_count": 236,
@@ -1313,11 +1174,12 @@
             "maximum_rank": 30,
             "observed_rows": 30
           }
-        }
+        },
+        "failure": "legacy_source_gate_policy"
       },
       "contract": {
         "policy_version": "frontend-result-quality-v1",
-        "passed": true,
+        "passed": false,
         "trend_count": 10,
         "required_trend_count": 10,
         "required_keyword_count": 5,
@@ -1453,7 +1315,8 @@
             "passed": true
           }
         ],
-        "ranking_effect": "none"
+        "ranking_effect": "none",
+        "failure": "legacy_frontend_result_policy"
       },
       "publication": {
         "passed": true,
@@ -1623,6 +1486,368 @@
         },
         "manifest_sha256": "c049cf9d48822968c348606685c8db4d70dbea561f4f6d1f661f4afed8f39332",
         "remote_manifest_blob": "c9d2282430f431e0083e2df5955e04187ecedac1"
+      }
+    },
+    {
+      "observed_at": "2026-08-13T18:00:00+00:00",
+      "passed": true,
+      "source_gate": {
+        "policy_version": "hourly-source-proof-v2",
+        "passed": true,
+        "sources": {
+          "google_trends": {
+            "row_count": 227,
+            "unique_topics": 227,
+            "unique_ranks": 227,
+            "minimum_rank": 1,
+            "maximum_rank": 227,
+            "observed_rows": 227
+          },
+          "x": {
+            "row_count": 30,
+            "unique_topics": 30,
+            "unique_ranks": 30,
+            "minimum_rank": 1,
+            "maximum_rank": 30,
+            "observed_rows": 30,
+            "collection_evidence": {
+              "collector": "codex_chrome_current_session",
+              "transport": "codex_browser_snapshot",
+              "profile": "current_logged_in_chrome",
+              "region": "KR",
+              "region_verified": true,
+              "observed_at": "2026-08-13T18:03:47.936000+00:00",
+              "scheduled_for": "2026-08-13T18:00:00+00:00",
+              "schedule_delay_seconds": 227.936,
+              "evidence_row_count": 30,
+              "evidence_consistent": true,
+              "timing_verified": true
+            }
+          }
+        }
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v2",
+        "passed": true,
+        "trend_count": 10,
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": 6,
+        "failures": [],
+        "trends": [
+          {
+            "publication_rank": 1,
+            "display_name": "개기일식",
+            "observed_rank": 1,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 2,
+            "display_name": "커피믹스",
+            "observed_rank": 28,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 3,
+            "display_name": "아시안 게임",
+            "observed_rank": 124,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "event_sponsorship"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 4,
+            "display_name": "용인반도체클러스터",
+            "observed_rank": 180,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "industry_adjacent",
+              "manufacturing_development",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 5,
+            "display_name": "불꽃축제",
+            "observed_rank": 314,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "distribution",
+              "industry_adjacent",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 6,
+            "display_name": "광 통신",
+            "observed_rank": 317,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "ownership_investment",
+              "platform_service",
+              "raw_materials_components"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 7,
+            "display_name": "지스타",
+            "observed_rank": 380,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "event_sponsorship",
+              "manufacturing_development"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 8,
+            "display_name": "롤 패치 노트",
+            "observed_rank": 484,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "manufacturing_development",
+              "ownership_investment"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "코난 극장판",
+            "observed_rank": 513,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "brand_marketing",
+              "content_production",
+              "distribution",
+              "ownership_investment",
+              "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "휴머노이드 로봇",
+            "observed_rank": 564,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
+          }
+        ],
+        "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": true,
+        "publication_id": "pub-05e53e61d80940fba4c25a9309941eea",
+        "remote_sha": "dc8ad04003bc6df6c159d2092f7818f21c3fb474",
+        "verified_at": "2026-08-13T18:05:03.010697+00:00",
+        "contract": {
+          "policy_version": "frontend-result-quality-v2",
+          "passed": true,
+          "trend_count": 10,
+          "required_trend_count": 10,
+          "required_keyword_count": 5,
+          "minimum_company_count": 6,
+          "failures": [],
+          "trends": [
+            {
+              "publication_rank": 1,
+              "display_name": "개기일식",
+              "observed_rank": 1,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "industry_adjacent",
+                "manufacturing_development",
+                "platform_service"
+              ],
+              "passed": true
+            },
+            {
+              "publication_rank": 2,
+              "display_name": "커피믹스",
+              "observed_rank": 28,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "ownership_investment",
+                "retail_sales"
+              ],
+              "passed": true
+            },
+            {
+              "publication_rank": 3,
+              "display_name": "아시안 게임",
+              "observed_rank": 124,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "distribution",
+                "event_sponsorship"
+              ],
+              "passed": true
+            },
+            {
+              "publication_rank": 4,
+              "display_name": "용인반도체클러스터",
+              "observed_rank": 180,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "industry_adjacent",
+                "manufacturing_development",
+                "raw_materials_components"
+              ],
+              "passed": true
+            },
+            {
+              "publication_rank": 5,
+              "display_name": "불꽃축제",
+              "observed_rank": 314,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "distribution",
+                "industry_adjacent",
+                "manufacturing_development"
+              ],
+              "passed": true
+            },
+            {
+              "publication_rank": 6,
+              "display_name": "광 통신",
+              "observed_rank": 317,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "ownership_investment",
+                "platform_service",
+                "raw_materials_components"
+              ],
+              "passed": true
+            },
+            {
+              "publication_rank": 7,
+              "display_name": "지스타",
+              "observed_rank": 380,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "event_sponsorship",
+                "manufacturing_development"
+              ],
+              "passed": true
+            },
+            {
+              "publication_rank": 8,
+              "display_name": "롤 패치 노트",
+              "observed_rank": 484,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "brand_marketing",
+                "manufacturing_development",
+                "ownership_investment"
+              ],
+              "passed": true
+            },
+            {
+              "publication_rank": 9,
+              "display_name": "코난 극장판",
+              "observed_rank": 513,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "brand_marketing",
+                "content_production",
+                "distribution",
+                "ownership_investment",
+                "retail_sales"
+              ],
+              "passed": true
+            },
+            {
+              "publication_rank": 10,
+              "display_name": "휴머노이드 로봇",
+              "observed_rank": 564,
+              "keyword_count": 5,
+              "company_count": 6,
+              "role_categories": [
+                "manufacturing_development",
+                "platform_service"
+              ],
+              "passed": true
+            }
+          ],
+          "ranking_effect": "none"
+        },
+        "source_gate": {
+          "policy_version": "hourly-source-proof-v2",
+          "passed": true,
+          "sources": {
+            "google_trends": {
+              "row_count": 227,
+              "unique_topics": 227,
+              "unique_ranks": 227,
+              "minimum_rank": 1,
+              "maximum_rank": 227,
+              "observed_rows": 227
+            },
+            "x": {
+              "row_count": 30,
+              "unique_topics": 30,
+              "unique_ranks": 30,
+              "minimum_rank": 1,
+              "maximum_rank": 30,
+              "observed_rows": 30,
+              "collection_evidence": {
+                "collector": "codex_chrome_current_session",
+                "transport": "codex_browser_snapshot",
+                "profile": "current_logged_in_chrome",
+                "region": "KR",
+                "region_verified": true,
+                "observed_at": "2026-08-13T18:03:47.936000+00:00",
+                "scheduled_for": "2026-08-13T18:00:00+00:00",
+                "schedule_delay_seconds": 227.936,
+                "evidence_row_count": 30,
+                "evidence_consistent": true,
+                "timing_verified": true
+              }
+            }
+          }
+        },
+        "manifest_sha256": "a89205deeed183da6423b014c8e57e33c3691c7a39998a42fc6af6ee5e5a170b",
+        "remote_manifest_blob": "e0336d54ee25273659697e4b6509174d7b595ce8"
       }
     }
   ],
