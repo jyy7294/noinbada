@@ -12,7 +12,7 @@ from .ontology import MINIMUM_FRONTEND_COMPANIES
 
 def record_publication_receipt(
     path: Path, *, observed_at: str, publication_id: str, remote_sha: str,
-    contract: dict | None = None,
+    contract: dict | None = None, source_gate: dict | None = None,
 ) -> None:
     """Persist proof that the exact hourly publication reached the remote."""
 
@@ -25,23 +25,32 @@ def record_publication_receipt(
                 publication_id TEXT NOT NULL,
                 remote_sha TEXT NOT NULL,
                 verified_at TEXT NOT NULL,
-                contract_json TEXT
+                contract_json TEXT,
+                source_gate_json TEXT
             )
             """
         )
         columns = {row[1] for row in connection.execute("PRAGMA table_info(publication_receipts)")}
         if "contract_json" not in columns:
             connection.execute("ALTER TABLE publication_receipts ADD COLUMN contract_json TEXT")
+        if "source_gate_json" not in columns:
+            connection.execute("ALTER TABLE publication_receipts ADD COLUMN source_gate_json TEXT")
+        existing = connection.execute(
+            "SELECT publication_id, remote_sha FROM publication_receipts WHERE observed_at=?",
+            (observed_at,),
+        ).fetchone()
+        if existing:
+            if existing != (publication_id, remote_sha):
+                raise ValueError(
+                    "an immutable publication receipt already exists for this observed_at"
+                )
+            return
         connection.execute(
             """
             INSERT INTO publication_receipts(
-                observed_at, publication_id, remote_sha, verified_at, contract_json
-            ) VALUES (?, ?, ?, ?, ?)
-            ON CONFLICT(observed_at) DO UPDATE SET
-                publication_id=excluded.publication_id,
-                remote_sha=excluded.remote_sha,
-                verified_at=excluded.verified_at,
-                contract_json=excluded.contract_json
+                observed_at, publication_id, remote_sha, verified_at,
+                contract_json, source_gate_json
+            ) VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
                 observed_at,
@@ -49,6 +58,8 @@ def record_publication_receipt(
                 remote_sha,
                 datetime.now(UTC).isoformat(),
                 json.dumps(contract, ensure_ascii=False, separators=(",", ":")) if contract else None,
+                json.dumps(source_gate, ensure_ascii=False, separators=(",", ":"))
+                if source_gate else None,
             ),
         )
         connection.commit()
@@ -66,8 +77,10 @@ def _publication_receipt(path: Path, observed_at: str) -> dict:
             column[1] for column in connection.execute("PRAGMA table_info(publication_receipts)")
         }
         contract_expression = "contract_json" if "contract_json" in columns else "NULL"
+        source_expression = "source_gate_json" if "source_gate_json" in columns else "NULL"
         row = None if not exists else connection.execute(
-            f"SELECT publication_id, remote_sha, verified_at, {contract_expression} "
+            f"SELECT publication_id, remote_sha, verified_at, {contract_expression}, "
+            f"{source_expression} "
             "FROM publication_receipts WHERE observed_at=?",
             (observed_at,),
         ).fetchone()
@@ -76,12 +89,18 @@ def _publication_receipt(path: Path, observed_at: str) -> dict:
     if not row:
         return {"passed": False, "publication_id": None, "remote_sha": None, "verified_at": None}
     contract = json.loads(row[3]) if row[3] else None
+    source_gate = json.loads(row[4]) if row[4] else None
     return {
-        "passed": bool(row[0] and row[1] and contract and contract.get("passed") is True),
+        "passed": bool(
+            row[0] and row[1]
+            and contract and contract.get("passed") is True
+            and source_gate and source_gate.get("passed") is True
+        ),
         "publication_id": row[0],
         "remote_sha": row[1],
         "verified_at": row[2],
         "contract": contract,
+        "source_gate": source_gate,
     }
 
 
@@ -209,8 +228,8 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
 
     normalized = at.astimezone(UTC).replace(minute=0, second=0, microsecond=0)
     stamp = normalized.isoformat()
-    source_gate = _source_gate(path, stamp)
     publication = _publication_receipt(path, stamp)
+    source_gate = publication.get("source_gate") or _source_gate(path, stamp)
     contract = publication.get("contract")
     if contract is None:
         intelligence = build_intelligence(normalized, hours=24, path=path)
@@ -265,12 +284,16 @@ def main() -> int:
         if intelligence.get("publication_id") != args.publication_id:
             parser.error("--intelligence publication_id does not match --publication-id")
         contract = evaluate_frontend_result(intelligence)
+        source_gate = _source_gate(args.database, args.end.astimezone(UTC).replace(
+            minute=0, second=0, microsecond=0
+        ).isoformat())
         record_publication_receipt(
             args.database,
             observed_at=args.end.astimezone(UTC).replace(minute=0, second=0, microsecond=0).isoformat(),
             publication_id=args.publication_id,
             remote_sha=args.remote_sha,
             contract=contract,
+            source_gate=source_gate,
         )
     result = evaluate_consecutive_hours(args.database, end=args.end, count=args.count)
     encoded = json.dumps(result, ensure_ascii=False, indent=2).encode("utf-8")
