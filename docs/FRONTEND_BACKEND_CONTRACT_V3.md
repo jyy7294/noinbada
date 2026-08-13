@@ -132,20 +132,23 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 - 기간별 결과: `ranking_views.{period}.unified_ranking`, `period_top10`, `window`, `data_readiness`
 - 기존 최상위 `unified_ranking`, `trend_top10`, `public_top10`은 7일(`weekly`) 기간 집계의 상세정보 결합 호환 별칭
 
-## 팀 검수용 3배 후보 팩
+## 완성 트렌드 노출 팩
 
-`latest/editorial-review.json`은 사용자 화면에 바로 노출하는 확정 데이터가 아니라
-팀이 취사선택하기 위한 별도 검수 문서입니다. manifest의
+`latest/editorial-review.json`의 `trends` 배열은 완성 노출 계약을 모두 통과한
+항목만 담습니다. manifest의
 `compatibility_documents.editorial_review` 경로와 SHA로 읽습니다.
 
-- 트렌드 후보: 실측 X·Google 순위를 보존한 구체적인 명명 개체 최대 30개
-- `related_keyword_candidates`: 후보당 15개, 최종 5개 선택용
+- 트렌드 후보: 실측 점수순 `main` 상위 30개 안에서 일반 제품 적합 규칙을 통과한 항목
+- `related_keywords`: 트렌드마다 정확히 5개
 - `company_candidates`: 해당 트렌드와의 개별 관계 자료가 확인된 국내외 상장사만 수록
 - `음식`, `운전`, `애니` 같은 포괄어와 업종별 회사 채우기는 금지합니다.
 - 회사마다 `reason`, `evidence_url`, `evidence_owner`, `evidence_type`,
   `verified_at`, `verification_status`, `company_description`을 제공합니다.
-- 검증 기업이 3개 미만이면 `insufficient_verified_companies`로 남기며 임의로
-  채우지 않습니다.
+- 검증 기업이 3개 미만이거나 관련 키워드가 정확히 5개가 아니면 `trends`에
+  넣지 않습니다. `publication_ready=true`는 완성 항목이 10개 이상일 때만 가능합니다.
+- 미충족 후보를 빈 기업이나 임의 기업으로 채우는 것은 금지합니다.
+- 키워드·기업 레지스트리는 자동 선발 뒤에만 사용하는 보강 캐시입니다. 등록 여부는
+  원본 점수·순위, 레인, 제품 적합 판정, 상위 30개 진입에 영향을 주지 않습니다.
 - 기본 화면은 `company_description_list`입니다. 검증 기업이 6개 이상으로
   많아질 때만 `company_display_policy.show_category_groups=true`로 제공하며,
   그 전에는 카테고리 탭을 만들지 않습니다.

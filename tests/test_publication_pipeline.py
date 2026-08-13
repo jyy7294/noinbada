@@ -128,6 +128,9 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
         for item in view["unified_ranking"]
     )
     assert all("period_top10" in view for view in rankings["ranking_views"].values())
+    assert b"\r\n" not in (tmp_path / "latest" / "status.json").read_bytes()
+    assert b"\r\n" not in rankings_path.read_bytes()
+    assert b"\r\n" not in (tmp_path / "latest" / "manifest.json").read_bytes()
     _validate_frontend_delivery(tmp_path / "latest", manifest)
     assert intelligence["news_discovery_queue"][0]["observed_term"] == "양즈깐루"
 
@@ -320,7 +323,7 @@ def test_market_reference_public_contract_removes_provider_exception_text():
     }
 
 
-def test_scheduled_publication_appends_only_three_gold_terms_once_per_hour(
+def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(
     tmp_path, monkeypatch
 ):
     from trzip.provider_verification import (
@@ -369,9 +372,11 @@ def test_scheduled_publication_appends_only_three_gold_terms_once_per_hour(
         )
     )
 
-    assert len(read_verification_ledger(database)) == 9
+    # 업비트와 말복 are recognized by general rules. The manually-known
+    # person names are no longer promoted into main by reference membership.
+    assert len(read_verification_ledger(database)) == 6
     assert first_payload["verification_run"]["status"] == "completed"
-    assert first_payload["verification_run"]["requested_terms"] == 3
+    assert first_payload["verification_run"]["requested_terms"] == 2
     assert first_payload["verification_run"]["ranking_effect"] == "none"
 
     run(tmp_path / "publication", database_path=database, now=at)
@@ -381,7 +386,7 @@ def test_scheduled_publication_appends_only_three_gold_terms_once_per_hour(
         )
     )
 
-    assert len(read_verification_ledger(database)) == 9
+    assert len(read_verification_ledger(database)) == 6
     assert second_payload["verification_run"]["status"] == "skipped_already_recorded_for_hour"
 
 

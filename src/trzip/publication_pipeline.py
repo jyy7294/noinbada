@@ -17,7 +17,7 @@ from .hourly_store import HourlyObservation, collect_current, coverage, floor_ho
 from .intelligence import build_intelligence
 from .company_adapters import enrich_company_identities, pykrx_stock
 from .enrichment_queue import sync_enrichment_queue
-from .editorial_review import build_editorial_review_pack
+from .editorial_review import build_editorial_review_pack, load_daily_editorial_review
 from .keyword_candidates import sync_provider_keyword_candidates
 from .normalization_evaluation import evaluate_regression_set
 from .provider_verification import (
@@ -32,6 +32,7 @@ from .provider_verification import (
 
 
 NEWS_DISCOVERY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "news_discovery_seed.json"
+DAILY_EDITORIAL_DIRECTORY = Path(__file__).resolve().parents[2] / "config" / "daily-editorial"
 DEFAULT_HOURLY_VERIFICATION_TERM_LIMIT = 3
 MAX_HOURLY_VERIFICATION_TERM_LIMIT = 3
 MONITORING_CONTRACT_VERSION = "trzip-v3-hourly"
@@ -91,7 +92,11 @@ def _read_json(path: Path, default):
 def _write_json(path: Path, payload) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    # Hashes in manifest.json must describe the bytes that GitHub serves.
+    # Writing text on Windows expands LF to CRLF, while Git normalizes tracked
+    # JSON back to LF during push and would invalidate every published hash.
+    encoded = json.dumps(payload, ensure_ascii=False, indent=2).encode("utf-8")
+    temporary.write_bytes(encoded)
     temporary.replace(path)
 
 
@@ -1375,9 +1380,31 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         at=at,
     )
     intelligence = _enrich_market_references(intelligence, previous_intelligence, at)
+    daily_editorial_path = DAILY_EDITORIAL_DIRECTORY / f"{(at.astimezone(UTC) + timedelta(hours=9)).date().isoformat()}.json"
+    daily_editorial_review = (
+        load_daily_editorial_review(daily_editorial_path)
+        if daily_editorial_path.is_file()
+        else None
+    )
+    # A reviewed set is valid only for the source snapshot it was built from.
+    # Never let yesterday's or a fixture day's list force unobserved terms into
+    # a different live collection; the automatic path will remain fail-closed.
+    if daily_editorial_review is not None:
+        observed_keys = {
+            str(item.get("event_key") or "")
+            for item in intelligence.get("unified_ranking") or []
+        }
+        required_keys = {
+            str(source_key)
+            for item in daily_editorial_review.get("items") or []
+            for source_key in item.get("source_event_keys") or []
+        }
+        if not required_keys.issubset(observed_keys):
+            daily_editorial_review = None
     intelligence["editorial_review_pack"] = build_editorial_review_pack(
         intelligence,
         generated_at=at,
+        daily_review=daily_editorial_review,
     )
     stats = coverage(database_path)
 
