@@ -583,7 +583,16 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         item for item in home_ranking
         if item.get("frontend_readiness_status") == "ready"
     ]
-    expected_trend_top10 = completed_home_ranking[:10]
+    expected_trend_top10 = []
+    food_count = 0
+    for item in completed_home_ranking:
+        if item.get("broad_category") == "food":
+            if food_count >= 1:
+                continue
+            food_count += 1
+        expected_trend_top10.append(item)
+        if len(expected_trend_top10) == 10:
+            break
     if trend_top10 != expected_trend_top10:
         raise ValueError("trend_top10 must contain only completed home trends")
     if home_top10 != trend_top10 or public_top10 != trend_top10:
@@ -597,7 +606,7 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         or readiness.get("minimum_company_count") != 6
         or readiness.get("ready_count") != len(completed_home_ranking)
         or readiness.get("published_count") != len(trend_top10)
-        or readiness.get("publication_ready") is not (len(completed_home_ranking) >= 10)
+        or readiness.get("publication_ready") is not (len(expected_trend_top10) >= 10)
         or readiness.get("padding_forbidden") is not True
         or readiness.get("ranking_effect") != "none"
     ):
