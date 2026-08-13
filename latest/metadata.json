@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-8ab1f422237045ed948ea008d4d6d541",
-  "generated_at": "2026-08-13T00:33:26.286380+00:00",
+  "publication_id": "pub-67db299ef8154cc09602dd8b408a2eca",
+  "generated_at": "2026-08-13T00:47:20.341507+00:00",
   "observed_at": "2026-08-13T00:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -106,6 +106,22 @@
     "on_time_within_15m_rate": 0.25,
     "latest_delay_seconds": 1769,
     "latest_duration_seconds": 148.43,
+    "current_publication_scheduled_at": "2026-08-13T00:00:00+00:00",
+    "current_publication_attempt_type": "recovery",
+    "current_publication_status": "recovered_complete",
+    "current_publication_success": true,
+    "current_publication_source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "current_schedule_initial_attempt_success": false,
+    "latest_scheduled_at": "2026-08-13T00:00:00+00:00",
+    "latest_scheduled_attempt_success": false,
+    "latest_scheduled_attempt_source_success": {
+      "x": false,
+      "google_trends": true
+    },
+    "recovered_from_scheduled_failure": true,
     "status": "collecting_baseline",
     "remaining_runs_for_3d": 64,
     "remaining_runs_for_7d": 160,
@@ -114,8 +130,8 @@
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-8ab1f422237045ed948ea008d4d6d541",
-    "rankings_path": "latest/delivery/pub-8ab1f422237045ed948ea008d4d6d541/rankings.json",
+    "bundle_path": "latest/delivery/pub-67db299ef8154cc09602dd8b408a2eca",
+    "rankings_path": "latest/delivery/pub-67db299ef8154cc09602dd8b408a2eca/rankings.json",
     "trend_detail_count": 345,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }

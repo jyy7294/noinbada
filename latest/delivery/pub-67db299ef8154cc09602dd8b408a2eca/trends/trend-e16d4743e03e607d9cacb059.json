@@ -1,0 +1,463 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-67db299ef8154cc09602dd8b408a2eca",
+  "generated_at": "2026-08-13T00:47:20.341507+00:00",
+  "observed_at": "2026-08-13T00:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "아이폰",
+    "topic": "아이폰",
+    "display_name": "아이폰",
+    "observed_representative_term": "아이폰",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "아이폰",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 10,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.058157,
+      "best_source_rank": 50
+    },
+    "raw_terms": [
+      "아이폰"
+    ],
+    "phenomenon_summary": "\"아이폰\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "product_brand",
+    "broad_category": "consumer",
+    "lane": "main",
+    "selection_reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 64.82,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.495423,
+    "current_source_position": 0.495423,
+    "momentum": 0.5,
+    "persistence": 1.0,
+    "score_components": {
+      "period_strength_points": 19.82,
+      "momentum_points": 10.0,
+      "persistence_points": 20.0,
+      "recency_points": 15.0,
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 64.82
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "momentum_status": "neutral_no_comparable_window",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.495423
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 10,
+          "presence_rate": 1.0
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.017857,
+        "google_trends": 0.059524
+      },
+      "momentum_status": "neutral_no_comparable_window"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T00:00:00+00:00",
+      "observed_hours": 10,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 54
+    },
+    "rank_change_by_source": {
+      "google_trends": -4
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T00:00:00+00:00",
+    "age_hours": 11,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 10,
+      "history_maturity": 0.0387,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "아이폰",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T21:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T21:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T21:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 98015,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "gnX4DdlmVzQ",
+              "title": "아이폰 20 프로 - 진짜 최악의 상황입니다",
+              "url": "https://www.youtube.com/watch?v=gnX4DdlmVzQ",
+              "published_at": "2026-08-12T01:05:01Z",
+              "publisher": "알뷰",
+              "metrics": {
+                "commentCount": 143,
+                "likeCount": 345,
+                "viewCount": 22555
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T21:00:00Z",
+                "query_term": "아이폰",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "VlYq-lwLQOU",
+              "title": "난생처음 아이폰 쓰면 생기는일",
+              "url": "https://www.youtube.com/watch?v=VlYq-lwLQOU",
+              "published_at": "2026-08-12T10:06:22Z",
+              "publisher": "제로크림",
+              "metrics": {
+                "commentCount": 66,
+                "likeCount": 2080,
+                "viewCount": 86314
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T21:00:00Z",
+                "query_term": "아이폰",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "JOFbmCIIyII",
+              "title": "물거품된 애플의 야심작…목표 주가도 '와르르' [지금이뉴스] / YTN",
+              "url": "https://www.youtube.com/watch?v=JOFbmCIIyII",
+              "published_at": "2026-08-11T10:21:52Z",
+              "publisher": "YTN",
+              "metrics": {
+                "commentCount": 826,
+                "likeCount": 1314,
+                "viewCount": 303097
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T21:00:00Z",
+                "query_term": "아이폰",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "sAk4SsAXlXo",
+              "title": "“아이폰을 접어봤자...” 갤럭시 Z폴드 8 역대 최고 판매 신기록 찍자, ‘애플 압승론’ 완전히 뒤집힌 실제 상황",
+              "url": "https://www.youtube.com/watch?v=sAk4SsAXlXo",
+              "published_at": "2026-08-10T13:34:52Z",
+              "publisher": "바이스톰 코리아",
+              "metrics": {
+                "commentCount": 231,
+                "likeCount": 5277,
+                "viewCount": 180485
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T21:00:00Z",
+                "query_term": "아이폰",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "imbeaWa9McI",
+              "title": "아이폰18 pro - 애플이 이렇게 당할 줄 몰랐겠죠?",
+              "url": "https://www.youtube.com/watch?v=imbeaWa9McI",
+              "published_at": "2026-08-06T04:39:00Z",
+              "publisher": "야옹이의 리뷰노트",
+              "metrics": {
+                "commentCount": 24,
+                "likeCount": 21,
+                "viewCount": 6144
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T21:00:00Z",
+                "query_term": "아이폰",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 145,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"100%\", \"page\": 6, \"row_on_page\": 20, \"started_text\": \"15시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 151,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"100%\", \"page\": 7, \"row_on_page\": 1, \"started_text\": \"16시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 156,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"100%\", \"page\": 7, \"row_on_page\": 6, \"started_text\": \"17시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 155,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"100%\", \"page\": 7, \"row_on_page\": 5, \"started_text\": \"18시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 156,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"100%\", \"page\": 7, \"row_on_page\": 6, \"started_text\": \"19시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 159,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"100%\", \"page\": 7, \"row_on_page\": 9, \"started_text\": \"20시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 159,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"100%\", \"page\": 7, \"row_on_page\": 9, \"started_text\": \"20시간 전\", \"status_text\": \"1시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 71,
+        "value": 30.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"200%\", \"page\": 3, \"row_on_page\": 21, \"started_text\": \"1시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 50,
+        "value": 51.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"200%\", \"page\": 2, \"row_on_page\": 25, \"started_text\": \"2시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 54,
+        "value": 47.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"100%\", \"page\": 3, \"row_on_page\": 4, \"started_text\": \"4시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 5,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "core": 0,
+        "value_chain": 0,
+        "adjacent": 0,
+        "excluded": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 5,
+        "matched_terms": [
+          {
+            "term": "아이폰",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류"
+    },
+    "rank": 117,
+    "classification": "일반 트렌드",
+    "persistence_rank": 70,
+    "momentum_rank": 117,
+    "main_rank": 18,
+    "home_context_status": "resolved",
+    "home_context_reason": "matched_verification_provider",
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "ranking_availability_status": "provisional_history"
+  }
+}

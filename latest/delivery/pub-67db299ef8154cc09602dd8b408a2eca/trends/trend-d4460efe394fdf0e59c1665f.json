@@ -1,0 +1,463 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-67db299ef8154cc09602dd8b408a2eca",
+  "generated_at": "2026-08-13T00:47:20.341507+00:00",
+  "observed_at": "2026-08-13T00:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "메츠 대 브레이브스",
+    "topic": "메츠 대 브레이브스",
+    "display_name": "메츠 대 브레이브스",
+    "observed_representative_term": "메츠 대 브레이브스",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "메츠 대 브레이브스",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 10,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.048776,
+      "best_source_rank": 91
+    },
+    "raw_terms": [
+      "메츠 대 브레이브스"
+    ],
+    "phenomenon_summary": "\"메츠 대 브레이브스\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "sports_participation",
+    "broad_category": "sports",
+    "lane": "main",
+    "selection_reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 59.56,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.364023,
+    "current_source_position": 0.364023,
+    "momentum": 0.5,
+    "persistence": 1.0,
+    "score_components": {
+      "period_strength_points": 14.56,
+      "momentum_points": 10.0,
+      "persistence_points": 20.0,
+      "recency_points": 15.0,
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 59.56
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "momentum_status": "neutral_no_comparable_window",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.364023
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 10,
+          "presence_rate": 1.0
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.017857,
+        "google_trends": 0.059524
+      },
+      "momentum_status": "neutral_no_comparable_window"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T00:00:00+00:00",
+      "observed_hours": 10,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 91
+    },
+    "rank_change_by_source": {
+      "google_trends": 103
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T00:00:00+00:00",
+    "age_hours": 11,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 10,
+      "history_maturity": 0.0387,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "메츠 대 브레이브스",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T00:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T00:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T00:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 23,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "eGkSCcqhyto",
+              "title": "판정 하나에 만루홈런?! 끝났어야 할 1회, 메츠 배티 데뷔 첫 그랜드슬램 #MLB #메츠 #브레이브스 #shorts",
+              "url": "https://www.youtube.com/watch?v=eGkSCcqhyto",
+              "published_at": "2026-08-11T10:10:57Z",
+              "publisher": "오늘스포츠",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 2,
+                "viewCount": 778
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T00:00:00Z",
+                "query_term": "메츠 대 브레이브스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "fyj2T16vxjM",
+              "title": "Mets vs Braves (7/29/26) | Doubleheader Game 2 | Mets Highlights",
+              "url": "https://www.youtube.com/watch?v=fyj2T16vxjM",
+              "published_at": "2026-07-30T02:08:59Z",
+              "publisher": "SNY",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 20,
+                "viewCount": 1976
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T00:00:00Z",
+                "query_term": "메츠 대 브레이브스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "v0_SJvKOGv0",
+              "title": "Mets vs. Braves 8/10/26 MLB Pick Prediction",
+              "url": "https://www.youtube.com/watch?v=v0_SJvKOGv0",
+              "published_at": "2026-08-10T05:48:46Z",
+              "publisher": "Tony's Picks",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 1,
+                "viewCount": 318
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T00:00:00Z",
+                "query_term": "메츠 대 브레이브스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "1vCgumyNcA4",
+              "title": "Mets vs Braves | Orioles vs Twins Predictions and BEST Bets! | Today's Best MLB Picks",
+              "url": "https://www.youtube.com/watch?v=1vCgumyNcA4",
+              "published_at": "2026-08-11T16:34:25Z",
+              "publisher": "WagerTalk TV: Sports Picks and Betting Tips",
+              "metrics": {
+                "commentCount": 2,
+                "likeCount": 9,
+                "viewCount": 284
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T00:00:00Z",
+                "query_term": "메츠 대 브레이브스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "GbXU5CguQmo",
+              "title": "Mets vs. Braves MLB Betting Odds & Picks, 8/12/26 | Night Moves Show",
+              "url": "https://www.youtube.com/watch?v=GbXU5CguQmo",
+              "published_at": "2026-08-12T11:08:55Z",
+              "publisher": "Tony's Picks",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 3,
+                "viewCount": 56
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T00:00:00Z",
+                "query_term": "메츠 대 브레이브스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 138,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"700%\", \"page\": 6, \"row_on_page\": 13, \"started_text\": \"14시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 145,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"700%\", \"page\": 6, \"row_on_page\": 20, \"started_text\": \"15시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 150,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"700%\", \"page\": 6, \"row_on_page\": 25, \"started_text\": \"16시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 149,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"700%\", \"page\": 6, \"row_on_page\": 24, \"started_text\": \"17시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 150,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"700%\", \"page\": 6, \"row_on_page\": 25, \"started_text\": \"18시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 152,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"700%\", \"page\": 7, \"row_on_page\": 2, \"started_text\": \"19시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 152,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"700%\", \"page\": 7, \"row_on_page\": 2, \"started_text\": \"19시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 160,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"700%\", \"page\": 7, \"row_on_page\": 10, \"started_text\": \"22시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 194,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"700%\", \"page\": 8, \"row_on_page\": 19, \"started_text\": \"23시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 91,
+        "value": 10.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"700%\", \"page\": 4, \"row_on_page\": 16, \"started_text\": \"1시간 전\", \"status_text\": \"활성\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 5,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "core": 0,
+        "value_chain": 0,
+        "adjacent": 0,
+        "excluded": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 5,
+        "matched_terms": [
+          {
+            "term": "메츠 대 브레이브스",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류"
+    },
+    "rank": 160,
+    "classification": "일반 트렌드",
+    "persistence_rank": 80,
+    "momentum_rank": 160,
+    "main_rank": 21,
+    "home_context_status": "resolved",
+    "home_context_reason": "matched_verification_provider",
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "ranking_availability_status": "provisional_history"
+  }
+}

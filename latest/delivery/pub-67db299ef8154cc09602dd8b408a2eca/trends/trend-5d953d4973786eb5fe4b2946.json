@@ -1,0 +1,409 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-67db299ef8154cc09602dd8b408a2eca",
+  "generated_at": "2026-08-13T00:47:20.341507+00:00",
+  "observed_at": "2026-08-13T00:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "광 통신",
+    "topic": "광 통신",
+    "display_name": "광 통신",
+    "observed_representative_term": "광 통신",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "광 통신",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 4,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.024941,
+      "best_source_rank": 89
+    },
+    "raw_terms": [
+      "광 통신"
+    ],
+    "phenomenon_summary": "\"광 통신\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "technology_tool",
+    "broad_category": "technology",
+    "lane": "main",
+    "selection_reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 54.52,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.538069,
+    "current_source_position": 0.538069,
+    "momentum": 0.5,
+    "persistence": 0.4,
+    "score_components": {
+      "period_strength_points": 21.52,
+      "momentum_points": 10.0,
+      "persistence_points": 8.0,
+      "recency_points": 15.0,
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 54.52
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "momentum_status": "neutral_no_comparable_window",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.538069
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 4,
+          "presence_rate": 0.4
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.017857,
+        "google_trends": 0.059524
+      },
+      "momentum_status": "neutral_no_comparable_window"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T00:00:00+00:00",
+      "observed_hours": 4,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 108
+    },
+    "rank_change_by_source": {
+      "google_trends": -19
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T00:00:00+00:00",
+    "age_hours": 11,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 10,
+      "history_maturity": 0.0387,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "광 통신",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 70911,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "5EiXLrrZGmc",
+              "title": "[대한광통신 주가전망] 경고 딱지 풀리면, 아마도 대폭발.",
+              "url": "https://www.youtube.com/watch?v=5EiXLrrZGmc",
+              "published_at": "2026-08-12T05:30:07Z",
+              "publisher": "주식연구소",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 143,
+                "viewCount": 2141
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "bODNA41carI",
+              "title": "[대한광통신 주가전망] \"긴급\" 경고종목지정세력들...장중에 조정후 시간외 +1%상승..장내 매수 했다!.#대한광통신주가 #대한광통신 #주식타짜안교수.#대한광통신주가 #대한광통신",
+              "url": "https://www.youtube.com/watch?v=bODNA41carI",
+              "published_at": "2026-08-12T13:30:35Z",
+              "publisher": "주식타짜훈련소",
+              "metrics": {
+                "commentCount": 13,
+                "likeCount": 172,
+                "viewCount": 1379
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "Nn8ixa4umUo",
+              "title": "[대한광통신 주가전망] 대한광통신 13,450원 매물대 분석! 방어선·목표가·세력 원가 전부 공개",
+              "url": "https://www.youtube.com/watch?v=Nn8ixa4umUo",
+              "published_at": "2026-08-11T09:30:16Z",
+              "publisher": "슈퍼개미 사관학교",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 8,
+                "viewCount": 444
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "KLF-2_lyPZE",
+              "title": "[대한광통신 주가전망] '경고' 13일 정말 끝장났습니다💥옵션만기💥결국 이거였네! 내일 '이렇게' 됩니다🚀매집포착",
+              "url": "https://www.youtube.com/watch?v=KLF-2_lyPZE",
+              "published_at": "2026-08-12T08:35:35Z",
+              "publisher": "오늘의주식",
+              "metrics": {
+                "commentCount": 28,
+                "likeCount": 202,
+                "viewCount": 2185
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "DhdjipShNEk",
+              "title": "[대한광통신 주가 전망] 투자경고 종목 지정! 주가 못 올리는 이유! 다음 상승 매도 준비! #대한광통신 #대한광통신목표가 #대한광통신주가전망",
+              "url": "https://www.youtube.com/watch?v=DhdjipShNEk",
+              "published_at": "2026-08-12T06:00:17Z",
+              "publisher": "세력주분석채널",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 25,
+                "viewCount": 572
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 99,
+        "value": 2.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"500%\", \"page\": 4, \"row_on_page\": 24, \"started_text\": \"22시간 전\", \"status_text\": \"11시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 107,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"500%\", \"page\": 5, \"row_on_page\": 7, \"started_text\": \"23시간 전\", \"status_text\": \"11시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 89,
+        "value": 12.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 4, \"row_on_page\": 14, \"started_text\": \"1시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 108,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 5, \"row_on_page\": 8, \"started_text\": \"3시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 5,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "core": 0,
+        "value_chain": 0,
+        "adjacent": 0,
+        "excluded": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 5,
+        "matched_terms": [
+          {
+            "term": "광 통신",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류"
+    },
+    "rank": 208,
+    "classification": "일반 트렌드",
+    "persistence_rank": 176,
+    "momentum_rank": 208,
+    "main_rank": 30,
+    "home_context_status": "resolved",
+    "home_context_reason": "matched_verification_provider",
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "ranking_availability_status": "provisional_history"
+  }
+}

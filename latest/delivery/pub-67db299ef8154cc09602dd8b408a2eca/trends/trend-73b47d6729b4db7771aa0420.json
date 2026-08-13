@@ -1,0 +1,2324 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-67db299ef8154cc09602dd8b408a2eca",
+  "generated_at": "2026-08-13T00:47:20.341507+00:00",
+  "observed_at": "2026-08-13T00:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "삼성전자",
+    "topic": "005930",
+    "display_name": "삼성전자",
+    "observed_representative_term": "005930",
+    "display_name_policy": "reviewed_stock_code_to_company_name",
+    "resolved_entity_name": "삼성전자",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 10,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.074784,
+      "best_source_rank": 55
+    },
+    "raw_terms": [
+      "005930"
+    ],
+    "phenomenon_summary": "\"005930\" · Google Trends KR에서 관측",
+    "context_status": "resolved_reference",
+    "ground_truth_match": true,
+    "category": "investment_market",
+    "broad_category": "market",
+    "lane": "main",
+    "selection_reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 70.83,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.645797,
+    "current_source_position": 0.645797,
+    "momentum": 0.5,
+    "persistence": 1.0,
+    "score_components": {
+      "period_strength_points": 25.83,
+      "momentum_points": 10.0,
+      "persistence_points": 20.0,
+      "recency_points": 15.0,
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 70.83
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "momentum_status": "neutral_no_comparable_window",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.645797
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 10,
+          "presence_rate": 1.0
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.017857,
+        "google_trends": 0.059524
+      },
+      "momentum_status": "neutral_no_comparable_window"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T00:00:00+00:00",
+      "observed_hours": 10,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 139
+    },
+    "rank_change_by_source": {
+      "google_trends": 0
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T00:00:00+00:00",
+    "age_hours": 11,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 10,
+      "history_maturity": 0.0387,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "005930",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        }
+      },
+      "status": "unavailable",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 64,
+        "value": 37.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 14, \"started_text\": \"6시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 64,
+        "value": 37.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 14, \"started_text\": \"7시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 60,
+        "value": 41.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 10, \"started_text\": \"8시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 57,
+        "value": 44.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 7, \"started_text\": \"9시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 55,
+        "value": 46.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 5, \"started_text\": \"10시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 58,
+        "value": 43.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 8, \"started_text\": \"11시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 61,
+        "value": 40.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 11, \"started_text\": \"11시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 99,
+        "value": 2.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 4, \"row_on_page\": 24, \"started_text\": \"13시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 139,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 6, \"row_on_page\": 14, \"started_text\": \"15시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 139,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 6, \"row_on_page\": 14, \"started_text\": \"16시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "삼성전자주식회사",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "삼성전자",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "파운드리",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_semiconductor_business_area",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://semiconductor.samsung.com/kr/about-us/business-area/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "메모리",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_semiconductor_business_area",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://semiconductor.samsung.com/kr/about-us/business-area/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "시스템LSI",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_semiconductor_business_area",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://semiconductor.samsung.com/kr/about-us/business-area/"
+        ],
+        "affects_score": false
+      }
+    ],
+    "keyword_evidence": {
+      "total": 5,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 5,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [
+      {
+        "company": "LG전자",
+        "stock_code": "066570",
+        "market": "KOSPI",
+        "relation_type": "reviewed_company_sector_context",
+        "strength": "sector_watch",
+        "reason": "관측어 '005930'에서 005930 → 전기·전자 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 전기·전자 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 066570",
+        "business_features": [
+          "전기·전자"
+        ],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+            "title": "삼성전자 반도체 사업영역",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.lg.com/global/business/about-lg-business/",
+            "title": "LG Electronics Our Business",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm",
+            "title": "LG전자 유가증권상장법인 회사코드 066570",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "전기·전자",
+            "edge_type": "reviewed_company_sector_context",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/business-area/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "전기·전자",
+            "to": "LG전자",
+            "edge_type": "industry_has_listed_participant",
+            "evidence_urls": [
+              "https://www.lg.com/global/business/about-lg-business/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "LG전자",
+            "to": "066570 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "official_identity": {
+          "company": "LG전자",
+          "english_name": "LG ELECTRONICS INC.",
+          "established_date": "20020401",
+          "homepage": "https://www.lge.co.kr",
+          "legal_name": "LG전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "066570",
+          "stock_name": "LG전자"
+        }
+      },
+      {
+        "company": "SK하이닉스",
+        "stock_code": "000660",
+        "market": "KOSPI",
+        "relation_type": "reviewed_company_sector_context",
+        "strength": "sector_watch",
+        "reason": "관측어 '005930'에서 005930 → 전기·전자 → SK하이닉스 → 000660 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 전기·전자 → SK하이닉스 → 000660 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 000660",
+        "business_features": [
+          "전기·전자"
+        ],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+            "title": "삼성전자 반도체 사업영역",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://news.skhynix.com/corporate/fact-sheet/",
+            "title": "SK하이닉스 Corporate Fact Sheet",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2025/09/09/000034/20250909000060/10136.htm",
+            "title": "SK하이닉스 유가증권상장법인 회사코드 000660",
+            "evidence_type": "official_listing_record",
+            "published_at": "2025-09-09",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "전기·전자",
+            "edge_type": "reviewed_company_sector_context",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/business-area/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "전기·전자",
+            "to": "SK하이닉스",
+            "edge_type": "industry_has_listed_participant",
+            "evidence_urls": [
+              "https://news.skhynix.com/corporate/fact-sheet/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "SK하이닉스",
+            "to": "000660 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2025/09/09/000034/20250909000060/10136.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2025-09-09",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "official_identity": {
+          "company": "SK하이닉스",
+          "english_name": "SK hynix Inc.",
+          "established_date": "19491015",
+          "homepage": "https://www.skhynix.com",
+          "legal_name": "에스케이하이닉스(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "000660",
+          "stock_name": "SK하이닉스"
+        }
+      },
+      {
+        "company": "삼성SDI",
+        "stock_code": "006400",
+        "market": "KOSPI",
+        "relation_type": "reviewed_company_sector_context",
+        "strength": "sector_watch",
+        "reason": "관측어 '005930'에서 005930 → 전기·전자 → 삼성SDI → 006400 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 전기·전자 → 삼성SDI → 006400 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 006400",
+        "business_features": [
+          "전기·전자"
+        ],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+            "title": "삼성전자 반도체 사업영역",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.samsungsdi.com/upload/download/sustainable-management/Samsung_SDI_Sustainability_Report_2025_EN.pdf",
+            "title": "Samsung SDI Sustainability Report 2025",
+            "evidence_type": "official_company_report",
+            "published_at": "2025-06-30",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2025/07/02/000294/20250702000872/00637.htm",
+            "title": "삼성SDI 유가증권상장법인 회사코드 006400",
+            "evidence_type": "official_listing_record",
+            "published_at": "2025-07-02",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "전기·전자",
+            "edge_type": "reviewed_company_sector_context",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/business-area/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "전기·전자",
+            "to": "삼성SDI",
+            "edge_type": "industry_has_listed_participant",
+            "evidence_urls": [
+              "https://www.samsungsdi.com/upload/download/sustainable-management/Samsung_SDI_Sustainability_Report_2025_EN.pdf"
+            ],
+            "evidence_type": [
+              "official_company_report"
+            ],
+            "as_of": "2025-06-30",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성SDI",
+            "to": "006400 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2025/07/02/000294/20250702000872/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2025-07-02",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "official_identity": {
+          "company": "삼성SDI",
+          "english_name": "SAMSUNG SDI CO.,LTD",
+          "established_date": "19700120",
+          "homepage": "https://www.samsungsdi.co.kr",
+          "legal_name": "삼성SDI(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "006400",
+          "stock_name": "삼성SDI"
+        }
+      },
+      {
+        "company": "삼성전기",
+        "stock_code": "009150",
+        "market": "KOSPI",
+        "relation_type": "reviewed_company_sector_context",
+        "strength": "sector_watch",
+        "reason": "관측어 '005930'에서 005930 → 전기·전자 → 삼성전기 → 009150 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 전기·전자 → 삼성전기 → 009150 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 009150",
+        "business_features": [
+          "전기·전자"
+        ],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+            "title": "삼성전자 반도체 사업영역",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://sem.samsung.com/kr/about-us/company/overview.do",
+            "title": "삼성전기 회사개요",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/02/20/000241/20260220000716/00637.htm",
+            "title": "삼성전기 유가증권상장법인 회사코드 009150",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-02-20",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "전기·전자",
+            "edge_type": "reviewed_company_sector_context",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/business-area/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "전기·전자",
+            "to": "삼성전기",
+            "edge_type": "industry_has_listed_participant",
+            "evidence_urls": [
+              "https://sem.samsung.com/kr/about-us/company/overview.do"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성전기",
+            "to": "009150 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/02/20/000241/20260220000716/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-02-20",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "official_identity": {
+          "company": "삼성전기",
+          "english_name": "SAMSUNG ELECTRO-MECHANICS CO.,LTD",
+          "established_date": "19730808",
+          "homepage": "https://www.sem.samsung.co.kr",
+          "legal_name": "삼성전기(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "009150",
+          "stock_name": "삼성전기"
+        }
+      },
+      {
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "market": "KOSPI",
+        "relation_type": "denotes_listed_company",
+        "strength": "direct",
+        "reason": "관측어 '005930'에서 005930 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 005930",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+        "evidence_sources": [
+          {
+            "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+            "title": "삼성전자 유가증권상장법인 회사코드 005930",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "삼성전자",
+            "edge_type": "denotes_listed_company",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-26",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성전자",
+            "to": "005930 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "삼성전자",
+          "english_name": "SAMSUNG ELECTRONICS CO,.LTD",
+          "established_date": "19690113",
+          "homepage": "https://www.samsung.com/sec",
+          "legal_name": "삼성전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005930",
+          "stock_name": "삼성전자"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "LG전자",
+        "stock_code": "066570",
+        "market": "KOSPI",
+        "relation_type": "reviewed_company_sector_context",
+        "strength": "sector_watch",
+        "reason": "관측어 '005930'에서 005930 → 전기·전자 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 전기·전자 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 066570",
+        "business_features": [
+          "전기·전자"
+        ],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+            "title": "삼성전자 반도체 사업영역",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.lg.com/global/business/about-lg-business/",
+            "title": "LG Electronics Our Business",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm",
+            "title": "LG전자 유가증권상장법인 회사코드 066570",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "전기·전자",
+            "edge_type": "reviewed_company_sector_context",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/business-area/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "전기·전자",
+            "to": "LG전자",
+            "edge_type": "industry_has_listed_participant",
+            "evidence_urls": [
+              "https://www.lg.com/global/business/about-lg-business/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "LG전자",
+            "to": "066570 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "official_identity": {
+          "company": "LG전자",
+          "english_name": "LG ELECTRONICS INC.",
+          "established_date": "20020401",
+          "homepage": "https://www.lge.co.kr",
+          "legal_name": "LG전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "066570",
+          "stock_name": "LG전자"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "066570",
+          "name": "LG전자",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 144200.0,
+              "high": 154400.0,
+              "low": 144200.0,
+              "close": 148000.0,
+              "volume": 1265580.0,
+              "change_pct": -1.6611295681063125
+            },
+            {
+              "date": "2026-07-31",
+              "open": 157500.0,
+              "high": 162400.0,
+              "low": 152500.0,
+              "close": 162100.0,
+              "volume": 1754895.0,
+              "change_pct": 9.527027027027026
+            },
+            {
+              "date": "2026-08-03",
+              "open": 158200.0,
+              "high": 161000.0,
+              "low": 154100.0,
+              "close": 158800.0,
+              "volume": 754750.0,
+              "change_pct": -2.0357803824799507
+            },
+            {
+              "date": "2026-08-04",
+              "open": 160400.0,
+              "high": 167300.0,
+              "low": 156900.0,
+              "close": 165500.0,
+              "volume": 1179360.0,
+              "change_pct": 4.2191435768261965
+            },
+            {
+              "date": "2026-08-05",
+              "open": 170900.0,
+              "high": 181200.0,
+              "low": 169000.0,
+              "close": 179500.0,
+              "volume": 1343478.0,
+              "change_pct": 8.459214501510575
+            },
+            {
+              "date": "2026-08-06",
+              "open": 176700.0,
+              "high": 181200.0,
+              "low": 171600.0,
+              "close": 175200.0,
+              "volume": 910158.0,
+              "change_pct": -2.395543175487465
+            },
+            {
+              "date": "2026-08-07",
+              "open": 187400.0,
+              "high": 187500.0,
+              "low": 178100.0,
+              "close": 185000.0,
+              "volume": 1456931.0,
+              "change_pct": 5.5936073059360725
+            },
+            {
+              "date": "2026-08-10",
+              "open": 184600.0,
+              "high": 190600.0,
+              "low": 180900.0,
+              "close": 190000.0,
+              "volume": 1054814.0,
+              "change_pct": 2.7027027027027026
+            },
+            {
+              "date": "2026-08-11",
+              "open": 187700.0,
+              "high": 187700.0,
+              "low": 181700.0,
+              "close": 181700.0,
+              "volume": 800188.0,
+              "change_pct": -4.368421052631579
+            },
+            {
+              "date": "2026-08-12",
+              "open": 184200.0,
+              "high": 212500.0,
+              "low": 184200.0,
+              "close": 205000.0,
+              "volume": 3086187.0,
+              "change_pct": 12.82333516785911
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 184200.0,
+            "high": 212500.0,
+            "low": 184200.0,
+            "close": 205000.0,
+            "volume": 3086187.0,
+            "change_pct": 12.82333516785911
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 205000,
+            "daily_change_pct": 12.82,
+            "volume": 3086187
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 17.01,
+            "five_vs_previous_volume_ratio": 1.16,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "SK하이닉스",
+        "stock_code": "000660",
+        "market": "KOSPI",
+        "relation_type": "reviewed_company_sector_context",
+        "strength": "sector_watch",
+        "reason": "관측어 '005930'에서 005930 → 전기·전자 → SK하이닉스 → 000660 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 전기·전자 → SK하이닉스 → 000660 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 000660",
+        "business_features": [
+          "전기·전자"
+        ],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+            "title": "삼성전자 반도체 사업영역",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://news.skhynix.com/corporate/fact-sheet/",
+            "title": "SK하이닉스 Corporate Fact Sheet",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2025/09/09/000034/20250909000060/10136.htm",
+            "title": "SK하이닉스 유가증권상장법인 회사코드 000660",
+            "evidence_type": "official_listing_record",
+            "published_at": "2025-09-09",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "전기·전자",
+            "edge_type": "reviewed_company_sector_context",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/business-area/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "전기·전자",
+            "to": "SK하이닉스",
+            "edge_type": "industry_has_listed_participant",
+            "evidence_urls": [
+              "https://news.skhynix.com/corporate/fact-sheet/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "SK하이닉스",
+            "to": "000660 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2025/09/09/000034/20250909000060/10136.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2025-09-09",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "official_identity": {
+          "company": "SK하이닉스",
+          "english_name": "SK hynix Inc.",
+          "established_date": "19491015",
+          "homepage": "https://www.skhynix.com",
+          "legal_name": "에스케이하이닉스(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "000660",
+          "stock_name": "SK하이닉스"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "000660",
+          "name": "SK하이닉스",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 1361000.0,
+              "high": 1459000.0,
+              "low": 1287000.0,
+              "close": 1322000.0,
+              "volume": 9543189.0,
+              "change_pct": -5.638829407566024
+            },
+            {
+              "date": "2026-07-31",
+              "open": 1697000.0,
+              "high": 1718000.0,
+              "low": 1586000.0,
+              "close": 1718000.0,
+              "volume": 10499619.0,
+              "change_pct": 29.954614220877456
+            },
+            {
+              "date": "2026-08-03",
+              "open": 1642000.0,
+              "high": 1645000.0,
+              "low": 1562000.0,
+              "close": 1567000.0,
+              "volume": 5432833.0,
+              "change_pct": -8.78928987194412
+            },
+            {
+              "date": "2026-08-04",
+              "open": 1620000.0,
+              "high": 1630000.0,
+              "low": 1483000.0,
+              "close": 1577000.0,
+              "volume": 5391210.0,
+              "change_pct": 0.6381620931716656
+            },
+            {
+              "date": "2026-08-05",
+              "open": 1693000.0,
+              "high": 1701000.0,
+              "low": 1647000.0,
+              "close": 1668000.0,
+              "volume": 3945674.0,
+              "change_pct": 5.7704502219403935
+            },
+            {
+              "date": "2026-08-06",
+              "open": 1600000.0,
+              "high": 1606000.0,
+              "low": 1481000.0,
+              "close": 1495000.0,
+              "volume": 5498295.0,
+              "change_pct": -10.371702637889687
+            },
+            {
+              "date": "2026-08-07",
+              "open": 1521000.0,
+              "high": 1542000.0,
+              "low": 1409000.0,
+              "close": 1422000.0,
+              "volume": 5002539.0,
+              "change_pct": -4.882943143812709
+            },
+            {
+              "date": "2026-08-10",
+              "open": 1443000.0,
+              "high": 1487000.0,
+              "low": 1397000.0,
+              "close": 1420000.0,
+              "volume": 3295283.0,
+              "change_pct": -0.14064697609001406
+            },
+            {
+              "date": "2026-08-11",
+              "open": 1405000.0,
+              "high": 1455000.0,
+              "low": 1373000.0,
+              "close": 1425000.0,
+              "volume": 3817655.0,
+              "change_pct": 0.35211267605633806
+            },
+            {
+              "date": "2026-08-12",
+              "open": 1456000.0,
+              "high": 1549000.0,
+              "low": 1440000.0,
+              "close": 1504000.0,
+              "volume": 4204301.0,
+              "change_pct": 5.543859649122807
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 1456000.0,
+            "high": 1549000.0,
+            "low": 1440000.0,
+            "close": 1504000.0,
+            "volume": 4204301.0,
+            "change_pct": 5.543859649122807
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 1504000,
+            "daily_change_pct": 5.54,
+            "volume": 4204301
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 0.6,
+            "five_vs_previous_volume_ratio": 0.63,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "삼성SDI",
+        "stock_code": "006400",
+        "market": "KOSPI",
+        "relation_type": "reviewed_company_sector_context",
+        "strength": "sector_watch",
+        "reason": "관측어 '005930'에서 005930 → 전기·전자 → 삼성SDI → 006400 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 전기·전자 → 삼성SDI → 006400 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 006400",
+        "business_features": [
+          "전기·전자"
+        ],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+            "title": "삼성전자 반도체 사업영역",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.samsungsdi.com/upload/download/sustainable-management/Samsung_SDI_Sustainability_Report_2025_EN.pdf",
+            "title": "Samsung SDI Sustainability Report 2025",
+            "evidence_type": "official_company_report",
+            "published_at": "2025-06-30",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2025/07/02/000294/20250702000872/00637.htm",
+            "title": "삼성SDI 유가증권상장법인 회사코드 006400",
+            "evidence_type": "official_listing_record",
+            "published_at": "2025-07-02",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "전기·전자",
+            "edge_type": "reviewed_company_sector_context",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/business-area/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "전기·전자",
+            "to": "삼성SDI",
+            "edge_type": "industry_has_listed_participant",
+            "evidence_urls": [
+              "https://www.samsungsdi.com/upload/download/sustainable-management/Samsung_SDI_Sustainability_Report_2025_EN.pdf"
+            ],
+            "evidence_type": [
+              "official_company_report"
+            ],
+            "as_of": "2025-06-30",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성SDI",
+            "to": "006400 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2025/07/02/000294/20250702000872/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2025-07-02",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "official_identity": {
+          "company": "삼성SDI",
+          "english_name": "SAMSUNG SDI CO.,LTD",
+          "established_date": "19700120",
+          "homepage": "https://www.samsungsdi.co.kr",
+          "legal_name": "삼성SDI(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "006400",
+          "stock_name": "삼성SDI"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "006400",
+          "name": "삼성SDI",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 350000.0,
+              "high": 389500.0,
+              "low": 350000.0,
+              "close": 358500.0,
+              "volume": 766793.0,
+              "change_pct": -1.510989010989011
+            },
+            {
+              "date": "2026-07-31",
+              "open": 382000.0,
+              "high": 399000.0,
+              "low": 362000.0,
+              "close": 397000.0,
+              "volume": 675830.0,
+              "change_pct": 10.739191073919107
+            },
+            {
+              "date": "2026-08-03",
+              "open": 392500.0,
+              "high": 397000.0,
+              "low": 377500.0,
+              "close": 389500.0,
+              "volume": 318802.0,
+              "change_pct": -1.8891687657430731
+            },
+            {
+              "date": "2026-08-04",
+              "open": 399500.0,
+              "high": 419500.0,
+              "low": 391500.0,
+              "close": 419500.0,
+              "volume": 401740.0,
+              "change_pct": 7.702182284980745
+            },
+            {
+              "date": "2026-08-05",
+              "open": 429500.0,
+              "high": 435000.0,
+              "low": 419000.0,
+              "close": 429000.0,
+              "volume": 301925.0,
+              "change_pct": 2.264600715137068
+            },
+            {
+              "date": "2026-08-06",
+              "open": 423000.0,
+              "high": 446500.0,
+              "low": 418500.0,
+              "close": 427000.0,
+              "volume": 346534.0,
+              "change_pct": -0.4662004662004662
+            },
+            {
+              "date": "2026-08-07",
+              "open": 444000.0,
+              "high": 468000.0,
+              "low": 439000.0,
+              "close": 459000.0,
+              "volume": 689155.0,
+              "change_pct": 7.494145199063232
+            },
+            {
+              "date": "2026-08-10",
+              "open": 454000.0,
+              "high": 484500.0,
+              "low": 442500.0,
+              "close": 481500.0,
+              "volume": 423653.0,
+              "change_pct": 4.901960784313726
+            },
+            {
+              "date": "2026-08-11",
+              "open": 475500.0,
+              "high": 481000.0,
+              "low": 457500.0,
+              "close": 459500.0,
+              "volume": 354160.0,
+              "change_pct": -4.569055036344756
+            },
+            {
+              "date": "2026-08-12",
+              "open": 468000.0,
+              "high": 496500.0,
+              "low": 459500.0,
+              "close": 485500.0,
+              "volume": 479152.0,
+              "change_pct": 5.658324265505985
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 468000.0,
+            "high": 496500.0,
+            "low": 459500.0,
+            "close": 485500.0,
+            "volume": 479152.0,
+            "change_pct": 5.658324265505985
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 485500,
+            "daily_change_pct": 5.66,
+            "volume": 479152
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 13.7,
+            "five_vs_previous_volume_ratio": 0.93,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "삼성전기",
+        "stock_code": "009150",
+        "market": "KOSPI",
+        "relation_type": "reviewed_company_sector_context",
+        "strength": "sector_watch",
+        "reason": "관측어 '005930'에서 005930 → 전기·전자 → 삼성전기 → 009150 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 전기·전자 → 삼성전기 → 009150 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 009150",
+        "business_features": [
+          "전기·전자"
+        ],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/business-area/",
+            "title": "삼성전자 반도체 사업영역",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://sem.samsung.com/kr/about-us/company/overview.do",
+            "title": "삼성전기 회사개요",
+            "evidence_type": "official_company_business_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/02/20/000241/20260220000716/00637.htm",
+            "title": "삼성전기 유가증권상장법인 회사코드 009150",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-02-20",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "전기·전자",
+            "edge_type": "reviewed_company_sector_context",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/business-area/"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "전기·전자",
+            "to": "삼성전기",
+            "edge_type": "industry_has_listed_participant",
+            "evidence_urls": [
+              "https://sem.samsung.com/kr/about-us/company/overview.do"
+            ],
+            "evidence_type": [
+              "official_company_business_page"
+            ],
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성전기",
+            "to": "009150 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/02/20/000241/20260220000716/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-02-20",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "official_identity": {
+          "company": "삼성전기",
+          "english_name": "SAMSUNG ELECTRO-MECHANICS CO.,LTD",
+          "established_date": "19730808",
+          "homepage": "https://www.sem.samsung.co.kr",
+          "legal_name": "삼성전기(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "009150",
+          "stock_name": "삼성전기"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "009150",
+          "name": "삼성전기",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 1005000.0,
+              "high": 1075000.0,
+              "low": 865000.0,
+              "close": 879000.0,
+              "volume": 1400040.0,
+              "change_pct": -14.577259475218659
+            },
+            {
+              "date": "2026-07-31",
+              "open": 1128000.0,
+              "high": 1142000.0,
+              "low": 1024000.0,
+              "close": 1142000.0,
+              "volume": 613210.0,
+              "change_pct": 29.92036405005688
+            },
+            {
+              "date": "2026-08-03",
+              "open": 1221000.0,
+              "high": 1260000.0,
+              "low": 1155000.0,
+              "close": 1181000.0,
+              "volume": 1107138.0,
+              "change_pct": 3.4150612959719786
+            },
+            {
+              "date": "2026-08-04",
+              "open": 1278000.0,
+              "high": 1279000.0,
+              "low": 1112000.0,
+              "close": 1185000.0,
+              "volume": 982295.0,
+              "change_pct": 0.3386960203217612
+            },
+            {
+              "date": "2026-08-05",
+              "open": 1351000.0,
+              "high": 1370000.0,
+              "low": 1290000.0,
+              "close": 1356000.0,
+              "volume": 1023094.0,
+              "change_pct": 14.430379746835442
+            },
+            {
+              "date": "2026-08-06",
+              "open": 1313000.0,
+              "high": 1320000.0,
+              "low": 1202000.0,
+              "close": 1229000.0,
+              "volume": 971901.0,
+              "change_pct": -9.365781710914455
+            },
+            {
+              "date": "2026-08-07",
+              "open": 1259000.0,
+              "high": 1304000.0,
+              "low": 1233000.0,
+              "close": 1278000.0,
+              "volume": 894867.0,
+              "change_pct": 3.986981285598047
+            },
+            {
+              "date": "2026-08-10",
+              "open": 1315000.0,
+              "high": 1357000.0,
+              "low": 1250000.0,
+              "close": 1274000.0,
+              "volume": 612678.0,
+              "change_pct": -0.3129890453834116
+            },
+            {
+              "date": "2026-08-11",
+              "open": 1238000.0,
+              "high": 1297000.0,
+              "low": 1191000.0,
+              "close": 1262000.0,
+              "volume": 724733.0,
+              "change_pct": -0.9419152276295133
+            },
+            {
+              "date": "2026-08-12",
+              "open": 1288000.0,
+              "high": 1350000.0,
+              "low": 1275000.0,
+              "close": 1335000.0,
+              "volume": 701680.0,
+              "change_pct": 5.784469096671949
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 1288000.0,
+            "high": 1350000.0,
+            "low": 1275000.0,
+            "close": 1335000.0,
+            "volume": 701680.0,
+            "change_pct": 5.784469096671949
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 1335000,
+            "daily_change_pct": 5.78,
+            "volume": 701680
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 8.62,
+            "five_vs_previous_volume_ratio": 0.76,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "market": "KOSPI",
+        "relation_type": "denotes_listed_company",
+        "strength": "direct",
+        "reason": "관측어 '005930'에서 005930 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '005930'에서 005930 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 005930",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+        "evidence_sources": [
+          {
+            "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+            "title": "삼성전자 유가증권상장법인 회사코드 005930",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "005930",
+        "matched_ontology_node": "005930",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "005930",
+            "to": "005930",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T00:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "005930",
+            "to": "삼성전자",
+            "edge_type": "denotes_listed_company",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-26",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성전자",
+            "to": "005930 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "삼성전자",
+          "english_name": "SAMSUNG ELECTRONICS CO,.LTD",
+          "established_date": "19690113",
+          "homepage": "https://www.samsung.com/sec",
+          "legal_name": "삼성전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005930",
+          "stock_name": "삼성전자"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "005930",
+          "name": "삼성전자",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 214000.0,
+              "high": 226000.0,
+              "low": 202000.0,
+              "close": 207000.0,
+              "volume": 46694193.0,
+              "change_pct": -0.7194244604316548
+            },
+            {
+              "date": "2026-07-31",
+              "open": 257000.0,
+              "high": 267000.0,
+              "low": 243000.0,
+              "close": 262500.0,
+              "volume": 58478873.0,
+              "change_pct": 26.811594202898554
+            },
+            {
+              "date": "2026-08-03",
+              "open": 248000.0,
+              "high": 249500.0,
+              "low": 238000.0,
+              "close": 239500.0,
+              "volume": 27825493.0,
+              "change_pct": -8.761904761904763
+            },
+            {
+              "date": "2026-08-04",
+              "open": 244500.0,
+              "high": 244500.0,
+              "low": 228000.0,
+              "close": 240000.0,
+              "volume": 29433821.0,
+              "change_pct": 0.20876826722338201
+            },
+            {
+              "date": "2026-08-05",
+              "open": 254000.0,
+              "high": 254500.0,
+              "low": 244000.0,
+              "close": 246000.0,
+              "volume": 22577128.0,
+              "change_pct": 2.5
+            },
+            {
+              "date": "2026-08-06",
+              "open": 241500.0,
+              "high": 246000.0,
+              "low": 228000.0,
+              "close": 230500.0,
+              "volume": 26101823.0,
+              "change_pct": -6.300813008130081
+            },
+            {
+              "date": "2026-08-07",
+              "open": 235000.0,
+              "high": 239500.0,
+              "low": 229000.0,
+              "close": 231000.0,
+              "volume": 20546010.0,
+              "change_pct": 0.21691973969631237
+            },
+            {
+              "date": "2026-08-10",
+              "open": 236000.0,
+              "high": 238500.0,
+              "low": 228500.0,
+              "close": 230000.0,
+              "volume": 16327805.0,
+              "change_pct": -0.4329004329004329
+            },
+            {
+              "date": "2026-08-11",
+              "open": 229500.0,
+              "high": 243000.0,
+              "low": 227500.0,
+              "close": 239500.0,
+              "volume": 23310969.0,
+              "change_pct": 4.130434782608695
+            },
+            {
+              "date": "2026-08-12",
+              "open": 243500.0,
+              "high": 260500.0,
+              "low": 241000.0,
+              "close": 255500.0,
+              "volume": 27102479.0,
+              "change_pct": 6.6805845511482245
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 243500.0,
+            "high": 260500.0,
+            "low": 241000.0,
+            "close": 255500.0,
+            "volume": 27102479.0,
+            "change_pct": 6.6805845511482245
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 255500,
+            "daily_change_pct": 6.68,
+            "volume": 27102479
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 10.85,
+            "five_vs_previous_volume_ratio": 0.61,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_categories": [
+      {
+        "name": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "companies": [
+          "LG전자",
+          "SK하이닉스",
+          "삼성SDI",
+          "삼성전기"
+        ],
+        "candidate_count": 4,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "삼성전자"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "candidate_company_categories": [
+      {
+        "name": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "companies": [
+          "LG전자",
+          "SK하이닉스",
+          "삼성SDI",
+          "삼성전기"
+        ],
+        "candidate_count": 4,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "삼성전자"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 5,
+      "ontology_complete_count": 5,
+      "published_count": 5,
+      "minimum_gold_companies": 5,
+      "score_independent_of_company_count": true,
+      "direct_count": 1,
+      "role_coverage": [
+        "인프라·서비스",
+        "직접 기업"
+      ],
+      "tier_counts": {
+        "core": 1,
+        "value_chain": 0,
+        "adjacent": 4,
+        "excluded": 0
+      },
+      "category_count": 2,
+      "candidate_category_count": 2,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 5,
+        "matched_terms": [
+          {
+            "term": "005930",
+            "observation_status": "observed_representative",
+            "ontology_status": "published",
+            "ontology_company_count": 5,
+            "lookup_match": {
+              "match_type": "exact_term",
+              "matched_label": "005930",
+              "target_node_id": "term:reviewed:005930",
+              "target_node_label": "005930",
+              "review_status": "node_label",
+              "evidence": []
+            }
+          },
+          {
+            "term": "삼성전자주식회사",
+            "observation_status": "approved_ontology_term",
+            "ontology_status": "published",
+            "ontology_company_count": 5,
+            "lookup_match": {
+              "match_type": "reviewed_company_identifier_alias",
+              "alias_id": "alias:reviewed:samsung-legal-name",
+              "matched_label": "삼성전자주식회사",
+              "target_node_id": "term:reviewed:005930",
+              "target_node_label": "005930",
+              "review_status": "approved",
+              "evidence": [
+                {
+                  "id": "evidence:reviewed:krx-005930",
+                  "title": "삼성전자 유가증권상장법인 회사코드 005930",
+                  "publisher": "한국거래소 KIND",
+                  "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+                  "evidence_type": "official_listing_record",
+                  "summary": "삼성전자주식회사의 유가증권상장법인 회사코드가 005930임을 확인한다.",
+                  "published_at": "2026-05-26",
+                  "review_status": "approved",
+                  "provenance": {
+                    "method": "manual_url_review",
+                    "reviewed_at": "2026-08-12",
+                    "scope": "company_to_stock"
+                  }
+                }
+              ],
+              "provenance": {
+                "method": "manual_url_review",
+                "reviewed_at": "2026-08-12"
+              }
+            }
+          },
+          {
+            "term": "삼성전자",
+            "observation_status": "approved_ontology_term",
+            "ontology_status": "published",
+            "ontology_company_count": 5,
+            "lookup_match": {
+              "match_type": "reviewed_company_identifier_alias",
+              "alias_id": "alias:reviewed:samsung-name",
+              "matched_label": "삼성전자",
+              "target_node_id": "term:reviewed:005930",
+              "target_node_label": "005930",
+              "review_status": "approved",
+              "evidence": [
+                {
+                  "id": "evidence:reviewed:krx-005930",
+                  "title": "삼성전자 유가증권상장법인 회사코드 005930",
+                  "publisher": "한국거래소 KIND",
+                  "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+                  "evidence_type": "official_listing_record",
+                  "summary": "삼성전자주식회사의 유가증권상장법인 회사코드가 005930임을 확인한다.",
+                  "published_at": "2026-05-26",
+                  "review_status": "approved",
+                  "provenance": {
+                    "method": "manual_url_review",
+                    "reviewed_at": "2026-08-12",
+                    "scope": "company_to_stock"
+                  }
+                }
+              ],
+              "provenance": {
+                "method": "manual_url_review",
+                "reviewed_at": "2026-08-12"
+              }
+            }
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "증거 온톨로지 경로가 완결된 고유 상장기업 5개 이상을 Gold로 공개"
+    },
+    "rank": 73,
+    "classification": "일반 트렌드",
+    "persistence_rank": 51,
+    "momentum_rank": 73,
+    "main_rank": 10,
+    "home_context_status": "resolved",
+    "home_context_reason": "context_resolved",
+    "company_card_status": "ready",
+    "company_card_reason": "evidence_backed_five_or_more",
+    "ranking_availability_status": "provisional_history"
+  }
+}
