@@ -10,6 +10,61 @@ from .company_roles import COMPANY_ROLE_LABELS
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 
 
+def record_publication_receipt(
+    path: Path, *, observed_at: str, publication_id: str, remote_sha: str
+) -> None:
+    """Persist proof that the exact hourly publication reached the remote."""
+
+    connection = sqlite3.connect(path)
+    try:
+        connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS publication_receipts (
+                observed_at TEXT PRIMARY KEY,
+                publication_id TEXT NOT NULL,
+                remote_sha TEXT NOT NULL,
+                verified_at TEXT NOT NULL
+            )
+            """
+        )
+        connection.execute(
+            """
+            INSERT INTO publication_receipts(observed_at, publication_id, remote_sha, verified_at)
+            VALUES (?, ?, ?, ?)
+            ON CONFLICT(observed_at) DO UPDATE SET
+                publication_id=excluded.publication_id,
+                remote_sha=excluded.remote_sha,
+                verified_at=excluded.verified_at
+            """,
+            (observed_at, publication_id, remote_sha, datetime.now(UTC).isoformat()),
+        )
+        connection.commit()
+    finally:
+        connection.close()
+
+
+def _publication_receipt(path: Path, observed_at: str) -> dict:
+    connection = sqlite3.connect(path)
+    try:
+        exists = connection.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='publication_receipts'"
+        ).fetchone()
+        row = None if not exists else connection.execute(
+            "SELECT publication_id, remote_sha, verified_at FROM publication_receipts WHERE observed_at=?",
+            (observed_at,),
+        ).fetchone()
+    finally:
+        connection.close()
+    if not row:
+        return {"passed": False, "publication_id": None, "remote_sha": None, "verified_at": None}
+    return {
+        "passed": bool(row[0] and row[1]),
+        "publication_id": row[0],
+        "remote_sha": row[1],
+        "verified_at": row[2],
+    }
+
+
 def evaluate_frontend_result(intelligence: dict) -> dict:
     """Evaluate the completed frontend contract without recomputing rank."""
 
@@ -136,11 +191,13 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
     apply_frontend_enrichment_cache(intelligence, verified_at=stamp)
     refresh_frontend_readiness(intelligence)
     contract = evaluate_frontend_result(intelligence)
+    publication = _publication_receipt(path, stamp)
     return {
         "observed_at": stamp,
-        "passed": source_gate["passed"] and contract["passed"],
+        "passed": source_gate["passed"] and contract["passed"] and publication["passed"],
         "source_gate": source_gate,
         "contract": contract,
+        "publication": publication,
     }
 
 
@@ -169,7 +226,19 @@ def main() -> int:
     parser.add_argument("--end", type=datetime.fromisoformat, required=True)
     parser.add_argument("--count", type=int, default=3)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--record-publication", action="store_true")
+    parser.add_argument("--publication-id")
+    parser.add_argument("--remote-sha")
     args = parser.parse_args()
+    if args.record_publication:
+        if not args.publication_id or not args.remote_sha:
+            parser.error("--record-publication requires --publication-id and --remote-sha")
+        record_publication_receipt(
+            args.database,
+            observed_at=args.end.astimezone(UTC).replace(minute=0, second=0, microsecond=0).isoformat(),
+            publication_id=args.publication_id,
+            remote_sha=args.remote_sha,
+        )
     result = evaluate_consecutive_hours(args.database, end=args.end, count=args.count)
     encoded = json.dumps(result, ensure_ascii=False, indent=2).encode("utf-8")
     if args.output:

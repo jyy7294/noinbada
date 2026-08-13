@@ -110,27 +110,6 @@ try {
         exit 0
     }
 
-    # Product-quality proof is tracked separately from transport publication.
-    # It never backfills a missing hour and never changes ranking. A streak is
-    # complete only when eight exact consecutive hours each contain observed
-    # X 1..30, observed Google rows, and a complete frontend Top10 contract.
-    $QualityOutput = Join-Path $PublicationRoot "monitoring\result_quality.json"
-    & $Python -m trzip.result_quality --database $DatabasePath `
-        --end $PublicationStatus.observed_at --count 8 --output $QualityOutput | Out-Null
-    $QualityExitCode = $LASTEXITCODE
-    try {
-        $Quality = Get-Content -LiteralPath $QualityOutput -Raw -Encoding utf8 | ConvertFrom-Json
-    } catch {
-        throw "result quality gate returned invalid JSON"
-    }
-    $QualityStatus = if ($Quality.passed -eq $true) { "complete" } else { "in_progress" }
-    $QualityDetail = "streak={0}/8 remaining={1}" -f `
-        $Quality.current_consecutive_success_count,$Quality.remaining_success_hours
-    Write-RunLog -Phase "result_quality" -Status $QualityStatus -Detail $QualityDetail
-    if ($QualityExitCode -notin @(0,1)) {
-        throw "result quality gate failed to execute; exit=$QualityExitCode"
-    }
-
     # Audit the exact publication and SQLite ledger that are about to be
     # published. History maturity may remain provisional, but both ranking
     # sources must be observed for this hour before remote publication.
@@ -196,17 +175,18 @@ try {
         throw "publication attempted to stage forbidden paths: $($ForbiddenPaths -join ', ')"
     }
     & git -C $LiveDataRoot diff --cached --quiet
-    if ($LASTEXITCODE -eq 0) {
-        Write-RunLog -Phase "publish" -Status "unchanged"
-        exit 0
-    }
+    $PublicationChanged = $LASTEXITCODE -ne 0
     $commitStamp = [DateTimeOffset]::UtcNow.ToString("yyyy-MM-ddTHH:00Z")
-    & git -C $LiveDataRoot -c user.name="trzip-local-collector" `
-        -c user.email="trzip-local-collector@users.noreply.github.com" `
-        commit -m "data: laptop hourly collection $commitStamp"
-    if ($LASTEXITCODE -ne 0) { throw "failed to commit live data" }
-    & git -C $LiveDataRoot push origin "HEAD:refs/heads/live-data"
-    if ($LASTEXITCODE -ne 0) { throw "failed to push live-data; local commit retained for retry" }
+    if (-not $PublicationChanged) {
+        Write-RunLog -Phase "publish" -Status "unchanged"
+    } else {
+        & git -C $LiveDataRoot -c user.name="trzip-local-collector" `
+            -c user.email="trzip-local-collector@users.noreply.github.com" `
+            commit -m "data: laptop hourly collection $commitStamp"
+        if ($LASTEXITCODE -ne 0) { throw "failed to commit live data" }
+        & git -C $LiveDataRoot push origin "HEAD:refs/heads/live-data"
+        if ($LASTEXITCODE -ne 0) { throw "failed to push live-data; local commit retained for retry" }
+    }
     $localPublished = (& git -C $LiveDataRoot rev-parse HEAD).Trim()
     $remoteLine = @(& git -C $LiveDataRoot ls-remote origin refs/heads/live-data)
     if ($LASTEXITCODE -ne 0 -or $remoteLine.Count -ne 1) {
@@ -215,6 +195,36 @@ try {
     $remotePublished = ($remoteLine[0] -split '\s+')[0].Trim()
     if ($remotePublished -ne $localPublished) {
         throw "remote live-data verification mismatch: local=$localPublished remote=$remotePublished"
+    }
+    # Count an hour only after the exact publication has passed runtime audit
+    # and its remote SHA has been independently verified.
+    $QualityOutput = Join-Path $PublicationRoot "monitoring\result_quality.json"
+    & $Python -m trzip.result_quality --database $DatabasePath `
+        --end $PublicationStatus.observed_at --count 8 --output $QualityOutput `
+        --record-publication --publication-id $PublicationStatus.publication_id `
+        --remote-sha $remotePublished | Out-Null
+    $QualityExitCode = $LASTEXITCODE
+    if ($QualityExitCode -notin @(0,1)) {
+        throw "result quality gate failed to execute; exit=$QualityExitCode"
+    }
+    $Quality = Get-Content -LiteralPath $QualityOutput -Raw -Encoding utf8 | ConvertFrom-Json
+    $QualityStatus = if ($Quality.passed -eq $true) { "complete" } else { "in_progress" }
+    $QualityDetail = "streak={0}/8 remaining={1}" -f `
+        $Quality.current_consecutive_success_count,$Quality.remaining_success_hours
+    Write-RunLog -Phase "result_quality" -Status $QualityStatus -Detail $QualityDetail
+    Sync-PublicDirectory -Name "monitoring"
+    & git -C $LiveDataRoot add -- monitoring
+    & git -C $LiveDataRoot diff --cached --quiet
+    if ($LASTEXITCODE -ne 0) {
+        & git -C $LiveDataRoot -c user.name="trzip-local-collector" `
+            -c user.email="trzip-local-collector@users.noreply.github.com" `
+            commit -m "data: record verified hourly result $commitStamp"
+        if ($LASTEXITCODE -ne 0) { throw "failed to attach verified monitoring result" }
+        & git -C $LiveDataRoot push origin "HEAD:refs/heads/live-data"
+        if ($LASTEXITCODE -ne 0) { throw "failed to publish verified monitoring result" }
+        $localPublished = (& git -C $LiveDataRoot rev-parse HEAD).Trim()
+        $remotePublished = ((@(& git -C $LiveDataRoot ls-remote origin refs/heads/live-data))[0] -split '\s+')[0].Trim()
+        if ($remotePublished -ne $localPublished) { throw "monitoring remote verification mismatch" }
     }
     $commit = (& git -C $LiveDataRoot rev-parse --short HEAD).Trim()
     Write-RunLog -Phase "publish" -Status "ok" -Detail "$commit remote_verified=true"
