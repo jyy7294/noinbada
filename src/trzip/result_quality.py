@@ -11,7 +11,8 @@ from .ontology import MINIMUM_FRONTEND_COMPANIES
 
 
 def record_publication_receipt(
-    path: Path, *, observed_at: str, publication_id: str, remote_sha: str
+    path: Path, *, observed_at: str, publication_id: str, remote_sha: str,
+    contract: dict | None = None,
 ) -> None:
     """Persist proof that the exact hourly publication reached the remote."""
 
@@ -23,20 +24,32 @@ def record_publication_receipt(
                 observed_at TEXT PRIMARY KEY,
                 publication_id TEXT NOT NULL,
                 remote_sha TEXT NOT NULL,
-                verified_at TEXT NOT NULL
+                verified_at TEXT NOT NULL,
+                contract_json TEXT
             )
             """
         )
+        columns = {row[1] for row in connection.execute("PRAGMA table_info(publication_receipts)")}
+        if "contract_json" not in columns:
+            connection.execute("ALTER TABLE publication_receipts ADD COLUMN contract_json TEXT")
         connection.execute(
             """
-            INSERT INTO publication_receipts(observed_at, publication_id, remote_sha, verified_at)
-            VALUES (?, ?, ?, ?)
+            INSERT INTO publication_receipts(
+                observed_at, publication_id, remote_sha, verified_at, contract_json
+            ) VALUES (?, ?, ?, ?, ?)
             ON CONFLICT(observed_at) DO UPDATE SET
                 publication_id=excluded.publication_id,
                 remote_sha=excluded.remote_sha,
-                verified_at=excluded.verified_at
+                verified_at=excluded.verified_at,
+                contract_json=excluded.contract_json
             """,
-            (observed_at, publication_id, remote_sha, datetime.now(UTC).isoformat()),
+            (
+                observed_at,
+                publication_id,
+                remote_sha,
+                datetime.now(UTC).isoformat(),
+                json.dumps(contract, ensure_ascii=False, separators=(",", ":")) if contract else None,
+            ),
         )
         connection.commit()
     finally:
@@ -49,19 +62,26 @@ def _publication_receipt(path: Path, observed_at: str) -> dict:
         exists = connection.execute(
             "SELECT 1 FROM sqlite_master WHERE type='table' AND name='publication_receipts'"
         ).fetchone()
+        columns = set() if not exists else {
+            column[1] for column in connection.execute("PRAGMA table_info(publication_receipts)")
+        }
+        contract_expression = "contract_json" if "contract_json" in columns else "NULL"
         row = None if not exists else connection.execute(
-            "SELECT publication_id, remote_sha, verified_at FROM publication_receipts WHERE observed_at=?",
+            f"SELECT publication_id, remote_sha, verified_at, {contract_expression} "
+            "FROM publication_receipts WHERE observed_at=?",
             (observed_at,),
         ).fetchone()
     finally:
         connection.close()
     if not row:
         return {"passed": False, "publication_id": None, "remote_sha": None, "verified_at": None}
+    contract = json.loads(row[3]) if row[3] else None
     return {
-        "passed": bool(row[0] and row[1]),
+        "passed": bool(row[0] and row[1] and contract and contract.get("passed") is True),
         "publication_id": row[0],
         "remote_sha": row[1],
         "verified_at": row[2],
+        "contract": contract,
     }
 
 
@@ -190,11 +210,13 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
     normalized = at.astimezone(UTC).replace(minute=0, second=0, microsecond=0)
     stamp = normalized.isoformat()
     source_gate = _source_gate(path, stamp)
-    intelligence = build_intelligence(normalized, hours=24, path=path)
-    apply_frontend_enrichment_cache(intelligence, verified_at=stamp)
-    refresh_frontend_readiness(intelligence)
-    contract = evaluate_frontend_result(intelligence)
     publication = _publication_receipt(path, stamp)
+    contract = publication.get("contract")
+    if contract is None:
+        intelligence = build_intelligence(normalized, hours=24, path=path)
+        apply_frontend_enrichment_cache(intelligence, verified_at=stamp)
+        refresh_frontend_readiness(intelligence)
+        contract = evaluate_frontend_result(intelligence)
     return {
         "observed_at": stamp,
         "passed": source_gate["passed"] and contract["passed"] and publication["passed"],
@@ -232,15 +254,23 @@ def main() -> int:
     parser.add_argument("--record-publication", action="store_true")
     parser.add_argument("--publication-id")
     parser.add_argument("--remote-sha")
+    parser.add_argument("--intelligence", type=Path)
     args = parser.parse_args()
     if args.record_publication:
         if not args.publication_id or not args.remote_sha:
             parser.error("--record-publication requires --publication-id and --remote-sha")
+        if not args.intelligence:
+            parser.error("--record-publication requires --intelligence")
+        intelligence = json.loads(args.intelligence.read_text(encoding="utf-8"))
+        if intelligence.get("publication_id") != args.publication_id:
+            parser.error("--intelligence publication_id does not match --publication-id")
+        contract = evaluate_frontend_result(intelligence)
         record_publication_receipt(
             args.database,
             observed_at=args.end.astimezone(UTC).replace(minute=0, second=0, microsecond=0).isoformat(),
             publication_id=args.publication_id,
             remote_sha=args.remote_sha,
+            contract=contract,
         )
     result = evaluate_consecutive_hours(args.database, end=args.end, count=args.count)
     encoded = json.dumps(result, ensure_ascii=False, indent=2).encode("utf-8")
