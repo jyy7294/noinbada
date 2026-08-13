@@ -32,18 +32,18 @@ SCORE_FORMULA_CONTRACTS = {
         ),
         "freshness_multiplier": True,
     },
-    "period40_momentum20_persistence20_recency15_cross5_v1": {
+    "spread35_velocity25_breadth20_persistence10_recency10_v1": {
         "components": (
-            ("period_strength_points", 40.0),
-            ("momentum_points", 20.0),
-            ("persistence_points", 20.0),
-            ("recency_points", 15.0),
-            ("cross_source_points", 5.0),
+            ("period_strength_points", 35.0),
+            ("momentum_points", 25.0),
+            ("persistence_points", 10.0),
+            ("recency_points", 10.0),
+            ("cross_source_points", 20.0),
         ),
         "freshness_multiplier": False,
     },
 }
-PERIOD_SCORE_FORMULA = "period40_momentum20_persistence20_recency15_cross5_v1"
+PERIOD_SCORE_FORMULA = "spread35_velocity25_breadth20_persistence10_recency10_v1"
 EXPECTED_SCHEMAS = {
     "intelligence": "trzip-intelligence-v3",
     "metadata": "trzip-live-data-v3",
@@ -167,6 +167,9 @@ def _audit_bundle(
         report.fail("bundle_observed_at_mismatch")
     if any(document.get("mode") != "live" for document in documents.values()):
         report.fail("bundle_not_live")
+    publishable_values = {document.get("publishable") for document in documents.values()}
+    if len(publishable_values) != 1 or None in publishable_values:
+        report.fail("bundle_publishable_mismatch")
 
     collection = metadata.get("collection") or {}
     collection_audit = collection.get("audit") or {}
@@ -210,6 +213,15 @@ def _audit_bundle(
     intelligence_partial = (intelligence.get("collection_status") or {}).get("partial")
     if status_partial != intelligence_partial:
         report.fail("bundle_partial_status_mismatch")
+    expected_publishable = (
+        status_partial is False
+        and all(status_sources.get(source) == "observed" for source in ALLOWED_RANKING_SOURCES)
+    )
+    if any(
+        document.get("publishable") is not expected_publishable
+        for document in documents.values()
+    ):
+        report.fail("bundle_publishable_state_invalid")
 
     health = metadata.get("collection_health")
     health_invalid = not isinstance(health, dict)
@@ -438,7 +450,7 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
     views = intelligence.get("ranking_views")
     failures = 0
     if (
-        intelligence.get("ranking_default_period") != "weekly"
+        intelligence.get("ranking_default_period") != "daily"
         or not isinstance(periods, list)
         or not isinstance(views, dict)
         or [
@@ -450,9 +462,9 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
         report.fail("ranking_period_contract_invalid")
         return
     if intelligence.get("ranking_top_level_alias") != {
-        "period": "weekly",
-        "unified_ranking": "weekly_period_aggregate",
-        "trend_top10": "weekly_period_top10",
+        "period": "daily",
+        "unified_ranking": "daily_period_aggregate",
+        "trend_top10": "daily_home_top10",
     }:
         report.fail("ranking_period_contract_invalid")
         return
@@ -499,14 +511,17 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
             for item in ranking
         ):
             failures += 1
-        main = [item for item in ranking if item.get("lane") == "main"]
+        main = [
+            item for item in ranking
+            if item.get("lane") == "main" and item.get("home_eligible") is True
+        ]
         if (
             [item.get("main_rank") for item in main] != list(range(1, len(main) + 1))
             or top10 != main[:10]
         ):
             failures += 1
         period_counts[key] = len(ranking)
-    weekly = views["weekly"]
+    default_view = views["daily"]
     if [
         (
             item.get("event_key"),
@@ -516,7 +531,7 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
             item.get("last_seen_at"),
             item.get("freshness"),
         )
-        for item in weekly.get("unified_ranking") or []
+        for item in default_view.get("unified_ranking") or []
     ] != [
         (
             item.get("event_key"),
@@ -529,14 +544,14 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
         for item in intelligence.get("unified_ranking") or []
     ]:
         failures += 1
-    if [item.get("event_key") for item in weekly.get("period_top10") or []] != [
+    if [item.get("event_key") for item in default_view.get("period_top10") or []] != [
         item.get("event_key") for item in intelligence.get("trend_top10") or []
     ]:
         failures += 1
     if failures:
         report.fail("ranking_period_integrity_error")
     report.metrics["ranking_periods"] = {
-        "default": "weekly",
+        "default": "daily",
         "counts": period_counts,
         "failure_count": failures,
     }
@@ -599,11 +614,17 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
     _audit_period_rankings(intelligence, report)
     unified = intelligence.get("unified_ranking")
     trend_top10 = intelligence.get("trend_top10")
+    home_top10 = intelligence.get("home_top10")
+    rising_top10 = intelligence.get("rising_top10")
+    all_observed = intelligence.get("all_observed_ranking")
     public_top10 = intelligence.get("public_top10")
     company_ready = intelligence.get("company_ready_trends")
     if not all(
         isinstance(value, list)
-        for value in (unified, trend_top10, public_top10, company_ready)
+        for value in (
+            unified, all_observed, home_top10, rising_top10,
+            trend_top10, public_top10, company_ready,
+        )
     ):
         report.fail("ranking_not_array")
         return
@@ -686,7 +707,26 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         if item.get("lane") != "main"
     ):
         home_failures += 1
-    if trend_top10 != main_ranking[:10] or public_top10 != trend_top10:
+    home_ranking = [
+        item for item in unified
+        if item.get("lane") == "main" and item.get("home_eligible") is True
+    ]
+    if [item.get("home_rank") for item in home_ranking] != list(
+        range(1, len(home_ranking) + 1)
+    ):
+        home_failures += 1
+    if (
+        all_observed != unified
+        or home_top10 != home_ranking[:10]
+        or trend_top10 != home_top10
+        or public_top10 != home_top10
+    ):
+        home_failures += 1
+    if any(
+        (item.get("ranking_data_readiness") or {}).get("momentum_status") != "measured"
+        or float(item.get("momentum_delta") or 0.0) <= 0.0
+        for item in rising_top10
+    ):
         home_failures += 1
     for item in trend_top10:
         if not isinstance(item, dict):
@@ -697,6 +737,11 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
             home_failures += 1
         if item.get("lane") != "main" or item.get("company_card_status") not in {
             "ready", "enrichment_pending", "not_applicable"
+        }:
+            home_failures += 1
+        if item.get("broad_category") not in {
+            "food", "content", "sports", "lifestyle", "culture",
+            "consumer", "technology", "market",
         }:
             home_failures += 1
         keywords = item.get("keywords") or []
@@ -711,7 +756,7 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
 
     company_failures = 0
     expected_company_ready = [
-        item for item in main_ranking
+        item for item in home_ranking
         if item.get("company_card_status") == "ready"
     ]
     if company_ready != expected_company_ready:
@@ -727,16 +772,18 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         if item.get("lane") != "main" or item.get("company_card_status") != "ready":
             company_failures += 1
         resolution = item.get("company_resolution") or {}
-        if resolution.get("publish_status") != "published" or resolution.get("minimum_gold_companies") != 5:
+        if resolution.get("publish_status") != "published" or resolution.get("minimum_gold_companies") != 3:
             company_failures += 1
         tickers = [str(company.get("stock_code") or "") for company in companies]
-        if len(tickers) < 5 or not all(tickers) or len(tickers) != len(set(tickers)):
+        if len(tickers) < 3 or not all(tickers) or len(tickers) != len(set(tickers)):
             company_failures += 1
         for company in companies:
             identity = company.get("official_identity") or {}
             if identity.get("status") != "verified" or identity.get("ranking_effect") != "none":
                 company_failures += 1
             if company.get("ontology_complete") is not True:
+                company_failures += 1
+            if company.get("relation_tier") not in {"direct", "value_chain", "industry_watch"}:
                 company_failures += 1
             evidence = company.get("evidence_sources") or []
             path = company.get("ontology_path") or []

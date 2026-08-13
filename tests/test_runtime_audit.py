@@ -17,7 +17,11 @@ def _write_runtime(root: Path) -> None:
     observed_at = "2026-08-12T18:00:00+00:00"
     company = {
         "company": "검증기업",
+        "ticker": "000001",
         "stock_code": "000001",
+        "market": "KRX",
+        "company_description": "Verified listed-company description",
+        "relation_tier": "direct",
         "official_identity": {"status": "verified", "ranking_effect": "none"},
         "ontology_complete": True,
         "evidence_sources": [{"url": "https://example.com/evidence"}],
@@ -26,21 +30,32 @@ def _write_runtime(root: Path) -> None:
             {"review_status": "approved", "evidence_urls": ["https://example.com/evidence"]},
         ],
     }
-    companies = [{**company, "stock_code": f"00000{index}"} for index in range(1, 6)]
+    companies = [
+        {**company, "ticker": f"00000{index}", "stock_code": f"00000{index}"}
+        for index in range(1, 4)
+    ]
     item = {
         "event_key": "event:test",
         "rank": 1,
+        "observed_rank": 1,
         "main_rank": 1,
+        "home_rank": 1,
+        "rising_rank": None,
         "display_name": "관측어",
-        "score": 72.0,
+        "broad_category": "culture",
+        "category": "culture",
+        "category_label": "문화·밈·참여",
+        "trend_definition": "실제로 관측된 문화 트렌드",
+        "home_eligible": True,
+        "score": 80.0,
         "score_components": {
-            "period_strength_points": 32.0,
-            "momentum_points": 10.0,
+            "period_strength_points": 35.0,
+            "momentum_points": 5.0,
             "persistence_points": 10.0,
-            "recency_points": 15.0,
-            "cross_source_points": 5.0,
-            "total_points": 72.0,
-            "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+            "recency_points": 10.0,
+            "cross_source_points": 20.0,
+            "total_points": 80.0,
+            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v1",
             "rounding_policy": "each_component_2dp_then_sum_2dp",
         },
         "candidate_status": "is_current",
@@ -49,24 +64,32 @@ def _write_runtime(root: Path) -> None:
         "period_strength": 0.8,
         "freshness": {
             "signal": 1.0,
-            "half_life_hours": 84.0,
+            "half_life_hours": 12.0,
             "hours_since_last_seen": 0.0,
         },
         "hours_since_last_seen": 0.0,
         "last_seen_at": observed_at,
         "detail_status": "shared_full_detail",
         "latest_source_ranks": {"x": 1, "google_trends": 1},
+        "source_rank_change": {"x": 0, "google_trends": 0},
+        "momentum_delta": None,
         "provenance": ["observed"],
         "lane": "main",
         "company_card_status": "ready",
-        "company_card_reason": "evidence_backed_five_or_more",
+        "company_status": "ready",
+        "keyword_status": "ready",
+        "company_card_reason": "evidence_backed_three_or_more",
         "keywords": [
             {"text": f"관련어{index}", "affects_score": False} for index in range(1, 6)
         ],
         "companies": companies,
         "company_resolution": {
             "publish_status": "published",
-            "minimum_gold_companies": 5,
+            "minimum_gold_companies": 3,
+        },
+        "ranking_data_readiness": {
+            "status": "ready",
+            "momentum_status": "unavailable",
         },
     }
     period_item = {
@@ -88,7 +111,10 @@ def _write_runtime(root: Path) -> None:
         "rank_change_by_source": {"x": 0, "google_trends": 0},
         "source_badge": "교차출처",
         "data_confidence": {"level": "high"},
-        "ranking_data_readiness": {"status": "ready"},
+        "ranking_data_readiness": {
+            "status": "ready",
+            "momentum_status": "unavailable",
+        },
         "detail_event_key": "event:test",
         "shared_detail_fields": ["keywords", "companies"],
     })
@@ -97,7 +123,7 @@ def _write_runtime(root: Path) -> None:
         {
             "key": key,
             "label": label,
-            "default": key == "weekly",
+            "default": key == "daily",
             "window": {
                 "from": observed_at,
                 "to": observed_at,
@@ -114,7 +140,7 @@ def _write_runtime(root: Path) -> None:
         view_item["freshness"]["half_life_hours"] = period["window"]["hours"] / 2
         ranking_views[period["key"]] = {
             **period,
-            "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v1",
             "data_readiness": {"status": "ready"},
             "company_detail_policy": "shared_by_detail_event_key",
             "company_count_affects_rank": False,
@@ -124,18 +150,42 @@ def _write_runtime(root: Path) -> None:
     intelligence = {
         "schema_version": "trzip-intelligence-v3",
         "mode": "live",
+        "publishable": True,
         "publication_id": publication_id,
         "generated_at": generated_at,
         "window": {"to": observed_at},
-        "ranking_default_period": "weekly",
+        "ranking_default_period": "daily",
         "ranking_periods": ranking_periods,
         "ranking_views": ranking_views,
         "ranking_top_level_alias": {
-            "period": "weekly",
-            "unified_ranking": "weekly_period_aggregate",
-            "trend_top10": "weekly_period_top10",
+            "period": "daily",
+            "unified_ranking": "daily_period_aggregate",
+            "trend_top10": "daily_home_top10",
         },
         "unified_ranking": [item],
+        "all_observed_ranking": [item],
+        "home_top10": [item],
+        "rising_top10": [],
+        "category_summary": [
+            {
+                "category": key,
+                "category_label": label,
+                "observed_count": 1 if key == "culture" else 0,
+                "home_candidate_count": 1 if key == "culture" else 0,
+                "home_top10_count": 1 if key == "culture" else 0,
+                "rising_top10_count": 0,
+            }
+            for key, label in (
+                ("food", "음식·식품"),
+                ("content", "음악·영상·게임 콘텐츠"),
+                ("sports", "스포츠"),
+                ("lifestyle", "패션·뷰티·여행·생활"),
+                ("culture", "문화·밈·참여"),
+                ("consumer", "제품·브랜드"),
+                ("technology", "기술·도구"),
+                ("market", "금융·시장"),
+            )
+        ],
         "trend_top10": [item],
         "public_top10": [item],
         "company_ready_trends": [item],
@@ -155,6 +205,7 @@ def _write_runtime(root: Path) -> None:
     metadata = {
         "schema_version": "trzip-live-data-v3",
         "mode": "live",
+        "publishable": True,
         "publication_id": publication_id,
         "generated_at": generated_at,
         "observed_at": observed_at,
@@ -206,6 +257,7 @@ def _write_runtime(root: Path) -> None:
     status = {
         "schema_version": "trzip-runtime-status-v1",
         "mode": "live",
+        "publishable": True,
         "publication_id": publication_id,
         "generated_at": generated_at,
         "observed_at": observed_at,
@@ -295,10 +347,12 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
         "source_status": {"x": "current_session_not_ready", "google_trends": "observed"},
         "partial": True,
     }
+    intelligence["publishable"] = False
     intelligence_path.write_text(json.dumps(intelligence), encoding="utf-8")
     metadata_path = tmp_path / "publication" / "latest" / "metadata.json"
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     metadata["collection"]["observed"] = 100
+    metadata["publishable"] = False
     metadata["collection"]["audit"]["x_korea_realtime"] = {
         "status": "current_session_not_ready",
         "row_count": 0,
@@ -327,6 +381,7 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
         "google_trends": "observed",
     }
     status["partial"] = True
+    status["publishable"] = False
     status_path.write_text(json.dumps(status), encoding="utf-8")
     connection = sqlite3.connect(tmp_path / "data" / "trzip-hourly.sqlite3")
     connection.execute("DELETE FROM hourly_observations WHERE source='x'")
@@ -366,8 +421,13 @@ def test_runtime_audit_rejects_score_and_company_evidence_breakage(tmp_path: Pat
     intelligence_path = tmp_path / "publication" / "latest" / "intelligence.json"
     intelligence = json.loads(intelligence_path.read_text(encoding="utf-8"))
     intelligence["unified_ranking"][0]["score"] = 99.0
-    intelligence["ranking_views"]["weekly"]["unified_ranking"][0]["score"] = 99.0
-    intelligence["ranking_views"]["weekly"]["period_top10"][0]["score"] = 99.0
+    intelligence["all_observed_ranking"][0]["score"] = 99.0
+    intelligence["home_top10"][0]["score"] = 99.0
+    intelligence["trend_top10"][0]["score"] = 99.0
+    intelligence["public_top10"][0]["score"] = 99.0
+    for view in intelligence["ranking_views"].values():
+        view["unified_ranking"][0]["score"] = 99.0
+        view["period_top10"][0]["score"] = 99.0
     broken_companies = json.loads(json.dumps(intelligence["company_ready_trends"][0]["companies"]))
     broken_companies[0]["ontology_path"] = []
     intelligence["company_ready_trends"][0]["companies"] = broken_companies

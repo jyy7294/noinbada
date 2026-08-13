@@ -30,19 +30,23 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
     trend_required = set(payload["$defs"]["trend"]["required"])
     company_required = set(payload["$defs"]["company"]["required"])
     assert {
-        "display_name", "score_components", "keywords", "companies", "main_rank",
-        "company_card_status", "company_card_reason",
+        "display_name", "score_components", "keywords", "companies", "observed_rank",
+        "home_rank", "rising_rank", "category_label", "trend_definition",
+        "keyword_status", "company_status", "company_card_reason",
     } <= trend_required
     assert {
-        "relationship_reason", "company_summary", "ontology_path", "evidence_sources",
-        "investment_warning",
+        "relationship_reason", "company_summary", "company_description", "ticker",
+        "ontology_path", "evidence_sources", "investment_warning",
     } <= company_required
     assert payload["$defs"]["trend"]["properties"]["keywords"]["maxItems"] == 5
     assert payload["$defs"]["trend"]["properties"]["companies"]["oneOf"] == [
-        {"maxItems": 0}, {"minItems": 5}
+        {"maxItems": 0}, {"minItems": 3}
     ]
     assert "ranking_availability" in payload["required"]
-    assert {"trend_top10", "public_top10", "company_ready_trends"} <= set(payload["required"])
+    assert {
+        "all_observed_ranking", "home_top10", "rising_top10", "category_summary",
+        "trend_top10", "public_top10", "company_ready_trends",
+    } <= set(payload["required"])
     assert {
         "ranking_default_period", "ranking_periods", "ranking_views",
         "ranking_top_level_alias",

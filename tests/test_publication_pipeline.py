@@ -114,14 +114,20 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     assert [item["event_key"] for item in rankings["unified_ranking"]] == [
         item["event_key"] for item in intelligence["unified_ranking"]
     ]
-    assert rankings["ranking_default_period"] == "weekly"
+    assert rankings["ranking_default_period"] == "daily"
     assert [period["key"] for period in rankings["ranking_periods"]] == [
         "daily", "weekly", "monthly",
     ]
     assert set(rankings["ranking_views"]) == {"daily", "weekly", "monthly"}
     assert [
-        item["event_key"] for item in rankings["ranking_views"]["weekly"]["unified_ranking"]
+        item["event_key"] for item in rankings["ranking_views"]["daily"]["unified_ranking"]
     ] == [item["event_key"] for item in rankings["unified_ranking"]]
+    assert rankings["all_observed_ranking"] == rankings["unified_ranking"]
+    assert rankings["home_top10"] == rankings["trend_top10"] == rankings["public_top10"]
+    assert isinstance(rankings["rising_top10"], list)
+    assert len(rankings["category_summary"]) == 8
+    assert intelligence["publishable"] is True
+    assert status["publishable"] is True
     assert all(
         "companies" not in item
         for view in rankings["ranking_views"].values()
@@ -170,7 +176,7 @@ def _public_rows(count=5):
     }
 
 
-def test_hourly_verification_uses_three_main_candidates_and_reuses_ledger(
+def test_hourly_verification_uses_three_non_issue_candidates_and_reuses_ledger(
     tmp_path, monkeypatch
 ):
     from trzip.provider_verification import (
@@ -213,7 +219,7 @@ def test_hourly_verification_uses_three_main_candidates_and_reuses_ledger(
         "hourly_term_limit": 3,
         "selection_policy": "never_verified_then_oldest_verified_then_current_rank",
         "candidate_count": 5,
-        "selection_scope": "current_main_candidates_including_context_review",
+        "selection_scope": "current_non_issue_candidates_including_review_lane",
         "providers": ["naver", "youtube", "instagram"],
         "ranking_effect": "none",
         "affects_collection_partial": False,
@@ -372,11 +378,11 @@ def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(
         )
     )
 
-    # 업비트와 말복 are recognized by general rules. The manually-known
-    # person names are no longer promoted into main by reference membership.
-    assert len(read_verification_ledger(database)) == 6
+    # The bounded context pass includes review-lane candidates, but remains
+    # rank-independent. Three terms x three providers are recorded.
+    assert len(read_verification_ledger(database)) == 9
     assert first_payload["verification_run"]["status"] == "completed"
-    assert first_payload["verification_run"]["requested_terms"] == 2
+    assert first_payload["verification_run"]["requested_terms"] == 3
     assert first_payload["verification_run"]["ranking_effect"] == "none"
 
     run(tmp_path / "publication", database_path=database, now=at)
@@ -386,7 +392,7 @@ def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(
         )
     )
 
-    assert len(read_verification_ledger(database)) == 6
+    assert len(read_verification_ledger(database)) == 9
     assert second_payload["verification_run"]["status"] == "skipped_already_recorded_for_hour"
 
 
@@ -412,6 +418,11 @@ def test_news_discovery_becomes_context_only_after_core_source_observation(tmp_p
     intelligence = json.loads(
         (tmp_path / "latest" / "intelligence.json").read_text(encoding="utf-8")
     )
+    status = json.loads(
+        (tmp_path / "latest" / "status.json").read_text(encoding="utf-8")
+    )
+    assert intelligence["publishable"] is False
+    assert status["publishable"] is False
     trend = intelligence["unified_ranking"][0]
     news = next(
         item for item in intelligence["news_discovery_queue"]

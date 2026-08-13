@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+import re
 
 
 POLICY_VERSION = "trend-fit-v1"
@@ -50,10 +51,13 @@ TREND_CATEGORIES = {
 
 NAMED_OBJECT_MARKERS = {
     "디저트", "쿠키", "초콜릿", "라면", "치킨", "커피", "음료", "메뉴", "맛집", "카페",
+    "삼계탕", "보양식", "축제", "전시", "팝업",
     "영화", "드라마", "예능", "웹툰", "애니", "극장판", "콘서트", "앨범",
     "신곡", "게임", "패치", "캐릭터", "굿즈", "키링", "유니폼", "팝업",
     "챌린지", "밈", "스마트폰", "폴더블폰", "휴대폰", "신발", "가방", "화장품", "주식",
-    "코스피", "코스닥", "야구", "축구", "농구", "테니스",
+    "코스피", "코스닥", "상장폐지", "관리종목", "증권", "가상자산", "비트코인", "cpi", "금리",
+    "야구", "축구", "농구", "테니스", "로봇", "휴머노이드", "반도체", "원자로",
+    "닭",
 }
 
 REPEATABLE_BEHAVIOR_MARKERS = {
@@ -76,8 +80,18 @@ PRODUCTIZATION_MARKERS = {
 # Keep them in the unified ranking and ask for context instead of promoting a
 # circular "category matched, therefore named object" conclusion.
 GENERIC_CATEGORY_WORDS = {
-    "음식", "제품", "브랜드", "콘텐츠", "생활", "문화", "기술",
+    "음식", "제품", "브랜드", "콘텐츠", "생활", "문화", "기술", "애니",
+    "운전", "날씨", "여행", "스포츠", "주식", "패션", "뷰티", "음악", "영상",
 }
+
+
+def _has_specific_term_shape(term: str) -> bool:
+    """Recognise concrete structures without consulting a reviewed term list."""
+
+    normalized = " ".join(str(term or "").casefold().split())
+    sports_fixture = bool(re.search(r"\S+\s+(?:대|vs\.?|v\.?)\s+\S+", normalized))
+    seasonal_ritual = bool(re.fullmatch(r"[초중말]복", normalized))
+    return sports_fixture or seasonal_ritual
 
 
 def _contains_any(text: str, markers: Iterable[str]) -> bool:
@@ -129,19 +143,22 @@ def assess_trend_fit(
         )
         or provider_soft_issue_matches >= 2
     )
-    generic_category_word = normalized_term.casefold() in {
-        value.casefold() for value in GENERIC_CATEGORY_WORDS
-    }
+    generic_tokens = normalized_term.casefold().split()
+    generic_category_word = bool(generic_tokens) and all(
+        token in {value.casefold() for value in GENERIC_CATEGORY_WORDS}
+        for token in generic_tokens
+    )
     has_specific_context = any((
         _contains_any(context, NAMED_OBJECT_MARKERS),
         _contains_any(context, REPEATABLE_BEHAVIOR_MARKERS),
         _contains_any(context, CONSUMER_ACTION_MARKERS),
         _contains_any(context, PRODUCTIZATION_MARKERS),
     ))
-    if (
-        (category in TREND_CATEGORIES and not generic_category_word)
-        or _contains_any(context, NAMED_OBJECT_MARKERS)
-    ):
+    # A category is an output label, not evidence that the raw expression is a
+    # concrete trend.  Otherwise a broad word such as "운전" can become
+    # screen_content through one related query and then circularly promote
+    # itself.  Promotion requires a lexical/structural signal in observed data.
+    if _contains_any(context, NAMED_OBJECT_MARKERS) or _has_specific_term_shape(normalized_term):
         labels.append("named_object")
     if _contains_any(context, REPEATABLE_BEHAVIOR_MARKERS) or "consumer_behavior" in claim_types:
         labels.append("repeatable_behavior")
@@ -163,7 +180,7 @@ def assess_trend_fit(
     if hard_issue:
         selection = "issue"
         reason = "정치·사건사고·재난·단순 기상특보·사생활 논란 맥락"
-    elif labels and not (generic_category_word and not has_specific_context):
+    elif labels and not generic_category_word:
         selection = "main"
         reason = "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호"
     else:

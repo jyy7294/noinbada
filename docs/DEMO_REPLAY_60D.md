@@ -15,9 +15,9 @@
 
 - 전체 기간: 60일
 - 순위 점수 구간: 최근 7일
-- 순위 보기: `daily` 24시간, `weekly` 7일(기본), `monthly` 30일
+- 순위 보기: `daily` 24시간(기본), `weekly` 7일, `monthly` 30일
 - 라이프사이클 기준선과 차트: 60일
-- 계산식: 운영 기간 집계 Ranking V2와 동일한 `period40_momentum20_persistence20_recency15_cross5_v1`
+- 계산식: 운영 기간 집계와 동일한 `spread35_velocity25_breadth20_persistence10_recency10_v1`
 - 출력 모드: `demo_replay`
 - 운영 영향: `ranking_effect=none`, `live_eligible=false`
 

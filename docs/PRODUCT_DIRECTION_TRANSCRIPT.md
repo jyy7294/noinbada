@@ -30,7 +30,7 @@
 2. 각 항목에 `신규 포착(new)`, `급상승(rising)`, `지속(sustained)`, `재부상(rebounding)`, `둔화(cooling)`, `기간 종료(expired)` 상태와 순위 변동을 표시한다. 대중화 여부는 별도 해석 문구로만 설명하며 구현에 없는 상태값을 만들지 않는다.
 3. 단순 인물명·행정·사건 검색은 삭제하지 않고 실시간 이슈 레인으로 분리한다.
 4. 운영자가 후보를 제안할 수는 있지만 X·Google 관측과 맥락 검증을 통과하기 전에는 공개 순위로 승격하지 않는다.
-5. 공개 기업의 기계 관계 등급 `relation_tier`는 `core`, `value_chain`, `adjacent`로 구분하고, 사용자에게는 `직접 관계`, `가치사슬`, `산업 관찰`로 설명한다. `direct`, `indirect`, `sector_watch`는 이 등급에서 파생되는 표시 강도이고 `excluded`는 공개 등급이 아니라 제외 상태다. 선행 수혜나 주가 상승을 단정하지 않는다.
+5. 공개 기업의 관계 등급 `relation_tier`는 `direct`, `value_chain`, `industry_watch`로 구분한다. 내부 온톨로지 등급 `core`, `value_chain`, `adjacent`는 `ontology_relation_tier`에 보존한다. 선행 수혜나 주가 상승을 단정하지 않는다.
 6. 기업 상세에는 관계 이유, 전달 경로, OpenDART 기업·사업 정보, pykrx 국내 종목명·일별 OHLCV와 위험·한계를 함께 표시한다. pykrx는 실시간 체결가로 표현하지 않는다.
 
 ## 밈트폴리오 경계

@@ -1,4 +1,5 @@
 from pathlib import Path
+from datetime import UTC, datetime
 
 from trzip.editorial_review import build_editorial_review_pack, load_daily_editorial_review
 from trzip.intelligence import _category
@@ -88,14 +89,15 @@ def test_broad_raw_expression_is_not_promoted_by_a_specific_related_query():
     assert pack["selection_audit"][0]["reason"] == "raw_expression_not_specific"
 
 
-def test_incomplete_automatic_candidate_stays_out_of_public_results_and_enters_enrichment_queue():
+def test_incomplete_automatic_candidate_stays_visible_and_enters_enrichment_queue():
     source = {"unified_ranking": [_automatic_row(1, "자동 후보", keywords=2, companies=1)]}
 
     pack = build_editorial_review_pack(source)
 
-    assert pack["trends"] == []
-    assert pack["preview_ready"] is False
-    assert pack["publication_ready"] is False
+    assert [item["event_key"] for item in pack["trends"]] == ["자동 후보"]
+    assert pack["trends"][0]["display_contract_status"] == "enrichment_pending"
+    assert pack["preview_ready"] is True
+    assert pack["publication_ready"] is True
     assert pack["enrichment_queue"] == [{
         "observed_rank": 1,
         "event_key": "자동 후보",
@@ -145,7 +147,7 @@ def test_top_ten_complete_automatic_candidates_form_publication_in_score_order()
     assert [item["observed_rank"] for item in pack["trends"]] == list(range(1, 11))
 
 
-def test_daily_editorial_pack_requires_ten_observed_complete_trends_in_source_rank_order():
+def test_daily_editorial_pack_cannot_change_automatic_selection_or_rank():
     root = Path(__file__).resolve().parents[1]
     review = load_daily_editorial_review(root / "config" / "daily-editorial" / "2026-08-13.json")
     source_rows = []
@@ -155,18 +157,18 @@ def test_daily_editorial_pack_requires_ten_observed_complete_trends_in_source_ra
             row["period_sources"] = ["x"]
             source_rows.append(row)
 
-    pack = build_editorial_review_pack({"unified_ranking": source_rows}, daily_review=review)
-
-    assert pack["publication_ready"] is True
-    assert pack["complete_trend_count"] == 10
-    assert len(pack["trends"]) == 10
-    assert [item["observed_rank"] for item in pack["trends"]] == sorted(
-        item["observed_rank"] for item in pack["trends"]
+    generated_at = datetime(2026, 8, 13, tzinfo=UTC)
+    automatic = build_editorial_review_pack(
+        {"unified_ranking": source_rows}, generated_at=generated_at
     )
-    assert all(len(item["related_keywords"]) == 5 for item in pack["trends"])
-    assert all(len(item["company_candidates"]) >= 3 for item in pack["trends"])
-    assert all(item["selection_basis"] == "daily_editorial_observed_candidate_then_enrichment" for item in pack["trends"])
-    assert all(item["detail_event_key"] in {row["event_key"] for row in source_rows} for item in pack["trends"])
+    reviewed = build_editorial_review_pack(
+        {"unified_ranking": source_rows}, generated_at=generated_at, daily_review=review
+    )
+
+    assert reviewed["trends"] == automatic["trends"]
+    assert reviewed["selection_audit"] == automatic["selection_audit"]
+    assert reviewed["manual_review_supplied"] is True
+    assert reviewed["manual_review_selection_effect"] == "none"
 
 
 def test_x_top30_discovery_stays_in_queue_until_enrichment_is_complete():

@@ -13,7 +13,10 @@ from trzip.intelligence import (
 def test_aliases_are_normalized_to_events():
     assert canonical_topic("두쫀쿠") == "두쫀쿠"
     assert canonical_topic("말복") == "말복"
-    assert canonical_topic("#JIN_IN_BALTIMORE_D2") == "BTS 진 볼티모어 공연"
+    assert canonical_topic("#JIN_IN_BALTIMORE_D2") == "jin in baltimore d2"
+    assert canonical_topic("#JIN_LIGHTS_UP_CHARM_CITY") == canonical_topic(
+        "JIN LIGHTS UP CHARM CITY"
+    )
     assert canonical_topic("볼티모어") == "볼티모어"
     assert canonical_topic("cpi 발표") == "cpi"
 
@@ -71,7 +74,7 @@ def test_cpi_release_variant_is_one_event_without_double_counting_source(tmp_pat
     assert event["topic"] == "cpi"
     assert event["raw_terms"] == ["cpi", "cpi 발표"]
     assert event["latest_source_ranks"] == {"google_trends": 1}
-    assert event["current_source_position"] == 1.0
+    assert event["current_source_position"] == 0.5
 
 
 def test_company_gold_never_fills_missing_companies_with_templates(tmp_path):
@@ -96,7 +99,7 @@ def test_company_gold_never_fills_missing_companies_with_templates(tmp_path):
     assert result["ontology_enrichment_queue"] == []
 
 
-def test_three_evidence_backed_companies_remain_candidates_but_gold_is_hidden(tmp_path):
+def test_three_evidence_backed_companies_are_publishable_gold(tmp_path):
     target = tmp_path / "ontology-incomplete.sqlite3"
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
     upsert([
@@ -109,14 +112,10 @@ def test_three_evidence_backed_companies_remain_candidates_but_gold_is_hidden(tm
     trend = result["unified_ranking"][0]
 
     assert len({company["stock_code"] for company in trend["company_candidates"]}) == 3
-    assert trend["companies"] == []
-    assert trend["company_resolution"]["publish_status"] == "ontology_incomplete"
-    queued = result["ontology_enrichment_queue"][0]
-    assert queued["representative_term"] == "두바이 쫀득쿠키"
-    assert queued["evidence_backed_company_count"] == 3
-    assert queued["missing_company_paths"] == 2
-    assert queued["padding_forbidden"] is True
-    assert queued["affects_score"] is False
+    assert trend["companies"] == trend["company_candidates"]
+    assert trend["company_resolution"]["publish_status"] == "published"
+    assert trend["company_resolution"]["minimum_gold_companies"] == 3
+    assert result["ontology_enrichment_queue"] == []
 
 
 def test_registered_person_name_stays_ranked_but_manual_reference_does_not_promote_it(tmp_path):
@@ -130,7 +129,7 @@ def test_registered_person_name_stays_ranked_but_manual_reference_does_not_promo
     assert person["lane"] == "review"
     assert person["companies"] == []
     assert person["company_candidates"] == []
-    assert person["company_resolution"]["status"] == "excluded_by_context"
+    assert person["company_resolution"]["status"] == "ontology_incomplete"
 
 
 def test_policy_issue_stays_ranked_but_has_no_company_candidates(tmp_path):
@@ -220,7 +219,7 @@ def test_drama_director_honorific_is_not_misclassified_as_sports(tmp_path):
     assert trend["broad_category"] != "sports"
 
 
-def test_weak_main_filter_covers_typed_market_content_sports_and_technology(tmp_path):
+def test_automatic_main_filter_does_not_use_reviewed_brand_or_team_names(tmp_path):
     target = tmp_path / "weak-main-filter.sqlite3"
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
     upsert([
@@ -235,13 +234,37 @@ def test_weak_main_filter_covers_typed_market_content_sports_and_technology(tmp_
     by_topic = {item["topic"]: item for item in result["unified_ranking"]}
 
     assert by_topic["삼성증권"]["broad_category"] == "market"
-    assert by_topic["티빙"]["broad_category"] == "content"
-    assert by_topic["롯데 자이언츠"]["broad_category"] == "sports"
+    assert by_topic["티빙"]["broad_category"] == "other"
+    assert by_topic["롯데 자이언츠"]["broad_category"] == "other"
     assert by_topic["휴머노이드 로봇"]["broad_category"] == "technology"
     assert all(by_topic[topic]["lane"] == "main" for topic in (
-        "삼성증권", "티빙", "롯데 자이언츠", "휴머노이드 로봇",
+        "삼성증권", "휴머노이드 로봇",
+    ))
+    assert all(by_topic[topic]["lane"] == "review" for topic in (
+        "티빙", "롯데 자이언츠",
     ))
     assert by_topic["음식"]["lane"] == "review"
+
+
+def test_broad_raw_word_and_unresolved_title_do_not_enter_home(tmp_path):
+    target = tmp_path / "broad-home-guard.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([
+        HourlyObservation(
+            at.isoformat(), "google_trends", "운전", 1, 100, "observed",
+            related_terms_json='["블랙박스 리뷰", "교통 영상"]',
+        ),
+        HourlyObservation(at.isoformat(), "google_trends", "미스코리아", 2, 99, "observed"),
+        HourlyObservation(at.isoformat(), "google_trends", "커피믹스", 3, 98, "observed"),
+    ], target)
+
+    result = build_intelligence(at, hours=1, path=target)
+    by_topic = {item["topic"]: item for item in result["unified_ranking"]}
+
+    assert by_topic["운전"]["lane"] == "review"
+    assert by_topic["미스코리아"]["lane"] == "review"
+    assert by_topic["커피믹스"]["lane"] == "main"
+    assert [item["topic"] for item in result["home_top10"]] == ["커피믹스"]
 
 
 def test_intelligence_exposes_lifecycle_and_rank_movement(tmp_path):
@@ -259,7 +282,7 @@ def test_intelligence_exposes_lifecycle_and_rank_movement(tmp_path):
     assert buldak["first_seen_at"].endswith("+00:00")
 
 
-def test_representative_and_related_terms_use_observed_source_expressions_only(tmp_path):
+def test_semantic_reference_aliases_do_not_merge_or_promote_observed_rows(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
     target = tmp_path / "keyword-evidence.sqlite3"
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
@@ -268,22 +291,11 @@ def test_representative_and_related_terms_use_observed_source_expressions_only(t
         HourlyObservation(at.isoformat(), "x", "JIN LIGHTS UP CHARM CITY", 9, 91, "observed"),
     ], target)
     result = build_intelligence(at, hours=1, path=target)
-    event = next(
-        item for item in result["lanes"]["main"]
-        if item["event_key"] == "BTS 진 볼티모어 공연"
-    )
-    assert event["topic"] == "#JIN_IN_BALTIMORE_D2"
-    assert event["display_name"] == "#JIN_IN_BALTIMORE_D2"
-    assert event["resolved_entity_name"] == "BTS 진 볼티모어 공연"
-    observed = [item for item in event["keywords"] if item["status"] == "observed_ranked_term"]
-    assert {item["text"] for item in observed} == {"JIN LIGHTS UP CHARM CITY"}
-    assert all(item["source"] == ["x"] for item in observed)
-    assert all(item["role_status"] == "deterministic_draft" for item in observed)
-    assert all(item["affects_score"] is False for item in observed)
-    assert event["company_resolution"]["status"] == "ontology_incomplete"
-    assert event["company_candidates"] == []
-    assert event["latest_source_ranks"]["x"] == 4
-    assert event["rank_change_by_source"]["x"] is None
+    assert {item["event_key"] for item in result["unified_ranking"]} == {
+        "jin in baltimore d2", "jin lights up charm city",
+    }
+    assert all(item["lane"] == "review" for item in result["unified_ranking"])
+    assert result["home_top10"] == []
 
 
 def test_google_related_queries_can_disambiguate_category_without_renaming_term(tmp_path):
@@ -328,12 +340,12 @@ def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
     assert unresolved not in result["trend_top10"]
     assert unresolved["companies"] == []
     generic = next(item for item in result["unified_ranking"] if item["topic"] == "패션 브랜드")
-    assert generic["lane"] == "main"
+    assert generic["lane"] == "review"
     assert generic["home_context_status"] == "review_required"
-    assert generic["home_context_reason"] == "context_evidence_missing"
+    assert generic["home_context_reason"] == "not_main_lane"
     assert generic["company_eligible"] is True
     assert generic["companies"] == []
-    assert generic in result["trend_top10"]
+    assert generic not in result["trend_top10"]
     assert generic["company_card_status"] == "enrichment_pending"
     stock = next(item for item in result["unified_ranking"] if item["topic"] == "005930")
     assert stock["resolved_entity_name"] == "삼성전자"
@@ -387,13 +399,13 @@ def test_investment_terms_do_not_receive_unrelated_generic_companies(tmp_path):
     generic = next(item for item in result["unified_ranking"] if item["resolved_entity_name"] == "관리종목")
     samsung = next(item for item in result["unified_ranking"] if item["resolved_entity_name"] == "삼성전자")
 
-    # Manual reference membership cannot promote either expression into the
-    # product-fit lane. Both remain ranked and wait for automatic context.
-    assert generic["company_eligible"] is False
+    # Manual reference membership cannot change rank or lane. It may only be
+    # consulted by the independent enrichment layer.
+    assert generic["company_eligible"] is True
     assert generic["companies"] == []
-    assert samsung["company_eligible"] is False
-    assert samsung["companies"] == []
-    assert samsung["company_resolution"]["publish_status"] == "excluded_by_context"
+    assert samsung["lane"] == "review"
+    assert samsung["company_eligible"] is True
+    assert samsung["company_resolution"]["score_independent_of_company_count"] is True
 
 
 def test_quality_summary_detects_unchanged_source_snapshots(tmp_path):
@@ -462,19 +474,19 @@ def test_representative_prefers_repeated_observed_term_before_best_rank(tmp_path
     first = datetime(2026, 8, 12, 3, tzinfo=UTC)
     second = datetime(2026, 8, 12, 4, tzinfo=UTC)
     upsert([
-        HourlyObservation(first.isoformat(), "x", "#JIN_IN_BALTIMORE_D2", 10, 1, "observed"),
-        HourlyObservation(second.isoformat(), "x", "#JIN_IN_BALTIMORE_D2", 10, 1, "observed"),
+        HourlyObservation(first.isoformat(), "x", "#JIN_LIGHTS_UP_CHARM_CITY", 10, 1, "observed"),
+        HourlyObservation(second.isoformat(), "x", "#JIN_LIGHTS_UP_CHARM_CITY", 10, 1, "observed"),
         HourlyObservation(second.isoformat(), "x", "JIN LIGHTS UP CHARM CITY", 1, 100, "observed"),
     ], target)
 
     item = build_intelligence(second, hours=2, path=target)["unified_ranking"][0]
 
-    assert item["event_key"] == "BTS 진 볼티모어 공연"
-    assert item["topic"] == "#JIN_IN_BALTIMORE_D2"
+    assert item["event_key"] == "jin lights up charm city"
+    assert item["topic"] == "#JIN_LIGHTS_UP_CHARM_CITY"
     assert item["representative_evidence"]["observed_hours"] == 2
 
 
-def test_current_observed_expression_beats_expired_historical_alias(tmp_path):
+def test_reviewed_seasonal_alias_does_not_merge_observed_events(tmp_path):
     target = tmp_path / "current-representative.sqlite3"
     first = datetime(2026, 8, 12, 3, tzinfo=UTC)
     current = datetime(2026, 8, 12, 4, tzinfo=UTC)
@@ -483,11 +495,11 @@ def test_current_observed_expression_beats_expired_historical_alias(tmp_path):
         HourlyObservation(current.isoformat(), "x", "말복", 2, 99, "observed"),
     ], target)
 
-    item = build_intelligence(current, hours=2, path=target)["unified_ranking"][0]
+    items = build_intelligence(current, hours=2, path=target)["unified_ranking"]
 
-    assert item["event_key"] == "말복"
-    assert item["topic"] == "말복"
-    assert item["representative_evidence"]["currently_observed"] is True
+    assert {item["event_key"] for item in items} == {"삼계탕", "말복"}
+    current_item = next(item for item in items if item["event_key"] == "말복")
+    assert current_item["representative_evidence"]["currently_observed"] is True
 
 
 def test_future_rows_do_not_leak_into_past_ranking(tmp_path):
@@ -550,9 +562,9 @@ def test_period_persistence_uses_source_eligible_snapshot_denominator(tmp_path):
     halfway = build_intelligence(start + timedelta(hours=47), hours=48, path=target)
     mature = build_intelligence(start + timedelta(hours=95), hours=96, path=target)
 
-    assert halfway["unified_ranking"][0]["persistence"] == 1.0
+    assert halfway["unified_ranking"][0]["persistence"] == 0.5
     assert halfway["quality_summary"]["ranking_maturity_status"] == "provisional"
-    assert mature["unified_ranking"][0]["persistence"] == 1.0
+    assert mature["unified_ranking"][0]["persistence"] == 0.5
     assert mature["quality_summary"]["ranking_maturity_status"] == "mature"
 
 
@@ -606,9 +618,10 @@ def test_current_position_is_source_normalized_and_cross_bonus_is_explicit(tmp_p
     single_item = build_intelligence(at, hours=1, path=single)["unified_ranking"][0]
     dual_item = build_intelligence(at, hours=1, path=dual)["unified_ranking"][0]
 
-    assert single_item["current_source_position"] == dual_item["current_source_position"] == 1.0
-    assert single_item["score_components"]["cross_source_points"] == 0
-    assert dual_item["score_components"]["cross_source_points"] == 5
+    assert single_item["current_source_position"] == 0.5
+    assert dual_item["current_source_position"] == 1.0
+    assert single_item["score_components"]["cross_source_points"] == 10
+    assert dual_item["score_components"]["cross_source_points"] == 20
     for item in (single_item, dual_item):
         components = item["score_components"]
         visible_sum = round(sum(
@@ -619,7 +632,7 @@ def test_current_position_is_source_normalized_and_cross_bonus_is_explicit(tmp_p
             )
         ), 2)
         assert item["score"] == components["total_points"] == visible_sum
-        assert components["formula_version"] == "period40_momentum20_persistence20_recency15_cross5_v1"
+        assert components["formula_version"] == "spread35_velocity25_breadth20_persistence10_recency10_v1"
         assert components["rounding_policy"] == "each_component_2dp_then_sum_2dp"
 
 
@@ -732,7 +745,7 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
     assert set(companies) == {"030200", "034120", "035760", "053210", "402340"}
     assert {
         stock_code for stock_code, company in companies.items()
-        if company["relation_tier"] == "core"
+        if company["relation_tier"] == "direct"
     } == {"034120", "035760", "053210"}
     assert {
         stock_code for stock_code, company in companies.items()
@@ -741,7 +754,7 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
     assert all(
         company["relation_display_type"] == "직접 관계"
         for company in companies.values()
-        if company["relation_tier"] == "core"
+        if company["relation_tier"] == "direct"
     )
     assert all(
         company["relation_display_type"] == "가치사슬"
@@ -750,10 +763,9 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
     )
     assert item["company_resolution"]["direct_count"] == 3
     assert item["company_resolution"]["tier_counts"] == {
-        "core": 3,
+        "direct": 3,
         "value_chain": 2,
-        "adjacent": 0,
-        "excluded": 0,
+        "industry_watch": 0,
     }
     assert all(
         "/dst/irReference/" not in source["url"]
@@ -788,10 +800,11 @@ def test_registered_gstar_enrichment_does_not_promote_an_unclassified_observatio
     }
     assert all(keyword["affects_score"] is False for keyword in item["keywords"])
     assert item["lane"] == "review"
-    assert item["company_eligible"] is False
-    assert item["company_candidates"] == []
-    assert item["companies"] == []
-    assert item["company_resolution"]["publish_status"] == "excluded_by_context"
+    assert item["company_eligible"] is True
+    assert item["company_resolution"]["score_independent_of_company_count"] is True
+    assert item["company_resolution"]["publish_status"] in {
+        "published", "ontology_incomplete",
+    }
 
 
 def test_tving_exposes_five_reviewed_related_keywords_and_five_companies(tmp_path):
@@ -804,6 +817,7 @@ def test_tving_exposes_five_reviewed_related_keywords_and_five_companies(tmp_pat
 
     item = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
 
+    assert item["lane"] == "review"
     assert [keyword["text"] for keyword in item["keywords"]] == [
         "TVING",
         "KT 시즌",
@@ -819,10 +833,9 @@ def test_tving_exposes_five_reviewed_related_keywords_and_five_companies(tmp_pat
         "005930", "030200", "035420", "035760", "402340",
     }
     assert item["company_resolution"]["tier_counts"] == {
-        "core": 1,
+        "direct": 1,
         "value_chain": 4,
-        "adjacent": 0,
-        "excluded": 0,
+        "industry_watch": 0,
     }
 
 
@@ -860,23 +873,22 @@ def test_humanoid_robot_exposes_five_keywords_and_three_core_two_industry_observ
     assert all(keyword["affects_score"] is False for keyword in item["keywords"])
     assert set(companies) == {"005380", "005930", "035420", "066570", "454910"}
     assert {
-        ticker for ticker, company in companies.items() if company["relation_tier"] == "core"
+        ticker for ticker, company in companies.items() if company["relation_tier"] == "direct"
     } == {"005380", "005930", "454910"}
     assert {
         ticker
         for ticker, company in companies.items()
-        if company["relation_tier"] == "adjacent"
+        if company["relation_tier"] == "industry_watch"
     } == {"035420", "066570"}
     assert all(
         company["relation_display_type"] == "산업 관찰"
         for company in companies.values()
-        if company["relation_tier"] == "adjacent"
+        if company["relation_tier"] == "industry_watch"
     )
     assert item["company_resolution"]["tier_counts"] == {
-        "core": 3,
+        "direct": 3,
         "value_chain": 0,
-        "adjacent": 2,
-        "excluded": 0,
+        "industry_watch": 2,
     }
 
 
@@ -950,12 +962,12 @@ def test_listed_securities_company_has_self_and_four_reviewed_sector_peers(tmp_p
     )
     assert next(
         company for company in item["companies"] if company["stock_code"] == "016360"
-    )["relation_tier"] == "core"
+    )["relation_tier"] == "direct"
     assert {
         company["relation_tier"]
         for company in item["companies"]
         if company["stock_code"] != "016360"
-    } == {"adjacent"}
+    } == {"industry_watch"}
 
 
 def test_unresearched_person_expression_stays_zero_candidate_and_review_only(tmp_path):
@@ -992,7 +1004,7 @@ def test_intelligence_exposes_daily_weekly_monthly_period_aggregate_views(tmp_pa
 
     result = build_intelligence(at, hours=1, path=target)
 
-    assert result["ranking_default_period"] == "weekly"
+    assert result["ranking_default_period"] == "daily"
     assert [period["key"] for period in result["ranking_periods"]] == [
         "daily", "weekly", "monthly",
     ]
@@ -1007,11 +1019,11 @@ def test_intelligence_exposes_daily_weekly_monthly_period_aggregate_views(tmp_pa
         assert view["unified_ranking"][0]["detail_event_key"] == "말복"
         assert "companies" not in view["unified_ranking"][0]
         assert view["period_top10"] == [view["unified_ranking"][0]]
-    weekly = result["ranking_views"]["weekly"]
-    assert [item["event_key"] for item in weekly["unified_ranking"]] == [
+    daily = result["ranking_views"]["daily"]
+    assert [item["event_key"] for item in daily["unified_ranking"]] == [
         item["event_key"] for item in result["unified_ranking"]
     ]
-    assert [item["score"] for item in weekly["unified_ranking"]] == [
+    assert [item["score"] for item in daily["unified_ranking"]] == [
         item["score"] for item in result["unified_ranking"]
     ]
     assert result["ranking_views"]["daily"]["data_readiness"]["status"] == "ready"

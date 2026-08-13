@@ -206,15 +206,15 @@ def test_seed_path_trace_preserves_every_edge_and_evidence_record():
         assert all(graph.evidence_record(value)["url"] for value in path.evidence_ids)
 
 
-def test_real_seed_with_three_companies_fails_new_five_company_gate():
+def test_real_seed_with_three_companies_passes_minimum_company_gate():
     graph = OntologyGraph.load(SEED_PATH)
 
     result = graph.resolve_term("두바이 쫀득쿠키")
 
     assert result["company_count"] == 3
-    assert result["minimum_required"] == 5
-    assert result["status"] == "ontology_incomplete"
-    assert result["publishable"] is False
+    assert result["minimum_required"] == 3
+    assert result["status"] == "published"
+    assert result["publishable"] is True
 
 
 def test_reviewed_enrichment_preserves_seed_and_publishes_malbok_without_padding():

@@ -11,11 +11,13 @@ def test_source_label_and_interpretation_are_separate(tmp_path):
         HourlyObservation(at.isoformat(), "google_trends", "말복", 1, 100, "observed"),
         HourlyObservation(at.isoformat(), "x", "삼계탕", 2, 99, "observed"),
     ], target)
-    trend = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
-    assert trend["display_name"] == "말복"
-    assert set(trend["raw_terms"]) == {"말복", "삼계탕"}
-    assert trend["phenomenon_summary"].startswith('"말복"')
-    assert "보양식" not in trend["phenomenon_summary"]
+    trends = build_intelligence(at, hours=1, path=target)["unified_ranking"]
+    assert {trend["event_key"] for trend in trends} == {"말복", "삼계탕"}
+    malbok = next(trend for trend in trends if trend["event_key"] == "말복")
+    assert malbok["display_name"] == "말복"
+    assert malbok["raw_terms"] == ["말복"]
+    assert malbok["phenomenon_summary"].startswith('"말복"')
+    assert "보양식" not in malbok["phenomenon_summary"]
 
 
 def test_unknown_cause_is_not_fabricated(tmp_path):

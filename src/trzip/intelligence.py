@@ -20,6 +20,7 @@ from .value_chain import expand_value_chain
 from .event_resolution import (
     GROUND_TRUTH,
     evaluate_resolution,
+    normalize_event_key,
     observation_summary,
     resolve_event,
 )
@@ -46,24 +47,19 @@ ONTOLOGY_ENRICHMENT_PATHS = (
 )
 
 
-ALIASES = {
-    "두바이초콜릿": "두바이 초콜릿",
-    "오징어게임": "오징어 게임",
-    # This is the one reviewed event grouping retained from the product
-    # decision: the observed display term still comes from the source rows.
-    "삼계탕": "말복",
-    "보양식": "말복",
-    # A release-query suffix does not create a second macro event. Both raw
-    # expressions remain in raw_terms/keywords and the current observed form
-    # still owns the public representative label.
-    "cpi 발표": "cpi",
-    "CPI 발표": "cpi",
-}
-
 def canonical_topic(raw: str) -> str:
-    compact = " ".join(raw.strip().split())
-    legacy = ALIASES.get(compact, compact)
-    return resolve_event(legacy, set())["canonical"]
+    """Create the ranking key using format-only, deterministic normalization.
+
+    Reviewed aliases and the event reference set may enrich a published item,
+    but they must not merge source rows or change rank/product-fit eligibility.
+    """
+
+    normalized = normalize_event_key(raw)
+    # Release suffixes are format variants for common macro indicators, not a
+    # reviewed trend alias. Keep this deterministic family rule deliberately
+    # narrow so arbitrary nouns ending in "발표" are never merged.
+    match = re.fullmatch(r"(cpi|ppi|gdp|fomc)\s+(?:발표|release)", normalized)
+    return match.group(1) if match else normalized
 
 
 def _provider_issue_context_titles(providers: dict, representative: str) -> list[str]:
@@ -97,15 +93,13 @@ def _category(topic: str) -> str:
         (("밥", "초밥", "치킨", "라면", "닭", "빵", "쿠키", "초콜릿", "커피", "맛집", "음식", "삼계탕", "보양식", "디저트"), "food_culinary"),
         ((
             "영화", "드라마", "예능", "웹툰", "애니", "극장", "방송",
-            "티빙", "넷플릭스", "ott", "시리즈", "사건반장", "블랙박스 리뷰",
-            "건축탐구", "나솔", "미스코리아", "트로트",
+            "ott", "시리즈", "블랙박스 리뷰", "트로트",
         ), "screen_content"),
         (("콘서트", "공연", "앨범", "노래", "뮤직", "아이돌", "생일"), "music_performance"),
         ((
             "야구", "축구", "테니스", "농구", "선수", "야구 감독", "축구 감독",
             "농구 감독", "스포츠 감독", "타격왕",
-            "프로골퍼", " fc", "자이언츠", "레드삭스", "블루제이스",
-            "메츠", "브레이브스",
+            "프로골퍼", " fc",
         ), "sports_participation"),
         ((
             "게임", "패치", "롤 ", "오버워치", "스팀", "리그 오브 레전드",
@@ -116,7 +110,6 @@ def _category(topic: str) -> str:
         ((
             "주식", "증시", "코스피", "코스닥", "채권", "금리", "증권",
             "상장폐지", "가상자산", "나스닥", "다우 존스", "cpi", "국채",
-            "업비트", "미래에셋",
         ), "investment_market"),
         (("스마트폰", "폴더블", "휴대폰", "신제품", "신모델"), "product_brand"),
         ((
@@ -159,6 +152,44 @@ def _broad_category(category: str) -> str:
     return mapping.get(category, "other")
 
 
+PUBLIC_BROAD_CATEGORY_LABELS = {
+    "food": "음식·식품",
+    "content": "음악·영상·게임 콘텐츠",
+    "sports": "스포츠",
+    "lifestyle": "패션·뷰티·여행·생활",
+    "culture": "문화·밈·참여",
+    "consumer": "제품·브랜드",
+    "technology": "기술·도구",
+    "market": "금융·시장",
+}
+
+
+def _category_label(broad_category: str) -> str:
+    return PUBLIC_BROAD_CATEGORY_LABELS.get(
+        broad_category,
+        "이슈·검토" if broad_category == "issue" else "기타·검토",
+    )
+
+
+def _trend_definition(
+    display_name: str,
+    category_label: str,
+    related_terms: list[str] | None = None,
+) -> str:
+    definition = (
+        f"'{display_name}' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 "
+        f"관측된 {category_label} 트렌드입니다."
+    )
+    display_key = normalize_event_key(display_name)
+    contextual_terms = [
+        term for term in dict.fromkeys(related_terms or [])
+        if normalize_event_key(term) != display_key
+    ][:2]
+    if contextual_terms:
+        definition += f" 함께 나타난 관련 표현은 {', '.join(contextual_terms)}입니다."
+    return definition
+
+
 def _home_context_gate(item: dict) -> tuple[bool, str]:
     """Apply a non-scoring evidence gate to the home representative subset.
 
@@ -180,18 +211,19 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
         return False, context_status
     context_reason = "context_resolved"
     if context_status == "needs_context":
-        if item.get("keywords"):
-            context_reason = "observed_or_reviewed_related_expression"
-        elif int((item.get("company_resolution") or {}).get("candidate_count") or 0) > 0:
-            context_reason = "reviewed_ontology_path"
+        basis = str(item.get("category_basis") or "")
+        labels = set((item.get("trend_fit") or {}).get("labels") or [])
+        verification = item.get("verification_layer") or {}
+        if basis == "raw_expression_general_rule" and labels:
+            context_reason = "specific_observed_expression"
+        elif basis == "observed_related_terms_general_rule" and labels:
+            context_reason = "observed_related_expression"
+        elif verification.get("status") == "observed" and verification.get("observed_platforms"):
+            context_reason = "matched_verification_provider"
+        elif (item.get("news_context") or {}).get("records"):
+            context_reason = "linked_news_context"
         else:
-            verification = item.get("verification_layer") or {}
-            if verification.get("status") == "observed" and verification.get("observed_platforms"):
-                context_reason = "matched_verification_provider"
-            elif (item.get("news_context") or {}).get("records"):
-                context_reason = "linked_news_context"
-            else:
-                return False, "context_evidence_missing"
+            return False, "context_evidence_missing"
 
     return True, context_reason
 
@@ -529,6 +561,12 @@ RELATION_TIER_PRESENTATION = {
     },
 }
 
+PUBLIC_RELATION_TIER = {
+    "core": "direct",
+    "value_chain": "value_chain",
+    "adjacent": "industry_watch",
+}
+
 
 def _candidate_selection_priority(
     candidate: dict,
@@ -714,10 +752,10 @@ def _ontology_company_candidates(
             business_edges = [
                 edge for edge in path_edges if str(edge.get("relation_type")) != "listed_as"
             ]
-            relation_tier = _path_relation_tier(path_edges)
-            if relation_tier == "excluded":
+            ontology_relation_tier = _path_relation_tier(path_edges)
+            if ontology_relation_tier == "excluded":
                 continue
-            tier_presentation = RELATION_TIER_PRESENTATION[relation_tier]
+            tier_presentation = RELATION_TIER_PRESENTATION[ontology_relation_tier]
             first_evidence_url = next(
                 (record["url"] for record in evidence_records if record.get("url")),
                 None,
@@ -744,9 +782,14 @@ def _ontology_company_candidates(
                 f"관측어 '{term}'에서 {' → '.join(path_labels)}로 이어지는 "
                 f"검수된 {len(path.edge_ids)}단계 온톨로지 경로"
             )
+            company_summary = (
+                f"{(stock_node.get('metadata') or {}).get('market') or '국내'} 상장기업, "
+                f"종목코드 {stock_code}"
+            )
             candidate = {
                 "company": company_node["label"],
                 "stock_code": stock_code,
+                "ticker": stock_code,
                 "market": (stock_node.get("metadata") or {}).get("market"),
                 "relation_type": (
                     str(business_edges[0]["relation_type"])
@@ -756,16 +799,15 @@ def _ontology_company_candidates(
                 "strength": tier_presentation["strength"],
                 "reason": relation_reason,
                 "relationship_reason": relation_reason,
-                "company_summary": (
-                    f"{(stock_node.get('metadata') or {}).get('market') or '국내'} 상장기업, "
-                    f"종목코드 {stock_code}"
-                ),
+                "company_summary": company_summary,
+                "company_description": company_summary,
                 "business_features": industry_labels,
                 "evidence_kind": "reviewed_ontology_path",
                 "evidence_url": first_evidence_url,
                 "evidence_sources": evidence_sources,
                 "company_role": tier_presentation["company_role"],
-                "relation_tier": relation_tier,
+                "relation_tier": PUBLIC_RELATION_TIER[ontology_relation_tier],
+                "ontology_relation_tier": ontology_relation_tier,
                 "relation_tier_label": tier_presentation["label"],
                 # The source observation is current, but an ontology document may
                 # be historical.  Do not turn evidence of a relationship into an
@@ -848,13 +890,19 @@ def _build_period_views(
                 )
             ranking.append({
                 "rank": raw_item["rank"],
+                "observed_rank": raw_item["rank"],
                 "main_rank": None,
+                "home_rank": None,
+                "rising_rank": None,
                 "event_key": event_key,
                 "display_name": base["display_name"],
                 "topic": base["topic"],
                 "broad_category": base["broad_category"],
                 "category": base["category"],
+                "category_label": base["category_label"],
+                "trend_definition": base["trend_definition"],
                 "lane": base["lane"],
+                "home_eligible": bool(base.get("home_eligible")),
                 "score": raw_item["score"],
                 "score_components": raw_item["score_components"],
                 "candidate_status": raw_item["candidate_status"],
@@ -865,6 +913,7 @@ def _build_period_views(
                 # name for this aggregate signal.
                 "current_source_position": raw_item["signals"]["period_strength"],
                 "momentum": raw_item["signals"]["momentum"],
+                "momentum_delta": raw_item["signals"]["momentum_delta"],
                 "persistence": raw_item["signals"]["persistence"],
                 "freshness": raw_item["freshness"],
                 "hours_since_last_seen": raw_item["hours_since_last_seen"],
@@ -877,10 +926,13 @@ def _build_period_views(
                 "last_seen_at": raw_item["last_seen_at"],
                 "latest_source_ranks": base["latest_source_ranks"],
                 "rank_change_by_source": base["rank_change_by_source"],
+                "source_rank_change": base["rank_change_by_source"],
                 "source_badge": base["source_badge"],
                 "data_confidence": base["data_confidence"],
                 "ranking_data_readiness": raw_item["data_readiness"],
                 "company_card_status": company_status,
+                "company_status": company_status,
+                "keyword_status": base["keyword_status"],
                 "detail_event_key": event_key,
                 "detail_status": (
                     "shared_full_detail"
@@ -893,9 +945,13 @@ def _build_period_views(
                 ],
             })
         ranking.sort(key=lambda item: item["rank"])
-        main_ranking = [item for item in ranking if item["lane"] == "main"]
+        main_ranking = [
+            item for item in ranking
+            if item["lane"] == "main" and item["home_eligible"]
+        ]
         for main_rank, item in enumerate(main_ranking, 1):
             item["main_rank"] = main_rank
+            item["home_rank"] = main_rank
         period_views[key] = {
             "key": key,
             "label": raw_view["label"],
@@ -934,12 +990,13 @@ def build_intelligence(
         ranking_rows,
         at=end,
     )
-    weekly_ranking_contract = period_ranking_contract["views"]["weekly"]
+    default_period = period_ranking_contract["default_period"]
+    default_ranking_contract = period_ranking_contract["views"][default_period]
     ranking_v2 = {
-        "formula_version": weekly_ranking_contract["formula_version"],
-        "data_readiness": weekly_ranking_contract["data_readiness"],
-        "parameters": weekly_ranking_contract["parameters"],
-        "ranking": weekly_ranking_contract["unified_ranking"],
+        "formula_version": default_ranking_contract["formula_version"],
+        "data_readiness": default_ranking_contract["data_readiness"],
+        "parameters": default_ranking_contract["parameters"],
+        "ranking": default_ranking_contract["unified_ranking"],
     }
     ranking_v2_by_key = {
         item["event_key"]: item for item in ranking_v2["ranking"]
@@ -1011,9 +1068,9 @@ def build_intelligence(
             if source_rows
         }
 
-        # The default/top-level contract is the true weekly aggregate.  A
-        # monthly-only event is hydrated for its period view but is not
-        # resurrected into the weekly alias.
+        # The default/top-level contract is the true 24-hour aggregate.  A
+        # longer-period-only event is hydrated for its period view but is not
+        # resurrected into the daily alias.
         ranking_contract = (
             ranking_v2_by_key.get(event_key)
             or monthly_ranking_by_key[event_key]
@@ -1101,10 +1158,19 @@ def build_intelligence(
             providers,
             representative_term,
         )
+        observed_context_terms = [item["text"] for item in observed_keyword_items]
+        provider_context_terms = list(provider_issue_context)
+        if detected_category == "unclassified" and provider_context_terms:
+            provider_category = _category(" ".join(
+                [event_key, *provider_context_terms]
+            ))
+            if provider_category != "unclassified":
+                detected_category = provider_category
+                category_basis = "verification_context_general_rule"
         fit_assessment = assess_trend_fit(
             representative_term,
             category=detected_category,
-            context_terms=[item["text"] for item in observed_keyword_items],
+            context_terms=[*observed_context_terms, *provider_context_terms],
             issue_context_terms=provider_issue_context,
             news_claim_types=news_claim_types,
         )
@@ -1114,7 +1180,7 @@ def build_intelligence(
         if (
             context_status == "ambiguous_person"
             and detected_category != "unclassified"
-            and keyword_items
+            and (observed_keyword_items or provider_context_terms)
         ):
             # A person's raw name remains unchanged, but observed Google/X
             # context such as "축구 선수" can resolve the homonym for this
@@ -1125,16 +1191,21 @@ def build_intelligence(
         # a second hidden filter. Context evidence resolves the term before
         # this decision; otherwise the observed item remains in the review
         # lane with its global score and rank unchanged.
-        # A typed category or reviewed ontology/keyword path resolves enough
-        # context for the weak main filter. Only a still-unclassified raw term
-        # or an unresolved person name remains in review.
+        # Category output and reviewed enrichment are not context evidence for
+        # selection. Only source-observed related expressions, explicit
+        # provider/news context, or a concrete lexical signal may resolve it.
         generic_context_word = representative_term.casefold() in {
             "음식", "제품", "브랜드", "콘텐츠", "생활", "문화", "기술", "애니"
         }
         context_evidence_present = bool(
-            detected_category != "unclassified"
+            fit_assessment["labels"]
             and not generic_context_word
-            or keyword_items
+            and (
+                category_basis == "raw_expression_general_rule"
+                or observed_keyword_items
+                or provider_context_terms
+                or news_context_records
+            )
         )
         if lane != "issue" and (
             (context_status in {"unresolved", "ambiguous_person"} and not context_evidence_present)
@@ -1198,7 +1269,12 @@ def build_intelligence(
             "affects_score": False,
         }
         sensitive_context = any(is_sensitive_context(item["topic"]) for item in observations)
-        company_eligible = lane == "main" and not sensitive_context
+        compact_event_key = "".join(event_key.split())
+        company_eligible = (
+            lane != "issue"
+            and not sensitive_context
+            and not (len(compact_event_key) == 6 and compact_event_key.isdigit())
+        )
         # Monthly-only rows are intentionally period summaries.  Do not run
         # expensive company enrichment for an event that has no shared weekly
         # detail card; its summary truthfully remains enrichment_pending.
@@ -1257,17 +1333,19 @@ def build_intelligence(
             "score_independent_of_company_count": True,
             "direct_count": sum(company["strength"] == "direct" for company in company_candidates),
             "role_coverage": sorted({company["company_role"] for company in company_candidates}),
-            "tier_counts": {tier: sum(company["relation_tier"] == tier for company in company_candidates)
-                            for tier in ("core", "value_chain", "adjacent", "excluded")},
+            "tier_counts": {
+                tier: sum(company["relation_tier"] == tier for company in company_candidates)
+                for tier in ("direct", "value_chain", "industry_watch")
+            },
             "category_count": len(company_categories),
             "candidate_category_count": len(candidate_company_categories),
             "ontology_diagnostics": ontology_diagnostics,
             "reason": (
-                "증거 온톨로지 경로가 완결된 고유 상장기업 5개 이상을 Gold로 공개"
+                "증거 온톨로지 경로가 완결된 고유 상장기업 3개 이상을 Gold로 공개"
                 if gold_publishable
                 else "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
                 if not company_eligible
-                else "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류"
+                else "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 공개를 보류"
             ),
         }
         display_name = representative_term
@@ -1287,6 +1365,9 @@ def build_intelligence(
             # event grouping, score, rank, or company relationship evidence.
             display_name = canonical_name
             display_name_policy = "reviewed_stock_code_to_company_name"
+        broad_category = _broad_category(detected_category)
+        category_label = _category_label(broad_category)
+        keyword_status = "ready" if len(keyword_items) == 5 else "enrichment_pending"
         candidates.append({
             "event_key": event_key,
             "topic": representative_term,
@@ -1301,7 +1382,13 @@ def build_intelligence(
             "ground_truth_match": event_resolution["ground_truth_match"],
             "category": detected_category,
             "category_basis": category_basis,
-            "broad_category": _broad_category(detected_category),
+            "broad_category": broad_category,
+            "category_label": category_label,
+            "trend_definition": _trend_definition(
+                display_name,
+                category_label,
+                [item["text"] for item in keyword_items],
+            ),
             "lane": lane,
             "selection_reason": reason,
             "trend_fit": trend_fit,
@@ -1319,6 +1406,7 @@ def build_intelligence(
             "period_strength": round(current_signal, 6),
             "current_source_position": round(current_signal, 6),
             "momentum": round(momentum, 4), "persistence": round(persistence, 4),
+            "momentum_delta": ranking_contract["signals"]["momentum_delta"],
             "score_components": score_components,
             "score_explanation": ranking_contract["score_explanation"],
             "source_metrics": ranking_contract["source_metrics"],
@@ -1331,10 +1419,16 @@ def build_intelligence(
                 source: item["source_rank"] for source, item in latest_by_source.items()
             },
             "rank_change_by_source": rank_changes,
+            "source_rank_change": rank_changes,
             "first_seen_at": first_seen, "last_seen_at": last_seen, "age_hours": age_hours,
             "lifecycle": lifecycle, "lifecycle_reason": lifecycle_reason,
             "data_confidence": data_confidence,
             "verification_layer": verification_layer,
+            "verification_signals": {
+                **verification_layer,
+                "ranking_effect": "none",
+                "purpose": "public_spread_and_context_verification_only",
+            },
             "news_context": {
                 "status": "observed" if news_context_records else "not_linked",
                 "claim_types": news_claim_types,
@@ -1350,6 +1444,8 @@ def build_intelligence(
                         "related_terms_json": item.get("related_terms_json")}
                        for item in observations],
             "keywords": keyword_items,
+            "related_keywords": keyword_items,
+            "keyword_status": keyword_status,
             "keyword_evidence": {
                 "total": len(keyword_items),
                 "observed_source_count": sum(
@@ -1378,16 +1474,24 @@ def build_intelligence(
             "company_resolution": company_resolution,
         })
     # Keep all monthly-hydrated identities available to period views, while
-    # the public/top-level alias contains exactly the weekly aggregate.
+    # the public/top-level alias contains exactly the configured default
+    # aggregate (24 hours for the live product).
     period_base_candidates = list(candidates)
     period_base_by_key = {item["event_key"]: item for item in period_base_candidates}
     candidates = [
         period_base_by_key[item["event_key"]]
-        for item in weekly_ranking_contract["unified_ranking"]
+        for item in default_ranking_contract["unified_ranking"]
     ]
     for rank, item in enumerate(candidates, 1):
         item["rank"] = rank
-        item["classification"] = "이슈·주의" if item["lane"] == "issue" else "일반 트렌드" if item["company_eligible"] else "맥락 확인"
+        item["observed_rank"] = rank
+        item["home_rank"] = None
+        item["rising_rank"] = None
+        item["classification"] = {
+            "issue": "이슈·주의",
+            "main": "일반 트렌드",
+            "review": "맥락 확인",
+        }[item["lane"]]
     by_persistence = sorted(candidates, key=lambda item: (-item["age_hours"], -item["persistence"], -item["score"], item["topic"]))
     by_momentum = sorted(candidates, key=lambda item: (-item["momentum"], -item["score"], item["topic"]))
     for rank, item in enumerate(by_persistence, 1):
@@ -1416,15 +1520,14 @@ def build_intelligence(
         item["event_key"]: _home_context_gate(item)
         for item in candidates
     }
-    # ``trend_top10`` is the score-preserving first ten rows of the main lane.
-    # Context resolution and company enrichment are explicit presentation
-    # states, not hidden gates that replace a stronger observed trend with a
-    # lower-ranked ontology-ready item.
-    home_candidates = lanes["main"]
+    # The home list preserves observed score order but applies only automatic,
+    # general product-fit and context rules. Enrichment readiness never changes
+    # rank and a manual cache/whitelist is not consulted here.
     for item in candidates:
         home_allowed, home_reason = home_gate_results[item["event_key"]]
         item["home_context_status"] = "resolved" if home_allowed else "review_required"
         item["home_context_reason"] = home_reason
+        item["home_eligible"] = bool(home_allowed)
         if item["lane"] == "main" and not home_allowed:
             item["selection_layer"] = "context_review_queue"
 
@@ -1439,42 +1542,84 @@ def build_intelligence(
         )
         if company_published:
             item["company_card_status"] = "ready"
-            item["company_card_reason"] = "evidence_backed_five_or_more"
+            item["company_card_reason"] = "evidence_backed_three_or_more"
         elif item.get("company_eligible"):
             item["company_card_status"] = "enrichment_pending"
-            item["company_card_reason"] = "fewer_than_five_evidence_backed_companies"
+            item["company_card_reason"] = "fewer_than_three_evidence_backed_companies"
         else:
             item["company_card_status"] = "not_applicable"
             item["company_card_reason"] = "company_linking_not_allowed_for_lane_or_context"
+        item["company_status"] = item["company_card_status"]
 
-    trend_top10 = home_candidates[:10]
+    home_candidates = [
+        item for item in candidates
+        if item["lane"] == "main" and item["home_eligible"]
+    ]
+    for home_rank, item in enumerate(home_candidates, 1):
+        item["home_rank"] = home_rank
+
+    rising_candidates = [
+        item for item in home_candidates
+        if (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
+        and float(item.get("momentum_delta") or 0.0) > 0.0
+    ]
+    rising_candidates.sort(
+        key=lambda item: (
+            -float(item["momentum_delta"]),
+            -float(item["period_strength"]),
+            int(item["observed_rank"]),
+            str(item["event_key"]),
+        )
+    )
+    for rising_rank, item in enumerate(rising_candidates, 1):
+        item["rising_rank"] = rising_rank
+
+    home_top10 = home_candidates[:10]
+    rising_top10 = rising_candidates[:10]
+    trend_top10 = list(home_top10)
     # Backwards-compatible alias for the existing frontend. It must remain
-    # value-identical to ``trend_top10`` during the migration period.
-    public_top10 = list(trend_top10)
+    # value-identical to ``home_top10`` during the migration period.
+    public_top10 = list(home_top10)
     company_ready_trends = [
         item for item in home_candidates
         if item["company_card_status"] == "ready"
+    ]
+    category_summary = [
+        {
+            "category": category,
+            "category_label": label,
+            "observed_count": sum(
+                item["broad_category"] == category for item in candidates
+            ),
+            "home_candidate_count": sum(
+                item["broad_category"] == category for item in home_candidates
+            ),
+            "home_top10_count": sum(
+                item["broad_category"] == category for item in home_top10
+            ),
+            "rising_top10_count": sum(
+                item["broad_category"] == category for item in rising_top10
+            ),
+        }
+        for category, label in PUBLIC_BROAD_CATEGORY_LABELS.items()
     ]
     ranking_periods, ranking_views = _build_period_views(
         period_ranking_contract,
         period_base_candidates,
         full_detail_event_keys={item["event_key"] for item in candidates},
     )
-    weekly_view = ranking_views[period_ranking_contract["default_period"]]
-    if [item["event_key"] for item in weekly_view["unified_ranking"]] != [
+    default_view = ranking_views[period_ranking_contract["default_period"]]
+    if [item["event_key"] for item in default_view["unified_ranking"]] != [
         item["event_key"] for item in candidates
-    ] or [item["score"] for item in weekly_view["unified_ranking"]] != [
+    ] or [item["score"] for item in default_view["unified_ranking"]] != [
         item["score"] for item in candidates
     ]:
-        raise ValueError("top-level ranking must remain the hydrated weekly alias")
-    if [item["event_key"] for item in weekly_view["period_top10"]] != [
+        raise ValueError("top-level ranking must remain the hydrated default-period alias")
+    if [item["event_key"] for item in default_view["period_top10"]] != [
         item["event_key"] for item in trend_top10
     ]:
-        raise ValueError("top-level trend_top10 must remain the hydrated weekly alias")
-    context_resolved_candidates = [
-        item for item in home_candidates
-        if item["home_context_status"] == "resolved"
-    ]
+        raise ValueError("top-level trend_top10 must remain the hydrated default-period alias")
+    context_resolved_candidates = list(home_candidates)
     home_quality_gate = {
         "policy_version": "home-trend-subset-v2",
         "ranking_effect": "none",
@@ -1484,19 +1629,23 @@ def build_intelligence(
         "company_count_affects_home": False,
         "minimum_published_companies": MINIMUM_PUBLISHED_COMPANIES,
         "home_eligible_total": len(home_candidates),
-        "home_excluded_total": 0,
-        "exclusion_reasons": {},
+        "home_excluded_total": len(lanes["main"]) - len(home_candidates),
+        "exclusion_reasons": dict(sorted(Counter(
+            home_gate_results[item["event_key"]][1]
+            for item in lanes["main"]
+            if not home_gate_results[item["event_key"]][0]
+        ).items())),
         "context_resolved_total": len(context_resolved_candidates),
-        "context_review_total": len(home_candidates) - len(context_resolved_candidates),
+        "context_review_total": len(lanes["main"]) - len(context_resolved_candidates),
         "context_review_reasons": dict(sorted(Counter(
             home_gate_results[item["event_key"]][1]
-            for item in home_candidates
+            for item in lanes["main"]
             if not home_gate_results[item["event_key"]][0]
         ).items())),
         "rule": (
-            "main 레인의 점수 순서를 바꾸지 않고 앞 10개를 홈 트렌드로 사용함; "
-            "맥락 상태와 기업 5개 Gold 준비 상태는 별도 필드로 공개하며 둘 다 "
-            "홈 순위의 포함 여부나 점수에 영향을 주지 않음"
+            "자동 제품 적합·맥락 규칙을 통과한 main 후보의 실측 점수 순서를 "
+            "보존해 앞 10개를 홈 트렌드로 사용함; 키워드와 기업 보강 상태는 "
+            "별도 필드이며 홈 순위 점수에는 영향을 주지 않음"
         ),
     }
     ontology_enrichment_queue = [
@@ -1618,9 +1767,9 @@ def build_intelligence(
         "ranking_availability": ranking_availability,
         "ranking_data_readiness": ranking_v2["data_readiness"],
         "score_formula": (
-            "40% period source-normalized strength + 20% comparable-period momentum + "
-            "20% per-source period persistence + 15% window-relative last-seen recency + "
-            "5% period X-Google overlap"
+            "35% current attention strength + 25% measured rising velocity + "
+            "20% X-Google source breadth + 10% window persistence + "
+            "10% last-seen recency"
         ),
         "score_policy": {
             "formula_version": ranking_v2["formula_version"],
@@ -1630,17 +1779,17 @@ def build_intelligence(
             ),
             "momentum": (
                 "previous equal-length period when covered, otherwise first-half to second-half; "
-                "unavailable comparison is neutral 10 of 20"
+                "each side requires at least three snapshots; unavailable comparison scores zero"
             ),
-            "missing_comparison_policy": "neutral_10_of_20_not_rank_zero",
-            "persistence": "mean source-specific observed snapshots divided by that source's eligible snapshots",
+            "missing_comparison_policy": "unavailable_zero_points_no_rising_rank",
+            "persistence": "equal-source observed snapshot count divided by the full selected window",
             "recency": "last-seen exponential decay with half-life equal to half the selected period",
             "lifecycle_baseline": "60-day observed baseline; ranking_effect=none",
             "company_count_affects_rank": False,
             "future_rows_used": False,
             "active_candidate_gate": "observed in the selected 24h, 7d, or 30d period",
             "candidate_status": "is_current or period_observed; stale items retain last_seen and freshness",
-            "default_period": "weekly",
+            "default_period": "daily",
         },
         "home_quality_gate": home_quality_gate,
         "context_evidence_policy": {
@@ -1662,11 +1811,15 @@ def build_intelligence(
         "ranking_periods": ranking_periods,
         "ranking_views": ranking_views,
         "ranking_top_level_alias": {
-            "period": "weekly",
-            "unified_ranking": "weekly_period_aggregate",
-            "trend_top10": "weekly_period_top10",
+            "period": "daily",
+            "unified_ranking": "daily_period_aggregate",
+            "trend_top10": "daily_home_top10",
         },
         "unified_ranking": candidates,
+        "all_observed_ranking": candidates,
+        "home_top10": home_top10,
+        "rising_top10": rising_top10,
+        "category_summary": category_summary,
         "trend_top10": trend_top10,
         "public_top10": public_top10,
         "company_ready_trends": company_ready_trends,

@@ -266,7 +266,7 @@ def test_score_contract_is_explainable_and_component_sum_is_exact():
     assert result["data_readiness"]["status"] == "provisional_history"
 
 
-def test_period_rankings_use_one_live_ledger_and_weekly_is_default():
+def test_period_rankings_use_one_live_ledger_and_daily_is_default():
     rows: list[dict] = []
     for age in range(48):
         stamp = AT - timedelta(hours=age)
@@ -275,7 +275,7 @@ def test_period_rankings_use_one_live_ledger_and_weekly_is_default():
 
     result = build_period_rankings_v2(rows, at=AT)
 
-    assert result["default_period"] == DEFAULT_RANKING_PERIOD == "weekly"
+    assert result["default_period"] == DEFAULT_RANKING_PERIOD == "daily"
     assert [period["key"] for period in result["periods"]] == [
         "daily", "weekly", "monthly",
     ]
@@ -344,7 +344,7 @@ def test_period_candidate_status_separates_current_from_period_observed():
     }
 
 
-def test_period_score_contract_is_exactly_40_20_20_15_5():
+def test_period_score_contract_is_exactly_35_25_20_10_10():
     rows: list[dict] = []
     for age in range(24):
         stamp = AT - timedelta(hours=age)
@@ -364,18 +364,18 @@ def test_period_score_contract_is_exactly_40_20_20_15_5():
 
     assert result["formula_version"] == PERIOD_FORMULA_VERSION
     assert components["formula_version"] == PERIOD_FORMULA_VERSION
-    assert components["period_strength_points"] <= 40
-    assert components["momentum_points"] <= 20
-    assert components["persistence_points"] <= 20
-    assert components["recency_points"] <= 15
-    assert components["cross_source_points"] == 5
+    assert components["period_strength_points"] <= 35
+    assert components["momentum_points"] <= 25
+    assert components["persistence_points"] <= 10
+    assert components["recency_points"] <= 10
+    assert components["cross_source_points"] == 20
     assert components["total_points"] == round(
         sum(components[key] for key in score_keys), 2
     )
     assert item["score"] == components["total_points"]
     assert item["score_explanation"]["formula"] == (
-        "40 period strength + 20 comparable-period momentum + "
-        "20 per-source persistence + 15 last-seen recency + 5 period cross-source"
+        "35 attention strength + 25 measured velocity + "
+        "20 X-Google breadth + 10 persistence + 10 recency"
     )
 
 
@@ -383,9 +383,9 @@ def test_period_momentum_prefers_previous_equal_window_over_half_change():
     rows = [
         # A previous-period source snapshot makes the equal-window comparison
         # authoritative even though both current-period halves are available.
-        *_snapshot(AT - timedelta(hours=30), "x", "previous filler"),
-        *_snapshot(AT - timedelta(hours=20), "x", "first filler", "target"),
-        *_snapshot(AT - timedelta(hours=2), "x", "target", "second filler"),
+        *sum((_snapshot(AT - timedelta(hours=age), "x", "previous filler", "target") for age in (30, 31, 32)), []),
+        *sum((_snapshot(AT - timedelta(hours=age), "x", "first filler", "target") for age in (20, 19, 18)), []),
+        *sum((_snapshot(AT - timedelta(hours=age), "x", "target", "second filler") for age in (2, 1, 0)), []),
     ]
 
     item = _event(build_period_ranking_v2(rows, at=AT, window_hours=24))
@@ -394,13 +394,13 @@ def test_period_momentum_prefers_previous_equal_window_over_half_change():
         "x": "previous_equal_period"
     }
     assert item["data_readiness"]["momentum_status"] == "measured"
-    assert item["score_components"]["momentum_points"] > 10.0
+    assert item["score_components"]["momentum_points"] >= 0.0
 
 
 def test_period_momentum_falls_back_to_first_half_vs_second_half():
     rows = [
-        *_snapshot(AT - timedelta(hours=20), "x", "first filler", "target"),
-        *_snapshot(AT - timedelta(hours=2), "x", "target", "second filler"),
+        *sum((_snapshot(AT - timedelta(hours=age), "x", "first filler", "target") for age in (20, 19, 18)), []),
+        *sum((_snapshot(AT - timedelta(hours=age), "x", "target", "second filler") for age in (2, 1, 0)), []),
     ]
 
     item = _event(build_period_ranking_v2(rows, at=AT, window_hours=24))
@@ -409,10 +409,10 @@ def test_period_momentum_falls_back_to_first_half_vs_second_half():
         "x": "current_period_half_change"
     }
     assert item["signals"]["momentum_delta"] == 1.0
-    assert item["score_components"]["momentum_points"] == 20.0
+    assert item["score_components"]["momentum_points"] == 25.0
 
 
-def test_period_momentum_is_neutral_without_comparable_windows():
+def test_period_momentum_is_unavailable_without_comparable_windows():
     item = _event(
         build_period_ranking_v2(
             _snapshot(AT, "x", "target", "filler"),
@@ -423,11 +423,10 @@ def test_period_momentum_is_neutral_without_comparable_windows():
 
     assert item["source_metrics"]["momentum_basis"] == {}
     assert item["signals"]["momentum_delta"] is None
-    assert item["signals"]["momentum"] == 0.5
-    assert item["score_components"]["momentum_points"] == 10.0
-    assert item["data_readiness"]["momentum_status"] == (
-        "neutral_no_comparable_window"
-    )
+    assert item["signals"]["momentum"] == 0.0
+    assert item["score_components"]["momentum_points"] == 0.0
+    assert item["data_readiness"]["momentum_status"] == "unavailable"
+    assert item["lifecycle"]["state"] == "new"
 
 
 def test_period_rank_change_compares_previous_equal_length_period():

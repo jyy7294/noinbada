@@ -4,7 +4,7 @@
   "title": "TRZIP publication metadata v3",
   "type": "object",
   "required": [
-    "schema_version", "publication_id", "generated_at", "observed_at", "mode",
+    "schema_version", "publication_id", "generated_at", "observed_at", "mode", "publishable",
     "storage", "collection", "coverage", "collection_health", "company_identity_data"
   ],
   "properties": {
@@ -13,6 +13,7 @@
     "generated_at": {"type": "string", "format": "date-time"},
     "observed_at": {"type": "string", "format": "date-time"},
     "mode": {"const": "live"},
+    "publishable": {"type": "boolean"},
     "storage": {"const": "local-sqlite-published-to-live-data"},
     "collection": {"type": "object"},
     "coverage": {"type": "object"},

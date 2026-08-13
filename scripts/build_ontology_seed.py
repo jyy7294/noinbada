@@ -281,7 +281,7 @@ class SeedBuilder:
                     ),
                 },
                 "publication_gate": {
-                    "minimum_unique_evidence_backed_companies": 5,
+                    "minimum_unique_evidence_backed_companies": 3,
                     "insufficient_status": "ontology_incomplete",
                     "padding_forbidden": True,
                 },

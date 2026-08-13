@@ -17,7 +17,7 @@ from .hourly_store import HourlyObservation, collect_current, coverage, floor_ho
 from .intelligence import build_intelligence
 from .company_adapters import enrich_company_identities, pykrx_stock
 from .enrichment_queue import sync_enrichment_queue
-from .editorial_review import build_editorial_review_pack, load_daily_editorial_review
+from .editorial_review import build_editorial_review_pack
 from .keyword_candidates import sync_provider_keyword_candidates
 from .normalization_evaluation import evaluate_regression_set
 from .provider_verification import (
@@ -32,7 +32,6 @@ from .provider_verification import (
 
 
 NEWS_DISCOVERY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "news_discovery_seed.json"
-DAILY_EDITORIAL_DIRECTORY = Path(__file__).resolve().parents[2] / "config" / "daily-editorial"
 DEFAULT_HOURLY_VERIFICATION_TERM_LIMIT = 3
 MAX_HOURLY_VERIFICATION_TERM_LIMIT = 3
 MONITORING_CONTRACT_VERSION = "trzip-v3-hourly"
@@ -47,7 +46,10 @@ RANKING_SUMMARY_FIELDS = (
     "display_name",
     "topic",
     "rank",
+    "observed_rank",
     "main_rank",
+    "home_rank",
+    "rising_rank",
     "score",
     "score_components",
     "candidate_status",
@@ -60,10 +62,14 @@ RANKING_SUMMARY_FIELDS = (
     "rank_change",
     "rank_change_status",
     "lane",
+    "home_eligible",
     "category",
     "broad_category",
+    "category_label",
+    "trend_definition",
     "current_source_position",
     "momentum",
+    "momentum_delta",
     "persistence",
     "lifecycle",
     "lifecycle_reason",
@@ -72,12 +78,15 @@ RANKING_SUMMARY_FIELDS = (
     "last_seen_at",
     "latest_source_ranks",
     "rank_change_by_source",
+    "source_rank_change",
     "source_badge",
     "confidence",
     "data_confidence",
     "ranking_data_readiness",
     "company_resolution",
     "company_card_status",
+    "company_status",
+    "keyword_status",
     "detail_event_key",
     "detail_status",
 )
@@ -208,7 +217,7 @@ def _verification_references(
     limit: int,
     verification_by_trend: dict[str, dict] | None = None,
 ) -> list[TrendReference]:
-    """Select a bounded, fair verification batch from current main candidates.
+    """Select a bounded, fair verification batch from current non-issue candidates.
 
     Rank order is the tie-breaker, not the only scheduling rule.  Trends that
     have never been checked are selected before previously checked trends; the
@@ -234,7 +243,7 @@ def _verification_references(
     candidates = sorted(
         (
             item for item in intelligence.get("unified_ranking", [])
-            if item.get("lane", "main") == "main"
+            if item.get("lane", "review") != "issue"
         ),
         key=lambda item: (
             bool(last_observed_at(item)),
@@ -263,8 +272,8 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
     """Collect bounded context evidence without changing score or rank.
 
     Provider failures are recorded as data states and never block publication.
-    Only three current main candidates are queried each hour. Candidates held
-    by the home context gate remain eligible for verification, and a retry of
+    Only three current non-issue candidates are queried each hour. Candidates
+    held in the review lane remain eligible for verification, and a retry of
     the same observation hour reuses the append-only ledger.
     """
 
@@ -358,10 +367,10 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         "hourly_term_limit": hourly_limit,
         "selection_policy": "never_verified_then_oldest_verified_then_current_rank",
         "candidate_count": sum(
-            item.get("lane", "main") == "main"
+            item.get("lane", "review") != "issue"
             for item in intelligence.get("unified_ranking", [])
         ),
-        "selection_scope": "current_main_candidates_including_context_review",
+        "selection_scope": "current_non_issue_candidates_including_review_lane",
         "providers": ["naver", "youtube", "instagram"],
         "ranking_effect": "none",
         "affects_collection_partial": False,
@@ -406,8 +415,8 @@ def _refresh_news_core_gate(
 
 def _validate_period_views(intelligence: dict) -> None:
     expected_periods = [("daily", 24), ("weekly", 168), ("monthly", 720)]
-    if intelligence.get("ranking_default_period") != "weekly":
-        raise ValueError("weekly must remain the default ranking period")
+    if intelligence.get("ranking_default_period") != "daily":
+        raise ValueError("daily must be the default ranking period")
     periods = intelligence.get("ranking_periods")
     views = intelligence.get("ranking_views")
     if not isinstance(periods, list) or not isinstance(views, dict):
@@ -423,7 +432,7 @@ def _validate_period_views(intelligence: dict) -> None:
         window = view.get("window") or {}
         if (
             view.get("key") != key
-            or view.get("default") is not (key == "weekly")
+            or view.get("default") is not (key == "daily")
             or window.get("to") != observed_at
             or window.get("hours") != hours
             or window.get("score_history_hours") != hours
@@ -453,30 +462,33 @@ def _validate_period_views(intelligence: dict) -> None:
             for item in ranking
         ):
             raise ValueError(f"period views must use shared current trend details: {key}")
-        main = [item for item in ranking if item.get("lane") == "main"]
+        main = [
+            item for item in ranking
+            if item.get("lane") == "main" and item.get("home_eligible") is True
+        ]
         if [item.get("main_rank") for item in main] != list(range(1, len(main) + 1)):
             raise ValueError(f"period main ranks must be continuous: {key}")
         if any(
             item.get("main_rank") is not None
             for item in ranking
-            if item.get("lane") != "main"
+            if item.get("lane") != "main" or item.get("home_eligible") is not True
         ) or period_top10 != main[:10]:
-            raise ValueError(f"period_top10 must be main-lane score order: {key}")
+            raise ValueError(f"period_top10 must be home-eligible score order: {key}")
 
-    weekly = views["weekly"]
+    default_view = views["daily"]
     top_level = intelligence.get("unified_ranking") or []
     if [
         (item.get("event_key"), item.get("rank"), item.get("score"))
-        for item in weekly["unified_ranking"]
+        for item in default_view["unified_ranking"]
     ] != [
         (item.get("event_key"), item.get("rank"), item.get("score"))
         for item in top_level
     ]:
-        raise ValueError("top-level unified ranking must be the hydrated weekly alias")
-    if [item.get("event_key") for item in weekly["period_top10"]] != [
+        raise ValueError("top-level unified ranking must be the hydrated daily alias")
+    if [item.get("event_key") for item in default_view["period_top10"]] != [
         item.get("event_key") for item in intelligence.get("trend_top10") or []
     ]:
-        raise ValueError("top-level trend_top10 must be the hydrated weekly alias")
+        raise ValueError("top-level trend_top10 must be the hydrated daily alias")
 
 
 def _validate_contract(intelligence: dict, metadata: dict, status: dict | None = None) -> None:
@@ -497,11 +509,22 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         observed_at.add(status.get("observed_at"))
     if None in observed_at or len(observed_at) != 1:
         raise ValueError("All publication documents must describe one observation window")
+    publishable_values = {document.get("publishable") for document in documents}
+    if None in publishable_values or len(publishable_values) != 1:
+        raise ValueError("All publication documents must share one publishable state")
     collection = metadata["collection"]
     if collection.get("rank_sources") != ["x", "google_trends"]:
         raise ValueError("Production rank sources must be X and Google Trends only")
     if "trends_mcp_used" in collection or "generated" in collection:
         raise ValueError("Legacy collection flags are not allowed in the v3 contract")
+    audit = collection.get("audit") or {}
+    source_observed = all(
+        (audit.get(key) or {}).get("status") == "observed"
+        for key in ("x_korea_realtime", "google_geo_kr")
+    )
+    expected_publishable = source_observed and not collection.get("errors")
+    if bool(metadata.get("publishable")) is not expected_publishable:
+        raise ValueError("publishable requires same-hour observed X and Google with no errors")
     _validate_period_views(intelligence)
     ranking = intelligence.get("unified_ranking", [])
     if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
@@ -521,13 +544,32 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
     ):
         raise ValueError("Only main-lane trends may have a main rank")
 
+    home_ranking = [
+        item for item in ranking
+        if item.get("lane") == "main" and item.get("home_eligible") is True
+    ]
+    if [item.get("home_rank") for item in home_ranking] != list(
+        range(1, len(home_ranking) + 1)
+    ):
+        raise ValueError("Home-eligible trends must have continuous home ranks")
     trend_top10 = intelligence.get("trend_top10", [])
+    home_top10 = intelligence.get("home_top10", [])
     public_top10 = intelligence.get("public_top10", [])
-    expected_trend_top10 = main_ranking[:10]
+    expected_trend_top10 = home_ranking[:10]
     if trend_top10 != expected_trend_top10:
-        raise ValueError("trend_top10 must be the first ten main-lane trends without reranking")
-    if public_top10 != trend_top10:
-        raise ValueError("public_top10 must remain a migration alias of trend_top10")
+        raise ValueError("trend_top10 must be the first ten home-eligible trends")
+    if home_top10 != trend_top10 or public_top10 != trend_top10:
+        raise ValueError("home/public/trend Top10 arrays must remain value-identical aliases")
+    if intelligence.get("all_observed_ranking") != ranking:
+        raise ValueError("all_observed_ranking must preserve the unified observed ranking")
+
+    rising = intelligence.get("rising_top10", [])
+    if any(
+        (item.get("ranking_data_readiness") or {}).get("momentum_status") != "measured"
+        or float(item.get("momentum_delta") or 0.0) <= 0.0
+        for item in rising
+    ):
+        raise ValueError("rising_top10 may contain only measured positive velocity")
 
     for item in ranking:
         published_companies = item.get("companies", [])
@@ -537,13 +579,15 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
             for company in published_companies
             if str(company.get("stock_code") or "").strip()
         }
-        if company_status == "published" and len(unique_stocks) < 5:
-            raise ValueError("Published company Gold requires five unique listed stocks")
+        if company_status == "published" and len(unique_stocks) < 3:
+            raise ValueError("Published company Gold requires three unique listed stocks")
         if published_companies and company_status != "published":
             raise ValueError("Non-published company status cannot expose Gold companies")
         if any(not company.get("ontology_complete") for company in published_companies):
             raise ValueError("Published companies require complete ontology paths")
         for company in published_companies:
+            if company.get("relation_tier") not in {"direct", "value_chain", "industry_watch"}:
+                raise ValueError("Published company relation_tier is outside the public contract")
             if not company.get("relation_display_type") or not company.get("team_review_status"):
                 raise ValueError(
                     f"Every company requires relation and review labels: {item.get('display_name')}"
@@ -731,6 +775,17 @@ def _write_frontend_delivery(
         },
         "ranking_top_level_alias": intelligence.get("ranking_top_level_alias"),
         "unified_ranking": [_ranking_summary(item) for item in ranking],
+        "all_observed_ranking": [
+            _ranking_summary(item)
+            for item in intelligence.get("all_observed_ranking") or []
+        ],
+        "home_top10": [
+            _ranking_summary(item) for item in intelligence.get("home_top10") or []
+        ],
+        "rising_top10": [
+            _ranking_summary(item) for item in intelligence.get("rising_top10") or []
+        ],
+        "category_summary": intelligence.get("category_summary") or [],
         "public_top10": [
             _ranking_summary(item) for item in intelligence.get("public_top10") or []
         ],
@@ -1355,7 +1410,7 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
     }
     intelligence = build_intelligence(
         at,
-        hours=168,
+        hours=24,
         path=database_path,
         news_context_by_term=news_context_by_term,
     )
@@ -1380,31 +1435,12 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         at=at,
     )
     intelligence = _enrich_market_references(intelligence, previous_intelligence, at)
-    daily_editorial_path = DAILY_EDITORIAL_DIRECTORY / f"{(at.astimezone(UTC) + timedelta(hours=9)).date().isoformat()}.json"
-    daily_editorial_review = (
-        load_daily_editorial_review(daily_editorial_path)
-        if daily_editorial_path.is_file()
-        else None
-    )
-    # A reviewed set is valid only for the source snapshot it was built from.
-    # Never let yesterday's or a fixture day's list force unobserved terms into
-    # a different live collection; the automatic path will remain fail-closed.
-    if daily_editorial_review is not None:
-        observed_keys = {
-            str(item.get("event_key") or "")
-            for item in intelligence.get("unified_ranking") or []
-        }
-        required_keys = {
-            str(source_key)
-            for item in daily_editorial_review.get("items") or []
-            for source_key in item.get("source_event_keys") or []
-        }
-        if not required_keys.issubset(observed_keys):
-            daily_editorial_review = None
+    # Manual daily lists are enrichment caches only. They must never select,
+    # promote, suppress, score or categorise a live trend.
     intelligence["editorial_review_pack"] = build_editorial_review_pack(
         intelligence,
         generated_at=at,
-        daily_review=daily_editorial_review,
+        daily_review=None,
     )
     stats = coverage(database_path)
 
@@ -1425,6 +1461,11 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
             for key in ("x_korea_realtime", "google_geo_kr")
         ),
     }
+    publishable = not intelligence["collection_status"]["partial"] and all(
+        intelligence["collection_status"]["source_status"].get(source) == "observed"
+        for source in ("x", "google_trends")
+    )
+    intelligence["publishable"] = publishable
 
     generated_at = datetime.now(UTC).isoformat()
     publication_id = f"pub-{uuid4().hex}"
@@ -1436,6 +1477,7 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         "generated_at": generated_at,
         "observed_at": at.isoformat(),
         "mode": "live",
+        "publishable": publishable,
         "storage": "local-sqlite-published-to-live-data",
         "retention_days": retention_days if retention_days > 0 else None,
         "retention_policy": "bounded" if retention_days > 0 else "indefinite",
@@ -1458,6 +1500,7 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         "generated_at": generated_at,
         "observed_at": metadata["observed_at"],
         "mode": "live",
+        "publishable": publishable,
         "partial": intelligence["collection_status"]["partial"],
         "source_status": intelligence["collection_status"]["source_status"],
         "errors": intelligence["collection_status"]["errors"],

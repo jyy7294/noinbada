@@ -8,7 +8,7 @@
 - NAVER·YouTube·Instagram·기사 검색은 검증과 맥락용이며 순위·점수에 영향을 주지 않습니다.
 - Google RSS, Trends MCP 자동호출, X API, GitHub Actions, Render, 생성·더미·백필 데이터는 운영 경로에 넣지 않습니다.
 - 대표어와 관련어는 실제 관측 표현을 사용합니다. 설명문을 트렌드명이나 관련어로 만들지 않습니다.
-- 기업은 URL 증거가 이어진 온톨로지 경로로만 연결합니다. 서로 다른 국내 상장종목 5개 미만이면 공개 `companies`는 비우고 후보와 보강 대기 상태만 남깁니다. 숫자를 맞추기 위한 범용 기업·약한 연관 기업 삽입은 금지합니다.
+- 기업은 URL 증거가 이어진 온톨로지 경로로만 연결합니다. 서로 다른 국내외 상장종목 3개 미만이면 공개 `companies`는 비우고 후보와 보강 대기 상태만 남깁니다. 숫자를 맞추기 위한 범용 기업·약한 연관 기업 삽입은 금지합니다.
 - 분류, 기사량, 검증 결과, 기업 수는 순위를 바꾸지 않습니다.
 - 프런트는 교체 대상입니다. 사용자가 명시적으로 요청하지 않으면 `frontend/`, `web/`, 디자인 파일을 수정하지 않습니다.
 - 비밀키, Chrome 프로필, 쿠키, SQLite, 로컬 절대경로를 Git 또는 공개 JSON에 넣지 않습니다.
@@ -48,7 +48,7 @@ SQLite 원본은 무기한 보존합니다. 구형 수집행은 삭제하지 않
 - `unified_ranking`은 전체 순위, `public_top10`은 그중 표시 적합 후보이며 재점수하지 않습니다.
 - 단일 출처면 `provisional_single_source`로 명시하고 통합 순위라고 부르지 않습니다.
 - `latest/intelligence.json`, `status.json`, `metadata.json`의 publication ID·생성시각·관측시각이 일치합니다.
-- 공개 기업은 최소 5개와 각 온톨로지 경로·근거 URL을 갖습니다.
+- 공개 기업은 최소 3개와 각 온톨로지 경로·근거 URL을 갖습니다.
 - 예약 작업 결과 0만으로 성공을 단정하지 않고 `status.partial`, 출처 상태, 실제 DB 행 수와 원격 `live-data` SHA를 함께 확인합니다.
 
 상세 운영·복구 절차는 `docs/CODEX_CONTINUITY.md`, 프런트 계약은 `docs/FRONTEND_BACKEND_CONTRACT_V3.md`를 따릅니다.

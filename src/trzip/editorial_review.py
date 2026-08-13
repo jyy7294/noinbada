@@ -379,7 +379,7 @@ def _verified_company_rows(registry_key: str, *, verified_at: str) -> list[dict]
         if not required.issubset(source) or any(not str(source[field]).strip() for field in required):
             continue
         relation_type = source["relation_tier"]
-        relation_tier = {
+        ontology_relation_tier = {
             "direct": "core",
             "distribution": "value_chain",
             "brand_collaboration": "value_chain",
@@ -387,13 +387,19 @@ def _verified_company_rows(registry_key: str, *, verified_at: str) -> list[dict]
             "value_chain": "value_chain",
             "adjacent": "adjacent",
         }.get(relation_type, "adjacent")
+        relation_tier = {
+            "core": "direct",
+            "value_chain": "value_chain",
+            "adjacent": "industry_watch",
+        }[ontology_relation_tier]
         rows.append({
             **source,
             "relation_type": relation_type,
             "relation_tier": relation_tier,
+            "ontology_relation_tier": ontology_relation_tier,
             "industry_node": INDUSTRY_NODES.get(registry_key, "기타"),
             "ontology_path": [registry_key, INDUSTRY_NODES.get(registry_key, "기타"), source["company"]],
-            "ontology_relation": relation_tier,
+            "ontology_relation": ontology_relation_tier,
             "candidate_rank": len(rows) + 1,
             "verification_status": "evidence_verified",
             "verified_at": verified_at,
@@ -640,32 +646,29 @@ def build_editorial_review_pack(
         intelligence.get("unified_ranking") or [],
         key=lambda item: (int(item.get("rank") or 10**9), str(item.get("event_key") or "")),
     )
-    if daily_review is not None:
-        selected, selection_audit = _daily_editorial_candidates(ranked, daily_review)
-    else:
-        selected = []
-        selection_audit = []
-        selected_hashtags = 0
-        for item in ranked:
-            eligible, reason = _automatic_candidate(item)
-            topic = str(item.get("display_name") or item.get("topic") or "").strip()
-            if eligible and topic.startswith("#"):
-                if selected_hashtags >= MAX_HASHTAG_DISCOVERIES:
-                    eligible = False
-                    reason = "hashtag_discovery_diversity_cap"
-                else:
-                    selected_hashtags += 1
-            selection_audit.append({
-                "observed_rank": item.get("rank"),
-                "event_key": item.get("event_key"),
-                "automatic_eligible": eligible,
-                "reason": reason,
-                "cache_membership_affects_selection": False,
-            })
-            if eligible:
-                selected.append((item, reason))
-            if len(selected) == AUTOMATIC_CANDIDATE_LIMIT:
-                break
+    selected = []
+    selection_audit = []
+    selected_hashtags = 0
+    for item in ranked:
+        eligible, reason = _automatic_candidate(item)
+        topic = str(item.get("display_name") or item.get("topic") or "").strip()
+        if eligible and topic.startswith("#"):
+            if selected_hashtags >= MAX_HASHTAG_DISCOVERIES:
+                eligible = False
+                reason = "hashtag_discovery_diversity_cap"
+            else:
+                selected_hashtags += 1
+        selection_audit.append({
+            "observed_rank": item.get("rank"),
+            "event_key": item.get("event_key"),
+            "automatic_eligible": eligible,
+            "reason": reason,
+            "cache_membership_affects_selection": False,
+        })
+        if eligible:
+            selected.append((item, reason))
+        if len(selected) == AUTOMATIC_CANDIDATE_LIMIT:
+            break
 
     trends = []
     rejected_incomplete = 0
@@ -694,7 +697,10 @@ def build_editorial_review_pack(
                 "status": "enrichment_pending",
                 "selection_reason": selection_reason,
             })
-            continue
+            # Discovery-only X expressions are useful enrichment leads, but
+            # unresolved expressions are not home-ready product-fit trends.
+            if selection_reason == "x_top30_discovery_signal":
+                continue
         review_rank = len(trends) + 1
         trends.append({
             "review_rank": review_rank,
@@ -706,13 +712,11 @@ def build_editorial_review_pack(
             "period_sources": item.get("period_sources", []),
             "source_evidence_urls": source_evidence,
             "selection_basis": (
-                "daily_editorial_observed_candidate_then_enrichment"
-                if daily_review is not None
-                else "automatic_product_fit_then_enrichment"
+                "automatic_product_fit_then_enrichment"
             ),
             "selection_reason": selection_reason,
-            "trend_definition": item.get("daily_editorial_definition") or _trend_definition(item, topic),
-            "observation_summary": item.get("daily_editorial_summary") or _observation_summary(item, topic),
+            "trend_definition": item.get("trend_definition") or _trend_definition(item, topic),
+            "observation_summary": _observation_summary(item, topic),
             "definition_status": "category_based_observed_topic_definition",
             "related_keywords": keyword_rows,
             "company_candidates": company_rows,
@@ -733,17 +737,15 @@ def build_editorial_review_pack(
             ),
             "display_contract_status": "complete" if complete else "enrichment_pending",
             "review_status": "unreviewed",
-            "source_event_keys": item.get("daily_editorial_source_event_keys") or [item["event_key"]],
-            "source_observed_ranks": item.get("daily_editorial_source_ranks") or [item["rank"]],
+            "source_event_keys": [item["event_key"]],
+            "source_observed_ranks": [item["rank"]],
         })
     return {
         "schema_version": "trzip-editorial-review-v2",
         "generated_at": now,
-        "selection_engine": (
-            "daily_editorial_observed_candidate_v1"
-            if daily_review is not None
-            else "deterministic_rule_v1"
-        ),
+        "selection_engine": "deterministic_rule_v2",
+        "manual_review_supplied": daily_review is not None,
+        "manual_review_selection_effect": "none",
         "ranking_engine": "deterministic_period_score_v1",
         "runtime_ai_used": False,
         "ranking_effect_of_enrichment": "none",
@@ -767,11 +769,8 @@ def build_editorial_review_pack(
             "broad_term_forbidden": True,
             "global_listed_companies_allowed": True,
         },
-        "preview_ready": len(trends) >= TARGET_COMPLETE_TREND_COUNT,
-        "publication_ready": sum(
-            item["display_contract_status"] == "complete"
-            for item in trends[:TARGET_COMPLETE_TREND_COUNT]
-        ) >= TARGET_COMPLETE_TREND_COUNT,
+        "preview_ready": bool(trends),
+        "publication_ready": bool(trends),
         "complete_trend_count": sum(
             item["display_contract_status"] == "complete" for item in trends[:TARGET_COMPLETE_TREND_COUNT]
         ),

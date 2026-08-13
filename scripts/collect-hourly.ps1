@@ -96,9 +96,23 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "frontend delivery manifest validation failed" }
     Write-RunLog -Phase "pipeline" -Status "ok"
 
+    $PublicationStatusPath = Join-Path $PublicationRoot "latest\status.json"
+    try {
+        $PublicationStatus = Get-Content -LiteralPath $PublicationStatusPath -Raw | ConvertFrom-Json
+    } catch {
+        throw "publication status is missing or invalid"
+    }
+    if ($PublicationStatus.publishable -ne $true) {
+        $SourceDetail = "x={0} google={1}" -f `
+            $PublicationStatus.source_status.x,$PublicationStatus.source_status.google_trends
+        Write-RunLog -Phase "publish" -Status "local_only" `
+            -Detail "same-hour X+Google gate not met; $SourceDetail"
+        exit 0
+    }
+
     # Audit the exact publication and SQLite ledger that are about to be
-    # published. A provisional X/96h state remains publishable and explicit;
-    # contract, score, evidence, secret, or ledger failures stop publication.
+    # published. History maturity may remain provisional, but both ranking
+    # sources must be observed for this hour before remote publication.
     $AuditScript = Join-Path $ProjectRoot "scripts\audit-runtime.py"
     $AuditOutput = @(& $Python $AuditScript --runtime-root $RuntimeRoot --json 2>&1)
     if ($LASTEXITCODE -ne 0) {

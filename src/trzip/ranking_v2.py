@@ -22,9 +22,10 @@ from typing import Any, Iterable, Mapping, Sequence
 
 
 FORMULA_VERSION = "current40_momentum20_persistence20_decay15_cross5_v2"
-PERIOD_FORMULA_VERSION = "period40_momentum20_persistence20_recency15_cross5_v1"
+PERIOD_FORMULA_VERSION = "spread35_velocity25_breadth20_persistence10_recency10_v1"
 DEFAULT_SOURCES = ("x", "google_trends")
-DEFAULT_RANKING_PERIOD = "weekly"
+DEFAULT_RANKING_PERIOD = "daily"
+MINIMUM_COMPARISON_SNAPSHOTS = 3
 RANKING_PERIODS = (
     {
         "key": "daily",
@@ -522,8 +523,8 @@ def build_period_rankings_v2(
 
     Every view reads the same materialised quality-eligible live ledger and
     aggregates every event observed inside its own period. The 60-day baseline
-    remains lifecycle-only. ``weekly`` is the compatibility/default period
-    used by top-level output.
+    remains lifecycle-only. ``daily`` is the product/default period used by
+    top-level output.
     """
 
     rows = [dict(row) for row in observations]
@@ -580,12 +581,13 @@ def build_period_ranking_v2(
 ) -> dict[str, Any]:
     """Aggregate every live-observed event in one ranking period.
 
-    Formula: 40 period strength + 20 period momentum + 20 persistence +
-    15 last-seen recency + 5 period cross-source. Period strength is the mean
+    Formula: 35 attention strength + 25 measured velocity + 20 source breadth
+    + 10 persistence + 10 last-seen recency. Attention strength is the mean
     of each observed source's 70% recency-weighted average position and 30%
     peak position. Momentum uses the previous equal-length window when source
-    coverage exists, then falls back to first-half versus second-half; when
-    neither comparison exists it is explicitly neutral (10/20).
+    coverage exists, then falls back to first-half versus second-half. Every
+    compared source requires three snapshots in both sides; otherwise velocity
+    is unavailable and contributes zero points.
     """
 
     current_at = _floor_utc_hour(at)
@@ -676,13 +678,19 @@ def build_period_ranking_v2(
             )
             for source in observed_sources
         }
-        period_strength = _mean(strengths.values())
+        # X and Google always own equal shares of the attention component.
+        # A single-source term therefore cannot inherit the missing source's
+        # attention weight (source breadth is rewarded separately below).
+        period_strength = _mean(strengths.get(source, 0.0) for source in sources)
 
         momentum_deltas: dict[str, float] = {}
         momentum_basis: dict[str, str] = {}
         for source in observed_sources:
             current_strength = strengths[source]
-            if previous_eligible[source]:
+            if (
+                len(current_eligible[source]) >= MINIMUM_COMPARISON_SNAPSHOTS
+                and len(previous_eligible[source]) >= MINIMUM_COMPARISON_SNAPSHOTS
+            ):
                 previous_strength = source_strength(
                     event_key, source, previous_eligible[source], previous_end
                 )
@@ -697,7 +705,10 @@ def build_period_ranking_v2(
                 stamp for stamp in current_eligible[source]
                 if half_boundary <= stamp <= current_at
             ]
-            if first_half and second_half:
+            if (
+                len(first_half) >= MINIMUM_COMPARISON_SNAPSHOTS
+                and len(second_half) >= MINIMUM_COMPARISON_SNAPSHOTS
+            ):
                 momentum_deltas[source] = source_strength(
                     event_key, source, second_half, current_at
                 ) - source_strength(
@@ -706,27 +717,33 @@ def build_period_ranking_v2(
                 momentum_basis[source] = "current_period_half_change"
         if momentum_deltas:
             momentum_delta = max(-1.0, min(1.0, _mean(momentum_deltas.values())))
-            momentum_signal = (momentum_delta + 1.0) / 2.0
+            # Velocity is an acceleration signal, not a symmetric direction
+            # score. Falling or flat terms receive no velocity points.
+            momentum_signal = max(0.0, momentum_delta)
             momentum_status = "measured"
         else:
             momentum_delta = None
-            momentum_signal = 0.5
-            momentum_status = "neutral_no_comparable_window"
+            momentum_signal = 0.0
+            momentum_status = "unavailable"
 
         persistence_by_source: dict[str, dict[str, Any]] = {}
         persistence_signals: list[float] = []
-        for source in observed_sources:
+        for source in sources:
             eligible = current_eligible[source]
             present = [
                 stamp for stamp in eligible
                 if (event_key, source, stamp) in event_ranks
             ]
-            signal = len(present) / len(eligible) if eligible else 0.0
+            # A feed with only two captured hours must not look as persistent
+            # as a mature 24-hour feed. Missing source snapshots count as
+            # unobserved against the selected product window.
+            signal = len(present) / window_hours
             persistence_signals.append(signal)
             persistence_by_source[source] = {
                 "eligible_hours": len(eligible),
                 "observed_hours": len(present),
                 "presence_rate": round(signal, 6),
+                "window_hours": window_hours,
             }
         persistence = _mean(persistence_signals)
         last_seen = max(period_stamps)
@@ -735,13 +752,13 @@ def build_period_ranking_v2(
         )
         recency_half_life = window_hours / 2.0
         recency = 0.5 ** (hours_since_last_seen / recency_half_life)
-        cross = 1.0 if set(DEFAULT_SOURCES) <= set(observed_sources) else 0.0
+        cross = len(set(observed_sources) & set(sources)) / len(sources)
         components = {
-            "period_strength_points": round(40 * period_strength, 2),
-            "momentum_points": round(20 * momentum_signal, 2),
-            "persistence_points": round(20 * persistence, 2),
-            "recency_points": round(15 * recency, 2),
-            "cross_source_points": round(5 * cross, 2),
+            "period_strength_points": round(35 * period_strength, 2),
+            "momentum_points": round(25 * momentum_signal, 2),
+            "persistence_points": round(10 * persistence, 2),
+            "recency_points": round(10 * recency, 2),
+            "cross_source_points": round(20 * cross, 2),
             "formula_version": PERIOD_FORMULA_VERSION,
             "rounding_policy": "each_component_2dp_then_sum_2dp",
         }
@@ -822,8 +839,8 @@ def build_period_ranking_v2(
             },
             "score_explanation": {
                 "formula": (
-                    "40 period strength + 20 comparable-period momentum + "
-                    "20 per-source persistence + 15 last-seen recency + 5 period cross-source"
+                    "35 attention strength + 25 measured velocity + "
+                    "20 X-Google breadth + 10 persistence + 10 recency"
                 ),
                 "momentum_status": momentum_status,
                 "momentum_basis": momentum_basis,
@@ -858,17 +875,17 @@ def build_period_ranking_v2(
             )
             for source in observed_sources
         }
-        strength_signal = _mean(strengths.values())
+        strength_signal = _mean(strengths.get(source, 0.0) for source in sources)
         persistence_values: list[float] = []
         half_deltas: list[float] = []
-        for source in observed_sources:
+        for source in sources:
             eligible = previous_eligible[source]
             present = [
                 stamp
                 for stamp in eligible
                 if (event_key, source, stamp) in event_ranks
             ]
-            persistence_values.append(len(present) / len(eligible) if eligible else 0.0)
+            persistence_values.append(len(present) / window_hours)
             first_half = [
                 stamp for stamp in eligible
                 if previous_start <= stamp < previous_half_boundary
@@ -877,7 +894,10 @@ def build_period_ranking_v2(
                 stamp for stamp in eligible
                 if previous_half_boundary <= stamp <= previous_end
             ]
-            if first_half and second_half:
+            if (
+                len(first_half) >= MINIMUM_COMPARISON_SNAPSHOTS
+                and len(second_half) >= MINIMUM_COMPARISON_SNAPSHOTS
+            ):
                 half_deltas.append(
                     source_strength(event_key, source, second_half, previous_end)
                     - source_strength(
@@ -889,9 +909,9 @@ def build_period_ranking_v2(
                 )
         if half_deltas:
             previous_delta = max(-1.0, min(1.0, _mean(half_deltas)))
-            previous_momentum = (previous_delta + 1.0) / 2.0
+            previous_momentum = max(0.0, previous_delta)
         else:
-            previous_momentum = 0.5
+            previous_momentum = 0.0
         previous_last_seen = max(
             stamp
             for stamp in event_hours[event_key]
@@ -901,15 +921,13 @@ def build_period_ranking_v2(
             0.0, (previous_end - previous_last_seen).total_seconds() / 3600.0
         )
         previous_recency = 0.5 ** (previous_age / (window_hours / 2.0))
-        previous_cross = (
-            1.0 if set(DEFAULT_SOURCES) <= set(observed_sources) else 0.0
-        )
+        previous_cross = len(set(observed_sources) & set(sources)) / len(sources)
         previous_score = round(
-            40 * strength_signal
-            + 20 * previous_momentum
-            + 20 * _mean(persistence_values)
-            + 15 * previous_recency
-            + 5 * previous_cross,
+            35 * strength_signal
+            + 25 * previous_momentum
+            + 10 * _mean(persistence_values)
+            + 10 * previous_recency
+            + 20 * previous_cross,
             2,
         )
         previous_scores.append((event_key, previous_score))
@@ -1005,6 +1023,11 @@ def classify_lifecycle_v2(
     age_since_first = (now - first_seen).total_seconds() / 3600.0
     if age_since_first < new_hours and observed_hours <= new_hours:
         return {"state": "new", "reason_code": "first_observed_within_new_window"}
+    if momentum_delta is None:
+        return {
+            "state": "insufficient_data",
+            "reason_code": "comparison_window_not_ready",
+        }
     if momentum_delta is not None and momentum_delta >= 0.12:
         return {"state": "rising", "reason_code": "normalised_position_rising"}
     if observed_hours >= new_hours:

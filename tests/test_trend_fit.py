@@ -39,7 +39,7 @@ def test_broad_taxonomy_word_needs_specific_context_before_main():
     assert generic["selection"] == "review"
     assert generic["generic_category_word"] is True
     assert generic["rank_effect"] == "none"
-    assert contextualized["selection"] == "main"
+    assert contextualized["selection"] == "review"
 
 
 def test_person_name_containing_phone_syllable_is_not_a_product_signal():
@@ -70,6 +70,8 @@ def test_provider_title_can_demote_legal_event_but_never_promote_a_term():
 
     assert legal["selection"] == "issue"
     assert legal["issue_context_used"] is True
+    # The raw market noun "증권" is itself a general lexical signal; the
+    # provider title does not create that eligibility.
     assert ordinary["selection"] == "main"
     assert ordinary["rank_effect"] == "none"
 
@@ -96,7 +98,8 @@ def test_single_soft_provider_title_does_not_demote_the_whole_trend():
         ],
     )
 
-    assert one_title["selection"] == "main"
+    assert one_title["selection"] == "review"
+    assert one_title["hard_issue"] is False
     assert one_title["provider_soft_issue_match_count"] == 1
     assert corroborated["selection"] == "issue"
     assert corroborated["provider_soft_issue_match_count"] == 2
