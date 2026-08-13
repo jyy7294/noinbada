@@ -664,8 +664,8 @@
         "company_status": {"enum": ["ready", "enrichment_pending", "not_applicable"]},
         "company_card_reason": {
           "enum": [
-            "evidence_backed_three_or_more",
-            "fewer_than_three_evidence_backed_companies",
+            "evidence_backed_six_or_more",
+            "fewer_than_six_evidence_backed_companies",
             "company_linking_not_allowed_for_lane_or_context"
           ]
         },

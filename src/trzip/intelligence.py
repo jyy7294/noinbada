@@ -1801,10 +1801,10 @@ def build_intelligence(
         )
         if company_published:
             item["company_card_status"] = "ready"
-            item["company_card_reason"] = "evidence_backed_three_or_more"
+            item["company_card_reason"] = "evidence_backed_six_or_more"
         elif item.get("company_eligible"):
             item["company_card_status"] = "enrichment_pending"
-            item["company_card_reason"] = "fewer_than_three_evidence_backed_companies"
+            item["company_card_reason"] = "fewer_than_six_evidence_backed_companies"
         else:
             item["company_card_status"] = "not_applicable"
             item["company_card_reason"] = "company_linking_not_allowed_for_lane_or_context"

@@ -1433,7 +1433,7 @@ def _trend_item(
         "company_candidates": list(template.get("company_candidates") or []),
         "company_resolution": dict(template.get("company_resolution") or {}),
         "company_card_status": str(template.get("company_card_status") or "enrichment_pending"),
-        "company_card_reason": str(template.get("company_card_reason") or "fewer_than_five_evidence_backed_companies"),
+        "company_card_reason": str(template.get("company_card_reason") or "fewer_than_six_evidence_backed_companies"),
         "series": list(series),
         "data_provenance": {
             "counts": dict(sorted(provenance_counts.items())),
