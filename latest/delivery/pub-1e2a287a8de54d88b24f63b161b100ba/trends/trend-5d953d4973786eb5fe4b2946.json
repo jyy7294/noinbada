@@ -1,0 +1,2519 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-1e2a287a8de54d88b24f63b161b100ba",
+  "generated_at": "2026-08-13T19:38:59.512327+00:00",
+  "observed_at": "2026-08-13T19:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "광 통신",
+    "topic": "광 통신",
+    "display_name": "광 통신",
+    "observed_representative_term": "광 통신",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "광 통신",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 14,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.072639,
+      "best_source_rank": 89
+    },
+    "raw_terms": [
+      "광 통신"
+    ],
+    "phenomenon_summary": "\"광 통신\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "technology_tool",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "technology",
+    "category_label": "기술·도구",
+    "trend_definition": "'광 통신'은(는) 기술·장비·인프라의 개발과 활용에 관심이 모이는 흐름입니다. X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 20.01,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": 157,
+    "rank_change": -150,
+    "rank_change_status": "measured",
+    "period_strength": 0.214511,
+    "current_source_position": 0.214511,
+    "momentum": 0.0,
+    "persistence": 0.25,
+    "momentum_delta": -0.030315,
+    "score_components": {
+      "period_strength_points": 7.51,
+      "momentum_points": 0.0,
+      "persistence_points": 2.5,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 20.01
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.429023
+      },
+      "momentum_deltas": {
+        "google_trends": -0.030315
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 12,
+          "comparison": 2
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 12,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 12,
+          "presence_rate": 0.5,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.5,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T19:00:00+00:00",
+      "observed_hours": 14,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 148
+    },
+    "rank_change_by_source": {
+      "google_trends": 9
+    },
+    "source_rank_change": {
+      "google_trends": 9
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T19:00:00+00:00",
+    "age_hours": 30,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 20,
+      "history_maturity": 0.5208,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "광 통신",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 70911,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "5EiXLrrZGmc",
+              "title": "[대한광통신 주가전망] 경고 딱지 풀리면, 아마도 대폭발.",
+              "url": "https://www.youtube.com/watch?v=5EiXLrrZGmc",
+              "published_at": "2026-08-12T05:30:07Z",
+              "publisher": "주식연구소",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 143,
+                "viewCount": 2141
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "bODNA41carI",
+              "title": "[대한광통신 주가전망] \"긴급\" 경고종목지정세력들...장중에 조정후 시간외 +1%상승..장내 매수 했다!.#대한광통신주가 #대한광통신 #주식타짜안교수.#대한광통신주가 #대한광통신",
+              "url": "https://www.youtube.com/watch?v=bODNA41carI",
+              "published_at": "2026-08-12T13:30:35Z",
+              "publisher": "주식타짜훈련소",
+              "metrics": {
+                "commentCount": 13,
+                "likeCount": 172,
+                "viewCount": 1379
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "Nn8ixa4umUo",
+              "title": "[대한광통신 주가전망] 대한광통신 13,450원 매물대 분석! 방어선·목표가·세력 원가 전부 공개",
+              "url": "https://www.youtube.com/watch?v=Nn8ixa4umUo",
+              "published_at": "2026-08-11T09:30:16Z",
+              "publisher": "슈퍼개미 사관학교",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 8,
+                "viewCount": 444
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "KLF-2_lyPZE",
+              "title": "[대한광통신 주가전망] '경고' 13일 정말 끝장났습니다💥옵션만기💥결국 이거였네! 내일 '이렇게' 됩니다🚀매집포착",
+              "url": "https://www.youtube.com/watch?v=KLF-2_lyPZE",
+              "published_at": "2026-08-12T08:35:35Z",
+              "publisher": "오늘의주식",
+              "metrics": {
+                "commentCount": 28,
+                "likeCount": 202,
+                "viewCount": 2185
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "DhdjipShNEk",
+              "title": "[대한광통신 주가 전망] 투자경고 종목 지정! 주가 못 올리는 이유! 다음 상승 매도 준비! #대한광통신 #대한광통신목표가 #대한광통신주가전망",
+              "url": "https://www.youtube.com/watch?v=DhdjipShNEk",
+              "published_at": "2026-08-12T06:00:17Z",
+              "publisher": "세력주분석채널",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 25,
+                "viewCount": 572
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "광 통신",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 70911,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "5EiXLrrZGmc",
+              "title": "[대한광통신 주가전망] 경고 딱지 풀리면, 아마도 대폭발.",
+              "url": "https://www.youtube.com/watch?v=5EiXLrrZGmc",
+              "published_at": "2026-08-12T05:30:07Z",
+              "publisher": "주식연구소",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 143,
+                "viewCount": 2141
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "bODNA41carI",
+              "title": "[대한광통신 주가전망] \"긴급\" 경고종목지정세력들...장중에 조정후 시간외 +1%상승..장내 매수 했다!.#대한광통신주가 #대한광통신 #주식타짜안교수.#대한광통신주가 #대한광통신",
+              "url": "https://www.youtube.com/watch?v=bODNA41carI",
+              "published_at": "2026-08-12T13:30:35Z",
+              "publisher": "주식타짜훈련소",
+              "metrics": {
+                "commentCount": 13,
+                "likeCount": 172,
+                "viewCount": 1379
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "Nn8ixa4umUo",
+              "title": "[대한광통신 주가전망] 대한광통신 13,450원 매물대 분석! 방어선·목표가·세력 원가 전부 공개",
+              "url": "https://www.youtube.com/watch?v=Nn8ixa4umUo",
+              "published_at": "2026-08-11T09:30:16Z",
+              "publisher": "슈퍼개미 사관학교",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 8,
+                "viewCount": 444
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "KLF-2_lyPZE",
+              "title": "[대한광통신 주가전망] '경고' 13일 정말 끝장났습니다💥옵션만기💥결국 이거였네! 내일 '이렇게' 됩니다🚀매집포착",
+              "url": "https://www.youtube.com/watch?v=KLF-2_lyPZE",
+              "published_at": "2026-08-12T08:35:35Z",
+              "publisher": "오늘의주식",
+              "metrics": {
+                "commentCount": 28,
+                "likeCount": 202,
+                "viewCount": 2185
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "DhdjipShNEk",
+              "title": "[대한광통신 주가 전망] 투자경고 종목 지정! 주가 못 올리는 이유! 다음 상승 매도 준비! #대한광통신 #대한광통신목표가 #대한광통신주가전망",
+              "url": "https://www.youtube.com/watch?v=DhdjipShNEk",
+              "published_at": "2026-08-12T06:00:17Z",
+              "publisher": "세력주분석채널",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 25,
+                "viewCount": 572
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "광 통신",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 99,
+        "value": 2.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"500%\", \"page\": 4, \"row_on_page\": 24, \"started_text\": \"22시간 전\", \"status_text\": \"11시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 107,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"500%\", \"page\": 5, \"row_on_page\": 7, \"started_text\": \"23시간 전\", \"status_text\": \"11시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 89,
+        "value": 12.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 4, \"row_on_page\": 14, \"started_text\": \"1시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 108,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 5, \"row_on_page\": 8, \"started_text\": \"3시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 112,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 5, \"row_on_page\": 12, \"started_text\": \"4시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 122,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 5, \"row_on_page\": 22, \"started_text\": \"6시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 158,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 245, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 7, \"row_on_page\": 8, \"started_text\": \"11시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "google_trends",
+        "rank": 159,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 237, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 7, \"row_on_page\": 9, \"started_text\": \"12시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "google_trends",
+        "rank": 168,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 242, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 7, \"row_on_page\": 18, \"started_text\": \"14시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 161,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 238, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 7, \"row_on_page\": 11, \"started_text\": \"16시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 164,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 229, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 7, \"row_on_page\": 14, \"started_text\": \"18시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 165,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 236, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 7, \"row_on_page\": 15, \"started_text\": \"19시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 157,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 227, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 7, \"row_on_page\": 7, \"started_text\": \"20시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 148,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 6, \"row_on_page\": 23, \"started_text\": \"21시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [
+      {
+        "text": "광섬유",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "광케이블",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "광통신망",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "데이터센터 광케이블",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "FTTH",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [
+      {
+        "company": "대한광통신",
+        "stock_code": "010170",
+        "ticker": "010170",
+        "market": "KOSDAQ",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "광섬유와 광케이블을 함께 생산하는 광통신 직접 사업자",
+        "relationship_reason": "광섬유와 광케이블을 함께 생산하는 광통신 직접 사업자",
+        "company_summary": "광섬유와 광케이블을 생산하는 국내 상장 광통신 소재·케이블 기업",
+        "company_description": "광섬유와 광케이블을 생산하는 국내 상장 광통신 소재·케이블 기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "listed_company_business_profile",
+        "evidence_url": "https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?MenuYn=Y&NewMenuID=Y&ReportGB=B&gicode=A010170&pGB=1&stkGb=701",
+        "evidence_sources": [
+          {
+            "url": "https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?MenuYn=Y&NewMenuID=Y&ReportGB=B&gicode=A010170&pGB=1&stkGb=701",
+            "title": "FnGuide Company Guide",
+            "evidence_type": "listed_company_business_profile",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?MenuYn=Y&NewMenuID=Y&ReportGB=B&gicode=A010170&pGB=1&stkGb=701"
+            ],
+            "evidence_type": "listed_company_business_profile",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "대한광통신",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?MenuYn=Y&NewMenuID=Y&ReportGB=B&gicode=A010170&pGB=1&stkGb=701"
+            ],
+            "evidence_type": "listed_company_business_profile",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "대한광통신",
+          "corp_code": "00113261",
+          "english_name": "TAIHAN Fiberoptics Co.,LTD",
+          "established_date": "19740902",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 251368708225,
+                "label": "자산총계",
+                "previous": 219015700323
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 115997400047,
+                "label": "자본총계",
+                "previous": 66651648061
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 135371308178,
+                "label": "부채총계",
+                "previous": 152364052262
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": -3671887420,
+                "label": "당기순이익(손실)",
+                "previous": -7034360746
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": -3961404116,
+                "label": "영업이익",
+                "previous": -6920418344
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 34248640061,
+                "label": "매출액",
+                "previous": 25393611150
+              }
+            },
+            "business_year": 2026,
+            "company": "대한광통신",
+            "corp_code": "00113261",
+            "filing_receipt_no": "20260515002702",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002702",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:18.147294+00:00",
+            "status": "observed",
+            "stock_code": "010170"
+          },
+          "homepage": "https://www.taihanfiber.com",
+          "legal_name": "대한광통신(주)",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "010170",
+          "stock_name": "대한광통신"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "010170",
+          "name": "대한광통신",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 8200.0,
+              "high": 8640.0,
+              "low": 7710.0,
+              "close": 8530.0,
+              "volume": 9677161.0,
+              "change_pct": 19.134078212290504
+            },
+            {
+              "date": "2026-08-03",
+              "open": 8510.0,
+              "high": 9850.0,
+              "low": 8030.0,
+              "close": 9250.0,
+              "volume": 14440372.0,
+              "change_pct": 8.440797186400937
+            },
+            {
+              "date": "2026-08-04",
+              "open": 9700.0,
+              "high": 10580.0,
+              "low": 9550.0,
+              "close": 10180.0,
+              "volume": 11494180.0,
+              "change_pct": 10.054054054054054
+            },
+            {
+              "date": "2026-08-05",
+              "open": 12040.0,
+              "high": 12760.0,
+              "low": 11030.0,
+              "close": 12070.0,
+              "volume": 40407421.0,
+              "change_pct": 18.56581532416503
+            },
+            {
+              "date": "2026-08-06",
+              "open": 11780.0,
+              "high": 11970.0,
+              "low": 10800.0,
+              "close": 11070.0,
+              "volume": 11193755.0,
+              "change_pct": -8.285004142502071
+            },
+            {
+              "date": "2026-08-07",
+              "open": 11170.0,
+              "high": 12030.0,
+              "low": 11070.0,
+              "close": 11460.0,
+              "volume": 18280864.0,
+              "change_pct": 3.523035230352303
+            },
+            {
+              "date": "2026-08-10",
+              "open": 11750.0,
+              "high": 14220.0,
+              "low": 11750.0,
+              "close": 14040.0,
+              "volume": 44098334.0,
+              "change_pct": 22.5130890052356
+            },
+            {
+              "date": "2026-08-11",
+              "open": 13020.0,
+              "high": 13950.0,
+              "low": 12550.0,
+              "close": 13450.0,
+              "volume": 15683165.0,
+              "change_pct": -4.202279202279202
+            },
+            {
+              "date": "2026-08-12",
+              "open": 13600.0,
+              "high": 13800.0,
+              "low": 12910.0,
+              "close": 13510.0,
+              "volume": 10985928.0,
+              "change_pct": 0.44609665427509293
+            },
+            {
+              "date": "2026-08-13",
+              "open": 14100.0,
+              "high": 14200.0,
+              "low": 13020.0,
+              "close": 13240.0,
+              "volume": 8561389.0,
+              "change_pct": -1.9985196150999258
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 14100.0,
+            "high": 14200.0,
+            "low": 13020.0,
+            "close": 13240.0,
+            "volume": 8561389.0,
+            "change_pct": -1.9985196150999258
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 13240,
+            "daily_change_pct": -2.0,
+            "volume": 8561389
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 15.53,
+            "five_vs_previous_volume_ratio": 1.12,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "Corning",
+        "stock_code": "GLW",
+        "ticker": "GLW",
+        "market": "NYSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "공식 광통신 제품군에 광섬유와 광케이블을 명시",
+        "relationship_reason": "공식 광통신 제품군에 광섬유와 광케이블을 명시",
+        "company_summary": "광섬유·광케이블·접속 솔루션을 공급하는 미국 상장 소재기업",
+        "company_description": "광섬유·광케이블·접속 솔루션을 공급하는 미국 상장 소재기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_product_page",
+        "evidence_url": "https://www.corning.com/optical-communications/worldwide/en/home/products.html",
+        "evidence_sources": [
+          {
+            "url": "https://www.corning.com/optical-communications/worldwide/en/home/products.html",
+            "title": "Corning",
+            "evidence_type": "official_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.corning.com/optical-communications/worldwide/en/home/products.html"
+            ],
+            "evidence_type": "official_product_page",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "Corning",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.corning.com/optical-communications/worldwide/en/home/products.html"
+            ],
+            "evidence_type": "official_product_page",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Corning",
+          "stock_code": "GLW",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NYSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "GLW",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "LS",
+        "stock_code": "006260",
+        "ticker": "006260",
+        "market": "KOSPI",
+        "relation_type": "ownership",
+        "strength": "value_chain",
+        "reason": "LS 공식 IR이 계열사 LS전선의 주력제품을 통신·전력으로 공시",
+        "relationship_reason": "LS 공식 IR이 계열사 LS전선의 주력제품을 통신·전력으로 공시",
+        "company_summary": "통신·전력 케이블 계열사를 보유한 국내 상장 지주회사",
+        "company_description": "통신·전력 케이블 계열사를 보유한 국내 상장 지주회사",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_group_ir",
+        "evidence_url": "https://www.lsholdings.com/en/ir/investment",
+        "evidence_sources": [
+          {
+            "url": "https://www.lsholdings.com/en/ir/investment",
+            "title": "LS Corp.",
+            "evidence_type": "official_group_ir",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "ownership_investment",
+        "company_role_label": "투자·소유",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.lsholdings.com/en/ir/investment"
+            ],
+            "evidence_type": "official_group_ir",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "LS",
+            "edge_type": "ownership",
+            "evidence_urls": [
+              "https://www.lsholdings.com/en/ir/investment"
+            ],
+            "evidence_type": "official_group_ir",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "LS",
+          "corp_code": "00105952",
+          "english_name": "LS Corp.",
+          "established_date": "19620515",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 27620017000000,
+                "label": "자산총계",
+                "previous": 24994792000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 7752113000000,
+                "label": "자본총계",
+                "previous": 7679588000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 19867904000000,
+                "label": "부채총계",
+                "previous": 17315204000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 241907000000,
+                "label": "당기순이익(손실)",
+                "previous": 141111000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 476090000000,
+                "label": "영업이익",
+                "previous": 304505000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 9504447000000,
+                "label": "매출액",
+                "previous": 6913573000000
+              }
+            },
+            "business_year": 2026,
+            "company": "LS",
+            "corp_code": "00105952",
+            "filing_receipt_no": "20260527000198",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260527000198",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:17.648670+00:00",
+            "status": "observed",
+            "stock_code": "006260"
+          },
+          "homepage": "https://www.lsholdings.co.kr",
+          "legal_name": "(주)LS",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "006260",
+          "stock_name": "LS"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "006260",
+          "name": "LS",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 253500.0,
+              "high": 270500.0,
+              "low": 244500.0,
+              "close": 267000.0,
+              "volume": 193549.0,
+              "change_pct": 19.463087248322147
+            },
+            {
+              "date": "2026-08-03",
+              "open": 262000.0,
+              "high": 278000.0,
+              "low": 260000.0,
+              "close": 273000.0,
+              "volume": 119332.0,
+              "change_pct": 2.247191011235955
+            },
+            {
+              "date": "2026-08-04",
+              "open": 280000.0,
+              "high": 301500.0,
+              "low": 277500.0,
+              "close": 300500.0,
+              "volume": 168198.0,
+              "change_pct": 10.073260073260073
+            },
+            {
+              "date": "2026-08-05",
+              "open": 317500.0,
+              "high": 335000.0,
+              "low": 311500.0,
+              "close": 329000.0,
+              "volume": 176261.0,
+              "change_pct": 9.484193011647255
+            },
+            {
+              "date": "2026-08-06",
+              "open": 328000.0,
+              "high": 354500.0,
+              "low": 326500.0,
+              "close": 328500.0,
+              "volume": 219985.0,
+              "change_pct": -0.1519756838905775
+            },
+            {
+              "date": "2026-08-07",
+              "open": 332000.0,
+              "high": 341000.0,
+              "low": 304500.0,
+              "close": 317000.0,
+              "volume": 193052.0,
+              "change_pct": -3.50076103500761
+            },
+            {
+              "date": "2026-08-10",
+              "open": 325500.0,
+              "high": 342000.0,
+              "low": 323500.0,
+              "close": 330000.0,
+              "volume": 138588.0,
+              "change_pct": 4.100946372239748
+            },
+            {
+              "date": "2026-08-11",
+              "open": 330000.0,
+              "high": 334500.0,
+              "low": 316500.0,
+              "close": 322500.0,
+              "volume": 130876.0,
+              "change_pct": -2.272727272727273
+            },
+            {
+              "date": "2026-08-12",
+              "open": 331000.0,
+              "high": 344500.0,
+              "low": 324000.0,
+              "close": 337000.0,
+              "volume": 148023.0,
+              "change_pct": 4.496124031007752
+            },
+            {
+              "date": "2026-08-13",
+              "open": 346000.0,
+              "high": 359000.0,
+              "low": 322500.0,
+              "close": 326000.0,
+              "volume": 208349.0,
+              "change_pct": -3.2640949554896146
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 346000.0,
+            "high": 359000.0,
+            "low": 322500.0,
+            "close": 326000.0,
+            "volume": 208349.0,
+            "change_pct": -3.2640949554896146
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 326000,
+            "daily_change_pct": -3.26,
+            "volume": 208349
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 2.84,
+            "five_vs_previous_volume_ratio": 0.93,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "Nokia",
+        "stock_code": "NOK",
+        "ticker": "NOK",
+        "market": "NYSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Nokia 공식 광네트워크 페이지가 광전송 플랫폼·광엔진·데이터센터 광연결 제품군을 명시",
+        "relationship_reason": "Nokia 공식 광네트워크 페이지가 광전송 플랫폼·광엔진·데이터센터 광연결 제품군을 명시",
+        "company_summary": "광전송 플랫폼·광엔진·데이터센터 연결 솔루션을 공급하는 핀란드 상장 통신장비기업",
+        "company_description": "광전송 플랫폼·광엔진·데이터센터 연결 솔루션을 공급하는 핀란드 상장 통신장비기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_optical_network_portfolio",
+        "evidence_url": "https://www.nokia.com/optical-networks/",
+        "evidence_sources": [
+          {
+            "url": "https://www.nokia.com/optical-networks/",
+            "title": "Nokia",
+            "evidence_type": "official_optical_network_portfolio",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.nokia.com/optical-networks/"
+            ],
+            "evidence_type": "official_optical_network_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "Nokia",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.nokia.com/optical-networks/"
+            ],
+            "evidence_type": "official_optical_network_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Nokia",
+          "stock_code": "NOK",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NYSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "NOK",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Prysmian",
+        "stock_code": "PRY",
+        "ticker": "PRY",
+        "market": "BIT",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Prysmian 공식 제품 페이지가 데이터센터·기업망용 광섬유와 광케이블 제품을 직접 소개",
+        "relationship_reason": "Prysmian 공식 제품 페이지가 데이터센터·기업망용 광섬유와 광케이블 제품을 직접 소개",
+        "company_summary": "단일·다중모드 광섬유와 광케이블을 생산하는 이탈리아 상장 케이블기업",
+        "company_description": "단일·다중모드 광섬유와 광케이블을 생산하는 이탈리아 상장 케이블기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_optical_fiber_portfolio",
+        "evidence_url": "https://na.prysmian.com/markets/digital-solutions/optical-fiber",
+        "evidence_sources": [
+          {
+            "url": "https://na.prysmian.com/markets/digital-solutions/optical-fiber",
+            "title": "Prysmian",
+            "evidence_type": "official_optical_fiber_portfolio",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://na.prysmian.com/markets/digital-solutions/optical-fiber"
+            ],
+            "evidence_type": "official_optical_fiber_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "Prysmian",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://na.prysmian.com/markets/digital-solutions/optical-fiber"
+            ],
+            "evidence_type": "official_optical_fiber_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Prysmian",
+          "stock_code": "PRY",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "BIT",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "PRY",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Ciena",
+        "stock_code": "CIEN",
+        "ticker": "CIEN",
+        "market": "NYSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Ciena 공식 제품군이 패킷광 플랫폼·코히어런트 광시스템·광인터커넥트를 명시",
+        "relationship_reason": "Ciena 공식 제품군이 패킷광 플랫폼·코히어런트 광시스템·광인터커넥트를 명시",
+        "company_summary": "패킷광 전송 플랫폼과 코히어런트 광통신 장비를 공급하는 미국 상장 네트워크기업",
+        "company_description": "패킷광 전송 플랫폼과 코히어런트 광통신 장비를 공급하는 미국 상장 네트워크기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_optical_network_product_portfolio",
+        "evidence_url": "https://www.ciena.com/products",
+        "evidence_sources": [
+          {
+            "url": "https://www.ciena.com/products",
+            "title": "Ciena",
+            "evidence_type": "official_optical_network_product_portfolio",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.ciena.com/products"
+            ],
+            "evidence_type": "official_optical_network_product_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "Ciena",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.ciena.com/products"
+            ],
+            "evidence_type": "official_optical_network_product_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Ciena",
+          "stock_code": "CIEN",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NYSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "CIEN",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "대한광통신",
+        "stock_code": "010170",
+        "ticker": "010170",
+        "market": "KOSDAQ",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "광섬유와 광케이블을 함께 생산하는 광통신 직접 사업자",
+        "relationship_reason": "광섬유와 광케이블을 함께 생산하는 광통신 직접 사업자",
+        "company_summary": "광섬유와 광케이블을 생산하는 국내 상장 광통신 소재·케이블 기업",
+        "company_description": "광섬유와 광케이블을 생산하는 국내 상장 광통신 소재·케이블 기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "listed_company_business_profile",
+        "evidence_url": "https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?MenuYn=Y&NewMenuID=Y&ReportGB=B&gicode=A010170&pGB=1&stkGb=701",
+        "evidence_sources": [
+          {
+            "url": "https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?MenuYn=Y&NewMenuID=Y&ReportGB=B&gicode=A010170&pGB=1&stkGb=701",
+            "title": "FnGuide Company Guide",
+            "evidence_type": "listed_company_business_profile",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?MenuYn=Y&NewMenuID=Y&ReportGB=B&gicode=A010170&pGB=1&stkGb=701"
+            ],
+            "evidence_type": "listed_company_business_profile",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "대한광통신",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?MenuYn=Y&NewMenuID=Y&ReportGB=B&gicode=A010170&pGB=1&stkGb=701"
+            ],
+            "evidence_type": "listed_company_business_profile",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "대한광통신",
+          "corp_code": "00113261",
+          "english_name": "TAIHAN Fiberoptics Co.,LTD",
+          "established_date": "19740902",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 251368708225,
+                "label": "자산총계",
+                "previous": 219015700323
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 115997400047,
+                "label": "자본총계",
+                "previous": 66651648061
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 135371308178,
+                "label": "부채총계",
+                "previous": 152364052262
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": -3671887420,
+                "label": "당기순이익(손실)",
+                "previous": -7034360746
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": -3961404116,
+                "label": "영업이익",
+                "previous": -6920418344
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 34248640061,
+                "label": "매출액",
+                "previous": 25393611150
+              }
+            },
+            "business_year": 2026,
+            "company": "대한광통신",
+            "corp_code": "00113261",
+            "filing_receipt_no": "20260515002702",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002702",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:18.147294+00:00",
+            "status": "observed",
+            "stock_code": "010170"
+          },
+          "homepage": "https://www.taihanfiber.com",
+          "legal_name": "대한광통신(주)",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "010170",
+          "stock_name": "대한광통신"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "010170",
+          "name": "대한광통신",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 8200.0,
+              "high": 8640.0,
+              "low": 7710.0,
+              "close": 8530.0,
+              "volume": 9677161.0,
+              "change_pct": 19.134078212290504
+            },
+            {
+              "date": "2026-08-03",
+              "open": 8510.0,
+              "high": 9850.0,
+              "low": 8030.0,
+              "close": 9250.0,
+              "volume": 14440372.0,
+              "change_pct": 8.440797186400937
+            },
+            {
+              "date": "2026-08-04",
+              "open": 9700.0,
+              "high": 10580.0,
+              "low": 9550.0,
+              "close": 10180.0,
+              "volume": 11494180.0,
+              "change_pct": 10.054054054054054
+            },
+            {
+              "date": "2026-08-05",
+              "open": 12040.0,
+              "high": 12760.0,
+              "low": 11030.0,
+              "close": 12070.0,
+              "volume": 40407421.0,
+              "change_pct": 18.56581532416503
+            },
+            {
+              "date": "2026-08-06",
+              "open": 11780.0,
+              "high": 11970.0,
+              "low": 10800.0,
+              "close": 11070.0,
+              "volume": 11193755.0,
+              "change_pct": -8.285004142502071
+            },
+            {
+              "date": "2026-08-07",
+              "open": 11170.0,
+              "high": 12030.0,
+              "low": 11070.0,
+              "close": 11460.0,
+              "volume": 18280864.0,
+              "change_pct": 3.523035230352303
+            },
+            {
+              "date": "2026-08-10",
+              "open": 11750.0,
+              "high": 14220.0,
+              "low": 11750.0,
+              "close": 14040.0,
+              "volume": 44098334.0,
+              "change_pct": 22.5130890052356
+            },
+            {
+              "date": "2026-08-11",
+              "open": 13020.0,
+              "high": 13950.0,
+              "low": 12550.0,
+              "close": 13450.0,
+              "volume": 15683165.0,
+              "change_pct": -4.202279202279202
+            },
+            {
+              "date": "2026-08-12",
+              "open": 13600.0,
+              "high": 13800.0,
+              "low": 12910.0,
+              "close": 13510.0,
+              "volume": 10985928.0,
+              "change_pct": 0.44609665427509293
+            },
+            {
+              "date": "2026-08-13",
+              "open": 14100.0,
+              "high": 14200.0,
+              "low": 13020.0,
+              "close": 13240.0,
+              "volume": 8561389.0,
+              "change_pct": -1.9985196150999258
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 14100.0,
+            "high": 14200.0,
+            "low": 13020.0,
+            "close": 13240.0,
+            "volume": 8561389.0,
+            "change_pct": -1.9985196150999258
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 13240,
+            "daily_change_pct": -2.0,
+            "volume": 8561389
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 15.53,
+            "five_vs_previous_volume_ratio": 1.12,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "Corning",
+        "stock_code": "GLW",
+        "ticker": "GLW",
+        "market": "NYSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "공식 광통신 제품군에 광섬유와 광케이블을 명시",
+        "relationship_reason": "공식 광통신 제품군에 광섬유와 광케이블을 명시",
+        "company_summary": "광섬유·광케이블·접속 솔루션을 공급하는 미국 상장 소재기업",
+        "company_description": "광섬유·광케이블·접속 솔루션을 공급하는 미국 상장 소재기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_product_page",
+        "evidence_url": "https://www.corning.com/optical-communications/worldwide/en/home/products.html",
+        "evidence_sources": [
+          {
+            "url": "https://www.corning.com/optical-communications/worldwide/en/home/products.html",
+            "title": "Corning",
+            "evidence_type": "official_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.corning.com/optical-communications/worldwide/en/home/products.html"
+            ],
+            "evidence_type": "official_product_page",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "Corning",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.corning.com/optical-communications/worldwide/en/home/products.html"
+            ],
+            "evidence_type": "official_product_page",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Corning",
+          "stock_code": "GLW",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NYSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "GLW",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "LS",
+        "stock_code": "006260",
+        "ticker": "006260",
+        "market": "KOSPI",
+        "relation_type": "ownership",
+        "strength": "value_chain",
+        "reason": "LS 공식 IR이 계열사 LS전선의 주력제품을 통신·전력으로 공시",
+        "relationship_reason": "LS 공식 IR이 계열사 LS전선의 주력제품을 통신·전력으로 공시",
+        "company_summary": "통신·전력 케이블 계열사를 보유한 국내 상장 지주회사",
+        "company_description": "통신·전력 케이블 계열사를 보유한 국내 상장 지주회사",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_group_ir",
+        "evidence_url": "https://www.lsholdings.com/en/ir/investment",
+        "evidence_sources": [
+          {
+            "url": "https://www.lsholdings.com/en/ir/investment",
+            "title": "LS Corp.",
+            "evidence_type": "official_group_ir",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "ownership_investment",
+        "company_role_label": "투자·소유",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.lsholdings.com/en/ir/investment"
+            ],
+            "evidence_type": "official_group_ir",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "LS",
+            "edge_type": "ownership",
+            "evidence_urls": [
+              "https://www.lsholdings.com/en/ir/investment"
+            ],
+            "evidence_type": "official_group_ir",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "LS",
+          "corp_code": "00105952",
+          "english_name": "LS Corp.",
+          "established_date": "19620515",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 27620017000000,
+                "label": "자산총계",
+                "previous": 24994792000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 7752113000000,
+                "label": "자본총계",
+                "previous": 7679588000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 19867904000000,
+                "label": "부채총계",
+                "previous": 17315204000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 241907000000,
+                "label": "당기순이익(손실)",
+                "previous": 141111000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 476090000000,
+                "label": "영업이익",
+                "previous": 304505000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 9504447000000,
+                "label": "매출액",
+                "previous": 6913573000000
+              }
+            },
+            "business_year": 2026,
+            "company": "LS",
+            "corp_code": "00105952",
+            "filing_receipt_no": "20260527000198",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260527000198",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:17.648670+00:00",
+            "status": "observed",
+            "stock_code": "006260"
+          },
+          "homepage": "https://www.lsholdings.co.kr",
+          "legal_name": "(주)LS",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "006260",
+          "stock_name": "LS"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "006260",
+          "name": "LS",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 253500.0,
+              "high": 270500.0,
+              "low": 244500.0,
+              "close": 267000.0,
+              "volume": 193549.0,
+              "change_pct": 19.463087248322147
+            },
+            {
+              "date": "2026-08-03",
+              "open": 262000.0,
+              "high": 278000.0,
+              "low": 260000.0,
+              "close": 273000.0,
+              "volume": 119332.0,
+              "change_pct": 2.247191011235955
+            },
+            {
+              "date": "2026-08-04",
+              "open": 280000.0,
+              "high": 301500.0,
+              "low": 277500.0,
+              "close": 300500.0,
+              "volume": 168198.0,
+              "change_pct": 10.073260073260073
+            },
+            {
+              "date": "2026-08-05",
+              "open": 317500.0,
+              "high": 335000.0,
+              "low": 311500.0,
+              "close": 329000.0,
+              "volume": 176261.0,
+              "change_pct": 9.484193011647255
+            },
+            {
+              "date": "2026-08-06",
+              "open": 328000.0,
+              "high": 354500.0,
+              "low": 326500.0,
+              "close": 328500.0,
+              "volume": 219985.0,
+              "change_pct": -0.1519756838905775
+            },
+            {
+              "date": "2026-08-07",
+              "open": 332000.0,
+              "high": 341000.0,
+              "low": 304500.0,
+              "close": 317000.0,
+              "volume": 193052.0,
+              "change_pct": -3.50076103500761
+            },
+            {
+              "date": "2026-08-10",
+              "open": 325500.0,
+              "high": 342000.0,
+              "low": 323500.0,
+              "close": 330000.0,
+              "volume": 138588.0,
+              "change_pct": 4.100946372239748
+            },
+            {
+              "date": "2026-08-11",
+              "open": 330000.0,
+              "high": 334500.0,
+              "low": 316500.0,
+              "close": 322500.0,
+              "volume": 130876.0,
+              "change_pct": -2.272727272727273
+            },
+            {
+              "date": "2026-08-12",
+              "open": 331000.0,
+              "high": 344500.0,
+              "low": 324000.0,
+              "close": 337000.0,
+              "volume": 148023.0,
+              "change_pct": 4.496124031007752
+            },
+            {
+              "date": "2026-08-13",
+              "open": 346000.0,
+              "high": 359000.0,
+              "low": 322500.0,
+              "close": 326000.0,
+              "volume": 208349.0,
+              "change_pct": -3.2640949554896146
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 346000.0,
+            "high": 359000.0,
+            "low": 322500.0,
+            "close": 326000.0,
+            "volume": 208349.0,
+            "change_pct": -3.2640949554896146
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 326000,
+            "daily_change_pct": -3.26,
+            "volume": 208349
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 2.84,
+            "five_vs_previous_volume_ratio": 0.93,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "Nokia",
+        "stock_code": "NOK",
+        "ticker": "NOK",
+        "market": "NYSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Nokia 공식 광네트워크 페이지가 광전송 플랫폼·광엔진·데이터센터 광연결 제품군을 명시",
+        "relationship_reason": "Nokia 공식 광네트워크 페이지가 광전송 플랫폼·광엔진·데이터센터 광연결 제품군을 명시",
+        "company_summary": "광전송 플랫폼·광엔진·데이터센터 연결 솔루션을 공급하는 핀란드 상장 통신장비기업",
+        "company_description": "광전송 플랫폼·광엔진·데이터센터 연결 솔루션을 공급하는 핀란드 상장 통신장비기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_optical_network_portfolio",
+        "evidence_url": "https://www.nokia.com/optical-networks/",
+        "evidence_sources": [
+          {
+            "url": "https://www.nokia.com/optical-networks/",
+            "title": "Nokia",
+            "evidence_type": "official_optical_network_portfolio",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.nokia.com/optical-networks/"
+            ],
+            "evidence_type": "official_optical_network_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "Nokia",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.nokia.com/optical-networks/"
+            ],
+            "evidence_type": "official_optical_network_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Nokia",
+          "stock_code": "NOK",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NYSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "NOK",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Prysmian",
+        "stock_code": "PRY",
+        "ticker": "PRY",
+        "market": "BIT",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Prysmian 공식 제품 페이지가 데이터센터·기업망용 광섬유와 광케이블 제품을 직접 소개",
+        "relationship_reason": "Prysmian 공식 제품 페이지가 데이터센터·기업망용 광섬유와 광케이블 제품을 직접 소개",
+        "company_summary": "단일·다중모드 광섬유와 광케이블을 생산하는 이탈리아 상장 케이블기업",
+        "company_description": "단일·다중모드 광섬유와 광케이블을 생산하는 이탈리아 상장 케이블기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_optical_fiber_portfolio",
+        "evidence_url": "https://na.prysmian.com/markets/digital-solutions/optical-fiber",
+        "evidence_sources": [
+          {
+            "url": "https://na.prysmian.com/markets/digital-solutions/optical-fiber",
+            "title": "Prysmian",
+            "evidence_type": "official_optical_fiber_portfolio",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://na.prysmian.com/markets/digital-solutions/optical-fiber"
+            ],
+            "evidence_type": "official_optical_fiber_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "Prysmian",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://na.prysmian.com/markets/digital-solutions/optical-fiber"
+            ],
+            "evidence_type": "official_optical_fiber_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Prysmian",
+          "stock_code": "PRY",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "BIT",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "PRY",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Ciena",
+        "stock_code": "CIEN",
+        "ticker": "CIEN",
+        "market": "NYSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Ciena 공식 제품군이 패킷광 플랫폼·코히어런트 광시스템·광인터커넥트를 명시",
+        "relationship_reason": "Ciena 공식 제품군이 패킷광 플랫폼·코히어런트 광시스템·광인터커넥트를 명시",
+        "company_summary": "패킷광 전송 플랫폼과 코히어런트 광통신 장비를 공급하는 미국 상장 네트워크기업",
+        "company_description": "패킷광 전송 플랫폼과 코히어런트 광통신 장비를 공급하는 미국 상장 네트워크기업",
+        "business_features": [
+          "광섬유/광케이블/통신인프라"
+        ],
+        "evidence_kind": "official_optical_network_product_portfolio",
+        "evidence_url": "https://www.ciena.com/products",
+        "evidence_sources": [
+          {
+            "url": "https://www.ciena.com/products",
+            "title": "Ciena",
+            "evidence_type": "official_optical_network_product_portfolio",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "광섬유/광케이블/통신인프라",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "광 통신",
+        "matched_ontology_node": "광 통신",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "광 통신",
+            "to": "광섬유/광케이블/통신인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.ciena.com/products"
+            ],
+            "evidence_type": "official_optical_network_product_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "광섬유/광케이블/통신인프라",
+            "to": "Ciena",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.ciena.com/products"
+            ],
+            "evidence_type": "official_optical_network_product_portfolio",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Ciena",
+          "stock_code": "CIEN",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NYSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "CIEN",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 6,
+      "score_independent_of_company_count": true,
+      "direct_count": 5,
+      "role_coverage": [
+        "광섬유/광케이블/통신인프라"
+      ],
+      "tier_counts": {
+        "direct": 5,
+        "value_chain": 1,
+        "industry_watch": 0
+      },
+      "category_count": 3,
+      "candidate_category_count": 3,
+      "role_category_counts": {
+        "ownership_investment": 1,
+        "platform_service": 2,
+        "raw_materials_components": 3
+      },
+      "ontology_diagnostics": {
+        "source": "term_specific_enrichment_cache",
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "용어별 근거 URL과 상장 식별자가 완비된 6개 이상 기업을 공개"
+    },
+    "rank": 307,
+    "observed_rank": 307,
+    "home_rank": 10,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 8,
+    "momentum_rank": 342,
+    "main_rank": 23,
+    "home_context_status": "resolved",
+    "home_context_reason": "specific_observed_expression",
+    "home_eligible": true,
+    "company_card_status": "ready",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "ready",
+    "frontend_readiness_status": "ready",
+    "frontend_readiness_missing": [],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 6,
+    "publication_rank": 5,
+    "ranking_availability_status": "provisional_history"
+  }
+}

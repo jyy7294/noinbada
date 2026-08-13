@@ -1,0 +1,1991 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-1e2a287a8de54d88b24f63b161b100ba",
+  "generated_at": "2026-08-13T19:38:59.512327+00:00",
+  "observed_at": "2026-08-13T19:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "개기일식",
+    "topic": "개기일식",
+    "display_name": "개기일식",
+    "observed_representative_term": "개기일식",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "개기일식",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 19,
+      "source_count": 2,
+      "reciprocal_rank_support": 0.314966,
+      "best_source_rank": 3
+    },
+    "raw_terms": [
+      "개기일식",
+      "일식"
+    ],
+    "phenomenon_summary": "\"개기일식\" · X 한국 실시간·Google Trends KR에서 함께 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "public_observation_event",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "culture",
+    "category_label": "문화·밈·참여",
+    "trend_definition": "'개기일식'은(는) 사람들이 관측·공유·참여하며 확산시키는 문화적 흐름입니다. 실측 데이터에서는 일식, 개기일식 시간 같은 표현과 함께 나타났습니다. X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 58.98,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "x",
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": 25,
+    "rank_change": 24,
+    "rank_change_status": "measured",
+    "period_strength": 0.702893,
+    "current_source_position": 0.702893,
+    "momentum": 0.0,
+    "persistence": 0.4375,
+    "momentum_delta": -0.168402,
+    "score_components": {
+      "period_strength_points": 24.6,
+      "momentum_points": 0.0,
+      "persistence_points": 4.38,
+      "recency_points": 10.0,
+      "cross_source_points": 20.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 58.98
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "x": "current_period_half_change",
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "x": 0.812384,
+        "google_trends": 0.593402
+      },
+      "momentum_deltas": {
+        "x": -0.050844,
+        "google_trends": -0.28596
+      },
+      "momentum_basis": {
+        "x": "current_period_half_change",
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "x": {
+          "current": 7,
+          "comparison": 5
+        },
+        "google_trends": {
+          "current": 9,
+          "comparison": 7
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 12,
+          "observed_hours": 12,
+          "presence_rate": 0.5,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 9,
+          "presence_rate": 0.375,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.5,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T19:00:00+00:00",
+      "observed_hours": 20,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 2,
+    "current_source_count": 1,
+    "source_badge": "교차출처",
+    "latest_source_ranks": {
+      "google_trends": 198,
+      "x": 11
+    },
+    "rank_change_by_source": {
+      "google_trends": 5,
+      "x": 1
+    },
+    "source_rank_change": {
+      "google_trends": 5,
+      "x": 1
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T19:00:00+00:00",
+    "age_hours": 30,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 20,
+      "history_maturity": 0.5208,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "개기일식",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T09:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T09:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T09:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 157171,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "ji2mTXM_tpw",
+              "title": "[현장영상] 태양과 달, 지구가 나란히…개기일식의 환상적 순간 / KBS 2026.08.13.",
+              "url": "https://www.youtube.com/watch?v=ji2mTXM_tpw",
+              "published_at": "2026-08-12T23:06:48Z",
+              "publisher": "KBS News",
+              "metrics": {
+                "commentCount": 173,
+                "likeCount": 788,
+                "viewCount": 74792
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "oKy4eHYQxGI",
+              "title": "'달이 태양을 집어삼켰어!!'..일식 순간 터진 환호성 #JTBC #Shorts",
+              "url": "https://www.youtube.com/watch?v=oKy4eHYQxGI",
+              "published_at": "2026-08-13T01:13:55Z",
+              "publisher": "JTBC News",
+              "metrics": {
+                "commentCount": 20,
+                "likeCount": 295,
+                "viewCount": 28310
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "QP77D7TFrZA",
+              "title": "개기일식과 유성우가 동시에? \"딱 하루, 우주쇼 펼쳐진다\" / KNN",
+              "url": "https://www.youtube.com/watch?v=QP77D7TFrZA",
+              "published_at": "2026-08-12T05:30:24Z",
+              "publisher": "KNN NEWS",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 248,
+                "viewCount": 42946
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "ADVAbZleRTU",
+              "title": "달이 태양 가리자…대낮에 펼쳐진 '우주쇼' / KNN",
+              "url": "https://www.youtube.com/watch?v=ADVAbZleRTU",
+              "published_at": "2026-08-13T08:45:09Z",
+              "publisher": "KNN NEWS",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 6,
+                "viewCount": 1458
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "7KkHvSt4BuU",
+              "title": "내 생애 첫 개기일식 in 스페인 | my first eclipse experience in Spain",
+              "url": "https://www.youtube.com/watch?v=7KkHvSt4BuU",
+              "published_at": "2026-08-13T01:07:26Z",
+              "publisher": "새보미 Sebomi",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 21,
+                "viewCount": 1419
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "개기일식",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T09:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T09:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T09:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 157171,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "ji2mTXM_tpw",
+              "title": "[현장영상] 태양과 달, 지구가 나란히…개기일식의 환상적 순간 / KBS 2026.08.13.",
+              "url": "https://www.youtube.com/watch?v=ji2mTXM_tpw",
+              "published_at": "2026-08-12T23:06:48Z",
+              "publisher": "KBS News",
+              "metrics": {
+                "commentCount": 173,
+                "likeCount": 788,
+                "viewCount": 74792
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "oKy4eHYQxGI",
+              "title": "'달이 태양을 집어삼켰어!!'..일식 순간 터진 환호성 #JTBC #Shorts",
+              "url": "https://www.youtube.com/watch?v=oKy4eHYQxGI",
+              "published_at": "2026-08-13T01:13:55Z",
+              "publisher": "JTBC News",
+              "metrics": {
+                "commentCount": 20,
+                "likeCount": 295,
+                "viewCount": 28310
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "QP77D7TFrZA",
+              "title": "개기일식과 유성우가 동시에? \"딱 하루, 우주쇼 펼쳐진다\" / KNN",
+              "url": "https://www.youtube.com/watch?v=QP77D7TFrZA",
+              "published_at": "2026-08-12T05:30:24Z",
+              "publisher": "KNN NEWS",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 248,
+                "viewCount": 42946
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "ADVAbZleRTU",
+              "title": "달이 태양 가리자…대낮에 펼쳐진 '우주쇼' / KNN",
+              "url": "https://www.youtube.com/watch?v=ADVAbZleRTU",
+              "published_at": "2026-08-13T08:45:09Z",
+              "publisher": "KNN NEWS",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 6,
+                "viewCount": 1458
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "7KkHvSt4BuU",
+              "title": "내 생애 첫 개기일식 in 스페인 | my first eclipse experience in Spain",
+              "url": "https://www.youtube.com/watch?v=7KkHvSt4BuU",
+              "published_at": "2026-08-13T01:07:26Z",
+              "publisher": "새보미 Sebomi",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 21,
+                "viewCount": 1419
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T09:00:00Z",
+                "query_term": "개기일식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 44,
+        "value": 57.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"400%\", \"page\": 2, \"row_on_page\": 19, \"started_text\": \"2시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 37,
+        "value": 64.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"400%\", \"page\": 2, \"row_on_page\": 12, \"started_text\": \"3시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 33,
+        "value": 68.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"400%\", \"page\": 2, \"row_on_page\": 8, \"started_text\": \"4시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 22,
+        "value": 79.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"400%\", \"page\": 1, \"row_on_page\": 22, \"started_text\": \"5시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 20,
+        "value": 81.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"400%\", \"page\": 1, \"row_on_page\": 20, \"started_text\": \"6시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 19,
+        "value": 82.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 1, \"row_on_page\": 19, \"started_text\": \"7시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 20,
+        "value": 81.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 1, \"row_on_page\": 20, \"started_text\": \"7시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[\"일식\"]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 56,
+        "value": 45.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 6, \"started_text\": \"10시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[\"일식\", \"개기일식 시간\"]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "x",
+        "rank": 5,
+        "value": 96.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 71,
+        "value": 30.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 21, \"started_text\": \"11시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[\"일식\", \"개기일식 시간\"]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "x",
+        "rank": 5,
+        "value": 96.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 50,
+        "value": 51.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 2, \"row_on_page\": 25, \"started_text\": \"13시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[\"일식\", \"개기일식 시간\"]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "x",
+        "rank": 6,
+        "value": 95.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 50,
+        "value": 51.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"500%\", \"page\": 2, \"row_on_page\": 25, \"started_text\": \"14시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[\"일식\", \"개기일식 시간\"]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "x",
+        "rank": 6,
+        "value": 95.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 76,
+        "value": 25.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 4, \"row_on_page\": 1, \"started_text\": \"16시간 전\", \"status_text\": \"16시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[\"일식\", \"개기일식 시간\"]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "x",
+        "rank": 6,
+        "value": 95.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 97,
+        "value": 4.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 245, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 4, \"row_on_page\": 22, \"started_text\": \"21시간 전\", \"status_text\": \"21시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[\"일식\", \"개기일식 시간\"]"
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "x",
+        "rank": 3,
+        "value": 98.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "google_trends",
+        "rank": 92,
+        "value": 9.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 237, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 4, \"row_on_page\": 17, \"started_text\": \"22시간 전\", \"status_text\": \"21시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[\"일식\", \"개기일식 시간\"]"
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "x",
+        "rank": 3,
+        "value": 98.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "google_trends",
+        "rank": 203,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 242, \"collection_page_count\": 10, \"growth_text\": \"100%\", \"page\": 9, \"row_on_page\": 3, \"started_text\": \"18시간 전\", \"status_text\": \"10시간 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[\"개기일식 시간\"]"
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "x",
+        "rank": 5,
+        "value": 96.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 198,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 238, \"collection_page_count\": 10, \"growth_text\": \"100%\", \"page\": 8, \"row_on_page\": 23, \"started_text\": \"19시간 전\", \"status_text\": \"10시간 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[\"개기일식 시간\"]"
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "x",
+        "rank": 10,
+        "value": 91.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "x",
+        "rank": 11,
+        "value": 90.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T18:00:00+00:00",
+        "source": "x",
+        "rank": 12,
+        "value": 89.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T18:03:47.936000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 227.936, \"scheduled_for\": \"2026-08-13T18:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T19:00:00+00:00",
+        "source": "x",
+        "rank": 11,
+        "value": 90.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T19:02:18.085000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 138.085, \"scheduled_for\": \"2026-08-13T19:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      }
+    ],
+    "keywords": [
+      {
+        "text": "일식",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 10,
+        "status": "observed_related_query",
+        "role": "alias_or_variant",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "개기일식 시간",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 9,
+        "status": "observed_related_query",
+        "role": "alias_or_variant",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "일식",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 10,
+        "status": "observed_related_query",
+        "role": "alias_or_variant",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "개기일식 시간",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 9,
+        "status": "observed_related_query",
+        "role": "alias_or_variant",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "일식 관측",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "일식 안경",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "태양 필터",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 2,
+      "observed_source_count": 2,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [
+      {
+        "company": "Canon",
+        "stock_code": "7751",
+        "ticker": "7751",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Canon 공식 가이드가 EOS R·PowerShot을 일식 촬영용 카메라로 직접 설명",
+        "relationship_reason": "Canon 공식 가이드가 EOS R·PowerShot을 일식 촬영용 카메라로 직접 설명",
+        "company_summary": "카메라·렌즈와 천체·일식 촬영 교육 콘텐츠를 제공하는 일본 상장 광학기업",
+        "company_description": "카메라·렌즈와 천체·일식 촬영 교육 콘텐츠를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_eclipse_equipment_guide",
+        "evidence_url": "https://www.usa.canon.com/learning/training-articles/training-articles-list/choosing-a-camera-for-eclipse-photography",
+        "evidence_sources": [
+          {
+            "url": "https://www.usa.canon.com/learning/training-articles/training-articles-list/choosing-a-camera-for-eclipse-photography",
+            "title": "Canon",
+            "evidence_type": "official_eclipse_equipment_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.usa.canon.com/learning/training-articles/training-articles-list/choosing-a-camera-for-eclipse-photography"
+            ],
+            "evidence_type": "official_eclipse_equipment_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Canon",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.usa.canon.com/learning/training-articles/training-articles-list/choosing-a-camera-for-eclipse-photography"
+            ],
+            "evidence_type": "official_eclipse_equipment_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Canon",
+          "stock_code": "7751",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7751",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Nikon",
+        "stock_code": "7731",
+        "ticker": "7731",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Nikon 공식 천체촬영 가이드가 태양·달·행성 관측 촬영 장비와 방법을 설명",
+        "relationship_reason": "Nikon 공식 천체촬영 가이드가 태양·달·행성 관측 촬영 장비와 방법을 설명",
+        "company_summary": "천체 촬영용 카메라·렌즈와 태양·달·행성 촬영 가이드를 제공하는 일본 상장 광학기업",
+        "company_description": "천체 촬영용 카메라·렌즈와 태양·달·행성 촬영 가이드를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_guide",
+        "evidence_url": "https://nij.nikon.com/cms/sp/p1000_astrophotography/",
+        "evidence_sources": [
+          {
+            "url": "https://nij.nikon.com/cms/sp/p1000_astrophotography/",
+            "title": "Nikon",
+            "evidence_type": "official_astrophotography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://nij.nikon.com/cms/sp/p1000_astrophotography/"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Nikon",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://nij.nikon.com/cms/sp/p1000_astrophotography/"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Nikon",
+          "stock_code": "7731",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7731",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Ricoh",
+        "stock_code": "7752",
+        "ticker": "7752",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Ricoh Imaging 공식 페이지가 Astrotracer 기반 천체 추적 촬영 기능을 명시",
+        "relationship_reason": "Ricoh Imaging 공식 페이지가 Astrotracer 기반 천체 추적 촬영 기능을 명시",
+        "company_summary": "PENTAX 카메라와 별 추적 촬영 장치 Astrotracer를 제공하는 일본 상장 광학기업",
+        "company_description": "PENTAX 카메라와 별 추적 촬영 장치 Astrotracer를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_product_page",
+        "evidence_url": "https://www.ricoh-imaging.co.jp/english/products/o-gps2/feature/",
+        "evidence_sources": [
+          {
+            "url": "https://www.ricoh-imaging.co.jp/english/products/o-gps2/feature/",
+            "title": "Ricoh Imaging",
+            "evidence_type": "official_astrophotography_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.ricoh-imaging.co.jp/english/products/o-gps2/feature/"
+            ],
+            "evidence_type": "official_astrophotography_product_page",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Ricoh",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.ricoh-imaging.co.jp/english/products/o-gps2/feature/"
+            ],
+            "evidence_type": "official_astrophotography_product_page",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Ricoh",
+          "stock_code": "7752",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7752",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "FUJIFILM Holdings",
+        "stock_code": "4901",
+        "ticker": "4901",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "FUJIFILM 공식 가이드가 X Series 카메라와 렌즈를 이용한 별 궤적 촬영 장비·방법을 설명",
+        "relationship_reason": "FUJIFILM 공식 가이드가 X Series 카메라와 렌즈를 이용한 별 궤적 촬영 장비·방법을 설명",
+        "company_summary": "천체 촬영용 카메라·렌즈와 별 궤적 촬영 가이드를 제공하는 일본 상장 광학기업",
+        "company_description": "천체 촬영용 카메라·렌즈와 별 궤적 촬영 가이드를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_guide",
+        "evidence_url": "https://www.fujifilm-x.com/en-gb/learning-centre/how-to-start-photographing-star-trails/",
+        "evidence_sources": [
+          {
+            "url": "https://www.fujifilm-x.com/en-gb/learning-centre/how-to-start-photographing-star-trails/",
+            "title": "FUJIFILM",
+            "evidence_type": "official_astrophotography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.fujifilm-x.com/en-gb/learning-centre/how-to-start-photographing-star-trails/"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "FUJIFILM Holdings",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.fujifilm-x.com/en-gb/learning-centre/how-to-start-photographing-star-trails/"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "FUJIFILM Holdings",
+          "stock_code": "4901",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "4901",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Sony Group",
+        "stock_code": "6758",
+        "ticker": "6758",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Sony 공식 지원 문서가 별이 가득한 밤하늘 장노출 촬영법과 장비 사용을 설명",
+        "relationship_reason": "Sony 공식 지원 문서가 별이 가득한 밤하늘 장노출 촬영법과 장비 사용을 설명",
+        "company_summary": "저조도 천체 촬영이 가능한 카메라와 밤하늘 촬영 가이드를 제공하는 일본 상장 전자기업",
+        "company_description": "저조도 천체 촬영이 가능한 카메라와 밤하늘 촬영 가이드를 제공하는 일본 상장 전자기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_guide",
+        "evidence_url": "https://www.sony.com/electronics/support/compact-cameras-dsc-t-series/dsc-t110/articles/00223374",
+        "evidence_sources": [
+          {
+            "url": "https://www.sony.com/electronics/support/compact-cameras-dsc-t-series/dsc-t110/articles/00223374",
+            "title": "Sony",
+            "evidence_type": "official_astrophotography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.sony.com/electronics/support/compact-cameras-dsc-t-series/dsc-t110/articles/00223374"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Sony Group",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.sony.com/electronics/support/compact-cameras-dsc-t-series/dsc-t110/articles/00223374"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Sony Group",
+          "stock_code": "6758",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "6758",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Adobe",
+        "stock_code": "ADBE",
+        "ticker": "ADBE",
+        "market": "NASDAQ",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Adobe 공식 가이드가 천체 사진 촬영과 후처리 워크플로를 별도 분야로 안내",
+        "relationship_reason": "Adobe 공식 가이드가 천체 사진 촬영과 후처리 워크플로를 별도 분야로 안내",
+        "company_summary": "천체 사진 보정·합성 워크플로를 제공하는 미국 상장 소프트웨어기업",
+        "company_description": "천체 사진 보정·합성 워크플로를 제공하는 미국 상장 소프트웨어기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_workflow",
+        "evidence_url": "https://www.adobe.com/creativecloud/photography/type/astrophotography.html",
+        "evidence_sources": [
+          {
+            "url": "https://www.adobe.com/creativecloud/photography/type/astrophotography.html",
+            "title": "Adobe",
+            "evidence_type": "official_astrophotography_workflow",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.adobe.com/creativecloud/photography/type/astrophotography.html"
+            ],
+            "evidence_type": "official_astrophotography_workflow",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Adobe",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.adobe.com/creativecloud/photography/type/astrophotography.html"
+            ],
+            "evidence_type": "official_astrophotography_workflow",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Adobe",
+          "stock_code": "ADBE",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NASDAQ",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "ADBE",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "Canon",
+        "stock_code": "7751",
+        "ticker": "7751",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Canon 공식 가이드가 EOS R·PowerShot을 일식 촬영용 카메라로 직접 설명",
+        "relationship_reason": "Canon 공식 가이드가 EOS R·PowerShot을 일식 촬영용 카메라로 직접 설명",
+        "company_summary": "카메라·렌즈와 천체·일식 촬영 교육 콘텐츠를 제공하는 일본 상장 광학기업",
+        "company_description": "카메라·렌즈와 천체·일식 촬영 교육 콘텐츠를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_eclipse_equipment_guide",
+        "evidence_url": "https://www.usa.canon.com/learning/training-articles/training-articles-list/choosing-a-camera-for-eclipse-photography",
+        "evidence_sources": [
+          {
+            "url": "https://www.usa.canon.com/learning/training-articles/training-articles-list/choosing-a-camera-for-eclipse-photography",
+            "title": "Canon",
+            "evidence_type": "official_eclipse_equipment_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.usa.canon.com/learning/training-articles/training-articles-list/choosing-a-camera-for-eclipse-photography"
+            ],
+            "evidence_type": "official_eclipse_equipment_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Canon",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.usa.canon.com/learning/training-articles/training-articles-list/choosing-a-camera-for-eclipse-photography"
+            ],
+            "evidence_type": "official_eclipse_equipment_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Canon",
+          "stock_code": "7751",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7751",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Nikon",
+        "stock_code": "7731",
+        "ticker": "7731",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Nikon 공식 천체촬영 가이드가 태양·달·행성 관측 촬영 장비와 방법을 설명",
+        "relationship_reason": "Nikon 공식 천체촬영 가이드가 태양·달·행성 관측 촬영 장비와 방법을 설명",
+        "company_summary": "천체 촬영용 카메라·렌즈와 태양·달·행성 촬영 가이드를 제공하는 일본 상장 광학기업",
+        "company_description": "천체 촬영용 카메라·렌즈와 태양·달·행성 촬영 가이드를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_guide",
+        "evidence_url": "https://nij.nikon.com/cms/sp/p1000_astrophotography/",
+        "evidence_sources": [
+          {
+            "url": "https://nij.nikon.com/cms/sp/p1000_astrophotography/",
+            "title": "Nikon",
+            "evidence_type": "official_astrophotography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://nij.nikon.com/cms/sp/p1000_astrophotography/"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Nikon",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://nij.nikon.com/cms/sp/p1000_astrophotography/"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Nikon",
+          "stock_code": "7731",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7731",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Ricoh",
+        "stock_code": "7752",
+        "ticker": "7752",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Ricoh Imaging 공식 페이지가 Astrotracer 기반 천체 추적 촬영 기능을 명시",
+        "relationship_reason": "Ricoh Imaging 공식 페이지가 Astrotracer 기반 천체 추적 촬영 기능을 명시",
+        "company_summary": "PENTAX 카메라와 별 추적 촬영 장치 Astrotracer를 제공하는 일본 상장 광학기업",
+        "company_description": "PENTAX 카메라와 별 추적 촬영 장치 Astrotracer를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_product_page",
+        "evidence_url": "https://www.ricoh-imaging.co.jp/english/products/o-gps2/feature/",
+        "evidence_sources": [
+          {
+            "url": "https://www.ricoh-imaging.co.jp/english/products/o-gps2/feature/",
+            "title": "Ricoh Imaging",
+            "evidence_type": "official_astrophotography_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.ricoh-imaging.co.jp/english/products/o-gps2/feature/"
+            ],
+            "evidence_type": "official_astrophotography_product_page",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Ricoh",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.ricoh-imaging.co.jp/english/products/o-gps2/feature/"
+            ],
+            "evidence_type": "official_astrophotography_product_page",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Ricoh",
+          "stock_code": "7752",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7752",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "FUJIFILM Holdings",
+        "stock_code": "4901",
+        "ticker": "4901",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "FUJIFILM 공식 가이드가 X Series 카메라와 렌즈를 이용한 별 궤적 촬영 장비·방법을 설명",
+        "relationship_reason": "FUJIFILM 공식 가이드가 X Series 카메라와 렌즈를 이용한 별 궤적 촬영 장비·방법을 설명",
+        "company_summary": "천체 촬영용 카메라·렌즈와 별 궤적 촬영 가이드를 제공하는 일본 상장 광학기업",
+        "company_description": "천체 촬영용 카메라·렌즈와 별 궤적 촬영 가이드를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_guide",
+        "evidence_url": "https://www.fujifilm-x.com/en-gb/learning-centre/how-to-start-photographing-star-trails/",
+        "evidence_sources": [
+          {
+            "url": "https://www.fujifilm-x.com/en-gb/learning-centre/how-to-start-photographing-star-trails/",
+            "title": "FUJIFILM",
+            "evidence_type": "official_astrophotography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.fujifilm-x.com/en-gb/learning-centre/how-to-start-photographing-star-trails/"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "FUJIFILM Holdings",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.fujifilm-x.com/en-gb/learning-centre/how-to-start-photographing-star-trails/"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "FUJIFILM Holdings",
+          "stock_code": "4901",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "4901",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Sony Group",
+        "stock_code": "6758",
+        "ticker": "6758",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Sony 공식 지원 문서가 별이 가득한 밤하늘 장노출 촬영법과 장비 사용을 설명",
+        "relationship_reason": "Sony 공식 지원 문서가 별이 가득한 밤하늘 장노출 촬영법과 장비 사용을 설명",
+        "company_summary": "저조도 천체 촬영이 가능한 카메라와 밤하늘 촬영 가이드를 제공하는 일본 상장 전자기업",
+        "company_description": "저조도 천체 촬영이 가능한 카메라와 밤하늘 촬영 가이드를 제공하는 일본 상장 전자기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_guide",
+        "evidence_url": "https://www.sony.com/electronics/support/compact-cameras-dsc-t-series/dsc-t110/articles/00223374",
+        "evidence_sources": [
+          {
+            "url": "https://www.sony.com/electronics/support/compact-cameras-dsc-t-series/dsc-t110/articles/00223374",
+            "title": "Sony",
+            "evidence_type": "official_astrophotography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.sony.com/electronics/support/compact-cameras-dsc-t-series/dsc-t110/articles/00223374"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Sony Group",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.sony.com/electronics/support/compact-cameras-dsc-t-series/dsc-t110/articles/00223374"
+            ],
+            "evidence_type": "official_astrophotography_guide",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Sony Group",
+          "stock_code": "6758",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "6758",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Adobe",
+        "stock_code": "ADBE",
+        "ticker": "ADBE",
+        "market": "NASDAQ",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Adobe 공식 가이드가 천체 사진 촬영과 후처리 워크플로를 별도 분야로 안내",
+        "relationship_reason": "Adobe 공식 가이드가 천체 사진 촬영과 후처리 워크플로를 별도 분야로 안내",
+        "company_summary": "천체 사진 보정·합성 워크플로를 제공하는 미국 상장 소프트웨어기업",
+        "company_description": "천체 사진 보정·합성 워크플로를 제공하는 미국 상장 소프트웨어기업",
+        "business_features": [
+          "천문관측/광학기기/천체촬영"
+        ],
+        "evidence_kind": "official_astrophotography_workflow",
+        "evidence_url": "https://www.adobe.com/creativecloud/photography/type/astrophotography.html",
+        "evidence_sources": [
+          {
+            "url": "https://www.adobe.com/creativecloud/photography/type/astrophotography.html",
+            "title": "Adobe",
+            "evidence_type": "official_astrophotography_workflow",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "천문관측/광학기기/천체촬영",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "천체관측장비",
+        "matched_ontology_node": "천체관측장비",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "개기일식",
+            "to": "천문관측/광학기기/천체촬영",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.adobe.com/creativecloud/photography/type/astrophotography.html"
+            ],
+            "evidence_type": "official_astrophotography_workflow",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "천문관측/광학기기/천체촬영",
+            "to": "Adobe",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.adobe.com/creativecloud/photography/type/astrophotography.html"
+            ],
+            "evidence_type": "official_astrophotography_workflow",
+            "as_of": "2026-08-13T19:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Adobe",
+          "stock_code": "ADBE",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "NASDAQ",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "ADBE",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 6,
+      "score_independent_of_company_count": true,
+      "direct_count": 1,
+      "role_coverage": [
+        "천문관측/광학기기/천체촬영"
+      ],
+      "tier_counts": {
+        "direct": 1,
+        "value_chain": 0,
+        "industry_watch": 5
+      },
+      "category_count": 3,
+      "candidate_category_count": 3,
+      "role_category_counts": {
+        "industry_adjacent": 4,
+        "manufacturing_development": 1,
+        "platform_service": 1
+      },
+      "ontology_diagnostics": {
+        "source": "term_specific_enrichment_cache",
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "용어별 근거 URL과 상장 식별자가 완비된 6개 이상 기업을 공개"
+    },
+    "rank": 1,
+    "observed_rank": 1,
+    "home_rank": 1,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 1,
+    "momentum_rank": 304,
+    "main_rank": 1,
+    "home_context_status": "resolved",
+    "home_context_reason": "specific_observed_expression",
+    "home_eligible": true,
+    "company_card_status": "ready",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "ready",
+    "frontend_readiness_status": "ready",
+    "frontend_readiness_missing": [],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 6,
+    "publication_rank": 1,
+    "ranking_availability_status": "provisional_history"
+  }
+}
