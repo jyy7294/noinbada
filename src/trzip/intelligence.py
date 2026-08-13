@@ -1110,8 +1110,20 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
     for rank, item in enumerate(home, 1):
         item["home_rank"] = rank
     complete = [item for item in home if item["frontend_readiness_status"] == "ready"]
-    for rank, item in enumerate(complete, 1):
-        item["publication_rank"] = rank
+    def select_frontend_top10(rows: list[dict]) -> list[dict]:
+        """Preserve score order while limiting the broad food lane to one."""
+
+        selected = []
+        food_count = 0
+        for row in rows:
+            if row.get("broad_category") == "food":
+                if food_count >= 1:
+                    continue
+                food_count += 1
+            selected.append(row)
+            if len(selected) == 10:
+                break
+        return selected
     rising = [
         item for item in complete
         if (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
@@ -1128,7 +1140,9 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
     for rank, item in enumerate(rising, 1):
         item["rising_rank"] = rank
 
-    top = complete[:10]
+    top = select_frontend_top10(complete)
+    for rank, item in enumerate(top, 1):
+        item["publication_rank"] = rank
     intelligence["home_top10"] = top
     intelligence["trend_top10"] = list(top)
     intelligence["public_top10"] = list(top)
@@ -1142,7 +1156,7 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
         "ready_count": len(complete),
         "published_count": len(top),
         "pending_count": len(home) - len(complete),
-        "publication_ready": len(complete) >= 10,
+        "publication_ready": len(top) >= 10,
     })
     for summary in intelligence.get("category_summary", []):
         category = summary.get("category")
@@ -1173,9 +1187,10 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
             item for item in period_home
             if item.get("frontend_readiness_status") == "ready"
         ]
-        for rank, item in enumerate(period_complete, 1):
+        period_top = select_frontend_top10(period_complete)
+        for rank, item in enumerate(period_top, 1):
             item["publication_rank"] = rank
-        view["period_top10"] = period_complete[:10]
+        view["period_top10"] = period_top
     return intelligence
 
 

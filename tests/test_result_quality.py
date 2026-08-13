@@ -55,3 +55,14 @@ def test_quality_gate_rejects_mismatched_company_role_label():
 
     assert result["passed"] is False
     assert any("invalid_company_role" in failure for failure in result["failures"])
+
+
+def test_quality_gate_rejects_more_than_one_food_trend():
+    trends = [_trend(rank) for rank in range(1, 11)]
+    trends[0]["broad_category"] = "food"
+    trends[1]["broad_category"] = "food"
+
+    result = evaluate_frontend_result({"home_top10": trends})
+
+    assert result["passed"] is False
+    assert "food_category_count:2" in result["failures"]

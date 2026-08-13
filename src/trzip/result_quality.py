@@ -77,6 +77,9 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
     event_keys = [str(item.get("event_key") or "") for item in top]
     if not all(event_keys) or len(event_keys) != len(set(event_keys)):
         failures.append("duplicate_or_empty_event_key")
+    food_count = sum(item.get("broad_category") == "food" for item in top)
+    if food_count > 1:
+        failures.append(f"food_category_count:{food_count}")
 
     trend_checks = []
     for item in top:
