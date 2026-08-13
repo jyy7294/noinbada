@@ -217,6 +217,12 @@ try {
     if ($LASTEXITCODE -ne 0 -or $RemoteManifestBlob -notmatch '^[0-9a-f]{40,64}$') {
         throw "failed to resolve manifest blob from verified remote commit"
     }
+    $LocalManifestPath = Join-Path $PublicationRoot "latest\manifest.json"
+    $LocalManifestBlob = (& git -C $LiveDataRoot hash-object `
+        --path=latest/manifest.json $LocalManifestPath).Trim()
+    if ($LASTEXITCODE -ne 0 -or $LocalManifestBlob -ne $RemoteManifestBlob) {
+        throw "local publication manifest bytes do not match the verified remote object"
+    }
     # Count an hour only after the exact publication has passed runtime audit
     # and its remote SHA has been independently verified.
     $QualityOutput = Join-Path $PublicationRoot "monitoring\result_quality.json"
@@ -225,7 +231,7 @@ try {
         --record-publication --publication-id $PublicationStatus.publication_id `
         --remote-sha $remotePublished `
         --intelligence (Join-Path $PublicationRoot "latest\intelligence.json") `
-        --manifest (Join-Path $PublicationRoot "latest\manifest.json") `
+        --manifest $LocalManifestPath `
         --remote-manifest-blob $RemoteManifestBlob | Out-Null
     $QualityExitCode = $LASTEXITCODE
     if ($QualityExitCode -notin @(0,1)) {
