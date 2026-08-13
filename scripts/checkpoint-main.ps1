@@ -172,8 +172,14 @@ try {
     try {
         $pytestOutput = @(& $Python -m pytest -q 2>&1)
         if ($LASTEXITCODE -ne 0) { throw "pytest failed: $($pytestOutput -join [Environment]::NewLine)" }
-        $pytestText = $pytestOutput -join "`n"
-        if ($pytestText -notmatch '(\d+)\s+passed') { throw "Could not read the pytest pass count." }
+        $pytestSummaries = @(
+            $pytestOutput | Where-Object { [string]$_ -match '^\s*\d+\s+passed(?:\s|,|$)' }
+        )
+        if ($pytestSummaries.Count -eq 0) { throw "Could not read the pytest pass count." }
+        $pytestSummary = [string]$pytestSummaries[-1]
+        if ($pytestSummary -notmatch '^\s*(\d+)\s+passed(?:\s|,|$)') {
+            throw "Could not read the final pytest pass count."
+        }
         $pytestCount = [int]$Matches[1]
 
         & $Python -m compileall -q src tests

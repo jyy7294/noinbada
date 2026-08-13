@@ -391,7 +391,8 @@
       "required": [
         "company", "stock_code", "relationship_reason", "company_summary",
         "business_features", "relation_tier", "relation_display_type", "verification_status",
-        "ontology_path", "ontology_complete", "evidence_sources", "official_identity"
+        "ontology_path", "ontology_complete", "evidence_sources", "official_identity",
+        "investment_warning"
       ],
       "properties": {
         "company": {"type": "string", "minLength": 1},
@@ -405,7 +406,8 @@
         "ontology_complete": {"type": "boolean"},
         "ontology_path": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/ontologyEdge"}},
         "evidence_sources": {"type": "array", "minItems": 1, "items": {"type": "object"}},
-        "official_identity": {"$ref": "#/$defs/officialIdentity"}
+        "official_identity": {"$ref": "#/$defs/officialIdentity"},
+        "investment_warning": {"type": "string", "minLength": 1}
       }
     },
     "officialIdentity": {
@@ -512,7 +514,17 @@
         "company_candidates": {"type": "array", "items": {"$ref": "#/$defs/company"}},
         "company_resolution": {"type": "object"},
         "verification_layer": {"type": "object"},
-        "news_context": {"type": "object"},
+        "news_context": {
+          "type": "object",
+          "required": ["status", "claim_types", "records", "affects_score", "ranking_source"],
+          "properties": {
+            "status": {"enum": ["observed", "not_linked"]},
+            "claim_types": {"type": "array", "items": {"type": "string"}},
+            "records": {"type": "array", "items": {"type": "object"}},
+            "affects_score": {"const": false},
+            "ranking_source": {"const": false}
+          }
+        },
         "home_context_status": {"enum": ["resolved", "review_required"]},
         "home_context_reason": {
           "enum": [

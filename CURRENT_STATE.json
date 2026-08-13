@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T00:44:48.1410218+00:00",
+    "updated_at":  "2026-08-13T00:57:38.0603000+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,32 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "4834a972f892a11f9d4151ce73e3922bdaf7a849",
+                       "base_remote_main_sha":  "9cdc33e4f2ee11c5e0db743750e18a8b459ec19f",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "schemas/metadata-v3.schema.json",
-                                             "src/trzip/publication_pipeline.py",
-                                             "src/trzip/runtime_audit.py",
-                                             "tests/test_publication_pipeline.py",
-                                             "tests/test_runtime_audit.py"
+                                             "docs/BACKEND_TEAM_PROMPT.md",
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
+                                             "docs/PRODUCT_DIRECTION_TRANSCRIPT.md",
+                                             "docs/PRODUCT_POLICY.md",
+                                             "README.md",
+                                             "schemas/intelligence-v3.schema.json",
+                                             "scripts/checkpoint-main.ps1",
+                                             "tests/test_local_runtime_contract.py",
+                                             "tests/test_public_contract_schema.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "schemas/metadata-v3.schema.json":  "43553c1976ea1f2d01f7767170beafa0caddee1fda6da660b988738cdca9260b",
-                                                    "src/trzip/publication_pipeline.py":  "566e48fb76646b119c75a10992a0ea417ea6d1f4db27c98faa16806dda52fbd6",
-                                                    "src/trzip/runtime_audit.py":  "aab51cca879f98344b5ae5ac5ca93eaa109df1d33666bf406763c776585855f5",
-                                                    "tests/test_publication_pipeline.py":  "08e09d3394a09539d48271dd812feefa4997ca85a2776818c373482a2cdbbc7e",
-                                                    "tests/test_runtime_audit.py":  "c91b0ccb15ebfb78e1e7cc9b3f46cfdbe6d2b645f353550354f2673b94320377"
+                                                    "docs/BACKEND_TEAM_PROMPT.md":  "b84eea4d156628963ae5d0d4e57f6fa075fa2a89f358c50dceaae5b12d58dba0",
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "f6eba5ba027972995202360cfaa19d4e478b407730c912347ecd1435a13ec953",
+                                                    "docs/PRODUCT_DIRECTION_TRANSCRIPT.md":  "3fc6f5babc8158b9ae6bf7d096e076007e75386836420ace9aa8611d8aa90d93",
+                                                    "docs/PRODUCT_POLICY.md":  "d045a66a0e0d0974c60fa74372d5632379b003a40d361442e065a63894ea324f",
+                                                    "README.md":  "c96cd54ae33d9d600c4f0a94b3a3c0409613208aa32c932ff7c05a5b51814e39",
+                                                    "schemas/intelligence-v3.schema.json":  "273627db902ac8ed645a14fdeb4ba47fc1ac30d3c1185f9f087621d81eff8fe1",
+                                                    "scripts/checkpoint-main.ps1":  "900e83067713e173cf2964666fbf4775b99e0f33f72792ea6634840894cd8be2",
+                                                    "tests/test_local_runtime_contract.py":  "68d70947856a20ca80f03a1c3552917f9bf5a29e9c4480bfafa05d52159a3176",
+                                                    "tests/test_public_contract_schema.py":  "03c3c6f0bb0e3ed05c08fadc3d56c4c3399feef0da12ba202b42826288c8e905"
                                                 },
-                       "commit_message":  "fix: distinguish recovery publication health",
+                       "commit_message":  "chore: align product contract with team decisions",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -53,23 +61,27 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Preserve scheduler reliability evidence while exposing whether the current recovered publication is complete.",
+                    "objective":  "Align the product, ranking, S# handoff, KPI, mock-data, and evidence contracts with the team meeting while preserving verified live rankings.",
                     "completed":  [
-                                      "Kept initial scheduled attempt success and timing immutable",
-                                      "Exposed current publication and recovery status separately",
-                                      "Validated collection-health semantics in schema and runtime audit",
-                                      "Passed 230 tests"
+                                      "Updated period ranking descriptions to match the implemented daily, weekly, and monthly formula.",
+                                      "Recorded the single persona, S# integration boundary, behavioral KPI events, and meme-portfolio mock boundary.",
+                                      "Strengthened news non-ranking and company investment-warning schema requirements.",
+                                      "Fixed checkpoint pytest count parsing to use the final summary line.",
+                                      "Validated the full suite with 230 passing tests before checkpoint."
                                   ],
                     "next_actions":  [
-                                         "Promote verified main to laptop runtime",
-                                         "Republish the current X and Google snapshot",
-                                         "Verify live-data publication and health fields on the remote"
+                                         "Continue hourly X and Google collection until at least 96 clean hours exist.",
+                                         "Complete evidence-backed related keywords and five-company Gold coverage for the weekly Top 10.",
+                                         "Verify the S# deep-link and unauthenticated browsing policy with Kiwoom before claiming integration complete."
                                      ],
                     "blockers":  [
-
+                                     "Clean live history remains below the 96-hour maturity gate.",
+                                     "Eight of the weekly Top 10 still lack complete five-keyword and five-company evidence coverage."
                                  ],
                     "known_limitations":  [
-                                              "Only ten hours of approved collector history exist, so daily weekly monthly rankings remain provisional"
+                                              "Current daily, weekly, and monthly rankings are provisional and similar because only 10 clean hours are available.",
+                                              "The analytics event names are a measurement contract; no analytics collector is implemented in this repository.",
+                                              "Meme-portfolio metrics remain explicitly labeled frontend mock data."
                                           ]
                 },
     "runtime_contract":  {

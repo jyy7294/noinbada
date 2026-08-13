@@ -57,6 +57,7 @@ def test_verified_code_checkpoint_is_explicit_and_non_force():
 
     assert "IncludePath" in checkpoint
     assert "pytest -q" in checkpoint
+    assert "$pytestSummaries[-1]" in checkpoint
     assert "diff --cached --check" in checkpoint
     assert "+refs/heads/main:refs/remotes/origin/main" in checkpoint
     assert 'push origin "HEAD:refs/heads/main"' in checkpoint

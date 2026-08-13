@@ -34,7 +34,8 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
         "company_card_status", "company_card_reason",
     } <= trend_required
     assert {
-        "relationship_reason", "company_summary", "ontology_path", "evidence_sources"
+        "relationship_reason", "company_summary", "ontology_path", "evidence_sources",
+        "investment_warning",
     } <= company_required
     assert payload["$defs"]["trend"]["properties"]["keywords"]["maxItems"] == 5
     assert payload["$defs"]["trend"]["properties"]["companies"]["oneOf"] == [
@@ -55,6 +56,10 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
     assert "verification_run" in payload["required"]
     assert "ranking_availability_status" in trend_required
     assert payload["properties"]["verification_run"]["properties"]["ranking_effect"] == {"const": "none"}
+    news_context = payload["$defs"]["trend"]["properties"]["news_context"]
+    assert {"affects_score", "ranking_source"} <= set(news_context["required"])
+    assert news_context["properties"]["affects_score"] == {"const": False}
+    assert news_context["properties"]["ranking_source"] == {"const": False}
 
 
 def test_latest_generated_publication_conforms_to_all_public_schemas(tmp_path, monkeypatch):
