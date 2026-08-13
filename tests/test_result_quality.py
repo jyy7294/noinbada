@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 from trzip.hourly_store import HourlyObservation, connect, upsert
 from trzip.result_quality import _source_gate, evaluate_frontend_result
@@ -75,7 +76,17 @@ def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):
     database = tmp_path / "runtime.sqlite3"
     stamp = "2026-08-13T17:00:00+00:00"
     rows = [
-        HourlyObservation(stamp, "x", f"x-{rank}", rank, 100 - rank, "observed")
+        HourlyObservation(
+            stamp, "x", f"x-{rank}", rank, 100 - rank, "observed",
+            source_payload_json=json.dumps({
+                "collector": "codex_chrome_current_session",
+                "transport": "codex_browser_snapshot",
+                "profile": "current_logged_in_chrome",
+                "region": "KR", "region_verified": True,
+                "observed_at": "2026-08-13T17:03:00+00:00",
+                "scheduled_for": stamp, "schedule_delay_seconds": 180,
+            }),
+        )
         for rank in range(1, 31)
     ] + [
         HourlyObservation(stamp, "google_trends", f"g-{rank}", rank, 100 - rank, "observed")

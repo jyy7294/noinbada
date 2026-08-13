@@ -233,6 +233,33 @@ def _source_gate(path: Path, observed_at: str) -> dict:
     }
     x = sources.get("x") or {}
     google = sources.get("google_trends") or {}
+    with sqlite3.connect(path) as evidence_connection:
+        x_payload_row = evidence_connection.execute(
+            "SELECT source_payload_json FROM hourly_observations "
+            "WHERE observed_at=? AND source='x' AND provenance='observed' "
+            f"AND {ELIGIBLE_COLLECTOR_SQL} ORDER BY source_rank LIMIT 1",
+            (observed_at,),
+        ).fetchone()
+    try:
+        x_evidence = json.loads(x_payload_row[0]) if x_payload_row and x_payload_row[0] else {}
+    except (TypeError, ValueError, json.JSONDecodeError):
+        x_evidence = {}
+    x["collection_evidence"] = {
+        key: x_evidence.get(key)
+        for key in (
+            "collector", "transport", "profile", "region", "region_verified",
+            "observed_at", "scheduled_for", "schedule_delay_seconds",
+        )
+    }
+    x_evidence_passed = (
+        x_evidence.get("collector") == "codex_chrome_current_session"
+        and x_evidence.get("transport") == "codex_browser_snapshot"
+        and x_evidence.get("profile") == "current_logged_in_chrome"
+        and x_evidence.get("region") == "KR"
+        and x_evidence.get("region_verified") is True
+        and x_evidence.get("scheduled_for") == observed_at
+        and 0 <= float(x_evidence.get("schedule_delay_seconds")) <= 900
+    ) if x_evidence.get("schedule_delay_seconds") is not None else False
     passed = (
         x.get("row_count") == 30
         and x.get("unique_topics") == 30
@@ -240,6 +267,7 @@ def _source_gate(path: Path, observed_at: str) -> dict:
         and x.get("minimum_rank") == 1
         and x.get("maximum_rank") == 30
         and x.get("observed_rows") == 30
+        and x_evidence_passed
         and int(google.get("row_count") or 0) > 0
         and google.get("row_count") == google.get("unique_topics") == google.get("observed_rows")
         and google.get("unique_ranks") == google.get("row_count")

@@ -294,10 +294,11 @@ def collect_x(at: datetime) -> list[HourlyObservation]:
     from .x_web_collector import collect_x_page
 
     minimum_rows = int(os.environ.get("TRZIP_X_MINIMUM_ROWS", "30"))
-    topics, _audit = collect_x_page(
+    topics, collection_audit = collect_x_page(
         minimum_rows=max(30, minimum_rows),
     )
     stamp = floor_hour(at).isoformat()
+    evidence = json.dumps(collection_audit, ensure_ascii=False, sort_keys=True)
     return [
         HourlyObservation(
             stamp,
@@ -306,6 +307,7 @@ def collect_x(at: datetime) -> list[HourlyObservation]:
             item.rank,
             float(max(1, 101 - item.rank)),
             "observed",
+            source_payload_json=evidence,
             collector_version="x_current_session_kr_v1",
         )
         for item in topics
@@ -423,10 +425,22 @@ def _first_verified_snapshot_for_hour(
     if source == "x":
         if len(rows) != 30:
             return None
+        try:
+            evidence = json.loads(rows[0].source_payload_json or "{}")
+        except (TypeError, ValueError, json.JSONDecodeError):
+            evidence = {}
         return rows, {
             "status": "observed",
             "row_count": 30,
             "detail": "first verified same-hour X Korea 1-30 snapshot preserved",
+            "collector": evidence.get("collector"),
+            "transport": evidence.get("transport"),
+            "profile": evidence.get("profile"),
+            "region": evidence.get("region"),
+            "region_verified": evidence.get("region_verified"),
+            "observed_at": evidence.get("observed_at"),
+            "scheduled_for": evidence.get("scheduled_for"),
+            "schedule_delay_seconds": evidence.get("schedule_delay_seconds"),
         }
     if source == "google_trends":
         if len(rows) < 100:
