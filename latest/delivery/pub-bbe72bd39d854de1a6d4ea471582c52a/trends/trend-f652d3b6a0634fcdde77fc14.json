@@ -1,0 +1,688 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-bbe72bd39d854de1a6d4ea471582c52a",
+  "generated_at": "2026-08-13T17:04:07.447437+00:00",
+  "observed_at": "2026-08-13T17:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "프로골퍼",
+    "topic": "프로골퍼",
+    "display_name": "프로골퍼",
+    "observed_representative_term": "프로골퍼",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "프로골퍼",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 12,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.078596,
+      "best_source_rank": 68
+    },
+    "raw_terms": [
+      "프로골퍼"
+    ],
+    "phenomenon_summary": "\"프로골퍼\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "sports_participation",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "sports",
+    "category_label": "스포츠",
+    "trend_definition": "'프로골퍼' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 스포츠 트렌드입니다.",
+    "lane": "review",
+    "selection_reason": "원문은 보존하되 대표 사건·현상의 문맥을 아직 확인하지 못함",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "review",
+      "main_eligible": false,
+      "hard_issue": false,
+      "ambiguous": true,
+      "generic_category_word": false,
+      "labels": [],
+      "reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "review",
+      "label": "맥락 검토",
+      "affects_score": false
+    },
+    "selection_layer": "review_queue",
+    "company_eligible": true,
+    "score": 14.59,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 0.445449,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 14.0
+    },
+    "hours_since_last_seen": 14.0,
+    "previous_period_rank": 79,
+    "rank_change": -326,
+    "rank_change_status": "measured",
+    "period_strength": 0.248051,
+    "current_source_position": 0.248051,
+    "momentum": 0.0,
+    "persistence": 0.1458,
+    "momentum_delta": -0.14736,
+    "score_components": {
+      "period_strength_points": 8.68,
+      "momentum_points": 0.0,
+      "persistence_points": 1.46,
+      "recency_points": 4.45,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 14.59
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.496102
+      },
+      "momentum_deltas": {
+        "google_trends": -0.14736
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 7,
+          "comparison": 5
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 10,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 7,
+          "presence_rate": 0.291667,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.416667,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T03:00:00+00:00",
+      "observed_hours": 12,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 147
+    },
+    "rank_change_by_source": {
+      "google_trends": 6
+    },
+    "source_rank_change": {
+      "google_trends": 6
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T03:00:00+00:00",
+    "age_hours": 28,
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 18,
+      "history_maturity": 0.4792,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "프로골퍼",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T19:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T19:00:00+00:00",
+          "status": "failed",
+          "matched": null,
+          "error_code": "024",
+          "metrics": {
+            "blog_total_reported": null,
+            "news_total_reported": null,
+            "partial_provider_error_count": 2,
+            "stored_evidence_count": 0
+          },
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T19:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 523692,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "RdpooZIkV6Q",
+              "title": "아이언 다운스윙을 가파르게 엎어치고 어깨가 들리는 골퍼라면 이렇게 연습해 보세요 머리와 왼쪽 어깨 사이 거리를 최대한 멀리 떨어뜨리고 핸드퍼스트로 임팩하면 됩니다",
+              "url": "https://www.youtube.com/watch?v=RdpooZIkV6Q",
+              "published_at": "2026-08-12T02:55:36Z",
+              "publisher": "파워스윙TV",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 40,
+                "viewCount": 9490
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "8qyqgohMOqA",
+              "title": "깊은 벙커 탈출",
+              "url": "https://www.youtube.com/watch?v=8qyqgohMOqA",
+              "published_at": "2026-08-10T22:14:54Z",
+              "publisher": "골때녀_골프공때리는녀석",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 95,
+                "viewCount": 86959
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "zwz1vUiB2fU",
+              "title": "미모의 현직 캐디님과 연습벌레 골프유튜버 에리스의 유쾌한 대결 | 블루원상주CC [4K]",
+              "url": "https://www.youtube.com/watch?v=zwz1vUiB2fU",
+              "published_at": "2026-08-04T09:00:21Z",
+              "publisher": "골프나라의 에리스",
+              "metrics": {
+                "commentCount": 130,
+                "likeCount": 612,
+                "viewCount": 69106
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "VzVUJ8PWBYE",
+              "title": "누구든 실제로 보면 반하게되는 #김재희 프로. 드라이버 스윙! #골프 #golf (구독은 좋아요)",
+              "url": "https://www.youtube.com/watch?v=VzVUJ8PWBYE",
+              "published_at": "2026-08-12T02:00:04Z",
+              "publisher": "골프직관",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 93,
+                "viewCount": 7056
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "WoRwT2Z2QfQ",
+              "title": "익산의 불주먹~ ㅋ 박현경프로",
+              "url": "https://www.youtube.com/watch?v=WoRwT2Z2QfQ",
+              "published_at": "2026-08-11T23:07:21Z",
+              "publisher": "규빠",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 127,
+                "viewCount": 18217
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "프로골퍼",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T19:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T19:00:00+00:00",
+          "status": "failed",
+          "matched": null,
+          "error_code": "024",
+          "metrics": {
+            "blog_total_reported": null,
+            "news_total_reported": null,
+            "partial_provider_error_count": 2,
+            "stored_evidence_count": 0
+          },
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T19:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 523692,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "RdpooZIkV6Q",
+              "title": "아이언 다운스윙을 가파르게 엎어치고 어깨가 들리는 골퍼라면 이렇게 연습해 보세요 머리와 왼쪽 어깨 사이 거리를 최대한 멀리 떨어뜨리고 핸드퍼스트로 임팩하면 됩니다",
+              "url": "https://www.youtube.com/watch?v=RdpooZIkV6Q",
+              "published_at": "2026-08-12T02:55:36Z",
+              "publisher": "파워스윙TV",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 40,
+                "viewCount": 9490
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "8qyqgohMOqA",
+              "title": "깊은 벙커 탈출",
+              "url": "https://www.youtube.com/watch?v=8qyqgohMOqA",
+              "published_at": "2026-08-10T22:14:54Z",
+              "publisher": "골때녀_골프공때리는녀석",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 95,
+                "viewCount": 86959
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "zwz1vUiB2fU",
+              "title": "미모의 현직 캐디님과 연습벌레 골프유튜버 에리스의 유쾌한 대결 | 블루원상주CC [4K]",
+              "url": "https://www.youtube.com/watch?v=zwz1vUiB2fU",
+              "published_at": "2026-08-04T09:00:21Z",
+              "publisher": "골프나라의 에리스",
+              "metrics": {
+                "commentCount": 130,
+                "likeCount": 612,
+                "viewCount": 69106
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "VzVUJ8PWBYE",
+              "title": "누구든 실제로 보면 반하게되는 #김재희 프로. 드라이버 스윙! #골프 #golf (구독은 좋아요)",
+              "url": "https://www.youtube.com/watch?v=VzVUJ8PWBYE",
+              "published_at": "2026-08-12T02:00:04Z",
+              "publisher": "골프직관",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 93,
+                "viewCount": 7056
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "WoRwT2Z2QfQ",
+              "title": "익산의 불주먹~ ㅋ 박현경프로",
+              "url": "https://www.youtube.com/watch?v=WoRwT2Z2QfQ",
+              "published_at": "2026-08-11T23:07:21Z",
+              "publisher": "규빠",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 127,
+                "viewCount": 18217
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "프로골퍼",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 74,
+        "value": 27.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"400%\", \"page\": 3, \"row_on_page\": 24, \"started_text\": \"9시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 72,
+        "value": 29.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"400%\", \"page\": 3, \"row_on_page\": 22, \"started_text\": \"10시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 69,
+        "value": 32.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"400%\", \"page\": 3, \"row_on_page\": 19, \"started_text\": \"11시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 73,
+        "value": 28.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"400%\", \"page\": 3, \"row_on_page\": 23, \"started_text\": \"12시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 68,
+        "value": 33.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"400%\", \"page\": 3, \"row_on_page\": 18, \"started_text\": \"13시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 70,
+        "value": 31.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"400%\", \"page\": 3, \"row_on_page\": 20, \"started_text\": \"14시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 73,
+        "value": 28.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"400%\", \"page\": 3, \"row_on_page\": 23, \"started_text\": \"14시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 104,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"400%\", \"page\": 5, \"row_on_page\": 4, \"started_text\": \"16시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 145,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 20, \"started_text\": \"18시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 150,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 25, \"started_text\": \"19시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 153,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 7, \"row_on_page\": 3, \"started_text\": \"20시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 147,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 22, \"started_text\": \"22시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "프로골퍼",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 후보층 공개를 보류"
+    },
+    "rank": 405,
+    "observed_rank": 405,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "맥락 확인",
+    "persistence_rank": 77,
+    "momentum_rank": 421,
+    "main_rank": null,
+    "home_context_status": "review_required",
+    "home_context_reason": "not_main_lane",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_six"
+    ],
+    "frontend_keyword_count": 0,
+    "frontend_company_count": 0,
+    "publication_rank": null,
+    "ranking_availability_status": "provisional_history"
+  }
+}
