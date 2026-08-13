@@ -187,6 +187,12 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
     if food_count > 1:
         failures.append(f"food_category_count:{food_count}")
 
+    rising = list(intelligence.get("rising_top10") or [])
+    for item in rising:
+        name = str(item.get("display_name") or item.get("event_key") or "")
+        if item.get("is_current") is not True or item.get("lifecycle") == "expired":
+            failures.append(f"{name}:non_current_rising_trend")
+
     trend_checks = []
     for item in top:
         name = str(item.get("display_name") or item.get("event_key") or "")
@@ -215,6 +221,11 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
             item_failures.append("keyword_without_source")
         if len(unique_codes) < MINIMUM_FRONTEND_COMPANIES or "" in unique_codes:
             item_failures.append(f"company_count:{len(unique_codes - {''})}")
+        if len(unique_codes - {""}) >= MINIMUM_FRONTEND_COMPANIES:
+            if item.get("company_card_status") != "ready":
+                item_failures.append("company_card_not_ready")
+            if item.get("company_card_reason") != "evidence_backed_six_or_more":
+                item_failures.append("company_card_reason_mismatch")
         for company in companies:
             company_name = str(company.get("company") or "").strip()
             evidence_urls = [

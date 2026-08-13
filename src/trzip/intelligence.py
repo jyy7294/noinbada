@@ -1123,6 +1123,19 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
         item["frontend_readiness_missing"] = missing
         item["frontend_keyword_count"] = keyword_count
         item["frontend_company_count"] = complete_company_count
+        # Enrichment can be attached after the initial candidate pass.  Keep
+        # the public card state and its explanation derived from the final
+        # evidence-complete company set so they can never contradict each
+        # other in the frontend contract.
+        if item.get("company_eligible"):
+            if complete_company_count >= MINIMUM_FRONTEND_COMPANIES:
+                item["company_card_status"] = "ready"
+                item["company_status"] = "ready"
+                item["company_card_reason"] = "evidence_backed_six_or_more"
+            else:
+                item["company_card_status"] = "enrichment_pending"
+                item["company_status"] = "enrichment_pending"
+                item["company_card_reason"] = "fewer_than_six_evidence_backed_companies"
         item["publication_rank"] = None
 
     home = [
@@ -1148,7 +1161,8 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
         return selected
     rising = [
         item for item in complete
-        if (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
+        if item.get("is_current") is True
+        and (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
         and float(item.get("momentum_delta") or 0.0) > 0.0
     ]
     rising.sort(key=lambda item: (

@@ -37,6 +37,8 @@ def _trend(rank: int) -> dict:
             "연결 기업 정보는 이해를 돕기 위한 참고 자료이고 투자 추천을 의미하지 않습니다."
         ),
         "frontend_readiness_status": "ready",
+        "company_card_status": "ready",
+        "company_card_reason": "evidence_backed_six_or_more",
         "related_keywords": [
             {"text": f"키워드 {index}", "source": ["google_trends"]}
             for index in range(5)
@@ -52,6 +54,25 @@ def test_complete_frontend_result_passes_quality_gate():
     assert result["policy_version"] == "frontend-result-quality-v4"
     assert result["trend_count"] == 10
     assert all(row["keyword_count"] == 5 and row["company_count"] == 6 for row in result["trends"])
+
+
+def test_quality_gate_rejects_company_state_mismatch_and_expired_rising():
+    trends = [_trend(rank) for rank in range(1, 11)]
+    trends[0]["company_card_status"] = "enrichment_pending"
+    trends[0]["company_card_reason"] = "fewer_than_six_evidence_backed_companies"
+    expired = {
+        "event_key": "expired-event",
+        "display_name": "Expired event",
+        "is_current": False,
+        "lifecycle": "expired",
+    }
+
+    result = evaluate_frontend_result({"home_top10": trends, "rising_top10": [expired]})
+
+    assert result["passed"] is False
+    assert any("company_card_not_ready" in failure for failure in result["failures"])
+    assert any("company_card_reason_mismatch" in failure for failure in result["failures"])
+    assert "Expired event:non_current_rising_trend" in result["failures"]
 
 
 def test_quality_gate_rejects_missing_company_role_and_non_contiguous_rank():

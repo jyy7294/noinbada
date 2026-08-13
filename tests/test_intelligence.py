@@ -11,7 +11,55 @@ from trzip.intelligence import (
     _assign_canonical_topics,
     build_intelligence,
     canonical_topic,
+    refresh_frontend_readiness,
 )
+
+
+def test_frontend_refresh_reconciles_company_reason_and_excludes_expired_rising():
+    companies = [
+        {
+            "company": f"Company {index}",
+            "stock_code": f"T{index}",
+            "market": "NASDAQ",
+            "company_description": "evidence-backed listed company",
+            "relationship_reason": "documented relationship",
+            "evidence_sources": [{"url": f"https://example.com/{index}"}],
+            "ontology_complete": True,
+        }
+        for index in range(6)
+    ]
+    expired = {
+        "event_key": "expired-rising",
+        "display_name": "Expired rising",
+        "lane": "main",
+        "home_eligible": True,
+        "broad_category": "content",
+        "keyword_status": "ready",
+        "related_keywords": [{"text": str(index)} for index in range(5)],
+        "companies": companies,
+        "company_eligible": True,
+        "company_card_status": "enrichment_pending",
+        "company_status": "enrichment_pending",
+        "company_card_reason": "fewer_than_six_evidence_backed_companies",
+        "ranking_data_readiness": {"momentum_status": "measured"},
+        "momentum_delta": 1.0,
+        "period_strength": 1.0,
+        "observed_rank": 1,
+        "is_current": False,
+        "lifecycle": "expired",
+    }
+    intelligence = {
+        "unified_ranking": [expired],
+        "category_summary": [],
+        "ranking_views": {},
+        "publication_readiness": {},
+    }
+
+    refresh_frontend_readiness(intelligence)
+
+    assert expired["company_card_status"] == "ready"
+    assert expired["company_card_reason"] == "evidence_backed_six_or_more"
+    assert intelligence["rising_top10"] == []
 
 
 def test_aliases_are_normalized_to_events():
