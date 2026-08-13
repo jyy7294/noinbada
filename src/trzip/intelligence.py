@@ -858,6 +858,14 @@ def _ontology_company_candidates(
             if ontology_relation_tier == "excluded":
                 continue
             tier_presentation = RELATION_TIER_PRESENTATION[ontology_relation_tier]
+            documented_role_category = next(
+                (
+                    str((edge.get("metadata") or {}).get("company_role_category") or "")
+                    for edge in business_edges
+                    if (edge.get("metadata") or {}).get("company_role_category")
+                ),
+                None,
+            )
             first_evidence_url = next(
                 (record["url"] for record in evidence_records if record.get("url")),
                 None,
@@ -908,6 +916,7 @@ def _ontology_company_candidates(
                 "evidence_url": first_evidence_url,
                 "evidence_sources": evidence_sources,
                 "company_role": tier_presentation["company_role"],
+                "company_role_category": documented_role_category,
                 "relation_tier": PUBLIC_RELATION_TIER[ontology_relation_tier],
                 "ontology_relation_tier": ontology_relation_tier,
                 "relation_tier_label": tier_presentation["label"],
