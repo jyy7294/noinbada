@@ -242,12 +242,8 @@ def test_additional_live_enrichment_caches_are_complete_and_do_not_select_trends
         assert row["score"] == 100 - index
         assert len(row["related_keywords"]) == 5
         assert row["keyword_status"] == "ready"
-        if row["display_name"] in {"커피믹스", "아시안 게임"}:
-            assert len(row["companies"]) == 6
-            assert row["company_status"] == "ready"
-        else:
-            assert len(row["companies"]) == 0
-            assert row.get("company_status") != "ready"
+        assert len(row["companies"]) == 6
+        assert row["company_status"] == "ready"
 
 
 def test_coffee_mix_cache_has_six_evidence_backed_listed_companies():

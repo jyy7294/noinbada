@@ -200,6 +200,20 @@ VERIFIED_COMPANIES = {
             "evidence_url": "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD",
             "evidence_owner": "LS Cable & System", "evidence_type": "official_supply_release",
         },
+        {
+            "company": "SG", "ticker": "255220", "market": "KOSDAQ",
+            "company_description": "용인 반도체 클러스터 건설 현장에 포장 소재를 공급하는 국내 상장 아스콘기업",
+            "relation_tier": "value_chain", "reason": "보도 자료가 SG의 SK하이닉스 용인 클러스터 아스콘 단독 공급 사실을 명시",
+            "evidence_url": "https://biz.chosun.com/stock/stock_general/2026/07/08/KPI33IKYMRAP7EZTEPDBDMPEOM/",
+            "evidence_owner": "ChosunBiz", "evidence_type": "reported_supply_disclosure",
+        },
+        {
+            "company": "현대건설", "ticker": "000720", "market": "KOSPI",
+            "company_description": "용인 첨단시스템반도체 국가산단 조성공사 입찰 참여가 보도된 국내 상장 건설기업",
+            "relation_tier": "industry_watch", "reason": "산단 조성공사 발주 보도가 현대건설을 1공구 입찰 참여 후보로 명시",
+            "evidence_url": "https://biz.chosun.com/real_estate/real_estate_general/2025/12/18/RC7MFPVPYBAAPN62N54KSYQ3QQ/",
+            "evidence_owner": "ChosunBiz", "evidence_type": "reported_tender_participation",
+        },
     ),
     "아시안 게임": (
         {
