@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T18:24:21.3182076+00:00",
+    "updated_at":  "2026-08-13T18:30:57.7419217+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,34 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "07eab7911351cc476f2eaf8eb5f508777f738ed5",
+                       "base_remote_main_sha":  "ff1046a19788cd8d3001c8ce6c49e0aa781f9401",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
-                                             "config/codex-automation/trzip-prompt.ko.txt",
                                              "CURRENT_STATE.json",
-                                             "docs/BACKEND_TEAM_PROMPT.md",
-                                             "scripts/collect-hourly.ps1",
-                                             "src/trzip/result_quality.py",
-                                             "tests/test_local_runtime_contract.py",
-                                             "tests/test_publication_receipts.py",
-                                             "tests/test_result_quality.py"
+                                             "src/trzip/trend_fit.py",
+                                             "tests/test_trend_fit.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "config/codex-automation/trzip-prompt.ko.txt":  "28dba42058126eda07b7a1c2e1cd6ab3079a69e920fe305d95c8e43aaf8a8490",
-                                                    "docs/BACKEND_TEAM_PROMPT.md":  "2e642b035d254ad2584ea88166a006b0faa16215855e462a602a772120540faf",
-                                                    "scripts/collect-hourly.ps1":  "3d2cc5e53bfec6aea0085b48ca943062cdc3ab5537c8682f8ab435d51151afe5",
-                                                    "src/trzip/result_quality.py":  "4bb036642bb887d02e751997fbd1d1b8dc9d2c6dde7876f7a1d7c6258bab9680",
-                                                    "tests/test_local_runtime_contract.py":  "8307925883dfbbfc71aac484f8d20f9d2acc81423c1dc59221386af8c4f831e5",
-                                                    "tests/test_publication_receipts.py":  "8e80a844a2e10478eefa9295a7b8686633fd9bb23f582077b582ab414875d3b9",
-                                                    "tests/test_result_quality.py":  "89aaca1928aa764fd14019da4502d42290663f453c84846ce57c5432ee326903"
+                                                    "src/trzip/trend_fit.py":  "9449a344e5339033b0e2a16cbd43130911f2b242011e2aaef80a3daf490802d9",
+                                                    "tests/test_trend_fit.py":  "0390788900438726061a40a43a80fffc65f1a3d48bcdf3f0ba83986e0441ade9"
                                                 },
-                       "commit_message":  "fix: enforce meaningful frontend trend definitions",
+                       "commit_message":  "fix: keep broad trend expressions out of home candidates",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  282
+                                      "count":  283
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -57,22 +47,22 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Validate eight consecutive exact-hour TRZIP publications under a fixed source and frontend data contract",
+                    "objective":  "Validate eight consecutive exact-hour TRZIP publications with product-fit Top10, five sourced keywords, six evidence-backed companies, ontology relations, and verified remote delivery",
                     "completed":  [
-                                      "Upgraded frontend result quality policy to v3",
-                                      "Required meaningful sourced trend definitions with investment boundary",
-                                      "Updated automation contract and regression tests",
-                                      "Verified 282 passed and 1 skipped"
+                                      "Excluded broad place, region, content, and sports class terms from the home subset without changing observed ranks",
+                                      "Added deterministic regression coverage",
+                                      "Verified 283 passed and 1 skipped"
                                   ],
                     "next_actions":  [
-                                         "Collect exact-hour X and Google observations",
-                                         "Require eight consecutive v3 publication receipts"
+                                         "Validate the next exact-hour v3 publication",
+                                         "Inspect Top10 product fit and enrichment output",
+                                         "Continue the fixed-policy consecutive streak"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "Eight-hour acceptance streak starts fresh under frontend-result-quality-v3"
+                                              "The fresh frontend-result-quality-v3 exact-hour streak has not yet begun"
                                           ]
                 },
     "runtime_contract":  {

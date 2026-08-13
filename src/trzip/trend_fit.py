@@ -83,6 +83,11 @@ PRODUCTIZATION_MARKERS = {
 GENERIC_CATEGORY_WORDS = {
     "음식", "제품", "브랜드", "콘텐츠", "생활", "문화", "기술", "애니",
     "운전", "날씨", "여행", "스포츠", "주식", "패션", "뷰티", "음악", "영상",
+    # Broad places, regions and activity/content classes are observations, not
+    # self-contained product trends. A concrete venue, event, work, brand or
+    # observed modifier is required before they can enter the home subset.
+    "수영장", "유럽", "아시아", "예능", "특집", "특집 예능",
+    "야구", "축구", "농구", "테니스",
 }
 
 

@@ -42,6 +42,19 @@ def test_broad_taxonomy_word_needs_specific_context_before_main():
     assert contextualized["selection"] == "review"
 
 
+def test_broad_place_region_activity_and_content_words_stay_in_review():
+    for term, category in (
+        ("수영장", "place_experience"),
+        ("유럽", "place_experience"),
+        ("특집 예능", "screen_content"),
+        ("테니스", "sports_participation"),
+    ):
+        result = assess_trend_fit(term, category=category)
+        assert result["selection"] == "review"
+        assert result["generic_category_word"] is True
+        assert result["rank_effect"] == "none"
+
+
 def test_person_name_containing_phone_syllable_is_not_a_product_signal():
     result = assess_trend_fit("코디 폰세")
 
