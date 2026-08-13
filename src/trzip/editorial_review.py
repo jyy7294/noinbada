@@ -37,12 +37,14 @@ VERIFIED_COMPANIES = {
     "말복": (
         {
             "company": "CJ제일제당", "ticker": "097950", "market": "KRX",
+            "company_description": "가정간편식과 비비고 브랜드를 운영하는 식품기업",
             "relation_tier": "direct", "reason": "비비고 삼계탕을 생산·판매하고 복날 보양식 매출을 공식 발표",
             "evidence_url": "https://www.cj.co.kr/kr/newsroom/pressreleases/news-detail/1345",
             "evidence_owner": "CJ제일제당", "evidence_type": "official_company_release",
         },
         {
             "company": "하림", "ticker": "136480", "market": "KRX",
+            "company_description": "닭고기 생산·가공과 삼계탕 제품을 운영하는 식품기업",
             "relation_tier": "direct", "reason": "하림 공식 제품관에서 자사 삼계탕 제품을 판매",
             "evidence_url": "https://www.harim.com/main/?menu=98",
             "evidence_owner": "하림", "evidence_type": "official_product_page",
@@ -51,18 +53,21 @@ VERIFIED_COMPANIES = {
     "아이폰": (
         {
             "company": "Apple", "ticker": "AAPL", "market": "NASDAQ",
+            "company_description": "아이폰을 개발·판매하는 글로벌 소비자 전자기업",
             "relation_tier": "direct", "reason": "아이폰의 개발·판매 주체",
             "evidence_url": "https://www.apple.com/iphone/", "evidence_owner": "Apple",
             "evidence_type": "official_product_page",
         },
         {
             "company": "Hon Hai Precision", "ticker": "2317", "market": "TWSE",
+            "company_description": "전자제품 위탁생산과 조립을 수행하는 글로벌 제조기업",
             "relation_tier": "value_chain", "reason": "Apple이 공개한 공급업체 명단에 Hon Hai Precision이 포함",
             "evidence_url": "https://www.apple.com/newsroom/kr/pdfs/product/support/standard/Apple%20Supplier%20Clean%20Energy%20Program_KR_221026.pdf",
             "evidence_owner": "Apple", "evidence_type": "official_supplier_document",
         },
         {
             "company": "TSMC", "ticker": "TSM", "market": "NYSE",
+            "company_description": "첨단 반도체를 위탁생산하는 글로벌 파운드리 기업",
             "relation_tier": "value_chain", "reason": "Apple이 공개한 공급업체 명단에 TSMC가 포함",
             "evidence_url": "https://www.apple.com/newsroom/kr/pdfs/product/support/standard/Apple%20Supplier%20Clean%20Energy%20Program_KR_221026.pdf",
             "evidence_owner": "Apple", "evidence_type": "official_supplier_document",
@@ -71,18 +76,21 @@ VERIFIED_COMPANIES = {
     "검은사막": (
         {
             "company": "펄어비스", "ticker": "263750", "market": "KOSDAQ",
+            "company_description": "검은사막 IP를 개발·서비스하는 게임기업",
             "relation_tier": "direct", "reason": "검은사막 공식 개발·서비스 주체",
             "evidence_url": "https://blackdesert.pearlabyss.com/Console/en-US/Main",
             "evidence_owner": "Pearl Abyss", "evidence_type": "official_product_page",
         },
         {
             "company": "Sony Group", "ticker": "SONY", "market": "NYSE",
+            "company_description": "PlayStation 게임 플랫폼을 운영하는 글로벌 엔터테인먼트 기업",
             "relation_tier": "distribution", "reason": "검은사막 공식 공지가 PlayStation 5 제공을 명시",
             "evidence_url": "https://blackdesert.pearlabyss.com/Console/en-US/News/Notice/Detail?_boardNo=12323",
             "evidence_owner": "Pearl Abyss", "evidence_type": "official_platform_release",
         },
         {
             "company": "Microsoft", "ticker": "MSFT", "market": "NASDAQ",
+            "company_description": "Xbox 게임 플랫폼과 클라우드 서비스를 운영하는 기술기업",
             "relation_tier": "distribution", "reason": "검은사막 공식 공지가 Xbox Series X|S 제공을 명시",
             "evidence_url": "https://blackdesert.pearlabyss.com/Console/en-US/News/Notice/Detail?_boardNo=12323",
             "evidence_owner": "Pearl Abyss", "evidence_type": "official_platform_release",
@@ -91,12 +99,14 @@ VERIFIED_COMPANIES = {
     "smr": (
         {
             "company": "NuScale Power", "ticker": "SMR", "market": "NYSE",
+            "company_description": "소형모듈원자로 설계와 상용화를 추진하는 미국 원전기업",
             "relation_tier": "direct", "reason": "공식 자료에 SMR 개발사 및 프로젝트 사업자로 명시",
             "evidence_url": "https://www.doosanenerbility.com/en/about/news_board_view?id=21000472&page=0&pageSize=9",
             "evidence_owner": "Doosan Enerbility", "evidence_type": "official_company_release",
         },
         {
             "company": "두산에너빌리티", "ticker": "034020", "market": "KRX",
+            "company_description": "원전 주기기와 발전설비를 제작하는 에너지 기자재 기업",
             "relation_tier": "value_chain", "reason": "NuScale과 SMR 소재·주기기 제작 계약을 공식 발표",
             "evidence_url": "https://www.doosanenerbility.com/kr/about/news_board_view?id=21000535",
             "evidence_owner": "두산에너빌리티", "evidence_type": "official_company_release",
@@ -157,6 +167,14 @@ def build_editorial_review_pack(intelligence: dict, *, generated_at: datetime | 
                 for rank, text in enumerate(KEYWORDS[registry_key], start=1)
             ],
             "company_candidates": company_rows,
+            "company_display_policy": {
+                "show_category_groups": len(company_rows) >= 6,
+                "default_layout": "company_description_list",
+                "grouping_reason": (
+                    "many_companies_need_navigation" if len(company_rows) >= 6
+                    else "few_companies_are_clearer_without_category_tabs"
+                ),
+            },
             "company_verification_status": (
                 "ready_for_team_selection" if len(company_rows) >= 3
                 else "insufficient_verified_companies"

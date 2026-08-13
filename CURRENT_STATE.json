@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T01:50:45.0534173+00:00",
+    "updated_at":  "2026-08-13T01:52:50.8255360+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,18 +8,20 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "8aef8e35f331b3c95bed0c6e27ed6c85704d866a",
+                       "base_remote_main_sha":  "357fd4ab0eac1d2788bf6f5321a1e50cd0af21bb",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
                                              "src/trzip/editorial_review.py",
                                              "tests/test_editorial_review.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/editorial_review.py":  "c08ce0d3de4dff9c979ce080bbaedde2cfd9532ff9f8c9a87e40bc4465c2912e",
-                                                    "tests/test_editorial_review.py":  "108f73d44b992ca63690f83fce6f96b596815b8bcf7e747978572dfa9ef78a3a"
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "9a64836d45560fa31d7bcb4f28d321bc7ec38131c5fc0cd6421e2780ead912f8",
+                                                    "src/trzip/editorial_review.py":  "bb20de431ac3cc477ddba953c64af3c80bad7b6867feb215157861953d2b96dd",
+                                                    "tests/test_editorial_review.py":  "133205293f874fd4a18f84254d49463e1530206985ffb17977e0e06f99865048"
                                                 },
-                       "commit_message":  "feat: align editorial candidates with approved product fit",
+                       "commit_message":  "feat: simplify company display contract",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,20 +49,20 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Use the team-approved concrete trend examples as the review candidate vocabulary while preserving source observation requirements.",
+                    "objective":  "Provide company descriptions directly and only request category grouping when a trend has many verified companies.",
                     "completed":  [
-                                      "Added concrete candidates for fireworks festival, Dazed, G-Star, TVING, Conan movie, seal meme, humanoid robots, and Samjeon-Nix.",
-                                      "Removed coffee mix from the approved product-fit candidate registry.",
-                                      "Kept company candidates empty until relation-specific evidence exists."
+                                      "Added a concise company description to every verified company candidate.",
+                                      "Defaulted company presentation to a simple description list.",
+                                      "Enabled category grouping only when six or more verified companies exist."
                                   ],
                     "next_actions":  [
-                                         "Verify at least three relation-specific listed companies for each selected trend."
+                                         "Connect company_description and company_display_policy in the next UI revision."
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "Only iPhone and Black Desert currently have three verified listed-company relations; no padding is used."
+                                              "No UI file was changed in this backend-only checkpoint."
                                           ]
                 },
     "runtime_contract":  {

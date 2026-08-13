@@ -143,9 +143,12 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 - `company_candidates`: 해당 트렌드와의 개별 관계 자료가 확인된 국내외 상장사만 수록
 - `음식`, `운전`, `애니` 같은 포괄어와 업종별 회사 채우기는 금지합니다.
 - 회사마다 `reason`, `evidence_url`, `evidence_owner`, `evidence_type`,
-  `verified_at`, `verification_status`를 제공합니다.
+  `verified_at`, `verification_status`, `company_description`을 제공합니다.
 - 검증 기업이 3개 미만이면 `insufficient_verified_companies`로 남기며 임의로
   채우지 않습니다.
+- 기본 화면은 `company_description_list`입니다. 검증 기업이 6개 이상으로
+  많아질 때만 `company_display_policy.show_category_groups=true`로 제공하며,
+  그 전에는 카테고리 탭을 만들지 않습니다.
 - `review_status=unreviewed` 후보는 기존 `keywords`·`companies`에 자동 병합하지
   않습니다. 팀 승인 이후에만 공개 필드로 승격합니다.
 - 이 후보 팩은 점수·순위에 영향을 주지 않으며 프론트가 사용하지 않아도 기존

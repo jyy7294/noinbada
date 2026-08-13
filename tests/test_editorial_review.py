@@ -15,6 +15,8 @@ def test_editorial_review_pack_only_includes_concrete_registered_terms():
     assert all(len(item["related_keyword_candidates"]) == 15 for item in pack["trends"])
     assert all(len(item["company_candidates"]) >= 3 for item in pack["trends"])
     assert all(company["ranking_effect"] == "none" for item in pack["trends"] for company in item["company_candidates"])
+    assert all(company["company_description"] for item in pack["trends"] for company in item["company_candidates"])
+    assert pack["trends"][0]["company_display_policy"]["show_category_groups"] is False
     assert pack["candidate_policy"]["padding_forbidden"] is True
     assert pack["candidate_policy"]["broad_term_forbidden"] is True
 
