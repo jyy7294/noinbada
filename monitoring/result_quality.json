@@ -2,8 +2,8 @@
   "policy_version": "consecutive-actual-result-v1",
   "required_consecutive_hours": 8,
   "passed": false,
-  "current_consecutive_success_count": 1,
-  "remaining_success_hours": 7,
+  "current_consecutive_success_count": 0,
+  "remaining_success_hours": 8,
   "evaluations": [
     {
       "observed_at": "2026-08-13T09:00:00+00:00",
@@ -29,12 +29,14 @@
       },
       "contract": {
         "policy_version": "frontend-result-quality-v1",
-        "passed": true,
-        "trend_count": 10,
+        "passed": false,
+        "trend_count": 9,
         "required_trend_count": 10,
         "required_keyword_count": 5,
         "minimum_company_count": 6,
-        "failures": [],
+        "failures": [
+          "home_top10_count:9"
+        ],
         "trends": [
           {
             "publication_rank": 1,
@@ -76,17 +78,6 @@
           },
           {
             "publication_rank": 4,
-            "display_name": "말복",
-            "observed_rank": 139,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 5,
             "display_name": "불꽃축제",
             "observed_rank": 183,
             "keyword_count": 5,
@@ -99,7 +90,7 @@
             "passed": true
           },
           {
-            "publication_rank": 6,
+            "publication_rank": 5,
             "display_name": "광 통신",
             "observed_rank": 205,
             "keyword_count": 5,
@@ -112,7 +103,7 @@
             "passed": true
           },
           {
-            "publication_rank": 7,
+            "publication_rank": 6,
             "display_name": "지스타",
             "observed_rank": 239,
             "keyword_count": 5,
@@ -124,7 +115,7 @@
             "passed": true
           },
           {
-            "publication_rank": 8,
+            "publication_rank": 7,
             "display_name": "롤 패치 노트",
             "observed_rank": 355,
             "keyword_count": 5,
@@ -137,20 +128,7 @@
             "passed": true
           },
           {
-            "publication_rank": 9,
-            "display_name": "삼계탕",
-            "observed_rank": 363,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "distribution",
-              "manufacturing_development",
-              "retail_sales"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 10,
+            "publication_rank": 8,
             "display_name": "코난 극장판",
             "observed_rank": 420,
             "keyword_count": 5,
@@ -161,6 +139,18 @@
               "distribution",
               "ownership_investment",
               "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "휴머노이드 로봇",
+            "observed_rank": 462,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development",
+              "platform_service"
             ],
             "passed": true
           }
@@ -198,12 +188,14 @@
       },
       "contract": {
         "policy_version": "frontend-result-quality-v1",
-        "passed": true,
-        "trend_count": 10,
+        "passed": false,
+        "trend_count": 9,
         "required_trend_count": 10,
         "required_keyword_count": 5,
         "minimum_company_count": 6,
-        "failures": [],
+        "failures": [
+          "home_top10_count:9"
+        ],
         "trends": [
           {
             "publication_rank": 1,
@@ -245,17 +237,6 @@
           },
           {
             "publication_rank": 4,
-            "display_name": "말복",
-            "observed_rank": 154,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 5,
             "display_name": "불꽃축제",
             "observed_rank": 205,
             "keyword_count": 5,
@@ -268,7 +249,7 @@
             "passed": true
           },
           {
-            "publication_rank": 6,
+            "publication_rank": 5,
             "display_name": "광 통신",
             "observed_rank": 230,
             "keyword_count": 5,
@@ -281,7 +262,7 @@
             "passed": true
           },
           {
-            "publication_rank": 7,
+            "publication_rank": 6,
             "display_name": "지스타",
             "observed_rank": 255,
             "keyword_count": 5,
@@ -293,7 +274,7 @@
             "passed": true
           },
           {
-            "publication_rank": 8,
+            "publication_rank": 7,
             "display_name": "롤 패치 노트",
             "observed_rank": 377,
             "keyword_count": 5,
@@ -306,20 +287,7 @@
             "passed": true
           },
           {
-            "publication_rank": 9,
-            "display_name": "삼계탕",
-            "observed_rank": 389,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "distribution",
-              "manufacturing_development",
-              "retail_sales"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 10,
+            "publication_rank": 8,
             "display_name": "코난 극장판",
             "observed_rank": 436,
             "keyword_count": 5,
@@ -330,6 +298,18 @@
               "distribution",
               "ownership_investment",
               "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "휴머노이드 로봇",
+            "observed_rank": 478,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development",
+              "platform_service"
             ],
             "passed": true
           }
@@ -352,12 +332,14 @@
       },
       "contract": {
         "policy_version": "frontend-result-quality-v1",
-        "passed": true,
-        "trend_count": 10,
+        "passed": false,
+        "trend_count": 9,
         "required_trend_count": 10,
         "required_keyword_count": 5,
         "minimum_company_count": 6,
-        "failures": [],
+        "failures": [
+          "home_top10_count:9"
+        ],
         "trends": [
           {
             "publication_rank": 1,
@@ -412,17 +394,6 @@
           },
           {
             "publication_rank": 5,
-            "display_name": "말복",
-            "observed_rank": 207,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 6,
             "display_name": "광 통신",
             "observed_rank": 232,
             "keyword_count": 5,
@@ -435,7 +406,7 @@
             "passed": true
           },
           {
-            "publication_rank": 7,
+            "publication_rank": 6,
             "display_name": "지스타",
             "observed_rank": 234,
             "keyword_count": 5,
@@ -447,7 +418,7 @@
             "passed": true
           },
           {
-            "publication_rank": 8,
+            "publication_rank": 7,
             "display_name": "롤 패치 노트",
             "observed_rank": 372,
             "keyword_count": 5,
@@ -460,20 +431,7 @@
             "passed": true
           },
           {
-            "publication_rank": 9,
-            "display_name": "삼계탕",
-            "observed_rank": 387,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "distribution",
-              "manufacturing_development",
-              "retail_sales"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 10,
+            "publication_rank": 8,
             "display_name": "코난 극장판",
             "observed_rank": 435,
             "keyword_count": 5,
@@ -484,6 +442,18 @@
               "distribution",
               "ownership_investment",
               "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "휴머노이드 로봇",
+            "observed_rank": 477,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development",
+              "platform_service"
             ],
             "passed": true
           }
@@ -593,17 +563,6 @@
           },
           {
             "publication_rank": 6,
-            "display_name": "말복",
-            "observed_rank": 256,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 7,
             "display_name": "광 통신",
             "observed_rank": 263,
             "keyword_count": 5,
@@ -616,7 +575,7 @@
             "passed": true
           },
           {
-            "publication_rank": 8,
+            "publication_rank": 7,
             "display_name": "지스타",
             "observed_rank": 285,
             "keyword_count": 5,
@@ -628,7 +587,7 @@
             "passed": true
           },
           {
-            "publication_rank": 9,
+            "publication_rank": 8,
             "display_name": "롤 패치 노트",
             "observed_rank": 422,
             "keyword_count": 5,
@@ -641,15 +600,29 @@
             "passed": true
           },
           {
-            "publication_rank": 10,
-            "display_name": "삼계탕",
-            "observed_rank": 431,
+            "publication_rank": 9,
+            "display_name": "코난 극장판",
+            "observed_rank": 474,
             "keyword_count": 5,
             "company_count": 6,
             "role_categories": [
+              "brand_marketing",
+              "content_production",
               "distribution",
-              "manufacturing_development",
+              "ownership_investment",
               "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "휴머노이드 로봇",
+            "observed_rank": 515,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development",
+              "platform_service"
             ],
             "passed": true
           }
@@ -680,12 +653,14 @@
       },
       "contract": {
         "policy_version": "frontend-result-quality-v1",
-        "passed": true,
-        "trend_count": 10,
+        "passed": false,
+        "trend_count": 9,
         "required_trend_count": 10,
         "required_keyword_count": 5,
         "minimum_company_count": 6,
-        "failures": [],
+        "failures": [
+          "home_top10_count:9"
+        ],
         "trends": [
           {
             "publication_rank": 1,
@@ -739,17 +714,6 @@
           },
           {
             "publication_rank": 5,
-            "display_name": "말복",
-            "observed_rank": 262,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 6,
             "display_name": "광 통신",
             "observed_rank": 269,
             "keyword_count": 5,
@@ -762,7 +726,7 @@
             "passed": true
           },
           {
-            "publication_rank": 7,
+            "publication_rank": 6,
             "display_name": "지스타",
             "observed_rank": 299,
             "keyword_count": 5,
@@ -774,7 +738,7 @@
             "passed": true
           },
           {
-            "publication_rank": 8,
+            "publication_rank": 7,
             "display_name": "롤 패치 노트",
             "observed_rank": 431,
             "keyword_count": 5,
@@ -787,20 +751,7 @@
             "passed": true
           },
           {
-            "publication_rank": 9,
-            "display_name": "삼계탕",
-            "observed_rank": 441,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "distribution",
-              "manufacturing_development",
-              "retail_sales"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 10,
+            "publication_rank": 8,
             "display_name": "코난 극장판",
             "observed_rank": 479,
             "keyword_count": 5,
@@ -811,6 +762,18 @@
               "distribution",
               "ownership_investment",
               "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "휴머노이드 로봇",
+            "observed_rank": 523,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development",
+              "platform_service"
             ],
             "passed": true
           }
@@ -905,17 +868,6 @@
           },
           {
             "publication_rank": 6,
-            "display_name": "말복",
-            "observed_rank": 255,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 7,
             "display_name": "광 통신",
             "observed_rank": 274,
             "keyword_count": 5,
@@ -928,7 +880,7 @@
             "passed": true
           },
           {
-            "publication_rank": 8,
+            "publication_rank": 7,
             "display_name": "지스타",
             "observed_rank": 298,
             "keyword_count": 5,
@@ -940,7 +892,7 @@
             "passed": true
           },
           {
-            "publication_rank": 9,
+            "publication_rank": 8,
             "display_name": "롤 패치 노트",
             "observed_rank": 431,
             "keyword_count": 5,
@@ -953,15 +905,29 @@
             "passed": true
           },
           {
-            "publication_rank": 10,
-            "display_name": "삼계탕",
-            "observed_rank": 442,
+            "publication_rank": 9,
+            "display_name": "코난 극장판",
+            "observed_rank": 478,
             "keyword_count": 5,
             "company_count": 6,
             "role_categories": [
+              "brand_marketing",
+              "content_production",
               "distribution",
-              "manufacturing_development",
+              "ownership_investment",
               "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "휴머노이드 로봇",
+            "observed_rank": 522,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development",
+              "platform_service"
             ],
             "passed": true
           }
@@ -1031,17 +997,6 @@
           },
           {
             "publication_rank": 4,
-            "display_name": "말복",
-            "observed_rank": 254,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 5,
             "display_name": "아시안 게임",
             "observed_rank": 260,
             "keyword_count": 5,
@@ -1053,7 +1008,7 @@
             "passed": true
           },
           {
-            "publication_rank": 6,
+            "publication_rank": 5,
             "display_name": "불꽃축제",
             "observed_rank": 280,
             "keyword_count": 5,
@@ -1066,7 +1021,7 @@
             "passed": true
           },
           {
-            "publication_rank": 7,
+            "publication_rank": 6,
             "display_name": "광 통신",
             "observed_rank": 311,
             "keyword_count": 5,
@@ -1079,7 +1034,7 @@
             "passed": true
           },
           {
-            "publication_rank": 8,
+            "publication_rank": 7,
             "display_name": "지스타",
             "observed_rank": 328,
             "keyword_count": 5,
@@ -1091,7 +1046,7 @@
             "passed": true
           },
           {
-            "publication_rank": 9,
+            "publication_rank": 8,
             "display_name": "롤 패치 노트",
             "observed_rank": 437,
             "keyword_count": 5,
@@ -1104,15 +1059,29 @@
             "passed": true
           },
           {
-            "publication_rank": 10,
-            "display_name": "삼계탕",
-            "observed_rank": 444,
+            "publication_rank": 9,
+            "display_name": "코난 극장판",
+            "observed_rank": 473,
             "keyword_count": 5,
             "company_count": 6,
             "role_categories": [
+              "brand_marketing",
+              "content_production",
               "distribution",
-              "manufacturing_development",
+              "ownership_investment",
               "retail_sales"
+            ],
+            "passed": true
+          },
+          {
+            "publication_rank": 10,
+            "display_name": "휴머노이드 로봇",
+            "observed_rank": 519,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development",
+              "platform_service"
             ],
             "passed": true
           }
@@ -1128,7 +1097,7 @@
     },
     {
       "observed_at": "2026-08-13T16:00:00+00:00",
-      "passed": true,
+      "passed": false,
       "source_gate": {
         "passed": true,
         "sources": {
@@ -1150,12 +1119,14 @@
       },
       "contract": {
         "policy_version": "frontend-result-quality-v1",
-        "passed": true,
-        "trend_count": 10,
+        "passed": false,
+        "trend_count": 9,
         "required_trend_count": 10,
         "required_keyword_count": 5,
         "minimum_company_count": 6,
-        "failures": [],
+        "failures": [
+          "home_top10_count:9"
+        ],
         "trends": [
           {
             "publication_rank": 1,
@@ -1209,17 +1180,6 @@
           },
           {
             "publication_rank": 5,
-            "display_name": "말복",
-            "observed_rank": 298,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "manufacturing_development"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 6,
             "display_name": "광 통신",
             "observed_rank": 317,
             "keyword_count": 5,
@@ -1232,7 +1192,7 @@
             "passed": true
           },
           {
-            "publication_rank": 7,
+            "publication_rank": 6,
             "display_name": "지스타",
             "observed_rank": 365,
             "keyword_count": 5,
@@ -1244,7 +1204,7 @@
             "passed": true
           },
           {
-            "publication_rank": 8,
+            "publication_rank": 7,
             "display_name": "롤 패치 노트",
             "observed_rank": 472,
             "keyword_count": 5,
@@ -1257,20 +1217,7 @@
             "passed": true
           },
           {
-            "publication_rank": 9,
-            "display_name": "삼계탕",
-            "observed_rank": 484,
-            "keyword_count": 5,
-            "company_count": 6,
-            "role_categories": [
-              "distribution",
-              "manufacturing_development",
-              "retail_sales"
-            ],
-            "passed": true
-          },
-          {
-            "publication_rank": 10,
+            "publication_rank": 8,
             "display_name": "코난 극장판",
             "observed_rank": 508,
             "keyword_count": 5,
@@ -1283,15 +1230,27 @@
               "retail_sales"
             ],
             "passed": true
+          },
+          {
+            "publication_rank": 9,
+            "display_name": "휴머노이드 로봇",
+            "observed_rank": 554,
+            "keyword_count": 5,
+            "company_count": 6,
+            "role_categories": [
+              "manufacturing_development",
+              "platform_service"
+            ],
+            "passed": true
           }
         ],
         "ranking_effect": "none"
       },
       "publication": {
         "passed": true,
-        "publication_id": "pub-b3d7bc224b7240198228bd18741685cf",
-        "remote_sha": "f2adcab8484dc05f31fe697d84661e28c090f87f",
-        "verified_at": "2026-08-13T16:21:55.161177+00:00"
+        "publication_id": "pub-13e9003c4a32482b8c2e0232abcb0a13",
+        "remote_sha": "25d769d83435ece7fb3ac94ed86461f855fa7a77",
+        "verified_at": "2026-08-13T16:32:25.120385+00:00"
       }
     }
   ],
