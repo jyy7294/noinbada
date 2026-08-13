@@ -43,6 +43,9 @@ def test_codex_automation_runs_full_local_publication_pipeline():
     assert "scripts\\audit-runtime.py" in runner
     assert "runtime quality audit failed; publication was not pushed" in runner
     assert 'Write-RunLog -Phase "audit"' in runner
+    assert "--preflight" in runner
+    assert "publication preflight failed before remote push" in runner
+    assert runner.index("--preflight") < runner.index('push origin "HEAD:refs/heads/live-data"')
     assert "Register-ScheduledTask" not in setup
     assert "Disable-ScheduledTask" in setup
     assert "+refs/heads/live-data:refs/remotes/origin/live-data" in setup

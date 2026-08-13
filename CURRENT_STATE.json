@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T17:38:46.0935278+00:00",
+    "updated_at":  "2026-08-13T17:44:23.3747636+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,18 +8,20 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "9109cbe5d8b933b76a1fb569ec18911e025f5512",
+                       "base_remote_main_sha":  "8a4030904d0f0562f81dc232d345001e408006aa",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
-                                             "config/codex-automation/trzip-prompt.ko.txt",
                                              "CURRENT_STATE.json",
+                                             "scripts/collect-hourly.ps1",
+                                             "src/trzip/result_quality.py",
                                              "tests/test_local_runtime_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "config/codex-automation/trzip-prompt.ko.txt":  "b9a4af56421cb916bf33da25827c89bcab97d844a29fe353ddbe9d7d44551092",
-                                                    "tests/test_local_runtime_contract.py":  "9d58c5f0d506d24597433e1682ee4518cbc02f58cd8626e84669cda8ae628cf4"
+                                                    "scripts/collect-hourly.ps1":  "328c655f19a316de0dbb20376526f4d7b49914dda361725d89d340108db22757",
+                                                    "src/trzip/result_quality.py":  "20b68d0941cd3922efaa0d96a113b3e2b30accc46d253dcc6368552896bad4bf",
+                                                    "tests/test_local_runtime_contract.py":  "b091c56070d88b247f637dc921121244a6cacf15a07f38a28fbd98f3c0e8f5c2"
                                                 },
-                       "commit_message":  "fix: align portable automation with final proof policy",
+                       "commit_message":  "fix: block incomplete publication before remote push",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,9 +49,9 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Ensure every newly bootstrapped PC applies the same exact-hour source, Top10 enrichment, and 8-hour proof contract.",
+                    "objective":  "Never let a source-v2 or frontend-v2 contract failure replace the remote latest publication.",
                     "completed":  [
-                                      "Replace the portable automation prompt with the final source-v2 and frontend-v2 validation instructions."
+                                      "Add a pre-publish source and frontend quality gate while retaining post-push immutable remote proof."
                                   ],
                     "next_actions":  [
                                          "Accumulate 8 consecutive exact-hour live receipts under the fixed policies."
@@ -58,7 +60,7 @@
 
                                  ],
                     "known_limitations":  [
-                                              "Eight-hour live validation is still awaiting new exact-hour receipts."
+                                              "Eight-hour live validation is still awaiting the first new exact-hour receipt."
                                           ]
                 },
     "runtime_contract":  {

@@ -127,6 +127,24 @@ try {
         $Audit.status,$Audit.failures.Count,$Audit.blockers.Count,$Audit.warnings.Count
     Write-RunLog -Phase "audit" -Status $Audit.status -Detail $AuditDetail
 
+    # The complete product contract must pass before any latest publication can
+    # replace the remote. Remote verification and the immutable receipt happen
+    # later, after the exact bytes are pushed and independently resolved.
+    $PreflightOutput = Join-Path $PublicationRoot "monitoring\publication_preflight.json"
+    & $Python -m trzip.result_quality --database $DatabasePath `
+        --end $PublicationStatus.observed_at --preflight `
+        --intelligence (Join-Path $PublicationRoot "latest\intelligence.json") `
+        --output $PreflightOutput | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        $Preflight = Get-Content -LiteralPath $PreflightOutput -Raw -Encoding utf8 | ConvertFrom-Json
+        $SourceRows = "x={0} google={1}" -f `
+            $Preflight.source_gate.sources.x.row_count, `
+            $Preflight.source_gate.sources.google_trends.row_count
+        throw "publication preflight failed before remote push; $SourceRows; failures=$($Preflight.contract.failures -join ',')"
+    }
+    Write-RunLog -Phase "preflight" -Status "ok" `
+        -Detail "source-v2 and frontend-v2 contracts passed before remote publication"
+
     $DirtyBefore = @(& git -C $LiveDataRoot status --porcelain)
     if ($LASTEXITCODE -ne 0) { throw "live-data worktree is not readable" }
     if ($DirtyBefore.Count -gt 0) {

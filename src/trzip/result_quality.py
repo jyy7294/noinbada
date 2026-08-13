@@ -390,7 +390,36 @@ def main() -> int:
     parser.add_argument("--intelligence", type=Path)
     parser.add_argument("--manifest", type=Path)
     parser.add_argument("--remote-manifest-blob")
+    parser.add_argument(
+        "--preflight",
+        action="store_true",
+        help="validate same-hour sources and frontend contract before remote publication",
+    )
     args = parser.parse_args()
+    if args.preflight:
+        if not args.intelligence:
+            parser.error("--preflight requires --intelligence")
+        normalized_end = args.end.astimezone(UTC).replace(
+            minute=0, second=0, microsecond=0
+        ).isoformat()
+        intelligence = json.loads(args.intelligence.read_text(encoding="utf-8"))
+        source_gate = _source_gate(args.database, normalized_end)
+        contract = evaluate_frontend_result(intelligence)
+        result = {
+            "policy_version": "hourly-publication-preflight-v1",
+            "observed_at": normalized_end,
+            "passed": source_gate["passed"] and contract["passed"],
+            "source_gate": source_gate,
+            "contract": contract,
+        }
+        encoded = json.dumps(result, ensure_ascii=False, indent=2).encode("utf-8")
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            temporary = args.output.with_suffix(args.output.suffix + ".tmp")
+            temporary.write_bytes(encoded)
+            temporary.replace(args.output)
+        print(encoded.decode("utf-8"))
+        return 0 if result["passed"] else 1
     if args.record_publication:
         if not args.publication_id or not args.remote_sha:
             parser.error("--record-publication requires --publication-id and --remote-sha")
