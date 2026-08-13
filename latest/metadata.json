@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-6d6fb74771594943842b5753b5f1b60b",
-  "generated_at": "2026-08-13T00:31:57.473221+00:00",
+  "publication_id": "pub-8ab1f422237045ed948ea008d4d6d541",
+  "generated_at": "2026-08-13T00:33:26.286380+00:00",
   "observed_at": "2026-08-13T00:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
@@ -11,19 +11,20 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-13.json",
   "collection": {
-    "observed": 222,
-    "errors": {
-      "x": "snapshot_stale"
-    },
+    "observed": 252,
+    "errors": {},
     "rank_sources": [
       "x",
       "google_trends"
     ],
     "audit": {
       "x_korea_realtime": {
-        "status": "snapshot_stale",
-        "row_count": 0,
-        "detail": "snapshot_stale"
+        "status": "observed",
+        "row_count": 30,
+        "detail": "verified_current_hour_snapshot",
+        "collector": "codex_chrome_current_session",
+        "transport": "codex_browser_snapshot",
+        "profile": "current_logged_in_chrome"
       },
       "google_geo_kr": {
         "status": "observed",
@@ -40,24 +41,24 @@
     "first_hour": "2026-08-12T13:00:00+00:00",
     "last_hour": "2026-08-13T00:00:00+00:00",
     "hours": 10,
-    "rows": 2077,
-    "observed_rows": 2077,
+    "rows": 2107,
+    "observed_rows": 2107,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 2,
-    "newly_observed": 2,
-    "reused_company_rows": 34,
+    "requested_stock_codes": 0,
+    "newly_observed": 0,
+    "reused_company_rows": 36,
     "unavailable_company_rows": 0
   },
   "company_identity_data": {
     "provider": "opendart",
     "requested": 23,
-    "fetched": 2,
-    "reused": 21,
+    "fetched": 0,
+    "reused": 23,
     "status_counts": {
       "verified": 23
     },
@@ -113,9 +114,9 @@
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-6d6fb74771594943842b5753b5f1b60b",
-    "rankings_path": "latest/delivery/pub-6d6fb74771594943842b5753b5f1b60b/rankings.json",
-    "trend_detail_count": 339,
+    "bundle_path": "latest/delivery/pub-8ab1f422237045ed948ea008d4d6d541",
+    "rankings_path": "latest/delivery/pub-8ab1f422237045ed948ea008d4d6d541/rankings.json",
+    "trend_detail_count": 345,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }
 }
