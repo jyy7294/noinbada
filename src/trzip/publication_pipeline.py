@@ -486,7 +486,17 @@ def _validate_period_views(intelligence: dict) -> None:
             item for item in main
             if item.get("frontend_readiness_status") == "ready"
         ]
-        if period_top10 != completed[:10]:
+        expected_top10 = []
+        food_count = 0
+        for item in completed:
+            if item.get("broad_category") == "food":
+                if food_count >= 1:
+                    continue
+                food_count += 1
+            expected_top10.append(item)
+            if len(expected_top10) == 10:
+                break
+        if period_top10 != expected_top10:
             raise ValueError(f"period_top10 must contain only completed home trends: {key}")
 
     default_view = views["daily"]
