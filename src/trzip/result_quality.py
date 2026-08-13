@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sqlite3
 from datetime import UTC, datetime, timedelta
@@ -14,6 +15,7 @@ from .ontology import MINIMUM_FRONTEND_COMPANIES
 def record_publication_receipt(
     path: Path, *, observed_at: str, publication_id: str, remote_sha: str,
     contract: dict | None = None, source_gate: dict | None = None,
+    manifest_sha256: str | None = None,
 ) -> None:
     """Persist proof that the exact hourly publication reached the remote."""
 
@@ -27,7 +29,8 @@ def record_publication_receipt(
                 remote_sha TEXT NOT NULL,
                 verified_at TEXT NOT NULL,
                 contract_json TEXT,
-                source_gate_json TEXT
+                source_gate_json TEXT,
+                manifest_sha256 TEXT
             )
             """
         )
@@ -36,6 +39,8 @@ def record_publication_receipt(
             connection.execute("ALTER TABLE publication_receipts ADD COLUMN contract_json TEXT")
         if "source_gate_json" not in columns:
             connection.execute("ALTER TABLE publication_receipts ADD COLUMN source_gate_json TEXT")
+        if "manifest_sha256" not in columns:
+            connection.execute("ALTER TABLE publication_receipts ADD COLUMN manifest_sha256 TEXT")
         existing = connection.execute(
             "SELECT publication_id, remote_sha FROM publication_receipts WHERE observed_at=?",
             (observed_at,),
@@ -50,8 +55,8 @@ def record_publication_receipt(
             """
             INSERT INTO publication_receipts(
                 observed_at, publication_id, remote_sha, verified_at,
-                contract_json, source_gate_json
-            ) VALUES (?, ?, ?, ?, ?, ?)
+                contract_json, source_gate_json, manifest_sha256
+            ) VALUES (?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 observed_at,
@@ -61,6 +66,7 @@ def record_publication_receipt(
                 json.dumps(contract, ensure_ascii=False, separators=(",", ":")) if contract else None,
                 json.dumps(source_gate, ensure_ascii=False, separators=(",", ":"))
                 if source_gate else None,
+                manifest_sha256,
             ),
         )
         connection.commit()
@@ -79,9 +85,10 @@ def _publication_receipt(path: Path, observed_at: str) -> dict:
         }
         contract_expression = "contract_json" if "contract_json" in columns else "NULL"
         source_expression = "source_gate_json" if "source_gate_json" in columns else "NULL"
+        manifest_expression = "manifest_sha256" if "manifest_sha256" in columns else "NULL"
         row = None if not exists else connection.execute(
             f"SELECT publication_id, remote_sha, verified_at, {contract_expression}, "
-            f"{source_expression} "
+            f"{source_expression}, {manifest_expression} "
             "FROM publication_receipts WHERE observed_at=?",
             (observed_at,),
         ).fetchone()
@@ -91,17 +98,20 @@ def _publication_receipt(path: Path, observed_at: str) -> dict:
         return {"passed": False, "publication_id": None, "remote_sha": None, "verified_at": None}
     contract = json.loads(row[3]) if row[3] else None
     source_gate = json.loads(row[4]) if row[4] else None
+    manifest_sha256 = row[5]
     return {
         "passed": bool(
             row[0] and row[1]
             and contract and contract.get("passed") is True
             and source_gate and source_gate.get("passed") is True
+            and isinstance(manifest_sha256, str) and len(manifest_sha256) == 64
         ),
         "publication_id": row[0],
         "remote_sha": row[1],
         "verified_at": row[2],
         "contract": contract,
         "source_gate": source_gate,
+        "manifest_sha256": manifest_sha256,
     }
 
 
@@ -283,19 +293,28 @@ def main() -> int:
     parser.add_argument("--publication-id")
     parser.add_argument("--remote-sha")
     parser.add_argument("--intelligence", type=Path)
+    parser.add_argument("--manifest", type=Path)
     args = parser.parse_args()
     if args.record_publication:
         if not args.publication_id or not args.remote_sha:
             parser.error("--record-publication requires --publication-id and --remote-sha")
-        if not args.intelligence:
-            parser.error("--record-publication requires --intelligence")
+        if not args.intelligence or not args.manifest:
+            parser.error("--record-publication requires --intelligence and --manifest")
         intelligence = json.loads(args.intelligence.read_text(encoding="utf-8"))
         if intelligence.get("publication_id") != args.publication_id:
             parser.error("--intelligence publication_id does not match --publication-id")
-        contract = evaluate_frontend_result(intelligence)
-        source_gate = _source_gate(args.database, args.end.astimezone(UTC).replace(
+        manifest_bytes = args.manifest.read_bytes()
+        manifest = json.loads(manifest_bytes.decode("utf-8"))
+        normalized_end = args.end.astimezone(UTC).replace(
             minute=0, second=0, microsecond=0
-        ).isoformat())
+        ).isoformat()
+        if (
+            manifest.get("publication_id") != args.publication_id
+            or manifest.get("observed_at") != normalized_end
+        ):
+            parser.error("--manifest does not match publication id and observed hour")
+        contract = evaluate_frontend_result(intelligence)
+        source_gate = _source_gate(args.database, normalized_end)
         record_publication_receipt(
             args.database,
             observed_at=args.end.astimezone(UTC).replace(minute=0, second=0, microsecond=0).isoformat(),
@@ -303,6 +322,7 @@ def main() -> int:
             remote_sha=args.remote_sha,
             contract=contract,
             source_gate=source_gate,
+            manifest_sha256=hashlib.sha256(manifest_bytes).hexdigest(),
         )
     result = evaluate_consecutive_hours(args.database, end=args.end, count=args.count)
     encoded = json.dumps(result, ensure_ascii=False, indent=2).encode("utf-8")

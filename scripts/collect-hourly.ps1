@@ -220,7 +220,8 @@ try {
         --end $PublicationStatus.observed_at --count 8 --output $QualityOutput `
         --record-publication --publication-id $PublicationStatus.publication_id `
         --remote-sha $remotePublished `
-        --intelligence (Join-Path $PublicationRoot "latest\intelligence.json") | Out-Null
+        --intelligence (Join-Path $PublicationRoot "latest\intelligence.json") `
+        --manifest (Join-Path $PublicationRoot "latest\manifest.json") | Out-Null
     $QualityExitCode = $LASTEXITCODE
     if ($QualityExitCode -notin @(0,1)) {
         throw "result quality gate failed to execute; exit=$QualityExitCode"
