@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T17:24:03.1974484+00:00",
+    "updated_at":  "2026-08-13T17:28:24.2700664+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "2929132016d1a50ea143807c2913cdf862468653",
+                       "base_remote_main_sha":  "2660afbc5f2098825064ac14227633f892083d84",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "scripts/promote-runtime.ps1",
-                                             "tests/test_local_runtime_contract.py"
+                                             "src/trzip/result_quality.py",
+                                             "tests/test_result_quality.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "scripts/promote-runtime.ps1":  "81a2fb133f073b3c3a4ba0f856b8445000d649538abc98c53dfa53019d209362",
-                                                    "tests/test_local_runtime_contract.py":  "41e2389738fc3efeb2fa6dc80a4f0bbfbf17d8249f0bb941759c535170db1b3d"
+                                                    "src/trzip/result_quality.py":  "dc1bb3d17ea771d277d76fbd2bd77855c303227441eeb5295edab3ee7ff1f826",
+                                                    "tests/test_result_quality.py":  "f87dd651168ae09da0440e34067ae047af533508a4f4f04b038ac7083ade11bb"
                                                 },
-                       "commit_message":  "fix: keep promoted runtime independently auditable",
+                       "commit_message":  "fix: verify every X browser evidence row",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  276
+                                      "count":  277
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,9 +47,9 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Make every promoted TRZIP runtime independently testable before the 8-hour live validation.",
+                    "objective":  "Fail closed unless all 30 X rows prove the same current logged-in Chrome collection and valid exact-hour timing.",
                     "completed":  [
-                                      "Install and verify dev audit dependencies during runtime promotion."
+                                      "Validate all X evidence rows and cross-check actual versus reported schedule delay."
                                   ],
                     "next_actions":  [
                                          "Accumulate 8 consecutive exact-hour live receipts under hourly-source-proof-v2."
@@ -58,7 +58,7 @@
 
                                  ],
                     "known_limitations":  [
-                                              "Eight-hour live validation is still 0/8 until new exact-hour receipts are produced."
+                                              "Eight-hour live validation is still awaiting new exact-hour receipts."
                                           ]
                 },
     "runtime_contract":  {

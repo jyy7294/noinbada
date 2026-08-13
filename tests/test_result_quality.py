@@ -101,6 +101,39 @@ def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):
     assert result["sources"]["google_trends"]["maximum_rank"] == 4
 
 
+def test_source_gate_fails_closed_for_invalid_or_inconsistent_x_evidence(tmp_path: Path):
+    database = tmp_path / "runtime.sqlite3"
+    stamp = "2026-08-13T17:00:00+00:00"
+    x_rows = []
+    for rank in range(1, 31):
+        payload = {
+            "collector": "codex_chrome_current_session",
+            "transport": "codex_browser_snapshot",
+            "profile": "current_logged_in_chrome",
+            "region": "KR", "region_verified": True,
+            "observed_at": "2026-08-13T17:03:00+00:00",
+            "scheduled_for": stamp, "schedule_delay_seconds": 180,
+        }
+        if rank == 30:
+            payload["schedule_delay_seconds"] = "not-a-number"
+        x_rows.append(HourlyObservation(
+            stamp, "x", f"x-{rank}", rank, 100 - rank, "observed",
+            source_payload_json=json.dumps(payload),
+        ))
+    google_rows = [
+        HourlyObservation(stamp, "google_trends", f"g-{rank}", rank, 100-rank, "observed")
+        for rank in range(1, 4)
+    ]
+    upsert(x_rows + google_rows, database)
+
+    result = _source_gate(database, stamp)
+
+    assert result["passed"] is False
+    evidence = result["sources"]["x"]["collection_evidence"]
+    assert evidence["evidence_row_count"] == 30
+    assert evidence["evidence_consistent"] is False
+
+
 def test_source_gate_rejects_unapproved_collector_and_duplicate_rank(tmp_path: Path):
     database = tmp_path / "runtime.sqlite3"
     stamp = "2026-08-13T18:00:00+00:00"

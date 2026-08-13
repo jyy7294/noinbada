@@ -234,16 +234,19 @@ def _source_gate(path: Path, observed_at: str) -> dict:
     x = sources.get("x") or {}
     google = sources.get("google_trends") or {}
     with sqlite3.connect(path) as evidence_connection:
-        x_payload_row = evidence_connection.execute(
+        x_payload_rows = evidence_connection.execute(
             "SELECT source_payload_json FROM hourly_observations "
             "WHERE observed_at=? AND source='x' AND provenance='observed' "
-            f"AND {ELIGIBLE_COLLECTOR_SQL} ORDER BY source_rank LIMIT 1",
+            f"AND {ELIGIBLE_COLLECTOR_SQL} ORDER BY source_rank",
             (observed_at,),
-        ).fetchone()
-    try:
-        x_evidence = json.loads(x_payload_row[0]) if x_payload_row and x_payload_row[0] else {}
-    except (TypeError, ValueError, json.JSONDecodeError):
-        x_evidence = {}
+        ).fetchall()
+    evidence_payloads = []
+    for payload_row in x_payload_rows:
+        try:
+            evidence_payloads.append(json.loads(payload_row[0]) if payload_row[0] else {})
+        except (TypeError, ValueError, json.JSONDecodeError):
+            evidence_payloads.append({})
+    x_evidence = evidence_payloads[0] if evidence_payloads else {}
     x["collection_evidence"] = {
         key: x_evidence.get(key)
         for key in (
@@ -251,6 +254,23 @@ def _source_gate(path: Path, observed_at: str) -> dict:
             "observed_at", "scheduled_for", "schedule_delay_seconds",
         )
     }
+    try:
+        scheduled_at = datetime.fromisoformat(str(x_evidence.get("scheduled_for")))
+        actually_observed_at = datetime.fromisoformat(str(x_evidence.get("observed_at")))
+        reported_delay = float(x_evidence.get("schedule_delay_seconds"))
+        actual_delay = (actually_observed_at - scheduled_at).total_seconds()
+        timing_passed = (
+            scheduled_at.tzinfo is not None
+            and actually_observed_at.tzinfo is not None
+            and 0 <= actual_delay <= 900
+            and abs(reported_delay - actual_delay) <= 1
+        )
+    except (TypeError, ValueError, OverflowError):
+        timing_passed = False
+    evidence_consistent = (
+        len(evidence_payloads) == 30
+        and all(payload == x_evidence for payload in evidence_payloads)
+    )
     x_evidence_passed = (
         x_evidence.get("collector") == "codex_chrome_current_session"
         and x_evidence.get("transport") == "codex_browser_snapshot"
@@ -258,8 +278,12 @@ def _source_gate(path: Path, observed_at: str) -> dict:
         and x_evidence.get("region") == "KR"
         and x_evidence.get("region_verified") is True
         and x_evidence.get("scheduled_for") == observed_at
-        and 0 <= float(x_evidence.get("schedule_delay_seconds")) <= 900
-    ) if x_evidence.get("schedule_delay_seconds") is not None else False
+        and timing_passed
+        and evidence_consistent
+    )
+    x["collection_evidence"]["evidence_row_count"] = len(evidence_payloads)
+    x["collection_evidence"]["evidence_consistent"] = evidence_consistent
+    x["collection_evidence"]["timing_verified"] = timing_passed
     passed = (
         x.get("row_count") == 30
         and x.get("unique_topics") == 30
