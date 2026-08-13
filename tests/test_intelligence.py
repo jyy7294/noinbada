@@ -215,6 +215,8 @@ def test_three_evidence_backed_companies_are_publishable_gold(tmp_path):
     assert trend["companies"] == trend["company_candidates"]
     assert trend["company_resolution"]["publish_status"] == "published"
     assert trend["company_resolution"]["minimum_gold_companies"] == 3
+    assert trend["company_card_status"] == "enrichment_pending"
+    assert trend["company_card_reason"] == "fewer_than_six_evidence_backed_companies"
     assert result["ontology_enrichment_queue"] == []
 
 

@@ -1797,7 +1797,7 @@ def build_intelligence(
         }
         company_published = (
             (item.get("company_resolution") or {}).get("publish_status") == "published"
-            and len(unique_stocks) >= MINIMUM_PUBLISHED_COMPANIES
+            and len(unique_stocks) >= MINIMUM_FRONTEND_COMPANIES
         )
         if company_published:
             item["company_card_status"] = "ready"
