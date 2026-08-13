@@ -18,6 +18,7 @@ def test_remote_publication_receipt_is_required_and_persisted(tmp_path: Path):
         contract={"passed": True, "trends": [{"display_name": "당시 결과"}]},
         source_gate={"passed": True, "sources": {"x": {"row_count": 30}}},
         manifest_sha256="c" * 64,
+        remote_manifest_blob="d" * 40,
     )
 
     receipt = _publication_receipt(database, stamp)
@@ -27,6 +28,7 @@ def test_remote_publication_receipt_is_required_and_persisted(tmp_path: Path):
     assert receipt["contract"]["trends"][0]["display_name"] == "당시 결과"
     assert receipt["source_gate"]["sources"]["x"]["row_count"] == 30
     assert receipt["manifest_sha256"] == "c" * 64
+    assert receipt["remote_manifest_blob"] == "d" * 40
 
 
 def test_legacy_receipt_without_contract_cannot_pass(tmp_path: Path):
@@ -57,6 +59,7 @@ def test_receipt_is_immutable_for_the_same_hour(tmp_path: Path):
         "contract": {"passed": True},
         "source_gate": {"passed": True},
         "manifest_sha256": "c" * 64,
+        "remote_manifest_blob": "d" * 40,
     }
     record_publication_receipt(database, **kwargs)
     record_publication_receipt(database, **kwargs)
