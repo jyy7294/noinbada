@@ -95,6 +95,7 @@ def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):
     upsert(rows, database)
 
     result = _source_gate(database, stamp)
+    assert result["policy_version"] == "hourly-source-proof-v2"
     assert result["passed"] is False
     assert result["sources"]["google_trends"]["row_count"] == 3
     assert result["sources"]["google_trends"]["maximum_rank"] == 4

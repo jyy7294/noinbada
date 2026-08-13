@@ -274,7 +274,11 @@ def _source_gate(path: Path, observed_at: str) -> dict:
         and google.get("minimum_rank") == 1
         and google.get("maximum_rank") == google.get("row_count")
     )
-    return {"passed": passed, "sources": sources}
+    return {
+        "policy_version": "hourly-source-proof-v2",
+        "passed": passed,
+        "sources": sources,
+    }
 
 
 def evaluate_actual_hour(path: Path, at: datetime) -> dict:
@@ -285,6 +289,12 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
     stamp = normalized.isoformat()
     publication = _publication_receipt(path, stamp)
     source_gate = publication.get("source_gate") or _source_gate(path, stamp)
+    if source_gate.get("policy_version") != "hourly-source-proof-v2":
+        source_gate = {
+            **source_gate,
+            "passed": False,
+            "failure": "legacy_source_gate_policy",
+        }
     contract = publication.get("contract")
     if contract is None:
         intelligence = build_intelligence(normalized, hours=24, path=path)
