@@ -1,0 +1,711 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-6e90d2fe6dce497185e5a87a3ada7929",
+  "generated_at": "2026-08-13T16:17:03.052726+00:00",
+  "observed_at": "2026-08-13T16:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "데이즈드",
+    "topic": "데이즈드",
+    "display_name": "데이즈드",
+    "observed_representative_term": "데이즈드",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "데이즈드",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 9,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.118716,
+      "best_source_rank": 9
+    },
+    "raw_terms": [
+      "데이즈드"
+    ],
+    "phenomenon_summary": "\"데이즈드\" · X 한국 실시간에서 관측",
+    "context_status": "resolved_reference",
+    "ground_truth_match": true,
+    "category": "unclassified",
+    "category_basis": "unclassified",
+    "broad_category": "other",
+    "category_label": "기타·검토",
+    "trend_definition": "'데이즈드' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 기타·검토 트렌드입니다.",
+    "lane": "review",
+    "selection_reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "review",
+      "main_eligible": false,
+      "hard_issue": false,
+      "ambiguous": true,
+      "generic_category_word": false,
+      "labels": [],
+      "reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "review",
+      "label": "맥락 검토",
+      "affects_score": false
+    },
+    "selection_layer": "review_queue",
+    "company_eligible": true,
+    "score": 20.44,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "x"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.244498,
+    "current_source_position": 0.244498,
+    "momentum": 0.0,
+    "persistence": 0.1875,
+    "momentum_delta": -0.415996,
+    "score_components": {
+      "period_strength_points": 8.56,
+      "momentum_points": 0.0,
+      "persistence_points": 1.88,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 20.44
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "x": "current_period_half_change"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "x": 0.488996
+      },
+      "momentum_deltas": {
+        "x": -0.415996
+      },
+      "momentum_basis": {
+        "x": "current_period_half_change"
+      },
+      "momentum_event_observations": {
+        "x": {
+          "current": 4,
+          "comparison": 5
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 9,
+          "observed_hours": 9,
+          "presence_rate": 0.375,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.375,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T21:00:00+00:00",
+      "last_seen_at": "2026-08-13T16:00:00+00:00",
+      "observed_hours": 9,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "x": 22
+    },
+    "rank_change_by_source": {
+      "x": 8
+    },
+    "source_rank_change": {
+      "x": 8
+    },
+    "first_seen_at": "2026-08-12T21:00:00+00:00",
+    "last_seen_at": "2026-08-13T16:00:00+00:00",
+    "age_hours": 19,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 17,
+      "history_maturity": 0.4583,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "데이즈드",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 170,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "t15cjdCMFiM",
+              "title": "옥진욱 (OK JIN WOOK) - '데이즈드' 화보 촬영 비하인드",
+              "url": "https://www.youtube.com/watch?v=t15cjdCMFiM",
+              "published_at": "2026-07-30T09:00:09Z",
+              "publisher": "YY Entertainment",
+              "metrics": {
+                "commentCount": 19,
+                "likeCount": 142,
+                "viewCount": 1433
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "8EdmZRUKdng",
+              "title": "WON THIS | 부산 KCC 이지스 우승하자마자 데이즈드 화보 찍은 허웅과 허훈 (with. 스포츠 기자 원석연)",
+              "url": "https://www.youtube.com/watch?v=8EdmZRUKdng",
+              "published_at": "2026-08-07T07:00:33Z",
+              "publisher": "DAZED KOREA",
+              "metrics": {
+                "commentCount": 85,
+                "likeCount": 498,
+                "viewCount": 9365
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "_nGqvXH7dwU",
+              "title": "WON THIS | \"냉동 참치처럼 쓰러졌어요\" 정기전 뛰면 몸에 무슨 일이 일어나냐면 (with. 스포츠기자 원석연)",
+              "url": "https://www.youtube.com/watch?v=_nGqvXH7dwU",
+              "published_at": "2026-08-04T07:00:29Z",
+              "publisher": "DAZED KOREA",
+              "metrics": {
+                "commentCount": 2,
+                "likeCount": 17,
+                "viewCount": 379
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "b7mPIXpDvro",
+              "title": "데이즈드 화보 촬영장에서 우승 직후 만난 웅이와 훈이.",
+              "url": "https://www.youtube.com/watch?v=b7mPIXpDvro",
+              "published_at": "2026-08-07T07:00:35Z",
+              "publisher": "DAZED KOREA",
+              "metrics": {
+                "commentCount": 4,
+                "likeCount": 51,
+                "viewCount": 1369
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "S72VxRQbwb8",
+              "title": "J-hope for Dazed Korea 🔥...",
+              "url": "https://www.youtube.com/watch?v=S72VxRQbwb8",
+              "published_at": "2026-08-06T12:13:09Z",
+              "publisher": "𝗕𝗮𝗻𝗴𝘁𝗮𝗻𝘄𝗼𝗿𝗹𝗱",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 416,
+                "viewCount": 6494
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "데이즈드",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 170,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "t15cjdCMFiM",
+              "title": "옥진욱 (OK JIN WOOK) - '데이즈드' 화보 촬영 비하인드",
+              "url": "https://www.youtube.com/watch?v=t15cjdCMFiM",
+              "published_at": "2026-07-30T09:00:09Z",
+              "publisher": "YY Entertainment",
+              "metrics": {
+                "commentCount": 19,
+                "likeCount": 142,
+                "viewCount": 1433
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "8EdmZRUKdng",
+              "title": "WON THIS | 부산 KCC 이지스 우승하자마자 데이즈드 화보 찍은 허웅과 허훈 (with. 스포츠 기자 원석연)",
+              "url": "https://www.youtube.com/watch?v=8EdmZRUKdng",
+              "published_at": "2026-08-07T07:00:33Z",
+              "publisher": "DAZED KOREA",
+              "metrics": {
+                "commentCount": 85,
+                "likeCount": 498,
+                "viewCount": 9365
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "_nGqvXH7dwU",
+              "title": "WON THIS | \"냉동 참치처럼 쓰러졌어요\" 정기전 뛰면 몸에 무슨 일이 일어나냐면 (with. 스포츠기자 원석연)",
+              "url": "https://www.youtube.com/watch?v=_nGqvXH7dwU",
+              "published_at": "2026-08-04T07:00:29Z",
+              "publisher": "DAZED KOREA",
+              "metrics": {
+                "commentCount": 2,
+                "likeCount": 17,
+                "viewCount": 379
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "b7mPIXpDvro",
+              "title": "데이즈드 화보 촬영장에서 우승 직후 만난 웅이와 훈이.",
+              "url": "https://www.youtube.com/watch?v=b7mPIXpDvro",
+              "published_at": "2026-08-07T07:00:35Z",
+              "publisher": "DAZED KOREA",
+              "metrics": {
+                "commentCount": 4,
+                "likeCount": 51,
+                "viewCount": 1369
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "S72VxRQbwb8",
+              "title": "J-hope for Dazed Korea 🔥...",
+              "url": "https://www.youtube.com/watch?v=S72VxRQbwb8",
+              "published_at": "2026-08-06T12:13:09Z",
+              "publisher": "𝗕𝗮𝗻𝗴𝘁𝗮𝗻𝘄𝗼𝗿𝗹𝗱",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 416,
+                "viewCount": 6494
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "데이즈드",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "x",
+        "rank": 9,
+        "value": 92.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "x",
+        "rank": 9,
+        "value": 92.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "x",
+        "rank": 10,
+        "value": 91.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "x",
+        "rank": 10,
+        "value": 91.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "x",
+        "rank": 16,
+        "value": 85.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "x",
+        "rank": 20,
+        "value": 81.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "x",
+        "rank": 22,
+        "value": 79.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "x",
+        "rank": 30,
+        "value": 71.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "x",
+        "rank": 22,
+        "value": 79.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [
+      {
+        "text": "데이즈드 코리아",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "데이즈드 화보",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "데이즈드 커버",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "데이즈드 패션",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "데이즈드 뷰티",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "데이즈드",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 후보층 공개를 보류"
+    },
+    "rank": 301,
+    "observed_rank": 301,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "맥락 확인",
+    "persistence_rank": 237,
+    "momentum_rank": 354,
+    "main_rank": null,
+    "home_context_status": "review_required",
+    "home_context_reason": "not_main_lane",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "evidence_backed_listed_companies_at_least_six"
+    ],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 0,
+    "publication_rank": null,
+    "ranking_availability_status": "provisional_history"
+  }
+}
