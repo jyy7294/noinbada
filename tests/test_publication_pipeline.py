@@ -494,12 +494,63 @@ def test_collection_health_preserves_first_scheduler_timing_on_manual_retry(tmp_
     first = _collection_health(
         tmp_path, at, collection, at + timedelta(seconds=2), at + timedelta(seconds=10)
     )
+    recovered_collection = {
+        "observed": 130,
+        "errors": {},
+        "audit": {
+            "x_korea_realtime": {"status": "observed", "row_count": 30},
+            "google_geo_kr": {"status": "observed", "row_count": 100},
+        },
+    }
     second = _collection_health(
-        tmp_path, at, collection, at + timedelta(minutes=20), at + timedelta(minutes=21)
+        tmp_path,
+        at,
+        recovered_collection,
+        at + timedelta(minutes=20),
+        at + timedelta(minutes=21),
     )
 
     assert first["latest_delay_seconds"] == second["latest_delay_seconds"] == 2
     assert second["recorded_runs"] == 1
+    assert second["successful_runs"] == 0
+    assert second["success_rate"] == 0.0
+    assert first["current_publication_status"] == "scheduled_partial"
+    assert first["current_publication_success"] is False
+    assert second["current_publication_attempt_type"] == "recovery"
+    assert second["current_publication_status"] == "recovered_complete"
+    assert second["current_publication_success"] is True
+    assert second["current_schedule_initial_attempt_success"] is False
+    assert second["latest_scheduled_attempt_success"] is False
+    assert second["recovered_from_scheduled_failure"] is True
+    assert second["current_publication_source_success"] == {
+        "x": True,
+        "google_trends": True,
+    }
+
+
+def test_collection_health_complete_republication_does_not_claim_recovery(tmp_path):
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    collection = {
+        "observed": 130,
+        "errors": {},
+        "audit": {
+            "x_korea_realtime": {"status": "observed", "row_count": 30},
+            "google_geo_kr": {"status": "observed", "row_count": 100},
+        },
+    }
+
+    first = _collection_health(tmp_path, at, collection, at, at)
+    second = _collection_health(
+        tmp_path, at, collection, at + timedelta(minutes=5), at + timedelta(minutes=6)
+    )
+
+    assert first["current_publication_status"] == "scheduled_complete"
+    assert second["current_publication_status"] == "republished_complete"
+    assert second["current_schedule_initial_attempt_success"] is True
+    assert second["latest_scheduled_attempt_success"] is True
+    assert second["recovered_from_scheduled_failure"] is False
+    assert second["recorded_runs"] == 1
+    assert second["successful_runs"] == 1
 
 
 def test_collection_health_drops_unversioned_legacy_success_rows(tmp_path):

@@ -184,6 +184,24 @@ def _write_runtime(root: Path) -> None:
             "rows": 12480,
             "observed_rows": 12480,
         },
+        "collection_health": {
+            "current_publication_scheduled_at": observed_at,
+            "current_publication_attempt_type": "scheduled",
+            "current_publication_status": "scheduled_complete",
+            "current_publication_success": True,
+            "current_publication_source_success": {
+                "x": True,
+                "google_trends": True,
+            },
+            "current_schedule_initial_attempt_success": True,
+            "latest_scheduled_at": observed_at,
+            "latest_scheduled_attempt_success": True,
+            "latest_scheduled_attempt_source_success": {
+                "x": True,
+                "google_trends": True,
+            },
+            "recovered_from_scheduled_failure": False,
+        },
     }
     status = {
         "schema_version": "trzip-runtime-status-v1",
@@ -285,6 +303,20 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
         "status": "current_session_not_ready",
         "row_count": 0,
     }
+    metadata["collection_health"].update({
+        "current_publication_status": "scheduled_partial",
+        "current_publication_success": False,
+        "current_publication_source_success": {
+            "x": False,
+            "google_trends": True,
+        },
+        "current_schedule_initial_attempt_success": False,
+        "latest_scheduled_attempt_success": False,
+        "latest_scheduled_attempt_source_success": {
+            "x": False,
+            "google_trends": True,
+        },
+    })
     metadata["coverage"]["rows"] = 9600
     metadata["coverage"]["observed_rows"] = 9600
     metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
@@ -307,6 +339,26 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
     assert result["status"] == "provisional"
     assert "combined_x_google_not_ready" in result["blockers"]
     assert "x_v3_history_missing" in result["blockers"]
+
+
+def test_runtime_audit_rejects_ambiguous_recovery_health_state(tmp_path: Path) -> None:
+    _write_runtime(tmp_path)
+    metadata_path = tmp_path / "publication" / "latest" / "metadata.json"
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata["collection_health"].update({
+        "current_publication_attempt_type": "recovery",
+        "current_publication_status": "recovered_complete",
+        "current_schedule_initial_attempt_success": False,
+        "latest_scheduled_attempt_success": False,
+        "recovered_from_scheduled_failure": False,
+    })
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+    _refresh_frontend_delivery(tmp_path)
+
+    result = audit_runtime(tmp_path)
+
+    assert result["status"] == "fail"
+    assert "collection_health_publication_state_invalid" in result["failures"]
 
 
 def test_runtime_audit_rejects_score_and_company_evidence_breakage(tmp_path: Path) -> None:

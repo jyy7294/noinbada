@@ -16,7 +16,33 @@
     "storage": {"const": "local-sqlite-published-to-live-data"},
     "collection": {"type": "object"},
     "coverage": {"type": "object"},
-    "collection_health": {"type": "object"},
+    "collection_health": {
+      "type": "object",
+      "required": [
+        "current_publication_scheduled_at", "current_publication_attempt_type",
+        "current_publication_status", "current_publication_success",
+        "current_publication_source_success", "current_schedule_initial_attempt_success",
+        "latest_scheduled_at", "latest_scheduled_attempt_success",
+        "latest_scheduled_attempt_source_success", "recovered_from_scheduled_failure"
+      ],
+      "properties": {
+        "current_publication_scheduled_at": {"type": "string", "format": "date-time"},
+        "current_publication_attempt_type": {"enum": ["scheduled", "recovery"]},
+        "current_publication_status": {
+          "enum": [
+            "scheduled_complete", "scheduled_partial", "recovered_complete",
+            "republished_complete", "recovery_partial"
+          ]
+        },
+        "current_publication_success": {"type": "boolean"},
+        "current_publication_source_success": {"$ref": "#/$defs/sourceSuccess"},
+        "current_schedule_initial_attempt_success": {"type": "boolean"},
+        "latest_scheduled_at": {"type": "string", "format": "date-time"},
+        "latest_scheduled_attempt_success": {"type": "boolean"},
+        "latest_scheduled_attempt_source_success": {"$ref": "#/$defs/sourceSuccess"},
+        "recovered_from_scheduled_failure": {"type": "boolean"}
+      }
+    },
     "company_identity_data": {
       "type": "object",
       "required": ["provider", "requested", "fetched", "reused", "ranking_effect", "relationship_evidence"],
@@ -28,6 +54,17 @@
         "ranking_effect": {"const": "none"},
         "relationship_evidence": {"const": false}
       }
+    }
+  },
+  "$defs": {
+    "sourceSuccess": {
+      "type": "object",
+      "required": ["x", "google_trends"],
+      "properties": {
+        "x": {"type": "boolean"},
+        "google_trends": {"type": "boolean"}
+      },
+      "additionalProperties": false
     }
   }
 }

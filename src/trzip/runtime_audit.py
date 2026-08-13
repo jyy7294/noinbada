@@ -211,6 +211,69 @@ def _audit_bundle(
     if status_partial != intelligence_partial:
         report.fail("bundle_partial_status_mismatch")
 
+    health = metadata.get("collection_health")
+    health_invalid = not isinstance(health, dict)
+    if isinstance(health, dict):
+        current_source_success = health.get("current_publication_source_success")
+        latest_source_success = health.get("latest_scheduled_attempt_source_success")
+        attempt_type = health.get("current_publication_attempt_type")
+        current_success = health.get("current_publication_success")
+        initial_success = health.get("current_schedule_initial_attempt_success")
+        latest_success = health.get("latest_scheduled_attempt_success")
+        recovered = health.get("recovered_from_scheduled_failure")
+        current_status = health.get("current_publication_status")
+        expected_source_success = {
+            source: status_sources.get(source) == "observed"
+            for source in ("x", "google_trends")
+        }
+        bool_fields = (current_success, initial_success, latest_success, recovered)
+        if (
+            any(not isinstance(value, bool) for value in bool_fields)
+            or current_source_success != expected_source_success
+            or not isinstance(latest_source_success, dict)
+            or set(latest_source_success) != {"x", "google_trends"}
+            or any(not isinstance(value, bool) for value in latest_source_success.values())
+            or health.get("current_publication_scheduled_at") != metadata.get("observed_at")
+            or not health.get("latest_scheduled_at")
+            or current_success is not (status_partial is False)
+        ):
+            health_invalid = True
+        elif attempt_type == "scheduled":
+            expected_status = "scheduled_complete" if current_success else "scheduled_partial"
+            if (
+                current_status != expected_status
+                or initial_success is not current_success
+                or recovered is not False
+            ):
+                health_invalid = True
+        elif attempt_type == "recovery":
+            expected_status = (
+                "recovered_complete"
+                if current_success and not initial_success
+                else "republished_complete"
+                if current_success
+                else "recovery_partial"
+            )
+            if (
+                current_status != expected_status
+                or recovered is not (current_success and not initial_success)
+            ):
+                health_invalid = True
+        else:
+            health_invalid = True
+        if health.get("latest_scheduled_at") == health.get("current_publication_scheduled_at"):
+            if latest_success is not initial_success:
+                health_invalid = True
+        report.metrics["collection_health_publication"] = {
+            "attempt_type": attempt_type,
+            "publication_status": current_status,
+            "current_publication_success": current_success,
+            "latest_scheduled_attempt_success": latest_success,
+            "recovered_from_scheduled_failure": recovered,
+        }
+    if health_invalid:
+        report.fail("collection_health_publication_state_invalid")
+
     public_text = json.dumps(documents, ensure_ascii=False)
     if any(pattern.search(public_text) for pattern in SECRET_PATTERNS):
         report.fail("public_bundle_contains_secret_or_local_path")

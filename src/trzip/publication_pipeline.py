@@ -1181,8 +1181,15 @@ def _collection_health(root: Path, at: datetime, collection: dict,
     # The first finished attempt is the scheduler measurement for that hour.
     # Later manual/recovery publications may enrich missing source data, but
     # must not rewrite the original start delay or inflate run counts.
-    if not any(row.get("scheduled_at") == at.isoformat() for row in history):
+    scheduled_at = at.isoformat()
+    initial_attempt = next(
+        (row for row in history if row.get("scheduled_at") == scheduled_at),
+        None,
+    )
+    is_recovery_publication = initial_attempt is not None
+    if initial_attempt is None:
         history.append(current)
+        initial_attempt = current
     history = sorted(history, key=lambda row: row["scheduled_at"])[-168:]
     _write_json(history_path, history)
     total = len(history)
@@ -1204,6 +1211,21 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         }
         for source in ("x", "google_trends")
     }
+    latest_scheduled_attempt = history[-1]
+    initial_attempt_success = bool(initial_attempt.get("success"))
+    recovered_from_scheduled_failure = bool(
+        is_recovery_publication and success and not initial_attempt_success
+    )
+    if not is_recovery_publication:
+        current_publication_status = "scheduled_complete" if success else "scheduled_partial"
+    elif success:
+        current_publication_status = (
+            "recovered_complete"
+            if recovered_from_scheduled_failure
+            else "republished_complete"
+        )
+    else:
+        current_publication_status = "recovery_partial"
     health = {
         "measurement_window_hours": 168,
         "recorded_runs": total,
@@ -1220,6 +1242,23 @@ def _collection_health(root: Path, at: datetime, collection: dict,
         if total else None,
         "latest_delay_seconds": history[-1]["delay_seconds"],
         "latest_duration_seconds": history[-1]["duration_seconds"],
+        "current_publication_scheduled_at": scheduled_at,
+        "current_publication_attempt_type": (
+            "recovery" if is_recovery_publication else "scheduled"
+        ),
+        "current_publication_status": current_publication_status,
+        "current_publication_success": bool(success),
+        "current_publication_source_success": {
+            source: bool(source_ok[source]) for source in ("x", "google_trends")
+        },
+        "current_schedule_initial_attempt_success": initial_attempt_success,
+        "latest_scheduled_at": latest_scheduled_attempt["scheduled_at"],
+        "latest_scheduled_attempt_success": bool(latest_scheduled_attempt.get("success")),
+        "latest_scheduled_attempt_source_success": {
+            source: bool(latest_scheduled_attempt.get("source_success", {}).get(source))
+            for source in ("x", "google_trends")
+        },
+        "recovered_from_scheduled_failure": recovered_from_scheduled_failure,
         "status": "measured_7d" if total >= 168 else "measuring_3_to_7_days" if total >= 72 else "collecting_baseline",
         "remaining_runs_for_3d": max(0, 72 - total),
         "remaining_runs_for_7d": max(0, 168 - total),
