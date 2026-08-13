@@ -1,0 +1,374 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-bc4d7eeb538e47e5ad380b1f333d5385",
+  "generated_at": "2026-08-13T16:28:35.379432+00:00",
+  "observed_at": "2026-08-13T16:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "용인반도체클러스터",
+    "topic": "용인반도체클러스터",
+    "display_name": "용인반도체클러스터",
+    "observed_representative_term": "용인반도체클러스터",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "용인반도체클러스터",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 5,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.026127,
+      "best_source_rank": 121
+    },
+    "raw_terms": [
+      "용인반도체클러스터"
+    ],
+    "phenomenon_summary": "\"용인반도체클러스터\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "technology_tool",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "technology",
+    "category_label": "기술·도구",
+    "trend_definition": "'용인반도체클러스터' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 기술·도구 트렌드입니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 30.66,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.230799,
+    "current_source_position": 0.230799,
+    "momentum": 0.4616,
+    "persistence": 0.1042,
+    "momentum_delta": 0.461597,
+    "score_components": {
+      "period_strength_points": 8.08,
+      "momentum_points": 11.54,
+      "persistence_points": 1.04,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 30.66
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.461597
+      },
+      "momentum_deltas": {
+        "google_trends": 0.461597
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 5,
+          "comparison": 0
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 9,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 5,
+          "presence_rate": 0.208333,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.375,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-13T09:00:00+00:00",
+      "last_seen_at": "2026-08-13T16:00:00+00:00",
+      "observed_hours": 5,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 141
+    },
+    "rank_change_by_source": {
+      "google_trends": -5
+    },
+    "source_rank_change": {
+      "google_trends": -5
+    },
+    "first_seen_at": "2026-08-13T09:00:00+00:00",
+    "last_seen_at": "2026-08-13T16:00:00+00:00",
+    "age_hours": 7,
+    "lifecycle": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 17,
+      "history_maturity": 0.4583,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 121,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 245, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 5, \"row_on_page\": 21, \"started_text\": \"5시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "google_trends",
+        "rank": 121,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 237, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 5, \"row_on_page\": 21, \"started_text\": \"6시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "google_trends",
+        "rank": 140,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 242, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 15, \"started_text\": \"8시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 136,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 238, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 11, \"started_text\": \"10시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 141,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 229, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 16, \"started_text\": \"12시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [
+      {
+        "text": "용인 반도체 국가산단",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "SK하이닉스 용인 팹",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "삼성전자 용인 클러스터",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "반도체 메가 클러스터",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "반도체 전력 인프라",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "용인반도체클러스터",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 후보층 공개를 보류"
+    },
+    "rank": 156,
+    "observed_rank": 156,
+    "home_rank": 8,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 415,
+    "momentum_rank": 150,
+    "main_rank": 18,
+    "home_context_status": "resolved",
+    "home_context_reason": "specific_observed_expression",
+    "home_eligible": true,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "evidence_backed_listed_companies_at_least_six"
+    ],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 0,
+    "publication_rank": null,
+    "ranking_availability_status": "provisional_history"
+  }
+}

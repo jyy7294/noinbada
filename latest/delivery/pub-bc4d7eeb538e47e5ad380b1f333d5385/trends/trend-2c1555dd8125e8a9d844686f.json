@@ -1,0 +1,651 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-bc4d7eeb538e47e5ad380b1f333d5385",
+  "generated_at": "2026-08-13T16:28:35.379432+00:00",
+  "observed_at": "2026-08-13T16:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "연금 개혁",
+    "topic": "연금 개혁",
+    "display_name": "연금 개혁",
+    "observed_representative_term": "연금 개혁",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "연금 개혁",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 9,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.111973,
+      "best_source_rank": 14
+    },
+    "raw_terms": [
+      "연금 개혁"
+    ],
+    "phenomenon_summary": "\"연금 개혁\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "unclassified",
+    "category_basis": "unclassified",
+    "broad_category": "other",
+    "category_label": "기타·검토",
+    "trend_definition": "'연금 개혁' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 기타·검토 트렌드입니다.",
+    "lane": "review",
+    "selection_reason": "원문은 보존하되 대표 사건·현상의 문맥을 아직 확인하지 못함",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "review",
+      "main_eligible": false,
+      "hard_issue": false,
+      "ambiguous": true,
+      "generic_category_word": false,
+      "labels": [],
+      "reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "review",
+      "label": "맥락 검토",
+      "affects_score": false
+    },
+    "selection_layer": "review_queue",
+    "company_eligible": true,
+    "score": 51.37,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.464653,
+    "current_source_position": 0.464653,
+    "momentum": 0.9293,
+    "persistence": 0.1875,
+    "momentum_delta": 0.929305,
+    "score_components": {
+      "period_strength_points": 16.26,
+      "momentum_points": 23.23,
+      "persistence_points": 1.88,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 51.37
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.929305
+      },
+      "momentum_deltas": {
+        "google_trends": 0.929305
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 9,
+          "comparison": 0
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 9,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 9,
+          "presence_rate": 0.375,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.375,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T23:00:00+00:00",
+      "last_seen_at": "2026-08-13T16:00:00+00:00",
+      "observed_hours": 9,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 16
+    },
+    "rank_change_by_source": {
+      "google_trends": -2
+    },
+    "source_rank_change": {
+      "google_trends": -2
+    },
+    "first_seen_at": "2026-08-12T23:00:00+00:00",
+    "last_seen_at": "2026-08-13T16:00:00+00:00",
+    "age_hours": 17,
+    "lifecycle": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 17,
+      "history_maturity": 0.4583,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "연금 개혁",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 34508,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "aaRuJZfXIPU",
+              "title": "🚨[연금 개혁 팩트체크] 내 연금도 깎인다고요 7.9조 원대 돌파한 고령층 연금의 진짜 진실! #시니어정보 #국민연금 #기초연금",
+              "url": "https://www.youtube.com/watch?v=aaRuJZfXIPU",
+              "published_at": "2026-08-09T10:15:13Z",
+              "publisher": "시니어 정보대장",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 11,
+                "viewCount": 27491
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "mmHfkofBalU",
+              "title": "국민연금 18년 만에 확 바뀌었습니다! 2026 국민연금 역대급 인상! 1962~1968년생 지금 안 하면 평생 천만원 날립니다! | 국민연금 | 노후지혜",
+              "url": "https://www.youtube.com/watch?v=mmHfkofBalU",
+              "published_at": "2026-08-07T06:07:35Z",
+              "publisher": "약보다 지혜",
+              "metrics": {
+                "commentCount": 53,
+                "likeCount": 471,
+                "viewCount": 11773
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "qZwsI7Nq9iI",
+              "title": "공무원연금, 군인연금, 사학연금 받아도 기초연금 받는다, 2027년 대개혁",
+              "url": "https://www.youtube.com/watch?v=qZwsI7Nq9iI",
+              "published_at": "2026-08-06T07:06:33Z",
+              "publisher": "연금봉급TV",
+              "metrics": {
+                "commentCount": 7,
+                "likeCount": 263,
+                "viewCount": 5193
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "fRn4Qhxw8JY",
+              "title": "내 노후 4년이 40일 만에 날아갔다, 국민연금이 못 판 이유",
+              "url": "https://www.youtube.com/watch?v=fRn4Qhxw8JY",
+              "published_at": "2026-08-08T09:00:59Z",
+              "publisher": "메르노트 - 돈으로 읽는 세상",
+              "metrics": {
+                "commentCount": 17,
+                "likeCount": 71,
+                "viewCount": 1394
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "HiDNQ5xCOrU",
+              "title": "국민연금 9 5%로 올랐습니다｜50대라면 보험료보다 이 3가지를 확인하세요 #노후준비 #자산관리",
+              "url": "https://www.youtube.com/watch?v=HiDNQ5xCOrU",
+              "published_at": "2026-08-06T03:54:36Z",
+              "publisher": "돈의 설계",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 0,
+                "viewCount": 18
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "연금 개혁",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 34508,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "aaRuJZfXIPU",
+              "title": "🚨[연금 개혁 팩트체크] 내 연금도 깎인다고요 7.9조 원대 돌파한 고령층 연금의 진짜 진실! #시니어정보 #국민연금 #기초연금",
+              "url": "https://www.youtube.com/watch?v=aaRuJZfXIPU",
+              "published_at": "2026-08-09T10:15:13Z",
+              "publisher": "시니어 정보대장",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 11,
+                "viewCount": 27491
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "mmHfkofBalU",
+              "title": "국민연금 18년 만에 확 바뀌었습니다! 2026 국민연금 역대급 인상! 1962~1968년생 지금 안 하면 평생 천만원 날립니다! | 국민연금 | 노후지혜",
+              "url": "https://www.youtube.com/watch?v=mmHfkofBalU",
+              "published_at": "2026-08-07T06:07:35Z",
+              "publisher": "약보다 지혜",
+              "metrics": {
+                "commentCount": 53,
+                "likeCount": 471,
+                "viewCount": 11773
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "qZwsI7Nq9iI",
+              "title": "공무원연금, 군인연금, 사학연금 받아도 기초연금 받는다, 2027년 대개혁",
+              "url": "https://www.youtube.com/watch?v=qZwsI7Nq9iI",
+              "published_at": "2026-08-06T07:06:33Z",
+              "publisher": "연금봉급TV",
+              "metrics": {
+                "commentCount": 7,
+                "likeCount": 263,
+                "viewCount": 5193
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "fRn4Qhxw8JY",
+              "title": "내 노후 4년이 40일 만에 날아갔다, 국민연금이 못 판 이유",
+              "url": "https://www.youtube.com/watch?v=fRn4Qhxw8JY",
+              "published_at": "2026-08-08T09:00:59Z",
+              "publisher": "메르노트 - 돈으로 읽는 세상",
+              "metrics": {
+                "commentCount": 17,
+                "likeCount": 71,
+                "viewCount": 1394
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "HiDNQ5xCOrU",
+              "title": "국민연금 9 5%로 올랐습니다｜50대라면 보험료보다 이 3가지를 확인하세요 #노후준비 #자산관리",
+              "url": "https://www.youtube.com/watch?v=HiDNQ5xCOrU",
+              "published_at": "2026-08-06T03:54:36Z",
+              "publisher": "돈의 설계",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 0,
+                "viewCount": 18
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "연금 개혁",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 42,
+        "value": 59.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 17, \"started_text\": \"2시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 32,
+        "value": 69.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 7, \"started_text\": \"3시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 26,
+        "value": 75.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 1, \"started_text\": \"4시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 18,
+        "value": 83.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 18, \"started_text\": \"6시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 15,
+        "value": 86.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 245, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 15, \"started_text\": \"12시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "google_trends",
+        "rank": 15,
+        "value": 86.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 237, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 15, \"started_text\": \"13시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "google_trends",
+        "rank": 14,
+        "value": 87.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 242, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 14, \"started_text\": \"15시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 14,
+        "value": 87.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 238, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 14, \"started_text\": \"16시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 16,
+        "value": 85.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 229, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 16, \"started_text\": \"19시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "연금 개혁",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 후보층 공개를 보류"
+    },
+    "rank": 14,
+    "observed_rank": 14,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "맥락 확인",
+    "persistence_rank": 267,
+    "momentum_rank": 14,
+    "main_rank": null,
+    "home_context_status": "review_required",
+    "home_context_reason": "not_main_lane",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_six"
+    ],
+    "frontend_keyword_count": 0,
+    "frontend_company_count": 0,
+    "publication_rank": null,
+    "ranking_availability_status": "provisional_history"
+  }
+}
