@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T17:44:23.3747636+00:00",
+    "updated_at":  "2026-08-13T17:48:08.2489913+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,20 +8,20 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "8a4030904d0f0562f81dc232d345001e408006aa",
+                       "base_remote_main_sha":  "0b24319f2e9aeede52ceb34f26768574203a28cc",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "scripts/collect-hourly.ps1",
-                                             "src/trzip/result_quality.py",
-                                             "tests/test_local_runtime_contract.py"
+                                             "docs/BACKEND_TEAM_HANDOFF.md",
+                                             "docs/BACKEND_TEAM_PROMPT.md",
+                                             "README.md"
                                          ],
                        "changed_file_digests":  {
-                                                    "scripts/collect-hourly.ps1":  "328c655f19a316de0dbb20376526f4d7b49914dda361725d89d340108db22757",
-                                                    "src/trzip/result_quality.py":  "20b68d0941cd3922efaa0d96a113b3e2b30accc46d253dcc6368552896bad4bf",
-                                                    "tests/test_local_runtime_contract.py":  "b091c56070d88b247f637dc921121244a6cacf15a07f38a28fbd98f3c0e8f5c2"
+                                                    "docs/BACKEND_TEAM_HANDOFF.md":  "d00f72aaeb38016662bb387a8f095ea447a29ec1f11d54272a321e541485665e",
+                                                    "docs/BACKEND_TEAM_PROMPT.md":  "cab250210942b8e8fbfb6312b40c25a28b6aabbbe0586b8faaea1e38bdc944f1",
+                                                    "README.md":  "cd95f5e5c3412ff30d98a348c48362ad0539106adf3f056ec456d9461ed620ef"
                                                 },
-                       "commit_message":  "fix: block incomplete publication before remote push",
+                       "commit_message":  "docs: align backend handoff with final contract",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -49,9 +49,9 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Never let a source-v2 or frontend-v2 contract failure replace the remote latest publication.",
+                    "objective":  "Prevent other computers and team members from implementing obsolete three-company or neutral-momentum rules.",
                     "completed":  [
-                                      "Add a pre-publish source and frontend quality gate while retaining post-push immutable remote proof."
+                                      "Align README and backend handoff documents with six companies, five sourced keywords, source-v2, frontend-v2, and eight-hour proof."
                                   ],
                     "next_actions":  [
                                          "Accumulate 8 consecutive exact-hour live receipts under the fixed policies."
