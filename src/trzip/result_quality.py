@@ -126,6 +126,30 @@ def record_publication_receipt(
         connection.close()
 
 
+def assert_publication_receipt_available(
+    path: Path, *, observed_at: str, publication_id: str,
+) -> None:
+    """Reject a different publication for an hour before any remote mutation."""
+
+    connection = sqlite3.connect(path)
+    try:
+        table = connection.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='publication_receipts'"
+        ).fetchone()
+        if not table:
+            return
+        existing = connection.execute(
+            "SELECT publication_id FROM publication_receipts WHERE observed_at=?",
+            (observed_at,),
+        ).fetchone()
+    finally:
+        connection.close()
+    if existing and existing[0] != publication_id:
+        raise ValueError(
+            "an immutable publication receipt already exists for this observed_at"
+        )
+
+
 def _publication_receipt(path: Path, observed_at: str) -> dict:
     connection = sqlite3.connect(path)
     try:
@@ -457,12 +481,25 @@ def main() -> int:
     parser.add_argument("--intelligence", type=Path)
     parser.add_argument("--manifest", type=Path)
     parser.add_argument("--remote-manifest-blob")
+    parser.add_argument("--assert-receipt-available", action="store_true")
     parser.add_argument(
         "--preflight",
         action="store_true",
         help="validate same-hour sources and frontend contract before remote publication",
     )
     args = parser.parse_args()
+    if args.assert_receipt_available:
+        if not args.publication_id:
+            parser.error("--assert-receipt-available requires --publication-id")
+        normalized_end = args.end.astimezone(UTC).replace(
+            minute=0, second=0, microsecond=0
+        ).isoformat()
+        assert_publication_receipt_available(
+            args.database,
+            observed_at=normalized_end,
+            publication_id=args.publication_id,
+        )
+        return 0
     if args.preflight:
         if not args.intelligence:
             parser.error("--preflight requires --intelligence")

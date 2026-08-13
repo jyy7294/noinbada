@@ -4,7 +4,11 @@ import sqlite3
 
 import pytest
 
-from trzip.result_quality import _publication_receipt, record_publication_receipt
+from trzip.result_quality import (
+    _publication_receipt,
+    assert_publication_receipt_available,
+    record_publication_receipt,
+)
 
 
 def test_remote_publication_receipt_is_required_and_persisted(tmp_path: Path):
@@ -75,6 +79,29 @@ def test_receipt_is_immutable_for_the_same_hour(tmp_path: Path):
         record_publication_receipt(
             database,
             **{**kwargs, "publication_id": "pub-replacement", "remote_sha": "b" * 40},
+        )
+
+
+def test_receipt_conflict_is_detected_before_remote_publication(tmp_path: Path):
+    database = tmp_path / "preflight.sqlite3"
+    stamp = "2026-08-13T16:00:00+00:00"
+    record_publication_receipt(
+        database,
+        observed_at=stamp,
+        publication_id="pub-first",
+        remote_sha="a" * 40,
+        contract={"passed": True},
+        source_gate={"passed": True},
+        manifest_sha256="c" * 64,
+        remote_manifest_blob="d" * 40,
+    )
+
+    assert_publication_receipt_available(
+        database, observed_at=stamp, publication_id="pub-first"
+    )
+    with pytest.raises(ValueError, match="immutable publication receipt"):
+        assert_publication_receipt_available(
+            database, observed_at=stamp, publication_id="pub-replacement"
         )
 
 

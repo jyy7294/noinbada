@@ -145,6 +145,15 @@ try {
     Write-RunLog -Phase "preflight" -Status "ok" `
         -Detail "source-v2 and frontend-v4 contracts passed before remote publication"
 
+    # A verified hour is immutable.  Reject a newly generated publication for
+    # that same hour before copying, committing, or pushing any remote bytes.
+    & $Python -m trzip.result_quality --database $DatabasePath `
+        --end $PublicationStatus.observed_at --assert-receipt-available `
+        --publication-id $PublicationStatus.publication_id
+    if ($LASTEXITCODE -ne 0) {
+        throw "immutable hourly receipt conflicts with generated publication; remote was not changed"
+    }
+
     $DirtyBefore = @(& git -C $LiveDataRoot status --porcelain)
     if ($LASTEXITCODE -ne 0) { throw "live-data worktree is not readable" }
     if ($DirtyBefore.Count -gt 0) {
