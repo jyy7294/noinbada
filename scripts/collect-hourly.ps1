@@ -143,7 +143,7 @@ try {
         throw "publication preflight failed before remote push; $SourceRows; failures=$($Preflight.contract.failures -join ',')"
     }
     Write-RunLog -Phase "preflight" -Status "ok" `
-        -Detail "source-v2 and frontend-v2 contracts passed before remote publication"
+        -Detail "source-v2 and frontend-v3 contracts passed before remote publication"
 
     $DirtyBefore = @(& git -C $LiveDataRoot status --porcelain)
     if ($LASTEXITCODE -ne 0) { throw "live-data worktree is not readable" }

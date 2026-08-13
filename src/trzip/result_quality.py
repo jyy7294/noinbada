@@ -154,8 +154,15 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
         item_failures = []
         if item.get("broad_category") not in PUBLIC_BROAD_CATEGORIES:
             item_failures.append(f"invalid_category:{item.get('broad_category')}")
-        if not str(item.get("trend_definition") or "").strip():
+        definition = str(item.get("trend_definition") or "").strip()
+        if not definition:
             item_failures.append("missing_trend_definition")
+        elif (
+            len(definition) < 80
+            or "X와 Google 대한민국 관측값" not in definition
+            or "투자 추천을 의미하지 않습니다" not in definition
+        ):
+            item_failures.append("insufficient_trend_definition")
         if len(keywords) != 5:
             item_failures.append(f"keyword_count:{len(keywords)}")
         keyword_texts = [str(keyword.get("text") or "").strip() for keyword in keywords]
@@ -205,7 +212,7 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
             "passed": not item_failures,
         })
     return {
-        "policy_version": "frontend-result-quality-v2",
+        "policy_version": "frontend-result-quality-v3",
         "passed": not failures,
         "trend_count": len(top),
         "required_trend_count": 10,
@@ -339,7 +346,7 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
             "failure": "legacy_source_gate_policy",
         }
     contract = publication.get("contract")
-    if contract is not None and contract.get("policy_version") != "frontend-result-quality-v2":
+    if contract is not None and contract.get("policy_version") != "frontend-result-quality-v3":
         contract = {
             **contract,
             "passed": False,

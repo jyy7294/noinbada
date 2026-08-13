@@ -31,7 +31,11 @@ def _trend(rank: int) -> dict:
         "display_name": f"트렌드 {rank}",
         "observed_rank": rank * 2,
         "broad_category": "technology",
-        "trend_definition": "실측 데이터에서 관측된 구체적인 기술 트렌드입니다.",
+        "trend_definition": (
+            "구체적인 기술 대상이 최근 관심을 받은 트렌드입니다. "
+            "X와 Google 대한민국 관측값을 바탕으로 발생 맥락과 연결 산업을 함께 설명하며, "
+            "연결 기업 정보는 이해를 돕기 위한 참고 자료이고 투자 추천을 의미하지 않습니다."
+        ),
         "frontend_readiness_status": "ready",
         "related_keywords": [
             {"text": f"키워드 {index}", "source": ["google_trends"]}
@@ -45,7 +49,7 @@ def test_complete_frontend_result_passes_quality_gate():
     result = evaluate_frontend_result({"home_top10": [_trend(rank) for rank in range(1, 11)]})
 
     assert result["passed"] is True
-    assert result["policy_version"] == "frontend-result-quality-v2"
+    assert result["policy_version"] == "frontend-result-quality-v3"
     assert result["trend_count"] == 10
     assert all(row["keyword_count"] == 5 and row["company_count"] == 6 for row in result["trends"])
 
@@ -95,6 +99,20 @@ def test_quality_gate_rejects_duplicate_keyword_and_missing_trend_context():
     assert any("empty_or_duplicate_keyword" in failure for failure in result["failures"])
     assert any("missing_trend_definition" in failure for failure in result["failures"])
     assert any("invalid_category" in failure for failure in result["failures"])
+
+
+def test_quality_gate_rejects_shallow_or_unbounded_trend_definition():
+    trends = [_trend(rank) for rank in range(1, 11)]
+    trends[0]["trend_definition"] = "최근 관측된 기술 트렌드입니다."
+    trends[1]["trend_definition"] = (
+        "구체적인 기술 대상이 최근 관심을 받은 트렌드입니다. "
+        "X와 Google 대한민국 관측값을 바탕으로 발생 맥락과 연결 산업을 설명합니다."
+    )
+
+    result = evaluate_frontend_result({"home_top10": trends})
+
+    assert result["passed"] is False
+    assert sum("insufficient_trend_definition" in failure for failure in result["failures"]) == 2
 
 
 def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):
