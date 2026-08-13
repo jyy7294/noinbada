@@ -147,10 +147,17 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
 def evaluate_consecutive_hours(path: Path, *, end: datetime, count: int = 3) -> dict:
     hours = [end - timedelta(hours=offset) for offset in reversed(range(count))]
     evaluations = [evaluate_actual_hour(path, at) for at in hours]
+    current_streak = 0
+    for row in reversed(evaluations):
+        if not row["passed"]:
+            break
+        current_streak += 1
     return {
         "policy_version": "consecutive-actual-result-v1",
         "required_consecutive_hours": count,
         "passed": len(evaluations) == count and all(row["passed"] for row in evaluations),
+        "current_consecutive_success_count": current_streak,
+        "remaining_success_hours": max(0, count - current_streak),
         "evaluations": evaluations,
         "ranking_effect": "none",
     }
@@ -161,9 +168,16 @@ def main() -> int:
     parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--end", type=datetime.fromisoformat, required=True)
     parser.add_argument("--count", type=int, default=3)
+    parser.add_argument("--output", type=Path)
     args = parser.parse_args()
     result = evaluate_consecutive_hours(args.database, end=args.end, count=args.count)
-    print(json.dumps(result, ensure_ascii=False, indent=2))
+    encoded = json.dumps(result, ensure_ascii=False, indent=2).encode("utf-8")
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        temporary = args.output.with_suffix(args.output.suffix + ".tmp")
+        temporary.write_bytes(encoded)
+        temporary.replace(args.output)
+    print(encoded.decode("utf-8"))
     return 0 if result["passed"] else 1
 
 

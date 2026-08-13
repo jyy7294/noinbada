@@ -45,3 +45,13 @@ def test_quality_gate_rejects_missing_company_role_and_non_contiguous_rank():
     assert result["passed"] is False
     assert "publication_rank_not_contiguous" in result["failures"]
     assert any("incomplete_company" in failure for failure in result["failures"])
+
+
+def test_quality_gate_rejects_mismatched_company_role_label():
+    trends = [_trend(rank) for rank in range(1, 11)]
+    trends[0]["companies"][0]["company_role_label"] = "판매·리테일"
+
+    result = evaluate_frontend_result({"home_top10": trends})
+
+    assert result["passed"] is False
+    assert any("invalid_company_role" in failure for failure in result["failures"])

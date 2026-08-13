@@ -110,6 +110,27 @@ try {
         exit 0
     }
 
+    # Product-quality proof is tracked separately from transport publication.
+    # It never backfills a missing hour and never changes ranking. A streak is
+    # complete only when eight exact consecutive hours each contain observed
+    # X 1..30, observed Google rows, and a complete frontend Top10 contract.
+    $QualityOutput = Join-Path $PublicationRoot "monitoring\result_quality.json"
+    & $Python -m trzip.result_quality --database $DatabasePath `
+        --end $PublicationStatus.observed_at --count 8 --output $QualityOutput | Out-Null
+    $QualityExitCode = $LASTEXITCODE
+    try {
+        $Quality = Get-Content -LiteralPath $QualityOutput -Raw -Encoding utf8 | ConvertFrom-Json
+    } catch {
+        throw "result quality gate returned invalid JSON"
+    }
+    $QualityStatus = if ($Quality.passed -eq $true) { "complete" } else { "in_progress" }
+    $QualityDetail = "streak={0}/8 remaining={1}" -f `
+        $Quality.current_consecutive_success_count,$Quality.remaining_success_hours
+    Write-RunLog -Phase "result_quality" -Status $QualityStatus -Detail $QualityDetail
+    if ($QualityExitCode -notin @(0,1)) {
+        throw "result quality gate failed to execute; exit=$QualityExitCode"
+    }
+
     # Audit the exact publication and SQLite ledger that are about to be
     # published. History maturity may remain provisional, but both ranking
     # sources must be observed for this hour before remote publication.
