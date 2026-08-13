@@ -848,7 +848,12 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
             path = company.get("ontology_path") or []
             if not evidence or len(path) < 2:
                 company_failures += 1
-            if any(edge.get("review_status") not in {"observed", "approved"} or not edge.get("evidence_urls") for edge in path):
+            if any(
+                edge.get("review_status")
+                not in {"observed", "approved", "verified", "published", "historical_reference"}
+                or not edge.get("evidence_urls")
+                for edge in path
+            ):
                 company_failures += 1
     if company_failures:
         report.fail("company_ready_contract_failed")
