@@ -1,0 +1,2553 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-8ea8d9f4686c4032a8cb8b2dffa004e3",
+  "generated_at": "2026-08-13T12:04:25.850128+00:00",
+  "observed_at": "2026-08-13T12:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "지스타",
+    "topic": "지스타",
+    "display_name": "지스타",
+    "observed_representative_term": "지스타",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "지스타",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 12,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.084424,
+      "best_source_rank": 55
+    },
+    "raw_terms": [
+      "지스타"
+    ],
+    "phenomenon_summary": "\"지스타\" · Google Trends KR에서 관측",
+    "context_status": "resolved_by_observed_context",
+    "ground_truth_match": false,
+    "category": "gaming_digital",
+    "category_basis": "verification_context_general_rule",
+    "broad_category": "content",
+    "category_label": "음악·영상·게임 콘텐츠",
+    "trend_definition": "'지스타' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 음악·영상·게임 콘텐츠 트렌드입니다. 함께 나타난 관련 표현은 G-STAR, G-CON입니다.",
+    "lane": "main",
+    "selection_reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 30.12,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 0.594604,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 9.0
+    },
+    "hours_since_last_seen": 9.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.311068,
+    "current_source_position": 0.311068,
+    "momentum": 0.0311,
+    "persistence": 0.25,
+    "momentum_delta": 0.031122,
+    "score_components": {
+      "period_strength_points": 10.89,
+      "momentum_points": 0.78,
+      "persistence_points": 2.5,
+      "recency_points": 5.95,
+      "cross_source_points": 10.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 30.12
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "current_period_half_change"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.622137
+      },
+      "momentum_deltas": {
+        "google_trends": 0.031122
+      },
+      "momentum_basis": {
+        "google_trends": "current_period_half_change"
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 8,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 15,
+          "observed_hours": 12,
+          "presence_rate": 0.5,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.333333,
+        "google_trends": 0.625
+      },
+      "momentum_status": "measured"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T03:00:00+00:00",
+      "observed_hours": 12,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 55
+    },
+    "rank_change_by_source": {
+      "google_trends": 90
+    },
+    "source_rank_change": {
+      "google_trends": 90
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T03:00:00+00:00",
+    "age_hours": 23,
+    "lifecycle": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 15,
+      "history_maturity": 0.4792,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "지스타",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T18:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T18:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T18:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 52,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "C9TtTXeMxqU",
+              "title": "지스타 - 한국 트렌드 (August 2026) | NewsDrop KR",
+              "url": "https://www.youtube.com/watch?v=C9TtTXeMxqU",
+              "published_at": "2026-08-12T06:12:39Z",
+              "publisher": "NewsDrop KR",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 0,
+                "viewCount": 0
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "3ag6bwWPc4o",
+              "title": "지스타, 이대로 괜찮을까요? 한국 게임쇼의 위기!",
+              "url": "https://www.youtube.com/watch?v=3ag6bwWPc4o",
+              "published_at": "2026-08-06T10:01:41Z",
+              "publisher": "명일동어린이ㅣ피규어·프라모델",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 0,
+                "viewCount": 212
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "F0cEyXXp4kc",
+              "title": "게임스컴 역대 최대 규모 지스타와 너무 다르다 #게임스컴2026 #게임스컴 #Gamescom2026 #지스타 #GSTAR #게임쇼 #부스완판 #역대최대규모 #글로벌게임사 #게임뉴스",
+              "url": "https://www.youtube.com/watch?v=F0cEyXXp4kc",
+              "published_at": "2026-08-02T23:00:27Z",
+              "publisher": "수확",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 4,
+                "viewCount": 1676
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "ACi7hq2BccY",
+              "title": "[환경 설정] 7.프린터 목록 정리하기",
+              "url": "https://www.youtube.com/watch?v=ACi7hq2BccY",
+              "published_at": "2026-08-05T23:22:54Z",
+              "publisher": "모두TV – GstarCAD / Creo의 모든 것",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 1,
+                "viewCount": 10
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "VaGzQh1Sa9w",
+              "title": "지스타 #Shorts #August2026 #한국뉴스",
+              "url": "https://www.youtube.com/watch?v=VaGzQh1Sa9w",
+              "published_at": "2026-08-12T06:12:47Z",
+              "publisher": "NewsDrop KR",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 0,
+                "viewCount": 0
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "지스타",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T18:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T18:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T18:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 52,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "C9TtTXeMxqU",
+              "title": "지스타 - 한국 트렌드 (August 2026) | NewsDrop KR",
+              "url": "https://www.youtube.com/watch?v=C9TtTXeMxqU",
+              "published_at": "2026-08-12T06:12:39Z",
+              "publisher": "NewsDrop KR",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 0,
+                "viewCount": 0
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "3ag6bwWPc4o",
+              "title": "지스타, 이대로 괜찮을까요? 한국 게임쇼의 위기!",
+              "url": "https://www.youtube.com/watch?v=3ag6bwWPc4o",
+              "published_at": "2026-08-06T10:01:41Z",
+              "publisher": "명일동어린이ㅣ피규어·프라모델",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 0,
+                "viewCount": 212
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "F0cEyXXp4kc",
+              "title": "게임스컴 역대 최대 규모 지스타와 너무 다르다 #게임스컴2026 #게임스컴 #Gamescom2026 #지스타 #GSTAR #게임쇼 #부스완판 #역대최대규모 #글로벌게임사 #게임뉴스",
+              "url": "https://www.youtube.com/watch?v=F0cEyXXp4kc",
+              "published_at": "2026-08-02T23:00:27Z",
+              "publisher": "수확",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 4,
+                "viewCount": 1676
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "ACi7hq2BccY",
+              "title": "[환경 설정] 7.프린터 목록 정리하기",
+              "url": "https://www.youtube.com/watch?v=ACi7hq2BccY",
+              "published_at": "2026-08-05T23:22:54Z",
+              "publisher": "모두TV – GstarCAD / Creo의 모든 것",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 1,
+                "viewCount": 10
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "VaGzQh1Sa9w",
+              "title": "지스타 #Shorts #August2026 #한국뉴스",
+              "url": "https://www.youtube.com/watch?v=VaGzQh1Sa9w",
+              "published_at": "2026-08-12T06:12:47Z",
+              "publisher": "NewsDrop KR",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 0,
+                "viewCount": 0
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T18:00:00Z",
+                "query_term": "지스타",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 71,
+        "value": 30.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 21, \"started_text\": \"9시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 73,
+        "value": 28.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 23, \"started_text\": \"10시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 71,
+        "value": 30.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 21, \"started_text\": \"10시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 63,
+        "value": 38.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 13, \"started_text\": \"12시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 62,
+        "value": 39.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 12, \"started_text\": \"13시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 66,
+        "value": 35.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 16, \"started_text\": \"13시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 69,
+        "value": 32.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 19, \"started_text\": \"14시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 102,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 5, \"row_on_page\": 2, \"started_text\": \"16시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 142,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"600%\", \"page\": 6, \"row_on_page\": 17, \"started_text\": \"18시간 전\", \"status_text\": \"17시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 143,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"600%\", \"page\": 6, \"row_on_page\": 18, \"started_text\": \"19시간 전\", \"status_text\": \"17시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 145,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"600%\", \"page\": 6, \"row_on_page\": 20, \"started_text\": \"20시간 전\", \"status_text\": \"17시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 55,
+        "value": 46.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"500%\", \"page\": 3, \"row_on_page\": 5, \"started_text\": \"22시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "G-STAR",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.gstar.or.kr/gstar/gstar_last_conf_list.do?day=3&tab_sub_order=2"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "G-CON",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_conference_program",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.gstar.or.kr/gstar/gstar_last_conf_list.do?day=3&tab_sub_order=2"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "오디세이 모니터",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_demo_hardware",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://about.ncsoft.com/news/article/news_update_251110"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "팰월드 모바일",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_exhibited_game",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.krafton.com/en/news/press/krafton-announces-on-site-programs-for-g-star-2025/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "산나비 외전",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_exhibited_game",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.neowiz.com/kr/media/press-release-detail/3401"
+        ],
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "G-STAR",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.gstar.or.kr/gstar/gstar_last_conf_list.do?day=3&tab_sub_order=2"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "G-CON",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_conference_program",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.gstar.or.kr/gstar/gstar_last_conf_list.do?day=3&tab_sub_order=2"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "오디세이 모니터",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_demo_hardware",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://about.ncsoft.com/news/article/news_update_251110"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "팰월드 모바일",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_exhibited_game",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.krafton.com/en/news/press/krafton-announces-on-site-programs-for-g-star-2025/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "산나비 외전",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_exhibited_game",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.neowiz.com/kr/media/press-release-detail/3401"
+        ],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 5,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 5,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [
+      {
+        "company": "네오위즈",
+        "stock_code": "095660",
+        "ticker": "095660",
+        "market": "KOSDAQ",
+        "relation_type": "participates_as_exhibitor",
+        "strength": "direct",
+        "reason": "관측어 '지스타'에서 지스타 → 네오위즈 → 095660 (KOSDAQ)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 네오위즈 → 095660 (KOSDAQ)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 095660",
+        "company_description": "KOSDAQ 상장기업, 종목코드 095660",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.neowiz.com/kr/media/press-release-detail/3401",
+        "evidence_sources": [
+          {
+            "url": "https://www.neowiz.com/kr/media/press-release-detail/3401",
+            "title": "네오위즈 산나비 외전 지스타 2025 단독 부스 참가",
+            "evidence_type": "company_official_event_participation",
+            "published_at": "2025-10-27",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/06/04/000613/20260604001630/00634.htm",
+            "title": "네오위즈 코스닥상장법인 회사코드 095660",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-06-04",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "네오위즈",
+            "edge_type": "participates_as_exhibitor",
+            "evidence_urls": [
+              "https://www.neowiz.com/kr/media/press-release-detail/3401"
+            ],
+            "evidence_type": [
+              "company_official_event_participation"
+            ],
+            "as_of": "2025-10-27",
+            "review_status": "approved"
+          },
+          {
+            "from": "네오위즈",
+            "to": "095660 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/06/04/000613/20260604001630/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-06-04",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "네오위즈",
+          "english_name": "NEOWIZ",
+          "established_date": "20070426",
+          "homepage": "https://www.neowizgames.com",
+          "legal_name": "(주)네오위즈",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "095660",
+          "stock_name": "네오위즈"
+        }
+      },
+      {
+        "company": "넷마블",
+        "stock_code": "251270",
+        "ticker": "251270",
+        "market": "KOSPI",
+        "relation_type": "participates_as_exhibitor",
+        "strength": "direct",
+        "reason": "관측어 '지스타'에서 지스타 → 넷마블 → 251270 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 넷마블 → 251270 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 251270",
+        "company_description": "KOSPI 상장기업, 종목코드 251270",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://ch.netmarble.com/Newsroom/PressRelease/Detail?bbs_code=1014&post_seq=6267&post_tag=%EC%A7%80%EC%8A%A4%ED%83%80+2025",
+        "evidence_sources": [
+          {
+            "url": "https://ch.netmarble.com/Newsroom/PressRelease/Detail?bbs_code=1014&post_seq=6267&post_tag=%EC%A7%80%EC%8A%A4%ED%83%80+2025",
+            "title": "넷마블 지스타 2025 출품작·부스 운영",
+            "evidence_type": "company_official_event_participation",
+            "published_at": "2025-11-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2025/09/19/000430/20250919001038/00634.htm",
+            "title": "넷마블 유가증권상장법인 회사코드 251270",
+            "evidence_type": "official_listing_record",
+            "published_at": "2025-09-19",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "넷마블",
+            "edge_type": "participates_as_exhibitor",
+            "evidence_urls": [
+              "https://ch.netmarble.com/Newsroom/PressRelease/Detail?bbs_code=1014&post_seq=6267&post_tag=%EC%A7%80%EC%8A%A4%ED%83%80+2025"
+            ],
+            "evidence_type": [
+              "company_official_event_participation"
+            ],
+            "as_of": "2025-11-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "넷마블",
+            "to": "251270 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2025/09/19/000430/20250919001038/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2025-09-19",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "넷마블",
+          "english_name": "Netmarble Corporation",
+          "established_date": "20111117",
+          "homepage": "https://company.netmarble.com",
+          "legal_name": "넷마블(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "251270",
+          "stock_name": "넷마블"
+        }
+      },
+      {
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "ticker": "005930",
+        "market": "KOSPI",
+        "relation_type": "provides_demo_hardware_to_exhibitor",
+        "strength": "indirect",
+        "reason": "관측어 '지스타'에서 지스타 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 005930",
+        "company_description": "KOSPI 상장기업, 종목코드 005930",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://about.ncsoft.com/news/article/news_update_251110",
+        "evidence_sources": [
+          {
+            "url": "https://about.ncsoft.com/news/article/news_update_251110",
+            "title": "엔씨소프트 지스타 2025 삼성전자 시연장비 협업",
+            "evidence_type": "company_official_event_hardware_partnership",
+            "published_at": "2025-11-10",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+            "title": "삼성전자 유가증권상장법인 회사코드 005930",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "삼성전자",
+            "edge_type": "provides_demo_hardware_to_exhibitor",
+            "evidence_urls": [
+              "https://about.ncsoft.com/news/article/news_update_251110"
+            ],
+            "evidence_type": [
+              "company_official_event_hardware_partnership"
+            ],
+            "as_of": "2025-11-10",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성전자",
+            "to": "005930 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "official_identity": {
+          "company": "삼성전자",
+          "english_name": "SAMSUNG ELECTRONICS CO,.LTD",
+          "established_date": "19690113",
+          "homepage": "https://www.samsung.com/sec",
+          "legal_name": "삼성전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005930",
+          "stock_name": "삼성전자"
+        }
+      },
+      {
+        "company": "엔씨소프트",
+        "stock_code": "036570",
+        "ticker": "036570",
+        "market": "KOSPI",
+        "relation_type": "participates_as_main_sponsor_and_exhibitor",
+        "strength": "direct",
+        "reason": "관측어 '지스타'에서 지스타 → 엔씨소프트 → 036570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 엔씨소프트 → 036570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 036570",
+        "company_description": "KOSPI 상장기업, 종목코드 036570",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://about.ncsoft.com/news/article/news_update_250908",
+        "evidence_sources": [
+          {
+            "url": "https://about.ncsoft.com/news/article/news_update_250908",
+            "title": "엔씨소프트 지스타 2025 메인 스폰서·300부스 참가",
+            "evidence_type": "company_official_event_participation",
+            "published_at": "2025-09-08",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/01/05/000235/20260105000785/00637.htm",
+            "title": "엔씨소프트 유가증권상장법인 회사코드 036570",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-01-05",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "엔씨소프트",
+            "edge_type": "participates_as_main_sponsor_and_exhibitor",
+            "evidence_urls": [
+              "https://about.ncsoft.com/news/article/news_update_250908"
+            ],
+            "evidence_type": [
+              "company_official_event_participation"
+            ],
+            "as_of": "2025-09-08",
+            "review_status": "approved"
+          },
+          {
+            "from": "엔씨소프트",
+            "to": "036570 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/01/05/000235/20260105000785/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-01-05",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "엔씨소프트",
+          "english_name": "NC Corporation",
+          "established_date": "19970311",
+          "homepage": "https://www.nc.com",
+          "legal_name": "(주)엔씨",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "036570",
+          "stock_name": "NC"
+        }
+      },
+      {
+        "company": "크래프톤",
+        "stock_code": "259960",
+        "ticker": "259960",
+        "market": "KOSPI",
+        "relation_type": "participates_as_exhibitor",
+        "strength": "direct",
+        "reason": "관측어 '지스타'에서 지스타 → 크래프톤 → 259960 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 크래프톤 → 259960 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 259960",
+        "company_description": "KOSPI 상장기업, 종목코드 259960",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.krafton.com/en/news/press/krafton-announces-on-site-programs-for-g-star-2025/",
+        "evidence_sources": [
+          {
+            "url": "https://www.krafton.com/en/news/press/krafton-announces-on-site-programs-for-g-star-2025/",
+            "title": "크래프톤 지스타 2025 현장 프로그램·부스 참가",
+            "evidence_type": "company_official_event_participation",
+            "published_at": "2025-11-03",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/04/01/001022/20260401002423/00637.htm",
+            "title": "크래프톤 유가증권상장법인 회사코드 259960",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-04-01",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "크래프톤",
+            "edge_type": "participates_as_exhibitor",
+            "evidence_urls": [
+              "https://www.krafton.com/en/news/press/krafton-announces-on-site-programs-for-g-star-2025/"
+            ],
+            "evidence_type": [
+              "company_official_event_participation"
+            ],
+            "as_of": "2025-11-03",
+            "review_status": "approved"
+          },
+          {
+            "from": "크래프톤",
+            "to": "259960 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/04/01/001022/20260401002423/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-04-01",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "크래프톤",
+          "english_name": "KRAFTON, Inc.",
+          "established_date": "20070326",
+          "homepage": "https://www.krafton.com",
+          "legal_name": "주식회사 크래프톤",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "259960",
+          "stock_name": "크래프톤"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "네오위즈",
+        "stock_code": "095660",
+        "ticker": "095660",
+        "market": "KOSDAQ",
+        "relation_type": "participates_as_exhibitor",
+        "strength": "direct",
+        "reason": "관측어 '지스타'에서 지스타 → 네오위즈 → 095660 (KOSDAQ)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 네오위즈 → 095660 (KOSDAQ)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 095660",
+        "company_description": "KOSDAQ 상장기업, 종목코드 095660",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.neowiz.com/kr/media/press-release-detail/3401",
+        "evidence_sources": [
+          {
+            "url": "https://www.neowiz.com/kr/media/press-release-detail/3401",
+            "title": "네오위즈 산나비 외전 지스타 2025 단독 부스 참가",
+            "evidence_type": "company_official_event_participation",
+            "published_at": "2025-10-27",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/06/04/000613/20260604001630/00634.htm",
+            "title": "네오위즈 코스닥상장법인 회사코드 095660",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-06-04",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "네오위즈",
+            "edge_type": "participates_as_exhibitor",
+            "evidence_urls": [
+              "https://www.neowiz.com/kr/media/press-release-detail/3401"
+            ],
+            "evidence_type": [
+              "company_official_event_participation"
+            ],
+            "as_of": "2025-10-27",
+            "review_status": "approved"
+          },
+          {
+            "from": "네오위즈",
+            "to": "095660 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/06/04/000613/20260604001630/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-06-04",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "네오위즈",
+          "english_name": "NEOWIZ",
+          "established_date": "20070426",
+          "homepage": "https://www.neowizgames.com",
+          "legal_name": "(주)네오위즈",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "095660",
+          "stock_name": "네오위즈"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "095660",
+          "name": "네오위즈",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 17480.0,
+              "high": 18500.0,
+              "low": 17450.0,
+              "close": 18400.0,
+              "volume": 86188.0,
+              "change_pct": 4.2492917847025495
+            },
+            {
+              "date": "2026-07-31",
+              "open": 18320.0,
+              "high": 18600.0,
+              "low": 17650.0,
+              "close": 18270.0,
+              "volume": 75770.0,
+              "change_pct": -0.7065217391304348
+            },
+            {
+              "date": "2026-08-03",
+              "open": 17900.0,
+              "high": 19180.0,
+              "low": 17900.0,
+              "close": 18500.0,
+              "volume": 96421.0,
+              "change_pct": 1.258894362342638
+            },
+            {
+              "date": "2026-08-04",
+              "open": 18800.0,
+              "high": 19650.0,
+              "low": 18470.0,
+              "close": 19260.0,
+              "volume": 95807.0,
+              "change_pct": 4.108108108108108
+            },
+            {
+              "date": "2026-08-05",
+              "open": 19110.0,
+              "high": 19400.0,
+              "low": 18600.0,
+              "close": 18780.0,
+              "volume": 80506.0,
+              "change_pct": -2.4922118380062304
+            },
+            {
+              "date": "2026-08-06",
+              "open": 18790.0,
+              "high": 19360.0,
+              "low": 18630.0,
+              "close": 19240.0,
+              "volume": 62249.0,
+              "change_pct": 2.4494142705005326
+            },
+            {
+              "date": "2026-08-07",
+              "open": 19060.0,
+              "high": 19590.0,
+              "low": 18900.0,
+              "close": 19280.0,
+              "volume": 51874.0,
+              "change_pct": 0.2079002079002079
+            },
+            {
+              "date": "2026-08-10",
+              "open": 19300.0,
+              "high": 19490.0,
+              "low": 19090.0,
+              "close": 19360.0,
+              "volume": 56825.0,
+              "change_pct": 0.4149377593360996
+            },
+            {
+              "date": "2026-08-11",
+              "open": 19350.0,
+              "high": 19680.0,
+              "low": 19190.0,
+              "close": 19640.0,
+              "volume": 61534.0,
+              "change_pct": 1.4462809917355373
+            },
+            {
+              "date": "2026-08-12",
+              "open": 19510.0,
+              "high": 20100.0,
+              "low": 19100.0,
+              "close": 19260.0,
+              "volume": 59618.0,
+              "change_pct": -1.9348268839103868
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 19510.0,
+            "high": 20100.0,
+            "low": 19100.0,
+            "close": 19260.0,
+            "volume": 59618.0,
+            "change_pct": -1.9348268839103868
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 19260,
+            "daily_change_pct": -1.93,
+            "volume": 59618
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 0.1,
+            "five_vs_previous_volume_ratio": 0.67,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "넷마블",
+        "stock_code": "251270",
+        "ticker": "251270",
+        "market": "KOSPI",
+        "relation_type": "participates_as_exhibitor",
+        "strength": "direct",
+        "reason": "관측어 '지스타'에서 지스타 → 넷마블 → 251270 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 넷마블 → 251270 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 251270",
+        "company_description": "KOSPI 상장기업, 종목코드 251270",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://ch.netmarble.com/Newsroom/PressRelease/Detail?bbs_code=1014&post_seq=6267&post_tag=%EC%A7%80%EC%8A%A4%ED%83%80+2025",
+        "evidence_sources": [
+          {
+            "url": "https://ch.netmarble.com/Newsroom/PressRelease/Detail?bbs_code=1014&post_seq=6267&post_tag=%EC%A7%80%EC%8A%A4%ED%83%80+2025",
+            "title": "넷마블 지스타 2025 출품작·부스 운영",
+            "evidence_type": "company_official_event_participation",
+            "published_at": "2025-11-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2025/09/19/000430/20250919001038/00634.htm",
+            "title": "넷마블 유가증권상장법인 회사코드 251270",
+            "evidence_type": "official_listing_record",
+            "published_at": "2025-09-19",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "넷마블",
+            "edge_type": "participates_as_exhibitor",
+            "evidence_urls": [
+              "https://ch.netmarble.com/Newsroom/PressRelease/Detail?bbs_code=1014&post_seq=6267&post_tag=%EC%A7%80%EC%8A%A4%ED%83%80+2025"
+            ],
+            "evidence_type": [
+              "company_official_event_participation"
+            ],
+            "as_of": "2025-11-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "넷마블",
+            "to": "251270 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2025/09/19/000430/20250919001038/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2025-09-19",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "넷마블",
+          "english_name": "Netmarble Corporation",
+          "established_date": "20111117",
+          "homepage": "https://company.netmarble.com",
+          "legal_name": "넷마블(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "251270",
+          "stock_name": "넷마블"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "251270",
+          "name": "넷마블",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 35950.0,
+              "high": 39000.0,
+              "low": 35950.0,
+              "close": 38450.0,
+              "volume": 272745.0,
+              "change_pct": 6.954102920723226
+            },
+            {
+              "date": "2026-07-31",
+              "open": 38350.0,
+              "high": 39000.0,
+              "low": 37700.0,
+              "close": 38300.0,
+              "volume": 163875.0,
+              "change_pct": -0.3901170351105332
+            },
+            {
+              "date": "2026-08-03",
+              "open": 38100.0,
+              "high": 39200.0,
+              "low": 37500.0,
+              "close": 38300.0,
+              "volume": 147239.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-04",
+              "open": 37850.0,
+              "high": 39450.0,
+              "low": 37800.0,
+              "close": 39300.0,
+              "volume": 126708.0,
+              "change_pct": 2.610966057441253
+            },
+            {
+              "date": "2026-08-05",
+              "open": 39400.0,
+              "high": 39900.0,
+              "low": 37900.0,
+              "close": 37950.0,
+              "volume": 170047.0,
+              "change_pct": -3.435114503816794
+            },
+            {
+              "date": "2026-08-06",
+              "open": 38000.0,
+              "high": 39300.0,
+              "low": 38000.0,
+              "close": 39000.0,
+              "volume": 214888.0,
+              "change_pct": 2.766798418972332
+            },
+            {
+              "date": "2026-08-07",
+              "open": 38650.0,
+              "high": 41000.0,
+              "low": 38650.0,
+              "close": 40900.0,
+              "volume": 209356.0,
+              "change_pct": 4.871794871794872
+            },
+            {
+              "date": "2026-08-10",
+              "open": 40350.0,
+              "high": 40700.0,
+              "low": 38750.0,
+              "close": 40250.0,
+              "volume": 144831.0,
+              "change_pct": -1.5892420537897312
+            },
+            {
+              "date": "2026-08-11",
+              "open": 40800.0,
+              "high": 41300.0,
+              "low": 40050.0,
+              "close": 40550.0,
+              "volume": 140507.0,
+              "change_pct": 0.7453416149068323
+            },
+            {
+              "date": "2026-08-12",
+              "open": 40350.0,
+              "high": 40800.0,
+              "low": 39500.0,
+              "close": 39750.0,
+              "volume": 114179.0,
+              "change_pct": -1.972872996300863
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 40350.0,
+            "high": 40800.0,
+            "low": 39500.0,
+            "close": 39750.0,
+            "volume": 114179.0,
+            "change_pct": -1.972872996300863
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 39750,
+            "daily_change_pct": -1.97,
+            "volume": 114179
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 1.92,
+            "five_vs_previous_volume_ratio": 0.94,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "ticker": "005930",
+        "market": "KOSPI",
+        "relation_type": "provides_demo_hardware_to_exhibitor",
+        "strength": "indirect",
+        "reason": "관측어 '지스타'에서 지스타 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 005930",
+        "company_description": "KOSPI 상장기업, 종목코드 005930",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://about.ncsoft.com/news/article/news_update_251110",
+        "evidence_sources": [
+          {
+            "url": "https://about.ncsoft.com/news/article/news_update_251110",
+            "title": "엔씨소프트 지스타 2025 삼성전자 시연장비 협업",
+            "evidence_type": "company_official_event_hardware_partnership",
+            "published_at": "2025-11-10",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+            "title": "삼성전자 유가증권상장법인 회사코드 005930",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "삼성전자",
+            "edge_type": "provides_demo_hardware_to_exhibitor",
+            "evidence_urls": [
+              "https://about.ncsoft.com/news/article/news_update_251110"
+            ],
+            "evidence_type": [
+              "company_official_event_hardware_partnership"
+            ],
+            "as_of": "2025-11-10",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성전자",
+            "to": "005930 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "official_identity": {
+          "company": "삼성전자",
+          "english_name": "SAMSUNG ELECTRONICS CO,.LTD",
+          "established_date": "19690113",
+          "homepage": "https://www.samsung.com/sec",
+          "legal_name": "삼성전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005930",
+          "stock_name": "삼성전자"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "005930",
+          "name": "삼성전자",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 214000.0,
+              "high": 226000.0,
+              "low": 202000.0,
+              "close": 207000.0,
+              "volume": 46694193.0,
+              "change_pct": -0.7194244604316548
+            },
+            {
+              "date": "2026-07-31",
+              "open": 257000.0,
+              "high": 267000.0,
+              "low": 243000.0,
+              "close": 262500.0,
+              "volume": 58478873.0,
+              "change_pct": 26.811594202898554
+            },
+            {
+              "date": "2026-08-03",
+              "open": 248000.0,
+              "high": 249500.0,
+              "low": 238000.0,
+              "close": 239500.0,
+              "volume": 27825493.0,
+              "change_pct": -8.761904761904763
+            },
+            {
+              "date": "2026-08-04",
+              "open": 244500.0,
+              "high": 244500.0,
+              "low": 228000.0,
+              "close": 240000.0,
+              "volume": 29433821.0,
+              "change_pct": 0.20876826722338201
+            },
+            {
+              "date": "2026-08-05",
+              "open": 254000.0,
+              "high": 254500.0,
+              "low": 244000.0,
+              "close": 246000.0,
+              "volume": 22577128.0,
+              "change_pct": 2.5
+            },
+            {
+              "date": "2026-08-06",
+              "open": 241500.0,
+              "high": 246000.0,
+              "low": 228000.0,
+              "close": 230500.0,
+              "volume": 26101823.0,
+              "change_pct": -6.300813008130081
+            },
+            {
+              "date": "2026-08-07",
+              "open": 235000.0,
+              "high": 239500.0,
+              "low": 229000.0,
+              "close": 231000.0,
+              "volume": 20546010.0,
+              "change_pct": 0.21691973969631237
+            },
+            {
+              "date": "2026-08-10",
+              "open": 236000.0,
+              "high": 238500.0,
+              "low": 228500.0,
+              "close": 230000.0,
+              "volume": 16327805.0,
+              "change_pct": -0.4329004329004329
+            },
+            {
+              "date": "2026-08-11",
+              "open": 229500.0,
+              "high": 243000.0,
+              "low": 227500.0,
+              "close": 239500.0,
+              "volume": 23310969.0,
+              "change_pct": 4.130434782608695
+            },
+            {
+              "date": "2026-08-12",
+              "open": 243500.0,
+              "high": 260500.0,
+              "low": 241000.0,
+              "close": 255500.0,
+              "volume": 27102479.0,
+              "change_pct": 6.6805845511482245
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 243500.0,
+            "high": 260500.0,
+            "low": 241000.0,
+            "close": 255500.0,
+            "volume": 27102479.0,
+            "change_pct": 6.6805845511482245
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 255500,
+            "daily_change_pct": 6.68,
+            "volume": 27102479
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 10.85,
+            "five_vs_previous_volume_ratio": 0.61,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "엔씨소프트",
+        "stock_code": "036570",
+        "ticker": "036570",
+        "market": "KOSPI",
+        "relation_type": "participates_as_main_sponsor_and_exhibitor",
+        "strength": "direct",
+        "reason": "관측어 '지스타'에서 지스타 → 엔씨소프트 → 036570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 엔씨소프트 → 036570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 036570",
+        "company_description": "KOSPI 상장기업, 종목코드 036570",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://about.ncsoft.com/news/article/news_update_250908",
+        "evidence_sources": [
+          {
+            "url": "https://about.ncsoft.com/news/article/news_update_250908",
+            "title": "엔씨소프트 지스타 2025 메인 스폰서·300부스 참가",
+            "evidence_type": "company_official_event_participation",
+            "published_at": "2025-09-08",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/01/05/000235/20260105000785/00637.htm",
+            "title": "엔씨소프트 유가증권상장법인 회사코드 036570",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-01-05",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "엔씨소프트",
+            "edge_type": "participates_as_main_sponsor_and_exhibitor",
+            "evidence_urls": [
+              "https://about.ncsoft.com/news/article/news_update_250908"
+            ],
+            "evidence_type": [
+              "company_official_event_participation"
+            ],
+            "as_of": "2025-09-08",
+            "review_status": "approved"
+          },
+          {
+            "from": "엔씨소프트",
+            "to": "036570 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/01/05/000235/20260105000785/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-01-05",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "엔씨소프트",
+          "english_name": "NC Corporation",
+          "established_date": "19970311",
+          "homepage": "https://www.nc.com",
+          "legal_name": "(주)엔씨",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "036570",
+          "stock_name": "NC"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "036570",
+          "name": "NC",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 223500.0,
+              "high": 237000.0,
+              "low": 221500.0,
+              "close": 229000.0,
+              "volume": 91648.0,
+              "change_pct": 2.9213483146067416
+            },
+            {
+              "date": "2026-07-31",
+              "open": 230500.0,
+              "high": 234500.0,
+              "low": 222500.0,
+              "close": 234500.0,
+              "volume": 84945.0,
+              "change_pct": 2.4017467248908297
+            },
+            {
+              "date": "2026-08-03",
+              "open": 230000.0,
+              "high": 238000.0,
+              "low": 228000.0,
+              "close": 232000.0,
+              "volume": 54463.0,
+              "change_pct": -1.0660980810234542
+            },
+            {
+              "date": "2026-08-04",
+              "open": 229000.0,
+              "high": 242000.0,
+              "low": 229000.0,
+              "close": 240500.0,
+              "volume": 43882.0,
+              "change_pct": 3.6637931034482754
+            },
+            {
+              "date": "2026-08-05",
+              "open": 241500.0,
+              "high": 245500.0,
+              "low": 234500.0,
+              "close": 235000.0,
+              "volume": 68032.0,
+              "change_pct": -2.2869022869022873
+            },
+            {
+              "date": "2026-08-06",
+              "open": 236000.0,
+              "high": 241000.0,
+              "low": 233000.0,
+              "close": 239500.0,
+              "volume": 45617.0,
+              "change_pct": 1.9148936170212765
+            },
+            {
+              "date": "2026-08-07",
+              "open": 238000.0,
+              "high": 249000.0,
+              "low": 238000.0,
+              "close": 248500.0,
+              "volume": 59029.0,
+              "change_pct": 3.7578288100208765
+            },
+            {
+              "date": "2026-08-10",
+              "open": 247500.0,
+              "high": 248000.0,
+              "low": 238500.0,
+              "close": 243500.0,
+              "volume": 50179.0,
+              "change_pct": -2.0120724346076457
+            },
+            {
+              "date": "2026-08-11",
+              "open": 247500.0,
+              "high": 268000.0,
+              "low": 241000.0,
+              "close": 255500.0,
+              "volume": 220264.0,
+              "change_pct": 4.9281314168377826
+            },
+            {
+              "date": "2026-08-12",
+              "open": 255500.0,
+              "high": 265000.0,
+              "low": 241000.0,
+              "close": 246500.0,
+              "volume": 125934.0,
+              "change_pct": -3.522504892367906
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 255500.0,
+            "high": 265000.0,
+            "low": 241000.0,
+            "close": 246500.0,
+            "volume": 125934.0,
+            "change_pct": -3.522504892367906
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 246500,
+            "daily_change_pct": -3.52,
+            "volume": 125934
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 2.92,
+            "five_vs_previous_volume_ratio": 1.46,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "크래프톤",
+        "stock_code": "259960",
+        "ticker": "259960",
+        "market": "KOSPI",
+        "relation_type": "participates_as_exhibitor",
+        "strength": "direct",
+        "reason": "관측어 '지스타'에서 지스타 → 크래프톤 → 259960 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '지스타'에서 지스타 → 크래프톤 → 259960 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 259960",
+        "company_description": "KOSPI 상장기업, 종목코드 259960",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.krafton.com/en/news/press/krafton-announces-on-site-programs-for-g-star-2025/",
+        "evidence_sources": [
+          {
+            "url": "https://www.krafton.com/en/news/press/krafton-announces-on-site-programs-for-g-star-2025/",
+            "title": "크래프톤 지스타 2025 현장 프로그램·부스 참가",
+            "evidence_type": "company_official_event_participation",
+            "published_at": "2025-11-03",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/04/01/001022/20260401002423/00637.htm",
+            "title": "크래프톤 유가증권상장법인 회사코드 259960",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-04-01",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "지스타",
+        "matched_ontology_node": "지스타",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "지스타",
+            "to": "지스타",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T03:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "지스타",
+            "to": "크래프톤",
+            "edge_type": "participates_as_exhibitor",
+            "evidence_urls": [
+              "https://www.krafton.com/en/news/press/krafton-announces-on-site-programs-for-g-star-2025/"
+            ],
+            "evidence_type": [
+              "company_official_event_participation"
+            ],
+            "as_of": "2025-11-03",
+            "review_status": "approved"
+          },
+          {
+            "from": "크래프톤",
+            "to": "259960 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/04/01/001022/20260401002423/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-04-01",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "크래프톤",
+          "english_name": "KRAFTON, Inc.",
+          "established_date": "20070326",
+          "homepage": "https://www.krafton.com",
+          "legal_name": "주식회사 크래프톤",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "259960",
+          "stock_name": "크래프톤"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "259960",
+          "name": "크래프톤",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 246000.0,
+              "high": 265000.0,
+              "low": 242000.0,
+              "close": 259000.0,
+              "volume": 252066.0,
+              "change_pct": 6.147540983606557
+            },
+            {
+              "date": "2026-07-31",
+              "open": 256500.0,
+              "high": 257000.0,
+              "low": 238000.0,
+              "close": 243000.0,
+              "volume": 186034.0,
+              "change_pct": -6.177606177606178
+            },
+            {
+              "date": "2026-08-03",
+              "open": 240000.0,
+              "high": 242000.0,
+              "low": 233500.0,
+              "close": 235000.0,
+              "volume": 128355.0,
+              "change_pct": -3.292181069958848
+            },
+            {
+              "date": "2026-08-04",
+              "open": 233000.0,
+              "high": 240000.0,
+              "low": 231500.0,
+              "close": 238000.0,
+              "volume": 115700.0,
+              "change_pct": 1.276595744680851
+            },
+            {
+              "date": "2026-08-05",
+              "open": 242000.0,
+              "high": 245500.0,
+              "low": 227500.0,
+              "close": 229000.0,
+              "volume": 150714.0,
+              "change_pct": -3.7815126050420167
+            },
+            {
+              "date": "2026-08-06",
+              "open": 229000.0,
+              "high": 230500.0,
+              "low": 224000.0,
+              "close": 230000.0,
+              "volume": 131085.0,
+              "change_pct": 0.43668122270742354
+            },
+            {
+              "date": "2026-08-07",
+              "open": 230000.0,
+              "high": 242000.0,
+              "low": 228500.0,
+              "close": 241500.0,
+              "volume": 107856.0,
+              "change_pct": 5.0
+            },
+            {
+              "date": "2026-08-10",
+              "open": 240000.0,
+              "high": 244000.0,
+              "low": 235000.0,
+              "close": 242000.0,
+              "volume": 74792.0,
+              "change_pct": 0.2070393374741201
+            },
+            {
+              "date": "2026-08-11",
+              "open": 242000.0,
+              "high": 247000.0,
+              "low": 239500.0,
+              "close": 244000.0,
+              "volume": 66912.0,
+              "change_pct": 0.8264462809917356
+            },
+            {
+              "date": "2026-08-12",
+              "open": 243500.0,
+              "high": 247000.0,
+              "low": 234000.0,
+              "close": 235000.0,
+              "volume": 94893.0,
+              "change_pct": -3.6885245901639343
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 243500.0,
+            "high": 247000.0,
+            "low": 234000.0,
+            "close": 235000.0,
+            "volume": 94893.0,
+            "change_pct": -3.6885245901639343
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 235000,
+            "daily_change_pct": -3.69,
+            "volume": 94893
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 2.17,
+            "five_vs_previous_volume_ratio": 0.57,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "네오위즈",
+          "넷마블",
+          "엔씨소프트",
+          "크래프톤"
+        ],
+        "candidate_count": 4,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "companies": [
+          "삼성전자"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "candidate_company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "네오위즈",
+          "넷마블",
+          "엔씨소프트",
+          "크래프톤"
+        ],
+        "candidate_count": 4,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "companies": [
+          "삼성전자"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 5,
+      "ontology_complete_count": 5,
+      "published_count": 5,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 4,
+      "role_coverage": [
+        "직접 기업",
+        "플랫폼·채널"
+      ],
+      "tier_counts": {
+        "direct": 4,
+        "value_chain": 1,
+        "industry_watch": 0
+      },
+      "category_count": 2,
+      "candidate_category_count": 2,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "지스타",
+            "observation_status": "observed_representative",
+            "ontology_status": "published",
+            "ontology_company_count": 5,
+            "lookup_match": {
+              "match_type": "exact_term",
+              "matched_label": "지스타",
+              "target_node_id": "term:reviewed:gstar",
+              "target_node_label": "지스타",
+              "review_status": "node_label",
+              "evidence": []
+            }
+          },
+          {
+            "term": "G-STAR",
+            "observation_status": "approved_ontology_term",
+            "ontology_status": "published",
+            "ontology_company_count": 5,
+            "lookup_match": {
+              "match_type": "reviewed_official_english_name",
+              "alias_id": "alias:reviewed:gstar-hyphen",
+              "matched_label": "G-STAR",
+              "target_node_id": "term:reviewed:gstar",
+              "target_node_label": "지스타",
+              "review_status": "approved",
+              "evidence": [
+                {
+                  "id": "evidence:reviewed:gstar-2025-program",
+                  "title": "G-STAR 2025 공식 G-CON 프로그램",
+                  "publisher": "지스타조직위원회",
+                  "url": "https://www.gstar.or.kr/gstar/gstar_last_conf_list.do?day=3&tab_sub_order=2",
+                  "evidence_type": "official_event_program",
+                  "summary": "지스타 공식 전년도 행사결과 페이지가 G-STAR 2025와 공식 컨퍼런스 G-CON 2025의 일정·세션·연사를 제시한다.",
+                  "published_at": "2025-11-13",
+                  "review_status": "approved",
+                  "provenance": {
+                    "method": "manual_url_review",
+                    "reviewed_at": "2026-08-13",
+                    "scope": "event_brand_and_official_program"
+                  }
+                }
+              ],
+              "provenance": {
+                "method": "manual_url_review",
+                "reviewed_at": "2026-08-13"
+              }
+            }
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "증거 온톨로지 경로가 완결된 고유 상장기업 3개 이상을 Gold로 공개"
+    },
+    "rank": 301,
+    "observed_rank": 301,
+    "home_rank": 14,
+    "rising_rank": 9,
+    "classification": "일반 트렌드",
+    "persistence_rank": 62,
+    "momentum_rank": 217,
+    "main_rank": 24,
+    "home_context_status": "resolved",
+    "home_context_reason": "context_resolved",
+    "home_eligible": true,
+    "company_card_status": "ready",
+    "company_card_reason": "evidence_backed_three_or_more",
+    "company_status": "ready",
+    "ranking_availability_status": "provisional_history"
+  }
+}

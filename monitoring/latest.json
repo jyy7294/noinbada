@@ -1,10 +1,10 @@
 {
   "measurement_window_hours": 168,
-  "recorded_runs": 12,
-  "successful_runs": 4,
-  "success_rate": 0.3333,
+  "recorded_runs": 13,
+  "successful_runs": 5,
+  "success_rate": 0.3846,
   "source_success_rate": {
-    "x": 0.3333,
+    "x": 0.3846,
     "google_trends": 1.0
   },
   "source_failure_counts": {
@@ -34,10 +34,10 @@
     "x": false,
     "google_trends": false
   },
-  "on_time_within_15m_rate": 0.3333,
-  "latest_delay_seconds": 119,
-  "latest_duration_seconds": 9.82,
-  "current_publication_scheduled_at": "2026-08-13T10:00:00+00:00",
+  "on_time_within_15m_rate": 0.3846,
+  "latest_delay_seconds": 256,
+  "latest_duration_seconds": 10.18,
+  "current_publication_scheduled_at": "2026-08-13T12:00:00+00:00",
   "current_publication_attempt_type": "scheduled",
   "current_publication_status": "scheduled_complete",
   "current_publication_success": true,
@@ -46,7 +46,7 @@
     "google_trends": true
   },
   "current_schedule_initial_attempt_success": true,
-  "latest_scheduled_at": "2026-08-13T10:00:00+00:00",
+  "latest_scheduled_at": "2026-08-13T12:00:00+00:00",
   "latest_scheduled_attempt_success": true,
   "latest_scheduled_attempt_source_success": {
     "x": true,
@@ -54,7 +54,7 @@
   },
   "recovered_from_scheduled_failure": false,
   "status": "collecting_baseline",
-  "remaining_runs_for_3d": 60,
-  "remaining_runs_for_7d": 156,
+  "remaining_runs_for_3d": 59,
+  "remaining_runs_for_7d": 155,
   "warning": "Codex 정각 자동화 실측 기록이며 노트북·Codex·Chrome 종료 또는 로그아웃 중에는 실행되지 않을 수 있음"
 }
