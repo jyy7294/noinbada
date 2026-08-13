@@ -1,0 +1,57 @@
+{
+  "schema_version": "trzip-ontology-enrichment-v1",
+  "metadata": {
+    "description": "Reviewed culture-event enrichment for automatically observed candidates. Never used for ranking or product-fit selection.",
+    "reviewed_at": "2026-08-14",
+    "ranking_input": false,
+    "padding_forbidden": true,
+    "publication_gate": "six unique listed stocks with complete URL-evidenced paths"
+  },
+  "nodes": [
+    {"id":"term:reviewed:hanbokexpo","type":"term","label":"한복상점","normalized_label":"한복상점","metadata":{"lookup_scope":"observed_term","ranking_input":false}},
+    {"id":"event:reviewed:hanbokexpo-2026","type":"entity","label":"2026 한복상점","normalized_label":"2026 한복상점","metadata":{"category":"culture_event","ranking_input":false}},
+    {"id":"company:kr:kospi:120110","type":"company","label":"코오롱인더","normalized_label":"코오롱인더","metadata":{"market":"KOSPI","ticker":"120110"}},
+    {"id":"stock:kr:kospi:120110","type":"stock","label":"120110 (KOSPI)","normalized_label":"120110 (kospi)","metadata":{"market":"KOSPI","ticker":"120110"}},
+    {"id":"company:kr:kospi:020000","type":"company","label":"한섬","normalized_label":"한섬","metadata":{"market":"KOSPI","ticker":"020000"}},
+    {"id":"stock:kr:kospi:020000","type":"stock","label":"020000 (KOSPI)","normalized_label":"020000 (kospi)","metadata":{"market":"KOSPI","ticker":"020000"}},
+    {"id":"evidence:reviewed:hanbokexpo-official","type":"evidence","label":"2026 한복상점 공식 안내","normalized_label":"2026 한복상점 공식 안내","metadata":{"publisher":"한국공예디자인문화진흥원","ranking_input":false}},
+    {"id":"evidence:reviewed:fnf-fashion","type":"evidence","label":"F&F 공식 기업 소개","normalized_label":"f&f 공식 기업 소개","metadata":{"publisher":"F&F","ranking_input":false}},
+    {"id":"evidence:reviewed:hanse-fashion","type":"evidence","label":"한세실업 공식 기업 소개","normalized_label":"한세실업 공식 기업 소개","metadata":{"publisher":"한세실업","ranking_input":false}},
+    {"id":"evidence:reviewed:hyosung-textile","type":"evidence","label":"효성티앤씨 공식 섬유 사업","normalized_label":"효성티앤씨 공식 섬유 사업","metadata":{"publisher":"효성티앤씨","ranking_input":false}},
+    {"id":"evidence:reviewed:youngone-apparel","type":"evidence","label":"영원무역 공식 의류 제조 소개","normalized_label":"영원무역 공식 의류 제조 소개","metadata":{"publisher":"영원무역","ranking_input":false}},
+    {"id":"evidence:reviewed:kolon-fashion","type":"evidence","label":"코오롱인더스트리 FnC 공식 소개","normalized_label":"코오롱인더스트리 fnc 공식 소개","metadata":{"publisher":"코오롱그룹","ranking_input":false}},
+    {"id":"evidence:reviewed:handsome-fashion","type":"evidence","label":"한섬 공식 기업 소개","normalized_label":"한섬 공식 기업 소개","metadata":{"publisher":"한섬","ranking_input":false}}
+  ],
+  "evidence": [
+    {"id":"evidence:reviewed:hanbokexpo-official","title":"2026 한복상점 공식 안내","publisher":"한국공예디자인문화진흥원","url":"https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216","evidence_type":"official_event_page","summary":"문화체육관광부 주최, 한국공예디자인문화진흥원 주관의 국내 한복 박람회임을 확인한다.","published_at":null,"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14","scope":"term_to_event"}},
+    {"id":"evidence:reviewed:fnf-fashion","title":"F&F 공식 기업 소개","publisher":"F&F","url":"https://www.fnf.co.kr/about/identity","evidence_type":"official_company_page","summary":"상장사 F&F가 패션 브랜드와 패션·문화 사업을 운영한다.","published_at":null,"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14","scope":"industry_company"}},
+    {"id":"evidence:reviewed:hanse-fashion","title":"한세실업 공식 기업 소개","publisher":"한세실업","url":"https://www.hansae.com/","evidence_type":"official_company_page","summary":"상장사 한세실업이 의류 OEM·ODM 제조 사업을 운영한다.","published_at":null,"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14","scope":"value_chain_company"}},
+    {"id":"evidence:reviewed:hyosung-textile","title":"효성티앤씨 공식 섬유 사업","publisher":"효성티앤씨","url":"https://www.hyosungtnc.com/kr/business/textile/fabric","evidence_type":"official_company_page","summary":"상장사 효성티앤씨가 의류용 직물과 염색 제품을 개발·공급한다.","published_at":null,"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14","scope":"value_chain_company"}},
+    {"id":"evidence:reviewed:youngone-apparel","title":"영원무역 공식 의류 제조 소개","publisher":"영원무역","url":"https://youngonecorporation.com/products/","evidence_type":"official_company_page","summary":"상장사 영원무역이 의류·섬유·신발·장비 제조 사업을 운영한다.","published_at":null,"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14","scope":"value_chain_company"}},
+    {"id":"evidence:reviewed:kolon-fashion","title":"코오롱인더스트리 FnC 공식 소개","publisher":"코오롱그룹","url":"https://www.kolon.com/kr/subsidiary/fashion","evidence_type":"official_company_page","summary":"상장사 코오롱인더스트리의 FnC 부문이 다양한 패션 브랜드와 유통 채널을 운영한다.","published_at":null,"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14","scope":"industry_company"}},
+    {"id":"evidence:reviewed:handsome-fashion","title":"한섬 공식 기업 소개","publisher":"한섬","url":"https://www.handsome.co.kr/ko/company/aboutHandsome.do","evidence_type":"official_company_page","summary":"상장사 한섬이 패션 브랜드와 라이프스타일 사업을 운영한다.","published_at":null,"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14","scope":"industry_company"}}
+  ],
+  "aliases": [],
+  "related_terms": [
+    {"id":"related:reviewed:hanbokexpo-2026","label":"2026 한복상점","target_node_id":"term:reviewed:hanbokexpo","relation_role":"event_name","evidence_ids":["evidence:reviewed:hanbokexpo-official"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"}},
+    {"id":"related:reviewed:hanbokexpo-hanbok","label":"한복","target_node_id":"term:reviewed:hanbokexpo","relation_role":"event_subject","evidence_ids":["evidence:reviewed:hanbokexpo-official"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"}},
+    {"id":"related:reviewed:hanbokexpo-expo","label":"한복 박람회","target_node_id":"term:reviewed:hanbokexpo","relation_role":"event_format","evidence_ids":["evidence:reviewed:hanbokexpo-official"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"}},
+    {"id":"related:reviewed:hanbokexpo-ddp","label":"동대문디자인플라자","target_node_id":"term:reviewed:hanbokexpo","relation_role":"venue","evidence_ids":["evidence:reviewed:hanbokexpo-official"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"}},
+    {"id":"related:reviewed:hanbokexpo-kcdf","label":"한국공예디자인문화진흥원","target_node_id":"term:reviewed:hanbokexpo","relation_role":"organizer","evidence_ids":["evidence:reviewed:hanbokexpo-official"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"}}
+  ],
+  "edges": [
+    {"id":"edge:reviewed:hanbokexpo-event","from_node":"term:reviewed:hanbokexpo","to_node":"event:reviewed:hanbokexpo-2026","relation_type":"observed_event","evidence_ids":["evidence:reviewed:hanbokexpo-official"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{"ranking_input":false}},
+    {"id":"edge:reviewed:hanbokexpo-fnf","from_node":"event:reviewed:hanbokexpo-2026","to_node":"company:kr:kospi:383220","relation_type":"industry_watch","evidence_ids":["evidence:reviewed:fnf-fashion"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{"not_event_participant_claim":true}},
+    {"id":"edge:reviewed:hanbokexpo-hanse","from_node":"event:reviewed:hanbokexpo-2026","to_node":"company:kr:kospi:105630","relation_type":"value_chain","evidence_ids":["evidence:reviewed:hanse-fashion"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{"not_event_participant_claim":true}},
+    {"id":"edge:reviewed:hanbokexpo-hyosung","from_node":"event:reviewed:hanbokexpo-2026","to_node":"company:kr:kospi:298020","relation_type":"raw_materials_components","evidence_ids":["evidence:reviewed:hyosung-textile"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{"not_event_participant_claim":true}},
+    {"id":"edge:reviewed:hanbokexpo-youngone","from_node":"event:reviewed:hanbokexpo-2026","to_node":"company:kr:kospi:111770","relation_type":"value_chain","evidence_ids":["evidence:reviewed:youngone-apparel"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{"not_event_participant_claim":true}},
+    {"id":"edge:reviewed:hanbokexpo-kolon","from_node":"event:reviewed:hanbokexpo-2026","to_node":"company:kr:kospi:120110","relation_type":"industry_watch","evidence_ids":["evidence:reviewed:kolon-fashion"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{"not_event_participant_claim":true}},
+    {"id":"edge:reviewed:hanbokexpo-handsome","from_node":"event:reviewed:hanbokexpo-2026","to_node":"company:kr:kospi:020000","relation_type":"industry_watch","evidence_ids":["evidence:reviewed:handsome-fashion"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{"not_event_participant_claim":true}},
+    {"id":"edge:reviewed:listing-383220","from_node":"company:kr:kospi:383220","to_node":"stock:kr:kospi:383220","relation_type":"listed_as","evidence_ids":["evidence:reviewed:fnf-fashion"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{}},
+    {"id":"edge:reviewed:listing-105630","from_node":"company:kr:kospi:105630","to_node":"stock:kr:kospi:105630","relation_type":"listed_as","evidence_ids":["evidence:reviewed:hanse-fashion"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{}},
+    {"id":"edge:reviewed:listing-298020","from_node":"company:kr:kospi:298020","to_node":"stock:kr:kospi:298020","relation_type":"listed_as","evidence_ids":["evidence:reviewed:hyosung-textile"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{}},
+    {"id":"edge:reviewed:listing-111770","from_node":"company:kr:kospi:111770","to_node":"stock:kr:kospi:111770","relation_type":"listed_as","evidence_ids":["evidence:reviewed:youngone-apparel"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{}},
+    {"id":"edge:reviewed:listing-120110","from_node":"company:kr:kospi:120110","to_node":"stock:kr:kospi:120110","relation_type":"listed_as","evidence_ids":["evidence:reviewed:kolon-fashion"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{}},
+    {"id":"edge:reviewed:listing-020000","from_node":"company:kr:kospi:020000","to_node":"stock:kr:kospi:020000","relation_type":"listed_as","evidence_ids":["evidence:reviewed:handsome-fashion"],"review_status":"approved","provenance":{"method":"manual_url_review","reviewed_at":"2026-08-14"},"metadata":{}}
+  ]
+}

@@ -43,9 +43,17 @@ ONTOLOGY_ENRICHMENT_PATH = (
 ONTOLOGY_HUMANOID_ENRICHMENT_PATH = (
     Path(__file__).resolve().parents[2] / "data" / "ontology_humanoid_enrichment.json"
 )
+ONTOLOGY_BRAND_ENRICHMENT_PATH = (
+    Path(__file__).resolve().parents[2] / "data" / "ontology_brand_enrichment.json"
+)
+ONTOLOGY_CULTURE_ENRICHMENT_PATH = (
+    Path(__file__).resolve().parents[2] / "data" / "ontology_culture_enrichment.json"
+)
 ONTOLOGY_ENRICHMENT_PATHS = (
     ONTOLOGY_ENRICHMENT_PATH,
     ONTOLOGY_HUMANOID_ENRICHMENT_PATH,
+    ONTOLOGY_BRAND_ENRICHMENT_PATH,
+    ONTOLOGY_CULTURE_ENRICHMENT_PATH,
 )
 
 
@@ -174,7 +182,7 @@ def _category(topic: str) -> str:
             "게임", "패치", "롤 ", "오버워치", "스팀", "리그 오브 레전드",
             "mmorpg", "콘솔", "이스포츠", "e스포츠",
         ), "gaming_digital"),
-        (("패션", "유니폼", "가방", "신발", "화장품"), "fashion_collectible"),
+        (("패션", "한복", "유니폼", "가방", "신발", "화장품"), "fashion_collectible"),
         (("여행", "호텔", "축제", "팝업", "전시"), "place_experience"),
         ((
             "주식", "증시", "코스피", "코스닥", "채권", "금리", "증권",

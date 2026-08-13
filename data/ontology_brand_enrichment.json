@@ -1,0 +1,457 @@
+{
+  "schema_version": "trzip-ontology-enrichment-v1",
+  "metadata": {
+    "description": "Reviewed brand and industry enrichment for automatically observed candidates. Never used for ranking or product-fit selection.",
+    "reviewed_at": "2026-08-14",
+    "ranking_input": false,
+    "padding_forbidden": true,
+    "publication_gate": "six unique listed stocks with complete URL-evidenced paths"
+  },
+  "nodes": [
+    {
+      "id": "term:reviewed:norangtongdak",
+      "type": "term",
+      "label": "노랑통닭",
+      "normalized_label": "노랑통닭",
+      "metadata": {
+        "lookup_scope": "observed_term",
+        "ranking_input": false
+      }
+    },
+    {
+      "id": "product:reviewed:chicken-franchise",
+      "type": "product_service",
+      "label": "치킨 프랜차이즈",
+      "normalized_label": "치킨 프랜차이즈",
+      "metadata": {
+        "category": "food_brand",
+        "ranking_input": false
+      }
+    },
+    {
+      "id": "company:kr:kosdaq:066360",
+      "type": "company",
+      "label": "체리부로",
+      "normalized_label": "체리부로",
+      "metadata": {
+        "market": "KOSDAQ",
+        "ticker": "066360"
+      }
+    },
+    {
+      "id": "stock:kr:kosdaq:066360",
+      "type": "stock",
+      "label": "066360 (KOSDAQ)",
+      "normalized_label": "066360 (kosdaq)",
+      "metadata": {"market": "KOSDAQ", "ticker": "066360"}
+    },
+    {
+      "id": "company:kr:kospi:036580",
+      "type": "company",
+      "label": "팜스코",
+      "normalized_label": "팜스코",
+      "metadata": {
+        "market": "KOSPI",
+        "ticker": "036580"
+      }
+    },
+    {
+      "id": "stock:kr:kospi:036580",
+      "type": "stock",
+      "label": "036580 (KOSPI)",
+      "normalized_label": "036580 (kospi)",
+      "metadata": {"market": "KOSPI", "ticker": "036580"}
+    },
+    {
+      "id": "evidence:reviewed:norang-official",
+      "type": "evidence",
+      "label": "노랑통닭 공식 채널",
+      "normalized_label": "노랑통닭 공식 채널",
+      "metadata": {
+        "publisher": "노랑푸드",
+        "ranking_input": false
+      }
+    },
+    {
+      "id": "evidence:reviewed:harim-chicken",
+      "type": "evidence",
+      "label": "하림 닭고기 제품과 기업 소개",
+      "normalized_label": "하림 닭고기 제품과 기업 소개",
+      "metadata": {
+        "publisher": "하림",
+        "ranking_input": false
+      }
+    },
+    {
+      "id": "evidence:reviewed:maniker-chicken",
+      "type": "evidence",
+      "label": "마니커 신선 닭고기 제품",
+      "normalized_label": "마니커 신선 닭고기 제품",
+      "metadata": {
+        "publisher": "마니커",
+        "ranking_input": false
+      }
+    },
+    {
+      "id": "evidence:reviewed:cherrybro-chicken",
+      "type": "evidence",
+      "label": "체리부로 브랜드 소개",
+      "normalized_label": "체리부로 브랜드 소개",
+      "metadata": {
+        "publisher": "체리부로",
+        "ranking_input": false
+      }
+    },
+    {
+      "id": "evidence:reviewed:dongwoo-chicken",
+      "type": "evidence",
+      "label": "동우팜투테이블 공식 기업 사이트",
+      "normalized_label": "동우팜투테이블 공식 기업 사이트",
+      "metadata": {
+        "publisher": "동우팜투테이블",
+        "ranking_input": false
+      }
+    },
+    {
+      "id": "evidence:reviewed:farmsco-broiler",
+      "type": "evidence",
+      "label": "팜스코 육계 사료 제품",
+      "normalized_label": "팜스코 육계 사료 제품",
+      "metadata": {
+        "publisher": "팜스코",
+        "ranking_input": false
+      }
+    },
+    {
+      "id": "evidence:reviewed:kyochon-franchise",
+      "type": "evidence",
+      "label": "교촌에프앤비 공식 기업 사이트",
+      "normalized_label": "교촌에프앤비 공식 기업 사이트",
+      "metadata": {
+        "publisher": "교촌에프앤비",
+        "ranking_input": false
+      }
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evidence:reviewed:norang-official",
+      "title": "노랑통닭 공식 채널",
+      "publisher": "노랑푸드",
+      "url": "https://litt.ly/norangtongdack",
+      "evidence_type": "official_brand_page",
+      "summary": "노랑통닭 공식 홈페이지와 브랜드 채널을 연결한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14",
+        "scope": "term_to_product"
+      }
+    },
+    {
+      "id": "evidence:reviewed:harim-chicken",
+      "title": "하림 닭고기 제품과 기업 소개",
+      "publisher": "하림",
+      "url": "https://www.harim.com/main/",
+      "evidence_type": "official_company_product_page",
+      "summary": "상장사 하림이 신선 닭고기와 육가공 제품을 생산한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14",
+        "scope": "industry_company"
+      }
+    },
+    {
+      "id": "evidence:reviewed:maniker-chicken",
+      "title": "마니커 신선 닭고기 제품",
+      "publisher": "마니커",
+      "url": "https://www.maniker.co.kr/m423.php",
+      "evidence_type": "official_company_product_page",
+      "summary": "상장사 마니커가 국내산 닭고기 제품을 생산한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14",
+        "scope": "industry_company"
+      }
+    },
+    {
+      "id": "evidence:reviewed:cherrybro-chicken",
+      "title": "체리부로 브랜드 소개",
+      "publisher": "체리부로",
+      "url": "https://cherrybro.com/brand-intro/",
+      "evidence_type": "official_company_product_page",
+      "summary": "상장사 체리부로가 닭고기 생산·가공·유통 브랜드를 운영한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14",
+        "scope": "industry_company"
+      }
+    },
+    {
+      "id": "evidence:reviewed:dongwoo-chicken",
+      "title": "동우팜투테이블 공식 기업 사이트",
+      "publisher": "동우팜투테이블",
+      "url": "https://www.dongwoofarmtotable.com/",
+      "evidence_type": "official_company_site",
+      "summary": "상장사 동우팜투테이블은 닭고기 계열화 사업을 운영한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14",
+        "scope": "industry_company"
+      }
+    },
+    {
+      "id": "evidence:reviewed:farmsco-broiler",
+      "title": "팜스코 육계 사료 제품",
+      "publisher": "팜스코",
+      "url": "https://farmsco.com/wp-content/uploads/2024/07/%EC%9C%A1%EA%B3%84%EA%B3%A8%EB%93%9C.pdf",
+      "evidence_type": "official_company_product_document",
+      "summary": "상장사 팜스코가 육계용 사료 제품군을 공급한다.",
+      "published_at": "2024-07-01",
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14",
+        "scope": "value_chain_company"
+      }
+    },
+    {
+      "id": "evidence:reviewed:kyochon-franchise",
+      "title": "교촌에프앤비 공식 기업 사이트",
+      "publisher": "교촌에프앤비",
+      "url": "https://www.kyochonfnb.com/",
+      "evidence_type": "official_company_site",
+      "summary": "상장사 교촌에프앤비가 치킨 프랜차이즈 브랜드를 운영한다.",
+      "published_at": null,
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14",
+        "scope": "industry_company"
+      }
+    }
+  ],
+  "aliases": [],
+  "related_terms": [
+    {
+      "id": "related:reviewed:norang-brand",
+      "label": "노랑푸드",
+      "target_node_id": "term:reviewed:norangtongdak",
+      "relation_role": "brand_operator",
+      "evidence_ids": [
+        "evidence:reviewed:norang-official"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      }
+    },
+    {
+      "id": "related:reviewed:norang-franchise",
+      "label": "치킨 프랜차이즈",
+      "target_node_id": "term:reviewed:norangtongdak",
+      "relation_role": "business_format",
+      "evidence_ids": [
+        "evidence:reviewed:norang-official"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      }
+    },
+    {
+      "id": "related:reviewed:norang-fried",
+      "label": "후라이드 치킨",
+      "target_node_id": "term:reviewed:norangtongdak",
+      "relation_role": "product_category",
+      "evidence_ids": [
+        "evidence:reviewed:norang-official"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      }
+    },
+    {
+      "id": "related:reviewed:norang-chicken",
+      "label": "닭고기",
+      "target_node_id": "term:reviewed:norangtongdak",
+      "relation_role": "core_ingredient",
+      "evidence_ids": [
+        "evidence:reviewed:harim-chicken"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      }
+    },
+    {
+      "id": "related:reviewed:norang-delivery",
+      "label": "치킨 배달",
+      "target_node_id": "term:reviewed:norangtongdak",
+      "relation_role": "sales_channel",
+      "evidence_ids": [
+        "evidence:reviewed:norang-official"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:reviewed:norang-franchise",
+      "from_node": "term:reviewed:norangtongdak",
+      "to_node": "product:reviewed:chicken-franchise",
+      "relation_type": "observed_brand_category",
+      "evidence_ids": [
+        "evidence:reviewed:norang-official"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      },
+      "metadata": {
+        "not_a_buy_signal": true
+      }
+    },
+    {
+      "id": "edge:reviewed:chicken-harim",
+      "from_node": "product:reviewed:chicken-franchise",
+      "to_node": "company:kr:kosdaq:136480",
+      "relation_type": "raw_materials_components",
+      "evidence_ids": [
+        "evidence:reviewed:harim-chicken"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      },
+      "metadata": {
+        "not_confirmed_supplier": true
+      }
+    },
+    {
+      "id": "edge:reviewed:chicken-maniker",
+      "from_node": "product:reviewed:chicken-franchise",
+      "to_node": "company:kr:kospi:027740",
+      "relation_type": "raw_materials_components",
+      "evidence_ids": [
+        "evidence:reviewed:maniker-chicken"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      },
+      "metadata": {
+        "not_confirmed_supplier": true
+      }
+    },
+    {
+      "id": "edge:reviewed:chicken-cherrybro",
+      "from_node": "product:reviewed:chicken-franchise",
+      "to_node": "company:kr:kosdaq:066360",
+      "relation_type": "raw_materials_components",
+      "evidence_ids": [
+        "evidence:reviewed:cherrybro-chicken"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      },
+      "metadata": {
+        "not_confirmed_supplier": true
+      }
+    },
+    {
+      "id": "edge:reviewed:chicken-dongwoo",
+      "from_node": "product:reviewed:chicken-franchise",
+      "to_node": "company:kr:kosdaq:088910",
+      "relation_type": "raw_materials_components",
+      "evidence_ids": [
+        "evidence:reviewed:dongwoo-chicken"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      },
+      "metadata": {
+        "not_confirmed_supplier": true
+      }
+    },
+    {
+      "id": "edge:reviewed:chicken-farmsco",
+      "from_node": "product:reviewed:chicken-franchise",
+      "to_node": "company:kr:kospi:036580",
+      "relation_type": "value_chain",
+      "evidence_ids": [
+        "evidence:reviewed:farmsco-broiler"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      },
+      "metadata": {
+        "not_confirmed_supplier": true
+      }
+    },
+    {
+      "id": "edge:reviewed:chicken-kyochon",
+      "from_node": "product:reviewed:chicken-franchise",
+      "to_node": "company:kr:kospi:339770",
+      "relation_type": "industry_watch",
+      "evidence_ids": [
+        "evidence:reviewed:kyochon-franchise"
+      ],
+      "review_status": "approved",
+      "provenance": {
+        "method": "manual_url_review",
+        "reviewed_at": "2026-08-14"
+      },
+      "metadata": {
+        "competitor_comparison_only": true
+      }
+    },
+    {
+      "id": "edge:reviewed:listing-066360",
+      "from_node": "company:kr:kosdaq:066360",
+      "to_node": "stock:kr:kosdaq:066360",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:cherrybro-chicken"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-14"},
+      "metadata": {}
+    },
+    {
+      "id": "edge:reviewed:listing-036580",
+      "from_node": "company:kr:kospi:036580",
+      "to_node": "stock:kr:kospi:036580",
+      "relation_type": "listed_as",
+      "evidence_ids": ["evidence:reviewed:farmsco-broiler"],
+      "review_status": "approved",
+      "provenance": {"method": "manual_url_review", "reviewed_at": "2026-08-14"},
+      "metadata": {}
+    }
+  ]
+}
