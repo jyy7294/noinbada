@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from trzip.hourly_store import HourlyObservation, upsert
+from trzip.hourly_store import HourlyObservation, connect, upsert
 from trzip.result_quality import _source_gate, evaluate_frontend_result
 
 
@@ -87,3 +87,40 @@ def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):
     assert result["passed"] is False
     assert result["sources"]["google_trends"]["row_count"] == 3
     assert result["sources"]["google_trends"]["maximum_rank"] == 4
+
+
+def test_source_gate_rejects_unapproved_collector_and_duplicate_rank(tmp_path: Path):
+    database = tmp_path / "runtime.sqlite3"
+    stamp = "2026-08-13T18:00:00+00:00"
+    x_rows = [
+        HourlyObservation(
+            stamp, "x", f"x-{rank}", rank, 100 - rank, "observed",
+            collector_version="unapproved_collector",
+        )
+        for rank in range(1, 31)
+    ]
+    google_rows = [
+        HourlyObservation(stamp, "google_trends", "g-1a", 1, 99, "observed"),
+        HourlyObservation(stamp, "google_trends", "g-1b", 1, 98, "observed"),
+        HourlyObservation(stamp, "google_trends", "g-3", 3, 97, "observed"),
+    ]
+    upsert(google_rows, database)
+    with connect(database) as connection:
+        connection.executemany(
+            "INSERT INTO hourly_observations "
+            "(observed_at,source,topic,source_rank,value,provenance,collector_version) "
+            "VALUES (?,?,?,?,?,?,?)",
+            [
+                (
+                    row.observed_at, row.source, row.topic, row.source_rank,
+                    row.value, row.provenance, row.collector_version,
+                )
+                for row in x_rows
+            ],
+        )
+        connection.commit()
+
+    result = _source_gate(database, stamp)
+    assert result["passed"] is False
+    assert "x" not in result["sources"]
+    assert result["sources"]["google_trends"]["unique_ranks"] == 2

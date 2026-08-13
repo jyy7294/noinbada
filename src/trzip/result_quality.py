@@ -7,6 +7,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from .company_roles import COMPANY_ROLE_LABELS
+from .hourly_store import ELIGIBLE_COLLECTOR_SQL
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 
 
@@ -186,13 +187,16 @@ def _source_gate(path: Path, observed_at: str) -> dict:
             """
             SELECT source, COUNT(*) AS row_count,
                    COUNT(DISTINCT topic) AS unique_topics,
+                   COUNT(DISTINCT source_rank) AS unique_ranks,
                    MIN(source_rank) AS minimum_rank,
                    MAX(source_rank) AS maximum_rank,
                    SUM(CASE WHEN provenance='observed' THEN 1 ELSE 0 END) AS observed_rows
             FROM hourly_observations
             WHERE observed_at=? AND source IN ('x', 'google_trends')
+              AND provenance='observed'
+              AND {ELIGIBLE_COLLECTOR_SQL}
             GROUP BY source
-            """,
+            """.format(ELIGIBLE_COLLECTOR_SQL=ELIGIBLE_COLLECTOR_SQL),
             (observed_at,),
         ).fetchall()
     finally:
@@ -201,22 +205,26 @@ def _source_gate(path: Path, observed_at: str) -> dict:
         source: {
             "row_count": row_count,
             "unique_topics": unique_topics,
+            "unique_ranks": unique_ranks,
             "minimum_rank": minimum_rank,
             "maximum_rank": maximum_rank,
             "observed_rows": observed_rows,
         }
-        for source, row_count, unique_topics, minimum_rank, maximum_rank, observed_rows in rows
+        for source, row_count, unique_topics, unique_ranks,
+        minimum_rank, maximum_rank, observed_rows in rows
     }
     x = sources.get("x") or {}
     google = sources.get("google_trends") or {}
     passed = (
         x.get("row_count") == 30
         and x.get("unique_topics") == 30
+        and x.get("unique_ranks") == 30
         and x.get("minimum_rank") == 1
         and x.get("maximum_rank") == 30
         and x.get("observed_rows") == 30
         and int(google.get("row_count") or 0) > 0
         and google.get("row_count") == google.get("unique_topics") == google.get("observed_rows")
+        and google.get("unique_ranks") == google.get("row_count")
         and google.get("minimum_rank") == 1
         and google.get("maximum_rank") == google.get("row_count")
     )
