@@ -99,6 +99,18 @@ py -3.13 -m venv .venv
 powershell -ExecutionPolicy Bypass -File scripts\setup-local-runtime.ps1
 ```
 
+새 Windows PC를 수집 노드로 구성할 때는 환경·`live-data`·Codex 정각 자동화와
+전체 테스트를 한 번에 구성하는 부트스트랩을 사용합니다.
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\bootstrap-new-pc.ps1 `
+  -TargetThreadId "현재 Codex 작업 ID"
+```
+
+X 로그인 쿠키와 GitHub 인증은 저장소에 포함하지 않습니다. 최초 로그인과 실제
+수집 검증까지 포함한 절차는 [새 Windows PC 설치](docs/PORTABLE_WINDOWS_SETUP.md)를
+따릅니다. 결과만 소비하는 PC는 `live-data/latest/manifest.json`을 바로 읽을 수 있습니다.
+
 정각 실행은 `%USERPROFILE%\.codex\automations\trzip\automation.toml`의 Codex 자동화가 담당합니다. X는 확장 프로그램이나 별도 브라우저 프로필이 아니라, 사용자가 현재 로그인해 둔 Chrome에서 직접 읽습니다. Chrome 또는 Codex가 종료된 시간은 실패·결측으로 남기며 이전 값을 현재 값처럼 재사용하지 않습니다.
 
 즉시 실행:

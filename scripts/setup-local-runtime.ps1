@@ -20,7 +20,7 @@ New-Item -ItemType Directory -Force -Path $RuntimeRoot | Out-Null
 if (-not (Test-Path -LiteralPath $Python)) {
     py -3.13 -m venv (Join-Path $ProjectRoot ".venv")
 }
-& $Python -m pip install -e "$ProjectRoot"
+& $Python -m pip install -e "$ProjectRoot[dev]"
 if ($LASTEXITCODE -ne 0) { throw "Dependency installation failed" }
 
 if (-not (Test-Path -LiteralPath (Join-Path $LiveDataRoot ".git"))) {

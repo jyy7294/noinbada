@@ -46,6 +46,32 @@ def test_codex_automation_runs_full_local_publication_pipeline():
     assert "Register-ScheduledTask" not in setup
     assert "Disable-ScheduledTask" in setup
     assert "+refs/heads/live-data:refs/remotes/origin/live-data" in setup
+    assert 'pip install -e "$ProjectRoot[dev]"' in setup
+
+
+def test_new_pc_bootstrap_installs_runtime_automation_and_runs_tests():
+    bootstrap = (ROOT / "scripts" / "bootstrap-new-pc.ps1").read_text(encoding="utf-8")
+    installer = (ROOT / "scripts" / "install-codex-automation.ps1").read_text(encoding="utf-8")
+    prompt = (ROOT / "config" / "codex-automation" / "trzip-prompt.ko.txt").read_text(encoding="utf-8")
+    guide = (ROOT / "docs" / "PORTABLE_WINDOWS_SETUP.md").read_text(encoding="utf-8")
+
+    assert "setup-local-runtime.ps1" in bootstrap
+    assert "install-codex-automation.ps1" in bootstrap
+    assert "CodexHome" in bootstrap
+    assert "origin/main" in bootstrap
+    assert "pytest -q" in bootstrap
+    assert "ready_for_browser_login_check" in bootstrap
+    assert "remaining_human_checks" in bootstrap
+    assert "FREQ=HOURLY;INTERVAL=1;BYMINUTE=0" in installer
+    assert "ReadAllText" in installer
+    assert "Text.Encoding]::UTF8" in installer
+    assert "{{X_INBOX}}" in prompt
+    assert "{{PROJECT_ROOT}}" in prompt
+    assert "chrome:control-chrome" in prompt
+    assert "collect-hourly.ps1" in prompt
+    assert "GitHub Actions" in prompt
+    assert "Windows 작업 스케줄러" in prompt
+    assert "로그인 쿠키와 토큰을 자동 복사하지 않는" in guide
 
 
 def test_verified_code_checkpoint_is_explicit_and_non_force():
