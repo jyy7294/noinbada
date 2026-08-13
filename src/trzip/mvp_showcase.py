@@ -17,11 +17,11 @@ from typing import Any
 
 from .editorial_review import (
     FINAL_KEYWORD_COUNT,
-    MINIMUM_VERIFIED_COMPANY_COUNT,
     _company_rows,
     _keyword_rows,
     _trend_definition,
 )
+from .ontology import MINIMUM_PUBLISHED_COMPANIES
 
 
 SCHEMA_VERSION = "trzip-mvp-showcase-v1"
@@ -58,7 +58,7 @@ def _scenario(topic: str, category: str, order: int, generated_at: str) -> dict[
     companies = _company_rows(seed, cache_key=topic, verified_at=generated_at)
     if len(keywords) != FINAL_KEYWORD_COUNT:
         raise ValueError(f"showcase keyword contract failed: {topic}")
-    if len(companies) < MINIMUM_VERIFIED_COMPANY_COUNT:
+    if len(companies) < MINIMUM_PUBLISHED_COMPANIES:
         raise ValueError(f"showcase company contract failed: {topic}")
 
     enriched = {
@@ -79,7 +79,7 @@ def _scenario(topic: str, category: str, order: int, generated_at: str) -> dict[
         "related_keywords": keywords,
         "company_candidates": companies,
         "company_display_policy": {
-            "minimum_company_count": MINIMUM_VERIFIED_COMPANY_COUNT,
+            "minimum_company_count": MINIMUM_PUBLISHED_COMPANIES,
             "investment_recommendation": False,
             "ranking_effect": "none",
         },
@@ -168,6 +168,6 @@ def validate_mvp_showcase(root: Path) -> dict[str, Any]:
             raise ValueError("showcase ordering contract failed")
         if len(trend.get("related_keywords") or []) != FINAL_KEYWORD_COUNT:
             raise ValueError("showcase keyword count mismatch")
-        if len(trend.get("company_candidates") or []) < MINIMUM_VERIFIED_COMPANY_COUNT:
+        if len(trend.get("company_candidates") or []) < MINIMUM_PUBLISHED_COMPANIES:
             raise ValueError("showcase company count mismatch")
     return manifest

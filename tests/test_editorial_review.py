@@ -1,7 +1,11 @@
 from pathlib import Path
 from datetime import UTC, datetime
 
-from trzip.editorial_review import build_editorial_review_pack, load_daily_editorial_review
+from trzip.editorial_review import (
+    apply_frontend_enrichment_cache,
+    build_editorial_review_pack,
+    load_daily_editorial_review,
+)
 from trzip.intelligence import _category
 
 
@@ -22,7 +26,7 @@ def _automatic_row(
     name: str,
     *,
     keywords: int = 5,
-    companies: int = 3,
+    companies: int = 6,
     lane: str = "main",
     category: str = "product_brand",
     broad_category: str = "consumer",
@@ -89,37 +93,202 @@ def test_broad_raw_expression_is_not_promoted_by_a_specific_related_query():
     assert pack["selection_audit"][0]["reason"] == "raw_expression_not_specific"
 
 
-def test_incomplete_automatic_candidate_stays_visible_and_enters_enrichment_queue():
+def test_incomplete_automatic_candidate_is_hidden_and_enters_enrichment_queue():
     source = {"unified_ranking": [_automatic_row(1, "자동 후보", keywords=2, companies=1)]}
 
     pack = build_editorial_review_pack(source)
 
-    assert [item["event_key"] for item in pack["trends"]] == ["자동 후보"]
-    assert pack["trends"][0]["display_contract_status"] == "enrichment_pending"
-    assert pack["preview_ready"] is True
-    assert pack["publication_ready"] is True
+    assert pack["trends"] == []
+    assert pack["preview_ready"] is False
+    assert pack["publication_ready"] is False
     assert pack["enrichment_queue"] == [{
         "observed_rank": 1,
         "event_key": "자동 후보",
         "keyword_count": 2,
         "company_count": 1,
         "missing_keywords": 3,
-        "missing_companies": 2,
+        "missing_companies": 5,
         "status": "enrichment_pending",
         "selection_reason": "automatic_product_fit",
     }]
 
 
 def test_enrichment_cache_is_applied_only_after_automatic_selection():
-    row = _automatic_row(7, "아이폰", keywords=0, companies=0)
+    row = _automatic_row(7, "개기일식", keywords=0, companies=0)
 
     item = build_editorial_review_pack({"unified_ranking": [row]})["trends"][0]
 
     assert item["observed_rank"] == 7
     assert item["score"] == 93
     assert len(item["related_keywords"]) == 5
-    assert len(item["company_candidates"]) >= 3
+    assert len(item["company_candidates"]) >= 6
     assert all(company["ranking_effect"] == "none" for company in item["company_candidates"])
+
+
+def test_frontend_cache_completes_display_data_without_changing_rank_or_selection():
+    row = _automatic_row(7, "개기일식", keywords=0, companies=0)
+    row.update({
+        "observed_rank": 7,
+        "home_rank": 3,
+        "home_eligible": True,
+        "score": 83.25,
+    })
+    immutable = {
+        field: row[field]
+        for field in ("rank", "observed_rank", "home_rank", "home_eligible", "score", "lane", "category")
+    }
+    payload = {"unified_ranking": [row]}
+
+    apply_frontend_enrichment_cache(payload, verified_at="2026-08-13T12:00:00+00:00")
+
+    item = payload["unified_ranking"][0]
+    assert {field: item[field] for field in immutable} == immutable
+    assert len(item["related_keywords"]) == 5
+    assert len({company["stock_code"] for company in item["companies"]}) >= 6
+    assert all(company["ontology_complete"] is True for company in item["companies"])
+    assert all(company["evidence_sources"] for company in item["companies"])
+
+
+def test_frontend_cache_preserves_observed_keyword_provenance_before_filling_slots():
+    row = _automatic_row(7, "아이폰", keywords=0, companies=0)
+    observed_keyword = {
+        "text": "아이폰 출시일",
+        "source": ["google_trends"],
+        "observed_hours": 2,
+        "status": "observed_related_query",
+        "role": "observed_related_expression",
+        "role_status": "observed_evidence",
+        "evidence_urls": [],
+        "affects_score": False,
+    }
+    row["related_keywords"] = [observed_keyword]
+    payload = {"unified_ranking": [row]}
+
+    apply_frontend_enrichment_cache(payload, verified_at="2026-08-13T12:00:00+00:00")
+
+    keywords = payload["unified_ranking"][0]["related_keywords"]
+    assert len(keywords) == 5
+    assert keywords[0] == observed_keyword
+    assert all(keyword["affects_score"] is False for keyword in keywords)
+
+
+def test_frontend_cache_replaces_three_structurally_incomplete_companies():
+    row = _automatic_row(7, "개기일식", keywords=0, companies=0)
+    row["companies"] = [
+        {
+            "company": f"미완성 기업 {index}",
+            "stock_code": f"BAD{index}",
+            "market": "NASDAQ",
+        }
+        for index in range(6)
+    ]
+    payload = {"unified_ranking": [row]}
+
+    apply_frontend_enrichment_cache(payload, verified_at="2026-08-13T12:00:00+00:00")
+
+    companies = payload["unified_ranking"][0]["companies"]
+    assert len({company["stock_code"] for company in companies}) >= 6
+    assert all(company["ontology_complete"] is True for company in companies)
+    assert all(company["company_description"] for company in companies)
+    assert all(company["relationship_reason"] for company in companies)
+    assert all(company["evidence_sources"][0]["url"] for company in companies)
+
+
+def test_astronomy_trends_share_evidence_backed_equipment_ontology_without_rank_changes():
+    rows = [
+        _automatic_row(
+            1,
+            "개기일식",
+            keywords=0,
+            companies=0,
+            category="public_observation_event",
+            broad_category="culture",
+        ),
+        _automatic_row(
+            2,
+            "유성우 시간",
+            keywords=0,
+            companies=0,
+            category="public_observation_event",
+            broad_category="culture",
+        ),
+    ]
+    before = [(row["rank"], row["score"], row["lane"]) for row in rows]
+    payload = {"unified_ranking": rows}
+
+    apply_frontend_enrichment_cache(payload, verified_at="2026-08-13T12:00:00+00:00")
+
+    assert [(row["rank"], row["score"], row["lane"]) for row in rows] == before
+    for row in rows:
+        assert row["keyword_status"] == "ready"
+        assert len(row["related_keywords"]) == 5
+        assert row["company_status"] == "ready"
+        assert {company["company"] for company in row["companies"]} == {
+            "Canon", "Nikon", "Ricoh", "FUJIFILM Holdings", "Sony Group", "Adobe",
+        }
+        assert all(company["ontology_complete"] is True for company in row["companies"])
+        assert all(company["evidence_sources"][0]["url"] for company in row["companies"])
+
+
+def test_additional_live_enrichment_caches_are_complete_and_do_not_select_trends():
+    names = ["커피믹스", "용인반도체클러스터", "아시안 게임"]
+    rows = [_automatic_row(index, name, keywords=0, companies=0) for index, name in enumerate(names, 1)]
+    payload = {"unified_ranking": rows}
+
+    apply_frontend_enrichment_cache(payload, verified_at="2026-08-13T12:00:00+00:00")
+
+    for index, row in enumerate(rows, 1):
+        assert row["rank"] == index
+        assert row["score"] == 100 - index
+        assert len(row["related_keywords"]) == 5
+        assert row["keyword_status"] == "ready"
+        if row["display_name"] in {"커피믹스", "아시안 게임"}:
+            assert len(row["companies"]) == 6
+            assert row["company_status"] == "ready"
+        else:
+            assert len(row["companies"]) == 0
+            assert row.get("company_status") != "ready"
+
+
+def test_coffee_mix_cache_has_six_evidence_backed_listed_companies():
+    row = _automatic_row(8, "커피믹스", keywords=0, companies=0)
+    payload = {"unified_ranking": [row]}
+
+    apply_frontend_enrichment_cache(payload, verified_at="2026-08-13T13:00:00+00:00")
+
+    assert len(row["related_keywords"]) == 5
+    assert len(row["companies"]) == 6
+    assert row["company_status"] == "ready"
+    assert all(company["ontology_complete"] is True for company in row["companies"])
+    assert all(company["evidence_sources"][0]["url"] for company in row["companies"])
+
+
+def test_live_frontend_caches_publish_six_companies_with_specific_role_categories():
+    names = ["불꽃축제", "광 통신", "지스타", "코난 극장판", "휴머노이드 로봇"]
+    rows = [_automatic_row(index, name, keywords=0, companies=0) for index, name in enumerate(names, 1)]
+    payload = {"unified_ranking": rows}
+
+    apply_frontend_enrichment_cache(payload, verified_at="2026-08-13T13:00:00+00:00")
+
+    allowed_roles = {
+        "manufacturing_development", "raw_materials_components", "content_production",
+        "distribution", "retail_sales", "brand_marketing", "platform_service",
+        "ownership_investment", "event_sponsorship", "industry_adjacent",
+    }
+    for row in rows:
+        assert len(row["related_keywords"]) == 5
+        assert len(row["companies"]) >= 6
+        assert row["company_status"] == "ready"
+        assert all(company["company_role_category"] in allowed_roles for company in row["companies"])
+        assert all(company["company_role_label"] for company in row["companies"])
+        assert all(company["evidence_sources"][0]["url"] for company in row["companies"])
+        assert row["company_resolution"]["category_count"] >= 1
+
+    conan = next(row for row in rows if row["display_name"] == "코난 극장판")
+    assert {company["market"] for company in conan["companies"]} == {"TSE"}
+    assert {company["company_role_category"] for company in conan["companies"]} >= {
+        "content_production", "distribution", "brand_marketing",
+    }
 
 
 def test_every_emitted_trend_satisfies_complete_display_contract():
@@ -128,7 +297,7 @@ def test_every_emitted_trend_satisfies_complete_display_contract():
     item = build_editorial_review_pack(source)["trends"][0]
 
     assert len(item["related_keywords"]) == 5
-    assert len(item["company_candidates"]) >= 3
+    assert len(item["company_candidates"]) >= 6
     assert item["company_verification_status"] == "ready_for_team_selection"
     assert item["display_contract_status"] == "complete"
     assert item["trend_definition"] == "‘완성 제품’은(는) 특정 제품이나 브랜드를 중심으로 형성된 관심 흐름입니다."

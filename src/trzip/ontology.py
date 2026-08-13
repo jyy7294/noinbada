@@ -45,6 +45,7 @@ COMPANY_LINK_RELATIONS = frozenset(
 )
 
 MINIMUM_PUBLISHED_COMPANIES = 3
+MINIMUM_FRONTEND_COMPANIES = 6
 
 
 class OntologyValidationError(ValueError):

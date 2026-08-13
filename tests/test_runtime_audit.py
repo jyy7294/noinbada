@@ -22,6 +22,8 @@ def _write_runtime(root: Path) -> None:
         "market": "KRX",
         "company_description": "Verified listed-company description",
         "relation_tier": "direct",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
         "official_identity": {"status": "verified", "ranking_effect": "none"},
         "ontology_complete": True,
         "evidence_sources": [{"url": "https://example.com/evidence"}],
@@ -32,7 +34,7 @@ def _write_runtime(root: Path) -> None:
     }
     companies = [
         {**company, "ticker": f"00000{index}", "stock_code": f"00000{index}"}
-        for index in range(1, 4)
+        for index in range(1, 7)
     ]
     item = {
         "event_key": "event:test",
@@ -40,6 +42,7 @@ def _write_runtime(root: Path) -> None:
         "observed_rank": 1,
         "main_rank": 1,
         "home_rank": 1,
+        "publication_rank": 1,
         "rising_rank": None,
         "display_name": "관측어",
         "broad_category": "culture",
@@ -55,7 +58,7 @@ def _write_runtime(root: Path) -> None:
             "recency_points": 10.0,
             "cross_source_points": 20.0,
             "total_points": 80.0,
-            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v1",
+            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
             "rounding_policy": "each_component_2dp_then_sum_2dp",
         },
         "candidate_status": "is_current",
@@ -78,14 +81,18 @@ def _write_runtime(root: Path) -> None:
         "company_card_status": "ready",
         "company_status": "ready",
         "keyword_status": "ready",
-        "company_card_reason": "evidence_backed_three_or_more",
+        "frontend_readiness_status": "ready",
+        "frontend_readiness_missing": [],
+        "frontend_keyword_count": 5,
+        "frontend_company_count": 6,
+        "company_card_reason": "evidence_backed_six_or_more",
         "keywords": [
             {"text": f"관련어{index}", "affects_score": False} for index in range(1, 6)
         ],
         "companies": companies,
         "company_resolution": {
             "publish_status": "published",
-            "minimum_gold_companies": 3,
+            "minimum_gold_companies": 6,
         },
         "ranking_data_readiness": {
             "status": "ready",
@@ -140,7 +147,7 @@ def _write_runtime(root: Path) -> None:
         view_item["freshness"]["half_life_hours"] = period["window"]["hours"] / 2
         ranking_views[period["key"]] = {
             **period,
-            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v1",
+            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
             "data_readiness": {"status": "ready"},
             "company_detail_policy": "shared_by_detail_event_key",
             "company_count_affects_rank": False,
@@ -161,6 +168,19 @@ def _write_runtime(root: Path) -> None:
             "period": "daily",
             "unified_ranking": "daily_period_aggregate",
             "trend_top10": "daily_home_top10",
+        },
+        "publication_readiness": {
+            "policy_version": "complete-home-contract-v1",
+            "target_count": 10,
+            "ready_count": 1,
+            "published_count": 1,
+            "pending_count": 0,
+            "publication_ready": False,
+            "required_keyword_count": 5,
+            "minimum_company_count": 6,
+            "padding_forbidden": True,
+            "ranking_effect": "none",
+            "rule": "Only complete trends enter frontend Top10 arrays.",
         },
         "unified_ranking": [item],
         "all_observed_ranking": [item],
@@ -189,6 +209,25 @@ def _write_runtime(root: Path) -> None:
         "trend_top10": [item],
         "public_top10": [item],
         "company_ready_trends": [item],
+        "youtube_content_discovery": {
+            "schema_version": "trzip-youtube-content-ranking-v1",
+            "observed_at": observed_at,
+            "status": "observed",
+            "region": "KR",
+            "chart": "mostPopular",
+            "row_count": 1,
+            "trend_count": 1,
+            "error_code": None,
+            "ranking": [{"event_key": "youtube:test", "youtube_trend_rank": 1}],
+            "top10": [{"event_key": "youtube:test", "youtube_trend_rank": 1}],
+            "video_chart": [{"video_id": "video-test", "youtube_rank": 1}],
+            "ranking_effect": "separate_content_lane",
+            "affects_x_google_rank": False,
+            "documentation": "https://developers.google.com/youtube/v3/docs/videos/list",
+            "limitations": "regional video chart",
+        },
+        "youtube_content_ranking": [{"event_key": "youtube:test", "youtube_trend_rank": 1}],
+        "youtube_content_top10": [{"event_key": "youtube:test", "youtube_trend_rank": 1}],
         "verification_policy": {"verification_affects_score": False},
         "verification_run": {"ranking_effect": "none"},
         "collection_status": {

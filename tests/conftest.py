@@ -8,3 +8,4 @@ def disable_external_company_identity_calls(monkeypatch):
     """Unit and contract tests must never consume a real OpenDART quota."""
 
     monkeypatch.setenv("TRZIP_DISABLE_EXTERNAL_COMPANY_IDENTITY", "1")
+    monkeypatch.setenv("TRZIP_DISABLE_EXTERNAL_YOUTUBE_TRENDING", "1")

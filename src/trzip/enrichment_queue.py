@@ -14,7 +14,46 @@ from pathlib import Path
 
 
 TASK_KINDS = {"related_keywords", "company_ontology"}
-REQUIRED_EVIDENCE_COUNT = 5
+REQUIRED_COUNTS = {
+    "related_keywords": 5,
+    "company_ontology": 6,
+}
+LLM_CANDIDATE_TARGETS = {
+    "related_keywords": 15,
+    "company_ontology": 18,
+}
+ONTOLOGY_EXPANSION_PATHS = (
+    "trend -> user_activity -> equipment_or_service -> listed_company",
+    "trend -> venue_or_event -> sponsor_or_operator -> listed_company",
+    "trend -> content_or_product -> producer_or_distributor -> listed_company",
+    "trend -> technology -> component_or_infrastructure -> listed_company",
+    "trend -> consumption_context -> measurable_demand_exposure -> listed_company",
+)
+
+
+def _llm_research_prompt(row: dict) -> str:
+    """Return a provider-neutral prompt for proposal generation only.
+
+    The LLM may expand a plausible ontology creatively, but cannot publish a
+    keyword/company or influence ranking.  A deterministic evidence/review gate
+    promotes only fully sourced listed-company relations to the Gold contract.
+    """
+
+    representative = row["representative_term"]
+    observed = ", ".join(row["observed_terms"][:20])
+    if row["task_kind"] == "related_keywords":
+        return (
+            f"트렌드 '{representative}'의 관측 표현({observed})을 바탕으로 관련 검색어 후보를 "
+            "최대 15개 제안하라. 동시 등장 표현, 사용 장면, 제품·행사·작품·기술 맥락을 우선하고 "
+            "단순 동의어 반복과 투자 종목명 끼워 넣기는 금지한다. 각 후보에 관계 유형과 근거 URL을 붙여라."
+        )
+    return (
+        f"트렌드 '{representative}'의 관측 표현({observed})에서 시작해 상장기업 후보를 최대 18개 제안하라. "
+        "트렌드→사용 장면→장비·서비스→산업→기업처럼 3~5단계 관계 경로를 창의적으로 탐색하되, "
+        "직접 관계·가치사슬·산업 관찰을 구분하라. 기업명, 종목코드, 거래소, 기업 설명, 연결 이유, "
+        "경로의 각 핵심 간선을 입증하는 공식·공시·신뢰 가능한 근거 URL을 제공하라. "
+        "관련성이 약한 기업으로 숫자를 채우거나 순위·점수 변경을 제안하지 마라."
+    )
 
 
 def _iso(value: datetime) -> str:
@@ -71,8 +110,14 @@ def _priority(item: dict, *, public_keys: set[str]) -> int:
 
 
 def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
+    # Once the public arrays are fail-closed, incomplete high-ranked candidates
+    # are intentionally absent from them.  Prioritise the first ten eligible
+    # score-ordered candidates instead so research closes the most visible gaps
+    # first without changing rank.
     public_keys = {
-        str(item.get("event_key") or "") for item in intelligence.get("public_top10", [])
+        str(item.get("event_key") or "")
+        for item in intelligence.get("unified_ranking", [])
+        if item.get("lane") == "main" and item.get("home_eligible") is True
     }
     stamp = _iso(at)
     rows: list[dict] = []
@@ -93,7 +138,9 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
         counts = {
             "related_keywords": len(item.get("keywords", [])),
             "company_ontology": int(
-                (item.get("company_resolution") or {}).get("candidate_count") or 0
+                item.get("frontend_company_count")
+                if item.get("frontend_company_count") is not None
+                else (item.get("company_resolution") or {}).get("candidate_count") or 0
             ),
         }
         policies = {
@@ -106,6 +153,9 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
                     "reviewed_provider_expression",
                 ],
                 "invented_terms_forbidden": True,
+                "llm_role": "candidate_generation_only",
+                "llm_candidate_target": LLM_CANDIDATE_TARGETS["related_keywords"],
+                "promotion_gate": "exactly_5_reviewed_evidence_terms",
             },
             "company_ontology": {
                 "accepted_evidence": [
@@ -116,11 +166,17 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
                 ],
                 "unique_listed_stocks_required": True,
                 "padding_forbidden": True,
+                "llm_role": "creative_graph_expansion_only",
+                "llm_candidate_target": LLM_CANDIDATE_TARGETS["company_ontology"],
+                "creative_path_templates": list(ONTOLOGY_EXPANSION_PATHS),
+                "allowed_relation_tiers": ["direct", "value_chain", "industry_watch"],
+                "promotion_gate": "minimum_6_complete_evidence_verified_listed_companies",
             },
         }
         for task_kind in sorted(TASK_KINDS):
-            current_count = min(REQUIRED_EVIDENCE_COUNT, counts[task_kind])
-            missing_count = max(0, REQUIRED_EVIDENCE_COUNT - current_count)
+            required_count = REQUIRED_COUNTS[task_kind]
+            current_count = min(required_count, counts[task_kind])
+            missing_count = max(0, required_count - current_count)
             rows.append({
                 "event_key": event_key,
                 "task_kind": task_kind,
@@ -131,12 +187,13 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
                 "latest_lane": str(item.get("lane") or "review"),
                 "priority": _priority(item, public_keys=public_keys),
                 "current_count": current_count,
-                "required_count": REQUIRED_EVIDENCE_COUNT,
+                "required_count": required_count,
                 "missing_count": missing_count,
                 "status": "complete" if missing_count == 0 else "pending",
                 "observed_terms": observed_terms,
                 "evidence_policy": policies[task_kind],
             })
+            rows[-1]["llm_research_prompt"] = _llm_research_prompt(rows[-1])
     return rows
 
 
@@ -220,16 +277,39 @@ def sync_enrichment_queue(
         item = dict(row)
         item["observed_terms"] = json.loads(item.pop("observed_terms_json"))
         item["evidence_policy"] = json.loads(item.pop("evidence_policy_json"))
+        item["llm_research_prompt"] = _llm_research_prompt({
+            **item,
+            "observed_terms": item["observed_terms"],
+        })
         item["affects_score"] = False
         pending.append(item)
     return {
         "schema_version": "trzip-enrichment-queue-v1",
         "observed_at": stamp,
-        "required_evidence_count": REQUIRED_EVIDENCE_COUNT,
+        "required_evidence_count": dict(REQUIRED_COUNTS),
         "counts": counts,
         "tracked_observations": int(total_observations),
         "pending_total": sum(item["pending"] for item in counts.values()),
         "pending_returned": len(pending),
         "pending": pending,
+        "llm_research_contract": {
+            "mode": "proposal_then_deterministic_review",
+            "candidate_targets": dict(LLM_CANDIDATE_TARGETS),
+            "ontology_expansion_paths": list(ONTOLOGY_EXPANSION_PATHS),
+            "required_company_fields": [
+                "company", "ticker", "market", "company_description",
+                "relationship_reason", "relation_tier", "ontology_path",
+                "evidence_urls", "company_role_category", "company_role_label",
+            ],
+            "allowed_relation_tiers": ["direct", "value_chain", "industry_watch"],
+            "allowed_company_role_categories": [
+                "manufacturing_development", "raw_materials_components",
+                "content_production", "distribution", "retail_sales",
+                "brand_marketing", "platform_service", "ownership_investment",
+                "event_sponsorship", "industry_adjacent",
+            ],
+            "llm_can_change_ranking": False,
+            "unverified_candidates_public": False,
+        },
         "ranking_effect": "none",
     }

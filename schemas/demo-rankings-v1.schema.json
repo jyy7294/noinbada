@@ -52,7 +52,7 @@
         "data_readiness", "unified_ranking", "trend_top10"
       ],
       "properties": {
-        "formula_version": {"const": "spread35_velocity25_breadth20_persistence10_recency10_v1"},
+        "formula_version": {"const": "spread35_velocity25_breadth20_persistence10_recency10_v2"},
         "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/entry"}},
         "trend_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/entry"}}
       }

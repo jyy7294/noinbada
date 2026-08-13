@@ -3,8 +3,12 @@ from datetime import UTC, datetime, timedelta
 from trzip.company_adapters import integration_status, opendart_company, pykrx_stock
 from trzip.hourly_store import HourlyObservation, upsert
 from trzip.intelligence import (
+    _broad_category,
+    _category,
+    _home_context_gate,
     _path_relation_tier,
     _provider_issue_context_titles,
+    _assign_canonical_topics,
     build_intelligence,
     canonical_topic,
 )
@@ -19,6 +23,63 @@ def test_aliases_are_normalized_to_events():
     )
     assert canonical_topic("볼티모어") == "볼티모어"
     assert canonical_topic("cpi 발표") == "cpi"
+    assert canonical_topic("로스앤젤레스 FC 대 케레타로 FC 순위") == canonical_topic(
+        "엘에이 FC 대 케레타로"
+    )
+
+
+def test_public_observation_event_is_a_culture_trend_without_a_manual_allowlist():
+    assert _category("개기일식") == "public_observation_event"
+    assert _broad_category(_category("개기일식")) == "culture"
+
+
+def test_astronomy_aliases_merge_only_with_source_related_query_context():
+    assert canonical_topic("일식") == "일식"
+    assert canonical_topic("일식", '["개기일식 시간"]') == "개기일식"
+    assert canonical_topic(
+        "별똥별", '["유성우 시간", "페르세우스 유성우 시간"]'
+    ) == "페르세우스 유성우"
+    assert canonical_topic(
+        "페르세우스", '["페르세우스 유성우 방향", "오늘 유성우"]'
+    ) == "페르세우스 유성우"
+    assert canonical_topic("별똥별", '["드라마 별똥별"]') == "별똥별"
+
+
+def test_same_expression_shares_source_context_within_one_day():
+    rows = _assign_canonical_topics([
+        {
+            "observed_at": "2026-08-13T10:00:00+00:00",
+            "topic": "페르세우스",
+            "related_terms_json": None,
+        },
+        {
+            "observed_at": "2026-08-13T13:00:00+00:00",
+            "topic": "페르세우스",
+            "related_terms_json": '["페르세우스 유성우 방향", "오늘 유성우"]',
+        },
+    ])
+    assert {row["event_key"] for row in rows} == {"페르세우스 유성우"}
+
+
+def test_single_source_market_term_needs_extra_home_context():
+    base = {
+        "lane": "main",
+        "category": "investment_market",
+        "broad_category": "market",
+        "context_status": "resolved",
+        "trend_fit": {"labels": ["named_object"]},
+        "period_sources": ["google_trends"],
+    }
+    assert _home_context_gate(base) == (False, "market_context_evidence_missing")
+
+    consumer_context = {
+        **base,
+        "trend_fit": {"labels": ["named_object", "consumer_action"]},
+    }
+    assert _home_context_gate(consumer_context) == (True, "context_resolved")
+
+    cross_source = {**base, "period_sources": ["x", "google_trends"]}
+    assert _home_context_gate(cross_source) == (True, "context_resolved")
 
 
 def test_listing_edge_alone_never_promotes_a_company_to_direct_relation():
@@ -75,6 +136,30 @@ def test_cpi_release_variant_is_one_event_without_double_counting_source(tmp_pat
     assert event["raw_terms"] == ["cpi", "cpi 발표"]
     assert event["latest_source_ranks"] == {"google_trends": 1}
     assert event["current_source_position"] == 0.5
+
+
+def test_sports_fixture_variants_merge_and_publish_compact_display_name(tmp_path):
+    target = tmp_path / "fixture-variants.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([
+        HourlyObservation(
+            at.isoformat(), "google_trends",
+            "로스앤젤레스 FC 대 케레타로 FC 순위", 1, 100, "observed"
+        ),
+        HourlyObservation(
+            at.isoformat(), "google_trends",
+            "엘에이 FC 대 케레타로", 2, 99, "observed"
+        ),
+    ], target)
+
+    result = build_intelligence(at, hours=1, path=target)
+
+    assert len(result["unified_ranking"]) == 1
+    event = result["unified_ranking"][0]
+    assert event["event_key"] == "로스앤젤레스 대 케레타로"
+    assert event["display_name"] == "로스앤젤레스 대 케레타로"
+    assert event["display_name_policy"] == "normalized_sports_fixture"
+    assert event["latest_source_ranks"] == {"google_trends": 1}
 
 
 def test_company_gold_never_fills_missing_companies_with_templates(tmp_path):
@@ -264,7 +349,9 @@ def test_broad_raw_word_and_unresolved_title_do_not_enter_home(tmp_path):
     assert by_topic["운전"]["lane"] == "review"
     assert by_topic["미스코리아"]["lane"] == "review"
     assert by_topic["커피믹스"]["lane"] == "main"
-    assert [item["topic"] for item in result["home_top10"]] == ["커피믹스"]
+    assert result["home_top10"] == []
+    assert by_topic["커피믹스"]["frontend_readiness_status"] == "enrichment_pending"
+    assert result["publication_readiness"]["publication_ready"] is False
 
 
 def test_intelligence_exposes_lifecycle_and_rank_movement(tmp_path):
@@ -620,7 +707,7 @@ def test_current_position_is_source_normalized_and_cross_bonus_is_explicit(tmp_p
 
     assert single_item["current_source_position"] == 0.5
     assert dual_item["current_source_position"] == 1.0
-    assert single_item["score_components"]["cross_source_points"] == 10
+    assert single_item["score_components"]["cross_source_points"] == 0
     assert dual_item["score_components"]["cross_source_points"] == 20
     for item in (single_item, dual_item):
         components = item["score_components"]
@@ -632,7 +719,7 @@ def test_current_position_is_source_normalized_and_cross_bonus_is_explicit(tmp_p
             )
         ), 2)
         assert item["score"] == components["total_points"] == visible_sum
-        assert components["formula_version"] == "spread35_velocity25_breadth20_persistence10_recency10_v1"
+        assert components["formula_version"] == "spread35_velocity25_breadth20_persistence10_recency10_v2"
         assert components["rounding_policy"] == "each_component_2dp_then_sum_2dp"
 
 

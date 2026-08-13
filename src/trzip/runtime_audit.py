@@ -11,6 +11,8 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+from .ontology import MINIMUM_FRONTEND_COMPANIES
+
 
 ALLOWED_RANKING_SOURCES = {"x", "google_trends"}
 ALLOWED_COLLECTOR_VERSIONS = {
@@ -32,7 +34,7 @@ SCORE_FORMULA_CONTRACTS = {
         ),
         "freshness_multiplier": True,
     },
-    "spread35_velocity25_breadth20_persistence10_recency10_v1": {
+    "spread35_velocity25_breadth20_persistence10_recency10_v2": {
         "components": (
             ("period_strength_points", 35.0),
             ("momentum_points", 25.0),
@@ -43,7 +45,7 @@ SCORE_FORMULA_CONTRACTS = {
         "freshness_multiplier": False,
     },
 }
-PERIOD_SCORE_FORMULA = "spread35_velocity25_breadth20_persistence10_recency10_v1"
+PERIOD_SCORE_FORMULA = "spread35_velocity25_breadth20_persistence10_recency10_v2"
 EXPECTED_SCHEMAS = {
     "intelligence": "trzip-intelligence-v3",
     "metadata": "trzip-live-data-v3",
@@ -381,6 +383,17 @@ def _audit_frontend_delivery(
         ]
         if published_keys != expected_keys:
             report.fail("frontend_rankings_order_mismatch")
+        expected_youtube = intelligence.get("youtube_content_discovery")
+        if expected_youtube is not None:
+            youtube = rankings.get("youtube_content_discovery") or {}
+            if (
+                youtube != expected_youtube
+                or youtube.get("ranking") != rankings.get("youtube_content_ranking")
+                or youtube.get("top10") != rankings.get("youtube_content_top10")
+                or youtube.get("affects_x_google_rank") is not False
+                or youtube.get("ranking_effect") != "separate_content_lane"
+            ):
+                report.fail("frontend_youtube_content_contract_mismatch")
         _audit_period_rankings(rankings, report)
 
     detail_index = bundle.get("trend_index") or []
@@ -517,7 +530,10 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
         ]
         if (
             [item.get("main_rank") for item in main] != list(range(1, len(main) + 1))
-            or top10 != main[:10]
+            or top10 != [
+                item for item in main
+                if item.get("frontend_readiness_status") == "ready"
+            ][:10]
         ):
             failures += 1
         period_counts[key] = len(ranking)
@@ -715,9 +731,13 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         range(1, len(home_ranking) + 1)
     ):
         home_failures += 1
+    completed_home_ranking = [
+        item for item in home_ranking
+        if item.get("frontend_readiness_status") == "ready"
+    ]
     if (
         all_observed != unified
-        or home_top10 != home_ranking[:10]
+        or home_top10 != completed_home_ranking[:10]
         or trend_top10 != home_top10
         or public_top10 != home_top10
     ):
@@ -738,6 +758,13 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         if item.get("lane") != "main" or item.get("company_card_status") not in {
             "ready", "enrichment_pending", "not_applicable"
         }:
+            home_failures += 1
+        if (
+            item.get("frontend_readiness_status") != "ready"
+            or item.get("keyword_status") != "ready"
+            or item.get("frontend_keyword_count") != 5
+            or int(item.get("frontend_company_count") or 0) < MINIMUM_FRONTEND_COMPANIES
+        ):
             home_failures += 1
         if item.get("broad_category") not in {
             "food", "content", "sports", "lifestyle", "culture",
@@ -772,10 +799,10 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         if item.get("lane") != "main" or item.get("company_card_status") != "ready":
             company_failures += 1
         resolution = item.get("company_resolution") or {}
-        if resolution.get("publish_status") != "published" or resolution.get("minimum_gold_companies") != 3:
+        if resolution.get("publish_status") != "published":
             company_failures += 1
         tickers = [str(company.get("stock_code") or "") for company in companies]
-        if len(tickers) < 3 or not all(tickers) or len(tickers) != len(set(tickers)):
+        if len(tickers) < MINIMUM_FRONTEND_COMPANIES or not all(tickers) or len(tickers) != len(set(tickers)):
             company_failures += 1
         for company in companies:
             identity = company.get("official_identity") or {}
@@ -784,6 +811,8 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
             if company.get("ontology_complete") is not True:
                 company_failures += 1
             if company.get("relation_tier") not in {"direct", "value_chain", "industry_watch"}:
+                company_failures += 1
+            if not company.get("company_role_category") or not company.get("company_role_label"):
                 company_failures += 1
             evidence = company.get("evidence_sources") or []
             path = company.get("ontology_path") or []

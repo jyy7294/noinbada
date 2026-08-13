@@ -37,6 +37,7 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
     assert {
         "relationship_reason", "company_summary", "company_description", "ticker",
         "ontology_path", "evidence_sources", "investment_warning",
+        "company_role_category", "company_role_label",
     } <= company_required
     assert payload["$defs"]["trend"]["properties"]["keywords"]["maxItems"] == 5
     assert payload["$defs"]["trend"]["properties"]["companies"]["oneOf"] == [
@@ -46,6 +47,7 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
     assert {
         "all_observed_ranking", "home_top10", "rising_top10", "category_summary",
         "trend_top10", "public_top10", "company_ready_trends",
+        "youtube_content_discovery", "youtube_content_ranking", "youtube_content_top10",
     } <= set(payload["required"])
     assert {
         "ranking_default_period", "ranking_periods", "ranking_views",

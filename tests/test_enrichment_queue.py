@@ -20,7 +20,7 @@ def _trend(rank, key, keywords=0, companies=0, lane="main"):
 
 def test_queue_persists_all_ranked_gaps_without_changing_intelligence(tmp_path):
     at = datetime(2026, 8, 13, tzinfo=UTC)
-    trends = [_trend(1, "complete", 5, 5), _trend(2, "gap", 1, 0)]
+    trends = [_trend(1, "complete", 5, 6), _trend(2, "gap", 1, 0)]
     intelligence = {"unified_ranking": trends, "public_top10": trends}
     before = repr(intelligence)
 
@@ -32,18 +32,35 @@ def test_queue_persists_all_ranked_gaps_without_changing_intelligence(tmp_path):
         "related_keywords": {"pending": 1, "complete": 1},
     }
     assert result["pending_total"] == 2
+    assert result["required_evidence_count"] == {
+        "related_keywords": 5,
+        "company_ontology": 6,
+    }
     assert {item["task_kind"] for item in result["pending"]} == {
         "company_ontology", "related_keywords",
     }
     assert all(item["affects_score"] is False for item in result["pending"])
     assert all(item["representative_term"] == "gap" for item in result["pending"])
+    contract = result["llm_research_contract"]
+    assert contract["mode"] == "proposal_then_deterministic_review"
+    assert contract["candidate_targets"] == {
+        "related_keywords": 15,
+        "company_ontology": 18,
+    }
+    assert contract["llm_can_change_ranking"] is False
+    assert contract["unverified_candidates_public"] is False
+    company_task = next(
+        item for item in result["pending"] if item["task_kind"] == "company_ontology"
+    )
+    assert "트렌드→사용 장면→장비·서비스→산업→기업" in company_task["llm_research_prompt"]
+    assert company_task["evidence_policy"]["llm_role"] == "creative_graph_expansion_only"
 
 
 def test_queue_is_idempotent_per_hour_and_keeps_history_across_hours(tmp_path):
     path = tmp_path / "queue.sqlite3"
     first_at = datetime(2026, 8, 13, tzinfo=UTC)
     first = {"unified_ranking": [_trend(1, "trend", 0, 0)], "public_top10": []}
-    second = {"unified_ranking": [_trend(3, "trend", 5, 5)], "public_top10": []}
+    second = {"unified_ranking": [_trend(3, "trend", 5, 6)], "public_top10": []}
 
     sync_enrichment_queue(first, path=path, at=first_at)
     sync_enrichment_queue(first, path=path, at=first_at)
@@ -56,6 +73,17 @@ def test_queue_is_idempotent_per_hour_and_keeps_history_across_hours(tmp_path):
         assert connection.execute(
             "SELECT COUNT(*) FROM enrichment_task_observations"
         ).fetchone()[0] == 4
+
+
+def test_six_complete_companies_close_company_task(tmp_path):
+    result = sync_enrichment_queue(
+        {"unified_ranking": [_trend(1, "ready-company", 0, 6)], "public_top10": []},
+        path=tmp_path / "queue.sqlite3",
+        at=datetime(2026, 8, 13, tzinfo=UTC),
+    )
+
+    assert result["counts"]["company_ontology"] == {"pending": 0, "complete": 1}
+    assert result["counts"]["related_keywords"] == {"pending": 1, "complete": 0}
 
 
 def test_public_rows_have_higher_research_priority_than_hidden_rows(tmp_path):

@@ -412,6 +412,39 @@ def test_period_momentum_falls_back_to_first_half_vs_second_half():
     assert item["score_components"]["momentum_points"] == 25.0
 
 
+def test_period_momentum_requires_three_event_observations_not_only_feed_snapshots():
+    rows = [
+        *sum((_snapshot(AT - timedelta(hours=age), "x", f"first filler {age}") for age in (14, 13, 12)), []),
+        *_snapshot(AT - timedelta(hours=2), "x", "target", "second filler 2"),
+        *_snapshot(AT - timedelta(hours=1), "x", "second filler 1"),
+        *_snapshot(AT, "x", "target", "second filler 0"),
+    ]
+
+    item = _event(build_period_ranking_v2(rows, at=AT, window_hours=24))
+
+    assert item["source_metrics"]["momentum_basis"] == {}
+    assert item["signals"]["momentum_delta"] is None
+    assert item["score_components"]["momentum_points"] == 0.0
+    assert item["data_readiness"]["momentum_status"] == "unavailable"
+
+
+def test_period_cross_source_points_are_bonus_only_when_both_sources_observe_event():
+    single_rows = [
+        *_snapshot(AT, "x", "target", "x filler"),
+        *_snapshot(AT, "google_trends", "google filler"),
+    ]
+    dual_rows = [
+        *_snapshot(AT, "x", "target", "x filler"),
+        *_snapshot(AT, "google_trends", "target", "google filler"),
+    ]
+
+    single = _event(build_period_ranking_v2(single_rows, at=AT, window_hours=24))
+    dual = _event(build_period_ranking_v2(dual_rows, at=AT, window_hours=24))
+
+    assert single["score_components"]["cross_source_points"] == 0.0
+    assert dual["score_components"]["cross_source_points"] == 20.0
+
+
 def test_period_momentum_is_unavailable_without_comparable_windows():
     item = _event(
         build_period_ranking_v2(

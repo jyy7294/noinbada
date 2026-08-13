@@ -124,6 +124,10 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     ] == [item["event_key"] for item in rankings["unified_ranking"]]
     assert rankings["all_observed_ranking"] == rankings["unified_ranking"]
     assert rankings["home_top10"] == rankings["trend_top10"] == rankings["public_top10"]
+    assert rankings["youtube_content_discovery"] == intelligence["youtube_content_discovery"]
+    assert rankings["youtube_content_ranking"] == intelligence["youtube_content_ranking"]
+    assert rankings["youtube_content_top10"] == intelligence["youtube_content_top10"]
+    assert rankings["youtube_content_discovery"]["affects_x_google_rank"] is False
     assert isinstance(rankings["rising_top10"], list)
     assert len(rankings["category_summary"]) == 8
     assert intelligence["publishable"] is True

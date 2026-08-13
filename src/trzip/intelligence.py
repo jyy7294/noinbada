@@ -7,6 +7,7 @@ from collections import Counter, defaultdict
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from .company_roles import with_company_role
 from .curation import is_sensitive_context
 from .hourly_store import (
     ELIGIBLE_COLLECTOR_SQL,
@@ -27,6 +28,7 @@ from .event_resolution import (
 from .ontology import (
     DEFAULT_PUBLISHABLE_REVIEW_STATUSES,
     MINIMUM_PUBLISHED_COMPANIES,
+    MINIMUM_FRONTEND_COMPANIES,
     OntologyGraph,
 )
 from .provider_verification import latest_verification_by_trend
@@ -47,7 +49,17 @@ ONTOLOGY_ENRICHMENT_PATHS = (
 )
 
 
-def canonical_topic(raw: str) -> str:
+def _source_related_terms(raw: str | None) -> list[str]:
+    if not raw:
+        return []
+    try:
+        values = json.loads(raw)
+    except (TypeError, ValueError, json.JSONDecodeError):
+        return []
+    return [str(value).strip() for value in values if str(value).strip()] if isinstance(values, list) else []
+
+
+def canonical_topic(raw: str, related_terms_json: str | None = None) -> str:
     """Create the ranking key using format-only, deterministic normalization.
 
     Reviewed aliases and the event reference set may enrich a published item,
@@ -55,11 +67,68 @@ def canonical_topic(raw: str) -> str:
     """
 
     normalized = normalize_event_key(raw)
+    related = [normalize_event_key(value) for value in _source_related_terms(related_terms_json)]
+    context = " ".join([normalized, *related])
+    # Ambiguous short expressions are merged only when the source itself
+    # supplies matching related-query evidence. Bare ``일식`` can also mean
+    # Japanese food, so it becomes an eclipse only with eclipse context.
+    if normalized in {"일식", "개기일식"} and "개기일식" in context:
+        return "개기일식"
+    meteor_terms = {
+        "유성우", "유성우 시간", "페르세우스", "페르세우스 유성우",
+        "페르세우스 유성우 시간", "별똥별", "별똥별 시간", "별똥별 보고",
+        "유성우 보고",
+    }
+    meteor_context = any(marker in context for marker in ("페르세우스 유성우", "유성우 시간"))
+    if normalized in meteor_terms and meteor_context:
+        return "페르세우스 유성우"
+    # Sports fixtures often arrive as search-query variants.  Strip display
+    # suffixes and format-only team markers before ranking so one match cannot
+    # occupy multiple positions.  This is a general linguistic rule, not a
+    # manually curated trend whitelist.
+    fixture = re.fullmatch(r"(.+?)\s+(?:대|vs\.?|v\.?)\s+(.+?)(?:\s+순위)?", normalized)
+    if fixture:
+        def normalize_team(value: str) -> str:
+            team = re.sub(r"\s+fc$", "", value.strip())
+            team = re.sub(r"^엘\s*에이\b", "로스앤젤레스", team)
+            return " ".join(team.split())
+
+        left, right = (normalize_team(value) for value in fixture.groups())
+        return f"{left} 대 {right}"
     # Release suffixes are format variants for common macro indicators, not a
     # reviewed trend alias. Keep this deterministic family rule deliberately
     # narrow so arbitrary nouns ending in "발표" are never merged.
     match = re.fullmatch(r"(cpi|ppi|gdp|fomc)\s+(?:발표|release)", normalized)
     return match.group(1) if match else normalized
+
+
+def _assign_canonical_topics(rows: list[dict]) -> list[dict]:
+    """Share source context for the same expression within a 24-hour event.
+
+    X often supplies only a bare topic while Google supplies related queries.
+    This lets those two observations resolve together without using a manual
+    ranking whitelist or carrying context across unrelated dates.
+    """
+
+    indexed: dict[str, list[tuple[datetime, list[str]]]] = defaultdict(list)
+    for row in rows:
+        key = normalize_event_key(row.get("topic") or "")
+        stamp = datetime.fromisoformat(str(row["observed_at"]))
+        indexed[key].append((stamp, _source_related_terms(row.get("related_terms_json"))))
+    output = []
+    for source in rows:
+        row = dict(source)
+        key = normalize_event_key(row.get("topic") or "")
+        stamp = datetime.fromisoformat(str(row["observed_at"]))
+        context = []
+        for other_stamp, terms in indexed.get(key, []):
+            if abs((stamp - other_stamp).total_seconds()) <= 24 * 3600:
+                context.extend(terms)
+        context_json = json.dumps(list(dict.fromkeys(context)), ensure_ascii=False)
+        row["event_key"] = canonical_topic(row.get("topic") or "", context_json)
+        row["canonical_topic"] = row["event_key"]
+        output.append(row)
+    return output
 
 
 def _provider_issue_context_titles(providers: dict, representative: str) -> list[str]:
@@ -97,7 +166,7 @@ def _category(topic: str) -> str:
         ), "screen_content"),
         (("콘서트", "공연", "앨범", "노래", "뮤직", "아이돌", "생일"), "music_performance"),
         ((
-            "야구", "축구", "테니스", "농구", "선수", "야구 감독", "축구 감독",
+            "아시안 게임", "아시안게임", "야구", "축구", "테니스", "농구", "선수", "야구 감독", "축구 감독",
             "농구 감독", "스포츠 감독", "타격왕",
             "프로골퍼", " fc",
         ), "sports_participation"),
@@ -116,6 +185,7 @@ def _category(topic: str) -> str:
             "로봇", "휴머노이드", "광 통신", "광통신", "인공지능", "원자로",
             "원전", "반도체", "데이터센터", "배터리", "자율주행",
         ), "technology_tool"),
+        (("일식", "월식", "유성우", "별똥별", "천문 현상"), "public_observation_event"),
     )
     for markers, category in heuristic_categories:
         if any(marker in lowered for marker in markers):
@@ -138,6 +208,7 @@ def _broad_category(category: str) -> str:
         "lifestyle_behavior": "lifestyle",
         "wellness_behavior": "lifestyle",
         "participation_meme": "culture",
+        "public_observation_event": "culture",
         "product_brand": "consumer",
         "technology_tool": "technology",
         "investment_market": "market",
@@ -209,6 +280,15 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
     context_status = str(item.get("context_status") or "")
     if context_status in {"unresolved", "ambiguous_person"}:
         return False, context_status
+    if item.get("broad_category") == "market":
+        labels = set((item.get("trend_fit") or {}).get("labels") or [])
+        period_sources = set(item.get("period_sources") or [])
+        has_market_context = bool(
+            labels.intersection({"consumer_action", "productization", "cross_context"})
+            or {"x", "google_trends"}.issubset(period_sources)
+        )
+        if not has_market_context:
+            return False, "market_context_evidence_missing"
     context_reason = "context_resolved"
     if context_status == "needs_context":
         basis = str(item.get("category_basis") or "")
@@ -786,7 +866,7 @@ def _ontology_company_candidates(
                 f"{(stock_node.get('metadata') or {}).get('market') or '국내'} 상장기업, "
                 f"종목코드 {stock_code}"
             )
-            candidate = {
+            candidate = with_company_role({
                 "company": company_node["label"],
                 "stock_code": stock_code,
                 "ticker": stock_code,
@@ -828,7 +908,7 @@ def _ontology_company_candidates(
                 "ontology_path": ontology_path,
                 "ontology_complete": complete,
                 "ontology_status": "complete" if complete else "incomplete",
-            }
+            })
             previous = by_stock.get(stock_code)
             if complete and (
                 previous is None
@@ -893,6 +973,7 @@ def _build_period_views(
                 "observed_rank": raw_item["rank"],
                 "main_rank": None,
                 "home_rank": None,
+                "publication_rank": None,
                 "rising_rank": None,
                 "event_key": event_key,
                 "display_name": base["display_name"],
@@ -933,6 +1014,18 @@ def _build_period_views(
                 "company_card_status": company_status,
                 "company_status": company_status,
                 "keyword_status": base["keyword_status"],
+                "frontend_readiness_status": base.get(
+                    "frontend_readiness_status", "enrichment_pending"
+                ),
+                "frontend_readiness_missing": base.get(
+                    "frontend_readiness_missing",
+                    [
+                        "related_keywords_exactly_five",
+                        "evidence_backed_listed_companies_at_least_six",
+                    ],
+                ),
+                "frontend_keyword_count": int(base.get("frontend_keyword_count") or 0),
+                "frontend_company_count": int(base.get("frontend_company_count") or 0),
                 "detail_event_key": event_key,
                 "detail_status": (
                     "shared_full_detail"
@@ -952,6 +1045,12 @@ def _build_period_views(
         for main_rank, item in enumerate(main_ranking, 1):
             item["main_rank"] = main_rank
             item["home_rank"] = main_rank
+        completed_ranking = [
+            item for item in main_ranking
+            if item["frontend_readiness_status"] == "ready"
+        ]
+        for publication_rank, item in enumerate(completed_ranking, 1):
+            item["publication_rank"] = publication_rank
         period_views[key] = {
             "key": key,
             "label": raw_view["label"],
@@ -962,9 +1061,122 @@ def _build_period_views(
             "company_detail_policy": "shared_by_detail_event_key",
             "company_count_affects_rank": False,
             "unified_ranking": ranking,
-            "period_top10": main_ranking[:10],
+            "period_top10": completed_ranking[:10],
         }
     return periods, period_views
+
+
+def refresh_frontend_readiness(intelligence: dict) -> dict:
+    """Rebuild frontend arrays after score-independent enrichment is attached."""
+
+    candidates = intelligence.get("unified_ranking", [])
+    for item in candidates:
+        keyword_count = len(item.get("related_keywords") or item.get("keywords") or [])
+        complete_companies = []
+        for company in item.get("companies") or []:
+            evidence_urls = {
+                str(source.get("url") or "").strip()
+                for source in company.get("evidence_sources") or []
+                if str(source.get("url") or "").strip()
+            }
+            if (
+                str(company.get("company") or "").strip()
+                and str(company.get("stock_code") or "").strip()
+                and str(company.get("market") or "").strip()
+                and str(company.get("company_description") or "").strip()
+                and str(company.get("relationship_reason") or "").strip()
+                and evidence_urls
+                and company.get("ontology_complete") is True
+            ):
+                complete_companies.append(company)
+        complete_company_count = len({
+            str(company["stock_code"]).strip() for company in complete_companies
+        })
+        missing = []
+        if item.get("keyword_status") != "ready" or keyword_count != 5:
+            missing.append("related_keywords_exactly_five")
+        if complete_company_count < MINIMUM_FRONTEND_COMPANIES:
+            missing.append("evidence_backed_listed_companies_at_least_six")
+        item["frontend_readiness_status"] = "ready" if not missing else "enrichment_pending"
+        item["frontend_readiness_missing"] = missing
+        item["frontend_keyword_count"] = keyword_count
+        item["frontend_company_count"] = complete_company_count
+        item["publication_rank"] = None
+
+    home = [
+        item for item in candidates
+        if item.get("lane") == "main" and item.get("home_eligible") is True
+    ]
+    for rank, item in enumerate(home, 1):
+        item["home_rank"] = rank
+    complete = [item for item in home if item["frontend_readiness_status"] == "ready"]
+    for rank, item in enumerate(complete, 1):
+        item["publication_rank"] = rank
+    rising = [
+        item for item in complete
+        if (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
+        and float(item.get("momentum_delta") or 0.0) > 0.0
+    ]
+    rising.sort(key=lambda item: (
+        -float(item["momentum_delta"]),
+        -float(item["period_strength"]),
+        int(item["observed_rank"]),
+        str(item["event_key"]),
+    ))
+    for item in candidates:
+        item["rising_rank"] = None
+    for rank, item in enumerate(rising, 1):
+        item["rising_rank"] = rank
+
+    top = complete[:10]
+    intelligence["home_top10"] = top
+    intelligence["trend_top10"] = list(top)
+    intelligence["public_top10"] = list(top)
+    intelligence["rising_top10"] = rising[:10]
+    intelligence["company_ready_trends"] = [
+        item for item in home
+        if int(item.get("frontend_company_count") or 0) >= MINIMUM_FRONTEND_COMPANIES
+    ]
+    readiness = intelligence.setdefault("publication_readiness", {})
+    readiness.update({
+        "ready_count": len(complete),
+        "published_count": len(top),
+        "pending_count": len(home) - len(complete),
+        "publication_ready": len(complete) >= 10,
+    })
+    for summary in intelligence.get("category_summary", []):
+        category = summary.get("category")
+        summary["home_top10_count"] = sum(
+            item.get("broad_category") == category for item in top
+        )
+        summary["rising_top10_count"] = sum(
+            item.get("broad_category") == category for item in rising[:10]
+        )
+    by_key = {item["event_key"]: item for item in candidates}
+    for view in (intelligence.get("ranking_views") or {}).values():
+        for summary in view.get("unified_ranking", []):
+            source = by_key.get(summary.get("event_key"))
+            if source is None:
+                continue
+            for field in (
+                "keyword_status", "company_card_status", "company_status",
+                "frontend_readiness_status", "frontend_readiness_missing",
+                "frontend_keyword_count", "frontend_company_count",
+            ):
+                summary[field] = source.get(field)
+            summary["publication_rank"] = None
+        period_home = [
+            item for item in view.get("unified_ranking", [])
+            if item.get("lane") == "main" and item.get("home_eligible") is True
+        ]
+        period_complete = [
+            item for item in period_home
+            if item.get("frontend_readiness_status") == "ready"
+        ]
+        for rank, item in enumerate(period_complete, 1):
+            item["publication_rank"] = rank
+        view["period_top10"] = period_complete[:10]
+    return intelligence
 
 
 def build_intelligence(
@@ -983,9 +1195,9 @@ def build_intelligence(
     period_start = end - timedelta(hours=720 - 1)
     rows = [dict(row) for row in _series_rows(period_start, end, path)]
     lifecycle_start = end - timedelta(days=60)
-    ranking_rows = [dict(row) for row in _series_rows(lifecycle_start, end, path)]
-    for item in ranking_rows:
-        item["event_key"] = canonical_topic(item["topic"])
+    ranking_rows = _assign_canonical_topics(
+        [dict(row) for row in _series_rows(lifecycle_start, end, path)]
+    )
     period_ranking_contract = build_period_rankings_v2(
         ranking_rows,
         at=end,
@@ -1035,9 +1247,7 @@ def build_intelligence(
     )
     news_context_by_term = news_context_by_term or {}
     grouped: dict[str, list[dict]] = defaultdict(list)
-    for row in rows:
-        item = dict(row)
-        item["canonical_topic"] = canonical_topic(item["topic"])
+    for item in _assign_canonical_topics(rows):
         grouped[item["canonical_topic"]].append(item)
 
     candidates = []
@@ -1341,16 +1551,28 @@ def build_intelligence(
             "candidate_category_count": len(candidate_company_categories),
             "ontology_diagnostics": ontology_diagnostics,
             "reason": (
-                "증거 온톨로지 경로가 완결된 고유 상장기업 3개 이상을 Gold로 공개"
+                "증거 온톨로지 경로가 완결된 고유 상장기업 3개 이상을 내부 Gold 후보층으로 보존"
                 if gold_publishable
                 else "사건·정책·논란 맥락은 기업 연결을 공개하지 않음"
                 if not company_eligible
-                else "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 공개를 보류"
+                else "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 후보층 공개를 보류"
             ),
         }
         display_name = representative_term
         display_name_policy = "observed_representative_term"
         canonical_name = str(event_resolution["canonical"] or "").strip()
+        if re.fullmatch(r".+\s+대\s+.+", event_key) and event_key != representative_term:
+            # Fixture query suffixes are still retained in raw_terms and
+            # representative evidence, while the card title uses the compact
+            # canonical event name shared by every source expression.
+            display_name = event_key
+            display_name_policy = "normalized_sports_fixture"
+        if event_key in {"개기일식", "페르세우스 유성우"} and event_key != representative_term:
+            # The source-backed event merge above is more specific than a bare
+            # source token such as ``일식`` or ``페르세우스``. Raw expressions
+            # remain available in raw_terms and representative_evidence.
+            display_name = event_key
+            display_name_policy = "source_context_event_merge"
         compact_representative = "".join(representative_term.split())
         if (
             len(compact_representative) == 6
@@ -1551,6 +1773,42 @@ def build_intelligence(
             item["company_card_reason"] = "company_linking_not_allowed_for_lane_or_context"
         item["company_status"] = item["company_card_status"]
 
+        keyword_count = len(item.get("related_keywords") or item.get("keywords") or [])
+        complete_companies = []
+        for company in item.get("companies") or []:
+            evidence_urls = {
+                str(source.get("url") or "").strip()
+                for source in company.get("evidence_sources") or []
+                if str(source.get("url") or "").strip()
+            }
+            if (
+                str(company.get("company") or "").strip()
+                and str(company.get("stock_code") or "").strip()
+                and str(company.get("market") or "").strip()
+                and str(company.get("company_description") or "").strip()
+                and str(company.get("relationship_reason") or "").strip()
+                and evidence_urls
+                and company.get("ontology_complete") is True
+            ):
+                complete_companies.append(company)
+        complete_company_count = len({
+            str(company["stock_code"]).strip() for company in complete_companies
+        })
+        readiness_missing = []
+        if item["keyword_status"] != "ready" or keyword_count != 5:
+            readiness_missing.append("related_keywords_exactly_five")
+        if (
+            complete_company_count < MINIMUM_FRONTEND_COMPANIES
+        ):
+            readiness_missing.append("evidence_backed_listed_companies_at_least_six")
+        item["frontend_readiness_status"] = (
+            "ready" if not readiness_missing else "enrichment_pending"
+        )
+        item["frontend_readiness_missing"] = readiness_missing
+        item["frontend_keyword_count"] = keyword_count
+        item["frontend_company_count"] = complete_company_count
+        item["publication_rank"] = None
+
     home_candidates = [
         item for item in candidates
         if item["lane"] == "main" and item["home_eligible"]
@@ -1558,8 +1816,15 @@ def build_intelligence(
     for home_rank, item in enumerate(home_candidates, 1):
         item["home_rank"] = home_rank
 
-    rising_candidates = [
+    completed_home_candidates = [
         item for item in home_candidates
+        if item["frontend_readiness_status"] == "ready"
+    ]
+    for publication_rank, item in enumerate(completed_home_candidates, 1):
+        item["publication_rank"] = publication_rank
+
+    rising_candidates = [
+        item for item in completed_home_candidates
         if (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
         and float(item.get("momentum_delta") or 0.0) > 0.0
     ]
@@ -1574,7 +1839,7 @@ def build_intelligence(
     for rising_rank, item in enumerate(rising_candidates, 1):
         item["rising_rank"] = rising_rank
 
-    home_top10 = home_candidates[:10]
+    home_top10 = completed_home_candidates[:10]
     rising_top10 = rising_candidates[:10]
     trend_top10 = list(home_top10)
     # Backwards-compatible alias for the existing frontend. It must remain
@@ -1582,7 +1847,7 @@ def build_intelligence(
     public_top10 = list(home_top10)
     company_ready_trends = [
         item for item in home_candidates
-        if item["company_card_status"] == "ready"
+        if int(item.get("frontend_company_count") or 0) >= MINIMUM_FRONTEND_COMPANIES
     ]
     category_summary = [
         {
@@ -1620,11 +1885,28 @@ def build_intelligence(
     ]:
         raise ValueError("top-level trend_top10 must remain the hydrated default-period alias")
     context_resolved_candidates = list(home_candidates)
+    publication_readiness = {
+        "policy_version": "complete-home-contract-v1",
+        "target_count": 10,
+        "ready_count": len(completed_home_candidates),
+        "published_count": len(home_top10),
+        "pending_count": len(home_candidates) - len(completed_home_candidates),
+        "publication_ready": len(completed_home_candidates) >= 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": MINIMUM_FRONTEND_COMPANIES,
+        "padding_forbidden": True,
+        "ranking_effect": "none",
+        "rule": (
+            "Only score-ordered, product-fit trends with exactly five evidence-backed "
+            "related keywords and at least six complete listed-company relationships "
+            "may enter frontend Top10 arrays."
+        ),
+    }
     home_quality_gate = {
-        "policy_version": "home-trend-subset-v2",
+        "policy_version": "home-trend-subset-v3",
         "ranking_effect": "none",
         "unified_ranking_preserved": True,
-        "main_lane_total": len(home_candidates),
+        "main_lane_total": len(lanes["main"]),
         "trend_top10_count": len(trend_top10),
         "company_count_affects_home": False,
         "minimum_published_companies": MINIMUM_PUBLISHED_COMPANIES,
@@ -1792,6 +2074,7 @@ def build_intelligence(
             "default_period": "daily",
         },
         "home_quality_gate": home_quality_gate,
+        "publication_readiness": publication_readiness,
         "context_evidence_policy": {
             "news_is_ranking_source": False,
             "news_layers": ["discovery", "context", "company_evidence"],
@@ -1836,6 +2119,8 @@ def build_intelligence(
                 item["home_context_status"] == "review_required" for item in public_top10
             ),
             "public_top10_count": len(public_top10),
+            "frontend_complete_candidate_count": len(completed_home_candidates),
+            "frontend_publication_ready": publication_readiness["publication_ready"],
             "trend_top10_count": len(trend_top10),
             "company_ready_trend_count": len(company_ready_trends),
             "excluded_from_public_due_to_non_main_lane": len(candidates) - len(home_candidates),

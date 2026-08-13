@@ -1,0 +1,171 @@
+from __future__ import annotations
+
+import argparse
+import json
+import sqlite3
+from datetime import UTC, datetime, timedelta
+from pathlib import Path
+
+from .company_roles import COMPANY_ROLE_LABELS
+from .ontology import MINIMUM_FRONTEND_COMPANIES
+
+
+def evaluate_frontend_result(intelligence: dict) -> dict:
+    """Evaluate the completed frontend contract without recomputing rank."""
+
+    top = list(intelligence.get("home_top10") or [])
+    failures: list[str] = []
+    if len(top) != 10:
+        failures.append(f"home_top10_count:{len(top)}")
+    if [item.get("publication_rank") for item in top] != list(range(1, len(top) + 1)):
+        failures.append("publication_rank_not_contiguous")
+    event_keys = [str(item.get("event_key") or "") for item in top]
+    if not all(event_keys) or len(event_keys) != len(set(event_keys)):
+        failures.append("duplicate_or_empty_event_key")
+
+    trend_checks = []
+    for item in top:
+        name = str(item.get("display_name") or item.get("event_key") or "")
+        keywords = list(item.get("related_keywords") or item.get("keywords") or [])
+        companies = list(item.get("companies") or [])
+        unique_codes = {str(company.get("stock_code") or "").strip() for company in companies}
+        item_failures = []
+        if len(keywords) != 5:
+            item_failures.append(f"keyword_count:{len(keywords)}")
+        if len(unique_codes) < MINIMUM_FRONTEND_COMPANIES or "" in unique_codes:
+            item_failures.append(f"company_count:{len(unique_codes - {''})}")
+        for company in companies:
+            evidence_urls = [
+                str(source.get("url") or "").strip()
+                for source in company.get("evidence_sources") or []
+                if isinstance(source, dict)
+            ]
+            if not all((
+                str(company.get("company") or "").strip(),
+                str(company.get("stock_code") or "").strip(),
+                str(company.get("market") or "").strip(),
+                str(company.get("company_description") or "").strip(),
+                str(company.get("relationship_reason") or "").strip(),
+                str(company.get("company_role_category") or "").strip(),
+                str(company.get("company_role_label") or "").strip(),
+                any(evidence_urls),
+                company.get("ontology_complete") is True,
+            )):
+                item_failures.append(f"incomplete_company:{company.get('company')}")
+            role_category = str(company.get("company_role_category") or "")
+            if COMPANY_ROLE_LABELS.get(role_category) != company.get("company_role_label"):
+                item_failures.append(f"invalid_company_role:{company.get('company')}")
+        if item.get("frontend_readiness_status") != "ready":
+            item_failures.append("frontend_not_ready")
+        failures.extend(f"{name}:{reason}" for reason in item_failures)
+        trend_checks.append({
+            "publication_rank": item.get("publication_rank"),
+            "display_name": name,
+            "observed_rank": item.get("observed_rank"),
+            "keyword_count": len(keywords),
+            "company_count": len(unique_codes - {""}),
+            "role_categories": sorted({
+                str(company.get("company_role_category") or "") for company in companies
+            }),
+            "passed": not item_failures,
+        })
+    return {
+        "policy_version": "frontend-result-quality-v1",
+        "passed": not failures,
+        "trend_count": len(top),
+        "required_trend_count": 10,
+        "required_keyword_count": 5,
+        "minimum_company_count": MINIMUM_FRONTEND_COMPANIES,
+        "failures": failures,
+        "trends": trend_checks,
+        "ranking_effect": "none",
+    }
+
+
+def _source_gate(path: Path, observed_at: str) -> dict:
+    connection = sqlite3.connect(path)
+    try:
+        rows = connection.execute(
+            """
+            SELECT source, COUNT(*) AS row_count,
+                   COUNT(DISTINCT topic) AS unique_topics,
+                   MIN(source_rank) AS minimum_rank,
+                   MAX(source_rank) AS maximum_rank,
+                   SUM(CASE WHEN provenance='observed' THEN 1 ELSE 0 END) AS observed_rows
+            FROM hourly_observations
+            WHERE observed_at=? AND source IN ('x', 'google_trends')
+            GROUP BY source
+            """,
+            (observed_at,),
+        ).fetchall()
+    finally:
+        connection.close()
+    sources = {
+        source: {
+            "row_count": row_count,
+            "unique_topics": unique_topics,
+            "minimum_rank": minimum_rank,
+            "maximum_rank": maximum_rank,
+            "observed_rows": observed_rows,
+        }
+        for source, row_count, unique_topics, minimum_rank, maximum_rank, observed_rows in rows
+    }
+    x = sources.get("x") or {}
+    google = sources.get("google_trends") or {}
+    passed = (
+        x.get("row_count") == 30
+        and x.get("unique_topics") == 30
+        and x.get("minimum_rank") == 1
+        and x.get("maximum_rank") == 30
+        and x.get("observed_rows") == 30
+        and int(google.get("row_count") or 0) > 0
+        and google.get("row_count") == google.get("unique_topics") == google.get("observed_rows")
+        and google.get("minimum_rank") == 1
+    )
+    return {"passed": passed, "sources": sources}
+
+
+def evaluate_actual_hour(path: Path, at: datetime) -> dict:
+    from .editorial_review import apply_frontend_enrichment_cache
+    from .intelligence import build_intelligence, refresh_frontend_readiness
+
+    normalized = at.astimezone(UTC).replace(minute=0, second=0, microsecond=0)
+    stamp = normalized.isoformat()
+    source_gate = _source_gate(path, stamp)
+    intelligence = build_intelligence(normalized, hours=24, path=path)
+    apply_frontend_enrichment_cache(intelligence, verified_at=stamp)
+    refresh_frontend_readiness(intelligence)
+    contract = evaluate_frontend_result(intelligence)
+    return {
+        "observed_at": stamp,
+        "passed": source_gate["passed"] and contract["passed"],
+        "source_gate": source_gate,
+        "contract": contract,
+    }
+
+
+def evaluate_consecutive_hours(path: Path, *, end: datetime, count: int = 3) -> dict:
+    hours = [end - timedelta(hours=offset) for offset in reversed(range(count))]
+    evaluations = [evaluate_actual_hour(path, at) for at in hours]
+    return {
+        "policy_version": "consecutive-actual-result-v1",
+        "required_consecutive_hours": count,
+        "passed": len(evaluations) == count and all(row["passed"] for row in evaluations),
+        "evaluations": evaluations,
+        "ranking_effect": "none",
+    }
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Audit consecutive actual TRZIP frontend results")
+    parser.add_argument("--database", type=Path, required=True)
+    parser.add_argument("--end", type=datetime.fromisoformat, required=True)
+    parser.add_argument("--count", type=int, default=3)
+    args = parser.parse_args()
+    result = evaluate_consecutive_hours(args.database, end=args.end, count=args.count)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
+    return 0 if result["passed"] else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

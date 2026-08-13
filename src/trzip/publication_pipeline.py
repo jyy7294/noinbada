@@ -14,10 +14,11 @@ from pathlib import Path
 from uuid import uuid4
 
 from .hourly_store import HourlyObservation, collect_current, coverage, floor_hour, latest_audit
-from .intelligence import build_intelligence
+from .intelligence import build_intelligence, refresh_frontend_readiness
 from .company_adapters import enrich_company_identities, pykrx_stock
 from .enrichment_queue import sync_enrichment_queue
-from .editorial_review import build_editorial_review_pack
+from .editorial_review import apply_frontend_enrichment_cache, build_editorial_review_pack
+from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .keyword_candidates import sync_provider_keyword_candidates
 from .normalization_evaluation import evaluate_regression_set
 from .provider_verification import (
@@ -28,7 +29,9 @@ from .provider_verification import (
     read_news_discovery_queue,
     verification_trend_keys_at,
     verify_terms,
+    resolve_provider_credentials,
 )
+from .youtube_trending import collect_youtube_trending
 
 
 NEWS_DISCOVERY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "news_discovery_seed.json"
@@ -49,6 +52,7 @@ RANKING_SUMMARY_FIELDS = (
     "observed_rank",
     "main_rank",
     "home_rank",
+    "publication_rank",
     "rising_rank",
     "score",
     "score_components",
@@ -87,6 +91,10 @@ RANKING_SUMMARY_FIELDS = (
     "company_card_status",
     "company_status",
     "keyword_status",
+    "frontend_readiness_status",
+    "frontend_readiness_missing",
+    "frontend_keyword_count",
+    "frontend_company_count",
     "detail_event_key",
     "detail_status",
 )
@@ -472,8 +480,14 @@ def _validate_period_views(intelligence: dict) -> None:
             item.get("main_rank") is not None
             for item in ranking
             if item.get("lane") != "main" or item.get("home_eligible") is not True
-        ) or period_top10 != main[:10]:
-            raise ValueError(f"period_top10 must be home-eligible score order: {key}")
+        ):
+            raise ValueError(f"period home ranks must preserve home-eligible score order: {key}")
+        completed = [
+            item for item in main
+            if item.get("frontend_readiness_status") == "ready"
+        ]
+        if period_top10 != completed[:10]:
+            raise ValueError(f"period_top10 must contain only completed home trends: {key}")
 
     default_view = views["daily"]
     top_level = intelligence.get("unified_ranking") or []
@@ -555,13 +569,29 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
     trend_top10 = intelligence.get("trend_top10", [])
     home_top10 = intelligence.get("home_top10", [])
     public_top10 = intelligence.get("public_top10", [])
-    expected_trend_top10 = home_ranking[:10]
+    completed_home_ranking = [
+        item for item in home_ranking
+        if item.get("frontend_readiness_status") == "ready"
+    ]
+    expected_trend_top10 = completed_home_ranking[:10]
     if trend_top10 != expected_trend_top10:
-        raise ValueError("trend_top10 must be the first ten home-eligible trends")
+        raise ValueError("trend_top10 must contain only completed home trends")
     if home_top10 != trend_top10 or public_top10 != trend_top10:
         raise ValueError("home/public/trend Top10 arrays must remain value-identical aliases")
     if intelligence.get("all_observed_ranking") != ranking:
         raise ValueError("all_observed_ranking must preserve the unified observed ranking")
+
+    readiness = intelligence.get("publication_readiness") or {}
+    if (
+        readiness.get("required_keyword_count") != 5
+        or readiness.get("minimum_company_count") != 6
+        or readiness.get("ready_count") != len(completed_home_ranking)
+        or readiness.get("published_count") != len(trend_top10)
+        or readiness.get("publication_ready") is not (len(completed_home_ranking) >= 10)
+        or readiness.get("padding_forbidden") is not True
+        or readiness.get("ranking_effect") != "none"
+    ):
+        raise ValueError("publication readiness contract is inconsistent")
 
     rising = intelligence.get("rising_top10", [])
     if any(
@@ -580,7 +610,7 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
             if str(company.get("stock_code") or "").strip()
         }
         if company_status == "published" and len(unique_stocks) < 3:
-            raise ValueError("Published company Gold requires three unique listed stocks")
+            raise ValueError("Published internal company candidates require three unique listed stocks")
         if published_companies and company_status != "published":
             raise ValueError("Non-published company status cannot expose Gold companies")
         if any(not company.get("ontology_complete") for company in published_companies):
@@ -588,6 +618,8 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         for company in published_companies:
             if company.get("relation_tier") not in {"direct", "value_chain", "industry_watch"}:
                 raise ValueError("Published company relation_tier is outside the public contract")
+            if not company.get("company_role_category") or not company.get("company_role_label"):
+                raise ValueError("Published companies require a frontend role category and label")
             if not company.get("relation_display_type") or not company.get("team_review_status"):
                 raise ValueError(
                     f"Every company requires relation and review labels: {item.get('display_name')}"
@@ -660,6 +692,14 @@ def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
         rankings.get("observed_at"),
     ) != identity:
         raise ValueError("frontend rankings identity mismatch")
+    youtube = rankings.get("youtube_content_discovery") or {}
+    if (
+        youtube.get("ranking") != rankings.get("youtube_content_ranking")
+        or youtube.get("top10") != rankings.get("youtube_content_top10")
+        or youtube.get("affects_x_google_rank") is not False
+        or youtube.get("ranking_effect") != "separate_content_lane"
+    ):
+        raise ValueError("frontend YouTube content ranking contract mismatch")
     _validate_period_views({
         "window": {"to": rankings.get("observed_at")},
         "ranking_default_period": rankings.get("ranking_default_period"),
@@ -774,6 +814,7 @@ def _write_frontend_delivery(
             for key, view in (intelligence.get("ranking_views") or {}).items()
         },
         "ranking_top_level_alias": intelligence.get("ranking_top_level_alias"),
+        "publication_readiness": intelligence.get("publication_readiness"),
         "unified_ranking": [_ranking_summary(item) for item in ranking],
         "all_observed_ranking": [
             _ranking_summary(item)
@@ -797,6 +838,9 @@ def _write_frontend_delivery(
             _ranking_summary(item)
             for item in intelligence.get("company_ready_trends") or []
         ],
+        "youtube_content_discovery": intelligence.get("youtube_content_discovery") or {},
+        "youtube_content_ranking": intelligence.get("youtube_content_ranking") or [],
+        "youtube_content_top10": intelligence.get("youtube_content_top10") or [],
         "trend_detail_index": [
             {"event_key": entry["event_key"], "path": entry["path"]}
             for entry in detail_index
@@ -866,7 +910,7 @@ def validate_frontend_delivery(root: Path) -> dict:
 
     expected_company_ready = [
         item for item in main_ranking
-        if item.get("company_card_status") == "ready"
+        if int(item.get("frontend_company_count") or 0) >= 6
     ]
     company_ready = intelligence.get("company_ready_trends", [])
     if company_ready != expected_company_ready:
@@ -879,8 +923,8 @@ def validate_frontend_delivery(root: Path) -> dict:
             for company in item.get("companies") or []
             if str(company.get("stock_code") or "").strip()
         }
-        if len(unique_stocks) < 5:
-            raise ValueError("Company-ready trends require five unique listed stocks")
+        if len(unique_stocks) < 6:
+            raise ValueError("Frontend company-ready trends require six unique listed stocks")
         if (item.get("company_resolution") or {}).get("publish_status") != "published":
             raise ValueError("Company-ready trends require a published company resolution")
 
@@ -1414,7 +1458,21 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         path=database_path,
         news_context_by_term=news_context_by_term,
     )
+    # This is a distinct official KR content-discovery chart.  It is never
+    # inserted into the X + Google score, so unlike measurements are not mixed.
+    intelligence["youtube_content_discovery"] = collect_youtube_trending(
+        path=database_path,
+        at=at,
+        credentials=resolve_provider_credentials(),
+    )
+    intelligence["youtube_content_ranking"] = intelligence["youtube_content_discovery"]["ranking"]
+    intelligence["youtube_content_top10"] = intelligence["youtube_content_discovery"]["top10"]
     intelligence = _refresh_verification_layer(intelligence, database_path, at)
+    intelligence = apply_frontend_enrichment_cache(
+        intelligence,
+        verified_at=at.astimezone(UTC).isoformat(),
+    )
+    intelligence = refresh_frontend_readiness(intelligence)
     intelligence["provider_keyword_candidate_queue"] = sync_provider_keyword_candidates(
         intelligence,
         path=database_path,

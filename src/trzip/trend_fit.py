@@ -45,13 +45,14 @@ TREND_CATEGORIES = {
     "lifestyle_behavior",
     "wellness_behavior",
     "participation_meme",
+    "public_observation_event",
     "technology_tool",
     "investment_market",
 }
 
 NAMED_OBJECT_MARKERS = {
     "디저트", "쿠키", "초콜릿", "라면", "치킨", "커피", "음료", "메뉴", "맛집", "카페",
-    "삼계탕", "보양식", "축제", "전시", "팝업",
+    "삼계탕", "보양식", "축제", "전시", "팝업", "일식", "월식", "유성우", "별똥별",
     "영화", "드라마", "예능", "웹툰", "애니", "극장판", "콘서트", "앨범",
     "신곡", "게임", "패치", "캐릭터", "굿즈", "키링", "유니폼", "팝업",
     "챌린지", "밈", "스마트폰", "폴더블폰", "휴대폰", "신발", "가방", "화장품", "주식",
@@ -182,7 +183,14 @@ def assess_trend_fit(
         reason = "정치·사건사고·재난·단순 기상특보·사생활 논란 맥락"
     elif labels and not generic_category_word:
         selection = "main"
-        reason = "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호"
+        reason_parts = {
+            "named_object": "구체적 대상",
+            "repeatable_behavior": "반복 참여 행동",
+            "consumer_action": "소비 행동",
+            "productization": "제품화 신호",
+            "cross_context": "교차 맥락 확산",
+        }
+        reason = " · ".join(reason_parts[label] for label in labels)
     else:
         selection = "review"
         reason = "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함"

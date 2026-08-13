@@ -30,6 +30,19 @@ STAGE_LABEL = {
     "other": "기타 검증 관계",
 }
 
+ROLE_CATEGORY_STAGE = {
+    "raw_materials_components": "upstream",
+    "manufacturing_development": "core",
+    "content_production": "core",
+    "ownership_investment": "core",
+    "distribution": "downstream",
+    "retail_sales": "downstream",
+    "platform_service": "downstream",
+    "brand_marketing": "consumer",
+    "event_sponsorship": "consumer",
+    "industry_adjacent": "other",
+}
+
 
 def expand_value_chain(
     topic: str,
@@ -47,8 +60,9 @@ def expand_value_chain(
     grouped: OrderedDict[tuple[str, str], list[dict]] = OrderedDict()
 
     for company in evidence_companies:
+        role_category = str(company.get("company_role_category") or "")
         role = str(company.get("company_role") or "기타 검증 관계")
-        stage = ROLE_STAGE.get(role, "other")
+        stage = ROLE_CATEGORY_STAGE.get(role_category, ROLE_STAGE.get(role, "other"))
         category_name = STAGE_LABEL[stage]
         company["relation_category"] = category_name
         company["value_chain_stage"] = stage

@@ -8,7 +8,7 @@
 
 - Core rank: X·Google만
 - Context verification: NAVER·YouTube·Instagram·기사, 순위 영향 없음
-- Company ready: 증거 경로 완결 + 국내외 상장기업 3개 이상
+- Company ready: 증거 경로 완결 + 국내외 상장기업 6개 이상
 - Market reference: pykrx 일별 값, 관계·추천 근거 아님
 - Frontend: `docs/FRONTEND_BACKEND_CONTRACT_V3.md`와 `schemas/`만 준수
 
@@ -18,7 +18,7 @@
 2. 최근 24시간 전체 실측 순위는 `all_observed_ranking`에 보존
 3. 표시 필터·카테고리·기사·기업은 점수 변경 금지
 4. 기사 발견어는 X/Google 실제 관측 전 순위 삽입 금지
-5. 기업 3개 미달이면 `enrichment_pending`, filler 금지
+5. 기업 6개 미달이면 `enrichment_pending`, filler 금지
 6. 생성·백필·fixture는 라이브 원장에 쓰기 금지
 7. 공개 세 문서는 같은 `publication_id/generated_at/observed_at` 묶음
 8. GitHub Actions·Render·Google RSS·Trends MCP·X API 추가 금지

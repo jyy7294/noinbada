@@ -22,7 +22,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 
 FORMULA_VERSION = "current40_momentum20_persistence20_decay15_cross5_v2"
-PERIOD_FORMULA_VERSION = "spread35_velocity25_breadth20_persistence10_recency10_v1"
+PERIOD_FORMULA_VERSION = "spread35_velocity25_breadth20_persistence10_recency10_v2"
 DEFAULT_SOURCES = ("x", "google_trends")
 DEFAULT_RANKING_PERIOD = "daily"
 MINIMUM_COMPARISON_SNAPSHOTS = 3
@@ -685,17 +685,31 @@ def build_period_ranking_v2(
 
         momentum_deltas: dict[str, float] = {}
         momentum_basis: dict[str, str] = {}
+        momentum_event_observations: dict[str, dict[str, int]] = {}
         for source in observed_sources:
             current_strength = strengths[source]
+            current_event_count = sum(
+                (event_key, source, stamp) in event_ranks
+                for stamp in current_eligible[source]
+            )
+            previous_event_count = sum(
+                (event_key, source, stamp) in event_ranks
+                for stamp in previous_eligible[source]
+            )
             if (
                 len(current_eligible[source]) >= MINIMUM_COMPARISON_SNAPSHOTS
                 and len(previous_eligible[source]) >= MINIMUM_COMPARISON_SNAPSHOTS
+                and current_event_count >= MINIMUM_COMPARISON_SNAPSHOTS
             ):
                 previous_strength = source_strength(
                     event_key, source, previous_eligible[source], previous_end
                 )
                 momentum_deltas[source] = current_strength - previous_strength
                 momentum_basis[source] = "previous_equal_period"
+                momentum_event_observations[source] = {
+                    "current": current_event_count,
+                    "comparison": previous_event_count,
+                }
                 continue
             first_half = [
                 stamp for stamp in current_eligible[source]
@@ -705,9 +719,18 @@ def build_period_ranking_v2(
                 stamp for stamp in current_eligible[source]
                 if half_boundary <= stamp <= current_at
             ]
+            first_half_event_count = sum(
+                (event_key, source, stamp) in event_ranks
+                for stamp in first_half
+            )
+            second_half_event_count = sum(
+                (event_key, source, stamp) in event_ranks
+                for stamp in second_half
+            )
             if (
                 len(first_half) >= MINIMUM_COMPARISON_SNAPSHOTS
                 and len(second_half) >= MINIMUM_COMPARISON_SNAPSHOTS
+                and second_half_event_count >= MINIMUM_COMPARISON_SNAPSHOTS
             ):
                 momentum_deltas[source] = source_strength(
                     event_key, source, second_half, current_at
@@ -715,6 +738,10 @@ def build_period_ranking_v2(
                     event_key, source, first_half, half_boundary - timedelta(hours=1)
                 )
                 momentum_basis[source] = "current_period_half_change"
+                momentum_event_observations[source] = {
+                    "current": second_half_event_count,
+                    "comparison": first_half_event_count,
+                }
         if momentum_deltas:
             momentum_delta = max(-1.0, min(1.0, _mean(momentum_deltas.values())))
             # Velocity is an acceleration signal, not a symmetric direction
@@ -752,7 +779,7 @@ def build_period_ranking_v2(
         )
         recency_half_life = window_hours / 2.0
         recency = 0.5 ** (hours_since_last_seen / recency_half_life)
-        cross = len(set(observed_sources) & set(sources)) / len(sources)
+        cross = float(set(sources).issubset(observed_sources))
         components = {
             "period_strength_points": round(35 * period_strength, 2),
             "momentum_points": round(25 * momentum_signal, 2),
@@ -821,12 +848,14 @@ def build_period_ranking_v2(
                 "period_strength": {key: round(value, 6) for key, value in strengths.items()},
                 "momentum_deltas": {key: round(value, 6) for key, value in momentum_deltas.items()},
                 "momentum_basis": momentum_basis,
+                "momentum_event_observations": momentum_event_observations,
                 "persistence": persistence_by_source,
             },
             "data_readiness": {
                 "status": "ready" if all(value >= 0.8 for value in coverage_by_source.values()) else "provisional",
                 "coverage_by_source": coverage_by_source,
                 "momentum_status": momentum_status,
+                "minimum_event_observations_for_momentum": MINIMUM_COMPARISON_SNAPSHOTS,
             },
             "lifecycle": lifecycle,
             "lifecycle_baseline": {

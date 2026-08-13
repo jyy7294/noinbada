@@ -51,7 +51,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 
 `home_context_status`와 `home_context_reason`은 동음이의어·짧은 인물명 등 사건 맥락의
 해결 여부만 나타냅니다. 기업 준비 여부는 `company_card_status`로 분리합니다.
-`ready`는 URL 증거가 이어진 서로 다른 국내외 상장종목이 3개 이상인 경우,
+`ready`는 URL 증거가 이어진 서로 다른 국내외 상장종목이 6개 이상인 경우,
 `enrichment_pending`은 근거 보강 중인 경우, `not_applicable`은 이슈·민감 맥락 등
 기업 연결 대상이 아닌 경우입니다. 기업 수를 맞추기 위한 padding은 금지하며,
 준비된 항목만 `company_ready_trends`에도 포함합니다.
@@ -75,7 +75,9 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 변화·지속 | `previous_period_rank`, `rank_change`, `rank_change_status`, `rank_change_by_source`, `lifecycle`, `persistence_rank`, `momentum_rank` |
 | 신뢰 상태 | `data_confidence`, `home_context_status`, `home_context_reason` |
 | 관련어 | `keywords` (0~5), 원천 관측 또는 검수된 온톨로지 표현만 허용하고 `affects_score=false` |
-| 기업 Gold | `companies` (0 또는 3개 이상) |
+| 기업 Gold | `companies` (0 또는 6개 이상) |
+| 기업 역할 | `companies[].company_role_category`, `companies[].company_role_label` (제조·개발/원재료·핵심부품/콘텐츠 제작/배급·유통/판매·리테일/브랜드·마케팅/플랫폼·서비스/투자·소유/행사 후원·운영/산업 연관) |
+| 관계 강도 | `companies[].relation_tier` (`direct`/`value_chain`/`industry_watch`) |
 | 기업 카드 준비 상태 | `company_card_status`, `company_card_reason` |
 | 기업 후보 감사 | `company_candidates`, `company_resolution` |
 | 보조 검증 | `verification_layer` |
@@ -89,7 +91,8 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 
 ## S# 종목화면 인계 경계
 
-- `companies[].stock_code`는 키움 종목화면에 전달할 6자리 종목 식별 키입니다.
+- `companies[].stock_code`와 `companies[].ticker`는 거래소 표기 종목 식별자입니다. KRX 상장사는 6자리 숫자, 해외 상장사는 문자·숫자 티커를 사용하며 `companies[].market`과 함께 해석합니다.
+- 키움 S# 종목화면 인계는 현재 KRX 6자리 종목만 대상으로 합니다. 해외 종목은 프런트가 `market`을 확인해 S# CTA를 숨기거나 별도 해외주식 인계 정책을 적용해야 합니다.
 - 정적 `live-data`는 로그인·계좌 개설·주문을 수행하지 않으며 인증정보도 보관하지 않습니다.
 - 실제 S# 딥링크 URI, 비로그인 탐색 허용 범위, 매매 단계 인증은 키움 프런트·정책 의존사항입니다. 해당 정책 확인 전에는 종목화면 이동을 구현 완료로 표시하지 않습니다.
 
@@ -144,7 +147,7 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 - `음식`, `운전`, `애니` 같은 포괄어와 업종별 회사 채우기는 금지합니다.
 - 회사마다 `reason`, `evidence_url`, `evidence_owner`, `evidence_type`,
   `verified_at`, `verification_status`, `company_description`을 제공합니다.
-- 검증 기업이 3개 미만이거나 관련 키워드가 5개 미만이어도 자동 제품 적합 조건을
+- 검증 기업이 6개 미만이거나 관련 키워드가 5개 미만이어도 자동 제품 적합 조건을
   통과한 트렌드는 유지합니다. 부족한 필드는 `enrichment_pending`으로 표시하며 임의로 채우지 않습니다.
 - 미충족 후보를 빈 기업이나 임의 기업으로 채우는 것은 금지합니다.
 - 키워드·기업 레지스트리는 자동 선발 뒤에만 사용하는 보강 캐시입니다. 등록 여부는
@@ -158,6 +161,9 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
   공개 계약은 그대로 동작합니다.
 - 각 기간은 동일한 적격 `observed` X·Google 원장에서 **그 기간 안에 실제 관측된 모든 사건**을 후보로 사용함
 - 점수는 `35 현재 관심 강도 + 25 실제 상승 속도 + 20 X·Google 교차 확산 + 10 관측 지속성 + 10 최신성`이며, 기업·분류 결과는 점수에 들어가지 않음
+- 공식 버전은 `spread35_velocity25_breadth20_persistence10_recency10_v2`임
+- 상승 속도는 해당 트렌드가 현재 비교면에서 서로 다른 시각에 최소 3회 관측돼야 계산되며, 0~2회면 `unavailable`·0점임
+- 교차 확산 20점은 X와 Google 양쪽에서 같은 사건이 관측된 경우에만 부여하며 단일 출처는 0점임
 - 기간강도는 출처별 정규화 위치의 `70% 신선도 가중 평균 + 30% 기간 최고점`을 출처 간 평균함
 - 상승 속도는 직전 동일 길이 기간을 우선 비교하고, 비교 원장이 없으면 현 기간 전반부→후반부를 비교함. 양쪽 정상 스냅샷이 각각 3회 미만이면 `unavailable`·0점임
 - 신선도 반감기는 선택 기간의 절반(일간 12시간, 주간 84시간, 월간 360시간)임
@@ -170,3 +176,10 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 프런트는 사용자가 기간 탭을 바꾸면 해당 `ranking_views`를 그대로 표시하고 자체 재계산하지 않습니다. `data_readiness.status`가 잠정이면 기간명 옆에 잠정 배지를 표시합니다.
 
 정확한 기계 계약은 `schemas/intelligence-v3.schema.json`, `schemas/metadata-v3.schema.json`, `schemas/status-v1.schema.json`을 따릅니다.
+## YouTube 콘텐츠 순위
+
+- `youtube_content_ranking`: 대한민국 `mostPopular` 영상을 작품·곡·게임 단위로 병합한 전체 콘텐츠 순위
+- `youtube_content_top10`: 콘텐츠 순위의 상위 10개
+- `youtube_content_discovery.video_chart`: API 원본 영상 차트와 영상별 등락
+
+YouTube 콘텐츠 순위는 `affects_x_google_rank=false`입니다. 프런트는 이 순위를 기존 `home_top10`의 점수나 등락과 혼용하면 안 됩니다.
