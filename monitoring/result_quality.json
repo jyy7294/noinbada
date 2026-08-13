@@ -7,7 +7,7 @@
   "evaluations": [
     {
       "observed_at": "2026-08-13T09:00:00+00:00",
-      "passed": true,
+      "passed": false,
       "source_gate": {
         "passed": true,
         "sources": {
@@ -166,11 +166,17 @@
           }
         ],
         "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": false,
+        "publication_id": null,
+        "remote_sha": null,
+        "verified_at": null
       }
     },
     {
       "observed_at": "2026-08-13T10:00:00+00:00",
-      "passed": true,
+      "passed": false,
       "source_gate": {
         "passed": true,
         "sources": {
@@ -329,6 +335,12 @@
           }
         ],
         "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": false,
+        "publication_id": null,
+        "remote_sha": null,
+        "verified_at": null
       }
     },
     {
@@ -477,11 +489,17 @@
           }
         ],
         "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": false,
+        "publication_id": null,
+        "remote_sha": null,
+        "verified_at": null
       }
     },
     {
       "observed_at": "2026-08-13T12:00:00+00:00",
-      "passed": true,
+      "passed": false,
       "source_gate": {
         "passed": true,
         "sources": {
@@ -637,6 +655,12 @@
           }
         ],
         "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": false,
+        "publication_id": null,
+        "remote_sha": null,
+        "verified_at": null
       }
     },
     {
@@ -792,6 +816,12 @@
           }
         ],
         "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": false,
+        "publication_id": null,
+        "remote_sha": null,
+        "verified_at": null
       }
     },
     {
@@ -937,6 +967,12 @@
           }
         ],
         "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": false,
+        "publication_id": null,
+        "remote_sha": null,
+        "verified_at": null
       }
     },
     {
@@ -1082,6 +1118,12 @@
           }
         ],
         "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": false,
+        "publication_id": null,
+        "remote_sha": null,
+        "verified_at": null
       }
     },
     {
@@ -1244,6 +1286,12 @@
           }
         ],
         "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": true,
+        "publication_id": "pub-6e90d2fe6dce497185e5a87a3ada7929",
+        "remote_sha": "e12ffa61d287ad18abbd8eb713f3d12410348cc8",
+        "verified_at": "2026-08-13T16:17:39.827381+00:00"
       }
     }
   ],
