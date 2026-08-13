@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-e1473be87e9442b6957a49490194a6c5",
-  "generated_at": "2026-08-13T16:38:44.935143+00:00",
+  "publication_id": "pub-b19de93bd9794d84bee82d65bf0e9351",
+  "generated_at": "2026-08-13T16:42:57.644686+00:00",
   "observed_at": "2026-08-13T16:00:00+00:00",
   "mode": "live",
   "publishable": true,
@@ -50,16 +50,16 @@
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 40,
-    "newly_observed": 5,
-    "reused_company_rows": 44,
+    "requested_stock_codes": 36,
+    "newly_observed": 1,
+    "reused_company_rows": 48,
     "unavailable_company_rows": 38
   },
   "company_identity_data": {
     "provider": "opendart",
     "requested": 71,
-    "fetched": 3,
-    "reused": 68,
+    "fetched": 0,
+    "reused": 71,
     "status_counts": {
       "verified": 33,
       "unavailable": 6,
@@ -137,8 +137,8 @@
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-e1473be87e9442b6957a49490194a6c5",
-    "rankings_path": "latest/delivery/pub-e1473be87e9442b6957a49490194a6c5/rankings.json",
+    "bundle_path": "latest/delivery/pub-b19de93bd9794d84bee82d65bf0e9351",
+    "rankings_path": "latest/delivery/pub-b19de93bd9794d84bee82d65bf0e9351/rankings.json",
     "trend_detail_count": 569,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }

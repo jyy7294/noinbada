@@ -5593,75 +5593,75 @@
           "ontology_complete": true,
           "ontology_status": "complete",
           "official_identity": {
-            "status": "verified",
-            "provider": "opendart",
             "company": "가온전선",
-            "stock_code": "000500",
-            "legal_name": "가온전선(주)",
-            "english_name": "GAON CABLE CO.,LTD",
-            "stock_name": "가온전선",
-            "market_class": "Y",
-            "homepage": "https://www.gaoncable.com",
-            "established_date": "19470924",
             "corp_code": "00104768",
+            "english_name": "GAON CABLE CO.,LTD",
+            "established_date": "19470924",
             "financial_snapshot": {
-              "status": "observed",
-              "provider": "opendart",
-              "company": "가온전선",
-              "stock_code": "000500",
-              "corp_code": "00104768",
-              "business_year": 2026,
-              "report_code": "11013",
-              "report_label": "1분기보고서",
-              "financial_statement_division": "CFS",
               "accounts": {
-                "revenue": {
-                  "label": "매출액",
-                  "current": 763576373000,
-                  "previous": 639297449000,
-                  "currency": "KRW"
-                },
-                "operating_profit": {
-                  "label": "영업이익",
-                  "current": 27834588000,
-                  "previous": 21884131000,
-                  "currency": "KRW"
-                },
-                "net_income": {
-                  "label": "당기순이익(손실)",
-                  "current": 19677232000,
-                  "previous": 15336972000,
-                  "currency": "KRW"
-                },
                 "assets": {
-                  "label": "자산총계",
+                  "currency": "KRW",
                   "current": 1515590835000,
-                  "previous": 1377927912000,
-                  "currency": "KRW"
-                },
-                "liabilities": {
-                  "label": "부채총계",
-                  "current": 1014504567000,
-                  "previous": 894139107000,
-                  "currency": "KRW"
+                  "label": "자산총계",
+                  "previous": 1377927912000
                 },
                 "equity": {
-                  "label": "자본총계",
+                  "currency": "KRW",
                   "current": 501086268000,
-                  "previous": 483788805000,
-                  "currency": "KRW"
+                  "label": "자본총계",
+                  "previous": 483788805000
+                },
+                "liabilities": {
+                  "currency": "KRW",
+                  "current": 1014504567000,
+                  "label": "부채총계",
+                  "previous": 894139107000
+                },
+                "net_income": {
+                  "currency": "KRW",
+                  "current": 19677232000,
+                  "label": "당기순이익(손실)",
+                  "previous": 15336972000
+                },
+                "operating_profit": {
+                  "currency": "KRW",
+                  "current": 27834588000,
+                  "label": "영업이익",
+                  "previous": 21884131000
+                },
+                "revenue": {
+                  "currency": "KRW",
+                  "current": 763576373000,
+                  "label": "매출액",
+                  "previous": 639297449000
                 }
               },
+              "business_year": 2026,
+              "company": "가온전선",
+              "corp_code": "00104768",
               "filing_receipt_no": "20260515000427",
               "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515000427",
-              "retrieved_at": "2026-08-13T16:38:36.229603+00:00",
+              "financial_statement_division": "CFS",
+              "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+              "provider": "opendart",
               "ranking_effect": "none",
               "relationship_evidence": false,
-              "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음"
+              "report_code": "11013",
+              "report_label": "1분기보고서",
+              "retrieved_at": "2026-08-13T16:38:36.229603+00:00",
+              "status": "observed",
+              "stock_code": "000500"
             },
-            "retrieved_at": "2026-08-13T16:00:00+00:00",
+            "homepage": "https://www.gaoncable.com",
+            "legal_name": "가온전선(주)",
+            "market_class": "Y",
+            "provider": "opendart",
             "ranking_effect": "none",
-            "relationship_evidence": false
+            "relationship_evidence": false,
+            "retrieved_at": "2026-08-13T16:00:00+00:00",
+            "status": "verified",
+            "stock_code": "000500",
+            "stock_name": "가온전선"
           },
           "market_reference": {
             "status": "observed",
@@ -6129,75 +6129,75 @@
           "ontology_complete": true,
           "ontology_status": "complete",
           "official_identity": {
-            "status": "verified",
-            "provider": "opendart",
             "company": "SG",
-            "stock_code": "255220",
-            "legal_name": "에스지이(주)",
-            "english_name": "SG CO., LTD.",
-            "stock_name": "SG",
-            "market_class": "K",
-            "homepage": "https://www.sgholdings.co.kr",
-            "established_date": "20091211",
             "corp_code": "00963976",
+            "english_name": "SG CO., LTD.",
+            "established_date": "20091211",
             "financial_snapshot": {
-              "status": "observed",
-              "provider": "opendart",
-              "company": "SG",
-              "stock_code": "255220",
-              "corp_code": "00963976",
-              "business_year": 2026,
-              "report_code": "11013",
-              "report_label": "1분기보고서",
-              "financial_statement_division": "CFS",
               "accounts": {
-                "revenue": {
-                  "label": "매출액",
-                  "current": 8952511032,
-                  "previous": 14273735630,
-                  "currency": "KRW"
-                },
-                "operating_profit": {
-                  "label": "영업이익",
-                  "current": -6035488732,
-                  "previous": -2430894807,
-                  "currency": "KRW"
-                },
-                "net_income": {
-                  "label": "당기순이익(손실)",
-                  "current": -10020479345,
-                  "previous": 1624204835,
-                  "currency": "KRW"
-                },
                 "assets": {
-                  "label": "자산총계",
+                  "currency": "KRW",
                   "current": 205096305874,
-                  "previous": 224392841651,
-                  "currency": "KRW"
-                },
-                "liabilities": {
-                  "label": "부채총계",
-                  "current": 99214825903,
-                  "previous": 122215490678,
-                  "currency": "KRW"
+                  "label": "자산총계",
+                  "previous": 224392841651
                 },
                 "equity": {
-                  "label": "자본총계",
+                  "currency": "KRW",
                   "current": 105881479971,
-                  "previous": 102177350973,
-                  "currency": "KRW"
+                  "label": "자본총계",
+                  "previous": 102177350973
+                },
+                "liabilities": {
+                  "currency": "KRW",
+                  "current": 99214825903,
+                  "label": "부채총계",
+                  "previous": 122215490678
+                },
+                "net_income": {
+                  "currency": "KRW",
+                  "current": -10020479345,
+                  "label": "당기순이익(손실)",
+                  "previous": 1624204835
+                },
+                "operating_profit": {
+                  "currency": "KRW",
+                  "current": -6035488732,
+                  "label": "영업이익",
+                  "previous": -2430894807
+                },
+                "revenue": {
+                  "currency": "KRW",
+                  "current": 8952511032,
+                  "label": "매출액",
+                  "previous": 14273735630
                 }
               },
+              "business_year": 2026,
+              "company": "SG",
+              "corp_code": "00963976",
               "filing_receipt_no": "20260515002529",
               "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002529",
-              "retrieved_at": "2026-08-13T16:38:37.204137+00:00",
+              "financial_statement_division": "CFS",
+              "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+              "provider": "opendart",
               "ranking_effect": "none",
               "relationship_evidence": false,
-              "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음"
+              "report_code": "11013",
+              "report_label": "1분기보고서",
+              "retrieved_at": "2026-08-13T16:38:37.204137+00:00",
+              "status": "observed",
+              "stock_code": "255220"
             },
-            "retrieved_at": "2026-08-13T16:00:00+00:00",
+            "homepage": "https://www.sgholdings.co.kr",
+            "legal_name": "에스지이(주)",
+            "market_class": "K",
+            "provider": "opendart",
             "ranking_effect": "none",
-            "relationship_evidence": false
+            "relationship_evidence": false,
+            "retrieved_at": "2026-08-13T16:00:00+00:00",
+            "status": "verified",
+            "stock_code": "255220",
+            "stock_name": "SG"
           },
           "market_reference": {
             "status": "observed",
@@ -6397,75 +6397,75 @@
           "ontology_complete": true,
           "ontology_status": "complete",
           "official_identity": {
-            "status": "verified",
-            "provider": "opendart",
             "company": "현대건설",
-            "stock_code": "000720",
-            "legal_name": "현대건설(주)",
-            "english_name": "HYUNDAI ENGINEERING & CONSTRUCTION CO.,LTD",
-            "stock_name": "현대건설",
-            "market_class": "Y",
-            "homepage": "https://www.hdec.kr",
-            "established_date": "19500110",
             "corp_code": "00164478",
+            "english_name": "HYUNDAI ENGINEERING & CONSTRUCTION CO.,LTD",
+            "established_date": "19500110",
             "financial_snapshot": {
-              "status": "observed",
-              "provider": "opendart",
-              "company": "현대건설",
-              "stock_code": "000720",
-              "corp_code": "00164478",
-              "business_year": 2026,
-              "report_code": "11013",
-              "report_label": "1분기보고서",
-              "financial_statement_division": "CFS",
               "accounts": {
-                "revenue": {
-                  "label": "매출액",
-                  "current": 6281265000000,
-                  "previous": 7455579000000,
-                  "currency": "KRW"
-                },
-                "operating_profit": {
-                  "label": "영업이익",
-                  "current": 180890000000,
-                  "previous": 213697000000,
-                  "currency": "KRW"
-                },
-                "net_income": {
-                  "label": "당기순이익(손실)",
-                  "current": 206753000000,
-                  "previous": 166742000000,
-                  "currency": "KRW"
-                },
                 "assets": {
-                  "label": "자산총계",
+                  "currency": "KRW",
                   "current": 28405874000000,
-                  "previous": 28108714000000,
-                  "currency": "KRW"
-                },
-                "liabilities": {
-                  "label": "부채총계",
-                  "current": 17377275000000,
-                  "previous": 17672570000000,
-                  "currency": "KRW"
+                  "label": "자산총계",
+                  "previous": 28108714000000
                 },
                 "equity": {
-                  "label": "자본총계",
+                  "currency": "KRW",
                   "current": 11028599000000,
-                  "previous": 10436144000000,
-                  "currency": "KRW"
+                  "label": "자본총계",
+                  "previous": 10436144000000
+                },
+                "liabilities": {
+                  "currency": "KRW",
+                  "current": 17377275000000,
+                  "label": "부채총계",
+                  "previous": 17672570000000
+                },
+                "net_income": {
+                  "currency": "KRW",
+                  "current": 206753000000,
+                  "label": "당기순이익(손실)",
+                  "previous": 166742000000
+                },
+                "operating_profit": {
+                  "currency": "KRW",
+                  "current": 180890000000,
+                  "label": "영업이익",
+                  "previous": 213697000000
+                },
+                "revenue": {
+                  "currency": "KRW",
+                  "current": 6281265000000,
+                  "label": "매출액",
+                  "previous": 7455579000000
                 }
               },
+              "business_year": 2026,
+              "company": "현대건설",
+              "corp_code": "00164478",
               "filing_receipt_no": "20260515002899",
               "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002899",
-              "retrieved_at": "2026-08-13T16:38:36.805782+00:00",
+              "financial_statement_division": "CFS",
+              "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+              "provider": "opendart",
               "ranking_effect": "none",
               "relationship_evidence": false,
-              "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음"
+              "report_code": "11013",
+              "report_label": "1분기보고서",
+              "retrieved_at": "2026-08-13T16:38:36.805782+00:00",
+              "status": "observed",
+              "stock_code": "000720"
             },
-            "retrieved_at": "2026-08-13T16:00:00+00:00",
+            "homepage": "https://www.hdec.kr",
+            "legal_name": "현대건설(주)",
+            "market_class": "Y",
+            "provider": "opendart",
             "ranking_effect": "none",
-            "relationship_evidence": false
+            "relationship_evidence": false,
+            "retrieved_at": "2026-08-13T16:00:00+00:00",
+            "status": "verified",
+            "stock_code": "000720",
+            "stock_name": "현대건설"
           },
           "market_reference": {
             "status": "observed",

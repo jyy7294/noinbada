@@ -1,0 +1,1438 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-b19de93bd9794d84bee82d65bf0e9351",
+  "generated_at": "2026-08-13T16:42:57.644686+00:00",
+  "observed_at": "2026-08-13T16:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "코난 극장판",
+    "topic": "코난 극장판",
+    "display_name": "코난 극장판",
+    "observed_representative_term": "코난 극장판",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "코난 극장판",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 5,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.057644,
+      "best_source_rank": 24
+    },
+    "raw_terms": [
+      "코난 극장판"
+    ],
+    "phenomenon_summary": "\"코난 극장판\" · X 한국 실시간에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "screen_content",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "content",
+    "category_label": "음악·영상·게임 콘텐츠",
+    "trend_definition": "'코난 극장판' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 음악·영상·게임 콘텐츠 트렌드입니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 8.13,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "x"
+    ],
+    "freshness": {
+      "signal": 0.471937,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 13.0
+    },
+    "hours_since_last_seen": 13.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.067778,
+    "current_source_position": 0.067778,
+    "momentum": 0.0,
+    "persistence": 0.1042,
+    "momentum_delta": null,
+    "score_components": {
+      "period_strength_points": 2.37,
+      "momentum_points": 0.0,
+      "persistence_points": 1.04,
+      "recency_points": 4.72,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 8.13
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "unavailable",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "x": 0.135556
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "momentum_event_observations": {},
+      "persistence": {
+        "x": {
+          "eligible_hours": 9,
+          "observed_hours": 5,
+          "presence_rate": 0.208333,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.375,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "unavailable",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T21:00:00+00:00",
+      "last_seen_at": "2026-08-13T03:00:00+00:00",
+      "observed_hours": 5,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "x": 30
+    },
+    "rank_change_by_source": {
+      "x": -5
+    },
+    "source_rank_change": {
+      "x": -5
+    },
+    "first_seen_at": "2026-08-12T21:00:00+00:00",
+    "last_seen_at": "2026-08-13T03:00:00+00:00",
+    "age_hours": 19,
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 17,
+      "history_maturity": 0.4583,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "x",
+        "rank": 26,
+        "value": 75.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "x",
+        "rank": 24,
+        "value": 77.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "x",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "x",
+        "rank": 25,
+        "value": 76.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "x",
+        "rank": 30,
+        "value": 71.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [
+      {
+        "text": "코난 극장판 개봉",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "코난 극장판 예고편",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "코난 극장판 상영관",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "코난 극장판 특전",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "코난 극장판 굿즈",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [
+      {
+        "company": "Sega Sammy Holdings",
+        "stock_code": "6460",
+        "ticker": "6460",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "그룹 계열 TMS 공식 작품 목록에 명탐정 코난 극장판 시리즈 수록",
+        "relationship_reason": "그룹 계열 TMS 공식 작품 목록에 명탐정 코난 극장판 시리즈 수록",
+        "company_summary": "명탐정 코난 TV·극장판 제작사 TMS Entertainment를 보유한 엔터테인먼트그룹",
+        "company_description": "명탐정 코난 TV·극장판 제작사 TMS Entertainment를 보유한 엔터테인먼트그룹",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_title_catalog",
+        "evidence_url": "https://www.tms-e.co.jp/alltitles/conan/",
+        "evidence_sources": [
+          {
+            "url": "https://www.tms-e.co.jp/alltitles/conan/",
+            "title": "TMS Entertainment",
+            "evidence_type": "official_title_catalog",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "ownership_investment",
+        "company_role_label": "투자·소유",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.tms-e.co.jp/alltitles/conan/"
+            ],
+            "evidence_type": "official_title_catalog",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "Sega Sammy Holdings",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.tms-e.co.jp/alltitles/conan/"
+            ],
+            "evidence_type": "official_title_catalog",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Sega Sammy Holdings",
+          "stock_code": "6460",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "6460",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "TOHO",
+        "stock_code": "9602",
+        "ticker": "9602",
+        "market": "TSE",
+        "relation_type": "distribution",
+        "strength": "value_chain",
+        "reason": "TOHO가 코난 극장판 개봉과 공식 무대행사를 운영",
+        "relationship_reason": "TOHO가 코난 극장판 개봉과 공식 무대행사를 운영",
+        "company_summary": "명탐정 코난 극장판을 일본 극장에 배급하는 영화기업",
+        "company_description": "명탐정 코난 극장판을 일본 극장에 배급하는 영화기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_movie_release",
+        "evidence_url": "https://www.toho.co.jp/movie/news/conan-movie-2026_20260411",
+        "evidence_sources": [
+          {
+            "url": "https://www.toho.co.jp/movie/news/conan-movie-2026_20260411",
+            "title": "TOHO",
+            "evidence_type": "official_movie_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "distribution",
+        "company_role_label": "배급·유통",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.toho.co.jp/movie/news/conan-movie-2026_20260411"
+            ],
+            "evidence_type": "official_movie_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "TOHO",
+            "edge_type": "distribution",
+            "evidence_urls": [
+              "https://www.toho.co.jp/movie/news/conan-movie-2026_20260411"
+            ],
+            "evidence_type": "official_movie_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "TOHO",
+          "stock_code": "9602",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9602",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Nippon Television Holdings",
+        "stock_code": "9404",
+        "ticker": "9404",
+        "market": "TSE",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "코난 극장판 제작사 크레딧에 Nippon Television이 포함",
+        "relationship_reason": "코난 극장판 제작사 크레딧에 Nippon Television이 포함",
+        "company_summary": "명탐정 코난 제작위원회와 방송에 참여하는 일본 미디어기업",
+        "company_description": "명탐정 코난 제작위원회와 방송에 참여하는 일본 미디어기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_movie_catalog",
+        "evidence_url": "https://www.ntv.co.jp/movie/index.html",
+        "evidence_sources": [
+          {
+            "url": "https://www.ntv.co.jp/movie/index.html",
+            "title": "Nippon Television",
+            "evidence_type": "official_movie_catalog",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "content_production",
+        "company_role_label": "콘텐츠 제작",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.ntv.co.jp/movie/index.html"
+            ],
+            "evidence_type": "official_movie_catalog",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "Nippon Television Holdings",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.ntv.co.jp/movie/index.html"
+            ],
+            "evidence_type": "official_movie_catalog",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Nippon Television Holdings",
+          "stock_code": "9404",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9404",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Takara Tomy",
+        "stock_code": "7867",
+        "ticker": "7867",
+        "market": "TSE",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "공식 코난 카드게임 사이트에서 상품·이벤트를 지속 운영",
+        "relationship_reason": "공식 코난 카드게임 사이트에서 상품·이벤트를 지속 운영",
+        "company_summary": "명탐정 코난 공식 트레이딩 카드게임을 기획·판매하는 일본 완구기업",
+        "company_description": "명탐정 코난 공식 트레이딩 카드게임을 기획·판매하는 일본 완구기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_ip_product_page",
+        "evidence_url": "https://www.takaratomy.co.jp/products/conan-cardgame/",
+        "evidence_sources": [
+          {
+            "url": "https://www.takaratomy.co.jp/products/conan-cardgame/",
+            "title": "Takara Tomy",
+            "evidence_type": "official_ip_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "retail_sales",
+        "company_role_label": "판매·리테일",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.takaratomy.co.jp/products/conan-cardgame/"
+            ],
+            "evidence_type": "official_ip_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "Takara Tomy",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.takaratomy.co.jp/products/conan-cardgame/"
+            ],
+            "evidence_type": "official_ip_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Takara Tomy",
+          "stock_code": "7867",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7867",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "McDonald's Holdings Company Japan",
+        "stock_code": "2702",
+        "ticker": "2702",
+        "market": "TSE",
+        "relation_type": "brand_collaboration",
+        "strength": "value_chain",
+        "reason": "코난 세계관을 활용한 치킨 타츠타 상품과 오리지널 애니메이션 캠페인을 공식 진행",
+        "relationship_reason": "코난 세계관을 활용한 치킨 타츠타 상품과 오리지널 애니메이션 캠페인을 공식 진행",
+        "company_summary": "일본 맥도날드를 운영하며 명탐정 코난 IP 캠페인을 전개한 상장 외식기업",
+        "company_description": "일본 맥도날드를 운영하며 명탐정 코난 IP 캠페인을 전개한 상장 외식기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_collaboration_release",
+        "evidence_url": "https://www.mcdonalds.co.jp/company/news/2025/0410a/",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcdonalds.co.jp/company/news/2025/0410a/",
+            "title": "McDonald's Japan",
+            "evidence_type": "official_collaboration_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "brand_marketing",
+        "company_role_label": "브랜드·마케팅",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.mcdonalds.co.jp/company/news/2025/0410a/"
+            ],
+            "evidence_type": "official_collaboration_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "McDonald's Holdings Company Japan",
+            "edge_type": "brand_collaboration",
+            "evidence_urls": [
+              "https://www.mcdonalds.co.jp/company/news/2025/0410a/"
+            ],
+            "evidence_type": "official_collaboration_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "McDonald's Holdings Company Japan",
+          "stock_code": "2702",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "2702",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Bandai Namco Holdings",
+        "stock_code": "7832",
+        "ticker": "7832",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "공식 게임 자료에서 명탐정 코난 콘텐츠 수록과 IP 활용을 확인",
+        "relationship_reason": "공식 게임 자료에서 명탐정 코난 콘텐츠 수록과 IP 활용을 확인",
+        "company_summary": "명탐정 코난 IP를 게임 콘텐츠로 상품화한 일본 엔터테인먼트기업",
+        "company_description": "명탐정 코난 IP를 게임 콘텐츠로 상품화한 일본 엔터테인먼트기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_ip_product_release",
+        "evidence_url": "https://www.bandainamcoent.co.jp/corporate/press/pdf/53-034.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.bandainamcoent.co.jp/corporate/press/pdf/53-034.pdf",
+            "title": "Bandai Namco Entertainment",
+            "evidence_type": "official_ip_product_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "content_production",
+        "company_role_label": "콘텐츠 제작",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.bandainamcoent.co.jp/corporate/press/pdf/53-034.pdf"
+            ],
+            "evidence_type": "official_ip_product_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "Bandai Namco Holdings",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.bandainamcoent.co.jp/corporate/press/pdf/53-034.pdf"
+            ],
+            "evidence_type": "official_ip_product_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Bandai Namco Holdings",
+          "stock_code": "7832",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7832",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "Sega Sammy Holdings",
+        "stock_code": "6460",
+        "ticker": "6460",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "그룹 계열 TMS 공식 작품 목록에 명탐정 코난 극장판 시리즈 수록",
+        "relationship_reason": "그룹 계열 TMS 공식 작품 목록에 명탐정 코난 극장판 시리즈 수록",
+        "company_summary": "명탐정 코난 TV·극장판 제작사 TMS Entertainment를 보유한 엔터테인먼트그룹",
+        "company_description": "명탐정 코난 TV·극장판 제작사 TMS Entertainment를 보유한 엔터테인먼트그룹",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_title_catalog",
+        "evidence_url": "https://www.tms-e.co.jp/alltitles/conan/",
+        "evidence_sources": [
+          {
+            "url": "https://www.tms-e.co.jp/alltitles/conan/",
+            "title": "TMS Entertainment",
+            "evidence_type": "official_title_catalog",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "ownership_investment",
+        "company_role_label": "투자·소유",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.tms-e.co.jp/alltitles/conan/"
+            ],
+            "evidence_type": "official_title_catalog",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "Sega Sammy Holdings",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.tms-e.co.jp/alltitles/conan/"
+            ],
+            "evidence_type": "official_title_catalog",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Sega Sammy Holdings",
+          "stock_code": "6460",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "6460",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "TOHO",
+        "stock_code": "9602",
+        "ticker": "9602",
+        "market": "TSE",
+        "relation_type": "distribution",
+        "strength": "value_chain",
+        "reason": "TOHO가 코난 극장판 개봉과 공식 무대행사를 운영",
+        "relationship_reason": "TOHO가 코난 극장판 개봉과 공식 무대행사를 운영",
+        "company_summary": "명탐정 코난 극장판을 일본 극장에 배급하는 영화기업",
+        "company_description": "명탐정 코난 극장판을 일본 극장에 배급하는 영화기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_movie_release",
+        "evidence_url": "https://www.toho.co.jp/movie/news/conan-movie-2026_20260411",
+        "evidence_sources": [
+          {
+            "url": "https://www.toho.co.jp/movie/news/conan-movie-2026_20260411",
+            "title": "TOHO",
+            "evidence_type": "official_movie_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "distribution",
+        "company_role_label": "배급·유통",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.toho.co.jp/movie/news/conan-movie-2026_20260411"
+            ],
+            "evidence_type": "official_movie_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "TOHO",
+            "edge_type": "distribution",
+            "evidence_urls": [
+              "https://www.toho.co.jp/movie/news/conan-movie-2026_20260411"
+            ],
+            "evidence_type": "official_movie_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "TOHO",
+          "stock_code": "9602",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9602",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Nippon Television Holdings",
+        "stock_code": "9404",
+        "ticker": "9404",
+        "market": "TSE",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "코난 극장판 제작사 크레딧에 Nippon Television이 포함",
+        "relationship_reason": "코난 극장판 제작사 크레딧에 Nippon Television이 포함",
+        "company_summary": "명탐정 코난 제작위원회와 방송에 참여하는 일본 미디어기업",
+        "company_description": "명탐정 코난 제작위원회와 방송에 참여하는 일본 미디어기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_movie_catalog",
+        "evidence_url": "https://www.ntv.co.jp/movie/index.html",
+        "evidence_sources": [
+          {
+            "url": "https://www.ntv.co.jp/movie/index.html",
+            "title": "Nippon Television",
+            "evidence_type": "official_movie_catalog",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "content_production",
+        "company_role_label": "콘텐츠 제작",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.ntv.co.jp/movie/index.html"
+            ],
+            "evidence_type": "official_movie_catalog",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "Nippon Television Holdings",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.ntv.co.jp/movie/index.html"
+            ],
+            "evidence_type": "official_movie_catalog",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Nippon Television Holdings",
+          "stock_code": "9404",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9404",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Takara Tomy",
+        "stock_code": "7867",
+        "ticker": "7867",
+        "market": "TSE",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "공식 코난 카드게임 사이트에서 상품·이벤트를 지속 운영",
+        "relationship_reason": "공식 코난 카드게임 사이트에서 상품·이벤트를 지속 운영",
+        "company_summary": "명탐정 코난 공식 트레이딩 카드게임을 기획·판매하는 일본 완구기업",
+        "company_description": "명탐정 코난 공식 트레이딩 카드게임을 기획·판매하는 일본 완구기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_ip_product_page",
+        "evidence_url": "https://www.takaratomy.co.jp/products/conan-cardgame/",
+        "evidence_sources": [
+          {
+            "url": "https://www.takaratomy.co.jp/products/conan-cardgame/",
+            "title": "Takara Tomy",
+            "evidence_type": "official_ip_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "retail_sales",
+        "company_role_label": "판매·리테일",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.takaratomy.co.jp/products/conan-cardgame/"
+            ],
+            "evidence_type": "official_ip_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "Takara Tomy",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.takaratomy.co.jp/products/conan-cardgame/"
+            ],
+            "evidence_type": "official_ip_product_page",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Takara Tomy",
+          "stock_code": "7867",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7867",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "McDonald's Holdings Company Japan",
+        "stock_code": "2702",
+        "ticker": "2702",
+        "market": "TSE",
+        "relation_type": "brand_collaboration",
+        "strength": "value_chain",
+        "reason": "코난 세계관을 활용한 치킨 타츠타 상품과 오리지널 애니메이션 캠페인을 공식 진행",
+        "relationship_reason": "코난 세계관을 활용한 치킨 타츠타 상품과 오리지널 애니메이션 캠페인을 공식 진행",
+        "company_summary": "일본 맥도날드를 운영하며 명탐정 코난 IP 캠페인을 전개한 상장 외식기업",
+        "company_description": "일본 맥도날드를 운영하며 명탐정 코난 IP 캠페인을 전개한 상장 외식기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_collaboration_release",
+        "evidence_url": "https://www.mcdonalds.co.jp/company/news/2025/0410a/",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcdonalds.co.jp/company/news/2025/0410a/",
+            "title": "McDonald's Japan",
+            "evidence_type": "official_collaboration_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "brand_marketing",
+        "company_role_label": "브랜드·마케팅",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.mcdonalds.co.jp/company/news/2025/0410a/"
+            ],
+            "evidence_type": "official_collaboration_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "McDonald's Holdings Company Japan",
+            "edge_type": "brand_collaboration",
+            "evidence_urls": [
+              "https://www.mcdonalds.co.jp/company/news/2025/0410a/"
+            ],
+            "evidence_type": "official_collaboration_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "McDonald's Holdings Company Japan",
+          "stock_code": "2702",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "2702",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Bandai Namco Holdings",
+        "stock_code": "7832",
+        "ticker": "7832",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "공식 게임 자료에서 명탐정 코난 콘텐츠 수록과 IP 활용을 확인",
+        "relationship_reason": "공식 게임 자료에서 명탐정 코난 콘텐츠 수록과 IP 활용을 확인",
+        "company_summary": "명탐정 코난 IP를 게임 콘텐츠로 상품화한 일본 엔터테인먼트기업",
+        "company_description": "명탐정 코난 IP를 게임 콘텐츠로 상품화한 일본 엔터테인먼트기업",
+        "business_features": [
+          "애니메이션IP/영화제작·배급"
+        ],
+        "evidence_kind": "official_ip_product_release",
+        "evidence_url": "https://www.bandainamcoent.co.jp/corporate/press/pdf/53-034.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.bandainamcoent.co.jp/corporate/press/pdf/53-034.pdf",
+            "title": "Bandai Namco Entertainment",
+            "evidence_type": "official_ip_product_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "애니메이션IP/영화제작·배급",
+        "company_role_category": "content_production",
+        "company_role_label": "콘텐츠 제작",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "코난 극장판",
+        "matched_ontology_node": "코난 극장판",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "코난 극장판",
+            "to": "애니메이션IP/영화제작·배급",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.bandainamcoent.co.jp/corporate/press/pdf/53-034.pdf"
+            ],
+            "evidence_type": "official_ip_product_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "애니메이션IP/영화제작·배급",
+            "to": "Bandai Namco Holdings",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.bandainamcoent.co.jp/corporate/press/pdf/53-034.pdf"
+            ],
+            "evidence_type": "official_ip_product_release",
+            "as_of": "2026-08-13T16:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Bandai Namco Holdings",
+          "stock_code": "7832",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7832",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 6,
+      "score_independent_of_company_count": true,
+      "direct_count": 1,
+      "role_coverage": [
+        "애니메이션IP/영화제작·배급"
+      ],
+      "tier_counts": {
+        "direct": 1,
+        "value_chain": 4,
+        "industry_watch": 1
+      },
+      "category_count": 5,
+      "candidate_category_count": 5,
+      "role_category_counts": {
+        "brand_marketing": 1,
+        "content_production": 2,
+        "distribution": 1,
+        "ownership_investment": 1,
+        "retail_sales": 1
+      },
+      "ontology_diagnostics": {
+        "source": "term_specific_enrichment_cache",
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "용어별 근거 URL과 상장 식별자가 완비된 6개 이상 기업을 공개"
+    },
+    "rank": 508,
+    "observed_rank": 508,
+    "home_rank": 29,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 251,
+    "momentum_rank": 517,
+    "main_rank": 48,
+    "home_context_status": "resolved",
+    "home_context_reason": "specific_observed_expression",
+    "home_eligible": true,
+    "company_card_status": "ready",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "ready",
+    "frontend_readiness_status": "ready",
+    "frontend_readiness_missing": [],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 6,
+    "publication_rank": 9,
+    "ranking_availability_status": "provisional_history"
+  }
+}
