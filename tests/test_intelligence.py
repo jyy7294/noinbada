@@ -1098,6 +1098,32 @@ def test_frontend_enrichment_queue_reports_six_company_target(tmp_path):
     )
 
 
+def test_hanbok_shop_company_roles_follow_reviewed_ontology_edges(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+
+    target = tmp_path / "hanbok-company-roles.sqlite3"
+    at = datetime(2026, 8, 14, 0, tzinfo=UTC)
+    upsert(
+        [HourlyObservation(at.isoformat(), "google_trends", "한복상점", 1, 100, "observed")],
+        target,
+    )
+
+    item = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
+    roles = {
+        company["stock_code"]: company["company_role_category"]
+        for company in item["companies"]
+    }
+
+    assert roles == {
+        "020000": "retail_sales",
+        "105630": "manufacturing_development",
+        "111770": "manufacturing_development",
+        "120110": "brand_marketing",
+        "298020": "raw_materials_components",
+        "383220": "brand_marketing",
+    }
+
+
 def test_listed_securities_company_has_self_and_four_reviewed_sector_peers(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 
