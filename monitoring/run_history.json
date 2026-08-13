@@ -230,5 +230,21 @@
         "detail": "snapshot_stale"
       }
     }
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-13T10:00:00+00:00",
+    "started_at": "2026-08-13T10:01:59.183052+00:00",
+    "finished_at": "2026-08-13T10:02:09.000741+00:00",
+    "delay_seconds": 119,
+    "duration_seconds": 9.82,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 267,
+    "errors": {},
+    "source_failures": {}
   }
 ]

@@ -1,0 +1,270 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-40b33ccd1326416aa14d02e11b12b185",
+  "generated_at": "2026-08-13T10:02:09.007218+00:00",
+  "observed_at": "2026-08-13T10:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "과천시",
+    "topic": "과천시",
+    "display_name": "과천시",
+    "observed_representative_term": "과천시",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "과천시",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 2,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.015289,
+      "best_source_rank": 66
+    },
+    "raw_terms": [
+      "과천시"
+    ],
+    "phenomenon_summary": "\"과천시\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "unclassified",
+    "category_basis": "unclassified",
+    "broad_category": "other",
+    "category_label": "기타·검토",
+    "trend_definition": "'과천시' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 기타·검토 트렌드입니다.",
+    "lane": "review",
+    "selection_reason": "원문은 보존하되 대표 사건·현상의 문맥을 아직 확인하지 못함",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "review",
+      "main_eligible": false,
+      "hard_issue": false,
+      "ambiguous": true,
+      "generic_category_word": false,
+      "labels": [],
+      "reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "review",
+      "label": "맥락 검토",
+      "affects_score": false
+    },
+    "selection_layer": "review_queue",
+    "company_eligible": true,
+    "score": 50.12,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.349488,
+    "current_source_position": 0.349488,
+    "momentum": 0.699,
+    "persistence": 0.0417,
+    "momentum_delta": 0.698975,
+    "score_components": {
+      "period_strength_points": 12.23,
+      "momentum_points": 17.47,
+      "persistence_points": 0.42,
+      "recency_points": 10.0,
+      "cross_source_points": 10.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 50.12
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "current_period_half_change"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.698975
+      },
+      "momentum_deltas": {
+        "google_trends": 0.698975
+      },
+      "momentum_basis": {
+        "google_trends": "current_period_half_change"
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 7,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 14,
+          "observed_hours": 2,
+          "presence_rate": 0.083333,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.291667,
+        "google_trends": 0.583333
+      },
+      "momentum_status": "measured"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-13T03:00:00+00:00",
+      "last_seen_at": "2026-08-13T10:00:00+00:00",
+      "observed_hours": 2,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 76
+    },
+    "rank_change_by_source": {
+      "google_trends": -10
+    },
+    "source_rank_change": {
+      "google_trends": -10
+    },
+    "first_seen_at": "2026-08-13T03:00:00+00:00",
+    "last_seen_at": "2026-08-13T10:00:00+00:00",
+    "age_hours": 7,
+    "lifecycle": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 14,
+      "history_maturity": 0.4375,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 66,
+        "value": 35.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"200%\", \"page\": 3, \"row_on_page\": 16, \"started_text\": \"2시간 전\", \"status_text\": \"활성\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "google_trends",
+        "rank": 76,
+        "value": 25.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 237, \"collection_page_count\": 10, \"growth_text\": \"100%\", \"page\": 4, \"row_on_page\": 1, \"started_text\": \"9시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "과천시",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 공개를 보류"
+    },
+    "rank": 75,
+    "observed_rank": 75,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "맥락 확인",
+    "persistence_rank": 369,
+    "momentum_rank": 73,
+    "main_rank": null,
+    "home_context_status": "review_required",
+    "home_context_reason": "not_main_lane",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "ranking_availability_status": "provisional_history"
+  }
+}
