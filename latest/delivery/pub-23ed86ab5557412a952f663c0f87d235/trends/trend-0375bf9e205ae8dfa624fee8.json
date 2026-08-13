@@ -1,0 +1,580 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-23ed86ab5557412a952f663c0f87d235",
+  "generated_at": "2026-08-13T09:05:18.775925+00:00",
+  "observed_at": "2026-08-13T09:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "커피믹스",
+    "topic": "커피믹스",
+    "display_name": "커피믹스",
+    "observed_representative_term": "커피믹스",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "커피믹스",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 3,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.030771,
+      "best_source_rank": 29
+    },
+    "raw_terms": [
+      "커피믹스"
+    ],
+    "phenomenon_summary": "\"커피믹스\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "food_culinary",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "food",
+    "category_label": "음식·식품",
+    "trend_definition": "'커피믹스' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 음식·식품 트렌드입니다.",
+    "lane": "main",
+    "selection_reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 57.07,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.428819,
+    "current_source_position": 0.428819,
+    "momentum": 0.8576,
+    "persistence": 0.0625,
+    "momentum_delta": 0.857637,
+    "score_components": {
+      "period_strength_points": 15.01,
+      "momentum_points": 21.44,
+      "persistence_points": 0.62,
+      "recency_points": 10.0,
+      "cross_source_points": 10.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 57.07
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "current_period_half_change"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.857637
+      },
+      "momentum_deltas": {
+        "google_trends": 0.857637
+      },
+      "momentum_basis": {
+        "google_trends": "current_period_half_change"
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 6,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 3,
+          "presence_rate": 0.125,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.25,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-13T01:00:00+00:00",
+      "last_seen_at": "2026-08-13T09:00:00+00:00",
+      "observed_hours": 3,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 29
+    },
+    "rank_change_by_source": {
+      "google_trends": 6
+    },
+    "source_rank_change": {
+      "google_trends": 6
+    },
+    "first_seen_at": "2026-08-13T01:00:00+00:00",
+    "last_seen_at": "2026-08-13T09:00:00+00:00",
+    "age_hours": 8,
+    "lifecycle": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 13,
+      "history_maturity": 0.3958,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "커피믹스",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T03:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T03:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T03:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 24570,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "m3zXpwH1QmU",
+              "title": "☕️믹스커피 하루 두잔 마시면 절대 안 되는 사람 🍀요리꿀팁/건강정보/음식/집밥/건강한 밥상",
+              "url": "https://www.youtube.com/watch?v=m3zXpwH1QmU",
+              "published_at": "2026-08-10T07:00:14Z",
+              "publisher": "식물조아~ ☘️",
+              "metrics": {
+                "viewCount": 9533
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "kn_H7Qpe2Ss",
+              "title": "아무도 몰랐던 믹스커피반전 효능 5가지 #건강정보 #건강루틴 @건강한루틴 사운드사용",
+              "url": "https://www.youtube.com/watch?v=kn_H7Qpe2Ss",
+              "published_at": "2026-08-12T23:00:02Z",
+              "publisher": "모나리자뜨락♡금2시",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 36,
+                "viewCount": 873
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "5gJSjx6pRE0",
+              "title": "[해외감동사연] 한국 믹스커피 한 잔에 오열한 영국! 영하 50도 혹한 녹인 눈물의 맛, 英마트 아수라장",
+              "url": "https://www.youtube.com/watch?v=5gJSjx6pRE0",
+              "published_at": "2026-08-04T06:00:07Z",
+              "publisher": "K-감동스토리",
+              "metrics": {
+                "commentCount": 2,
+                "likeCount": 124,
+                "viewCount": 2930
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "b5-EukiFNxc",
+              "title": "[해외감동사연] 한국 싫다던 이탈리아 여성, 한국 믹스 커피 먹고 넋이 나간 이유",
+              "url": "https://www.youtube.com/watch?v=b5-EukiFNxc",
+              "published_at": "2026-08-03T01:08:43Z",
+              "publisher": "감동의기억",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 2,
+                "viewCount": 13
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "r19nPzN0ol8",
+              "title": "\"결국 한국 기사식당마저 털렸다\" 한국 백반맛 알아버린 미국 여자들, 뉴욕까지 수출된 한국 기사식당의 정체는 | 해외반응",
+              "url": "https://www.youtube.com/watch?v=r19nPzN0ol8",
+              "published_at": "2026-08-12T23:00:08Z",
+              "publisher": "클로이의 한국노트",
+              "metrics": {
+                "commentCount": 3,
+                "likeCount": 117,
+                "viewCount": 634
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "커피믹스",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T03:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T03:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T03:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 24570,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "m3zXpwH1QmU",
+              "title": "☕️믹스커피 하루 두잔 마시면 절대 안 되는 사람 🍀요리꿀팁/건강정보/음식/집밥/건강한 밥상",
+              "url": "https://www.youtube.com/watch?v=m3zXpwH1QmU",
+              "published_at": "2026-08-10T07:00:14Z",
+              "publisher": "식물조아~ ☘️",
+              "metrics": {
+                "viewCount": 9533
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "kn_H7Qpe2Ss",
+              "title": "아무도 몰랐던 믹스커피반전 효능 5가지 #건강정보 #건강루틴 @건강한루틴 사운드사용",
+              "url": "https://www.youtube.com/watch?v=kn_H7Qpe2Ss",
+              "published_at": "2026-08-12T23:00:02Z",
+              "publisher": "모나리자뜨락♡금2시",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 36,
+                "viewCount": 873
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "5gJSjx6pRE0",
+              "title": "[해외감동사연] 한국 믹스커피 한 잔에 오열한 영국! 영하 50도 혹한 녹인 눈물의 맛, 英마트 아수라장",
+              "url": "https://www.youtube.com/watch?v=5gJSjx6pRE0",
+              "published_at": "2026-08-04T06:00:07Z",
+              "publisher": "K-감동스토리",
+              "metrics": {
+                "commentCount": 2,
+                "likeCount": 124,
+                "viewCount": 2930
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "b5-EukiFNxc",
+              "title": "[해외감동사연] 한국 싫다던 이탈리아 여성, 한국 믹스 커피 먹고 넋이 나간 이유",
+              "url": "https://www.youtube.com/watch?v=b5-EukiFNxc",
+              "published_at": "2026-08-03T01:08:43Z",
+              "publisher": "감동의기억",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 2,
+                "viewCount": 13
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "r19nPzN0ol8",
+              "title": "\"결국 한국 기사식당마저 털렸다\" 한국 백반맛 알아버린 미국 여자들, 뉴욕까지 수출된 한국 기사식당의 정체는 | 해외반응",
+              "url": "https://www.youtube.com/watch?v=r19nPzN0ol8",
+              "published_at": "2026-08-12T23:00:08Z",
+              "publisher": "클로이의 한국노트",
+              "metrics": {
+                "commentCount": 3,
+                "likeCount": 117,
+                "viewCount": 634
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T03:00:00Z",
+                "query_term": "커피믹스",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 51,
+        "value": 50.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"700%\", \"page\": 3, \"row_on_page\": 1, \"started_text\": \"1시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 35,
+        "value": 66.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"600%\", \"page\": 2, \"row_on_page\": 10, \"started_text\": \"3시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 245, \"collection_page_count\": 10, \"growth_text\": \"700%\", \"page\": 2, \"row_on_page\": 4, \"started_text\": \"9시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "커피믹스",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 공개를 보류"
+    },
+    "rank": 26,
+    "observed_rank": 26,
+    "home_rank": 3,
+    "rising_rank": 3,
+    "classification": "일반 트렌드",
+    "persistence_rank": 347,
+    "momentum_rank": 26,
+    "main_rank": 4,
+    "home_context_status": "resolved",
+    "home_context_reason": "specific_observed_expression",
+    "home_eligible": true,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "ranking_availability_status": "provisional_history"
+  }
+}
