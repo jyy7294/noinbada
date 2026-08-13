@@ -49,8 +49,16 @@ try {
     if (-not (Test-Path -LiteralPath $python)) {
         throw "Runtime Python environment is missing."
     }
-    & $python -m pip install -e $RuntimeCheckout --quiet
+    # Keep the promoted runtime independently auditable.  The hourly process only
+    # needs production dependencies, but checkpoint/runtime verification also
+    # requires the repository's schema and test dependencies on every machine.
+    & $python -m pip install -e "$RuntimeCheckout[dev]" --quiet
     if ($LASTEXITCODE -ne 0) { throw "Runtime dependency refresh failed." }
+
+    & $python -c "import jsonschema, pytest" 2>$null
+    if ($LASTEXITCODE -ne 0) {
+        throw "Runtime verification dependencies are unavailable after refresh."
+    }
 
     if (-not (Test-Path -LiteralPath $AutomationConfig -PathType Leaf)) {
         throw "Codex hourly automation config is missing."

@@ -96,6 +96,8 @@ def test_verified_code_checkpoint_is_explicit_and_non_force():
     assert 'status\\s*=\\s*"ACTIVE"' in promotion
     assert "FREQ=HOURLY;INTERVAL=1;BYMINUTE=0" in promotion
     assert "codex_hourly_automation" in promotion
+    assert 'pip install -e "$RuntimeCheckout[dev]"' in promotion
+    assert 'import jsonschema, pytest' in promotion
     assert "Get-ScheduledTask" not in promotion
     assert 'scheduler = "codex_hourly_automation"' in checkpoint
     assert (

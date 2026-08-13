@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T08:56:25.7451024+00:00",
+    "updated_at":  "2026-08-13T17:24:03.1974484+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,86 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "82c793b85f2b762f56fbb26de1fc194dea9bd8e7",
+                       "base_remote_main_sha":  "2929132016d1a50ea143807c2913cdf862468653",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
-                                             "AGENTS.md",
                                              "CURRENT_STATE.json",
-                                             "data/ontology_seed.json",
-                                             "docs/BACKEND_TEAM_HANDOFF.md",
-                                             "docs/BACKEND_TEAM_PROMPT.md",
-                                             "docs/CODEX_CONTINUITY.md",
-                                             "docs/COMPANY_RELATION_POLICY.md",
-                                             "docs/DEMO_REPLAY_60D.md",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "docs/PRODUCT_DIRECTION_TRANSCRIPT.md",
-                                             "docs/PRODUCT_POLICY.md",
-                                             "README.md",
-                                             "schemas/demo-rankings-v1.schema.json",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "schemas/metadata-v3.schema.json",
-                                             "schemas/status-v1.schema.json",
-                                             "scripts/build_ontology_seed.py",
-                                             "scripts/collect-hourly.ps1",
-                                             "src/trzip/editorial_review.py",
-                                             "src/trzip/intelligence.py",
-                                             "src/trzip/ontology.py",
-                                             "src/trzip/publication_pipeline.py",
-                                             "src/trzip/ranking_v2.py",
-                                             "src/trzip/runtime_audit.py",
-                                             "src/trzip/trend_fit.py",
-                                             "tests/test_display_names.py",
-                                             "tests/test_editorial_review.py",
-                                             "tests/test_intelligence.py",
-                                             "tests/test_ontology.py",
-                                             "tests/test_public_contract_schema.py",
-                                             "tests/test_publication_pipeline.py",
-                                             "tests/test_ranking_v2.py",
-                                             "tests/test_runtime_audit.py",
-                                             "tests/test_trend_fit.py"
+                                             "scripts/promote-runtime.ps1",
+                                             "tests/test_local_runtime_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "AGENTS.md":  "31ff3e2cd591f88f4157d421496b97e1ac1d247829d48f4fb7d04e99374c7be9",
-                                                    "data/ontology_seed.json":  "35d1e931aa9c2812c85f05fc3e7e3cb323a5ac40c3d0f57af25c0257ff5d2a23",
-                                                    "docs/BACKEND_TEAM_HANDOFF.md":  "8945b26cc169ecd21d6acf7924320ff0817b3b4d73416e978c333abf93c57a03",
-                                                    "docs/BACKEND_TEAM_PROMPT.md":  "7eff96c9428e8154edc864c37c64d8ce67a97284d6d7be5d5006f54ae1be0611",
-                                                    "docs/CODEX_CONTINUITY.md":  "b511eeb471403db6bf02f6ca8e5848cc6d728c7d5cb4cfe5ebfb8e77b27ec09b",
-                                                    "docs/COMPANY_RELATION_POLICY.md":  "c3b1336900c5f30b344d7852ead1ac8ba692678f1cee9cbda7222d327d9b51d2",
-                                                    "docs/DEMO_REPLAY_60D.md":  "287c1284c51619b0e7d01a49056059cb0eb051053825cc89cf3fbc68be69c929",
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "27039b0422ab159a91b6cde8288d4e3cfd0c794f23d0b490fdb3d9a550c56c70",
-                                                    "docs/PRODUCT_DIRECTION_TRANSCRIPT.md":  "0c1e5023b4e0d9292aaf7011a977a07fd1ffe671f9325c2e5cfbd69fc5d29465",
-                                                    "docs/PRODUCT_POLICY.md":  "f69c54ef8c6f750cf35362a900228a8cc4d899da3244a8002c714d7ef6ab4e35",
-                                                    "README.md":  "44b693e3d0d66db789f65386964a9beea82109a41e17250bf031303c37d65138",
-                                                    "schemas/demo-rankings-v1.schema.json":  "c8ee52279e9e9af89b479a5ef93f9e407e627cd2a348d222899fb1e49e89dfc0",
-                                                    "schemas/intelligence-v3.schema.json":  "f6f6d07955e81e6a44967c8801f59cfe68a2405ab03d1bdfb1c5704bf9529081",
-                                                    "schemas/metadata-v3.schema.json":  "bbab2a415a6d69f666bafbdffcea81c945eb53d80e8b6a73152a032183a109c5",
-                                                    "schemas/status-v1.schema.json":  "830db6f725ab9a3965605a653faebbbe944d18b20249f0fc2cffa3c646251cb3",
-                                                    "scripts/build_ontology_seed.py":  "003b7b086ac5632c2288146ac82ed9ec4905b08af55d26627e05b92762d92fbf",
-                                                    "scripts/collect-hourly.ps1":  "70d9230a7a6c57c5ba695e388550bd31a24821967dbf459ef00034b210ab4957",
-                                                    "src/trzip/editorial_review.py":  "5f0db412a02920405255a6c8f220df000953b3de6a3443707903345401ac82c0",
-                                                    "src/trzip/intelligence.py":  "f029eabb38cd4b15a63d2f217658eb4583c49becc57626284815ad78f6b46185",
-                                                    "src/trzip/ontology.py":  "7fbe10dd7d58586aac9b32f6f738f4ee2dee6d2996dbc1253bbc0eeacae3187e",
-                                                    "src/trzip/publication_pipeline.py":  "25eb75db6889a29de312eef6c12137cce20cd25db4b903f68c91076d1e427f73",
-                                                    "src/trzip/ranking_v2.py":  "8f5425fe3a42e91a95f5c9d491c391af0f261fc2e714f5a9f383ebc061a58394",
-                                                    "src/trzip/runtime_audit.py":  "d604f85fec3e58604267ee4a574518710036bf7afbfddc577c3ac88996e44d19",
-                                                    "src/trzip/trend_fit.py":  "ab694ab2dcb242383b3025b679961a7ee814030d0d0843a17fb930a377b89b1f",
-                                                    "tests/test_display_names.py":  "cad628d74e697c756536343a7dcd88eca5b6dca8e2ef6fe9cea8fe46dd952dff",
-                                                    "tests/test_editorial_review.py":  "4f328886508fdf5dea415c841b073908035767e31b7d07cdecc0fd8bbb8c44bf",
-                                                    "tests/test_intelligence.py":  "78a898f1a2c689894e1bd2c7f4b37f54f0f1369c27eeb57e0dd9e4b75e86709d",
-                                                    "tests/test_ontology.py":  "9eadfdc7893405698bc6adc9f3673ef75d78cbadcc7e3ae2269c58482c8c51ed",
-                                                    "tests/test_public_contract_schema.py":  "8947f99a5f3bdf7af9fc6bdc8283bc9efac2f7371da90db77fe91bb4803e9f39",
-                                                    "tests/test_publication_pipeline.py":  "6d5096f86137336d13d2a4105c6affdda43e9fb0ac544fc9560ed4dcdd50fd57",
-                                                    "tests/test_ranking_v2.py":  "404e20dae8ae4305bb050b819002b1b48eb07d245938c443da3a48ee41479538",
-                                                    "tests/test_runtime_audit.py":  "f57cb4a563cc0afe1092d34bfae5d7eb3f4645fff668a6403099381f9b149885",
-                                                    "tests/test_trend_fit.py":  "f1ca71a454fb6671c023c082502593d12fc570323f0a983285b454a7bb521a69"
+                                                    "scripts/promote-runtime.ps1":  "81a2fb133f073b3c3a4ba0f856b8445000d649538abc98c53dfa53019d209362",
+                                                    "tests/test_local_runtime_contract.py":  "41e2389738fc3efeb2fa6dc80a4f0bbfbf17d8249f0bb941759c535170db1b3d"
                                                 },
-                       "commit_message":  "feat: finalize automatic trend ranking contract",
+                       "commit_message":  "fix: keep promoted runtime independently auditable",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  246
+                                      "count":  276
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -109,22 +47,18 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Implement the approved 24-hour automatic trend ranking, enrichment, and publication-safety contract without changing the frontend.",
+                    "objective":  "Make every promoted TRZIP runtime independently testable before the 8-hour live validation.",
                     "completed":  [
-                                      "Replaced ranking with the 35/25/20/10/10 measured formula and honest unavailable comparison handling.",
-                                      "Added automatic home and rising rankings, eight public categories, lifecycle states, and explicit observed/home/rising rank fields.",
-                                      "Added keyword and listed-company enrichment status without fake padding or whitelist influence on ranking.",
-                                      "Added publication safety so incomplete X or Google runs remain local and cannot overwrite the remote live-data publication.",
-                                      "Updated public schemas, backend contracts, runtime audit, documentation, and deterministic tests while leaving the frontend untouched."
+                                      "Install and verify dev audit dependencies during runtime promotion."
                                   ],
                     "next_actions":  [
-                                         "Promote the verified main commit to the runtime checkout after the hourly collection boundary and verify the next complete X+Google publication."
+                                         "Accumulate 8 consecutive exact-hour live receipts under hourly-source-proof-v2."
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "The current production ledger has less than a full 24 hours of clean history, so rising comparisons and many keyword/company enrichments remain honestly unavailable or pending until more observations accumulate."
+                                              "Eight-hour live validation is still 0/8 until new exact-hour receipts are produced."
                                           ]
                 },
     "runtime_contract":  {
