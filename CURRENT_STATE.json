@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T17:28:24.2700664+00:00",
+    "updated_at":  "2026-08-13T17:32:19.4042088+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,7 +8,7 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "2660afbc5f2098825064ac14227633f892083d84",
+                       "base_remote_main_sha":  "ade002004d0dd6606379de9beb81dfd1df639d4f",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
@@ -16,16 +16,16 @@
                                              "tests/test_result_quality.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/result_quality.py":  "dc1bb3d17ea771d277d76fbd2bd77855c303227441eeb5295edab3ee7ff1f826",
-                                                    "tests/test_result_quality.py":  "f87dd651168ae09da0440e34067ae047af533508a4f4f04b038ac7083ade11bb"
+                                                    "src/trzip/result_quality.py":  "4d85880ff689130049046727a757ea2189321ec5ba8571ad0ae007e1fbf8fa79",
+                                                    "tests/test_result_quality.py":  "846d4d675d26f6dc061a60609d804b40ea6d5a123a1eb6fa9ae8a51802661f86"
                                                 },
-                       "commit_message":  "fix: verify every X browser evidence row",
+                       "commit_message":  "fix: validate complete frontend trend context",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  277
+                                      "count":  278
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,12 +47,12 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Fail closed unless all 30 X rows prove the same current logged-in Chrome collection and valid exact-hour timing.",
+                    "objective":  "Require every hourly Top10 item to expose a valid category, definition, distinct sourced keywords, and complete company ontology path.",
                     "completed":  [
-                                      "Validate all X evidence rows and cross-check actual versus reported schedule delay."
+                                      "Strengthen the immutable frontend result receipt contract beyond simple item counts."
                                   ],
                     "next_actions":  [
-                                         "Accumulate 8 consecutive exact-hour live receipts under hourly-source-proof-v2."
+                                         "Accumulate 8 consecutive exact-hour live receipts under the fixed quality policy."
                                      ],
                     "blockers":  [
 

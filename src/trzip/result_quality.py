@@ -12,6 +12,12 @@ from .hourly_store import ELIGIBLE_COLLECTOR_SQL
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 
 
+PUBLIC_BROAD_CATEGORIES = {
+    "food", "content", "sports", "lifestyle", "culture",
+    "consumer", "technology", "market",
+}
+
+
 def record_publication_receipt(
     path: Path, *, observed_at: str, publication_id: str, remote_sha: str,
     contract: dict | None = None, source_gate: dict | None = None,
@@ -146,8 +152,18 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
         companies = list(item.get("companies") or [])
         unique_codes = {str(company.get("stock_code") or "").strip() for company in companies}
         item_failures = []
+        if item.get("broad_category") not in PUBLIC_BROAD_CATEGORIES:
+            item_failures.append(f"invalid_category:{item.get('broad_category')}")
+        if not str(item.get("trend_definition") or "").strip():
+            item_failures.append("missing_trend_definition")
         if len(keywords) != 5:
             item_failures.append(f"keyword_count:{len(keywords)}")
+        keyword_texts = [str(keyword.get("text") or "").strip() for keyword in keywords]
+        normalized_keyword_texts = {" ".join(text.casefold().split()) for text in keyword_texts}
+        if not all(keyword_texts) or len(normalized_keyword_texts) != len(keyword_texts):
+            item_failures.append("empty_or_duplicate_keyword")
+        if any(not list(keyword.get("source") or []) for keyword in keywords):
+            item_failures.append("keyword_without_source")
         if len(unique_codes) < MINIMUM_FRONTEND_COMPANIES or "" in unique_codes:
             item_failures.append(f"company_count:{len(unique_codes - {''})}")
         for company in companies:
@@ -166,6 +182,9 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
                 str(company.get("company_role_label") or "").strip(),
                 any(evidence_urls),
                 company.get("ontology_complete") is True,
+                isinstance(company.get("ontology_path"), list)
+                and len(company.get("ontology_path")) >= 2,
+                str(company.get("relation_tier") or "").strip(),
             )):
                 item_failures.append(f"incomplete_company:{company.get('company')}")
             role_category = str(company.get("company_role_category") or "")

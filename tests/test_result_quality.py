@@ -15,6 +15,11 @@ def _company(index: int) -> dict:
         "company_role_category": "manufacturing_development",
         "company_role_label": "제조·개발",
         "ontology_complete": True,
+        "ontology_path": [
+            {"from": "event", "to": "industry"},
+            {"from": "industry", "to": f"company-{index}"},
+        ],
+        "relation_tier": "direct",
         "evidence_sources": [{"url": f"https://example.com/{index}"}],
     }
 
@@ -25,8 +30,13 @@ def _trend(rank: int) -> dict:
         "event_key": f"event:{rank}",
         "display_name": f"트렌드 {rank}",
         "observed_rank": rank * 2,
+        "broad_category": "technology",
+        "trend_definition": "실측 데이터에서 관측된 구체적인 기술 트렌드입니다.",
         "frontend_readiness_status": "ready",
-        "related_keywords": [{"text": f"키워드 {index}"} for index in range(5)],
+        "related_keywords": [
+            {"text": f"키워드 {index}", "source": ["google_trends"]}
+            for index in range(5)
+        ],
         "companies": [_company(index) for index in range(1, 7)],
     }
 
@@ -70,6 +80,20 @@ def test_quality_gate_rejects_more_than_one_food_trend():
 
     assert result["passed"] is False
     assert "food_category_count:2" in result["failures"]
+
+
+def test_quality_gate_rejects_duplicate_keyword_and_missing_trend_context():
+    trends = [_trend(rank) for rank in range(1, 11)]
+    trends[0]["related_keywords"][1]["text"] = trends[0]["related_keywords"][0]["text"]
+    trends[0]["trend_definition"] = ""
+    trends[1]["broad_category"] = "other"
+
+    result = evaluate_frontend_result({"home_top10": trends})
+
+    assert result["passed"] is False
+    assert any("empty_or_duplicate_keyword" in failure for failure in result["failures"])
+    assert any("missing_trend_definition" in failure for failure in result["failures"])
+    assert any("invalid_category" in failure for failure in result["failures"])
 
 
 def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):
