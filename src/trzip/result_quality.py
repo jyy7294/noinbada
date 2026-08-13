@@ -34,15 +34,22 @@ def _ontology_path_reaches_company(path: object, company_name: str) -> bool:
     if not isinstance(path, list) or len(path) < 2:
         return False
     target = " ".join(company_name.casefold().split())
-    terminal = path[-1]
-    if isinstance(terminal, str):
-        return " ".join(terminal.casefold().split()) == target
-    if isinstance(terminal, dict):
-        values = [terminal.get(key) for key in ("to", "target", "label", "name")]
-        return any(
+    # A complete listed-company path normally terminates at the stock node,
+    # with the company reached by the preceding business edge.  Accept an
+    # explicit company node anywhere on the forward path instead of wrongly
+    # requiring the terminal stock label to equal the company name.
+    for step in path:
+        if isinstance(step, str):
+            values = [step]
+        elif isinstance(step, dict):
+            values = [step.get(key) for key in ("to", "target", "label", "name")]
+        else:
+            continue
+        if any(
             " ".join(str(value).casefold().split()) == target
             for value in values if value
-        )
+        ):
+            return True
     return False
 
 
