@@ -314,7 +314,7 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
             "passed": not item_failures,
         })
     return {
-        "policy_version": "frontend-result-quality-v4",
+        "policy_version": "frontend-result-quality-v5",
         "passed": not failures,
         "trend_count": len(top),
         "required_trend_count": 10,
@@ -448,7 +448,7 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
             "failure": "legacy_source_gate_policy",
         }
     contract = publication.get("contract")
-    if contract is not None and contract.get("policy_version") != "frontend-result-quality-v4":
+    if contract is not None and contract.get("policy_version") != "frontend-result-quality-v5":
         contract = {
             **contract,
             "passed": False,
@@ -477,7 +477,7 @@ def evaluate_consecutive_hours(path: Path, *, end: datetime, count: int = 3) -> 
             break
         current_streak += 1
     return {
-        "policy_version": "consecutive-actual-result-v1",
+        "policy_version": "consecutive-actual-result-v2",
         "required_consecutive_hours": count,
         "passed": len(evaluations) == count and all(row["passed"] for row in evaluations),
         "current_consecutive_success_count": current_streak,

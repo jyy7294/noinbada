@@ -153,7 +153,7 @@ try {
         throw "publication preflight failed before remote push; $SourceRows; failures=$($Preflight.contract.failures -join ',')"
     }
     Write-RunLog -Phase "preflight" -Status "ok" `
-        -Detail "source-v2 and frontend-v4 contracts passed before remote publication"
+        -Detail "source-v2 and frontend-v5 contracts passed before remote publication"
 
     # A verified hour is immutable.  Reject a newly generated publication for
     # that same hour before copying, committing, or pushing any remote bytes.

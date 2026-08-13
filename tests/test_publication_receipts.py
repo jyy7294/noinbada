@@ -25,7 +25,7 @@ def test_remote_publication_receipt_is_required_and_persisted(tmp_path: Path):
         publication_id="pub-example",
         remote_sha="a" * 40,
         contract={
-            "policy_version": "frontend-result-quality-v4",
+            "policy_version": "frontend-result-quality-v5",
             "passed": True,
             "trends": [{"display_name": "당시 결과"}],
         },
