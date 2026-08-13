@@ -1,0 +1,260 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "period_observed",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {},
+    "confidence": "demo",
+    "current_source_position": 0.504306,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 4
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "카우보이 모자",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "카우보이 모자",
+    "first_seen_at": "2026-08-12T04:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-2619603de1f4259aaabfecaa.json",
+    "is_current": false,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T07:00:00+00:00",
+    "latest_source_ranks": {},
+    "lifecycle": "expired",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T04:00:00+00:00",
+      "last_seen_at": "2026-08-12T07:00:00+00:00",
+      "observed_hours": 4,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "main_rank": 273,
+    "momentum": 0.752153,
+    "observed_representative_term": "카우보이 모자",
+    "period_sources": [
+      "x"
+    ],
+    "persistence": 0.02381,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference"
+    ],
+    "rank": 273,
+    "rank_change": null,
+    "rank_change_by_source": {},
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "period_observed",
+        "display_name": "카우보이 모자",
+        "event_key": "카우보이 모자",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T07:00:00+00:00",
+        "main_rank": 302,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 302,
+        "rank_change": null,
+        "score": 44.27,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.0,
+          "period_strength_points": 19.99,
+          "persistence_points": 3.33,
+          "recency_points": 5.95,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 44.27
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "period_observed",
+        "display_name": "카우보이 모자",
+        "event_key": "카우보이 모자",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T07:00:00+00:00",
+        "main_rank": 267,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 267,
+        "rank_change": null,
+        "score": 50.2,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.05,
+          "period_strength_points": 20.19,
+          "persistence_points": 0.42,
+          "recency_points": 14.54,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 50.2
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "period_observed",
+        "display_name": "카우보이 모자",
+        "event_key": "카우보이 모자",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T07:00:00+00:00",
+        "main_rank": 273,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 273,
+        "rank_change": null,
+        "score": 48.83,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.04,
+          "period_strength_points": 20.17,
+          "persistence_points": 0.48,
+          "recency_points": 13.14,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 48.83
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "카우보이 모자"
+    ],
+    "score": 48.83,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 15.04,
+      "period_strength_points": 20.17,
+      "persistence_points": 0.48,
+      "recency_points": 13.14,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 48.83
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T04:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 26,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 27,
+        "source": "x",
+        "source_rank": 27,
+        "topic": "카우보이 모자",
+        "value": 75.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T05:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 26,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 26,
+        "source": "x",
+        "source_rank": 26,
+        "topic": "카우보이 모자",
+        "value": 75.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T06:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 26,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 26,
+        "source": "x",
+        "source_rank": 26,
+        "topic": "카우보이 모자",
+        "value": 75.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T07:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 37,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 37,
+        "source": "x",
+        "source_rank": 37,
+        "topic": "카우보이 모자",
+        "value": 64.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "x": 0.504306
+      },
+      "period_strength": {
+        "x": 0.504306
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 4,
+          "presence_rate": 0.02381
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "카우보이 모자"
+  }
+}

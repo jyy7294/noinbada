@@ -1,0 +1,320 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "period_observed",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {},
+    "confidence": "demo",
+    "current_source_position": 0.871698,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 9
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "꼬들 1684",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "꼬들 1684",
+    "first_seen_at": "2026-08-12T03:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-6ec7d2e2aac56058b285ecbd.json",
+    "is_current": false,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T12:00:00+00:00",
+    "latest_source_ranks": {},
+    "lifecycle": "cooling",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T03:00:00+00:00",
+      "last_seen_at": "2026-08-12T12:00:00+00:00",
+      "observed_hours": 9,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "main_rank": 26,
+    "momentum": 0.935849,
+    "observed_representative_term": "꼬들 1684",
+    "period_sources": [
+      "x"
+    ],
+    "persistence": 0.053571,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference"
+    ],
+    "rank": 26,
+    "rank_change": null,
+    "rank_change_by_source": {},
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "period_observed",
+        "display_name": "꼬들 1684",
+        "event_key": "꼬들 1684",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T12:00:00+00:00",
+        "main_rank": 68,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 68,
+        "rank_change": null,
+        "score": 68.47,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.6,
+          "period_strength_points": 34.42,
+          "persistence_points": 7.5,
+          "recency_points": 7.95,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 68.47
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "period_observed",
+        "display_name": "꼬들 1684",
+        "event_key": "꼬들 1684",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T12:00:00+00:00",
+        "main_rank": 27,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 27,
+        "rank_change": null,
+        "score": 69.28,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.73,
+          "period_strength_points": 34.92,
+          "persistence_points": 0.94,
+          "recency_points": 14.69,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 69.28
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "period_observed",
+        "display_name": "꼬들 1684",
+        "event_key": "꼬들 1684",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T12:00:00+00:00",
+        "main_rank": 26,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 26,
+        "rank_change": null,
+        "score": 68.36,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.72,
+          "period_strength_points": 34.87,
+          "persistence_points": 1.07,
+          "recency_points": 13.7,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 68.36
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "꼬들 1684"
+    ],
+    "score": 68.36,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 18.72,
+      "period_strength_points": 34.87,
+      "persistence_points": 1.07,
+      "recency_points": 13.7,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 68.36
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T03:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 3,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 3,
+        "source": "x",
+        "source_rank": 3,
+        "topic": "꼬들 1684",
+        "value": 98.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T04:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 7,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 7,
+        "source": "x",
+        "source_rank": 7,
+        "topic": "꼬들 1684",
+        "value": 94.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T05:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 7,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 7,
+        "source": "x",
+        "source_rank": 7,
+        "topic": "꼬들 1684",
+        "value": 94.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T06:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 8,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 8,
+        "source": "x",
+        "source_rank": 8,
+        "topic": "꼬들 1684",
+        "value": 93.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T07:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 5,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 5,
+        "source": "x",
+        "source_rank": 5,
+        "topic": "꼬들 1684",
+        "value": 96.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T08:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 5,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 5,
+        "source": "x",
+        "source_rank": 5,
+        "topic": "꼬들 1684",
+        "value": 96.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T09:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 7,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 7,
+        "source": "x",
+        "source_rank": 7,
+        "topic": "꼬들 1684",
+        "value": 94.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T11:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 12,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 12,
+        "source": "x",
+        "source_rank": 12,
+        "topic": "꼬들 1684",
+        "value": 89.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T12:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 13,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 13,
+        "source": "x",
+        "source_rank": 13,
+        "topic": "꼬들 1684",
+        "value": 88.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "x": 0.871698
+      },
+      "period_strength": {
+        "x": 0.871698
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 9,
+          "presence_rate": 0.053571
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "꼬들 1684"
+  }
+}

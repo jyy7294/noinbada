@@ -1,0 +1,270 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "is_current",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.343402,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 2
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "보고 소원 트렌드",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "보고 소원 트렌드",
+    "first_seen_at": "2026-08-12T21:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-ef6091a7d6d8e4bbcbac4baf.json",
+    "is_current": true,
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "x": 19
+    },
+    "lifecycle": "new",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T21:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 2,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "new",
+    "lifecycle_reason": "first_observed_within_new_window",
+    "main_rank": 336,
+    "momentum": 0.671701,
+    "observed_representative_term": "보고 소원 트렌드",
+    "period_sources": [
+      "x"
+    ],
+    "persistence": 0.011905,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed"
+    ],
+    "rank": 336,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "x": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "보고 소원 트렌드",
+        "event_key": "보고 소원 트렌드",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 307,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 307,
+        "rank_change": null,
+        "score": 43.93,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 13.45,
+          "period_strength_points": 13.81,
+          "persistence_points": 1.67,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 43.93
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "보고 소원 트렌드",
+        "event_key": "보고 소원 트렌드",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 360,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 360,
+        "rank_change": null,
+        "score": 42.37,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 13.43,
+          "period_strength_points": 13.73,
+          "persistence_points": 0.21,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 42.37
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "보고 소원 트렌드",
+        "event_key": "보고 소원 트렌드",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 336,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 336,
+        "rank_change": null,
+        "score": 42.41,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 13.43,
+          "period_strength_points": 13.74,
+          "persistence_points": 0.24,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 42.41
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "보고 소원 트렌드"
+    ],
+    "score": 42.41,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 13.43,
+      "period_strength_points": 13.74,
+      "persistence_points": 0.24,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 42.41
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 22,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 22,
+        "source": "x",
+        "source_rank": 22,
+        "topic": "보고 소원 트렌드",
+        "value": 79.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 19,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 19,
+        "source": "x",
+        "source_rank": 19,
+        "topic": "보고 소원 트렌드",
+        "value": 82.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "x": 0.343402
+      },
+      "period_strength": {
+        "x": 0.343402
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 2,
+          "presence_rate": 0.011905
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "보고 소원 트렌드"
+  }
+}

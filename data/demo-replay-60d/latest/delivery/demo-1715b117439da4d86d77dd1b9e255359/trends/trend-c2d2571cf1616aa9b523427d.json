@@ -1,0 +1,1233 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "is_current",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.386283,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 1,
+        "observed": 9,
+        "synthetic_backfill": 69
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "은마아파트",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "은마아파트",
+    "first_seen_at": "2026-06-15T23:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-c2d2571cf1616aa9b523427d.json",
+    "is_current": true,
+    "keywords": [
+      {
+        "affects_score": false,
+        "observed_hours": 8,
+        "role": "alias_or_variant",
+        "role_status": "deterministic_draft",
+        "source": [
+          "google_trends"
+        ],
+        "status": "observed_related_query",
+        "text": "대치동은마아파트"
+      },
+      {
+        "affects_score": false,
+        "observed_hours": 8,
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "source": [
+          "google_trends"
+        ],
+        "status": "observed_related_query",
+        "text": "재건축"
+      }
+    ],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 16
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-06-15T23:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 74,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 260,
+    "momentum": 0.572042,
+    "observed_representative_term": "은마아파트",
+    "period_sources": [
+      "x",
+      "google_trends"
+    ],
+    "persistence": 0.154762,
+    "previous_period_rank": 34,
+    "previous_period_score": 58.43,
+    "provenance": [
+      "historical_reference",
+      "observed",
+      "synthetic_backfill"
+    ],
+    "rank": 260,
+    "rank_change": -226,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "은마아파트",
+        "event_key": "은마아파트",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 2,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": 71,
+        "previous_period_score": 19.31,
+        "rank": 2,
+        "rank_change": 69,
+        "score": 79.86,
+        "score_change": 60.55,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 19.14,
+          "period_strength_points": 36.55,
+          "persistence_points": 9.17,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 79.86
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "은마아파트",
+        "event_key": "은마아파트",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 293,
+        "period_sources": [
+          "x",
+          "google_trends"
+        ],
+        "previous_period_rank": 86,
+        "previous_period_score": 46.81,
+        "rank": 293,
+        "rank_change": -207,
+        "score": 48.74,
+        "score_change": 1.93,
+        "score_components": {
+          "cross_source_points": 5.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 10.85,
+          "period_strength_points": 14.64,
+          "persistence_points": 3.25,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 48.74
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "은마아파트",
+        "event_key": "은마아파트",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 260,
+        "period_sources": [
+          "x",
+          "google_trends"
+        ],
+        "previous_period_rank": 34,
+        "previous_period_score": 58.43,
+        "rank": 260,
+        "rank_change": -226,
+        "score": 49.99,
+        "score_change": -8.44,
+        "score_components": {
+          "cross_source_points": 5.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 11.44,
+          "period_strength_points": 15.45,
+          "persistence_points": 3.1,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 49.99
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "은마아파트"
+    ],
+    "score": 49.99,
+    "score_change": -8.44,
+    "score_components": {
+      "cross_source_points": 5.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 11.44,
+      "period_strength_points": 15.45,
+      "persistence_points": 3.1,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 49.99
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period",
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-15T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 14,
+        "source": "google_trends",
+        "source_rank": 14,
+        "topic": "은마아파트",
+        "value": 25.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-17T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 11,
+        "source": "google_trends",
+        "source_rank": 11,
+        "topic": "은마아파트",
+        "value": 28.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-17T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 39,
+        "source": "x",
+        "source_rank": 39,
+        "topic": "은마아파트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-21T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 12,
+        "source": "google_trends",
+        "source_rank": 12,
+        "topic": "은마아파트",
+        "value": 27.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-22T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 20,
+        "source": "google_trends",
+        "source_rank": 20,
+        "topic": "은마아파트",
+        "value": 16.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-23T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "은마아파트",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-27T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 21,
+        "source": "google_trends",
+        "source_rank": 21,
+        "topic": "은마아파트",
+        "value": 17.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-29T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 16,
+        "source": "google_trends",
+        "source_rank": 16,
+        "topic": "은마아파트",
+        "value": 22.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-30T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 18,
+        "source": "google_trends",
+        "source_rank": 18,
+        "topic": "은마아파트",
+        "value": 20.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-03T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 9,
+        "source": "google_trends",
+        "source_rank": 9,
+        "topic": "은마아파트",
+        "value": 28.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-04T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 22,
+        "source": "google_trends",
+        "source_rank": 22,
+        "topic": "은마아파트",
+        "value": 15.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-08T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "google_trends",
+        "source_rank": 30,
+        "topic": "은마아파트",
+        "value": 10.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-09T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 24,
+        "source": "google_trends",
+        "source_rank": 24,
+        "topic": "은마아파트",
+        "value": 16.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-10T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 17,
+        "source": "google_trends",
+        "source_rank": 17,
+        "topic": "은마아파트",
+        "value": 24.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-11T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 18,
+        "source": "google_trends",
+        "source_rank": 18,
+        "topic": "은마아파트",
+        "value": 23.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-12T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 34,
+        "source": "google_trends",
+        "source_rank": 34,
+        "topic": "은마아파트",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-13T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 18,
+        "source": "google_trends",
+        "source_rank": 18,
+        "topic": "은마아파트",
+        "value": 22.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-15T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 21,
+        "source": "google_trends",
+        "source_rank": 21,
+        "topic": "은마아파트",
+        "value": 20.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-19T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 31,
+        "source": "google_trends",
+        "source_rank": 31,
+        "topic": "은마아파트",
+        "value": 10.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-25T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 21,
+        "source": "google_trends",
+        "source_rank": 21,
+        "topic": "은마아파트",
+        "value": 20.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-28T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 5,
+        "source": "google_trends",
+        "source_rank": 5,
+        "topic": "은마아파트",
+        "value": 35.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-31T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "은마아파트",
+        "value": 17.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-01T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 7,
+        "source": "google_trends",
+        "source_rank": 7,
+        "topic": "은마아파트",
+        "value": 24.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-02T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 7,
+        "source": "google_trends",
+        "source_rank": 7,
+        "topic": "은마아파트",
+        "value": 24.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-03T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 19,
+        "source": "google_trends",
+        "source_rank": 19,
+        "topic": "은마아파트",
+        "value": 12.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-04T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 27,
+        "source": "google_trends",
+        "source_rank": 27,
+        "topic": "은마아파트",
+        "value": 4.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-05T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "은마아파트",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T00:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "은마아파트",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T01:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 13,
+        "source": "google_trends",
+        "source_rank": 13,
+        "topic": "은마아파트",
+        "value": 18.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T02:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 24,
+        "source": "google_trends",
+        "source_rank": 24,
+        "topic": "은마아파트",
+        "value": 7.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T03:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 16,
+        "source": "google_trends",
+        "source_rank": 16,
+        "topic": "은마아파트",
+        "value": 15.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T04:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 22,
+        "source": "google_trends",
+        "source_rank": 22,
+        "topic": "은마아파트",
+        "value": 9.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-08T18:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "google_trends",
+        "source_rank": 29,
+        "topic": "은마아파트",
+        "value": 2.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-08T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 26,
+        "source": "google_trends",
+        "source_rank": 26,
+        "topic": "은마아파트",
+        "value": 5.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-08T21:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "은마아파트",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-08T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 26,
+        "source": "google_trends",
+        "source_rank": 26,
+        "topic": "은마아파트",
+        "value": 5.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T00:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "은마아파트",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T01:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 12,
+        "source": "google_trends",
+        "source_rank": 12,
+        "topic": "은마아파트",
+        "value": 19.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T02:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 18,
+        "source": "google_trends",
+        "source_rank": 18,
+        "topic": "은마아파트",
+        "value": 13.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T03:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 13,
+        "source": "google_trends",
+        "source_rank": 13,
+        "topic": "은마아파트",
+        "value": 18.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T04:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 18,
+        "source": "google_trends",
+        "source_rank": 18,
+        "topic": "은마아파트",
+        "value": 13.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T05:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 26,
+        "source": "google_trends",
+        "source_rank": 26,
+        "topic": "은마아파트",
+        "value": 5.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T06:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 15,
+        "source": "google_trends",
+        "source_rank": 15,
+        "topic": "은마아파트",
+        "value": 16.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T07:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "은마아파트",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T08:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 24,
+        "source": "google_trends",
+        "source_rank": 24,
+        "topic": "은마아파트",
+        "value": 7.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T09:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "은마아파트",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T10:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 25,
+        "source": "google_trends",
+        "source_rank": 25,
+        "topic": "은마아파트",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T11:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 11,
+        "source": "google_trends",
+        "source_rank": 11,
+        "topic": "은마아파트",
+        "value": 20.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T12:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "은마아파트",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T13:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 6,
+        "source": "google_trends",
+        "source_rank": 6,
+        "topic": "은마아파트",
+        "value": 25.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T14:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 5,
+        "source": "google_trends",
+        "source_rank": 5,
+        "topic": "은마아파트",
+        "value": 26.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T15:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 8,
+        "source": "google_trends",
+        "source_rank": 8,
+        "topic": "은마아파트",
+        "value": 23.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T16:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 12,
+        "source": "google_trends",
+        "source_rank": 12,
+        "topic": "은마아파트",
+        "value": 19.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T16:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "x",
+        "source_rank": 30,
+        "topic": "은마아파트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T17:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 11,
+        "source": "google_trends",
+        "source_rank": 11,
+        "topic": "은마아파트",
+        "value": 20.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T18:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 3,
+        "source": "google_trends",
+        "source_rank": 3,
+        "topic": "은마아파트",
+        "value": 28.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T19:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 16,
+        "source": "google_trends",
+        "source_rank": 16,
+        "topic": "은마아파트",
+        "value": 15.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T19:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "x",
+        "source_rank": 28,
+        "topic": "은마아파트",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 4,
+        "source": "google_trends",
+        "source_rank": 4,
+        "topic": "은마아파트",
+        "value": 27.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T21:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 5,
+        "source": "google_trends",
+        "source_rank": 5,
+        "topic": "은마아파트",
+        "value": 26.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T22:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 3,
+        "source": "google_trends",
+        "source_rank": 3,
+        "topic": "은마아파트",
+        "value": 28.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T22:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 26,
+        "source": "x",
+        "source_rank": 26,
+        "topic": "은마아파트",
+        "value": 5.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 3,
+        "source": "google_trends",
+        "source_rank": 3,
+        "topic": "은마아파트",
+        "value": 28.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "x",
+        "source_rank": 29,
+        "topic": "은마아파트",
+        "value": 2.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-10T18:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "은마아파트",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T01:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "google_trends",
+        "source_rank": 30,
+        "topic": "은마아파트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T03:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "google_trends",
+        "source_rank": 30,
+        "topic": "은마아파트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T11:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "google_trends",
+        "source_rank": 30,
+        "topic": "은마아파트",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T01:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 24,
+        "source": "google_trends",
+        "source_rank": 24,
+        "topic": "은마아파트",
+        "value": 7.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T07:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 10,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 10,
+        "source": "google_trends",
+        "source_rank": 10,
+        "topic": "은마아파트",
+        "value": 91.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 13,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 13,
+        "source": "google_trends",
+        "source_rank": 13,
+        "topic": "은마아파트",
+        "value": 88.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 13,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 13,
+        "source": "google_trends",
+        "source_rank": 13,
+        "topic": "은마아파트",
+        "value": 88.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 12,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 12,
+        "source": "google_trends",
+        "source_rank": 12,
+        "topic": "은마아파트",
+        "value": 89.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 10,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 10,
+        "source": "google_trends",
+        "source_rank": 10,
+        "topic": "은마아파트",
+        "value": 91.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 10,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 10,
+        "source": "google_trends",
+        "source_rank": 10,
+        "topic": "은마아파트",
+        "value": 91.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 11,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 11,
+        "source": "google_trends",
+        "source_rank": 11,
+        "topic": "은마아파트",
+        "value": 90.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 15,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 15,
+        "source": "google_trends",
+        "source_rank": 15,
+        "topic": "은마아파트",
+        "value": 86.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 18,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 18,
+        "source": "google_trends",
+        "source_rank": 18,
+        "topic": "은마아파트",
+        "value": 83.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 16,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 16,
+        "source": "google_trends",
+        "source_rank": 16,
+        "topic": "은마아파트",
+        "value": 85.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period",
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.204105,
+        "x": 0.084064
+      },
+      "period_strength": {
+        "google_trends": 0.688503,
+        "x": 0.084064
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 48,
+          "presence_rate": 0.285714
+        },
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 4,
+          "presence_rate": 0.02381
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "은마아파트"
+  }
+}

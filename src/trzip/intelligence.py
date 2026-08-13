@@ -808,6 +808,8 @@ def _ontology_company_candidates(
 def _build_period_views(
     period_contract: dict,
     candidates: list[dict],
+    *,
+    full_detail_event_keys: set[str],
 ) -> tuple[list[dict], dict[str, dict]]:
     """Hydrate period scores with shared trend identity/classification only.
 
@@ -828,9 +830,21 @@ def _build_period_views(
             base = base_by_key.get(event_key)
             if base is None:
                 raise ValueError(
-                    f"period ranking event is absent from current candidate set: {event_key}"
+                    f"period ranking event is absent from period identity set: {event_key}"
                 )
             lifecycle = raw_item["lifecycle"]
+            company_status = base.get("company_card_status")
+            if not company_status:
+                publish_status = (base.get("company_resolution") or {}).get(
+                    "publish_status"
+                )
+                company_status = (
+                    "ready"
+                    if publish_status == "published"
+                    else "enrichment_pending"
+                    if base.get("company_eligible")
+                    else "not_applicable"
+                )
             ranking.append({
                 "rank": raw_item["rank"],
                 "main_rank": None,
@@ -842,9 +856,20 @@ def _build_period_views(
                 "lane": base["lane"],
                 "score": raw_item["score"],
                 "score_components": raw_item["score_components"],
-                "current_source_position": raw_item["signals"]["current"],
+                "candidate_status": raw_item["candidate_status"],
+                "is_current": raw_item["is_current"],
+                "period_sources": raw_item["period_sources"],
+                "period_strength": raw_item["signals"]["period_strength"],
+                # Kept as a migration alias; period_strength is the precise
+                # name for this aggregate signal.
+                "current_source_position": raw_item["signals"]["period_strength"],
                 "momentum": raw_item["signals"]["momentum"],
                 "persistence": raw_item["signals"]["persistence"],
+                "freshness": raw_item["freshness"],
+                "hours_since_last_seen": raw_item["hours_since_last_seen"],
+                "previous_period_rank": raw_item["previous_period_rank"],
+                "rank_change": raw_item["rank_change"],
+                "rank_change_status": raw_item["rank_change_status"],
                 "lifecycle": lifecycle["state"],
                 "lifecycle_reason": lifecycle["reason_code"],
                 "first_seen_at": raw_item["lifecycle_baseline"]["first_seen_at"],
@@ -854,8 +879,13 @@ def _build_period_views(
                 "source_badge": base["source_badge"],
                 "data_confidence": base["data_confidence"],
                 "ranking_data_readiness": raw_item["data_readiness"],
-                "company_card_status": base["company_card_status"],
+                "company_card_status": company_status,
                 "detail_event_key": event_key,
+                "detail_status": (
+                    "shared_full_detail"
+                    if event_key in full_detail_event_keys
+                    else "period_summary_only"
+                ),
                 "shared_detail_fields": [
                     "keywords", "companies", "company_candidates",
                     "company_resolution", "verification_layer", "news_context",
@@ -875,7 +905,7 @@ def _build_period_views(
             "company_detail_policy": "shared_by_detail_event_key",
             "company_count_affects_rank": False,
             "unified_ranking": ranking,
-            "trend_top10": main_ranking[:10],
+            "period_top10": main_ranking[:10],
         }
     return periods, period_views
 
@@ -889,13 +919,12 @@ def build_intelligence(
 ) -> dict:
     end = floor_hour(at)
     start = end - timedelta(hours=max(1, hours) - 1)
-    rows = _series_rows(start, end, path)
-    rows = [dict(row) for row in rows]
-    # Ranking V2 uses a real 60-day ledger only for lifecycle/baseline
-    # classification. Its score-bearing history remains the most recent 168
-    # hours with a 24-hour half-life. Synthetic/legacy rows are already
-    # excluded by `_series_rows` and Ranking V2 fails closed if provenance is
-    # not observed.
+    requested_rows = [dict(row) for row in _series_rows(start, end, path)]
+    # Period views are true aggregates.  Hydration therefore needs every
+    # event that can appear in the longest public view (30 days), while the
+    # 60-day ledger remains lifecycle-only and never contributes score.
+    period_start = end - timedelta(hours=720 - 1)
+    rows = [dict(row) for row in _series_rows(period_start, end, path)]
     lifecycle_start = end - timedelta(days=60)
     ranking_rows = [dict(row) for row in _series_rows(lifecycle_start, end, path)]
     for item in ranking_rows:
@@ -914,8 +943,17 @@ def build_intelligence(
     ranking_v2_by_key = {
         item["event_key"]: item for item in ranking_v2["ranking"]
     }
-    hourly_ranking, daily_aggregates = _hourly_and_daily_rankings(rows)
-    eligible_hours = sorted({row["observed_at"] for row in rows})
+    monthly_ranking_by_key = {
+        item["event_key"]: item
+        for item in period_ranking_contract["views"]["monthly"]["unified_ranking"]
+    }
+    hourly_ranking, daily_aggregates = _hourly_and_daily_rankings(requested_rows)
+    weekly_start = end - timedelta(hours=168 - 1)
+    eligible_hours = sorted({
+        row["observed_at"]
+        for row in rows
+        if row["observed_at"] >= weekly_start.isoformat()
+    })
     eligible_hour_count = len(eligible_hours)
     snapshot_sizes = Counter((row["observed_at"], row["source"]) for row in rows)
     source_times: dict[str, list[str]] = defaultdict(list)
@@ -966,30 +1004,31 @@ def build_intelligence(
             if current_rows:
                 current_by_source[source] = min(current_rows, key=lambda item: item["source_rank"])
 
-        # Historical observations remain in hourly/daily aggregates, but a
-        # current ranking candidate must be present in at least one source's
-        # verified snapshot for the requested hour. Persistence alone can
-        # never resurrect an expired topic.
-        if not current_by_source:
-            continue
+        latest_by_source = {
+            source: max(source_rows, key=lambda item: item["observed_at"])
+            for source, source_rows in history_by_source.items()
+            if source_rows
+        }
 
-        # Ranking V2 is the single score owner. There is no legacy score
-        # fallback: historical rows that do not satisfy the live collector
-        # cohort have already been quarantined by `_series_rows`.
-        ranking_contract = ranking_v2_by_key[event_key]
+        # The default/top-level contract is the true weekly aggregate.  A
+        # monthly-only event is hydrated for its period view but is not
+        # resurrected into the weekly alias.
+        ranking_contract = (
+            ranking_v2_by_key.get(event_key)
+            or monthly_ranking_by_key[event_key]
+        )
         score = ranking_contract["score"]
         score_components = ranking_contract["score_components"]
-        current_signal = ranking_contract["signals"]["current"]
+        current_signal = ranking_contract["signals"]["period_strength"]
         momentum = ranking_contract["signals"]["momentum"]
         persistence = ranking_contract["signals"]["persistence"]
         lifecycle_contract = ranking_contract["lifecycle"]
         lifecycle = lifecycle_contract["state"]
         lifecycle_reason = lifecycle_contract["reason_code"]
         lifecycle_baseline = ranking_contract["lifecycle_baseline"]
-        maturity_values = [
-            float(values["maturity"])
-            for values in ranking_contract["source_metrics"]["persistence"].values()
-        ]
+        maturity_values = list(
+            ranking_contract["data_readiness"].get("coverage_by_source", {}).values()
+        )
         history_maturity = (
             sum(maturity_values) / len(maturity_values) if maturity_values else 0.0
         )
@@ -997,17 +1036,17 @@ def build_intelligence(
         last_seen = lifecycle_baseline["last_seen_at"]
         first_seen_dt = datetime.fromisoformat(first_seen)
         age_hours = max(0, int((end - first_seen_dt).total_seconds() // 3600))
-        previous_hour = (end - timedelta(hours=1)).isoformat()
         rank_changes = {}
-        for source, current_item in current_by_source.items():
-            previous_items = [
-                item
-                for item in history_by_source.get(source, [])
-                if item["observed_at"] == previous_hour
-            ]
+        for source, latest_item in latest_by_source.items():
+            previous_items = sorted(
+                (
+                    item for item in history_by_source.get(source, [])
+                    if item["observed_at"] < latest_item["observed_at"]
+                ),
+                key=lambda item: item["observed_at"],
+            )
             rank_changes[source] = (
-                min(item["source_rank"] for item in previous_items)
-                - current_item["source_rank"]
+                previous_items[-1]["source_rank"] - latest_item["source_rank"]
                 if previous_items
                 else None
             )
@@ -1144,7 +1183,11 @@ def build_intelligence(
         }
         sensitive_context = any(is_sensitive_context(item["topic"]) for item in observations)
         company_eligible = lane == "main" and not sensitive_context
-        if company_eligible:
+        # Monthly-only rows are intentionally period summaries.  Do not run
+        # expensive company enrichment for an event that has no shared weekly
+        # detail card; its summary truthfully remains enrichment_pending.
+        should_enrich_company = company_eligible and event_key in ranking_v2_by_key
+        if should_enrich_company:
             company_candidates, ontology_diagnostics = _ontology_company_candidates(
                 ontology_graph,
                 representative=representative_term,
@@ -1248,6 +1291,15 @@ def build_intelligence(
             "selection_layer": selection_layer,
             "company_eligible": company_eligible,
             "score": score,
+            "candidate_status": ranking_contract["candidate_status"],
+            "is_current": ranking_contract["is_current"],
+            "period_sources": ranking_contract["period_sources"],
+            "freshness": ranking_contract["freshness"],
+            "hours_since_last_seen": ranking_contract["hours_since_last_seen"],
+            "previous_period_rank": ranking_contract["previous_period_rank"],
+            "rank_change": ranking_contract["rank_change"],
+            "rank_change_status": ranking_contract["rank_change_status"],
+            "period_strength": round(current_signal, 6),
             "current_source_position": round(current_signal, 6),
             "momentum": round(momentum, 4), "persistence": round(persistence, 4),
             "score_components": score_components,
@@ -1257,9 +1309,9 @@ def build_intelligence(
             "lifecycle_baseline": lifecycle_baseline,
             "source_count": len(sources),
             "current_source_count": len(current_by_source),
-            "source_badge": "교차출처" if len(current_by_source) >= 2 else "단일출처",
+            "source_badge": "교차출처" if len(sources) >= 2 else "단일출처",
             "latest_source_ranks": {
-                source: item["source_rank"] for source, item in current_by_source.items()
+                source: item["source_rank"] for source, item in latest_by_source.items()
             },
             "rank_change_by_source": rank_changes,
             "first_seen_at": first_seen, "last_seen_at": last_seen, "age_hours": age_hours,
@@ -1308,9 +1360,14 @@ def build_intelligence(
             "candidate_company_categories": candidate_company_categories,
             "company_resolution": company_resolution,
         })
-    # Ranking V2 owns score order and deterministic tie-breaking.  The
-    # hydrated contract must not apply a second lexical re-sort.
-    candidates.sort(key=lambda item: ranking_v2_by_key[item["event_key"]]["rank"])
+    # Keep all monthly-hydrated identities available to period views, while
+    # the public/top-level alias contains exactly the weekly aggregate.
+    period_base_candidates = list(candidates)
+    period_base_by_key = {item["event_key"]: item for item in period_base_candidates}
+    candidates = [
+        period_base_by_key[item["event_key"]]
+        for item in weekly_ranking_contract["unified_ranking"]
+    ]
     for rank, item in enumerate(candidates, 1):
         item["rank"] = rank
         item["classification"] = "이슈·주의" if item["lane"] == "issue" else "일반 트렌드" if item["company_eligible"] else "맥락 확인"
@@ -1383,7 +1440,8 @@ def build_intelligence(
     ]
     ranking_periods, ranking_views = _build_period_views(
         period_ranking_contract,
-        candidates,
+        period_base_candidates,
+        full_detail_event_keys={item["event_key"] for item in candidates},
     )
     weekly_view = ranking_views[period_ranking_contract["default_period"]]
     if [item["event_key"] for item in weekly_view["unified_ranking"]] != [
@@ -1392,7 +1450,7 @@ def build_intelligence(
         item["score"] for item in candidates
     ]:
         raise ValueError("top-level ranking must remain the hydrated weekly alias")
-    if [item["event_key"] for item in weekly_view["trend_top10"]] != [
+    if [item["event_key"] for item in weekly_view["period_top10"]] != [
         item["event_key"] for item in trend_top10
     ]:
         raise ValueError("top-level trend_top10 must remain the hydrated weekly alias")
@@ -1543,23 +1601,29 @@ def build_intelligence(
         "ranking_availability": ranking_availability,
         "ranking_data_readiness": ranking_v2["data_readiness"],
         "score_formula": (
-            "40% current source-normalized position + 20% exact previous-hour momentum + "
-            "20% per-source persistence x 96-hour maturity + 15% 24-hour-half-life "
-            "observed history + 5% current X-Google overlap"
+            "40% period source-normalized strength + 20% comparable-period momentum + "
+            "20% per-source period persistence + 15% window-relative last-seen recency + "
+            "5% period X-Google overlap"
         ),
         "score_policy": {
             "formula_version": ranking_v2["formula_version"],
             "source_values_used": False,
-            "current_position": "mean 0..1 position inside each currently observed source snapshot",
-            "momentum": "same-source exact previous-hour position change; unavailable comparison is neutral",
-            "missing_previous_hour_policy": "neutral_10_of_20_not_rank_zero",
-            "persistence": "mean source-specific presence rate multiplied by source-specific 96-hour maturity",
-            "decayed_history": "eligible observed history only; 24-hour exponential half-life over 168 hours",
+            "period_strength": (
+                "per-source 0..1 positions aggregated as 70% recency-weighted mean + 30% peak"
+            ),
+            "momentum": (
+                "previous equal-length period when covered, otherwise first-half to second-half; "
+                "unavailable comparison is neutral 10 of 20"
+            ),
+            "missing_comparison_policy": "neutral_10_of_20_not_rank_zero",
+            "persistence": "mean source-specific observed snapshots divided by that source's eligible snapshots",
+            "recency": "last-seen exponential decay with half-life equal to half the selected period",
             "lifecycle_baseline": "60-day observed baseline; ranking_effect=none",
             "company_count_affects_rank": False,
             "future_rows_used": False,
-            "active_candidate_gate": "present in at least one current eligible source snapshot",
-            "maturity_gate_hours": 96,
+            "active_candidate_gate": "observed in the selected 24h, 7d, or 30d period",
+            "candidate_status": "is_current or period_observed; stale items retain last_seen and freshness",
+            "default_period": "weekly",
         },
         "home_quality_gate": home_quality_gate,
         "context_evidence_policy": {
@@ -1582,8 +1646,8 @@ def build_intelligence(
         "ranking_views": ranking_views,
         "ranking_top_level_alias": {
             "period": "weekly",
-            "unified_ranking": "hydrated_weekly_view",
-            "trend_top10": "hydrated_weekly_view",
+            "unified_ranking": "weekly_period_aggregate",
+            "trend_top10": "weekly_period_top10",
         },
         "unified_ranking": candidates,
         "trend_top10": trend_top10,

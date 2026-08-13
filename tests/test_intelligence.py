@@ -546,7 +546,7 @@ def test_low_history_is_explicit_and_does_not_block_ranking(tmp_path):
     assert result["unified_ranking"][0]["ranking_availability_status"] == "provisional_single_source"
 
 
-def test_persistence_matures_linearly_until_96_eligible_hours(tmp_path):
+def test_period_persistence_uses_source_eligible_snapshot_denominator(tmp_path):
     target = tmp_path / "maturity.sqlite3"
     start = datetime(2026, 8, 8, 0, tzinfo=UTC)
     rows = [
@@ -565,7 +565,7 @@ def test_persistence_matures_linearly_until_96_eligible_hours(tmp_path):
     halfway = build_intelligence(start + timedelta(hours=47), hours=48, path=target)
     mature = build_intelligence(start + timedelta(hours=95), hours=96, path=target)
 
-    assert halfway["unified_ranking"][0]["persistence"] == 0.5
+    assert halfway["unified_ranking"][0]["persistence"] == 1.0
     assert halfway["quality_summary"]["ranking_maturity_status"] == "provisional"
     assert mature["unified_ranking"][0]["persistence"] == 1.0
     assert mature["quality_summary"]["ranking_maturity_status"] == "mature"
@@ -629,12 +629,12 @@ def test_current_position_is_source_normalized_and_cross_bonus_is_explicit(tmp_p
         visible_sum = round(sum(
             components[key]
             for key in (
-                "current_points", "momentum_points", "persistence_points",
-                "decayed_history_points", "cross_source_points",
+                "period_strength_points", "momentum_points", "persistence_points",
+                "recency_points", "cross_source_points",
             )
         ), 2)
         assert item["score"] == components["total_points"] == visible_sum
-        assert components["formula_version"] == "current40_momentum20_persistence20_decay15_cross5_v2"
+        assert components["formula_version"] == "period40_momentum20_persistence20_recency15_cross5_v1"
         assert components["rounding_policy"] == "each_component_2dp_then_sum_2dp"
 
 
@@ -660,7 +660,7 @@ def test_unified_ranking_preserves_main_issue_and_review_without_score_calibrati
     assert result["public_top10"] == result["trend_top10"]
 
 
-def test_window_only_history_cannot_reenter_current_ranking(tmp_path):
+def test_weekly_period_retains_recent_history_with_explicit_stale_status(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 
     target = tmp_path / "active-only.sqlite3"
@@ -673,7 +673,11 @@ def test_window_only_history_cannot_reenter_current_ranking(tmp_path):
 
     result = build_intelligence(current, hours=2, path=target)
 
-    assert [item["topic"] for item in result["unified_ranking"]] == ["불닭"]
+    assert [item["topic"] for item in result["unified_ranking"]] == ["불닭", "오징어 게임"]
+    stale = result["unified_ranking"][1]
+    assert stale["candidate_status"] == "period_observed"
+    assert stale["is_current"] is False
+    assert stale["hours_since_last_seen"] == 1.0
     historical = {
         item["representative_term"]
         for snapshot in result["hourly_rankings"][:-1]
@@ -1002,7 +1006,7 @@ def test_unresearched_person_expression_stays_zero_candidate_and_enters_queue(tm
     assert queue["research_stages"][-1] == "team_review"
 
 
-def test_intelligence_exposes_daily_weekly_monthly_current_only_views(tmp_path):
+def test_intelligence_exposes_daily_weekly_monthly_period_aggregate_views(tmp_path):
     target = tmp_path / "period-ranking-views.sqlite3"
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
     rows = []
@@ -1030,7 +1034,7 @@ def test_intelligence_exposes_daily_weekly_monthly_current_only_views(tmp_path):
         assert view["company_detail_policy"] == "shared_by_detail_event_key"
         assert view["unified_ranking"][0]["detail_event_key"] == "말복"
         assert "companies" not in view["unified_ranking"][0]
-        assert view["trend_top10"] == [view["unified_ranking"][0]]
+        assert view["period_top10"] == [view["unified_ranking"][0]]
     weekly = result["ranking_views"]["weekly"]
     assert [item["event_key"] for item in weekly["unified_ranking"]] == [
         item["event_key"] for item in result["unified_ranking"]
@@ -1039,4 +1043,35 @@ def test_intelligence_exposes_daily_weekly_monthly_current_only_views(tmp_path):
         item["score"] for item in result["unified_ranking"]
     ]
     assert result["ranking_views"]["daily"]["data_readiness"]["status"] == "ready"
-    assert result["ranking_views"]["monthly"]["data_readiness"]["status"] == "provisional_history"
+    assert result["ranking_views"]["monthly"]["data_readiness"]["status"] == "provisional"
+
+
+def test_monthly_only_event_is_period_summary_without_entering_weekly_alias(tmp_path):
+    target = tmp_path / "monthly-only-period.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert([
+        HourlyObservation(at.isoformat(), "x", "말복", 1, 100, "observed"),
+        HourlyObservation(
+            (at - timedelta(days=20)).isoformat(),
+            "x",
+            "오징어 게임",
+            1,
+            100,
+            "observed",
+        ),
+    ], target)
+
+    result = build_intelligence(at, hours=1, path=target)
+
+    assert [item["event_key"] for item in result["unified_ranking"]] == ["말복"]
+    monthly = result["ranking_views"]["monthly"]["unified_ranking"]
+    monthly_old = next(item for item in monthly if item["event_key"] == "오징어 게임")
+    assert monthly_old["candidate_status"] == "period_observed"
+    assert monthly_old["detail_status"] == "period_summary_only"
+    assert monthly_old["company_card_status"] == "enrichment_pending"
+    assert monthly_old["last_seen_at"] == (at - timedelta(days=20)).isoformat()
+    assert monthly_old["freshness"]["half_life_hours"] == 360.0
+    assert all(
+        item["event_key"] != "오징어 게임"
+        for item in result["ranking_views"]["weekly"]["unified_ranking"]
+    )

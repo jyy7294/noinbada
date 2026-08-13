@@ -1,0 +1,342 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "is_current",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.563579,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 8
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "트레킹",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "트레킹",
+    "first_seen_at": "2026-08-12T14:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-aaab67cf4de4648c97994239.json",
+    "is_current": true,
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 129
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T14:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 8,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 208,
+    "momentum": 0.781789,
+    "observed_representative_term": "트레킹",
+    "period_sources": [
+      "google_trends"
+    ],
+    "persistence": 0.047619,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed"
+    ],
+    "rank": 208,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "트레킹",
+        "event_key": "트레킹",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 139,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 139,
+        "rank_change": null,
+        "score": 59.8,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.63,
+          "period_strength_points": 22.5,
+          "persistence_points": 6.67,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 59.8
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "트레킹",
+        "event_key": "트레킹",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 212,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 212,
+        "rank_change": null,
+        "score": 54.03,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.64,
+          "period_strength_points": 22.55,
+          "persistence_points": 0.84,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 54.03
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "트레킹",
+        "event_key": "트레킹",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 208,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 208,
+        "rank_change": null,
+        "score": 54.13,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.64,
+          "period_strength_points": 22.54,
+          "persistence_points": 0.95,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 54.13
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "트레킹"
+    ],
+    "score": 54.13,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 15.64,
+      "period_strength_points": 22.54,
+      "persistence_points": 0.95,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 54.13
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 85,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 85,
+        "source": "google_trends",
+        "source_rank": 85,
+        "topic": "트레킹",
+        "value": 16.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 96,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 96,
+        "source": "google_trends",
+        "source_rank": 96,
+        "topic": "트레킹",
+        "value": 5.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 106,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 106,
+        "source": "google_trends",
+        "source_rank": 106,
+        "topic": "트레킹",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 111,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 111,
+        "source": "google_trends",
+        "source_rank": 111,
+        "topic": "트레킹",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 118,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 118,
+        "source": "google_trends",
+        "source_rank": 118,
+        "topic": "트레킹",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 62,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 62,
+        "source": "google_trends",
+        "source_rank": 62,
+        "topic": "트레킹",
+        "value": 39.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 92,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 92,
+        "source": "google_trends",
+        "source_rank": 92,
+        "topic": "트레킹",
+        "value": 9.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 129,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 129,
+        "source": "google_trends",
+        "source_rank": 129,
+        "topic": "트레킹",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.563579
+      },
+      "period_strength": {
+        "google_trends": 0.563579
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 8,
+          "presence_rate": 0.047619
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "트레킹"
+  }
+}

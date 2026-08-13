@@ -145,7 +145,7 @@ powershell -ExecutionPolicy Bypass -File scripts\collect-hourly.ps1
 
 ### 60일 MVP 데모 리플레이
 
-실제 새 원장이 60일 쌓이기 전 프런트의 순위·등락·지속성·상세 차트를 시험할 때는 `data/demo-replay-60d/latest/manifest.json`을 별도 데이터 원본으로 사용합니다. 전체 모드는 `demo_replay`, 화면 표시는 `7일 순위 시뮬레이션 데모`이며 최근 7일만 운영 Ranking V2와 같은 공식으로 점수를 계산하고 60일은 라이프사이클 기준선으로만 사용합니다. 행별 `observed`·`historical_reference`·`reconstructed_reference`·`synthetic_backfill`을 보존하며 라이브 SQLite와 `live-data/latest`에는 삽입하지 않습니다. 사건 시점만 복원한 `research_reconstructed` seed는 별도 비순위 `research-events.ndjson`으로 전달합니다. 생성·연동 규칙은 [60일 MVP 데모 리플레이](docs/DEMO_REPLAY_60D.md)를 따릅니다.
+실제 새 원장이 60일 쌓이기 전 프런트의 순위·등락·지속성·상세 차트를 시험할 때는 `data/demo-replay-60d/latest/manifest.json`을 별도 데이터 원본으로 사용합니다. 전체 모드는 `demo_replay`, 화면 표시는 `7일 순위 시뮬레이션 데모`이며 최근 7일만 운영 Ranking V2와 같은 공식으로 점수를 계산하고 60일은 라이프사이클 기준선으로만 사용합니다. 행별 `observed`·`historical_reference`·`reconstructed_reference`·`synthetic_backfill`을 보존하며 라이브 SQLite와 `live-data/latest`에는 삽입하지 않습니다. 사건 시점만 복원한 `research_reconstructed` seed는 원본 비순위 `research-events.ndjson`과, 근거 공개일 이후 활성 기간에만 생성되는 데모 전용 합성 관측으로 분리합니다. 생성·연동 규칙은 [60일 MVP 데모 리플레이](docs/DEMO_REPLAY_60D.md)를 따릅니다.
 
 ## 현재 기술 스택
 

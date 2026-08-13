@@ -1,0 +1,236 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "period_observed",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {},
+    "confidence": "demo",
+    "current_source_position": 0.298226,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 2
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "파가니니",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "파가니니",
+    "first_seen_at": "2026-08-12T11:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-1e243e6621f5946d357d42ed.json",
+    "is_current": false,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T12:00:00+00:00",
+    "latest_source_ranks": {},
+    "lifecycle": "cooling",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T11:00:00+00:00",
+      "last_seen_at": "2026-08-12T12:00:00+00:00",
+      "observed_hours": 2,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "main_rank": 364,
+    "momentum": 0.649113,
+    "observed_representative_term": "파가니니",
+    "period_sources": [
+      "x"
+    ],
+    "persistence": 0.011905,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference"
+    ],
+    "rank": 364,
+    "rank_change": null,
+    "rank_change_by_source": {},
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "period_observed",
+        "display_name": "파가니니",
+        "event_key": "파가니니",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T12:00:00+00:00",
+        "main_rank": 374,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 374,
+        "rank_change": null,
+        "score": 34.52,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 12.98,
+          "period_strength_points": 11.92,
+          "persistence_points": 1.67,
+          "recency_points": 7.95,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 34.52
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "period_observed",
+        "display_name": "파가니니",
+        "event_key": "파가니니",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T12:00:00+00:00",
+        "main_rank": 379,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 379,
+        "rank_change": null,
+        "score": 39.81,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 12.98,
+          "period_strength_points": 11.93,
+          "persistence_points": 0.21,
+          "recency_points": 14.69,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 39.81
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "period_observed",
+        "display_name": "파가니니",
+        "event_key": "파가니니",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T12:00:00+00:00",
+        "main_rank": 364,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 364,
+        "rank_change": null,
+        "score": 38.85,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 12.98,
+          "period_strength_points": 11.93,
+          "persistence_points": 0.24,
+          "recency_points": 13.7,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 38.85
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "파가니니"
+    ],
+    "score": 38.85,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 12.98,
+      "period_strength_points": 11.93,
+      "persistence_points": 0.24,
+      "recency_points": 13.7,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 38.85
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T11:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 21,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 21,
+        "source": "x",
+        "source_rank": 21,
+        "topic": "파가니니",
+        "value": 80.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T12:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 22,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 22,
+        "source": "x",
+        "source_rank": 22,
+        "topic": "파가니니",
+        "value": 79.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "x": 0.298226
+      },
+      "period_strength": {
+        "x": 0.298226
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 2,
+          "presence_rate": 0.011905
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "파가니니"
+  }
+}

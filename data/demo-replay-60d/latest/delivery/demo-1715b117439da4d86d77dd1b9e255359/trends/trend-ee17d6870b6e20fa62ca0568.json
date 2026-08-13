@@ -1,0 +1,284 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "period_observed",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {},
+    "confidence": "demo",
+    "current_source_position": 0.07492,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 6
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "박준순",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "박준순",
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-ee17d6870b6e20fa62ca0568.json",
+    "is_current": false,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T21:00:00+00:00",
+    "latest_source_ranks": {},
+    "lifecycle": "cooling",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-12T21:00:00+00:00",
+      "observed_hours": 6,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "main_rank": 423,
+    "momentum": 0.53746,
+    "observed_representative_term": "박준순",
+    "period_sources": [
+      "google_trends"
+    ],
+    "persistence": 0.035714,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed"
+    ],
+    "rank": 423,
+    "rank_change": null,
+    "rank_change_by_source": {},
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "period_observed",
+        "display_name": "박준순",
+        "event_key": "박준순",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T21:00:00+00:00",
+        "main_rank": 387,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 387,
+        "rank_change": null,
+        "score": 32.17,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 10.76,
+          "period_strength_points": 3.05,
+          "persistence_points": 5.0,
+          "recency_points": 13.36,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 32.17
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "period_observed",
+        "display_name": "박준순",
+        "event_key": "박준순",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T21:00:00+00:00",
+        "main_rank": 449,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 449,
+        "rank_change": null,
+        "score": 29.31,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 10.75,
+          "period_strength_points": 2.99,
+          "persistence_points": 0.63,
+          "recency_points": 14.94,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 29.31
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "period_observed",
+        "display_name": "박준순",
+        "event_key": "박준순",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T21:00:00+00:00",
+        "main_rank": 423,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 423,
+        "rank_change": null,
+        "score": 29.21,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 10.75,
+          "period_strength_points": 3.0,
+          "persistence_points": 0.71,
+          "recency_points": 14.75,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 29.21
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "박준순"
+    ],
+    "score": 29.21,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 10.75,
+      "period_strength_points": 3.0,
+      "persistence_points": 0.71,
+      "recency_points": 14.75,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 29.21
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 177,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 177,
+        "source": "google_trends",
+        "source_rank": 177,
+        "topic": "박준순",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 182,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 182,
+        "source": "google_trends",
+        "source_rank": 182,
+        "topic": "박준순",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 182,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 182,
+        "source": "google_trends",
+        "source_rank": 182,
+        "topic": "박준순",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 185,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 185,
+        "source": "google_trends",
+        "source_rank": 185,
+        "topic": "박준순",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 184,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 184,
+        "source": "google_trends",
+        "source_rank": 184,
+        "topic": "박준순",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 186,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 186,
+        "source": "google_trends",
+        "source_rank": 186,
+        "topic": "박준순",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.07492
+      },
+      "period_strength": {
+        "google_trends": 0.07492
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 6,
+          "presence_rate": 0.035714
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "박준순"
+  }
+}

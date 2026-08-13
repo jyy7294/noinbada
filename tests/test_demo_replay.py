@@ -199,7 +199,7 @@ def test_research_reconstruction_jsonl_is_separate_and_explicit(tmp_path):
     Draft202012Validator(observation_schema).validate(row)
 
 
-def test_research_event_seed_is_delivered_but_never_ranked(tmp_path):
+def test_research_event_seed_is_delivered_and_only_demo_ranked_in_active_window(tmp_path):
     research = tmp_path / "research-events.jsonl"
     source = {
         "schema_version": "trzip-reconstructed-event-v1",
@@ -237,6 +237,21 @@ def test_research_event_seed_is_delivered_but_never_ranked(tmp_path):
     assert row["rank_eligible"] is False
     assert row["ranking_eligible"] is False
     assert row["ranking_effect"] == "none"
+    ledger = output / "latest" / manifest["bundle"]["observation_ledger"]["path"]
+    observations = [json.loads(line) for line in ledger.read_text(encoding="utf-8").splitlines()]
+    simulation_rows = [
+        item for item in observations
+        if item.get("research_event_id") == "sample-event"
+    ]
+    assert simulation_rows
+    assert all(item["provenance"] == "synthetic_backfill" for item in simulation_rows)
+    assert all(item["ranking_eligible"] is False for item in simulation_rows)
+    assert all(item["demo_ranking_eligible"] is True for item in simulation_rows)
+    assert all(item["field_lineage"]["topic"] == "research_seed" for item in simulation_rows)
+    assert all(
+        item["research_seed"]["evidence_as_of"] <= item["observed_at"][:10]
+        for item in simulation_rows
+    )
     rankings = json.loads(
         (output / "latest" / manifest["bundle"]["rankings"]["path"]).read_text(encoding="utf-8")
     )
@@ -245,6 +260,85 @@ def test_research_event_seed_is_delivered_but_never_ranked(tmp_path):
         (ROOT / "schemas" / "demo-research-event-v1.schema.json").read_text(encoding="utf-8")
     )
     Draft202012Validator(catalog_schema).validate(row)
+
+
+def test_research_seed_appears_on_past_dates_without_lookahead_or_current_revival(tmp_path):
+    def event(event_id, term, active_from, active_to, peak, evidence_date):
+        return {
+            "schema_version": "trzip-reconstructed-event-v1",
+            "event_id": event_id,
+            "representative_term": term,
+            "aliases": [term],
+            "category": "culture",
+            "active_from": active_from,
+            "active_to": active_to,
+            "peak_hint": peak,
+            "provenance": "research_reconstructed",
+            "measurement_status": "event_timing_evidence_only",
+            "rank_eligible": False,
+            "confidence": 0.99,
+            "evidence": [
+                {
+                    "url": f"https://example.com/{event_id}/a",
+                    "published_at": evidence_date,
+                    "publisher": "example-a",
+                    "evidence_type": "dated_report",
+                    "claim": "event timing only",
+                },
+                {
+                    "url": f"https://example.com/{event_id}/b",
+                    "published_at": evidence_date,
+                    "publisher": "example-b",
+                    "evidence_type": "dated_report",
+                    "claim": "independent event timing",
+                },
+            ],
+        }
+
+    research = tmp_path / "research-events.jsonl"
+    rows = [
+        event("e9", "June evidence event", "2026-06-14", "2026-06-18", "2026-06-15", "2026-06-14"),
+        event("e21", "Future evidence event", "2026-06-14", "2026-06-25", "2026-06-20", "2026-06-20"),
+        event("e24", "July evidence event", "2026-07-10", "2026-07-20", "2026-07-15", "2026-07-12"),
+    ]
+    research.write_text(
+        "".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows),
+        encoding="utf-8",
+    )
+    output = tmp_path / "demo-past-research"
+    manifest = build_demo_replay(
+        output,
+        as_of=AT,
+        research_reconstruction_jsonl=research,
+    )
+    rankings = json.loads(
+        (output / "latest" / manifest["bundle"]["rankings"]["path"]).read_text(encoding="utf-8")
+    )
+    snapshots = {item["date"]: item for item in rankings["daily_snapshots"]}
+    june15 = {item["event_key"] for item in snapshots["2026-06-15"]["top10"]}
+    june20 = {item["event_key"] for item in snapshots["2026-06-20"]["top10"]}
+    july15 = {item["event_key"] for item in snapshots["2026-07-15"]["top10"]}
+    research_keys = {
+        "june evidence event", "future evidence event", "july evidence event"
+    }
+    assert june15 & research_keys
+    assert "future evidence event" not in june15
+    assert june20 & research_keys
+    assert july15 & research_keys
+    assert not research_keys & {
+        item["event_key"] for item in rankings["unified_ranking"]
+    }
+
+    ledger = output / "latest" / manifest["bundle"]["observation_ledger"]["path"]
+    observations = [json.loads(line) for line in ledger.read_text(encoding="utf-8").splitlines()]
+    future_rows = [
+        item for item in observations
+        if item.get("research_event_id") == "e21"
+    ]
+    assert future_rows
+    assert min(item["observed_at"][:10] for item in future_rows) == "2026-06-20"
+    lineage = rankings["data_lineage"]["research_seed_simulation"]
+    assert lineage["dual_source_ratio"] <= 0.6
 
 
 def test_score_window_is_seven_days_but_lifecycle_baseline_uses_old_rows():

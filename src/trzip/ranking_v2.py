@@ -22,6 +22,7 @@ from typing import Any, Iterable, Mapping, Sequence
 
 
 FORMULA_VERSION = "current40_momentum20_persistence20_decay15_cross5_v2"
+PERIOD_FORMULA_VERSION = "period40_momentum20_persistence20_recency15_cross5_v1"
 DEFAULT_SOURCES = ("x", "google_trends")
 DEFAULT_RANKING_PERIOD = "weekly"
 RANKING_PERIODS = (
@@ -29,20 +30,16 @@ RANKING_PERIODS = (
         "key": "daily",
         "label": "24시간",
         "window_hours": 24,
-        "persistence_maturity_hours": 24,
     },
     {
         "key": "weekly",
         "label": "7일",
         "window_hours": 168,
-        # This preserves the approved V2 top-level default contract.
-        "persistence_maturity_hours": 96,
     },
     {
         "key": "monthly",
         "label": "30일",
         "window_hours": 720,
-        "persistence_maturity_hours": 720,
     },
 )
 SOURCE_ALIASES = {
@@ -521,12 +518,12 @@ def build_period_rankings_v2(
     at: datetime,
     expected_sources: Sequence[str] = DEFAULT_SOURCES,
 ) -> dict[str, Any]:
-    """Build 24-hour, 7-day and 30-day current-only ranking views.
+    """Build 24-hour, 7-day and 30-day observed-period ranking views.
 
     Every view reads the same materialised quality-eligible live ledger and
-    uses the same V2 formula.  Only its score-bearing persistence/history
-    window changes.  The 60-day baseline remains lifecycle-only in every view.
-    ``weekly`` is the compatibility/default period used by top-level output.
+    aggregates every event observed inside its own period. The 60-day baseline
+    remains lifecycle-only. ``weekly`` is the compatibility/default period
+    used by top-level output.
     """
 
     rows = [dict(row) for row in observations]
@@ -536,17 +533,11 @@ def build_period_rankings_v2(
     for definition in RANKING_PERIODS:
         period_key = str(definition["key"])
         window_hours = int(definition["window_hours"])
-        result = build_ranking_v2(
+        result = build_period_ranking_v2(
             rows,
             at=current_at,
+            window_hours=window_hours,
             expected_sources=expected_sources,
-            candidate_policy="current_only",
-            persistence_window_hours=window_hours,
-            persistence_maturity_hours=int(
-                definition["persistence_maturity_hours"]
-            ),
-            history_window_hours=window_hours,
-            history_half_life_hours=24.0,
             lifecycle_baseline_days=60,
             ranking_mode="live_observed",
         )
@@ -575,6 +566,396 @@ def build_period_rankings_v2(
         "default_period": DEFAULT_RANKING_PERIOD,
         "periods": periods,
         "views": views,
+    }
+
+
+def build_period_ranking_v2(
+    observations: Iterable[Mapping[str, Any]],
+    *,
+    at: datetime,
+    window_hours: int,
+    expected_sources: Sequence[str] = DEFAULT_SOURCES,
+    lifecycle_baseline_days: int = 60,
+    ranking_mode: str = "live_observed",
+) -> dict[str, Any]:
+    """Aggregate every live-observed event in one ranking period.
+
+    Formula: 40 period strength + 20 period momentum + 20 persistence +
+    15 last-seen recency + 5 period cross-source. Period strength is the mean
+    of each observed source's 70% recency-weighted average position and 30%
+    peak position. Momentum uses the previous equal-length window when source
+    coverage exists, then falls back to first-half versus second-half; when
+    neither comparison exists it is explicitly neutral (10/20).
+    """
+
+    current_at = _floor_utc_hour(at)
+    if window_hours < 2:
+        raise ValueError("window_hours must be at least two")
+    if ranking_mode != "live_observed":
+        raise ValueError("period ranking accepts live_observed rows only")
+    if lifecycle_baseline_days < 1:
+        raise ValueError("lifecycle_baseline_days must be positive")
+    sources = _normalise_expected_sources(expected_sources)
+    baseline_hours = lifecycle_baseline_days * 24
+    rows = _prepare_rows(
+        observations,
+        earliest=current_at - timedelta(hours=baseline_hours),
+        current_at=current_at,
+        sources=sources,
+    )
+    snapshot_sizes: dict[tuple[datetime, str], int] = {}
+    source_hours: dict[str, set[datetime]] = {source: set() for source in sources}
+    event_ranks: dict[tuple[str, str, datetime], int] = {}
+    event_hours: dict[str, set[datetime]] = defaultdict(set)
+    for row in rows:
+        stamp, source, event_key, rank = (
+            row["observed_at"], row["source"], row["event_key"], row["source_rank"]
+        )
+        snapshot_sizes[(stamp, source)] = max(
+            snapshot_sizes.get((stamp, source), 0), rank
+        )
+        source_hours[source].add(stamp)
+        key = (event_key, source, stamp)
+        event_ranks[key] = min(event_ranks.get(key, rank), rank)
+        event_hours[event_key].add(stamp)
+
+    period_start = current_at - timedelta(hours=window_hours - 1)
+    previous_end = period_start - timedelta(hours=1)
+    previous_start = previous_end - timedelta(hours=window_hours - 1)
+    half_boundary = period_start + timedelta(hours=window_hours // 2)
+    current_eligible = {
+        source: sorted(
+            stamp for stamp in source_hours[source]
+            if period_start <= stamp <= current_at
+        )
+        for source in sources
+    }
+    previous_eligible = {
+        source: sorted(
+            stamp for stamp in source_hours[source]
+            if previous_start <= stamp <= previous_end
+        )
+        for source in sources
+    }
+
+    def source_strength(event_key: str, source: str, stamps: Sequence[datetime], end: datetime) -> float:
+        observed: list[tuple[float, float]] = []
+        half_life = max(window_hours / 2.0, 1.0)
+        for stamp in stamps:
+            position = _event_position(
+                event_key, source, stamp,
+                best_event_rank=event_ranks,
+                snapshot_sizes=snapshot_sizes,
+            )
+            if (event_key, source, stamp) not in event_ranks:
+                continue
+            age = max(0.0, (end - stamp).total_seconds() / 3600.0)
+            observed.append((position, 0.5 ** (age / half_life)))
+        if not observed:
+            return 0.0
+        weighted_mean = sum(value * weight for value, weight in observed) / sum(
+            weight for _value, weight in observed
+        )
+        peak = max(value for value, _weight in observed)
+        return 0.7 * weighted_mean + 0.3 * peak
+
+    candidates: list[dict[str, Any]] = []
+    for event_key, all_stamps in sorted(event_hours.items()):
+        period_stamps = sorted(
+            stamp for stamp in all_stamps if period_start <= stamp <= current_at
+        )
+        if not period_stamps:
+            continue
+        observed_sources = [
+            source for source in sources
+            if any((event_key, source, stamp) in event_ranks for stamp in period_stamps)
+        ]
+        strengths = {
+            source: source_strength(
+                event_key, source, current_eligible[source], current_at
+            )
+            for source in observed_sources
+        }
+        period_strength = _mean(strengths.values())
+
+        momentum_deltas: dict[str, float] = {}
+        momentum_basis: dict[str, str] = {}
+        for source in observed_sources:
+            current_strength = strengths[source]
+            if previous_eligible[source]:
+                previous_strength = source_strength(
+                    event_key, source, previous_eligible[source], previous_end
+                )
+                momentum_deltas[source] = current_strength - previous_strength
+                momentum_basis[source] = "previous_equal_period"
+                continue
+            first_half = [
+                stamp for stamp in current_eligible[source]
+                if period_start <= stamp < half_boundary
+            ]
+            second_half = [
+                stamp for stamp in current_eligible[source]
+                if half_boundary <= stamp <= current_at
+            ]
+            if first_half and second_half:
+                momentum_deltas[source] = source_strength(
+                    event_key, source, second_half, current_at
+                ) - source_strength(
+                    event_key, source, first_half, half_boundary - timedelta(hours=1)
+                )
+                momentum_basis[source] = "current_period_half_change"
+        if momentum_deltas:
+            momentum_delta = max(-1.0, min(1.0, _mean(momentum_deltas.values())))
+            momentum_signal = (momentum_delta + 1.0) / 2.0
+            momentum_status = "measured"
+        else:
+            momentum_delta = None
+            momentum_signal = 0.5
+            momentum_status = "neutral_no_comparable_window"
+
+        persistence_by_source: dict[str, dict[str, Any]] = {}
+        persistence_signals: list[float] = []
+        for source in observed_sources:
+            eligible = current_eligible[source]
+            present = [
+                stamp for stamp in eligible
+                if (event_key, source, stamp) in event_ranks
+            ]
+            signal = len(present) / len(eligible) if eligible else 0.0
+            persistence_signals.append(signal)
+            persistence_by_source[source] = {
+                "eligible_hours": len(eligible),
+                "observed_hours": len(present),
+                "presence_rate": round(signal, 6),
+            }
+        persistence = _mean(persistence_signals)
+        last_seen = max(period_stamps)
+        hours_since_last_seen = max(
+            0.0, (current_at - last_seen).total_seconds() / 3600.0
+        )
+        recency_half_life = window_hours / 2.0
+        recency = 0.5 ** (hours_since_last_seen / recency_half_life)
+        cross = 1.0 if set(DEFAULT_SOURCES) <= set(observed_sources) else 0.0
+        components = {
+            "period_strength_points": round(40 * period_strength, 2),
+            "momentum_points": round(20 * momentum_signal, 2),
+            "persistence_points": round(20 * persistence, 2),
+            "recency_points": round(15 * recency, 2),
+            "cross_source_points": round(5 * cross, 2),
+            "formula_version": PERIOD_FORMULA_VERSION,
+            "rounding_policy": "each_component_2dp_then_sum_2dp",
+        }
+        total = round(sum(
+            components[key] for key in (
+                "period_strength_points", "momentum_points", "persistence_points",
+                "recency_points", "cross_source_points",
+            )
+        ), 2)
+        components["total_points"] = total
+
+        baseline_stamps = sorted(
+            stamp for stamp in all_stamps
+            if current_at - timedelta(hours=baseline_hours) <= stamp <= current_at
+        )
+        previous_seen = next(
+            (stamp for stamp in reversed(baseline_stamps) if stamp < last_seen), None
+        )
+        lifecycle = classify_lifecycle_v2(
+            current_at=current_at,
+            first_seen_at=baseline_stamps[0],
+            last_seen_at=last_seen,
+            previous_seen_at=previous_seen,
+            current_observed=last_seen == current_at,
+            momentum_delta=momentum_delta,
+            observed_hours=len(baseline_stamps),
+        )
+        coverage_by_source = {
+            source: round(len(current_eligible[source]) / window_hours, 6)
+            for source in sources
+        }
+        current_sources = [
+            source for source in observed_sources
+            if (event_key, source, current_at) in event_ranks
+        ]
+        candidates.append({
+            "event_key": event_key,
+            "score": total,
+            "score_components": components,
+            "candidate_status": "is_current" if current_sources else "period_observed",
+            "is_current": bool(current_sources),
+            "current_sources": current_sources,
+            "period_sources": observed_sources,
+            "last_seen_at": last_seen.isoformat(),
+            "hours_since_last_seen": round(hours_since_last_seen, 3),
+            "freshness": {
+                "signal": round(recency, 6),
+                "half_life_hours": recency_half_life,
+                "hours_since_last_seen": round(hours_since_last_seen, 3),
+            },
+            "signals": {
+                "period_strength": round(period_strength, 6),
+                "momentum": round(momentum_signal, 6),
+                "momentum_delta": round(momentum_delta, 6) if momentum_delta is not None else None,
+                "persistence": round(persistence, 6),
+                "recency": round(recency, 6),
+                "cross_source": cross,
+            },
+            "source_metrics": {
+                "period_strength": {key: round(value, 6) for key, value in strengths.items()},
+                "momentum_deltas": {key: round(value, 6) for key, value in momentum_deltas.items()},
+                "momentum_basis": momentum_basis,
+                "persistence": persistence_by_source,
+            },
+            "data_readiness": {
+                "status": "ready" if all(value >= 0.8 for value in coverage_by_source.values()) else "provisional",
+                "coverage_by_source": coverage_by_source,
+                "momentum_status": momentum_status,
+            },
+            "lifecycle": lifecycle,
+            "lifecycle_baseline": {
+                "window_days": lifecycle_baseline_days,
+                "first_seen_at": baseline_stamps[0].isoformat(),
+                "last_seen_at": baseline_stamps[-1].isoformat(),
+                "observed_hours": len(baseline_stamps),
+                "ranking_effect": "none",
+                "purpose": "lifecycle_classification_only",
+            },
+            "score_explanation": {
+                "formula": (
+                    "40 period strength + 20 comparable-period momentum + "
+                    "20 per-source persistence + 15 last-seen recency + 5 period cross-source"
+                ),
+                "momentum_status": momentum_status,
+                "momentum_basis": momentum_basis,
+                "lifecycle_baseline_ranking_effect": "none",
+            },
+        })
+    # Build a directly comparable previous-period table.  Its momentum uses
+    # the same documented half-period fallback because the immediately prior
+    # equal window is itself the comparison target.  This table never adds a
+    # stale event to the current period; it exists only to expose honest rank
+    # change instead of comparing against the previous collection hour.
+    previous_scores: list[tuple[str, float]] = []
+    previous_coverage_available = any(previous_eligible.values())
+    previous_half_boundary = previous_start + timedelta(hours=window_hours // 2)
+    previous_events = {
+        event_key
+        for event_key, stamps in event_hours.items()
+        if any(previous_start <= stamp <= previous_end for stamp in stamps)
+    }
+    for event_key in sorted(previous_events):
+        observed_sources = [
+            source
+            for source in sources
+            if any(
+                (event_key, source, stamp) in event_ranks
+                for stamp in previous_eligible[source]
+            )
+        ]
+        strengths = {
+            source: source_strength(
+                event_key, source, previous_eligible[source], previous_end
+            )
+            for source in observed_sources
+        }
+        strength_signal = _mean(strengths.values())
+        persistence_values: list[float] = []
+        half_deltas: list[float] = []
+        for source in observed_sources:
+            eligible = previous_eligible[source]
+            present = [
+                stamp
+                for stamp in eligible
+                if (event_key, source, stamp) in event_ranks
+            ]
+            persistence_values.append(len(present) / len(eligible) if eligible else 0.0)
+            first_half = [
+                stamp for stamp in eligible
+                if previous_start <= stamp < previous_half_boundary
+            ]
+            second_half = [
+                stamp for stamp in eligible
+                if previous_half_boundary <= stamp <= previous_end
+            ]
+            if first_half and second_half:
+                half_deltas.append(
+                    source_strength(event_key, source, second_half, previous_end)
+                    - source_strength(
+                        event_key,
+                        source,
+                        first_half,
+                        previous_half_boundary - timedelta(hours=1),
+                    )
+                )
+        if half_deltas:
+            previous_delta = max(-1.0, min(1.0, _mean(half_deltas)))
+            previous_momentum = (previous_delta + 1.0) / 2.0
+        else:
+            previous_momentum = 0.5
+        previous_last_seen = max(
+            stamp
+            for stamp in event_hours[event_key]
+            if previous_start <= stamp <= previous_end
+        )
+        previous_age = max(
+            0.0, (previous_end - previous_last_seen).total_seconds() / 3600.0
+        )
+        previous_recency = 0.5 ** (previous_age / (window_hours / 2.0))
+        previous_cross = (
+            1.0 if set(DEFAULT_SOURCES) <= set(observed_sources) else 0.0
+        )
+        previous_score = round(
+            40 * strength_signal
+            + 20 * previous_momentum
+            + 20 * _mean(persistence_values)
+            + 15 * previous_recency
+            + 5 * previous_cross,
+            2,
+        )
+        previous_scores.append((event_key, previous_score))
+    previous_scores.sort(key=lambda item: (-item[1], item[0]))
+    previous_rank_by_event = {
+        event_key: rank
+        for rank, (event_key, _score) in enumerate(previous_scores, 1)
+    }
+
+    candidates.sort(key=lambda item: (-item["score"], item["event_key"]))
+    for rank, item in enumerate(candidates, 1):
+        item["rank"] = rank
+        previous_rank = previous_rank_by_event.get(item["event_key"])
+        item["previous_period_rank"] = previous_rank
+        item["rank_change"] = (
+            previous_rank - rank if previous_rank is not None else None
+        )
+        item["rank_change_status"] = (
+            "measured"
+            if previous_rank is not None
+            else "new_in_period"
+            if previous_coverage_available
+            else "unavailable_no_previous_period_coverage"
+        )
+    return {
+        "formula_version": PERIOD_FORMULA_VERSION,
+        "generated_at": current_at.isoformat(),
+        "expected_sources": list(sources),
+        "ranking": candidates,
+        "data_readiness": {
+            "status": "ready" if all(
+                len(current_eligible[source]) / window_hours >= 0.8 for source in sources
+            ) else "provisional",
+            "coverage_by_source": {
+                source: round(len(current_eligible[source]) / window_hours, 6)
+                for source in sources
+            },
+            "previous_period_coverage_available": previous_coverage_available,
+        },
+        "parameters": {
+            "candidate_policy": "period_observed",
+            "window_hours": window_hours,
+            "recency_half_life_hours": window_hours / 2.0,
+            "lifecycle_baseline_days": lifecycle_baseline_days,
+            "ranking_mode": ranking_mode,
+        },
     }
 
 

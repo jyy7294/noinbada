@@ -48,6 +48,15 @@ RANKING_SUMMARY_FIELDS = (
     "main_rank",
     "score",
     "score_components",
+    "candidate_status",
+    "is_current",
+    "period_sources",
+    "period_strength",
+    "freshness",
+    "hours_since_last_seen",
+    "previous_period_rank",
+    "rank_change",
+    "rank_change_status",
     "lane",
     "category",
     "broad_category",
@@ -68,6 +77,7 @@ RANKING_SUMMARY_FIELDS = (
     "company_resolution",
     "company_card_status",
     "detail_event_key",
+    "detail_status",
 )
 
 
@@ -109,6 +119,21 @@ def _ranking_summary(item: dict) -> dict:
         for field in RANKING_SUMMARY_FIELDS
         if field in item
     }
+
+
+def _period_detail_items(intelligence: dict) -> list[dict]:
+    """Return deterministic weekly details plus period-only summary details."""
+
+    items = list(intelligence.get("unified_ranking") or [])
+    seen = {str(item.get("event_key") or "") for item in items}
+    views = intelligence.get("ranking_views") or {}
+    for period_key in ("daily", "weekly", "monthly"):
+        for item in (views.get(period_key) or {}).get("unified_ranking") or []:
+            event_key = str(item.get("event_key") or "")
+            if event_key and event_key not in seen:
+                items.append(item)
+                seen.add(event_key)
+    return items
 
 
 def _current_x_snapshot_provenance(at: datetime) -> dict[str, str]:
@@ -402,8 +427,8 @@ def _validate_period_views(intelligence: dict) -> None:
         ):
             raise ValueError(f"invalid ranking period metadata: {key}")
         ranking = view.get("unified_ranking")
-        trend_top10 = view.get("trend_top10")
-        if not isinstance(ranking, list) or not isinstance(trend_top10, list):
+        period_top10 = view.get("period_top10")
+        if not isinstance(ranking, list) or not isinstance(period_top10, list):
             raise ValueError(f"ranking view arrays are required: {key}")
         if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
             raise ValueError(f"ranking view ranks must be continuous: {key}")
@@ -414,6 +439,9 @@ def _validate_period_views(intelligence: dict) -> None:
         if any(
             item.get("detail_event_key") != item.get("event_key")
             or not item.get("latest_source_ranks")
+            or item.get("candidate_status") not in {"is_current", "period_observed"}
+            or not isinstance(item.get("freshness"), dict)
+            or item.get("detail_status") not in {"shared_full_detail", "period_summary_only"}
             or "companies" in item
             or "company_candidates" in item
             for item in ranking
@@ -426,8 +454,8 @@ def _validate_period_views(intelligence: dict) -> None:
             item.get("main_rank") is not None
             for item in ranking
             if item.get("lane") != "main"
-        ) or trend_top10 != main[:10]:
-            raise ValueError(f"period trend_top10 must be main-lane score order: {key}")
+        ) or period_top10 != main[:10]:
+            raise ValueError(f"period_top10 must be main-lane score order: {key}")
 
     weekly = views["weekly"]
     top_level = intelligence.get("unified_ranking") or []
@@ -439,7 +467,7 @@ def _validate_period_views(intelligence: dict) -> None:
         for item in top_level
     ]:
         raise ValueError("top-level unified ranking must be the hydrated weekly alias")
-    if [item.get("event_key") for item in weekly["trend_top10"]] != [
+    if [item.get("event_key") for item in weekly["period_top10"]] != [
         item.get("event_key") for item in intelligence.get("trend_top10") or []
     ]:
         raise ValueError("top-level trend_top10 must be the hydrated weekly alias")
@@ -642,8 +670,9 @@ def _write_frontend_delivery(
     (stage / "trends").mkdir(parents=True)
 
     ranking = list(intelligence.get("unified_ranking") or [])
+    detail_items = _period_detail_items(intelligence)
     detail_index: list[dict] = []
-    for item in ranking:
+    for item in detail_items:
         event_key = str(item.get("event_key") or "").strip()
         if not event_key:
             raise ValueError("frontend delivery requires an event_key for every trend")
@@ -687,9 +716,9 @@ def _write_frontend_delivery(
                     _ranking_summary(item)
                     for item in view.get("unified_ranking") or []
                 ],
-                "trend_top10": [
+                "period_top10": [
                     _ranking_summary(item)
-                    for item in view.get("trend_top10") or []
+                    for item in view.get("period_top10") or []
                 ],
             }
             for key, view in (intelligence.get("ranking_views") or {}).items()
@@ -1342,7 +1371,7 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         "collection_health": collection_health,
         "frontend_delivery": _delivery_descriptor(
             publication_id,
-            len(intelligence.get("unified_ranking") or []),
+            len(_period_detail_items(intelligence)),
         ),
     }
     status = {

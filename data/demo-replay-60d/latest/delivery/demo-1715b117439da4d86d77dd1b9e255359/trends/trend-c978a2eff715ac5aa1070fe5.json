@@ -1,0 +1,284 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "period_observed",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {},
+    "confidence": "demo",
+    "current_source_position": 0.469923,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 6
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "가내밀레",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "가내밀레",
+    "first_seen_at": "2026-08-12T03:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-c978a2eff715ac5aa1070fe5.json",
+    "is_current": false,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T08:00:00+00:00",
+    "latest_source_ranks": {},
+    "lifecycle": "expired",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T03:00:00+00:00",
+      "last_seen_at": "2026-08-12T08:00:00+00:00",
+      "observed_hours": 6,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "main_rank": 283,
+    "momentum": 0.734962,
+    "observed_representative_term": "가내밀레",
+    "period_sources": [
+      "x"
+    ],
+    "persistence": 0.035714,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference"
+    ],
+    "rank": 283,
+    "rank_change": null,
+    "rank_change_by_source": {},
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "period_observed",
+        "display_name": "가내밀레",
+        "event_key": "가내밀레",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T08:00:00+00:00",
+        "main_rank": 305,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 305,
+        "rank_change": null,
+        "score": 44.07,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.55,
+          "period_strength_points": 18.21,
+          "persistence_points": 5.0,
+          "recency_points": 6.31,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 44.07
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "period_observed",
+        "display_name": "가내밀레",
+        "event_key": "가내밀레",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T08:00:00+00:00",
+        "main_rank": 292,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 292,
+        "rank_change": null,
+        "score": 48.79,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.72,
+          "period_strength_points": 18.87,
+          "persistence_points": 0.63,
+          "recency_points": 14.57,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 48.79
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "period_observed",
+        "display_name": "가내밀레",
+        "event_key": "가내밀레",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T08:00:00+00:00",
+        "main_rank": 283,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 283,
+        "rank_change": null,
+        "score": 47.46,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.7,
+          "period_strength_points": 18.8,
+          "persistence_points": 0.71,
+          "recency_points": 13.25,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 47.46
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "가내밀레"
+    ],
+    "score": 47.46,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 14.7,
+      "period_strength_points": 18.8,
+      "persistence_points": 0.71,
+      "recency_points": 13.25,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 47.46
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T03:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 20,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 20,
+        "source": "x",
+        "source_rank": 20,
+        "topic": "가내밀레",
+        "value": 81.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T04:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 23,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 24,
+        "source": "x",
+        "source_rank": 24,
+        "topic": "가내밀레",
+        "value": 78.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T05:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 23,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 23,
+        "source": "x",
+        "source_rank": 23,
+        "topic": "가내밀레",
+        "value": 78.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T06:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 22,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 22,
+        "source": "x",
+        "source_rank": 22,
+        "topic": "가내밀레",
+        "value": 79.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T07:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 50,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 50,
+        "source": "x",
+        "source_rank": 50,
+        "topic": "가내밀레",
+        "value": 51.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T08:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 50,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 50,
+        "source": "x",
+        "source_rank": 50,
+        "topic": "가내밀레",
+        "value": 51.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "x": 0.469923
+      },
+      "period_strength": {
+        "x": 0.469923
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 6,
+          "presence_rate": 0.035714
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "가내밀레"
+  }
+}

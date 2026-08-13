@@ -3,24 +3,24 @@
     "by_provenance": {
       "historical_reference": 571,
       "observed": 1855,
-      "synthetic_backfill": 12518
+      "synthetic_backfill": 13357
     },
     "by_source": {
-      "google_trends": 8155,
-      "x": 6789
+      "google_trends": 8545,
+      "x": 7238
     },
     "by_source_and_provenance": {
       "google_trends": {
         "historical_reference": 148,
         "observed": 1795,
         "reconstructed_reference": 0,
-        "synthetic_backfill": 6212
+        "synthetic_backfill": 6602
       },
       "x": {
         "historical_reference": 423,
         "observed": 60,
         "reconstructed_reference": 0,
-        "synthetic_backfill": 6306
+        "synthetic_backfill": 6755
       }
     },
     "legacy_operational_observed_rows": {
@@ -39,18 +39,35 @@
       "duplicate_raw_rank_resolved_by_event_key": 62,
       "rank_shift_after_prior_tie_resolution": 39,
       "raw_rank_preserved": 2324,
+      "research_seed_synthetic_rank": 839,
       "synthetic_generated_rank": 12518
     },
-    "row_count": 14944,
+    "research_seed_simulation": {
+      "by_source": {
+        "google_trends": 390,
+        "x": 449
+      },
+      "dual_source_event_date_pairs": 9,
+      "dual_source_ratio": 0.010843,
+      "event_count": 47,
+      "event_date_pairs": 830,
+      "live_eligible": false,
+      "measurement_status": "synthetic_not_measured",
+      "no_future_evidence": true,
+      "provenance": "synthetic_backfill",
+      "row_count": 839,
+      "source_policy": "hash_single_source_peak_dual_subset_v1"
+    },
+    "row_count": 15783,
     "synthetic_rows_are_not_claimed_as_measured": true
   },
   "data_window_days": 60,
   "demo_label": "7일 순위 시뮬레이션 데모",
   "frontend_delivery": {
-    "observation_ledger_path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/observations.ndjson",
-    "rankings_path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/rankings.json",
-    "research_event_catalog_path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/research-events.ndjson",
-    "trend_detail_count": 252
+    "observation_ledger_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/observations.ndjson",
+    "rankings_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/rankings.json",
+    "research_event_catalog_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/research-events.ndjson",
+    "trend_detail_count": 449
   },
   "generated_at": "2026-08-12T23:00:00+00:00",
   "lifecycle_baseline_days": 60,
@@ -71,7 +88,7 @@
     "row_level_provenance_preserved": true,
     "synthetic_backfill": "deterministic MVP gap fill; never measured"
   },
-  "publication_id": "demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
   "rank_sources": [
     "x",
     "google_trends"
@@ -79,7 +96,7 @@
   "ranking_effect": "none",
   "research_event_catalog": {
     "measurement_status": "event_timing_evidence_only",
-    "path": "delivery/demo-5bfc135c9fdfd3cbcf2fefd2c8c42b49/research-events.ndjson",
+    "path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/research-events.ndjson",
     "provenance": "research_reconstructed",
     "ranking_effect": "none",
     "ranking_eligible": false,

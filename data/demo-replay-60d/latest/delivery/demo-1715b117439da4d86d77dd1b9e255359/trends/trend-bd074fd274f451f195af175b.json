@@ -1,0 +1,308 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "period_observed",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {},
+    "confidence": "demo",
+    "current_source_position": 0.336665,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 8
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "레드삭스 대 블루제이스",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "레드삭스 대 블루제이스",
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-bd074fd274f451f195af175b.json",
+    "is_current": false,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T21:00:00+00:00",
+    "latest_source_ranks": {},
+    "lifecycle": "cooling",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-12T21:00:00+00:00",
+      "observed_hours": 8,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "main_rank": 334,
+    "momentum": 0.668332,
+    "observed_representative_term": "레드삭스 대 블루제이스",
+    "period_sources": [
+      "google_trends"
+    ],
+    "persistence": 0.047619,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed"
+    ],
+    "rank": 334,
+    "rank_change": null,
+    "rank_change_by_source": {},
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "period_observed",
+        "display_name": "레드삭스 대 블루제이스",
+        "event_key": "레드삭스 대 블루제이스",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T21:00:00+00:00",
+        "main_rank": 281,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 281,
+        "rank_change": null,
+        "score": 46.83,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 13.36,
+          "period_strength_points": 13.44,
+          "persistence_points": 6.67,
+          "recency_points": 13.36,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 46.83
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "period_observed",
+        "display_name": "레드삭스 대 블루제이스",
+        "event_key": "레드삭스 대 블루제이스",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T21:00:00+00:00",
+        "main_rank": 358,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 358,
+        "rank_change": null,
+        "score": 42.62,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 13.37,
+          "period_strength_points": 13.47,
+          "persistence_points": 0.84,
+          "recency_points": 14.94,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 42.62
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "period_observed",
+        "display_name": "레드삭스 대 블루제이스",
+        "event_key": "레드삭스 대 블루제이스",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T21:00:00+00:00",
+        "main_rank": 334,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 334,
+        "rank_change": null,
+        "score": 42.54,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 13.37,
+          "period_strength_points": 13.47,
+          "persistence_points": 0.95,
+          "recency_points": 14.75,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 42.54
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "레드삭스 대 블루제이스"
+    ],
+    "score": 42.54,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 13.37,
+      "period_strength_points": 13.47,
+      "persistence_points": 0.95,
+      "recency_points": 14.75,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 42.54
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 121,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 121,
+        "source": "google_trends",
+        "source_rank": 121,
+        "topic": "레드삭스 대 블루제이스",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 127,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 127,
+        "source": "google_trends",
+        "source_rank": 127,
+        "topic": "레드삭스 대 블루제이스",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 133,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 133,
+        "source": "google_trends",
+        "source_rank": 133,
+        "topic": "레드삭스 대 블루제이스",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 134,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 134,
+        "source": "google_trends",
+        "source_rank": 134,
+        "topic": "레드삭스 대 블루제이스",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 132,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 132,
+        "source": "google_trends",
+        "source_rank": 132,
+        "topic": "레드삭스 대 블루제이스",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 133,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 133,
+        "source": "google_trends",
+        "source_rank": 133,
+        "topic": "레드삭스 대 블루제이스",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 133,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 133,
+        "source": "google_trends",
+        "source_rank": 133,
+        "topic": "레드삭스 대 블루제이스",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 140,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 140,
+        "source": "google_trends",
+        "source_rank": 140,
+        "topic": "레드삭스 대 블루제이스",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.336665
+      },
+      "period_strength": {
+        "google_trends": 0.336665
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 8,
+          "presence_rate": 0.047619
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "레드삭스 대 블루제이스"
+  }
+}

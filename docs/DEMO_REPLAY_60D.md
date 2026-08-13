@@ -17,7 +17,7 @@
 - 순위 점수 구간: 최근 7일
 - 순위 보기: `daily` 24시간, `weekly` 7일(기본), `monthly` 30일
 - 라이프사이클 기준선과 차트: 60일
-- 계산식: 운영 Ranking V2와 동일한 `current40_momentum20_persistence20_decay15_cross5_v2`
+- 계산식: 운영 기간 집계 Ranking V2와 동일한 `period40_momentum20_persistence20_recency15_cross5_v1`
 - 출력 모드: `demo_replay`
 - 운영 영향: `ranking_effect=none`, `live_eligible=false`
 
@@ -25,7 +25,9 @@
 
 구형 운영 원장의 Google 128행과 X 423행은 합계 551행을 삭제하지 않고 최신 `trzip-observation-v1` 행으로 변환합니다. 원래 `observed_at`·`topic`·`raw_rank`·`value`는 보존하고, `region`·`event_key`처럼 계산 가능한 값은 `derived`, 원래 수집하지 않은 payload·관련어·seed 시각은 `not_collected`, 알 수 없는 수집기 버전은 `unknown`으로 `field_lineage`에 표시합니다. 동일 시각·출처에 같은 순위가 여러 개면 `raw_rank → event_key → topic → stable row id` 순으로 정렬해 `resolved_rank`를 부여합니다. `raw_rank`는 바꾸지 않습니다.
 
-별도 연구 재구성 입력은 두 종류를 지원합니다. 플랫폼·순위까지 재구성한 행은 JSONL 한 줄당 `observed_at`, `source`, `topic`, `raw_rank`, `provenance=reconstructed_reference`를 제공할 수 있습니다. 사건 시점만 근거로 복원한 seed는 `provenance=research_reconstructed`, `measurement_status=event_timing_evidence_only`, `rank_eligible=false`를 유지합니다. 후자는 플랫폼·순위를 만들지 않고 `research-events.ndjson` sidecar에만 실리며 정규화·QA·향후 실측어 매칭에 사용합니다.
+별도 연구 재구성 입력은 두 종류를 지원합니다. 플랫폼·순위까지 재구성한 행은 JSONL 한 줄당 `observed_at`, `source`, `topic`, `raw_rank`, `provenance=reconstructed_reference`를 제공할 수 있습니다. 사건 시점만 근거로 복원한 seed는 원본 sidecar에서 `provenance=research_reconstructed`, `measurement_status=event_timing_evidence_only`, `rank_eligible=false`를 유지합니다.
+
+사건 seed는 데모 차트를 재생할 때만 `synthetic_backfill` 관측으로 펼칩니다. 시작일은 `max(active_from, 해당 시점까지 공개된 가장 이른 evidence.published_at)`이며 `active_to` 뒤에는 생성하지 않습니다. 따라서 미래 기사를 과거 순위에 사용하는 look-ahead와 만료 사건의 현재 순위 부활을 막습니다. 합성 행은 `reference_kind=research_seed_simulation`, `measurement_status=synthetic_not_measured`, `ranking_eligible=false`, `demo_ranking_eligible=true`, `live_eligible=false`입니다. X·Google 양쪽에서 실제 관측됐다는 뜻이 아니며, 해시 기반 기본 단일 source 슬롯과 peak 인근 일부 교차 슬롯만 사용합니다. 운영 원장에는 절대 적재하지 않습니다.
 
 ```powershell
 py -3.13 scripts/build-demo-replay.py --research-input work/research-reconstruction.jsonl

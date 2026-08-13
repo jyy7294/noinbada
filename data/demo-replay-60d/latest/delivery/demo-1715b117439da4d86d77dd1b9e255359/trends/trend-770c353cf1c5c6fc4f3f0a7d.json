@@ -1,0 +1,296 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "is_current",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.657909,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 2,
+        "observed": 2
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "안판석 감독님",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "안판석 감독님",
+    "first_seen_at": "2026-08-12T11:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-770c353cf1c5c6fc4f3f0a7d.json",
+    "is_current": true,
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "x": 22
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T11:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 4,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 153,
+    "momentum": 0.828954,
+    "observed_representative_term": "안판석 감독님",
+    "period_sources": [
+      "x"
+    ],
+    "persistence": 0.02381,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference",
+      "observed"
+    ],
+    "rank": 153,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "x": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "안판석 감독님",
+        "event_key": "안판석 감독님",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 158,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 158,
+        "rank_change": null,
+        "score": 58.52,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 16.04,
+          "period_strength_points": 24.15,
+          "persistence_points": 3.33,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 58.52
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "안판석 감독님",
+        "event_key": "안판석 감독님",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 152,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 152,
+        "rank_change": null,
+        "score": 58.67,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 16.65,
+          "period_strength_points": 26.6,
+          "persistence_points": 0.42,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 58.67
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "안판석 감독님",
+        "event_key": "안판석 감독님",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 153,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 153,
+        "rank_change": null,
+        "score": 58.38,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 16.58,
+          "period_strength_points": 26.32,
+          "persistence_points": 0.48,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 58.38
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "안판석 감독님"
+    ],
+    "score": 58.38,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 16.58,
+      "period_strength_points": 26.32,
+      "persistence_points": 0.48,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 58.38
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T11:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 5,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 5,
+        "source": "x",
+        "source_rank": 5,
+        "topic": "안판석 감독님",
+        "value": 96.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T12:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 4,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 4,
+        "source": "x",
+        "source_rank": 4,
+        "topic": "안판석 감독님",
+        "value": 97.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 23,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 23,
+        "source": "x",
+        "source_rank": 23,
+        "topic": "안판석 감독님",
+        "value": 78.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 22,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 22,
+        "source": "x",
+        "source_rank": 22,
+        "topic": "안판석 감독님",
+        "value": 79.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "x": 0.657909
+      },
+      "period_strength": {
+        "x": 0.657909
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 4,
+          "presence_rate": 0.02381
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "안판석 감독님"
+  }
+}

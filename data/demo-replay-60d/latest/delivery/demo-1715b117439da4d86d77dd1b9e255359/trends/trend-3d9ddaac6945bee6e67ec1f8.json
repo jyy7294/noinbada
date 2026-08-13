@@ -1,0 +1,633 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "is_current",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.513514,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 1,
+        "synthetic_backfill": 31
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "삼전닉스",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "삼전닉스",
+    "first_seen_at": "2026-07-01T23:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-3d9ddaac6945bee6e67ec1f8.json",
+    "is_current": true,
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 109
+    },
+    "lifecycle": "rebounding",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-07-01T23:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 32,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rebounding",
+    "lifecycle_reason": "returned_after_long_observation_gap",
+    "main_rank": 247,
+    "momentum": 0.756757,
+    "observed_representative_term": "삼전닉스",
+    "period_sources": [
+      "google_trends"
+    ],
+    "persistence": 0.005952,
+    "previous_period_rank": 91,
+    "previous_period_score": 25.2,
+    "provenance": [
+      "observed",
+      "synthetic_backfill"
+    ],
+    "rank": 247,
+    "rank_change": -156,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "삼전닉스",
+        "event_key": "삼전닉스",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 240,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 240,
+        "rank_change": null,
+        "score": 51.51,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.14,
+          "period_strength_points": 20.54,
+          "persistence_points": 0.83,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 51.51
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "삼전닉스",
+        "event_key": "삼전닉스",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 312,
+        "period_sources": [
+          "x",
+          "google_trends"
+        ],
+        "previous_period_rank": 2,
+        "previous_period_score": 79.88,
+        "rank": 312,
+        "rank_change": -310,
+        "score": 46.79,
+        "score_change": -33.09,
+        "score_components": {
+          "cross_source_points": 5.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 9.46,
+          "period_strength_points": 16.34,
+          "persistence_points": 0.99,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 46.79
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "삼전닉스",
+        "event_key": "삼전닉스",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 247,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": 91,
+        "previous_period_score": 25.2,
+        "rank": 247,
+        "rank_change": -156,
+        "score": 50.8,
+        "score_change": 25.6,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.14,
+          "period_strength_points": 20.54,
+          "persistence_points": 0.12,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 50.8
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "삼전닉스"
+    ],
+    "score": 50.8,
+    "score_change": 25.6,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 15.14,
+      "period_strength_points": 20.54,
+      "persistence_points": 0.12,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 50.8
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-01T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 2,
+        "source": "x",
+        "source_rank": 2,
+        "topic": "삼전닉스",
+        "value": 90.912
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-02T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 1,
+        "source": "x",
+        "source_rank": 1,
+        "topic": "삼전닉스",
+        "value": 90.6006
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-03T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 1,
+        "source": "x",
+        "source_rank": 1,
+        "topic": "삼전닉스",
+        "value": 87.5734
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-04T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 1,
+        "source": "x",
+        "source_rank": 1,
+        "topic": "삼전닉스",
+        "value": 88.021
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-05T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 1,
+        "source": "x",
+        "source_rank": 1,
+        "topic": "삼전닉스",
+        "value": 83.206
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-06T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 4,
+        "source": "x",
+        "source_rank": 4,
+        "topic": "삼전닉스",
+        "value": 80.3555
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-07T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 3,
+        "source": "x",
+        "source_rank": 3,
+        "topic": "삼전닉스",
+        "value": 76.9202
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-08T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 4,
+        "source": "x",
+        "source_rank": 4,
+        "topic": "삼전닉스",
+        "value": 75.4999
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-09T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 5,
+        "source": "x",
+        "source_rank": 5,
+        "topic": "삼전닉스",
+        "value": 74.6777
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-10T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 10,
+        "source": "x",
+        "source_rank": 10,
+        "topic": "삼전닉스",
+        "value": 70.5738
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-11T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 7,
+        "source": "x",
+        "source_rank": 7,
+        "topic": "삼전닉스",
+        "value": 68.816
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-12T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 7,
+        "source": "x",
+        "source_rank": 7,
+        "topic": "삼전닉스",
+        "value": 69.1667
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-13T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 11,
+        "source": "x",
+        "source_rank": 11,
+        "topic": "삼전닉스",
+        "value": 66.5158
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-14T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 23,
+        "source": "x",
+        "source_rank": 23,
+        "topic": "삼전닉스",
+        "value": 62.5187
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-15T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 12,
+        "source": "x",
+        "source_rank": 12,
+        "topic": "삼전닉스",
+        "value": 61.5648
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-16T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 20,
+        "source": "x",
+        "source_rank": 20,
+        "topic": "삼전닉스",
+        "value": 60.1656
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-17T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 34,
+        "source": "x",
+        "source_rank": 34,
+        "topic": "삼전닉스",
+        "value": 56.9378
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-18T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 24,
+        "source": "x",
+        "source_rank": 24,
+        "topic": "삼전닉스",
+        "value": 55.9571
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-19T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 30,
+        "source": "x",
+        "source_rank": 30,
+        "topic": "삼전닉스",
+        "value": 53.2973
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-20T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 36,
+        "source": "x",
+        "source_rank": 36,
+        "topic": "삼전닉스",
+        "value": 47.7796
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-21T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 38,
+        "source": "x",
+        "source_rank": 38,
+        "topic": "삼전닉스",
+        "value": 46.3776
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-22T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 41,
+        "source": "x",
+        "source_rank": 41,
+        "topic": "삼전닉스",
+        "value": 46.9125
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-23T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 42,
+        "source": "x",
+        "source_rank": 42,
+        "topic": "삼전닉스",
+        "value": 42.2539
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-24T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 43,
+        "source": "x",
+        "source_rank": 43,
+        "topic": "삼전닉스",
+        "value": 42.8248
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-25T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 43,
+        "source": "x",
+        "source_rank": 43,
+        "topic": "삼전닉스",
+        "value": 38.5047
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-26T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 43,
+        "source": "x",
+        "source_rank": 43,
+        "topic": "삼전닉스",
+        "value": 33.9217
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-27T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 42,
+        "source": "x",
+        "source_rank": 42,
+        "topic": "삼전닉스",
+        "value": 35.1972
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-28T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 42,
+        "source": "x",
+        "source_rank": 42,
+        "topic": "삼전닉스",
+        "value": 33.1186
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-29T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 42,
+        "source": "x",
+        "source_rank": 42,
+        "topic": "삼전닉스",
+        "value": 28.4849
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-30T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 42,
+        "source": "x",
+        "source_rank": 42,
+        "topic": "삼전닉스",
+        "value": 25.3824
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-31T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "research_seed_simulation",
+        "resolved_rank": 38,
+        "source": "x",
+        "source_rank": 38,
+        "topic": "삼전닉스",
+        "value": 23.5393
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 109,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 109,
+        "source": "google_trends",
+        "source_rank": 109,
+        "topic": "삼전닉스",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.513514
+      },
+      "period_strength": {
+        "google_trends": 0.513514
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 1,
+          "presence_rate": 0.005952
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "삼전닉스"
+  }
+}

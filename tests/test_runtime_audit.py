@@ -34,17 +34,27 @@ def _write_runtime(root: Path) -> None:
         "display_name": "관측어",
         "score": 72.0,
         "score_components": {
-            "current_points": 40.0,
+            "period_strength_points": 32.0,
             "momentum_points": 10.0,
             "persistence_points": 10.0,
-            "decayed_history_points": 11.0,
-            "cross_source_points": 1.0,
-            "component_subtotal_points": 72.0,
-            "freshness_multiplier": 1.0,
+            "recency_points": 15.0,
+            "cross_source_points": 5.0,
             "total_points": 72.0,
-            "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+            "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
             "rounding_policy": "each_component_2dp_then_sum_2dp",
         },
+        "candidate_status": "is_current",
+        "is_current": True,
+        "period_sources": ["x", "google_trends"],
+        "period_strength": 0.8,
+        "freshness": {
+            "signal": 1.0,
+            "half_life_hours": 84.0,
+            "hours_since_last_seen": 0.0,
+        },
+        "hours_since_last_seen": 0.0,
+        "last_seen_at": observed_at,
+        "detail_status": "shared_full_detail",
         "latest_source_ranks": {"x": 1, "google_trends": 1},
         "provenance": ["observed"],
         "lane": "main",
@@ -98,18 +108,19 @@ def _write_runtime(root: Path) -> None:
         }
         for key, label, hours in period_definitions
     ]
-    ranking_views = {
-        period["key"]: {
+    ranking_views = {}
+    for period in ranking_periods:
+        view_item = json.loads(json.dumps(period_item))
+        view_item["freshness"]["half_life_hours"] = period["window"]["hours"] / 2
+        ranking_views[period["key"]] = {
             **period,
-            "formula_version": "current40_momentum20_persistence20_decay15_cross5_v2",
+            "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
             "data_readiness": {"status": "ready"},
             "company_detail_policy": "shared_by_detail_event_key",
             "company_count_affects_rank": False,
-            "unified_ranking": [dict(period_item)],
-            "trend_top10": [dict(period_item)],
+            "unified_ranking": [view_item],
+            "period_top10": [dict(view_item)],
         }
-        for period in ranking_periods
-    }
     intelligence = {
         "schema_version": "trzip-intelligence-v3",
         "mode": "live",
@@ -121,8 +132,8 @@ def _write_runtime(root: Path) -> None:
         "ranking_views": ranking_views,
         "ranking_top_level_alias": {
             "period": "weekly",
-            "unified_ranking": "hydrated_weekly_view",
-            "trend_top10": "hydrated_weekly_view",
+            "unified_ranking": "weekly_period_aggregate",
+            "trend_top10": "weekly_period_top10",
         },
         "unified_ranking": [item],
         "trend_top10": [item],
@@ -304,7 +315,7 @@ def test_runtime_audit_rejects_score_and_company_evidence_breakage(tmp_path: Pat
     intelligence = json.loads(intelligence_path.read_text(encoding="utf-8"))
     intelligence["unified_ranking"][0]["score"] = 99.0
     intelligence["ranking_views"]["weekly"]["unified_ranking"][0]["score"] = 99.0
-    intelligence["ranking_views"]["weekly"]["trend_top10"][0]["score"] = 99.0
+    intelligence["ranking_views"]["weekly"]["period_top10"][0]["score"] = 99.0
     broken_companies = json.loads(json.dumps(intelligence["company_ready_trends"][0]["companies"]))
     broken_companies[0]["ontology_path"] = []
     intelligence["company_ready_trends"][0]["companies"] = broken_companies

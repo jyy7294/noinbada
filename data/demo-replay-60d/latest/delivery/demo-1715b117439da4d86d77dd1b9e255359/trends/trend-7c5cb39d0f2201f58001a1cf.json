@@ -1,0 +1,368 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "is_current",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.280292,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 1,
+        "observed": 9
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "헬멧",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "헬멧",
+    "first_seen_at": "2026-08-12T11:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-7c5cb39d0f2201f58001a1cf.json",
+    "is_current": true,
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 221
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T11:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 10,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 353,
+    "momentum": 0.640146,
+    "observed_representative_term": "헬멧",
+    "period_sources": [
+      "google_trends"
+    ],
+    "persistence": 0.059524,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference",
+      "observed"
+    ],
+    "rank": 353,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "헬멧",
+        "event_key": "헬멧",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 282,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 282,
+        "rank_change": null,
+        "score": 46.67,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 12.67,
+          "period_strength_points": 10.67,
+          "persistence_points": 8.33,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 46.67
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "헬멧",
+        "event_key": "헬멧",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 376,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 376,
+        "rank_change": null,
+        "score": 40.16,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 12.82,
+          "period_strength_points": 11.29,
+          "persistence_points": 1.05,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 40.16
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "헬멧",
+        "event_key": "헬멧",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 353,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 353,
+        "rank_change": null,
+        "score": 40.2,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 12.8,
+          "period_strength_points": 11.21,
+          "persistence_points": 1.19,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 40.2
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "헬멧"
+    ],
+    "score": 40.2,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 12.8,
+      "period_strength_points": 11.21,
+      "persistence_points": 1.19,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 40.2
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T11:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 9,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 9,
+        "source": "google_trends",
+        "source_rank": 9,
+        "topic": "헬멧",
+        "value": 92.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 173,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 173,
+        "source": "google_trends",
+        "source_rank": 173,
+        "topic": "헬멧",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 184,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 184,
+        "source": "google_trends",
+        "source_rank": 184,
+        "topic": "헬멧",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 191,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 191,
+        "source": "google_trends",
+        "source_rank": 191,
+        "topic": "헬멧",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 194,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 194,
+        "source": "google_trends",
+        "source_rank": 194,
+        "topic": "헬멧",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 195,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 195,
+        "source": "google_trends",
+        "source_rank": 195,
+        "topic": "헬멧",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 198,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 198,
+        "source": "google_trends",
+        "source_rank": 198,
+        "topic": "헬멧",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 198,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 198,
+        "source": "google_trends",
+        "source_rank": 198,
+        "topic": "헬멧",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 200,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 200,
+        "source": "google_trends",
+        "source_rank": 200,
+        "topic": "헬멧",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 221,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 221,
+        "source": "google_trends",
+        "source_rank": 221,
+        "topic": "헬멧",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.280292
+      },
+      "period_strength": {
+        "google_trends": 0.280292
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 10,
+          "presence_rate": 0.059524
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "헬멧"
+  }
+}

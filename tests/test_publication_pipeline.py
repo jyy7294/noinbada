@@ -10,6 +10,7 @@ from trzip.publication_pipeline import (
     _public_market_reference,
     _verification_references,
     _hourly_verification_term_limit,
+    _period_detail_items,
     _prune_observations,
     _refresh_verification_layer,
     _sanitize_collection_for_public,
@@ -24,6 +25,21 @@ def test_local_cli_is_canonical():
     from trzip.local_pipeline import run as local_run
 
     assert local_run is run
+
+
+def test_period_detail_items_include_monthly_only_summary_after_weekly_details():
+    weekly = {"event_key": "weekly", "detail_status": "shared_full_detail"}
+    monthly_only = {"event_key": "monthly", "detail_status": "period_summary_only"}
+    intelligence = {
+        "unified_ranking": [weekly],
+        "ranking_views": {
+            "daily": {"unified_ranking": [weekly]},
+            "weekly": {"unified_ranking": [weekly]},
+            "monthly": {"unified_ranking": [weekly, monthly_only]},
+        },
+    }
+
+    assert _period_detail_items(intelligence) == [weekly, monthly_only]
 
 
 def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
@@ -111,6 +127,7 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
         for view in rankings["ranking_views"].values()
         for item in view["unified_ranking"]
     )
+    assert all("period_top10" in view for view in rankings["ranking_views"].values())
     _validate_frontend_delivery(tmp_path / "latest", manifest)
     assert intelligence["news_discovery_queue"][0]["observed_term"] == "양즈깐루"
 

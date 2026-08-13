@@ -9,7 +9,7 @@
     "event_key", "raw_rank", "source_rank", "resolved_rank", "value",
     "provenance", "reference_kind", "measurement_status",
     "collector_version", "seed_observed_at", "source_payload", "related_terms",
-    "rank_resolution", "ranking_eligible", "mode", "live_eligible",
+    "rank_resolution", "ranking_eligible", "demo_ranking_eligible", "mode", "live_eligible",
     "ranking_effect", "quality_status", "seed_version", "field_lineage"
   ],
   "properties": {
@@ -39,7 +39,8 @@
     "seed_observed_at": {"type": ["string", "null"]},
     "source_payload": {"$ref": "#/$defs/statusValue"},
     "related_terms": {"$ref": "#/$defs/statusValue"},
-    "ranking_eligible": {"const": true},
+    "ranking_eligible": {"type": "boolean"},
+    "demo_ranking_eligible": {"const": true},
     "mode": {"const": "demo_replay"},
     "live_eligible": {"const": false},
     "ranking_effect": {"const": "demo_replay_only"},
@@ -55,12 +56,30 @@
         "enum": [
           "observed", "derived", "unknown", "not_collected", "synthetic",
           "reconstructed", "derived_from_metric_order",
+          "research_seed",
           "observed_pending_tie_resolution",
           "reconstructed_pending_tie_resolution"
         ]
       }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"reference_kind": {"const": "research_seed_simulation"}},
+        "required": ["reference_kind"]
+      },
+      "then": {
+        "required": ["research_event_id", "research_seed"],
+        "properties": {
+          "provenance": {"const": "synthetic_backfill"},
+          "measurement_status": {"const": "synthetic_not_measured"},
+          "ranking_eligible": {"const": false},
+          "demo_ranking_eligible": {"const": true}
+        }
+      }
+    }
+  ],
   "$defs": {
     "statusValue": {
       "type": "object",

@@ -32,7 +32,18 @@ SCORE_FORMULA_CONTRACTS = {
         ),
         "freshness_multiplier": True,
     },
+    "period40_momentum20_persistence20_recency15_cross5_v1": {
+        "components": (
+            ("period_strength_points", 40.0),
+            ("momentum_points", 20.0),
+            ("persistence_points", 20.0),
+            ("recency_points", 15.0),
+            ("cross_source_points", 5.0),
+        ),
+        "freshness_multiplier": False,
+    },
 }
+PERIOD_SCORE_FORMULA = "period40_momentum20_persistence20_recency15_cross5_v1"
 EXPECTED_SCHEMAS = {
     "intelligence": "trzip-intelligence-v3",
     "metadata": "trzip-live-data-v3",
@@ -298,7 +309,21 @@ def _audit_frontend_delivery(
         _audit_period_rankings(rankings, report)
 
     detail_index = bundle.get("trend_index") or []
-    expected_count = len(intelligence.get("unified_ranking") or [])
+    expected_event_keys: list[str] = []
+    seen_event_keys: set[str] = set()
+    ranking_lists = [intelligence.get("unified_ranking") or []]
+    views = intelligence.get("ranking_views") or {}
+    ranking_lists.extend(
+        (views.get(period) or {}).get("unified_ranking") or []
+        for period in ("daily", "weekly", "monthly")
+    )
+    for ranking in ranking_lists:
+        for item in ranking:
+            event_key = str((item if isinstance(item, dict) else {}).get("event_key") or "")
+            if event_key and event_key not in seen_event_keys:
+                seen_event_keys.add(event_key)
+                expected_event_keys.append(event_key)
+    expected_count = len(expected_event_keys)
     if (
         not isinstance(detail_index, list)
         or bundle.get("trend_count") != expected_count
@@ -335,10 +360,6 @@ def _audit_frontend_delivery(
             or (detail.get("trend") or {}).get("event_key") != event_key
         ):
             detail_failures += 1
-    expected_event_keys = [
-        str(item.get("event_key") or "")
-        for item in intelligence.get("unified_ranking") or []
-    ]
     if event_keys != expected_event_keys or detail_failures:
         report.fail("frontend_trend_detail_integrity_error")
     report.metrics["frontend_delivery"] = {
@@ -365,11 +386,18 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
     ):
         report.fail("ranking_period_contract_invalid")
         return
+    if intelligence.get("ranking_top_level_alias") != {
+        "period": "weekly",
+        "unified_ranking": "weekly_period_aggregate",
+        "trend_top10": "weekly_period_top10",
+    }:
+        report.fail("ranking_period_contract_invalid")
+        return
     period_counts: dict[str, int] = {}
     for key, hours in expected:
         view = views[key]
         ranking = view.get("unified_ranking")
-        top10 = view.get("trend_top10")
+        top10 = view.get("period_top10")
         window = view.get("window") or {}
         if (
             not isinstance(ranking, list)
@@ -377,6 +405,7 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
             or window.get("hours") != hours
             or window.get("score_history_hours") != hours
             or window.get("lifecycle_baseline_days") != 60
+            or view.get("formula_version") != PERIOD_SCORE_FORMULA
             or view.get("company_count_affects_rank") is not False
             or view.get("company_detail_policy") != "shared_by_detail_event_key"
         ):
@@ -391,6 +420,17 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
         if any(
             item.get("detail_event_key") != item.get("event_key")
             or not item.get("latest_source_ranks")
+            or item.get("candidate_status") not in {"is_current", "period_observed"}
+            or item.get("is_current") is not (
+                item.get("candidate_status") == "is_current"
+            )
+            or not item.get("last_seen_at")
+            or item.get("detail_status") not in {
+                "shared_full_detail", "period_summary_only"
+            }
+            or not isinstance(item.get("freshness"), dict)
+            or (item.get("freshness") or {}).get("half_life_hours") != hours / 2
+            or not _score_contract_matches(item, required_formula=PERIOD_SCORE_FORMULA)
             or "companies" in item
             or "company_candidates" in item
             for item in ranking
@@ -405,14 +445,28 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
         period_counts[key] = len(ranking)
     weekly = views["weekly"]
     if [
-        (item.get("event_key"), item.get("rank"), item.get("score"))
+        (
+            item.get("event_key"),
+            item.get("rank"),
+            item.get("score"),
+            item.get("candidate_status"),
+            item.get("last_seen_at"),
+            item.get("freshness"),
+        )
         for item in weekly.get("unified_ranking") or []
     ] != [
-        (item.get("event_key"), item.get("rank"), item.get("score"))
+        (
+            item.get("event_key"),
+            item.get("rank"),
+            item.get("score"),
+            item.get("candidate_status"),
+            item.get("last_seen_at"),
+            item.get("freshness"),
+        )
         for item in intelligence.get("unified_ranking") or []
     ]:
         failures += 1
-    if [item.get("event_key") for item in weekly.get("trend_top10") or []] != [
+    if [item.get("event_key") for item in weekly.get("period_top10") or []] != [
         item.get("event_key") for item in intelligence.get("trend_top10") or []
     ]:
         failures += 1
@@ -423,6 +477,59 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
         "counts": period_counts,
         "failure_count": failures,
     }
+
+
+def _score_contract_matches(
+    item: dict[str, Any],
+    *,
+    required_formula: str | None = None,
+) -> bool:
+    try:
+        score = float(item.get("score"))
+    except (TypeError, ValueError):
+        return False
+    components = item.get("score_components") or {}
+    formula_version = components.get("formula_version")
+    if required_formula is not None and formula_version != required_formula:
+        return False
+    formula = SCORE_FORMULA_CONTRACTS.get(formula_version)
+    if formula is None:
+        return False
+    values: list[float] = []
+    for key, maximum in formula["components"]:
+        value = components.get(key)
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            return False
+        numeric = float(value)
+        if numeric < 0 or numeric > maximum:
+            return False
+        values.append(numeric)
+    subtotal = round(sum(values), 2)
+    total = subtotal
+    if formula["freshness_multiplier"]:
+        declared_subtotal = components.get("component_subtotal_points")
+        multiplier = components.get("freshness_multiplier")
+        if (
+            not isinstance(declared_subtotal, (int, float))
+            or isinstance(declared_subtotal, bool)
+            or float(declared_subtotal) != subtotal
+            or not isinstance(multiplier, (int, float))
+            or isinstance(multiplier, bool)
+            or not 0.0 <= float(multiplier) <= 1.0
+        ):
+            return False
+        total = round(subtotal * float(multiplier), 2)
+    elif "freshness_multiplier" in components:
+        return False
+    try:
+        declared_total = float(components.get("total_points"))
+    except (TypeError, ValueError):
+        return False
+    return (
+        components.get("rounding_policy") == "each_component_2dp_then_sum_2dp"
+        and total == score
+        and total == declared_total
+    )
 
 
 def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
@@ -463,50 +570,16 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         score = float(item.get("score") or 0.0)
         scores.append(score)
         components = item.get("score_components") or {}
-        formula_version = components.get("formula_version")
-        formula = SCORE_FORMULA_CONTRACTS.get(formula_version)
-        if formula is None:
+        if not _score_contract_matches(item, required_formula=PERIOD_SCORE_FORMULA):
             score_mismatch_count += 1
-        else:
-            component_contract = formula["components"]
-            component_values: list[float] = []
-            component_valid = True
-            for key, maximum in component_contract:
-                value = components.get(key)
-                if not isinstance(value, (int, float)) or isinstance(value, bool):
-                    component_valid = False
-                    break
-                numeric = float(value)
-                if numeric < 0 or numeric > maximum:
-                    component_valid = False
-                    break
-                component_values.append(numeric)
-            if not component_valid:
-                score_mismatch_count += 1
-            else:
-                subtotal = round(sum(component_values), 2)
-                total = subtotal
-                if formula["freshness_multiplier"]:
-                    declared_subtotal = components.get("component_subtotal_points")
-                    multiplier = components.get("freshness_multiplier")
-                    if (
-                        not isinstance(declared_subtotal, (int, float))
-                        or isinstance(declared_subtotal, bool)
-                        or float(declared_subtotal) != subtotal
-                        or not isinstance(multiplier, (int, float))
-                        or isinstance(multiplier, bool)
-                        or not 0.0 <= float(multiplier) <= 1.0
-                    ):
-                        component_valid = False
-                    else:
-                        total = round(subtotal * float(multiplier), 2)
-                if (
-                    not component_valid
-                    or total != score
-                    or total != float(components.get("total_points", -1))
-                ):
-                    score_mismatch_count += 1
-        if components.get("rounding_policy") != "each_component_2dp_then_sum_2dp":
+        if (
+            item.get("candidate_status") not in {"is_current", "period_observed"}
+            or item.get("is_current") is not (
+                item.get("candidate_status") == "is_current"
+            )
+            or not item.get("last_seen_at")
+            or not isinstance(item.get("freshness"), dict)
+        ):
             score_mismatch_count += 1
 
         source_ranks = item.get("latest_source_ranks") or {}

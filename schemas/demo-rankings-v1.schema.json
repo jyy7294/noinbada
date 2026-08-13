@@ -52,7 +52,7 @@
         "data_readiness", "unified_ranking", "trend_top10"
       ],
       "properties": {
-        "formula_version": {"const": "current40_momentum20_persistence20_decay15_cross5_v2"},
+        "formula_version": {"const": "period40_momentum20_persistence20_recency15_cross5_v1"},
         "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/entry"}},
         "trend_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/entry"}}
       }

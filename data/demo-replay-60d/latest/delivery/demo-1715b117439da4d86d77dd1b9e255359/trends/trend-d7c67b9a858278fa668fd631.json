@@ -1,0 +1,380 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "is_current",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.841936,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 2,
+        "observed": 9
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "폭포",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "폭포",
+    "first_seen_at": "2026-08-12T04:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-d7c67b9a858278fa668fd631.json",
+    "is_current": true,
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 105
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T04:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 11,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 25,
+    "momentum": 0.920968,
+    "observed_representative_term": "폭포",
+    "period_sources": [
+      "google_trends"
+    ],
+    "persistence": 0.065476,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference",
+      "observed"
+    ],
+    "rank": 25,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "폭포",
+        "event_key": "폭포",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 10,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 10,
+        "rank_change": null,
+        "score": 76.63,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.49,
+          "period_strength_points": 33.97,
+          "persistence_points": 9.17,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 76.63
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "폭포",
+        "event_key": "폭포",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 35,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 35,
+        "rank_change": null,
+        "score": 68.16,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.4,
+          "period_strength_points": 33.61,
+          "persistence_points": 1.15,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 68.16
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "폭포",
+        "event_key": "폭포",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 25,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 25,
+        "rank_change": null,
+        "score": 68.41,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.42,
+          "period_strength_points": 33.68,
+          "persistence_points": 1.31,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 68.41
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "폭포"
+    ],
+    "score": 68.41,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 18.42,
+      "period_strength_points": 33.68,
+      "persistence_points": 1.31,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 68.41
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T04:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 10,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 18,
+        "source": "google_trends",
+        "source_rank": 18,
+        "topic": "폭포",
+        "value": 91.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T05:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 10,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 11,
+        "source": "google_trends",
+        "source_rank": 11,
+        "topic": "폭포",
+        "value": 91.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 12,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 12,
+        "source": "google_trends",
+        "source_rank": 12,
+        "topic": "폭포",
+        "value": 89.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 12,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 12,
+        "source": "google_trends",
+        "source_rank": 12,
+        "topic": "폭포",
+        "value": 89.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 17,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 17,
+        "source": "google_trends",
+        "source_rank": 17,
+        "topic": "폭포",
+        "value": 84.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 35,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 35,
+        "source": "google_trends",
+        "source_rank": 35,
+        "topic": "폭포",
+        "value": 66.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 31,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 31,
+        "source": "google_trends",
+        "source_rank": 31,
+        "topic": "폭포",
+        "value": 70.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 36,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 36,
+        "source": "google_trends",
+        "source_rank": 36,
+        "topic": "폭포",
+        "value": 65.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 12,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 12,
+        "source": "google_trends",
+        "source_rank": 12,
+        "topic": "폭포",
+        "value": 89.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 22,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 22,
+        "source": "google_trends",
+        "source_rank": 22,
+        "topic": "폭포",
+        "value": 79.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 105,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 105,
+        "source": "google_trends",
+        "source_rank": 105,
+        "topic": "폭포",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.841936
+      },
+      "period_strength": {
+        "google_trends": 0.841936
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 11,
+          "presence_rate": 0.065476
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "폭포"
+  }
+}

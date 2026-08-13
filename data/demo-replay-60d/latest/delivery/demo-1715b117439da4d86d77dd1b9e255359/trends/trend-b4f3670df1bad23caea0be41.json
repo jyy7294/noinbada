@@ -1,0 +1,766 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "is_current",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.477578,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 1,
+        "observed": 9,
+        "synthetic_backfill": 32
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "대우건설",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "대우건설",
+    "first_seen_at": "2026-06-16T23:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-b4f3670df1bad23caea0be41.json",
+    "is_current": true,
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 82
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-06-16T23:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 34,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 191,
+    "momentum": 0.738789,
+    "observed_representative_term": "대우건설",
+    "period_sources": [
+      "x",
+      "google_trends"
+    ],
+    "persistence": 0.068452,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference",
+      "observed",
+      "synthetic_backfill"
+    ],
+    "rank": 191,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "대우건설",
+        "event_key": "대우건설",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 32,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": 67,
+        "previous_period_score": 27.55,
+        "rank": 32,
+        "rank_change": 35,
+        "score": 71.57,
+        "score_change": 44.02,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 17.65,
+          "period_strength_points": 30.59,
+          "persistence_points": 8.33,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 71.57
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "대우건설",
+        "event_key": "대우건설",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 252,
+        "period_sources": [
+          "x",
+          "google_trends"
+        ],
+        "previous_period_rank": 76,
+        "previous_period_score": 49.32,
+        "rank": 252,
+        "rank_change": -176,
+        "score": 51.16,
+        "score_change": 1.84,
+        "score_components": {
+          "cross_source_points": 5.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 10.71,
+          "period_strength_points": 18.83,
+          "persistence_points": 1.62,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 51.16
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "대우건설",
+        "event_key": "대우건설",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 191,
+        "period_sources": [
+          "x",
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 191,
+        "rank_change": null,
+        "score": 55.25,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 5.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.78,
+          "period_strength_points": 19.1,
+          "persistence_points": 1.37,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 55.25
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "대우건설"
+    ],
+    "score": 55.25,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 5.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 14.78,
+      "period_strength_points": 19.1,
+      "persistence_points": 1.37,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 55.25
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period",
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-16T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "google_trends",
+        "source_rank": 30,
+        "topic": "대우건설",
+        "value": 9.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-16T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "x",
+        "source_rank": 28,
+        "topic": "대우건설",
+        "value": 11.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-20T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 33,
+        "source": "x",
+        "source_rank": 33,
+        "topic": "대우건설",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-23T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 24,
+        "source": "google_trends",
+        "source_rank": 24,
+        "topic": "대우건설",
+        "value": 12.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-23T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 22,
+        "source": "x",
+        "source_rank": 22,
+        "topic": "대우건설",
+        "value": 19.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-29T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 32,
+        "source": "x",
+        "source_rank": 32,
+        "topic": "대우건설",
+        "value": 7.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-04T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 34,
+        "source": "x",
+        "source_rank": 34,
+        "topic": "대우건설",
+        "value": 5.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-10T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "대우건설",
+        "value": 18.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-10T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 19,
+        "source": "x",
+        "source_rank": 19,
+        "topic": "대우건설",
+        "value": 19.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-11T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 24,
+        "source": "google_trends",
+        "source_rank": 24,
+        "topic": "대우건설",
+        "value": 17.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-11T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 18,
+        "source": "x",
+        "source_rank": 18,
+        "topic": "대우건설",
+        "value": 20.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-15T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 31,
+        "source": "google_trends",
+        "source_rank": 31,
+        "topic": "대우건설",
+        "value": 10.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-15T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 31,
+        "source": "x",
+        "source_rank": 31,
+        "topic": "대우건설",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-17T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "google_trends",
+        "source_rank": 29,
+        "topic": "대우건설",
+        "value": 12.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-17T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "x",
+        "source_rank": 29,
+        "topic": "대우건설",
+        "value": 10.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-21T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "google_trends",
+        "source_rank": 30,
+        "topic": "대우건설",
+        "value": 10.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-21T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 26,
+        "source": "x",
+        "source_rank": 26,
+        "topic": "대우건설",
+        "value": 14.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-28T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 26,
+        "source": "google_trends",
+        "source_rank": 26,
+        "topic": "대우건설",
+        "value": 14.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-28T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 26,
+        "source": "x",
+        "source_rank": 26,
+        "topic": "대우건설",
+        "value": 18.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T05:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 17,
+        "source": "x",
+        "source_rank": 17,
+        "topic": "대우건설",
+        "value": 14.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-08T22:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "x",
+        "source_rank": 29,
+        "topic": "대우건설",
+        "value": 2.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-10T05:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "x",
+        "source_rank": 30,
+        "topic": "대우건설",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-10T07:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "x",
+        "source_rank": 30,
+        "topic": "대우건설",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-10T11:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "x",
+        "source_rank": 29,
+        "topic": "대우건설",
+        "value": 2.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-10T12:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "x",
+        "source_rank": 28,
+        "topic": "대우건설",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-10T16:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "x",
+        "source_rank": 28,
+        "topic": "대우건설",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-10T17:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "x",
+        "source_rank": 29,
+        "topic": "대우건설",
+        "value": 2.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T05:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "x",
+        "source_rank": 28,
+        "topic": "대우건설",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T07:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "x",
+        "source_rank": 29,
+        "topic": "대우건설",
+        "value": 2.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T10:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "x",
+        "source_rank": 28,
+        "topic": "대우건설",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T11:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 27,
+        "source": "x",
+        "source_rank": 27,
+        "topic": "대우건설",
+        "value": 4.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T12:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 25,
+        "source": "x",
+        "source_rank": 25,
+        "topic": "대우건설",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T10:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 4,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 4,
+        "source": "google_trends",
+        "source_rank": 4,
+        "topic": "대우건설",
+        "value": 97.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 61,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 61,
+        "source": "google_trends",
+        "source_rank": 61,
+        "topic": "대우건설",
+        "value": 40.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 62,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 62,
+        "source": "google_trends",
+        "source_rank": 62,
+        "topic": "대우건설",
+        "value": 39.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 59,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 59,
+        "source": "google_trends",
+        "source_rank": 59,
+        "topic": "대우건설",
+        "value": 42.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 59,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 59,
+        "source": "google_trends",
+        "source_rank": 59,
+        "topic": "대우건설",
+        "value": 42.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 56,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 56,
+        "source": "google_trends",
+        "source_rank": 56,
+        "topic": "대우건설",
+        "value": 45.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 59,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 59,
+        "source": "google_trends",
+        "source_rank": 59,
+        "topic": "대우건설",
+        "value": 42.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 65,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 65,
+        "source": "google_trends",
+        "source_rank": 65,
+        "topic": "대우건설",
+        "value": 36.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 51,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 51,
+        "source": "google_trends",
+        "source_rank": 51,
+        "topic": "대우건설",
+        "value": 50.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 82,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 82,
+        "source": "google_trends",
+        "source_rank": 82,
+        "topic": "대우건설",
+        "value": 19.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period",
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.769027,
+        "x": 0.18613
+      },
+      "period_strength": {
+        "google_trends": 0.769027,
+        "x": 0.18613
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 10,
+          "presence_rate": 0.059524
+        },
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 13,
+          "presence_rate": 0.077381
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "대우건설"
+  }
+}

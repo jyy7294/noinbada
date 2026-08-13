@@ -1,0 +1,296 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "period_observed",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {},
+    "confidence": "demo",
+    "current_source_position": 0.543728,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 7
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "#jin_in_baltimore_d2",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "#jin_in_baltimore_d2",
+    "first_seen_at": "2026-08-12T03:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-929c9455de2ef34eb32e1ff6.json",
+    "is_current": false,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T09:00:00+00:00",
+    "latest_source_ranks": {},
+    "lifecycle": "expired",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T03:00:00+00:00",
+      "last_seen_at": "2026-08-12T09:00:00+00:00",
+      "observed_hours": 7,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "main_rank": 242,
+    "momentum": 0.771864,
+    "observed_representative_term": "#jin_in_baltimore_d2",
+    "period_sources": [
+      "x"
+    ],
+    "persistence": 0.041667,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference"
+    ],
+    "rank": 242,
+    "rank_change": null,
+    "rank_change_by_source": {},
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "period_observed",
+        "display_name": "#jin_in_baltimore_d2",
+        "event_key": "#jin_in_baltimore_d2",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T09:00:00+00:00",
+        "main_rank": 259,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 259,
+        "rank_change": null,
+        "score": 49.63,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.42,
+          "period_strength_points": 21.7,
+          "persistence_points": 5.83,
+          "recency_points": 6.68,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 49.63
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "period_observed",
+        "display_name": "#jin_in_baltimore_d2",
+        "event_key": "#jin_in_baltimore_d2",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T09:00:00+00:00",
+        "main_rank": 234,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 234,
+        "rank_change": null,
+        "score": 52.53,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.44,
+          "period_strength_points": 21.76,
+          "persistence_points": 0.73,
+          "recency_points": 14.6,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 52.53
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "period_observed",
+        "display_name": "#jin_in_baltimore_d2",
+        "event_key": "#jin_in_baltimore_d2",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T09:00:00+00:00",
+        "main_rank": 242,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 242,
+        "rank_change": null,
+        "score": 51.38,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 15.44,
+          "period_strength_points": 21.75,
+          "persistence_points": 0.83,
+          "recency_points": 13.36,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 51.38
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "#JIN_IN_BALTIMORE_D2"
+    ],
+    "score": 51.38,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 15.44,
+      "period_strength_points": 21.75,
+      "persistence_points": 0.83,
+      "recency_points": 13.36,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 51.38
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T03:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 21,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 21,
+        "source": "x",
+        "source_rank": 21,
+        "topic": "#JIN_IN_BALTIMORE_D2",
+        "value": 80.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T04:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 28,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 29,
+        "source": "x",
+        "source_rank": 29,
+        "topic": "#JIN_IN_BALTIMORE_D2",
+        "value": 73.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T05:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 27,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 27,
+        "source": "x",
+        "source_rank": 27,
+        "topic": "#JIN_IN_BALTIMORE_D2",
+        "value": 74.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T06:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 27,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 27,
+        "source": "x",
+        "source_rank": 27,
+        "topic": "#JIN_IN_BALTIMORE_D2",
+        "value": 74.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T07:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 26,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 26,
+        "source": "x",
+        "source_rank": 26,
+        "topic": "#JIN_IN_BALTIMORE_D2",
+        "value": 75.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T08:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 24,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 24,
+        "source": "x",
+        "source_rank": 24,
+        "topic": "#JIN_IN_BALTIMORE_D2",
+        "value": 77.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T09:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 25,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 25,
+        "source": "x",
+        "source_rank": 25,
+        "topic": "#JIN_IN_BALTIMORE_D2",
+        "value": 76.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "x": 0.543728
+      },
+      "period_strength": {
+        "x": 0.543728
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 7,
+          "presence_rate": 0.041667
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "#jin_in_baltimore_d2"
+  }
+}

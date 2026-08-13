@@ -69,9 +69,10 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 원천 표현 | `raw_terms` |
 | 넓은 분류 | `broad_category` |
 | 표시 레인 | `lane`, `selection_reason` |
-| 공정 순위 | `rank`, `main_rank`, `score`, `score_components` (`rank`는 전체 순위, `main_rank`는 main 내부 순위) |
+| 공정 순위 | `rank`, `main_rank`, `score`, `score_components` (`rank`는 선택 기간 전체 순위, `main_rank`는 main 내부 순위) |
 | 원천 순위 | `latest_source_ranks`, `source_badge` |
-| 변화·지속 | `rank_change_by_source`, `lifecycle`, `persistence_rank`, `momentum_rank` |
+| 기간 상태 | `candidate_status` (`is_current`/`period_observed`), `last_seen_at`, `freshness`, `hours_since_last_seen` |
+| 변화·지속 | `previous_period_rank`, `rank_change`, `rank_change_status`, `rank_change_by_source`, `lifecycle`, `persistence_rank`, `momentum_rank` |
 | 신뢰 상태 | `data_confidence`, `home_context_status`, `home_context_reason` |
 | 관련어 | `keywords` (0~5), 원천 관측 또는 검수된 온톨로지 표현만 허용하고 `affects_score=false` |
 | 기업 Gold | `companies` (0 또는 5개 이상) |
@@ -102,11 +103,17 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 
 - 기본 기간: `ranking_default_period=weekly`
 - 기간 목록: `ranking_periods`를 `daily(24h)`, `weekly(168h)`, `monthly(720h)` 순서로 제공
-- 기간별 결과: `ranking_views.{period}.unified_ranking`, `trend_top10`, `window`, `data_readiness`
-- 기존 최상위 `unified_ranking`, `trend_top10`, `public_top10`은 7일(`weekly`) 결과의 상세정보 결합 호환 별칭
-- 모든 기간은 동일한 현재 적격 `observed` X·Google 원장을 사용하며 현재 시각에 관측된 사건만 순위 후보가 됨
+- 기간별 결과: `ranking_views.{period}.unified_ranking`, `period_top10`, `window`, `data_readiness`
+- 기존 최상위 `unified_ranking`, `trend_top10`, `public_top10`은 7일(`weekly`) 기간 집계의 상세정보 결합 호환 별칭
+- 각 기간은 동일한 적격 `observed` X·Google 원장에서 **그 기간 안에 실제 관측된 모든 사건**을 후보로 사용함
+- 점수는 `40 기간강도 + 20 비교기간 모멘텀 + 20 출처별 지속성 + 15 마지막 관측 신선도 + 5 기간 내 X·Google 교차관측`이며, 기업·분류 결과는 점수에 들어가지 않음
+- 기간강도는 출처별 정규화 위치의 `70% 신선도 가중 평균 + 30% 기간 최고점`을 출처 간 평균함
+- 모멘텀은 직전 동일 길이 기간을 우선 비교하고, 비교 원장이 없으면 현 기간 전반부→후반부를 비교하며, 둘 다 불가능하면 10/20 중립점수를 적용함
+- 신선도 반감기는 선택 기간의 절반(일간 12시간, 주간 84시간, 월간 360시간)임
+- `candidate_status=period_observed`는 현재 정각에는 없지만 선택 기간 안에서 관측된 사건임을 뜻하므로 `last_seen_at`·`freshness`를 함께 표시해야 함
+- `rank_change`는 직전 동일 길이 기간 순위와의 차이이며 비교 원장이 없으면 `rank_change_status=unavailable_no_previous_period_coverage`로 표시함
 - 60일 이력은 `new`·`rebounding` 생애주기 판별에만 사용하고 점수에는 반영하지 않음
-- 기간 항목의 `detail_event_key`로 기존 트렌드 상세를 조회하며 기업·관련어·기사·검증 정보를 기간마다 복제하지 않음
+- 기간 항목의 `detail_event_key`로 상세를 조회함. 주간 호환 목록 밖의 월간 전용 사건은 `detail_status=period_summary_only`이며 근거 없는 기업·관련어를 생성하지 않음
 - 기업 수와 기업 준비상태는 어떤 기간의 점수·순위·Top 10에도 영향을 주지 않음
 
 프런트는 사용자가 기간 탭을 바꾸면 해당 `ranking_views`를 그대로 표시하고 자체 재계산하지 않습니다. `data_readiness.status`가 잠정이면 기간명 옆에 잠정 배지를 표시합니다.

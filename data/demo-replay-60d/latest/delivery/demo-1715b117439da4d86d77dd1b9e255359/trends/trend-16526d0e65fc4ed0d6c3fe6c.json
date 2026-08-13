@@ -1,0 +1,1029 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "is_current",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_card_status": "not_applicable",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "excluded_by_context",
+      "published_count": 0,
+      "reason": "사건·정책·논란 맥락은 기업 연결을 공개하지 않음",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "excluded_by_context",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.462733,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 2,
+        "synthetic_backfill": 62
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "#HAPPYJAEMINDAY",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "#happyjaeminday",
+    "first_seen_at": "2026-06-15T23:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-16526d0e65fc4ed0d6c3fe6c.json",
+    "is_current": true,
+    "keywords": [],
+    "lane": "review",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "x": 7
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-06-15T23:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 56,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 220,
+    "momentum": 0.58663,
+    "observed_representative_term": "#HAPPYJAEMINDAY",
+    "period_sources": [
+      "x",
+      "google_trends"
+    ],
+    "persistence": 0.157738,
+    "previous_period_rank": 71,
+    "previous_period_score": 44.33,
+    "provenance": [
+      "observed",
+      "synthetic_backfill"
+    ],
+    "rank": 220,
+    "rank_change": -149,
+    "rank_change_by_source": {
+      "x": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "#HAPPYJAEMINDAY",
+        "event_key": "#happyjaeminday",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 136,
+        "period_sources": [
+          "x",
+          "google_trends"
+        ],
+        "previous_period_rank": 38,
+        "previous_period_score": 52.39,
+        "rank": 136,
+        "rank_change": -98,
+        "score": 60.09,
+        "score_change": 7.7,
+        "score_components": {
+          "cross_source_points": 5.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 13.0,
+          "period_strength_points": 24.59,
+          "persistence_points": 2.5,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 60.09
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "#HAPPYJAEMINDAY",
+        "event_key": "#happyjaeminday",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 229,
+        "period_sources": [
+          "x",
+          "google_trends"
+        ],
+        "previous_period_rank": 81,
+        "previous_period_score": 48.52,
+        "rank": 229,
+        "rank_change": -148,
+        "score": 52.81,
+        "score_change": 4.29,
+        "score_components": {
+          "cross_source_points": 5.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 12.13,
+          "period_strength_points": 17.8,
+          "persistence_points": 2.88,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 52.81
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "#HAPPYJAEMINDAY",
+        "event_key": "#happyjaeminday",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 220,
+        "period_sources": [
+          "x",
+          "google_trends"
+        ],
+        "previous_period_rank": 71,
+        "previous_period_score": 44.33,
+        "rank": 220,
+        "rank_change": -149,
+        "score": 53.39,
+        "score_change": 9.06,
+        "score_components": {
+          "cross_source_points": 5.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 11.73,
+          "period_strength_points": 18.51,
+          "persistence_points": 3.15,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 53.39
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "#HAPPYJAEMINDAY"
+    ],
+    "score": 53.39,
+    "score_change": 9.06,
+    "score_components": {
+      "cross_source_points": 5.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 11.73,
+      "period_strength_points": 18.51,
+      "persistence_points": 3.15,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 53.39
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period",
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-15T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 16,
+        "source": "google_trends",
+        "source_rank": 16,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 23.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-18T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 35,
+        "source": "google_trends",
+        "source_rank": 35,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 4.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-19T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 21,
+        "source": "google_trends",
+        "source_rank": 21,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 18.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-20T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 13,
+        "source": "google_trends",
+        "source_rank": 13,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 26.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-06-30T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 22,
+        "source": "google_trends",
+        "source_rank": 22,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 16.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-01T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 33,
+        "source": "google_trends",
+        "source_rank": 33,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-07T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 22,
+        "source": "google_trends",
+        "source_rank": 22,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 18.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-12T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 33,
+        "source": "google_trends",
+        "source_rank": 33,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 7.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-13T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 17,
+        "source": "google_trends",
+        "source_rank": 17,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 23.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-24T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 32,
+        "source": "google_trends",
+        "source_rank": 32,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 9.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-07-30T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 17,
+        "source": "google_trends",
+        "source_rank": 17,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 23.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T16:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 25,
+        "source": "google_trends",
+        "source_rank": 25,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 24,
+        "source": "google_trends",
+        "source_rank": 24,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 7.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T21:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "google_trends",
+        "source_rank": 30,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T22:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-06T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T04:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T05:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 22,
+        "source": "google_trends",
+        "source_rank": 22,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 9.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T06:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T08:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T09:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 21,
+        "source": "google_trends",
+        "source_rank": 21,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 10.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T10:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T11:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 29,
+        "source": "google_trends",
+        "source_rank": 29,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 2.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T12:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 16,
+        "source": "google_trends",
+        "source_rank": 16,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 15.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T13:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 19,
+        "source": "google_trends",
+        "source_rank": 19,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 12.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T14:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 25,
+        "source": "google_trends",
+        "source_rank": 25,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T14:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "x",
+        "source_rank": 30,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T15:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 19,
+        "source": "google_trends",
+        "source_rank": 19,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 12.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T16:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 8,
+        "source": "google_trends",
+        "source_rank": 8,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 23.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T16:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 25,
+        "source": "x",
+        "source_rank": 25,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T17:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 17,
+        "source": "google_trends",
+        "source_rank": 17,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 14.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T18:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 17,
+        "source": "google_trends",
+        "source_rank": 17,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 14.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T19:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 19,
+        "source": "google_trends",
+        "source_rank": 19,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 12.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 6,
+        "source": "google_trends",
+        "source_rank": 6,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 25.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 21,
+        "source": "x",
+        "source_rank": 21,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 10.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T21:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 12,
+        "source": "google_trends",
+        "source_rank": 12,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 19.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-07T21:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 27,
+        "source": "x",
+        "source_rank": 27,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 4.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T01:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 26,
+        "source": "google_trends",
+        "source_rank": 26,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 5.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T04:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T04:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "x",
+        "source_rank": 30,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T05:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 15,
+        "source": "google_trends",
+        "source_rank": 15,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 16.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-09T06:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 19,
+        "source": "google_trends",
+        "source_rank": 19,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 12.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T05:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 24,
+        "source": "google_trends",
+        "source_rank": 24,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 7.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T06:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 27,
+        "source": "google_trends",
+        "source_rank": 27,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 4.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T08:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "google_trends",
+        "source_rank": 30,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T09:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T12:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 26,
+        "source": "google_trends",
+        "source_rank": 26,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 5.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T15:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T16:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 15,
+        "source": "google_trends",
+        "source_rank": 15,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 16.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T16:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 27,
+        "source": "x",
+        "source_rank": 27,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 4.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T17:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "google_trends",
+        "source_rank": 28,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T18:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 23,
+        "source": "google_trends",
+        "source_rank": 23,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 8.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T19:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 19,
+        "source": "google_trends",
+        "source_rank": 19,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 12.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 8,
+        "source": "google_trends",
+        "source_rank": 8,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 23.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 25,
+        "source": "x",
+        "source_rank": 25,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 6.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T21:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 17,
+        "source": "google_trends",
+        "source_rank": 17,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 14.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T22:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 11,
+        "source": "google_trends",
+        "source_rank": 11,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 20.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-11T23:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 14,
+        "source": "google_trends",
+        "source_rank": 14,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 17.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 30,
+        "source": "x",
+        "source_rank": 30,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 10,
+        "source": "google_trends",
+        "source_rank": 10,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 21.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T20:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 28,
+        "source": "x",
+        "source_rank": 28,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 3.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 8,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 8,
+        "source": "x",
+        "source_rank": 8,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 93.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T22:00:00+00:00",
+        "provenance": "synthetic_backfill",
+        "raw_rank": null,
+        "reference_kind": "deterministic_gap_fill",
+        "resolved_rank": 11,
+        "source": "google_trends",
+        "source_rank": 11,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 20.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 7,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 7,
+        "source": "x",
+        "source_rank": 7,
+        "topic": "#HAPPYJAEMINDAY",
+        "value": 94.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period",
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": -0.084656,
+        "x": 0.431175
+      },
+      "period_strength": {
+        "google_trends": 0.494291,
+        "x": 0.431175
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 42,
+          "presence_rate": 0.25
+        },
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 11,
+          "presence_rate": 0.065476
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "#HAPPYJAEMINDAY"
+  }
+}

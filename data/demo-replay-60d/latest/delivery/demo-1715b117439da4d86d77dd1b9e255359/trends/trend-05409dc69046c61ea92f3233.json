@@ -1,0 +1,369 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "sports",
+    "candidate_status": "is_current",
+    "category": "sports_participation",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [
+          {
+            "lookup_match": null,
+            "observation_status": "observed_representative",
+            "ontology_company_count": 0,
+            "ontology_status": "ontology_incomplete",
+            "term": "kbo 순위"
+          },
+          {
+            "lookup_match": null,
+            "observation_status": "observed_related_query",
+            "ontology_company_count": 0,
+            "ontology_status": "ontology_incomplete",
+            "term": "야구순위"
+          }
+        ],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "ontology_incomplete",
+      "published_count": 0,
+      "reason": "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "ontology_incomplete",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.427824,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 8
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "kbo 순위",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "kbo 순위",
+    "first_seen_at": "2026-08-12T14:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-05409dc69046c61ea92f3233.json",
+    "is_current": true,
+    "keywords": [
+      {
+        "affects_score": false,
+        "observed_hours": 1,
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "source": [
+          "google_trends"
+        ],
+        "status": "observed_related_query",
+        "text": "야구순위"
+      }
+    ],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 187
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T14:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 8,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 284,
+    "momentum": 0.713912,
+    "observed_representative_term": "kbo 순위",
+    "period_sources": [
+      "google_trends"
+    ],
+    "persistence": 0.047619,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed"
+    ],
+    "rank": 284,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "kbo 순위",
+        "event_key": "kbo 순위",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 232,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 232,
+        "rank_change": null,
+        "score": 52.47,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.16,
+          "period_strength_points": 16.64,
+          "persistence_points": 6.67,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 52.47
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "kbo 순위",
+        "event_key": "kbo 순위",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 306,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 306,
+        "rank_change": null,
+        "score": 47.3,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.29,
+          "period_strength_points": 17.17,
+          "persistence_points": 0.84,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 47.3
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "kbo 순위",
+        "event_key": "kbo 순위",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 284,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 284,
+        "rank_change": null,
+        "score": 47.34,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.28,
+          "period_strength_points": 17.11,
+          "persistence_points": 0.95,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 47.34
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "kbo 순위"
+    ],
+    "score": 47.34,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 14.28,
+      "period_strength_points": 17.11,
+      "persistence_points": 0.95,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 47.34
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 84,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 84,
+        "source": "google_trends",
+        "source_rank": 84,
+        "topic": "kbo 순위",
+        "value": 17.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 103,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 103,
+        "source": "google_trends",
+        "source_rank": 103,
+        "topic": "kbo 순위",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 113,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 113,
+        "source": "google_trends",
+        "source_rank": 113,
+        "topic": "kbo 순위",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 123,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 123,
+        "source": "google_trends",
+        "source_rank": 123,
+        "topic": "kbo 순위",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 130,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 130,
+        "source": "google_trends",
+        "source_rank": 130,
+        "topic": "kbo 순위",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 132,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 132,
+        "source": "google_trends",
+        "source_rank": 132,
+        "topic": "kbo 순위",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 150,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 150,
+        "source": "google_trends",
+        "source_rank": 150,
+        "topic": "kbo 순위",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 187,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 187,
+        "source": "google_trends",
+        "source_rank": 187,
+        "topic": "kbo 순위",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.427824
+      },
+      "period_strength": {
+        "google_trends": 0.427824
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 8,
+          "presence_rate": 0.047619
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "kbo 순위"
+  }
+}

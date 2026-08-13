@@ -1,0 +1,388 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "culture",
+    "candidate_status": "is_current",
+    "category": "participation_meme",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {
+      "candidate_category_count": 0,
+      "candidate_count": 0,
+      "category_count": 0,
+      "direct_count": 0,
+      "minimum_gold_companies": 5,
+      "ontology_complete_count": 0,
+      "ontology_diagnostics": {
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "matched_terms": [
+          {
+            "lookup_match": null,
+            "observation_status": "observed_representative",
+            "ontology_company_count": 0,
+            "ontology_status": "ontology_incomplete",
+            "term": "챱챱 물개"
+          }
+        ],
+        "minimum_gold_companies": 5,
+        "padding_forbidden": true,
+        "ranking_effect": "none",
+        "seed_path": "ontology_seed.json"
+      },
+      "publish_status": "ontology_incomplete",
+      "published_count": 0,
+      "reason": "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류",
+      "role_coverage": [],
+      "score_independent_of_company_count": true,
+      "status": "ontology_incomplete",
+      "tier_counts": {
+        "adjacent": 0,
+        "core": 0,
+        "excluded": 0,
+        "value_chain": 0
+      }
+    },
+    "confidence": "demo",
+    "current_source_position": 0.795851,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 9,
+        "observed": 2
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "챱챱 물개",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "챱챱 물개",
+    "first_seen_at": "2026-08-12T03:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-58b9cbdc025fbd5989bebb30.json",
+    "is_current": true,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T23:00:00+00:00",
+    "latest_source_ranks": {
+      "x": 27
+    },
+    "lifecycle": "rising",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T03:00:00+00:00",
+      "last_seen_at": "2026-08-12T23:00:00+00:00",
+      "observed_hours": 11,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "main_rank": 45,
+    "momentum": 0.897925,
+    "observed_representative_term": "챱챱 물개",
+    "period_sources": [
+      "x"
+    ],
+    "persistence": 0.065476,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference",
+      "observed"
+    ],
+    "rank": 45,
+    "rank_change": null,
+    "rank_change_by_source": {
+      "x": null
+    },
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "is_current",
+        "display_name": "챱챱 물개",
+        "event_key": "챱챱 물개",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 44,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 44,
+        "rank_change": null,
+        "score": 70.06,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 17.18,
+          "period_strength_points": 28.71,
+          "persistence_points": 9.17,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 70.06
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "is_current",
+        "display_name": "챱챱 물개",
+        "event_key": "챱챱 물개",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 52,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 52,
+        "rank_change": null,
+        "score": 66.36,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.04,
+          "period_strength_points": 32.17,
+          "persistence_points": 1.15,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 66.36
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "is_current",
+        "display_name": "챱챱 물개",
+        "event_key": "챱챱 물개",
+        "is_current": true,
+        "last_seen_at": "2026-08-12T23:00:00+00:00",
+        "main_rank": 45,
+        "period_sources": [
+          "x"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 45,
+        "rank_change": null,
+        "score": 66.1,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 17.96,
+          "period_strength_points": 31.83,
+          "persistence_points": 1.31,
+          "recency_points": 15.0,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 66.1
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "챱챱 물개"
+    ],
+    "score": 66.1,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 17.96,
+      "period_strength_points": 31.83,
+      "persistence_points": 1.31,
+      "recency_points": 15.0,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 66.1
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T03:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 6,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 6,
+        "source": "x",
+        "source_rank": 6,
+        "topic": "챱챱 물개",
+        "value": 95.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T04:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 5,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 5,
+        "source": "x",
+        "source_rank": 5,
+        "topic": "챱챱 물개",
+        "value": 96.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T05:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 4,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 4,
+        "source": "x",
+        "source_rank": 4,
+        "topic": "챱챱 물개",
+        "value": 97.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T06:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 5,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 5,
+        "source": "x",
+        "source_rank": 5,
+        "topic": "챱챱 물개",
+        "value": 96.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T07:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 3,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 3,
+        "source": "x",
+        "source_rank": 3,
+        "topic": "챱챱 물개",
+        "value": 98.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T08:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 3,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 3,
+        "source": "x",
+        "source_rank": 3,
+        "topic": "챱챱 물개",
+        "value": 98.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T09:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 5,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 5,
+        "source": "x",
+        "source_rank": 5,
+        "topic": "챱챱 물개",
+        "value": 96.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T11:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 9,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 9,
+        "source": "x",
+        "source_rank": 9,
+        "topic": "챱챱 물개",
+        "value": 92.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T12:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 12,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 12,
+        "source": "x",
+        "source_rank": 12,
+        "topic": "챱챱 물개",
+        "value": 89.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 25,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 25,
+        "source": "x",
+        "source_rank": 25,
+        "topic": "챱챱 물개",
+        "value": 76.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T23:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 27,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 27,
+        "source": "x",
+        "source_rank": 27,
+        "topic": "챱챱 물개",
+        "value": 74.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "x": 0.795851
+      },
+      "period_strength": {
+        "x": 0.795851
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 168,
+          "observed_hours": 11,
+          "presence_rate": 0.065476
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "챱챱 물개"
+  }
+}

@@ -58,8 +58,8 @@
       "required": ["period", "unified_ranking", "trend_top10"],
       "properties": {
         "period": {"const": "weekly"},
-        "unified_ranking": {"const": "hydrated_weekly_view"},
-        "trend_top10": {"const": "hydrated_weekly_view"}
+        "unified_ranking": {"const": "weekly_period_aggregate"},
+        "trend_top10": {"const": "weekly_period_top10"}
       }
     },
     "home_quality_gate": {
@@ -264,11 +264,13 @@
       "required": [
         "rank", "main_rank", "event_key", "display_name", "topic",
         "broad_category", "category", "lane", "score", "score_components",
-        "current_source_position", "momentum", "persistence", "lifecycle",
+        "candidate_status", "is_current", "period_sources", "period_strength",
+        "current_source_position", "momentum", "persistence", "freshness",
+        "hours_since_last_seen", "previous_period_rank", "rank_change", "rank_change_status", "lifecycle",
         "lifecycle_reason", "first_seen_at", "last_seen_at", "latest_source_ranks",
         "rank_change_by_source", "source_badge", "data_confidence",
         "ranking_data_readiness", "company_card_status", "detail_event_key",
-        "shared_detail_fields"
+        "detail_status", "shared_detail_fields"
       ],
       "properties": {
         "rank": {"type": "integer", "minimum": 1},
@@ -280,11 +282,20 @@
         "category": {"type": "string", "minLength": 1},
         "lane": {"enum": ["main", "issue", "review"]},
         "score": {"type": "number", "minimum": 0, "maximum": 100},
-        "score_components": {"$ref": "#/$defs/score_components"},
+        "score_components": {"$ref": "#/$defs/period_score_components"},
+        "candidate_status": {"enum": ["is_current", "period_observed"]},
+        "is_current": {"type": "boolean"},
+        "period_sources": {"type": "array", "uniqueItems": true, "items": {"enum": ["x", "google_trends"]}},
+        "period_strength": {"type": "number", "minimum": 0, "maximum": 1},
         "current_source_position": {"type": "number", "minimum": 0, "maximum": 1},
         "momentum": {"type": "number", "minimum": 0, "maximum": 1},
         "persistence": {"type": "number", "minimum": 0, "maximum": 1},
-        "lifecycle": {"enum": ["new", "rising", "sustained", "rebounding"]},
+        "freshness": {"type": "object"},
+        "hours_since_last_seen": {"type": "number", "minimum": 0},
+        "previous_period_rank": {"type": ["integer", "null"], "minimum": 1},
+        "rank_change": {"type": ["integer", "null"]},
+        "rank_change_status": {"enum": ["measured", "new_in_period", "unavailable_no_previous_period_coverage"]},
+        "lifecycle": {"enum": ["new", "rising", "sustained", "rebounding", "cooling", "expired"]},
         "lifecycle_reason": {"type": "string", "minLength": 1},
         "first_seen_at": {"type": "string", "format": "date-time"},
         "last_seen_at": {"type": "string", "format": "date-time"},
@@ -295,6 +306,7 @@
         "ranking_data_readiness": {"type": "object"},
         "company_card_status": {"enum": ["ready", "enrichment_pending", "not_applicable"]},
         "detail_event_key": {"type": "string", "minLength": 1},
+        "detail_status": {"enum": ["shared_full_detail", "period_summary_only"]},
         "shared_detail_fields": {
           "type": "array",
           "uniqueItems": true,
@@ -313,19 +325,19 @@
       "required": [
         "key", "label", "default", "window", "formula_version",
         "data_readiness", "company_detail_policy", "company_count_affects_rank",
-        "unified_ranking", "trend_top10"
+        "unified_ranking", "period_top10"
       ],
       "properties": {
         "key": {"enum": ["daily", "weekly", "monthly"]},
         "label": {"type": "string", "minLength": 1},
         "default": {"type": "boolean"},
         "window": {"$ref": "#/$defs/rankingWindow"},
-        "formula_version": {"const": "current40_momentum20_persistence20_decay15_cross5_v2"},
+        "formula_version": {"const": "period40_momentum20_persistence20_recency15_cross5_v1"},
         "data_readiness": {"type": "object"},
         "company_detail_policy": {"const": "shared_by_detail_event_key"},
         "company_count_affects_rank": {"const": false},
         "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/periodTrend"}},
-        "trend_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/periodTrend"}}
+        "period_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/periodTrend"}}
       }
     },
     "rankingAvailability": {
@@ -419,25 +431,22 @@
         "relationship_evidence": {"const": false}
       }
     },
-    "score_components": {
+    "period_score_components": {
       "type": "object",
       "additionalProperties": false,
       "required": [
-        "current_points", "momentum_points", "persistence_points",
-        "decayed_history_points", "cross_source_points",
-        "component_subtotal_points", "freshness_multiplier", "total_points",
+        "period_strength_points", "momentum_points", "persistence_points",
+        "recency_points", "cross_source_points", "total_points",
         "formula_version", "rounding_policy"
       ],
       "properties": {
-        "current_points": {"type": "number", "minimum": 0, "maximum": 40},
+        "period_strength_points": {"type": "number", "minimum": 0, "maximum": 40},
         "momentum_points": {"type": "number", "minimum": 0, "maximum": 20},
         "persistence_points": {"type": "number", "minimum": 0, "maximum": 20},
-        "decayed_history_points": {"type": "number", "minimum": 0, "maximum": 15},
+        "recency_points": {"type": "number", "minimum": 0, "maximum": 15},
         "cross_source_points": {"type": "number", "minimum": 0, "maximum": 5},
-        "component_subtotal_points": {"type": "number", "minimum": 0, "maximum": 100},
-        "freshness_multiplier": {"const": 1.0},
         "total_points": {"type": "number", "minimum": 0, "maximum": 100},
-        "formula_version": {"const": "current40_momentum20_persistence20_decay15_cross5_v2"},
+        "formula_version": {"const": "period40_momentum20_persistence20_recency15_cross5_v1"},
         "rounding_policy": {"const": "each_component_2dp_then_sum_2dp"}
       }
     },
@@ -446,7 +455,9 @@
       "required": [
         "rank", "main_rank", "event_key", "display_name", "observed_representative_term",
         "display_name_policy", "raw_terms", "broad_category",
-        "lane", "score", "score_components", "latest_source_ranks",
+        "lane", "score", "score_components", "candidate_status", "is_current",
+        "period_sources", "period_strength", "freshness", "hours_since_last_seen",
+        "previous_period_rank", "rank_change", "rank_change_status", "latest_source_ranks",
         "current_source_position", "momentum", "persistence", "score_explanation",
         "source_metrics", "ranking_data_readiness", "lifecycle", "lifecycle_reason",
         "lifecycle_baseline", "rank_change_by_source", "first_seen_at", "last_seen_at",
@@ -468,14 +479,23 @@
         "broad_category": {"enum": ["food", "content", "lifestyle", "sports", "culture", "consumer", "technology", "market", "issue", "other"]},
         "lane": {"enum": ["main", "issue", "review"]},
         "score": {"type": "number", "minimum": 0, "maximum": 100},
-        "score_components": {"$ref": "#/$defs/score_components"},
+        "score_components": {"$ref": "#/$defs/period_score_components"},
+        "candidate_status": {"enum": ["is_current", "period_observed"]},
+        "is_current": {"type": "boolean"},
+        "period_sources": {"type": "array", "uniqueItems": true, "items": {"enum": ["x", "google_trends"]}},
+        "period_strength": {"type": "number", "minimum": 0, "maximum": 1},
+        "freshness": {"type": "object"},
+        "hours_since_last_seen": {"type": "number", "minimum": 0},
+        "previous_period_rank": {"type": ["integer", "null"], "minimum": 1},
+        "rank_change": {"type": ["integer", "null"]},
+        "rank_change_status": {"enum": ["measured", "new_in_period", "unavailable_no_previous_period_coverage"]},
         "current_source_position": {"type": "number", "minimum": 0, "maximum": 1},
         "momentum": {"type": "number", "minimum": 0, "maximum": 1},
         "persistence": {"type": "number", "minimum": 0, "maximum": 1},
         "score_explanation": {"type": "object"},
         "source_metrics": {"type": "object"},
         "ranking_data_readiness": {"type": "object"},
-        "lifecycle": {"enum": ["new", "rising", "sustained", "rebounding"]},
+        "lifecycle": {"enum": ["new", "rising", "sustained", "rebounding", "cooling", "expired"]},
         "lifecycle_reason": {"type": "string", "minLength": 1},
         "lifecycle_baseline": {"type": "object"},
         "rank_change_by_source": {"type": "object"},

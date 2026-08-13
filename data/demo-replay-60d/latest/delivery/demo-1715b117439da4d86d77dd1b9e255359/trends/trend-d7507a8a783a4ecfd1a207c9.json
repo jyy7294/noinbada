@@ -1,0 +1,296 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "period_observed",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {},
+    "confidence": "demo",
+    "current_source_position": 0.805262,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "observed": 7
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "김용건",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "김용건",
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-d7507a8a783a4ecfd1a207c9.json",
+    "is_current": false,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T19:00:00+00:00",
+    "latest_source_ranks": {},
+    "lifecycle": "cooling",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-12T19:00:00+00:00",
+      "observed_hours": 7,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "main_rank": 57,
+    "momentum": 0.902631,
+    "observed_representative_term": "김용건",
+    "period_sources": [
+      "google_trends"
+    ],
+    "persistence": 0.041667,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "observed"
+    ],
+    "rank": 57,
+    "rank_change": null,
+    "rank_change_by_source": {},
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "period_observed",
+        "display_name": "김용건",
+        "event_key": "김용건",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T19:00:00+00:00",
+        "main_rank": 69,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 69,
+        "rank_change": null,
+        "score": 68.08,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.07,
+          "period_strength_points": 32.27,
+          "persistence_points": 5.83,
+          "recency_points": 11.91,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 68.08
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "period_observed",
+        "display_name": "김용건",
+        "event_key": "김용건",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T19:00:00+00:00",
+        "main_rank": 60,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 60,
+        "rank_change": null,
+        "score": 65.86,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.05,
+          "period_strength_points": 32.2,
+          "persistence_points": 0.73,
+          "recency_points": 14.88,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 65.86
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "period_observed",
+        "display_name": "김용건",
+        "event_key": "김용건",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T19:00:00+00:00",
+        "main_rank": 57,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 57,
+        "rank_change": null,
+        "score": 65.6,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 18.05,
+          "period_strength_points": 32.21,
+          "persistence_points": 0.83,
+          "recency_points": 14.51,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 65.6
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "김용건"
+    ],
+    "score": 65.6,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 18.05,
+      "period_strength_points": 32.21,
+      "persistence_points": 0.83,
+      "recency_points": 14.51,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 65.6
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 47,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 47,
+        "source": "google_trends",
+        "source_rank": 47,
+        "topic": "김용건",
+        "value": 54.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 46,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 46,
+        "source": "google_trends",
+        "source_rank": 46,
+        "topic": "김용건",
+        "value": 55.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 39,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 39,
+        "source": "google_trends",
+        "source_rank": 39,
+        "topic": "김용건",
+        "value": 62.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 38,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 38,
+        "source": "google_trends",
+        "source_rank": 38,
+        "topic": "김용건",
+        "value": 63.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 36,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 36,
+        "source": "google_trends",
+        "source_rank": 36,
+        "topic": "김용건",
+        "value": 65.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 37,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 37,
+        "source": "google_trends",
+        "source_rank": 37,
+        "topic": "김용건",
+        "value": 64.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 39,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 39,
+        "source": "google_trends",
+        "source_rank": 39,
+        "topic": "김용건",
+        "value": 62.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.805262
+      },
+      "period_strength": {
+        "google_trends": 0.805262
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 7,
+          "presence_rate": 0.041667
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "김용건"
+  }
+}

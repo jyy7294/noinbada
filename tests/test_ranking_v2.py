@@ -7,6 +7,8 @@ import pytest
 from trzip.ranking_v2 import (
     DEFAULT_RANKING_PERIOD,
     FORMULA_VERSION,
+    PERIOD_FORMULA_VERSION,
+    build_period_ranking_v2,
     build_period_rankings_v2,
     build_ranking_v2,
     classify_lifecycle_v2,
@@ -285,42 +287,189 @@ def test_period_rankings_use_one_live_ledger_and_weekly_is_default():
         for view in result["views"].values()
     )
     assert result["views"]["daily"]["data_readiness"]["status"] == "ready"
-    assert result["views"]["monthly"]["data_readiness"]["status"] == "provisional_history"
+    assert result["views"]["monthly"]["data_readiness"]["status"] == "provisional"
     assert all(
-        view["parameters"]["candidate_policy"] == "current_only"
+        view["parameters"]["candidate_policy"] == "period_observed"
         and view["parameters"]["lifecycle_baseline_days"] == 60
         and view["parameters"]["ranking_mode"] == "live_observed"
         for view in result["views"].values()
     )
 
 
-def test_period_windows_change_score_bearing_history_but_not_current_gate():
+def test_each_period_contains_every_event_observed_inside_its_own_window():
     rows = [
-        *_snapshot(AT, "x", "target", "current filler"),
-        *_snapshot(AT, "google_trends", "target", "current g filler"),
-        *_snapshot(AT - timedelta(days=20), "x", "target", "old filler"),
-        *_snapshot(AT - timedelta(days=20), "google_trends", "target", "old g filler"),
-        *_snapshot(AT - timedelta(hours=1), "x", "expired", "hour filler"),
-        *_snapshot(AT - timedelta(hours=1), "google_trends", "expired", "hour g filler"),
+        *_snapshot(AT, "x", "current", "current filler"),
+        *_snapshot(AT - timedelta(hours=48), "x", "weekly only", "weekly filler"),
+        *_snapshot(AT - timedelta(days=20), "x", "monthly only", "monthly filler"),
+        *_snapshot(AT - timedelta(days=40), "x", "baseline only", "baseline filler"),
     ]
 
     result = build_period_rankings_v2(rows, at=AT)
-    views = result["views"]
+    event_keys = {
+        period: {item["event_key"] for item in view["unified_ranking"]}
+        for period, view in result["views"].items()
+    }
 
-    assert all(
-        "target" in {item["event_key"] for item in view["unified_ranking"]}
-        and "expired" not in {item["event_key"] for item in view["unified_ranking"]}
-        for view in views.values()
+    assert "current" in event_keys["daily"]
+    assert "weekly only" not in event_keys["daily"]
+    assert "monthly only" not in event_keys["daily"]
+    assert {"current", "weekly only"} <= event_keys["weekly"]
+    assert "monthly only" not in event_keys["weekly"]
+    assert {"current", "weekly only", "monthly only"} <= event_keys["monthly"]
+    assert "baseline only" not in set().union(*event_keys.values())
+
+
+def test_period_candidate_status_separates_current_from_period_observed():
+    rows = [
+        *_snapshot(AT, "x", "current", "current filler"),
+        *_snapshot(AT - timedelta(hours=6), "x", "stale", "stale filler"),
+    ]
+
+    result = build_period_ranking_v2(rows, at=AT, window_hours=24)
+    current = _event(result, "current")
+    stale = _event(result, "stale")
+
+    assert current["candidate_status"] == "is_current"
+    assert current["is_current"] is True
+    assert current["current_sources"] == ["x"]
+    assert stale["candidate_status"] == "period_observed"
+    assert stale["is_current"] is False
+    assert stale["current_sources"] == []
+    assert stale["last_seen_at"] == (AT - timedelta(hours=6)).isoformat()
+    assert stale["hours_since_last_seen"] == 6.0
+    assert stale["freshness"] == {
+        "signal": 0.707107,
+        "half_life_hours": 12.0,
+        "hours_since_last_seen": 6.0,
+    }
+
+
+def test_period_score_contract_is_exactly_40_20_20_15_5():
+    rows: list[dict] = []
+    for age in range(24):
+        stamp = AT - timedelta(hours=age)
+        rows += _snapshot(stamp, "x", "target", f"x filler {age}")
+        rows += _snapshot(stamp, "google_trends", "target", f"g filler {age}")
+
+    result = build_period_ranking_v2(rows, at=AT, window_hours=24)
+    item = _event(result)
+    components = item["score_components"]
+    score_keys = (
+        "period_strength_points",
+        "momentum_points",
+        "persistence_points",
+        "recency_points",
+        "cross_source_points",
     )
-    daily_target = next(
-        item for item in views["daily"]["unified_ranking"]
-        if item["event_key"] == "target"
+
+    assert result["formula_version"] == PERIOD_FORMULA_VERSION
+    assert components["formula_version"] == PERIOD_FORMULA_VERSION
+    assert components["period_strength_points"] <= 40
+    assert components["momentum_points"] <= 20
+    assert components["persistence_points"] <= 20
+    assert components["recency_points"] <= 15
+    assert components["cross_source_points"] == 5
+    assert components["total_points"] == round(
+        sum(components[key] for key in score_keys), 2
     )
-    assert daily_target["lifecycle"]["state"] == "rebounding"
-    assert all(
-        view["unified_ranking"][0]["lifecycle_baseline"]["ranking_effect"] == "none"
-        for view in views.values()
+    assert item["score"] == components["total_points"]
+    assert item["score_explanation"]["formula"] == (
+        "40 period strength + 20 comparable-period momentum + "
+        "20 per-source persistence + 15 last-seen recency + 5 period cross-source"
     )
+
+
+def test_period_momentum_prefers_previous_equal_window_over_half_change():
+    rows = [
+        # A previous-period source snapshot makes the equal-window comparison
+        # authoritative even though both current-period halves are available.
+        *_snapshot(AT - timedelta(hours=30), "x", "previous filler"),
+        *_snapshot(AT - timedelta(hours=20), "x", "first filler", "target"),
+        *_snapshot(AT - timedelta(hours=2), "x", "target", "second filler"),
+    ]
+
+    item = _event(build_period_ranking_v2(rows, at=AT, window_hours=24))
+
+    assert item["source_metrics"]["momentum_basis"] == {
+        "x": "previous_equal_period"
+    }
+    assert item["data_readiness"]["momentum_status"] == "measured"
+    assert item["score_components"]["momentum_points"] > 10.0
+
+
+def test_period_momentum_falls_back_to_first_half_vs_second_half():
+    rows = [
+        *_snapshot(AT - timedelta(hours=20), "x", "first filler", "target"),
+        *_snapshot(AT - timedelta(hours=2), "x", "target", "second filler"),
+    ]
+
+    item = _event(build_period_ranking_v2(rows, at=AT, window_hours=24))
+
+    assert item["source_metrics"]["momentum_basis"] == {
+        "x": "current_period_half_change"
+    }
+    assert item["signals"]["momentum_delta"] == 1.0
+    assert item["score_components"]["momentum_points"] == 20.0
+
+
+def test_period_momentum_is_neutral_without_comparable_windows():
+    item = _event(
+        build_period_ranking_v2(
+            _snapshot(AT, "x", "target", "filler"),
+            at=AT,
+            window_hours=24,
+        )
+    )
+
+    assert item["source_metrics"]["momentum_basis"] == {}
+    assert item["signals"]["momentum_delta"] is None
+    assert item["signals"]["momentum"] == 0.5
+    assert item["score_components"]["momentum_points"] == 10.0
+    assert item["data_readiness"]["momentum_status"] == (
+        "neutral_no_comparable_window"
+    )
+
+
+def test_period_rank_change_compares_previous_equal_length_period():
+    rows = [
+        *_snapshot(AT - timedelta(hours=4), "x", "old leader", "target"),
+        *_snapshot(AT, "x", "target", "old leader"),
+    ]
+
+    result = build_period_ranking_v2(rows, at=AT, window_hours=4)
+    target = _event(result, "target")
+    old_leader = _event(result, "old leader")
+
+    assert target["previous_period_rank"] == 2
+    assert target["rank"] == 1
+    assert target["rank_change"] == 1
+    assert target["rank_change_status"] == "measured"
+    assert old_leader["previous_period_rank"] == 1
+    assert old_leader["rank"] == 2
+    assert old_leader["rank_change"] == -1
+
+
+def test_period_sixty_day_baseline_changes_lifecycle_but_not_points():
+    period_rows = _snapshot(AT, "x", "target", "current filler")
+    with_baseline = [
+        *period_rows,
+        *_snapshot(AT - timedelta(days=30), "x", "target", "baseline filler"),
+    ]
+
+    new = _event(build_period_ranking_v2(period_rows, at=AT, window_hours=24))
+    returning = _event(
+        build_period_ranking_v2(with_baseline, at=AT, window_hours=24)
+    )
+
+    assert new["score"] == returning["score"]
+    assert new["score_components"] == returning["score_components"]
+    assert new["lifecycle"]["state"] == "new"
+    assert returning["lifecycle"]["state"] == "rebounding"
+    assert returning["lifecycle_baseline"]["window_days"] == 60
+    assert returning["lifecycle_baseline"]["ranking_effect"] == "none"
+    assert returning["score_explanation"][
+        "lifecycle_baseline_ranking_effect"
+    ] == "none"
 
 
 def test_period_rankings_reject_generated_rows_for_every_view():

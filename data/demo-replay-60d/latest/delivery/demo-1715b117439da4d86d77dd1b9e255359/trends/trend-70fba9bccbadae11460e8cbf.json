@@ -1,0 +1,322 @@
+{
+  "demo_label": "7일 순위 시뮬레이션 데모",
+  "generated_at": "2026-08-12T23:00:00+00:00",
+  "live_eligible": false,
+  "mode": "demo_replay",
+  "observed_at": "2026-08-12T23:00:00+00:00",
+  "publication_id": "demo-1715b117439da4d86d77dd1b9e255359",
+  "ranking_effect": "none",
+  "schema_version": "trzip-trend-detail-v1",
+  "trend": {
+    "broad_category": "other",
+    "candidate_status": "period_observed",
+    "category": "unclassified",
+    "companies": [],
+    "company_candidates": [],
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "company_card_status": "enrichment_pending",
+    "company_resolution": {},
+    "confidence": "demo",
+    "current_source_position": 0.472945,
+    "data_confidence": {
+      "label": "7일 순위 시뮬레이션 데모",
+      "level": "demo",
+      "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터"
+    },
+    "data_provenance": {
+      "counts": {
+        "historical_reference": 1,
+        "observed": 8
+      },
+      "live_eligible": false,
+      "mode": "demo_replay",
+      "ranking_effect": "none",
+      "row_level_preserved": true
+    },
+    "display_name": "염경엽",
+    "display_name_policy": "observed_representative_term",
+    "event_key": "염경엽",
+    "first_seen_at": "2026-08-12T09:00:00+00:00",
+    "frontend_detail_path": "delivery/demo-1715b117439da4d86d77dd1b9e255359/trends/trend-70fba9bccbadae11460e8cbf.json",
+    "is_current": false,
+    "keywords": [],
+    "lane": "main",
+    "last_seen_at": "2026-08-12T21:00:00+00:00",
+    "latest_source_ranks": {},
+    "lifecycle": "cooling",
+    "lifecycle_baseline": {
+      "first_seen_at": "2026-08-12T09:00:00+00:00",
+      "last_seen_at": "2026-08-12T21:00:00+00:00",
+      "observed_hours": 9,
+      "purpose": "lifecycle_classification_only",
+      "ranking_effect": "none",
+      "window_days": 60
+    },
+    "lifecycle_label": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "main_rank": 265,
+    "momentum": 0.736473,
+    "observed_representative_term": "염경엽",
+    "period_sources": [
+      "google_trends"
+    ],
+    "persistence": 0.053571,
+    "previous_period_rank": null,
+    "previous_period_score": null,
+    "provenance": [
+      "historical_reference",
+      "observed"
+    ],
+    "rank": 265,
+    "rank_change": null,
+    "rank_change_by_source": {},
+    "ranking_data_readiness": {
+      "coverage_by_source": {
+        "google_trends": 1.0,
+        "x": 1.0
+      },
+      "momentum_status": "measured",
+      "status": "ready"
+    },
+    "ranking_views": {
+      "daily": {
+        "candidate_status": "period_observed",
+        "display_name": "염경엽",
+        "event_key": "염경엽",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T21:00:00+00:00",
+        "main_rank": 221,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 221,
+        "rank_change": null,
+        "score": 53.51,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.53,
+          "period_strength_points": 18.12,
+          "persistence_points": 7.5,
+          "recency_points": 13.36,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 53.51
+        },
+        "status": "ranked"
+      },
+      "monthly": {
+        "candidate_status": "period_observed",
+        "display_name": "염경엽",
+        "event_key": "염경엽",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T21:00:00+00:00",
+        "main_rank": 277,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 277,
+        "rank_change": null,
+        "score": 49.68,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.76,
+          "period_strength_points": 19.04,
+          "persistence_points": 0.94,
+          "recency_points": 14.94,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 49.68
+        },
+        "status": "ranked"
+      },
+      "weekly": {
+        "candidate_status": "period_observed",
+        "display_name": "염경엽",
+        "event_key": "염경엽",
+        "is_current": false,
+        "last_seen_at": "2026-08-12T21:00:00+00:00",
+        "main_rank": 265,
+        "period_sources": [
+          "google_trends"
+        ],
+        "previous_period_rank": null,
+        "previous_period_score": null,
+        "rank": 265,
+        "rank_change": null,
+        "score": 49.47,
+        "score_change": null,
+        "score_components": {
+          "cross_source_points": 0.0,
+          "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+          "momentum_points": 14.73,
+          "period_strength_points": 18.92,
+          "persistence_points": 1.07,
+          "recency_points": 14.75,
+          "rounding_policy": "each_component_2dp_then_sum_2dp",
+          "total_points": 49.47
+        },
+        "status": "ranked"
+      }
+    },
+    "raw_terms": [
+      "염경엽"
+    ],
+    "score": 49.47,
+    "score_change": null,
+    "score_components": {
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "momentum_points": 14.73,
+      "period_strength_points": 18.92,
+      "persistence_points": 1.07,
+      "recency_points": 14.75,
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 49.47
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "lifecycle_baseline_ranking_effect": "none",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_status": "measured"
+    },
+    "series": [
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T09:00:00+00:00",
+        "provenance": "historical_reference",
+        "raw_rank": 1,
+        "reference_kind": "legacy_operational_observed",
+        "resolved_rank": 1,
+        "source": "google_trends",
+        "source_rank": 1,
+        "topic": "염경엽",
+        "value": 100.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T13:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 149,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 149,
+        "source": "google_trends",
+        "source_rank": 149,
+        "topic": "염경엽",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T14:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 157,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 157,
+        "source": "google_trends",
+        "source_rank": 157,
+        "topic": "염경엽",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T15:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 163,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 163,
+        "source": "google_trends",
+        "source_rank": 163,
+        "topic": "염경엽",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T16:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 166,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 166,
+        "source": "google_trends",
+        "source_rank": 166,
+        "topic": "염경엽",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T17:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 167,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 167,
+        "source": "google_trends",
+        "source_rank": 167,
+        "topic": "염경엽",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T18:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 173,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 173,
+        "source": "google_trends",
+        "source_rank": 173,
+        "topic": "염경엽",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T19:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 174,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 174,
+        "source": "google_trends",
+        "source_rank": 174,
+        "topic": "염경엽",
+        "value": 1.0
+      },
+      {
+        "live_eligible": false,
+        "observed_at": "2026-08-12T21:00:00+00:00",
+        "provenance": "observed",
+        "raw_rank": 175,
+        "reference_kind": "current_collector_contract",
+        "resolved_rank": 175,
+        "source": "google_trends",
+        "source_rank": 175,
+        "topic": "염경엽",
+        "value": 1.0
+      }
+    ],
+    "source_badge": "단일출처",
+    "source_metrics": {
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_deltas": {
+        "google_trends": 0.472945
+      },
+      "period_strength": {
+        "google_trends": 0.472945
+      },
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 168,
+          "observed_hours": 9,
+          "presence_rate": 0.053571
+        }
+      }
+    },
+    "status": "ranked",
+    "topic": "염경엽"
+  }
+}

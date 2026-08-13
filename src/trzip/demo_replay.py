@@ -24,7 +24,11 @@ from datetime import UTC, date, datetime, time, timedelta
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
 
-from .ranking_v2 import FORMULA_VERSION, build_ranking_v2
+from .ranking_v2 import (
+    PERIOD_FORMULA_VERSION,
+    build_period_ranking_v2,
+    build_ranking_v2,
+)
 
 
 SCHEMA_VERSION = "trzip-demo-replay-v1"
@@ -97,7 +101,11 @@ def build_demo_replay(
         score_window_days=score_window_days,
         topics=topic_order,
         reference_rows=historical_rows,
+        research_events=research_event_catalog,
         fixture_curve=fixture_curve,
+    )
+    research_event_catalog = _annotate_research_event_catalog(
+        research_event_catalog, observations
     )
     ranking_views = {
         "daily": _ranking_view(observations, at=current_at, window_days=1, templates=templates),
@@ -112,6 +120,10 @@ def build_demo_replay(
         at=current_at,
         days=days,
         score_window_days=score_window_days,
+        display_names={
+            _event_key(item["representative_term"]): item["representative_term"]
+            for item in research_event_catalog
+        },
     )
     publication_id = _publication_id(
         current_at, observations, reference_catalog=research_event_catalog
@@ -221,7 +233,7 @@ def build_demo_replay(
         "score_window": {
             "days": score_window_days,
             "hours": score_window_days * 24,
-            "formula_version": FORMULA_VERSION,
+            "formula_version": PERIOD_FORMULA_VERSION,
             "same_formula_as_live": True,
         },
         "lifecycle_baseline": {"days": days, "ranking_effect": "none"},
@@ -369,6 +381,25 @@ def validate_demo_replay(root: Path) -> dict[str, Any]:
             raise ValueError("observation ledger has invalid provenance")
         if row.get("mode") != "demo_replay" or row.get("live_eligible") is not False:
             raise ValueError("observation ledger contains a live-eligible row")
+        if row.get("reference_kind") == "research_seed_simulation":
+            research_seed = row.get("research_seed") or {}
+            observed_date = _parse_datetime(row["observed_at"]).date()
+            if (
+                row.get("provenance") != "synthetic_backfill"
+                or row.get("measurement_status") != "synthetic_not_measured"
+                or row.get("ranking_eligible") is not False
+                or row.get("demo_ranking_eligible") is not True
+                or (row.get("field_lineage") or {}).get("topic") != "research_seed"
+            ):
+                raise ValueError("research seed simulation must remain explicitly synthetic")
+            if date.fromisoformat(str(research_seed.get("evidence_as_of"))) > observed_date:
+                raise ValueError("research seed simulation uses future evidence")
+            if not (
+                date.fromisoformat(str(research_seed.get("active_from")))
+                <= observed_date
+                <= date.fromisoformat(str(research_seed.get("active_to")))
+            ):
+                raise ValueError("research seed simulation escapes its active window")
         row_count += 1
     if row_count != bundle["observation_ledger"]["row_count"]:
         raise ValueError("observation ledger row count mismatch")
@@ -782,6 +813,7 @@ def _materialise_observations(
     score_window_days: int,
     topics: Sequence[str],
     reference_rows: Sequence[Mapping[str, Any]],
+    research_events: Sequence[Mapping[str, Any]],
     fixture_curve: Sequence[float],
 ) -> list[dict[str, Any]]:
     earliest_date = (at - timedelta(days=days - 1)).date()
@@ -811,10 +843,21 @@ def _materialise_observations(
         day_index = (stamp.date() - earliest_date).days
         for source in RANK_SOURCES:
             observed = _resolve_reference_ranks(references.get((stamp, source), []))
-            target_size = max(30, max((int(row["source_rank"]) for row in observed), default=0))
             used_keys = {row["event_key"] for row in observed}
             used_ranks = {int(row["source_rank"]) for row in observed}
-            generated = _synthetic_snapshot(
+            research_candidates = _research_seed_candidates(
+                research_events,
+                stamp=stamp,
+                source=source,
+                excluded_event_keys=used_keys,
+            )
+            generic_needed = max(0, 30 - len(used_ranks))
+            target_size = max(
+                30,
+                max((int(row["source_rank"]) for row in observed), default=0),
+                len(used_ranks) + generic_needed + len(research_candidates),
+            )
+            generated = _synthetic_snapshot_scores(
                 topics,
                 stamp=stamp,
                 source=source,
@@ -822,11 +865,41 @@ def _materialise_observations(
                 fixture_curve=fixture_curve,
             )
             available_ranks = [rank for rank in range(1, target_size + 1) if rank not in used_ranks]
+            mixed_candidates: list[tuple[float, str, str, Any]] = []
+            for event, attention, evidence_as_of in research_candidates:
+                event_key = _event_key(event["representative_term"])
+                mixed_candidates.append(
+                    (attention, event_key, "research", (event, evidence_as_of))
+                )
+            generic_count = 0
+            for score, topic in generated:
+                if generic_count >= generic_needed:
+                    break
+                event_key = _event_key(topic)
+                if event_key in used_keys or any(
+                    event_key == candidate[1] for candidate in mixed_candidates
+                ):
+                    continue
+                mixed_candidates.append((score, event_key, "generic", topic))
+                generic_count += 1
+            mixed_candidates.sort(key=lambda item: (-item[0], item[1], item[2]))
+            research_rows = []
             synthetic_rows = []
-            for topic, rank in zip(
-                (topic for topic in generated if _event_key(topic) not in used_keys),
-                available_ranks,
+            for (candidate_score, _event_key_value, kind, payload), rank in zip(
+                mixed_candidates, available_ranks
             ):
+                if kind == "research":
+                    event, evidence_as_of = payload
+                    research_rows.append(_research_seed_observation(
+                        event,
+                        stamp=stamp,
+                        source=source,
+                        rank=rank,
+                        attention=candidate_score,
+                        evidence_as_of=evidence_as_of,
+                    ))
+                    continue
+                topic = str(payload)
                 synthetic_rows.append({
                     "schema_version": OBSERVATION_SCHEMA_VERSION,
                     "observed_at": stamp.isoformat(),
@@ -863,7 +936,7 @@ def _materialise_observations(
                         "related_terms": "not_collected",
                     },
                 })
-            for row in observed + synthetic_rows:
+            for row in observed + research_rows + synthetic_rows:
                 row = dict(row)
                 row.update({
                     "mode": "demo_replay",
@@ -872,9 +945,30 @@ def _materialise_observations(
                     "quality_status": "eligible",
                     "seed_version": SEED_VERSION,
                 })
+                row.setdefault("demo_ranking_eligible", True)
                 observations.append(row)
     observations.sort(key=lambda row: (row["observed_at"], row["source"], row["source_rank"], row["event_key"]))
     return observations
+
+
+def _synthetic_snapshot_scores(
+    topics: Sequence[str],
+    *,
+    stamp: datetime,
+    source: str,
+    day_index: int,
+    fixture_curve: Sequence[float],
+) -> list[tuple[float, str]]:
+    curve = fixture_curve[day_index % len(fixture_curve)] if fixture_curve else 1.0
+    scored = []
+    for index, topic in enumerate(topics):
+        stable = _stable_unit(SEED_VERSION, source, topic)
+        wave = _stable_unit(topic, stamp.date().isoformat())
+        hour = _stable_unit(source, topic, str(stamp.hour))
+        rotation = ((day_index * 7 + stamp.hour + index * 3) % 41) / 41
+        score = stable * 0.35 + wave * 0.28 + hour * 0.12 + rotation * 0.2 + (curve % 17) / 340
+        scored.append((score, topic))
+    return sorted(scored, key=lambda item: (-item[0], _event_key(item[1])))
 
 
 def _synthetic_snapshot(
@@ -885,23 +979,231 @@ def _synthetic_snapshot(
     day_index: int,
     fixture_curve: Sequence[float],
 ) -> list[str]:
-    curve = fixture_curve[day_index % len(fixture_curve)] if fixture_curve else 1.0
-    scored = []
-    for index, topic in enumerate(topics):
-        stable = _stable_unit(SEED_VERSION, source, topic)
-        wave = _stable_unit(topic, stamp.date().isoformat())
-        hour = _stable_unit(source, topic, str(stamp.hour))
-        rotation = ((day_index * 7 + stamp.hour + index * 3) % 41) / 41
-        score = stable * 0.35 + wave * 0.28 + hour * 0.12 + rotation * 0.2 + (curve % 17) / 340
-        scored.append((score, topic))
-    return [topic for _score, topic in sorted(scored, key=lambda item: (-item[0], _event_key(item[1])))]
+    return [
+        topic for _score, topic in _synthetic_snapshot_scores(
+            topics,
+            stamp=stamp,
+            source=source,
+            day_index=day_index,
+            fixture_curve=fixture_curve,
+        )
+    ]
+
+
+def _research_seed_candidates(
+    events: Sequence[Mapping[str, Any]],
+    *,
+    stamp: datetime,
+    source: str,
+    excluded_event_keys: set[str],
+) -> list[tuple[Mapping[str, Any], float, str]]:
+    """Return date-eligible research seeds in a deterministic demo order.
+
+    A seed cannot appear before at least one cited source was published.  The
+    score below controls only its synthetic demo rank; it is never presented as
+    an X/Google measurement or copied to the live ledger.
+    """
+
+    current_date = stamp.date()
+    candidates: list[tuple[float, str, Mapping[str, Any], str]] = []
+    for event in events:
+        term = str(event.get("representative_term") or "").strip()
+        event_key = _event_key(term)
+        if not term or event_key in excluded_event_keys:
+            continue
+        active_from = date.fromisoformat(str(event["active_from"]))
+        active_to = date.fromisoformat(str(event["active_to"]))
+        peak_hint = date.fromisoformat(str(event["peak_hint"]))
+        evidence_dates = sorted(
+            date.fromisoformat(str(item["published_at"]))
+            for item in event.get("evidence") or []
+            if item.get("published_at")
+        )
+        if not evidence_dates:
+            continue
+        eligible_from = max(active_from, evidence_dates[0])
+        if not eligible_from <= current_date <= active_to:
+            continue
+        selected_sources = _research_seed_sources(event, current_date=current_date)
+        if source not in selected_sources:
+            continue
+        eligible_evidence = [value for value in evidence_dates if value <= current_date]
+        if not eligible_evidence:
+            continue
+        left_span = max((peak_hint - eligible_from).days, 1)
+        right_span = max((active_to - peak_hint).days, 1)
+        if current_date == peak_hint:
+            phase = 1.0
+        elif current_date < peak_hint:
+            phase = (current_date - eligible_from).days / left_span
+        else:
+            phase = (active_to - current_date).days / right_span
+        phase = max(0.0, min(1.0, phase))
+        confidence = max(0.0, min(1.0, float(event.get("confidence") or 0.0)))
+        stable_tie = _stable_unit(SEED_VERSION, source, str(event.get("event_id")), current_date.isoformat())
+        attention = round(0.72 * phase + 0.23 * confidence + 0.05 * stable_tie, 6)
+        candidates.append(
+            (-attention, event_key, event, max(eligible_evidence).isoformat())
+        )
+    return [
+        (event, -negative_attention, evidence_as_of)
+        for negative_attention, _event_key_value, event, evidence_as_of in sorted(
+            candidates, key=lambda value: (value[0], value[1])
+        )
+    ]
+
+
+def _research_seed_sources(
+    event: Mapping[str, Any],
+    *,
+    current_date: date,
+) -> tuple[str, ...]:
+    """Choose synthetic source slots without implying universal cross-source proof."""
+
+    event_id = str(event.get("event_id") or event.get("representative_term"))
+    base_source = RANK_SOURCES[
+        min(int(_stable_unit(SEED_VERSION, event_id, "base_source") * len(RANK_SOURCES)), len(RANK_SOURCES) - 1)
+    ]
+    peak_hint = date.fromisoformat(str(event["peak_hint"]))
+    confidence = max(0.0, min(1.0, float(event.get("confidence") or 0.0)))
+    evidence = event.get("evidence") or []
+    near_peak = abs((current_date - peak_hint).days) <= 2
+    dual_source = (
+        near_peak
+        and confidence >= 0.85
+        and len(evidence) >= 2
+        and _stable_unit(SEED_VERSION, event_id, "dual_source") < 0.30
+    )
+    return RANK_SOURCES if dual_source else (base_source,)
+
+
+def _research_seed_observation(
+    event: Mapping[str, Any],
+    *,
+    stamp: datetime,
+    source: str,
+    rank: int,
+    attention: float,
+    evidence_as_of: str,
+) -> dict[str, Any]:
+    """Materialise one non-measured research seed into the demo ledger."""
+
+    topic = str(event["representative_term"])
+    eligible_evidence = [
+        item for item in event.get("evidence") or []
+        if str(item.get("published_at") or "") <= evidence_as_of
+    ]
+    evidence_urls = sorted({str(item["url"]) for item in eligible_evidence if item.get("url")})
+    seed_start = max(
+        date.fromisoformat(str(event["active_from"])),
+        min(date.fromisoformat(str(item["published_at"])) for item in event["evidence"]),
+    )
+    seed_value = {
+        "event_id": event["event_id"],
+        "active_from": event["active_from"],
+        "active_to": event["active_to"],
+        "peak_hint": event["peak_hint"],
+        "evidence_as_of": evidence_as_of,
+        "evidence_urls": evidence_urls,
+        "input_rank_eligible": False,
+        "synthetic_attention": attention,
+        "synthetic_source_policy": "hash_single_source_peak_dual_subset_v1",
+        "synthetic_selected_sources": list(
+            _research_seed_sources(event, current_date=stamp.date())
+        ),
+    }
+    return {
+        "schema_version": OBSERVATION_SCHEMA_VERSION,
+        "observed_at": stamp.isoformat(),
+        "source": source,
+        "region": "KR",
+        "topic": topic,
+        "event_key": _event_key(topic),
+        "raw_rank": None,
+        "source_rank": rank,
+        "resolved_rank": rank,
+        "value": round(attention * 100, 4),
+        "provenance": "synthetic_backfill",
+        "reference_kind": "research_seed_simulation",
+        "measurement_status": "synthetic_not_measured",
+        "legacy_operational": False,
+        "collector_version": None,
+        "seed_observed_at": datetime.combine(seed_start, time(0), UTC).isoformat(),
+        "source_payload": {"status": "reconstructed", "value": seed_value},
+        "related_terms": {
+            "status": "reconstructed",
+            "value": list(event.get("aliases") or [])[:5],
+        },
+        "research_event_id": event["event_id"],
+        "research_seed": seed_value,
+        "rank_resolution": "research_seed_synthetic_rank",
+        "ranking_eligible": False,
+        "demo_ranking_eligible": True,
+        "field_lineage": {
+            "observed_at": "research_seed",
+            "source": "synthetic",
+            "region": "derived",
+            "topic": "research_seed",
+            "event_key": "research_seed",
+            "raw_rank": "not_collected",
+            "source_rank": "synthetic",
+            "value": "synthetic",
+            "collector_version": "not_collected",
+            "seed_observed_at": "research_seed",
+            "source_payload": "research_seed",
+            "related_terms": "research_seed",
+        },
+    }
+
+
+def _annotate_research_event_catalog(
+    events: Sequence[Mapping[str, Any]],
+    observations: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    by_event = Counter(
+        str(row.get("research_event_id"))
+        for row in observations
+        if row.get("reference_kind") == "research_seed_simulation"
+    )
+    output: list[dict[str, Any]] = []
+    for source_event in events:
+        event = dict(source_event)
+        evidence_dates = sorted(
+            date.fromisoformat(str(item["published_at"]))
+            for item in event.get("evidence") or []
+            if item.get("published_at")
+        )
+        eligible_from = (
+            max(date.fromisoformat(str(event["active_from"])), evidence_dates[0])
+            if evidence_dates else None
+        )
+        count = by_event[str(event["event_id"])]
+        if not event["replay_window"]["overlaps"]:
+            reason = "outside_60d_replay_window"
+        elif eligible_from is None or eligible_from > date.fromisoformat(str(event["active_to"])):
+            reason = "no_evidence_available_during_active_window"
+        elif count == 0:
+            reason = "no_materialised_replay_stamp"
+        else:
+            reason = "materialised_as_non_measured_demo_rows"
+        event["simulation"] = {
+            "eligible_from": eligible_from.isoformat() if eligible_from else None,
+            "observation_rows": count,
+            "materialised": count > 0,
+            "reason": reason,
+            "provenance": "synthetic_backfill" if count else None,
+            "ranking_effect": "demo_replay_only" if count else "none",
+            "no_future_evidence": True,
+        }
+        output.append(event)
+    return output
 
 
 def _score_at(observations: Sequence[Mapping[str, Any]], *, at: datetime, score_window_days: int) -> dict:
     score_rows = []
     for row in observations:
         stamp = _parse_datetime(row["observed_at"])
-        if stamp <= at:
+        if stamp <= at and row.get("demo_ranking_eligible", True) is True:
             # Ranking V2 fails closed on non-live provenance.  A private copy is
             # used solely for identical arithmetic; the original row and every
             # persisted output retain their honest demo provenance. Ranking V2
@@ -938,9 +1240,9 @@ def _ranking_view(
 ) -> dict[str, Any]:
     """Build one period view and compare it with the preceding equal period."""
 
-    current = _score_at(observations, at=at, score_window_days=window_days)
+    current = _period_score_at(observations, at=at, window_days=window_days)
     previous_at = at - timedelta(days=window_days)
-    previous = _score_at(observations, at=previous_at, score_window_days=window_days)
+    previous = _period_score_at(observations, at=previous_at, window_days=window_days)
     previous_by_event = {
         item["event_key"]: item for item in previous.get("ranking", [])
     }
@@ -960,17 +1262,22 @@ def _ranking_view(
             "main_rank": int(item["rank"]),
             "score": float(item["score"]),
             "score_components": item["score_components"],
-            "previous_period_rank": int(old["rank"]) if old else None,
-            "previous_period_score": float(old["score"]) if old else None,
-            "rank_change": (
-                int(old["rank"]) - int(item["rank"])
-                if old is not None else None
+            "previous_period_rank": (
+                int(item["previous_period_rank"])
+                if item.get("previous_period_rank") is not None
+                else int(old["rank"]) if old else None
             ),
+            "previous_period_score": float(old["score"]) if old else None,
+            "rank_change": item.get("rank_change"),
             "score_change": (
                 round(float(item["score"]) - float(old["score"]), 2)
                 if old is not None else None
             ),
             "status": "ranked",
+            "candidate_status": item["candidate_status"],
+            "is_current": item["is_current"],
+            "period_sources": item["period_sources"],
+            "last_seen_at": item["last_seen_at"],
         })
     return {
         "window_hours": window_days * 24,
@@ -984,13 +1291,49 @@ def _ranking_view(
     }
 
 
+def _period_score_at(
+    observations: Sequence[Mapping[str, Any]],
+    *,
+    at: datetime,
+    window_days: int,
+) -> dict[str, Any]:
+    """Apply the production period arithmetic to an ephemeral demo-only copy."""
+
+    score_rows = [
+        {
+            "observed_at": row["observed_at"],
+            "source": row["source"],
+            "event_key": row["event_key"],
+            "source_rank": int(row["source_rank"]),
+            "provenance": "observed",
+            "quality_status": "eligible",
+        }
+        for row in observations
+        if _parse_datetime(row["observed_at"]) <= at
+        and row.get("demo_ranking_eligible", True) is True
+    ]
+    result = build_period_ranking_v2(
+        score_rows,
+        at=at,
+        window_hours=window_days * 24,
+        lifecycle_baseline_days=60,
+        ranking_mode="live_observed",
+    )
+    result["ranking_mode"] = "demo_replay"
+    result["live_eligible"] = False
+    result["ranking_effect"] = "none"
+    return result
+
+
 def _daily_snapshots(
     observations: Sequence[Mapping[str, Any]],
     *,
     at: datetime,
     days: int,
     score_window_days: int,
+    display_names: Mapping[str, str] | None = None,
 ) -> list[dict[str, Any]]:
+    display_names = display_names or {}
     dates = [(at - timedelta(days=offset)).date() for offset in reversed(range(days))]
     by_date: dict[date, list[Mapping[str, Any]]] = defaultdict(list)
     for row in observations:
@@ -1004,12 +1347,20 @@ def _daily_snapshots(
             snapshots.append({"date": current_date.isoformat(), "top10": []})
             continue
         snapshot_at = max(_parse_datetime(row["observed_at"]) for row in candidates)
-        ranking = _score_at(all_to_date, at=snapshot_at, score_window_days=score_window_days)
+        ranking = _period_score_at(
+            all_to_date, at=snapshot_at, window_days=score_window_days
+        )
         snapshots.append({
             "date": current_date.isoformat(),
             "observed_at": snapshot_at.isoformat(),
+            "score_window_days": score_window_days,
             "top10": [
-                {"rank": item["rank"], "event_key": item["event_key"], "score": item["score"]}
+                {
+                    "rank": item["rank"],
+                    "event_key": item["event_key"],
+                    "display_name": display_names.get(item["event_key"], item["event_key"]),
+                    "score": item["score"],
+                }
                 for item in ranking["ranking"][:10]
             ],
         })
@@ -1036,6 +1387,7 @@ def _trend_item(
     }
     lifecycle_value = scored.get("lifecycle") or {}
     lifecycle = lifecycle_value.get("state", "new") if isinstance(lifecycle_value, dict) else lifecycle_value
+    signals = scored.get("signals") or {}
     item = {
         "event_key": scored["event_key"],
         "display_name": display,
@@ -1046,11 +1398,14 @@ def _trend_item(
         "rank": int(scored["rank"]),
         "main_rank": int(scored["rank"]),
         "status": "ranked",
+        "candidate_status": scored.get("candidate_status", "is_current"),
+        "is_current": bool(scored.get("is_current", True)),
+        "period_sources": list(scored.get("period_sources") or current_source_ranks),
         "score": float(scored["score"]),
         "score_components": scored["score_components"],
-        "current_source_position": scored["signals"]["current"],
-        "momentum": scored["signals"]["momentum"],
-        "persistence": scored["signals"]["persistence"],
+        "current_source_position": signals.get("current", signals.get("period_strength")),
+        "momentum": signals.get("momentum"),
+        "persistence": signals.get("persistence"),
         "score_explanation": scored["score_explanation"],
         "source_metrics": scored["source_metrics"],
         "ranking_data_readiness": scored["data_readiness"],
@@ -1094,7 +1449,8 @@ def _trend_item(
 
 def _ranking_summary(item: Mapping[str, Any]) -> dict[str, Any]:
     keys = (
-        "event_key", "display_name", "topic", "rank", "main_rank", "status", "score",
+        "event_key", "display_name", "topic", "rank", "main_rank", "status",
+        "candidate_status", "is_current", "period_sources", "score",
         "score_components", "lane", "category", "broad_category", "lifecycle",
         "lifecycle_reason", "first_seen_at", "last_seen_at", "latest_source_ranks",
         "rank_change_by_source", "source_badge", "confidence", "data_confidence",
@@ -1143,6 +1499,19 @@ def _lineage(observations: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
         row["source"] for row in observations if row.get("legacy_operational") is True
     )
     rank_resolution = Counter(row.get("rank_resolution", "unknown") for row in observations)
+    research_seed_rows = [
+        row for row in observations
+        if row.get("reference_kind") == "research_seed_simulation"
+    ]
+    research_seed_coverage: dict[tuple[str, str], set[str]] = defaultdict(set)
+    for row in research_seed_rows:
+        research_seed_coverage[
+            (str(row.get("research_event_id")), row["observed_at"][:10])
+        ].add(row["source"])
+    dual_source_pairs = sum(
+        len(sources) == len(RANK_SOURCES)
+        for sources in research_seed_coverage.values()
+    )
     return {
         "row_count": len(observations),
         "by_provenance": dict(sorted(provenance.items())),
@@ -1164,6 +1533,24 @@ def _lineage(observations: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
             "duplicate_rank_policy": "raw_rank_then_event_key_then_topic_then_stable_row_id",
         },
         "rank_resolution_counts": dict(sorted(rank_resolution.items())),
+        "research_seed_simulation": {
+            "row_count": len(research_seed_rows),
+            "event_count": len({row.get("research_event_id") for row in research_seed_rows}),
+            "by_source": {
+                source: sum(row["source"] == source for row in research_seed_rows)
+                for source in RANK_SOURCES
+            },
+            "event_date_pairs": len(research_seed_coverage),
+            "dual_source_event_date_pairs": dual_source_pairs,
+            "dual_source_ratio": round(
+                dual_source_pairs / len(research_seed_coverage), 6
+            ) if research_seed_coverage else 0.0,
+            "source_policy": "hash_single_source_peak_dual_subset_v1",
+            "provenance": "synthetic_backfill",
+            "measurement_status": "synthetic_not_measured",
+            "live_eligible": False,
+            "no_future_evidence": True,
+        },
         "measured_rows_are_not_synthetic": True,
         "synthetic_rows_are_not_claimed_as_measured": True,
     }

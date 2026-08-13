@@ -72,6 +72,35 @@ function Get-DirtyPaths {
     return @($paths)
 }
 
+function Add-GitPathsInBatches {
+    param(
+        [Parameter(Mandatory = $true)][string[]]$Paths,
+        [int]$BatchSize = 40
+    )
+    if ($BatchSize -lt 1) { throw "BatchSize must be positive." }
+    for ($offset = 0; $offset -lt $Paths.Count; $offset += $BatchSize) {
+        $last = [Math]::Min($offset + $BatchSize - 1, $Paths.Count - 1)
+        $batch = @($Paths[$offset..$last])
+        Invoke-Git add -- @batch | Out-Null
+    }
+}
+
+function Restore-GitPathsInBatches {
+    param(
+        [Parameter(Mandatory = $true)][string[]]$Paths,
+        [int]$BatchSize = 40
+    )
+    if ($BatchSize -lt 1) { throw "BatchSize must be positive." }
+    for ($offset = 0; $offset -lt $Paths.Count; $offset += $BatchSize) {
+        $last = [Math]::Min($offset + $BatchSize - 1, $Paths.Count - 1)
+        $batch = @($Paths[$offset..$last])
+        & git -C $ProjectRoot restore --staged -- @batch 2>$null | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            throw "Could not restore the staged checkpoint batch."
+        }
+    }
+}
+
 function Assert-OnlyAllowedDirtyPaths {
     param([string[]]$Allowed)
     $unexpected = @(Get-DirtyPaths | Where-Object { $_ -notin $Allowed })
@@ -125,8 +154,13 @@ try {
         throw "Local main is not equal to origin/main. Integrate the remote change and revalidate."
     }
 
-    Invoke-Git add -- @normalized | Out-Null
-    $staged = @(Invoke-Git diff --cached --name-only | ForEach-Object { $_.Trim().Replace("\", "/") })
+    # Windows limits native-process command-line length. Generated delivery
+    # bundles can contain hundreds of explicit files, so preserve the strict
+    # allowlist while staging it in bounded batches.
+    Add-GitPathsInBatches -Paths $normalized
+    # Do not let rename detection hide the deleted side of a regenerated
+    # immutable bundle; every requested path must be accounted for explicitly.
+    $staged = @(Invoke-Git diff --cached --no-renames --name-only | ForEach-Object { $_.Trim().Replace("\", "/") })
     $missing = @($normalized | Where-Object { $_ -notin $staged -and $_ -ne $StateRelative })
     if ($missing.Count -gt 0) { throw "Requested paths had no staged change: $($missing -join ', ')" }
 
@@ -263,9 +297,13 @@ try {
 } catch {
     $originalError = $_
     if (-not $Committed) {
-        $actualStaged = @(& git -C $ProjectRoot diff --cached --name-only 2>$null)
-        if ($actualStaged.Count -gt 0) {
-            & git -C $ProjectRoot restore --staged -- @actualStaged 2>$null | Out-Null
+        # Rename detection can collapse a generated bundle replacement into
+        # fewer paths. Re-read the index until both additions and the formerly
+        # paired deletions are fully unstaged.
+        while ($true) {
+            $actualStaged = @(& git -C $ProjectRoot diff --cached --no-renames --name-only 2>$null)
+            if ($actualStaged.Count -eq 0) { break }
+            Restore-GitPathsInBatches -Paths $actualStaged
         }
         if ($StateExisted) {
             [IO.File]::WriteAllBytes($StatePath, $StateBefore)
