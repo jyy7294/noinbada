@@ -6,6 +6,7 @@ import json
 import sqlite3
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
+from urllib.parse import urlparse
 
 from .company_roles import COMPANY_ROLE_LABELS
 from .hourly_store import ELIGIBLE_COLLECTOR_SQL
@@ -16,6 +17,28 @@ PUBLIC_BROAD_CATEGORIES = {
     "food", "content", "sports", "lifestyle", "culture",
     "consumer", "technology", "market",
 }
+PUBLIC_RELATION_TIERS = {"direct", "value_chain", "industry_watch"}
+
+
+def _valid_public_url(value: str) -> bool:
+    parsed = urlparse(value)
+    return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def _ontology_path_reaches_company(path: object, company_name: str) -> bool:
+    if not isinstance(path, list) or len(path) < 2:
+        return False
+    target = " ".join(company_name.casefold().split())
+    terminal = path[-1]
+    if isinstance(terminal, str):
+        return " ".join(terminal.casefold().split()) == target
+    if isinstance(terminal, dict):
+        values = [terminal.get(key) for key in ("to", "target", "label", "name")]
+        return any(
+            " ".join(str(value).casefold().split()) == target
+            for value in values if value
+        )
+    return False
 
 
 def record_publication_receipt(
@@ -174,6 +197,7 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
         if len(unique_codes) < MINIMUM_FRONTEND_COMPANIES or "" in unique_codes:
             item_failures.append(f"company_count:{len(unique_codes - {''})}")
         for company in companies:
+            company_name = str(company.get("company") or "").strip()
             evidence_urls = [
                 str(source.get("url") or "").strip()
                 for source in company.get("evidence_sources") or []
@@ -197,6 +221,12 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
             role_category = str(company.get("company_role_category") or "")
             if COMPANY_ROLE_LABELS.get(role_category) != company.get("company_role_label"):
                 item_failures.append(f"invalid_company_role:{company.get('company')}")
+            if any(not _valid_public_url(url) for url in evidence_urls) or not evidence_urls:
+                item_failures.append(f"invalid_company_evidence_url:{company_name}")
+            if company.get("relation_tier") not in PUBLIC_RELATION_TIERS:
+                item_failures.append(f"invalid_relation_tier:{company_name}")
+            if not _ontology_path_reaches_company(company.get("ontology_path"), company_name):
+                item_failures.append(f"ontology_path_not_to_company:{company_name}")
         if item.get("frontend_readiness_status") != "ready":
             item_failures.append("frontend_not_ready")
         failures.extend(f"{name}:{reason}" for reason in item_failures)
@@ -212,7 +242,7 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
             "passed": not item_failures,
         })
     return {
-        "policy_version": "frontend-result-quality-v3",
+        "policy_version": "frontend-result-quality-v4",
         "passed": not failures,
         "trend_count": len(top),
         "required_trend_count": 10,
@@ -346,7 +376,7 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
             "failure": "legacy_source_gate_policy",
         }
     contract = publication.get("contract")
-    if contract is not None and contract.get("policy_version") != "frontend-result-quality-v3":
+    if contract is not None and contract.get("policy_version") != "frontend-result-quality-v4":
         contract = {
             **contract,
             "passed": False,

@@ -17,7 +17,7 @@ def _company(index: int) -> dict:
         "ontology_complete": True,
         "ontology_path": [
             {"from": "event", "to": "industry"},
-            {"from": "industry", "to": f"company-{index}"},
+            {"from": "industry", "to": f"기업{index}"},
         ],
         "relation_tier": "direct",
         "evidence_sources": [{"url": f"https://example.com/{index}"}],
@@ -49,7 +49,7 @@ def test_complete_frontend_result_passes_quality_gate():
     result = evaluate_frontend_result({"home_top10": [_trend(rank) for rank in range(1, 11)]})
 
     assert result["passed"] is True
-    assert result["policy_version"] == "frontend-result-quality-v3"
+    assert result["policy_version"] == "frontend-result-quality-v4"
     assert result["trend_count"] == 10
     assert all(row["keyword_count"] == 5 and row["company_count"] == 6 for row in result["trends"])
 
@@ -74,6 +74,21 @@ def test_quality_gate_rejects_mismatched_company_role_label():
 
     assert result["passed"] is False
     assert any("invalid_company_role" in failure for failure in result["failures"])
+
+
+def test_quality_gate_rejects_invalid_relation_url_and_ontology_destination():
+    trends = [_trend(rank) for rank in range(1, 11)]
+    company = trends[0]["companies"][0]
+    company["relation_tier"] = "sponsor_guess"
+    company["evidence_sources"] = [{"url": "not-a-public-url"}]
+    company["ontology_path"][-1]["to"] = "다른 기업"
+
+    result = evaluate_frontend_result({"home_top10": trends})
+
+    assert result["passed"] is False
+    assert any("invalid_relation_tier" in failure for failure in result["failures"])
+    assert any("invalid_company_evidence_url" in failure for failure in result["failures"])
+    assert any("ontology_path_not_to_company" in failure for failure in result["failures"])
 
 
 def test_quality_gate_rejects_more_than_one_food_trend():

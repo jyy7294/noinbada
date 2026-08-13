@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T18:34:52.6451266+00:00",
+    "updated_at":  "2026-08-13T18:41:44.1835452+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,34 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "ec2ec76fcb1467e05f12c243c1d63c0611da6605",
+                       "base_remote_main_sha":  "c5dc21f492e84e89f1ffc87bcbcc6ff6dde86200",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
+                                             "config/codex-automation/trzip-prompt.ko.txt",
                                              "CURRENT_STATE.json",
-                                             "src/trzip/intelligence.py",
-                                             "tests/test_intelligence.py"
+                                             "docs/BACKEND_TEAM_PROMPT.md",
+                                             "scripts/collect-hourly.ps1",
+                                             "src/trzip/result_quality.py",
+                                             "tests/test_local_runtime_contract.py",
+                                             "tests/test_publication_receipts.py",
+                                             "tests/test_result_quality.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/intelligence.py":  "6b0cff161dd481062a28572b830d60e96d2873339fa6bf35869b204f9533c366",
-                                                    "tests/test_intelligence.py":  "39717cb4188b40bca70d4a57428093a0d430cc291d2fbb45fdc0251afcb8459c"
+                                                    "config/codex-automation/trzip-prompt.ko.txt":  "dc2ecd7f5668f4330186fed00b91651c094b8effc808a6caf9321293e36351b4",
+                                                    "docs/BACKEND_TEAM_PROMPT.md":  "91ee867c210e9067d23c5cd7b884cd9246a77d2771cbf3816f6ac2b3a1bf7710",
+                                                    "scripts/collect-hourly.ps1":  "634f2513a604f72b93900001f0f713cee9aa76ba713493dee63d20e7a3edd50e",
+                                                    "src/trzip/result_quality.py":  "d2db2754714f5ce1861f025b09ca8ce4c13c37064702108c701bb5703cc80b8b",
+                                                    "tests/test_local_runtime_contract.py":  "fc7a5bc5995d970f0a24305d2f2f4506fc26f72eb2b59339896f071878a4104e",
+                                                    "tests/test_publication_receipts.py":  "92f2d845df5a3e9598b06af69009f97442f22f0a174b4f0e63641e255323746f",
+                                                    "tests/test_result_quality.py":  "767ffd645cd80bc0d2b36f17fa90b259805f7425118ff27fda188263504b0eeb"
                                                 },
-                       "commit_message":  "fix: align enrichment queue with six-company frontend gate",
+                       "commit_message":  "fix: validate company evidence and ontology destinations",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  284
+                                      "count":  285
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,22 +57,24 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Validate eight consecutive exact-hour TRZIP publications with product-fit Top10, five sourced keywords, six evidence-backed companies, ontology relations, and verified remote delivery",
+                    "objective":  "Validate eight consecutive exact-hour TRZIP publications with product-fit Top10, five sourced keywords, six evidence-backed companies, valid ontology relations, and verified remote delivery",
                     "completed":  [
-                                      "Aligned ontology enrichment queue with the six-company frontend requirement",
-                                      "Added regression coverage for queue target and missing count",
-                                      "Verified 284 passed and 1 skipped"
+                                      "Upgraded frontend quality policy to v4",
+                                      "Validated HTTP(S) evidence URLs and fixed public relation tiers",
+                                      "Required ontology paths to terminate at the published company",
+                                      "Updated runtime automation and regression tests",
+                                      "Verified 285 passed and 1 skipped"
                                   ],
                     "next_actions":  [
-                                         "Run and audit the next exact-hour v3 publication",
-                                         "Verify Top10 product fit, keywords, companies, relationships, manifest, and remote SHA",
-                                         "Continue the fixed-policy consecutive streak"
+                                         "Run and audit the next exact-hour v4 publication",
+                                         "Inspect product-fit Top10 and enrichment content",
+                                         "Continue eight consecutive exact-hour validations"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "No exact-hour frontend-result-quality-v3 success has been recorded yet"
+                                              "The exact-hour v4 streak begins with the next publication"
                                           ]
                 },
     "runtime_contract":  {
