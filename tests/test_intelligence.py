@@ -33,6 +33,21 @@ def test_public_observation_event_is_a_culture_trend_without_a_manual_allowlist(
     assert _broad_category(_category("개기일식")) == "culture"
 
 
+def test_trend_definition_explains_meaning_and_observed_context():
+    from trzip.intelligence import _trend_definition
+
+    definition = _trend_definition(
+        "개기일식",
+        "문화·밈·참여",
+        ["일식", "개기일식 시간"],
+    )
+
+    assert "관측·공유·참여" in definition
+    assert "일식, 개기일식 시간" in definition
+    assert "X와 Google 대한민국 관측값" in definition
+    assert "투자 추천을 의미하지 않습니다" in definition
+
+
 def test_astronomy_aliases_merge_only_with_source_related_query_context():
     assert canonical_topic("일식") == "일식"
     assert canonical_topic("일식", '["개기일식 시간"]') == "개기일식"

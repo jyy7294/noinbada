@@ -247,17 +247,31 @@ def _trend_definition(
     category_label: str,
     related_terms: list[str] | None = None,
 ) -> str:
-    definition = (
-        f"'{display_name}' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 "
-        f"관측된 {category_label} 트렌드입니다."
+    category_meanings = {
+        "음식·식품": "제품·메뉴·식문화에 대한 소비자 관심이 모이는 흐름",
+        "음악·영상·게임 콘텐츠": "작품·공연·게임과 그 이용 경험에 관심이 모이는 흐름",
+        "스포츠": "경기·대회·선수 또는 관람 활동에 관심이 모이는 흐름",
+        "패션·뷰티·여행·생활": "장소·행사·스타일 또는 생활 경험에 관심이 모이는 흐름",
+        "문화·밈·참여": "사람들이 관측·공유·참여하며 확산시키는 문화적 흐름",
+        "제품·브랜드": "특정 제품이나 브랜드의 이용·구매 맥락에 관심이 모이는 흐름",
+        "기술·도구": "기술·장비·인프라의 개발과 활용에 관심이 모이는 흐름",
+        "금융·시장": "시장·자산·금융 서비스의 변화와 이용에 관심이 모이는 흐름",
+    }
+    meaning = category_meanings.get(
+        category_label,
+        "구체적인 대상과 그 이용 맥락에 관심이 모이는 흐름",
     )
+    definition = f"'{display_name}'은(는) {meaning}입니다."
     display_key = normalize_event_key(display_name)
     contextual_terms = [
         term for term in dict.fromkeys(related_terms or [])
         if normalize_event_key(term) != display_key
     ][:2]
     if contextual_terms:
-        definition += f" 함께 나타난 관련 표현은 {', '.join(contextual_terms)}입니다."
+        definition += (
+            f" 실측 데이터에서는 {', '.join(contextual_terms)} 같은 표현과 함께 나타났습니다."
+        )
+    definition += " X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다."
     return definition
 
 

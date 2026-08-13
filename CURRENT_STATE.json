@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T18:11:59.5531571+00:00",
+    "updated_at":  "2026-08-13T18:17:46.1931911+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "c5069119c8c135758be548bfa245b5c58221d46e",
+                       "base_remote_main_sha":  "e1028256b570198f0b0d6887236dc10e2e65f672",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "src/trzip/enrichment_queue.py",
-                                             "tests/test_enrichment_queue.py"
+                                             "src/trzip/intelligence.py",
+                                             "tests/test_intelligence.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/enrichment_queue.py":  "b19b2545077933217425e76e7740d52af2c5cc9b64f1d0b218985b600fadabc2",
-                                                    "tests/test_enrichment_queue.py":  "bd3c4cd7d31d26bd72eb7cc5846ae8aaf84cd7b415c3ab965e05dece1f3cecc0"
+                                                    "src/trzip/intelligence.py":  "3d2d85687921c017529105b387d8c1443512b75c4e4035b2f9436a8cec5e1d54",
+                                                    "tests/test_intelligence.py":  "72965062fd869fbcd3e502bef19b259ef5ef167ee70867796d6cbf389e3da143"
                                                 },
-                       "commit_message":  "fix: prioritize current frontend enrichment gaps",
+                       "commit_message":  "feat: publish meaningful trend definitions",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  280
+                                      "count":  281
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,20 +47,20 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Keep hourly enrichment work aligned with current observed candidates without changing rank or UI.",
+                    "objective":  "Give the frontend a useful deterministic definition of what each observed trend means without changing rank or UI.",
                     "completed":  [
-                                      "Count reviewed frontend related keywords before raw candidates.",
-                                      "Exclude stale prior-hour tasks from the current pending queue.",
-                                      "Validated 280 passed and 1 skipped."
+                                      "Added category-specific trend meaning.",
+                                      "Included observed context expressions and source limitation.",
+                                      "Validated 281 passed and 1 skipped."
                                   ],
                     "next_actions":  [
-                                         "Validate the next exact-hour publication under fixed source and frontend policies."
+                                         "Start a fresh eight-hour live validation under the improved definition contract."
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "Eight consecutive exact-hour live results remain required."
+                                              "Exact-hour live validation must restart because the published content contract changed."
                                           ]
                 },
     "runtime_contract":  {
