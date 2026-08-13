@@ -196,6 +196,23 @@ try {
     if ($remotePublished -ne $localPublished) {
         throw "remote live-data verification mismatch: local=$localPublished remote=$remotePublished"
     }
+    $RemoteManifestText = (@(
+        & git -C $LiveDataRoot show "${remotePublished}:latest/manifest.json"
+    ) -join [Environment]::NewLine)
+    if ($LASTEXITCODE -ne 0) {
+        throw "failed to read manifest from verified remote commit"
+    }
+    try {
+        $RemoteManifest = $RemoteManifestText | ConvertFrom-Json
+    } catch {
+        throw "verified remote commit contains an invalid manifest"
+    }
+    if (
+        $RemoteManifest.publication_id -ne $PublicationStatus.publication_id -or
+        $RemoteManifest.observed_at -ne $PublicationStatus.observed_at
+    ) {
+        throw "remote manifest does not match the current hourly publication"
+    }
     # Count an hour only after the exact publication has passed runtime audit
     # and its remote SHA has been independently verified.
     $QualityOutput = Join-Path $PublicationRoot "monitoring\result_quality.json"
