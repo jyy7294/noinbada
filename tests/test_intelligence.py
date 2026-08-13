@@ -1029,6 +1029,25 @@ def test_stock_code_reference_data_does_not_promote_or_company_enrich_it(tmp_pat
     )
 
 
+def test_frontend_enrichment_queue_reports_six_company_target(tmp_path):
+    from trzip.hourly_store import HourlyObservation, upsert
+
+    target = tmp_path / "frontend-enrichment-target.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    upsert(
+        [HourlyObservation(at.isoformat(), "google_trends", "개기일식", 1, 100, "observed")],
+        target,
+    )
+
+    result = build_intelligence(at, hours=1, path=target)
+    queue = result["ontology_enrichment_queue"][0]
+
+    assert queue["minimum_required"] == 6
+    assert queue["missing_company_paths"] == max(
+        0, 6 - queue["evidence_backed_company_count"]
+    )
+
+
 def test_listed_securities_company_has_self_and_four_reviewed_sector_peers(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 

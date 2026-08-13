@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T18:30:57.7419217+00:00",
+    "updated_at":  "2026-08-13T18:34:52.6451266+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "ff1046a19788cd8d3001c8ce6c49e0aa781f9401",
+                       "base_remote_main_sha":  "ec2ec76fcb1467e05f12c243c1d63c0611da6605",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "src/trzip/trend_fit.py",
-                                             "tests/test_trend_fit.py"
+                                             "src/trzip/intelligence.py",
+                                             "tests/test_intelligence.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/trend_fit.py":  "9449a344e5339033b0e2a16cbd43130911f2b242011e2aaef80a3daf490802d9",
-                                                    "tests/test_trend_fit.py":  "0390788900438726061a40a43a80fffc65f1a3d48bcdf3f0ba83986e0441ade9"
+                                                    "src/trzip/intelligence.py":  "6b0cff161dd481062a28572b830d60e96d2873339fa6bf35869b204f9533c366",
+                                                    "tests/test_intelligence.py":  "39717cb4188b40bca70d4a57428093a0d430cc291d2fbb45fdc0251afcb8459c"
                                                 },
-                       "commit_message":  "fix: keep broad trend expressions out of home candidates",
+                       "commit_message":  "fix: align enrichment queue with six-company frontend gate",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  283
+                                      "count":  284
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -49,20 +49,20 @@
     "handoff":  {
                     "objective":  "Validate eight consecutive exact-hour TRZIP publications with product-fit Top10, five sourced keywords, six evidence-backed companies, ontology relations, and verified remote delivery",
                     "completed":  [
-                                      "Excluded broad place, region, content, and sports class terms from the home subset without changing observed ranks",
-                                      "Added deterministic regression coverage",
-                                      "Verified 283 passed and 1 skipped"
+                                      "Aligned ontology enrichment queue with the six-company frontend requirement",
+                                      "Added regression coverage for queue target and missing count",
+                                      "Verified 284 passed and 1 skipped"
                                   ],
                     "next_actions":  [
-                                         "Validate the next exact-hour v3 publication",
-                                         "Inspect Top10 product fit and enrichment output",
+                                         "Run and audit the next exact-hour v3 publication",
+                                         "Verify Top10 product fit, keywords, companies, relationships, manifest, and remote SHA",
                                          "Continue the fixed-policy consecutive streak"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "The fresh frontend-result-quality-v3 exact-hour streak has not yet begun"
+                                              "No exact-hour frontend-result-quality-v3 success has been recorded yet"
                                           ]
                 },
     "runtime_contract":  {

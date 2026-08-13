@@ -1966,10 +1966,13 @@ def build_intelligence(
             "representative_term": item["display_name"],
             "observed_terms": [item["display_name"], *[keyword["text"] for keyword in item["keywords"]]],
             "evidence_backed_company_count": item["company_resolution"]["candidate_count"],
-            "minimum_required": MINIMUM_PUBLISHED_COMPANIES,
+            # The queue serves the frontend contract, which is stricter than
+            # the ontology Gold publication floor.  Report the actual six-
+            # company completion target so operators do not stop at three.
+            "minimum_required": MINIMUM_FRONTEND_COMPANIES,
             "missing_company_paths": max(
                 0,
-                MINIMUM_PUBLISHED_COMPANIES - item["company_resolution"]["candidate_count"],
+                MINIMUM_FRONTEND_COMPANIES - item["company_resolution"]["candidate_count"],
             ),
             "status": "evidence_research_required",
             "lookup_status": (
