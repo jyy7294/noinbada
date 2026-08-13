@@ -1041,7 +1041,7 @@ def _enrich_official_company_identities(
         for field in ("company_candidates", "companies"):
             for company in item.get(field, []):
                 stock_code = str(company.get("stock_code") or "").strip()
-                company["official_identity"] = identities.get(
+                identity = identities.get(
                     stock_code,
                     {
                         "status": "unavailable",
@@ -1059,6 +1059,24 @@ def _enrich_official_company_identities(
                         "relationship_evidence": False,
                     },
                 )
+                market = str(company.get("market") or "").strip().upper()
+                if market not in {"KRX", "KOSPI", "KOSDAQ"} and identity.get("provider") == "opendart":
+                    identity = {
+                        "status": "unavailable",
+                        "provider": "exchange_official",
+                        "company": str(company.get("company") or ""),
+                        "stock_code": stock_code,
+                        "legal_name": None,
+                        "english_name": None,
+                        "stock_name": None,
+                        "market_class": market or None,
+                        "homepage": None,
+                        "established_date": None,
+                        "retrieved_at": at.astimezone(UTC).isoformat(),
+                        "ranking_effect": "none",
+                        "relationship_evidence": False,
+                    }
+                company["official_identity"] = identity
     intelligence["company_identity_status"] = status
     return intelligence
 

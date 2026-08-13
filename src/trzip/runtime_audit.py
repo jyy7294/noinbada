@@ -806,7 +806,14 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
             company_failures += 1
         for company in companies:
             identity = company.get("official_identity") or {}
-            if identity.get("status") != "verified" or identity.get("ranking_effect") != "none":
+            if (
+                identity.get("status") not in {"verified", "unavailable", "not_found", "error", "stock_code_mismatch"}
+                or (
+                    identity.get("provider") is not None
+                    and identity.get("provider") not in {"opendart", "exchange_official", "sec_edgar"}
+                )
+                or identity.get("ranking_effect") != "none"
+            ):
                 company_failures += 1
             if company.get("ontology_complete") is not True:
                 company_failures += 1

@@ -995,6 +995,26 @@ def apply_frontend_enrichment_cache(intelligence: dict, *, verified_at: str) -> 
                 if len(item["related_keywords"]) == FINAL_KEYWORD_COUNT
                 else "enrichment_pending"
             )
+        # Issue-lane events may still receive contextual keywords, but must
+        # never expose investable company cards.  Reviewed enrichment is a
+        # presentation cache, not permission to cross the editorial lane gate.
+        if item.get("lane") == "issue":
+            item["company_candidates"] = []
+            item["companies"] = []
+            item["company_eligible"] = False
+            item["company_card_status"] = "not_applicable"
+            item["company_status"] = "not_applicable"
+            resolution = dict(item.get("company_resolution") or {})
+            resolution.update({
+                "status": "excluded_by_context",
+                "publish_status": "not_published",
+                "candidate_count": 0,
+                "published_count": 0,
+                "reason": "issue_lane_company_cards_are_disabled",
+                "score_independent": True,
+            })
+            item["company_resolution"] = resolution
+            continue
         complete_company_codes = {
             str(company.get("stock_code") or "").strip()
             for company in item.get("companies") or []
