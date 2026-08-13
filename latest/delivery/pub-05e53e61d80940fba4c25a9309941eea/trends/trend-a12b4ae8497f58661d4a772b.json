@@ -1,0 +1,2576 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-05e53e61d80940fba4c25a9309941eea",
+  "generated_at": "2026-08-13T18:04:17.605706+00:00",
+  "observed_at": "2026-08-13T18:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "불꽃축제",
+    "topic": "불꽃축제",
+    "display_name": "불꽃축제",
+    "observed_representative_term": "불꽃축제",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "불꽃축제",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 11,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.14186,
+      "best_source_rank": 7
+    },
+    "raw_terms": [
+      "불꽃축제"
+    ],
+    "phenomenon_summary": "\"불꽃축제\" · X 한국 실시간에서 관측",
+    "context_status": "resolved_reference",
+    "ground_truth_match": true,
+    "category": "place_experience",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "lifestyle",
+    "category_label": "패션·뷰티·여행·생활",
+    "trend_definition": "'불꽃축제' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 패션·뷰티·여행·생활 트렌드입니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 19.89,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "x"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.21704,
+    "current_source_position": 0.21704,
+    "momentum": 0.0,
+    "persistence": 0.2292,
+    "momentum_delta": -0.509281,
+    "score_components": {
+      "period_strength_points": 7.6,
+      "momentum_points": 0.0,
+      "persistence_points": 2.29,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 19.89
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "x": "current_period_half_change"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "x": 0.43408
+      },
+      "momentum_deltas": {
+        "x": -0.509281
+      },
+      "momentum_basis": {
+        "x": "current_period_half_change"
+      },
+      "momentum_event_observations": {
+        "x": {
+          "current": 6,
+          "comparison": 5
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 11,
+          "observed_hours": 11,
+          "presence_rate": 0.458333,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.458333,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T21:00:00+00:00",
+      "last_seen_at": "2026-08-13T18:00:00+00:00",
+      "observed_hours": 11,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "x": 29
+    },
+    "rank_change_by_source": {
+      "x": 0
+    },
+    "source_rank_change": {
+      "x": 0
+    },
+    "first_seen_at": "2026-08-12T21:00:00+00:00",
+    "last_seen_at": "2026-08-13T18:00:00+00:00",
+    "age_hours": 21,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 19,
+      "history_maturity": 0.5,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "불꽃축제",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "failed",
+          "matched": null,
+          "error_code": "024",
+          "metrics": {
+            "blog_total_reported": null,
+            "news_total_reported": null,
+            "partial_provider_error_count": 2,
+            "stored_evidence_count": 0
+          },
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 25778,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "hNzligDCNs4",
+              "title": "불꽃축제 3초뒤 일어난 레전드 순간 ㄷㄷ",
+              "url": "https://www.youtube.com/watch?v=hNzligDCNs4",
+              "published_at": "2026-08-04T12:00:12Z",
+              "publisher": "숏플래시",
+              "metrics": {
+                "commentCount": 553,
+                "likeCount": 12101,
+                "viewCount": 1605634
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "OSFg9U1GFe4",
+              "title": "현수막 이어 불꽃놀이서 '또'? 광복절 앞두고 '태극기 논란' 공분 / KNN",
+              "url": "https://www.youtube.com/watch?v=OSFg9U1GFe4",
+              "published_at": "2026-08-12T01:00:00Z",
+              "publisher": "KNN NEWS",
+              "metrics": {
+                "commentCount": 675,
+                "likeCount": 589,
+                "viewCount": 45489
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "FGh8P-NfndQ",
+              "title": "[불꽃축제 티켓 이벤트] 그날 밤 어디서든, 찬란한 불꽃 속으로 | 한화와 함께하는 서울세계불꽃축제 2026",
+              "url": "https://www.youtube.com/watch?v=FGh8P-NfndQ",
+              "published_at": "2026-08-11T08:05:32Z",
+              "publisher": "한화TV (Hanwha TV)",
+              "metrics": {
+                "commentCount": 458,
+                "likeCount": 302,
+                "viewCount": 43571
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "_U22ZObucKE",
+              "title": "불꽃축제 실황 | 부산 다대포 바다축제 개막식 | 다대포 불꽃축제",
+              "url": "https://www.youtube.com/watch?v=_U22ZObucKE",
+              "published_at": "2026-08-07T14:48:39Z",
+              "publisher": "Happy Music with AI",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 2,
+                "viewCount": 126
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "b4BrVZQqwy8",
+              "title": "[와글와글] 10만 명 몰린 불꽃축제서 '오발사고' (2026.08.11/뉴스투데이/MBC)",
+              "url": "https://www.youtube.com/watch?v=b4BrVZQqwy8",
+              "published_at": "2026-08-10T21:56:07Z",
+              "publisher": "MBCNEWS",
+              "metrics": {
+                "commentCount": 44,
+                "likeCount": 190,
+                "viewCount": 24446
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "불꽃축제",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "failed",
+          "matched": null,
+          "error_code": "024",
+          "metrics": {
+            "blog_total_reported": null,
+            "news_total_reported": null,
+            "partial_provider_error_count": 2,
+            "stored_evidence_count": 0
+          },
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T23:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 25778,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "hNzligDCNs4",
+              "title": "불꽃축제 3초뒤 일어난 레전드 순간 ㄷㄷ",
+              "url": "https://www.youtube.com/watch?v=hNzligDCNs4",
+              "published_at": "2026-08-04T12:00:12Z",
+              "publisher": "숏플래시",
+              "metrics": {
+                "commentCount": 553,
+                "likeCount": 12101,
+                "viewCount": 1605634
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "OSFg9U1GFe4",
+              "title": "현수막 이어 불꽃놀이서 '또'? 광복절 앞두고 '태극기 논란' 공분 / KNN",
+              "url": "https://www.youtube.com/watch?v=OSFg9U1GFe4",
+              "published_at": "2026-08-12T01:00:00Z",
+              "publisher": "KNN NEWS",
+              "metrics": {
+                "commentCount": 675,
+                "likeCount": 589,
+                "viewCount": 45489
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "FGh8P-NfndQ",
+              "title": "[불꽃축제 티켓 이벤트] 그날 밤 어디서든, 찬란한 불꽃 속으로 | 한화와 함께하는 서울세계불꽃축제 2026",
+              "url": "https://www.youtube.com/watch?v=FGh8P-NfndQ",
+              "published_at": "2026-08-11T08:05:32Z",
+              "publisher": "한화TV (Hanwha TV)",
+              "metrics": {
+                "commentCount": 458,
+                "likeCount": 302,
+                "viewCount": 43571
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "_U22ZObucKE",
+              "title": "불꽃축제 실황 | 부산 다대포 바다축제 개막식 | 다대포 불꽃축제",
+              "url": "https://www.youtube.com/watch?v=_U22ZObucKE",
+              "published_at": "2026-08-07T14:48:39Z",
+              "publisher": "Happy Music with AI",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 2,
+                "viewCount": 126
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "b4BrVZQqwy8",
+              "title": "[와글와글] 10만 명 몰린 불꽃축제서 '오발사고' (2026.08.11/뉴스투데이/MBC)",
+              "url": "https://www.youtube.com/watch?v=b4BrVZQqwy8",
+              "published_at": "2026-08-10T21:56:07Z",
+              "publisher": "MBCNEWS",
+              "metrics": {
+                "commentCount": 44,
+                "likeCount": 190,
+                "viewCount": 24446
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T23:00:00Z",
+                "query_term": "불꽃축제",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "x",
+        "rank": 7,
+        "value": 94.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "x",
+        "rank": 8,
+        "value": 93.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "x",
+        "rank": 12,
+        "value": 89.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "x",
+        "rank": 9,
+        "value": 92.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "x",
+        "rank": 14,
+        "value": 87.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "x",
+        "rank": 19,
+        "value": 82.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "x",
+        "rank": 21,
+        "value": 80.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "x",
+        "rank": 27,
+        "value": 74.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "x",
+        "rank": 28,
+        "value": 73.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "x",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T18:00:00+00:00",
+        "source": "x",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T18:03:47.936000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 227.936, \"scheduled_for\": \"2026-08-13T18:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [
+      {
+        "text": "불꽃축제 일정",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "불꽃축제 장소",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "불꽃축제 명당",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "불꽃축제 교통",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "불꽃축제 티켓",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [
+      {
+        "company": "한화",
+        "stock_code": "000880",
+        "ticker": "000880",
+        "market": "KRX",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "한화가 2000년부터 서울세계불꽃축제를 진행",
+        "relationship_reason": "한화가 2000년부터 서울세계불꽃축제를 진행",
+        "company_summary": "서울세계불꽃축제를 주최하고 연화 기술을 제공하는 한화그룹 지주 성격의 상장사",
+        "company_description": "서울세계불꽃축제를 주최하고 연화 기술을 제공하는 한화그룹 지주 성격의 상장사",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "official_group_profile",
+        "evidence_url": "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf",
+            "title": "Hanwha",
+            "evidence_type": "official_group_profile",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf"
+            ],
+            "evidence_type": "official_group_profile",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "한화",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf"
+            ],
+            "evidence_type": "official_group_profile",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "한화",
+          "corp_code": null,
+          "english_name": null,
+          "established_date": null,
+          "financial_snapshot": {
+            "company": "한화",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "reason": "financial_snapshot_unavailable",
+            "relationship_evidence": false,
+            "retrieved_at": "2026-08-13T13:00:00+00:00",
+            "status": "unavailable",
+            "stock_code": "000880"
+          },
+          "homepage": null,
+          "legal_name": null,
+          "market_class": null,
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T13:00:00+00:00",
+          "status": "unavailable",
+          "stock_code": "000880",
+          "stock_name": null
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "000880",
+          "name": "한화",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-03",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-04",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-05",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-06",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-07",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-10",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-11",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-12",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-13",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 83800.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 83800,
+            "daily_change_pct": 0.0,
+            "volume": 0
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 0.0,
+            "five_vs_previous_volume_ratio": null,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "GS리테일",
+        "stock_code": "007070",
+        "ticker": "007070",
+        "market": "KRX",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "불꽃축제 인근 GS25 매장의 매출과 행사용품 판매가 급증한 실측 사례",
+        "relationship_reason": "불꽃축제 인근 GS25 매장의 매출과 행사용품 판매가 급증한 실측 사례",
+        "company_summary": "GS25를 운영하며 대형 지역행사 인근의 식음료·행사용품 수요에 노출되는 유통기업",
+        "company_description": "GS25를 운영하며 대형 지역행사 인근의 식음료·행사용품 수요에 노출되는 유통기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "reported_sales_evidence",
+        "evidence_url": "https://www.youtube.com/watch?v=FCShe4_bSQ4",
+        "evidence_sources": [
+          {
+            "url": "https://www.youtube.com/watch?v=FCShe4_bSQ4",
+            "title": "연합뉴스TV",
+            "evidence_type": "reported_sales_evidence",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "distribution",
+        "company_role_label": "배급·유통",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.youtube.com/watch?v=FCShe4_bSQ4"
+            ],
+            "evidence_type": "reported_sales_evidence",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "GS리테일",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.youtube.com/watch?v=FCShe4_bSQ4"
+            ],
+            "evidence_type": "reported_sales_evidence",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "GS리테일",
+          "corp_code": null,
+          "english_name": null,
+          "established_date": null,
+          "financial_snapshot": {
+            "company": "GS리테일",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "reason": "financial_snapshot_unavailable",
+            "relationship_evidence": false,
+            "retrieved_at": "2026-08-13T13:00:00+00:00",
+            "status": "unavailable",
+            "stock_code": "007070"
+          },
+          "homepage": null,
+          "legal_name": null,
+          "market_class": null,
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T13:00:00+00:00",
+          "status": "unavailable",
+          "stock_code": "007070",
+          "stock_name": null
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "007070",
+          "name": "GS리테일",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 24800.0,
+              "high": 25600.0,
+              "low": 24150.0,
+              "close": 24750.0,
+              "volume": 294766.0,
+              "change_pct": 0.6097560975609756
+            },
+            {
+              "date": "2026-08-03",
+              "open": 24550.0,
+              "high": 25500.0,
+              "low": 24100.0,
+              "close": 24400.0,
+              "volume": 204434.0,
+              "change_pct": -1.4141414141414141
+            },
+            {
+              "date": "2026-08-04",
+              "open": 24050.0,
+              "high": 25200.0,
+              "low": 23950.0,
+              "close": 25050.0,
+              "volume": 126637.0,
+              "change_pct": 2.663934426229508
+            },
+            {
+              "date": "2026-08-05",
+              "open": 24900.0,
+              "high": 25650.0,
+              "low": 24650.0,
+              "close": 24800.0,
+              "volume": 238369.0,
+              "change_pct": -0.998003992015968
+            },
+            {
+              "date": "2026-08-06",
+              "open": 24900.0,
+              "high": 26750.0,
+              "low": 24850.0,
+              "close": 26450.0,
+              "volume": 314521.0,
+              "change_pct": 6.653225806451612
+            },
+            {
+              "date": "2026-08-07",
+              "open": 26750.0,
+              "high": 28950.0,
+              "low": 26250.0,
+              "close": 28350.0,
+              "volume": 596701.0,
+              "change_pct": 7.183364839319471
+            },
+            {
+              "date": "2026-08-10",
+              "open": 28000.0,
+              "high": 29650.0,
+              "low": 26750.0,
+              "close": 28400.0,
+              "volume": 407540.0,
+              "change_pct": 0.1763668430335097
+            },
+            {
+              "date": "2026-08-11",
+              "open": 28400.0,
+              "high": 28500.0,
+              "low": 27200.0,
+              "close": 27550.0,
+              "volume": 170291.0,
+              "change_pct": -2.992957746478873
+            },
+            {
+              "date": "2026-08-12",
+              "open": 27350.0,
+              "high": 27650.0,
+              "low": 26750.0,
+              "close": 27000.0,
+              "volume": 238272.0,
+              "change_pct": -1.9963702359346642
+            },
+            {
+              "date": "2026-08-13",
+              "open": 26800.0,
+              "high": 27300.0,
+              "low": 26300.0,
+              "close": 26750.0,
+              "volume": 226950.0,
+              "change_pct": -0.9259259259259258
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 26800.0,
+            "high": 27300.0,
+            "low": 26300.0,
+            "close": 26750.0,
+            "volume": 226950.0,
+            "change_pct": -0.9259259259259258
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 26750,
+            "daily_change_pct": -0.93,
+            "volume": 226950
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": -5.64,
+            "five_vs_previous_volume_ratio": 1.39,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "BGF리테일",
+        "stock_code": "282330",
+        "ticker": "282330",
+        "market": "KRX",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "CU 편의점망을 통해 대형 행사 주변 소비 수요에 노출되는 비교 유통사",
+        "relationship_reason": "CU 편의점망을 통해 대형 행사 주변 소비 수요에 노출되는 비교 유통사",
+        "company_summary": "CU를 운영하며 축제 관람객의 식음료·간편식·행사용품 수요에 노출되는 유통기업",
+        "company_description": "CU를 운영하며 축제 관람객의 식음료·간편식·행사용품 수요에 노출되는 유통기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "business_exposure_evidence",
+        "evidence_url": "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf",
+            "title": "BGF리테일",
+            "evidence_type": "business_exposure_evidence",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "distribution",
+        "company_role_label": "배급·유통",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf"
+            ],
+            "evidence_type": "business_exposure_evidence",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "BGF리테일",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf"
+            ],
+            "evidence_type": "business_exposure_evidence",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "BGF리테일",
+          "corp_code": null,
+          "english_name": null,
+          "established_date": null,
+          "financial_snapshot": {
+            "company": "BGF리테일",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "reason": "financial_snapshot_unavailable",
+            "relationship_evidence": false,
+            "retrieved_at": "2026-08-13T13:00:00+00:00",
+            "status": "unavailable",
+            "stock_code": "282330"
+          },
+          "homepage": null,
+          "legal_name": null,
+          "market_class": null,
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T13:00:00+00:00",
+          "status": "unavailable",
+          "stock_code": "282330",
+          "stock_name": null
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "282330",
+          "name": "BGF리테일",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 125200.0,
+              "high": 126900.0,
+              "low": 118600.0,
+              "close": 125000.0,
+              "volume": 154791.0,
+              "change_pct": -1.1075949367088607
+            },
+            {
+              "date": "2026-08-03",
+              "open": 123300.0,
+              "high": 126800.0,
+              "low": 120900.0,
+              "close": 122000.0,
+              "volume": 60035.0,
+              "change_pct": -2.4
+            },
+            {
+              "date": "2026-08-04",
+              "open": 119100.0,
+              "high": 125700.0,
+              "low": 119100.0,
+              "close": 125300.0,
+              "volume": 40805.0,
+              "change_pct": 2.7049180327868854
+            },
+            {
+              "date": "2026-08-05",
+              "open": 122500.0,
+              "high": 125800.0,
+              "low": 121000.0,
+              "close": 122300.0,
+              "volume": 103223.0,
+              "change_pct": -2.3942537909018355
+            },
+            {
+              "date": "2026-08-06",
+              "open": 123500.0,
+              "high": 134200.0,
+              "low": 123500.0,
+              "close": 133500.0,
+              "volume": 77636.0,
+              "change_pct": 9.157808667211773
+            },
+            {
+              "date": "2026-08-07",
+              "open": 141900.0,
+              "high": 156000.0,
+              "low": 141200.0,
+              "close": 153100.0,
+              "volume": 218092.0,
+              "change_pct": 14.681647940074907
+            },
+            {
+              "date": "2026-08-10",
+              "open": 150700.0,
+              "high": 155500.0,
+              "low": 148500.0,
+              "close": 151000.0,
+              "volume": 58974.0,
+              "change_pct": -1.3716525146962768
+            },
+            {
+              "date": "2026-08-11",
+              "open": 152900.0,
+              "high": 156600.0,
+              "low": 149000.0,
+              "close": 150500.0,
+              "volume": 82040.0,
+              "change_pct": -0.33112582781456956
+            },
+            {
+              "date": "2026-08-12",
+              "open": 150300.0,
+              "high": 152000.0,
+              "low": 144400.0,
+              "close": 145500.0,
+              "volume": 70377.0,
+              "change_pct": -3.322259136212625
+            },
+            {
+              "date": "2026-08-13",
+              "open": 144100.0,
+              "high": 146700.0,
+              "low": 142000.0,
+              "close": 142700.0,
+              "volume": 59482.0,
+              "change_pct": -1.9243986254295533
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 144100.0,
+            "high": 146700.0,
+            "low": 142000.0,
+            "close": 142700.0,
+            "volume": 59482.0,
+            "change_pct": -1.9243986254295533
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 142700,
+            "daily_change_pct": -1.92,
+            "volume": 59482
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": -6.79,
+            "five_vs_previous_volume_ratio": 1.12,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "Canon",
+        "stock_code": "7751",
+        "ticker": "7751",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Canon 공식 카메라 설명서가 불꽃 촬영 전용 장면 모드와 삼각대 사용법을 명시",
+        "relationship_reason": "Canon 공식 카메라 설명서가 불꽃 촬영 전용 장면 모드와 삼각대 사용법을 명시",
+        "company_summary": "불꽃 촬영용 카메라와 촬영 모드를 제공하는 일본 상장 광학기업",
+        "company_description": "불꽃 촬영용 카메라와 촬영 모드를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "official_fireworks_camera_guide",
+        "evidence_url": "https://files.canon-europe.com/files/soft39129/Manual/1000HS_CUG_EN.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://files.canon-europe.com/files/soft39129/Manual/1000HS_CUG_EN.pdf",
+            "title": "Canon",
+            "evidence_type": "official_fireworks_camera_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://files.canon-europe.com/files/soft39129/Manual/1000HS_CUG_EN.pdf"
+            ],
+            "evidence_type": "official_fireworks_camera_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "Canon",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://files.canon-europe.com/files/soft39129/Manual/1000HS_CUG_EN.pdf"
+            ],
+            "evidence_type": "official_fireworks_camera_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Canon",
+          "stock_code": "7751",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7751",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Nikon",
+        "stock_code": "7731",
+        "ticker": "7731",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Nikon 공식 가이드가 DSLR·Z 시리즈·COOLPIX를 이용한 불꽃 촬영법을 직접 안내",
+        "relationship_reason": "Nikon 공식 가이드가 DSLR·Z 시리즈·COOLPIX를 이용한 불꽃 촬영법을 직접 안내",
+        "company_summary": "불꽃 촬영용 카메라·렌즈와 촬영 교육 콘텐츠를 제공하는 일본 상장 광학기업",
+        "company_description": "불꽃 촬영용 카메라·렌즈와 촬영 교육 콘텐츠를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "official_fireworks_photography_guide",
+        "evidence_url": "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/taking-pictures-of-fireworks",
+        "evidence_sources": [
+          {
+            "url": "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/taking-pictures-of-fireworks",
+            "title": "Nikon",
+            "evidence_type": "official_fireworks_photography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/taking-pictures-of-fireworks"
+            ],
+            "evidence_type": "official_fireworks_photography_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "Nikon",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/taking-pictures-of-fireworks"
+            ],
+            "evidence_type": "official_fireworks_photography_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Nikon",
+          "stock_code": "7731",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7731",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Sony Group",
+        "stock_code": "6758",
+        "ticker": "6758",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Sony 공식 가이드가 불꽃 촬영용 장비·렌즈·설정과 촬영 절차를 직접 설명",
+        "relationship_reason": "Sony 공식 가이드가 불꽃 촬영용 장비·렌즈·설정과 촬영 절차를 직접 설명",
+        "company_summary": "불꽃 촬영 기능과 카메라·렌즈 제품군을 제공하는 일본 상장 전자기업",
+        "company_description": "불꽃 촬영 기능과 카메라·렌즈 제품군을 제공하는 일본 상장 전자기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "official_fireworks_photography_guide",
+        "evidence_url": "https://www.sony.com/electronics/support/articles/00223375",
+        "evidence_sources": [
+          {
+            "url": "https://www.sony.com/electronics/support/articles/00223375",
+            "title": "Sony",
+            "evidence_type": "official_fireworks_photography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.sony.com/electronics/support/articles/00223375"
+            ],
+            "evidence_type": "official_fireworks_photography_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "Sony Group",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.sony.com/electronics/support/articles/00223375"
+            ],
+            "evidence_type": "official_fireworks_photography_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Sony Group",
+          "stock_code": "6758",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "6758",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "한화",
+        "stock_code": "000880",
+        "ticker": "000880",
+        "market": "KRX",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "한화가 2000년부터 서울세계불꽃축제를 진행",
+        "relationship_reason": "한화가 2000년부터 서울세계불꽃축제를 진행",
+        "company_summary": "서울세계불꽃축제를 주최하고 연화 기술을 제공하는 한화그룹 지주 성격의 상장사",
+        "company_description": "서울세계불꽃축제를 주최하고 연화 기술을 제공하는 한화그룹 지주 성격의 상장사",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "official_group_profile",
+        "evidence_url": "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf",
+            "title": "Hanwha",
+            "evidence_type": "official_group_profile",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf"
+            ],
+            "evidence_type": "official_group_profile",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "한화",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf"
+            ],
+            "evidence_type": "official_group_profile",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "한화",
+          "corp_code": null,
+          "english_name": null,
+          "established_date": null,
+          "financial_snapshot": {
+            "company": "한화",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "reason": "financial_snapshot_unavailable",
+            "relationship_evidence": false,
+            "retrieved_at": "2026-08-13T13:00:00+00:00",
+            "status": "unavailable",
+            "stock_code": "000880"
+          },
+          "homepage": null,
+          "legal_name": null,
+          "market_class": null,
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T13:00:00+00:00",
+          "status": "unavailable",
+          "stock_code": "000880",
+          "stock_name": null
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "000880",
+          "name": "한화",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-03",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-04",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-05",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-06",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-07",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-10",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-11",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-12",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-13",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 83800.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 83800.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 83800,
+            "daily_change_pct": 0.0,
+            "volume": 0
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 0.0,
+            "five_vs_previous_volume_ratio": null,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "GS리테일",
+        "stock_code": "007070",
+        "ticker": "007070",
+        "market": "KRX",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "불꽃축제 인근 GS25 매장의 매출과 행사용품 판매가 급증한 실측 사례",
+        "relationship_reason": "불꽃축제 인근 GS25 매장의 매출과 행사용품 판매가 급증한 실측 사례",
+        "company_summary": "GS25를 운영하며 대형 지역행사 인근의 식음료·행사용품 수요에 노출되는 유통기업",
+        "company_description": "GS25를 운영하며 대형 지역행사 인근의 식음료·행사용품 수요에 노출되는 유통기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "reported_sales_evidence",
+        "evidence_url": "https://www.youtube.com/watch?v=FCShe4_bSQ4",
+        "evidence_sources": [
+          {
+            "url": "https://www.youtube.com/watch?v=FCShe4_bSQ4",
+            "title": "연합뉴스TV",
+            "evidence_type": "reported_sales_evidence",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "distribution",
+        "company_role_label": "배급·유통",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.youtube.com/watch?v=FCShe4_bSQ4"
+            ],
+            "evidence_type": "reported_sales_evidence",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "GS리테일",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.youtube.com/watch?v=FCShe4_bSQ4"
+            ],
+            "evidence_type": "reported_sales_evidence",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "GS리테일",
+          "corp_code": null,
+          "english_name": null,
+          "established_date": null,
+          "financial_snapshot": {
+            "company": "GS리테일",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "reason": "financial_snapshot_unavailable",
+            "relationship_evidence": false,
+            "retrieved_at": "2026-08-13T13:00:00+00:00",
+            "status": "unavailable",
+            "stock_code": "007070"
+          },
+          "homepage": null,
+          "legal_name": null,
+          "market_class": null,
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T13:00:00+00:00",
+          "status": "unavailable",
+          "stock_code": "007070",
+          "stock_name": null
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "007070",
+          "name": "GS리테일",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 24800.0,
+              "high": 25600.0,
+              "low": 24150.0,
+              "close": 24750.0,
+              "volume": 294766.0,
+              "change_pct": 0.6097560975609756
+            },
+            {
+              "date": "2026-08-03",
+              "open": 24550.0,
+              "high": 25500.0,
+              "low": 24100.0,
+              "close": 24400.0,
+              "volume": 204434.0,
+              "change_pct": -1.4141414141414141
+            },
+            {
+              "date": "2026-08-04",
+              "open": 24050.0,
+              "high": 25200.0,
+              "low": 23950.0,
+              "close": 25050.0,
+              "volume": 126637.0,
+              "change_pct": 2.663934426229508
+            },
+            {
+              "date": "2026-08-05",
+              "open": 24900.0,
+              "high": 25650.0,
+              "low": 24650.0,
+              "close": 24800.0,
+              "volume": 238369.0,
+              "change_pct": -0.998003992015968
+            },
+            {
+              "date": "2026-08-06",
+              "open": 24900.0,
+              "high": 26750.0,
+              "low": 24850.0,
+              "close": 26450.0,
+              "volume": 314521.0,
+              "change_pct": 6.653225806451612
+            },
+            {
+              "date": "2026-08-07",
+              "open": 26750.0,
+              "high": 28950.0,
+              "low": 26250.0,
+              "close": 28350.0,
+              "volume": 596701.0,
+              "change_pct": 7.183364839319471
+            },
+            {
+              "date": "2026-08-10",
+              "open": 28000.0,
+              "high": 29650.0,
+              "low": 26750.0,
+              "close": 28400.0,
+              "volume": 407540.0,
+              "change_pct": 0.1763668430335097
+            },
+            {
+              "date": "2026-08-11",
+              "open": 28400.0,
+              "high": 28500.0,
+              "low": 27200.0,
+              "close": 27550.0,
+              "volume": 170291.0,
+              "change_pct": -2.992957746478873
+            },
+            {
+              "date": "2026-08-12",
+              "open": 27350.0,
+              "high": 27650.0,
+              "low": 26750.0,
+              "close": 27000.0,
+              "volume": 238272.0,
+              "change_pct": -1.9963702359346642
+            },
+            {
+              "date": "2026-08-13",
+              "open": 26800.0,
+              "high": 27300.0,
+              "low": 26300.0,
+              "close": 26750.0,
+              "volume": 226950.0,
+              "change_pct": -0.9259259259259258
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 26800.0,
+            "high": 27300.0,
+            "low": 26300.0,
+            "close": 26750.0,
+            "volume": 226950.0,
+            "change_pct": -0.9259259259259258
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 26750,
+            "daily_change_pct": -0.93,
+            "volume": 226950
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": -5.64,
+            "five_vs_previous_volume_ratio": 1.39,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "BGF리테일",
+        "stock_code": "282330",
+        "ticker": "282330",
+        "market": "KRX",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "CU 편의점망을 통해 대형 행사 주변 소비 수요에 노출되는 비교 유통사",
+        "relationship_reason": "CU 편의점망을 통해 대형 행사 주변 소비 수요에 노출되는 비교 유통사",
+        "company_summary": "CU를 운영하며 축제 관람객의 식음료·간편식·행사용품 수요에 노출되는 유통기업",
+        "company_description": "CU를 운영하며 축제 관람객의 식음료·간편식·행사용품 수요에 노출되는 유통기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "business_exposure_evidence",
+        "evidence_url": "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf",
+            "title": "BGF리테일",
+            "evidence_type": "business_exposure_evidence",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "distribution",
+        "company_role_label": "배급·유통",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf"
+            ],
+            "evidence_type": "business_exposure_evidence",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "BGF리테일",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf"
+            ],
+            "evidence_type": "business_exposure_evidence",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "BGF리테일",
+          "corp_code": null,
+          "english_name": null,
+          "established_date": null,
+          "financial_snapshot": {
+            "company": "BGF리테일",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "reason": "financial_snapshot_unavailable",
+            "relationship_evidence": false,
+            "retrieved_at": "2026-08-13T13:00:00+00:00",
+            "status": "unavailable",
+            "stock_code": "282330"
+          },
+          "homepage": null,
+          "legal_name": null,
+          "market_class": null,
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T13:00:00+00:00",
+          "status": "unavailable",
+          "stock_code": "282330",
+          "stock_name": null
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "282330",
+          "name": "BGF리테일",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 125200.0,
+              "high": 126900.0,
+              "low": 118600.0,
+              "close": 125000.0,
+              "volume": 154791.0,
+              "change_pct": -1.1075949367088607
+            },
+            {
+              "date": "2026-08-03",
+              "open": 123300.0,
+              "high": 126800.0,
+              "low": 120900.0,
+              "close": 122000.0,
+              "volume": 60035.0,
+              "change_pct": -2.4
+            },
+            {
+              "date": "2026-08-04",
+              "open": 119100.0,
+              "high": 125700.0,
+              "low": 119100.0,
+              "close": 125300.0,
+              "volume": 40805.0,
+              "change_pct": 2.7049180327868854
+            },
+            {
+              "date": "2026-08-05",
+              "open": 122500.0,
+              "high": 125800.0,
+              "low": 121000.0,
+              "close": 122300.0,
+              "volume": 103223.0,
+              "change_pct": -2.3942537909018355
+            },
+            {
+              "date": "2026-08-06",
+              "open": 123500.0,
+              "high": 134200.0,
+              "low": 123500.0,
+              "close": 133500.0,
+              "volume": 77636.0,
+              "change_pct": 9.157808667211773
+            },
+            {
+              "date": "2026-08-07",
+              "open": 141900.0,
+              "high": 156000.0,
+              "low": 141200.0,
+              "close": 153100.0,
+              "volume": 218092.0,
+              "change_pct": 14.681647940074907
+            },
+            {
+              "date": "2026-08-10",
+              "open": 150700.0,
+              "high": 155500.0,
+              "low": 148500.0,
+              "close": 151000.0,
+              "volume": 58974.0,
+              "change_pct": -1.3716525146962768
+            },
+            {
+              "date": "2026-08-11",
+              "open": 152900.0,
+              "high": 156600.0,
+              "low": 149000.0,
+              "close": 150500.0,
+              "volume": 82040.0,
+              "change_pct": -0.33112582781456956
+            },
+            {
+              "date": "2026-08-12",
+              "open": 150300.0,
+              "high": 152000.0,
+              "low": 144400.0,
+              "close": 145500.0,
+              "volume": 70377.0,
+              "change_pct": -3.322259136212625
+            },
+            {
+              "date": "2026-08-13",
+              "open": 144100.0,
+              "high": 146700.0,
+              "low": 142000.0,
+              "close": 142700.0,
+              "volume": 59482.0,
+              "change_pct": -1.9243986254295533
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 144100.0,
+            "high": 146700.0,
+            "low": 142000.0,
+            "close": 142700.0,
+            "volume": 59482.0,
+            "change_pct": -1.9243986254295533
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 142700,
+            "daily_change_pct": -1.92,
+            "volume": 59482
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": -6.79,
+            "five_vs_previous_volume_ratio": 1.12,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "Canon",
+        "stock_code": "7751",
+        "ticker": "7751",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Canon 공식 카메라 설명서가 불꽃 촬영 전용 장면 모드와 삼각대 사용법을 명시",
+        "relationship_reason": "Canon 공식 카메라 설명서가 불꽃 촬영 전용 장면 모드와 삼각대 사용법을 명시",
+        "company_summary": "불꽃 촬영용 카메라와 촬영 모드를 제공하는 일본 상장 광학기업",
+        "company_description": "불꽃 촬영용 카메라와 촬영 모드를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "official_fireworks_camera_guide",
+        "evidence_url": "https://files.canon-europe.com/files/soft39129/Manual/1000HS_CUG_EN.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://files.canon-europe.com/files/soft39129/Manual/1000HS_CUG_EN.pdf",
+            "title": "Canon",
+            "evidence_type": "official_fireworks_camera_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://files.canon-europe.com/files/soft39129/Manual/1000HS_CUG_EN.pdf"
+            ],
+            "evidence_type": "official_fireworks_camera_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "Canon",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://files.canon-europe.com/files/soft39129/Manual/1000HS_CUG_EN.pdf"
+            ],
+            "evidence_type": "official_fireworks_camera_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Canon",
+          "stock_code": "7751",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7751",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Nikon",
+        "stock_code": "7731",
+        "ticker": "7731",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Nikon 공식 가이드가 DSLR·Z 시리즈·COOLPIX를 이용한 불꽃 촬영법을 직접 안내",
+        "relationship_reason": "Nikon 공식 가이드가 DSLR·Z 시리즈·COOLPIX를 이용한 불꽃 촬영법을 직접 안내",
+        "company_summary": "불꽃 촬영용 카메라·렌즈와 촬영 교육 콘텐츠를 제공하는 일본 상장 광학기업",
+        "company_description": "불꽃 촬영용 카메라·렌즈와 촬영 교육 콘텐츠를 제공하는 일본 상장 광학기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "official_fireworks_photography_guide",
+        "evidence_url": "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/taking-pictures-of-fireworks",
+        "evidence_sources": [
+          {
+            "url": "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/taking-pictures-of-fireworks",
+            "title": "Nikon",
+            "evidence_type": "official_fireworks_photography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/taking-pictures-of-fireworks"
+            ],
+            "evidence_type": "official_fireworks_photography_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "Nikon",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/taking-pictures-of-fireworks"
+            ],
+            "evidence_type": "official_fireworks_photography_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Nikon",
+          "stock_code": "7731",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7731",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Sony Group",
+        "stock_code": "6758",
+        "ticker": "6758",
+        "market": "TSE",
+        "relation_type": "adjacent",
+        "strength": "industry_watch",
+        "reason": "Sony 공식 가이드가 불꽃 촬영용 장비·렌즈·설정과 촬영 절차를 직접 설명",
+        "relationship_reason": "Sony 공식 가이드가 불꽃 촬영용 장비·렌즈·설정과 촬영 절차를 직접 설명",
+        "company_summary": "불꽃 촬영 기능과 카메라·렌즈 제품군을 제공하는 일본 상장 전자기업",
+        "company_description": "불꽃 촬영 기능과 카메라·렌즈 제품군을 제공하는 일본 상장 전자기업",
+        "business_features": [
+          "문화행사/연화/현장소비"
+        ],
+        "evidence_kind": "official_fireworks_photography_guide",
+        "evidence_url": "https://www.sony.com/electronics/support/articles/00223375",
+        "evidence_sources": [
+          {
+            "url": "https://www.sony.com/electronics/support/articles/00223375",
+            "title": "Sony",
+            "evidence_type": "official_fireworks_photography_guide",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "문화행사/연화/현장소비",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "불꽃축제",
+        "matched_ontology_node": "불꽃축제",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "불꽃축제",
+            "to": "문화행사/연화/현장소비",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.sony.com/electronics/support/articles/00223375"
+            ],
+            "evidence_type": "official_fireworks_photography_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "문화행사/연화/현장소비",
+            "to": "Sony Group",
+            "edge_type": "adjacent",
+            "evidence_urls": [
+              "https://www.sony.com/electronics/support/articles/00223375"
+            ],
+            "evidence_type": "official_fireworks_photography_guide",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Sony Group",
+          "stock_code": "6758",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "6758",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 6,
+      "score_independent_of_company_count": true,
+      "direct_count": 1,
+      "role_coverage": [
+        "문화행사/연화/현장소비"
+      ],
+      "tier_counts": {
+        "direct": 1,
+        "value_chain": 0,
+        "industry_watch": 5
+      },
+      "category_count": 3,
+      "candidate_category_count": 3,
+      "role_category_counts": {
+        "distribution": 2,
+        "industry_adjacent": 3,
+        "manufacturing_development": 1
+      },
+      "ontology_diagnostics": {
+        "source": "term_specific_enrichment_cache",
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "용어별 근거 URL과 상장 식별자가 완비된 6개 이상 기업을 공개"
+    },
+    "rank": 314,
+    "observed_rank": 314,
+    "home_rank": 12,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 235,
+    "momentum_rank": 352,
+    "main_rank": 25,
+    "home_context_status": "resolved",
+    "home_context_reason": "context_resolved",
+    "home_eligible": true,
+    "company_card_status": "ready",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "ready",
+    "frontend_readiness_status": "ready",
+    "frontend_readiness_missing": [],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 6,
+    "publication_rank": 5,
+    "ranking_availability_status": "provisional_history"
+  }
+}

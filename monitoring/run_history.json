@@ -301,5 +301,21 @@
     "observed_rows": 266,
     "errors": {},
     "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-13T18:00:00+00:00",
+    "started_at": "2026-08-13T18:03:54.985388+00:00",
+    "finished_at": "2026-08-13T18:04:17.559064+00:00",
+    "delay_seconds": 235,
+    "duration_seconds": 22.57,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 257,
+    "errors": {},
+    "source_failures": {}
   }
 ]

@@ -1,0 +1,1446 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-05e53e61d80940fba4c25a9309941eea",
+  "generated_at": "2026-08-13T18:04:17.605706+00:00",
+  "observed_at": "2026-08-13T18:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "아시안 게임",
+    "topic": "아시안 게임",
+    "display_name": "아시안 게임",
+    "observed_representative_term": "아시안 게임",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "아시안 게임",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 5,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.031538,
+      "best_source_rank": 70
+    },
+    "raw_terms": [
+      "아시안 게임"
+    ],
+    "phenomenon_summary": "\"아시안 게임\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "sports_participation",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "sports",
+    "category_label": "스포츠",
+    "trend_definition": "'아시안 게임' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 스포츠 트렌드입니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 36.81,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.303147,
+    "current_source_position": 0.303147,
+    "momentum": 0.6063,
+    "persistence": 0.1042,
+    "momentum_delta": 0.606294,
+    "score_components": {
+      "period_strength_points": 10.61,
+      "momentum_points": 15.16,
+      "persistence_points": 1.04,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 36.81
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.606294
+      },
+      "momentum_deltas": {
+        "google_trends": 0.606294
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 5,
+          "comparison": 0
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 11,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 5,
+          "presence_rate": 0.208333,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.458333,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-13T12:00:00+00:00",
+      "last_seen_at": "2026-08-13T18:00:00+00:00",
+      "observed_hours": 5,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 113
+    },
+    "rank_change_by_source": {
+      "google_trends": 5
+    },
+    "source_rank_change": {
+      "google_trends": 5
+    },
+    "first_seen_at": "2026-08-13T12:00:00+00:00",
+    "last_seen_at": "2026-08-13T18:00:00+00:00",
+    "age_hours": 6,
+    "lifecycle": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 19,
+      "history_maturity": 0.5,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "google_trends",
+        "rank": 70,
+        "value": 31.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 242, \"collection_page_count\": 10, \"growth_text\": \"200%\", \"page\": 3, \"row_on_page\": 20, \"started_text\": \"3시간 전\", \"status_text\": \"활성\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 90,
+        "value": 11.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 238, \"collection_page_count\": 10, \"growth_text\": \"200%\", \"page\": 4, \"row_on_page\": 15, \"started_text\": \"4시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 113,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 229, \"collection_page_count\": 10, \"growth_text\": \"200%\", \"page\": 5, \"row_on_page\": 13, \"started_text\": \"7시간 전\", \"status_text\": \"5시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 118,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 236, \"collection_page_count\": 10, \"growth_text\": \"200%\", \"page\": 5, \"row_on_page\": 18, \"started_text\": \"8시간 전\", \"status_text\": \"5시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 113,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 227, \"collection_page_count\": 10, \"growth_text\": \"200%\", \"page\": 5, \"row_on_page\": 13, \"started_text\": \"9시간 전\", \"status_text\": \"5시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [
+      {
+        "text": "아이치 나고야 아시안게임",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "아시안게임 일정",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "아시안게임 종목",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "아시안게임 국가대표",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "아시안게임 메달",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [
+      {
+        "company": "Toyota Motor",
+        "stock_code": "7203",
+        "ticker": "7203",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 Toyota를 Tier 1 모빌리티 후원사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 Toyota를 Tier 1 모빌리티 후원사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임의 모빌리티 분야 공식 후원사인 일본 상장 자동차기업",
+        "company_description": "2026 아이치·나고야 아시안게임의 모빌리티 분야 공식 후원사인 일본 상장 자동차기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "Toyota Motor",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Toyota Motor",
+          "stock_code": "7203",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7203",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Chubu Electric Power",
+        "stock_code": "9502",
+        "ticker": "9502",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 Chubu Electric Power를 Tier 1 유틸리티 후원사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 Chubu Electric Power를 Tier 1 유틸리티 후원사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임의 유틸리티 분야 공식 후원사인 일본 상장 전력기업",
+        "company_description": "2026 아이치·나고야 아시안게임의 유틸리티 분야 공식 후원사인 일본 상장 전력기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "Chubu Electric Power",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Chubu Electric Power",
+          "stock_code": "9502",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9502",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "AEON",
+        "stock_code": "8267",
+        "ticker": "8267",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 AEON을 Tier 1 유통·리테일 후원사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 AEON을 Tier 1 유통·리테일 후원사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임의 유통·리테일 분야 공식 후원사인 일본 상장 유통기업",
+        "company_description": "2026 아이치·나고야 아시안게임의 유통·리테일 분야 공식 후원사인 일본 상장 유통기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "distribution",
+        "company_role_label": "배급·유통",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "AEON",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "AEON",
+          "stock_code": "8267",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "8267",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "NTT",
+        "stock_code": "9432",
+        "ticker": "9432",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 NTT를 통신 서비스 공식 파트너로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 NTT를 통신 서비스 공식 파트너로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임의 통신 서비스 공식 파트너인 일본 상장 통신기업",
+        "company_description": "2026 아이치·나고야 아시안게임의 통신 서비스 공식 파트너인 일본 상장 통신기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "NTT",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "NTT",
+          "stock_code": "9432",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9432",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "YONEX",
+        "stock_code": "7906",
+        "ticker": "7906",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 YONEX를 배드민턴·테니스 장비 공식 공급사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 YONEX를 배드민턴·테니스 장비 공식 공급사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임 배드민턴·테니스 장비 공식 공급사인 일본 상장기업",
+        "company_description": "2026 아이치·나고야 아시안게임 배드민턴·테니스 장비 공식 공급사인 일본 상장기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "YONEX",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "YONEX",
+          "stock_code": "7906",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7906",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Brother Industries",
+        "stock_code": "6448",
+        "ticker": "6448",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 Brother Industries를 현장 장비 공식 공급사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 Brother Industries를 현장 장비 공식 공급사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임 현장 냉방 장비 공식 공급사인 일본 상장기업",
+        "company_description": "2026 아이치·나고야 아시안게임 현장 냉방 장비 공식 공급사인 일본 상장기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "Brother Industries",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Brother Industries",
+          "stock_code": "6448",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "6448",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "Toyota Motor",
+        "stock_code": "7203",
+        "ticker": "7203",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 Toyota를 Tier 1 모빌리티 후원사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 Toyota를 Tier 1 모빌리티 후원사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임의 모빌리티 분야 공식 후원사인 일본 상장 자동차기업",
+        "company_description": "2026 아이치·나고야 아시안게임의 모빌리티 분야 공식 후원사인 일본 상장 자동차기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "Toyota Motor",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Toyota Motor",
+          "stock_code": "7203",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7203",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Chubu Electric Power",
+        "stock_code": "9502",
+        "ticker": "9502",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 Chubu Electric Power를 Tier 1 유틸리티 후원사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 Chubu Electric Power를 Tier 1 유틸리티 후원사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임의 유틸리티 분야 공식 후원사인 일본 상장 전력기업",
+        "company_description": "2026 아이치·나고야 아시안게임의 유틸리티 분야 공식 후원사인 일본 상장 전력기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "Chubu Electric Power",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Chubu Electric Power",
+          "stock_code": "9502",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9502",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "AEON",
+        "stock_code": "8267",
+        "ticker": "8267",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 AEON을 Tier 1 유통·리테일 후원사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 AEON을 Tier 1 유통·리테일 후원사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임의 유통·리테일 분야 공식 후원사인 일본 상장 유통기업",
+        "company_description": "2026 아이치·나고야 아시안게임의 유통·리테일 분야 공식 후원사인 일본 상장 유통기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "distribution",
+        "company_role_label": "배급·유통",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "AEON",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_45.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "AEON",
+          "stock_code": "8267",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "8267",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "NTT",
+        "stock_code": "9432",
+        "ticker": "9432",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 NTT를 통신 서비스 공식 파트너로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 NTT를 통신 서비스 공식 파트너로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임의 통신 서비스 공식 파트너인 일본 상장 통신기업",
+        "company_description": "2026 아이치·나고야 아시안게임의 통신 서비스 공식 파트너인 일본 상장 통신기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "NTT",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "NTT",
+          "stock_code": "9432",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "9432",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "YONEX",
+        "stock_code": "7906",
+        "ticker": "7906",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 YONEX를 배드민턴·테니스 장비 공식 공급사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 YONEX를 배드민턴·테니스 장비 공식 공급사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임 배드민턴·테니스 장비 공식 공급사인 일본 상장기업",
+        "company_description": "2026 아이치·나고야 아시안게임 배드민턴·테니스 장비 공식 공급사인 일본 상장기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "YONEX",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "YONEX",
+          "stock_code": "7906",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "7906",
+          "reason": "market_reference_invalid"
+        }
+      },
+      {
+        "company": "Brother Industries",
+        "stock_code": "6448",
+        "ticker": "6448",
+        "market": "TSE",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "대회 공식 파트너 명단이 Brother Industries를 현장 장비 공식 공급사로 명시",
+        "relationship_reason": "대회 공식 파트너 명단이 Brother Industries를 현장 장비 공식 공급사로 명시",
+        "company_summary": "2026 아이치·나고야 아시안게임 현장 냉방 장비 공식 공급사인 일본 상장기업",
+        "company_description": "2026 아이치·나고야 아시안게임 현장 냉방 장비 공식 공급사인 일본 상장기업",
+        "business_features": [
+          "국제스포츠행사/공식후원/현장인프라"
+        ],
+        "evidence_kind": "official_sponsor_list",
+        "evidence_url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+        "evidence_sources": [
+          {
+            "url": "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf",
+            "title": "Aichi-Nagoya 2026 Organising Committee",
+            "evidence_type": "official_sponsor_list",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "국제스포츠행사/공식후원/현장인프라",
+        "company_role_category": "event_sponsorship",
+        "company_role_label": "행사 후원·운영",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "아시안 게임",
+        "matched_ontology_node": "아시안 게임",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "아시안 게임",
+            "to": "국제스포츠행사/공식후원/현장인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "국제스포츠행사/공식후원/현장인프라",
+            "to": "Brother Industries",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://www.aichi-nagoya2026.org/en/assets/file/donations/partner-list_20.pdf"
+            ],
+            "evidence_type": "official_sponsor_list",
+            "as_of": "2026-08-13T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "status": "unavailable",
+          "provider": "exchange_official",
+          "company": "Brother Industries",
+          "stock_code": "6448",
+          "legal_name": null,
+          "english_name": null,
+          "stock_name": null,
+          "market_class": "TSE",
+          "homepage": null,
+          "established_date": null,
+          "retrieved_at": "2026-08-13T18:00:00+00:00",
+          "ranking_effect": "none",
+          "relationship_evidence": false
+        },
+        "market_reference": {
+          "status": "invalid",
+          "stock_code": "6448",
+          "reason": "market_reference_invalid"
+        }
+      }
+    ],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 6,
+      "score_independent_of_company_count": true,
+      "direct_count": 6,
+      "role_coverage": [
+        "국제스포츠행사/공식후원/현장인프라"
+      ],
+      "tier_counts": {
+        "direct": 6,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 2,
+      "candidate_category_count": 2,
+      "role_category_counts": {
+        "distribution": 1,
+        "event_sponsorship": 5
+      },
+      "ontology_diagnostics": {
+        "source": "term_specific_enrichment_cache",
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "용어별 근거 URL과 상장 식별자가 완비된 6개 이상 기업을 공개"
+    },
+    "rank": 124,
+    "observed_rank": 124,
+    "home_rank": 8,
+    "rising_rank": 2,
+    "classification": "일반 트렌드",
+    "persistence_rank": 489,
+    "momentum_rank": 123,
+    "main_rank": 13,
+    "home_context_status": "resolved",
+    "home_context_reason": "specific_observed_expression",
+    "home_eligible": true,
+    "company_card_status": "ready",
+    "company_card_reason": "fewer_than_three_evidence_backed_companies",
+    "company_status": "ready",
+    "frontend_readiness_status": "ready",
+    "frontend_readiness_missing": [],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 6,
+    "publication_rank": 3,
+    "ranking_availability_status": "provisional_history"
+  }
+}

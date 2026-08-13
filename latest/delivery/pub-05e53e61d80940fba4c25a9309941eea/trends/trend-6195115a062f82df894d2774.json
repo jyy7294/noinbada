@@ -1,0 +1,2890 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-05e53e61d80940fba4c25a9309941eea",
+  "generated_at": "2026-08-13T18:04:17.605706+00:00",
+  "observed_at": "2026-08-13T18:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "말복",
+    "topic": "말복",
+    "display_name": "말복",
+    "observed_representative_term": "말복",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "말복",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 11,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.089954,
+      "best_source_rank": 32
+    },
+    "raw_terms": [
+      "말복"
+    ],
+    "phenomenon_summary": "\"말복\" · Google Trends KR에서 관측",
+    "context_status": "resolved_reference",
+    "ground_truth_match": true,
+    "category": "seasonal_food_ritual",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "food",
+    "category_label": "음식·식품",
+    "trend_definition": "'말복' 관련 관심이 X와 Google의 대한민국 실측 데이터에서 관측된 음식·식품 트렌드입니다. 함께 나타난 관련 표현은 末伏, 복달임입니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 19.41,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 0.374577,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 17.0
+    },
+    "hours_since_last_seen": 17.0,
+    "previous_period_rank": 70,
+    "rank_change": -255,
+    "rank_change_status": "measured",
+    "period_strength": 0.375106,
+    "current_source_position": 0.375106,
+    "momentum": 0.0597,
+    "persistence": 0.1042,
+    "momentum_delta": 0.05965,
+    "score_components": {
+      "period_strength_points": 13.13,
+      "momentum_points": 1.49,
+      "persistence_points": 1.04,
+      "recency_points": 3.75,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 19.41
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.750211
+      },
+      "momentum_deltas": {
+        "google_trends": 0.05965
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 5,
+          "comparison": 6
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 11,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 13,
+          "observed_hours": 5,
+          "presence_rate": 0.208333,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.458333,
+        "google_trends": 0.541667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T01:00:00+00:00",
+      "observed_hours": 11,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 32
+    },
+    "rank_change_by_source": {
+      "google_trends": 21
+    },
+    "source_rank_change": {
+      "google_trends": 21
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T01:00:00+00:00",
+    "age_hours": 29,
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 19,
+      "history_maturity": 0.5,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "말복",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        }
+      },
+      "status": "unavailable",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "말복",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        }
+      },
+      "status": "unavailable",
+      "observed_platforms": [],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 69,
+        "value": 32.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"100%\", \"page\": 3, \"row_on_page\": 19, \"started_text\": \"12시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 67,
+        "value": 34.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"100%\", \"page\": 3, \"row_on_page\": 17, \"started_text\": \"13시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 63,
+        "value": 38.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"100%\", \"page\": 3, \"row_on_page\": 13, \"started_text\": \"14시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 60,
+        "value": 41.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"100%\", \"page\": 3, \"row_on_page\": 10, \"started_text\": \"15시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 58,
+        "value": 43.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"100%\", \"page\": 3, \"row_on_page\": 8, \"started_text\": \"16시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 61,
+        "value": 40.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"100%\", \"page\": 3, \"row_on_page\": 11, \"started_text\": \"17시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 64,
+        "value": 37.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"100%\", \"page\": 3, \"row_on_page\": 14, \"started_text\": \"17시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 100,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"100%\", \"page\": 4, \"row_on_page\": 25, \"started_text\": \"19시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 81,
+        "value": 20.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"100%\", \"page\": 4, \"row_on_page\": 6, \"started_text\": \"21시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 53,
+        "value": 48.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"100%\", \"page\": 3, \"row_on_page\": 3, \"started_text\": \"22시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 32,
+        "value": 69.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"100%\", \"page\": 2, \"row_on_page\": 7, \"started_text\": \"23시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "末伏",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "복달임",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "seasonal_custom",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "초복",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "same_seasonal_calendar_group",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "중복",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "same_seasonal_calendar_group",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "삼복",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "seasonal_calendar_group",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "末伏",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "복달임",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "seasonal_custom",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "초복",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "same_seasonal_calendar_group",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "중복",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "same_seasonal_calendar_group",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "삼복",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "seasonal_calendar_group",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+        ],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 5,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 5,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [
+      {
+        "company": "대상",
+        "stock_code": "001680",
+        "ticker": "001680",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 대상 → 001680 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 대상 → 001680 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 001680",
+        "company_description": "KOSPI 상장기업, 종목코드 001680",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2024/07/02/000240/20240702000603/00637.htm",
+            "title": "대상 유가증권상장법인 회사코드 001680",
+            "evidence_type": "official_listing_record",
+            "published_at": "2024-07-01",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "대상",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "대상",
+            "to": "001680 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2024/07/02/000240/20240702000603/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2024-07-01",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "대상",
+          "english_name": "DAESANG CORPORATION",
+          "established_date": "19560131",
+          "homepage": "https://www.daesang.co.kr",
+          "legal_name": "대상(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "001680",
+          "stock_name": "대상"
+        }
+      },
+      {
+        "company": "마니커",
+        "stock_code": "027740",
+        "ticker": "027740",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 027740",
+        "company_description": "KOSPI 상장기업, 종목코드 027740",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm",
+            "title": "마니커 유가증권상장법인 회사코드 027740",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-03-18",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "마니커",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "마니커",
+            "to": "027740 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-03-18",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "마니커",
+          "english_name": "MANIKER CO.,LTD.",
+          "established_date": "19850927",
+          "homepage": "https://www.maniker.co.kr",
+          "legal_name": "(주)마니커",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "027740",
+          "stock_name": "마니커"
+        }
+      },
+      {
+        "company": "신세계푸드",
+        "stock_code": "031440",
+        "ticker": "031440",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 신세계푸드 → 031440 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 신세계푸드 → 031440 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 031440",
+        "company_description": "KOSPI 상장기업, 종목코드 031440",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/01/07/000327/20260107001105/00634.htm",
+            "title": "신세계푸드 유가증권상장법인 회사코드 031440",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-01-07",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "신세계푸드",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "신세계푸드",
+            "to": "031440 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/01/07/000327/20260107001105/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-01-07",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "신세계푸드",
+          "english_name": "SHINSEGAE FOOD Inc.",
+          "established_date": "19791011",
+          "homepage": "https://www.shinsegaefood.com",
+          "legal_name": "(주)신세계푸드",
+          "market_class": "E",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "031440",
+          "stock_name": "신세계푸드"
+        }
+      },
+      {
+        "company": "이마트",
+        "stock_code": "139480",
+        "ticker": "139480",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 이마트 → 139480 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 이마트 → 139480 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 139480",
+        "company_description": "KOSPI 상장기업, 종목코드 139480",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/01/28/000318/20260128001057/00634.htm",
+            "title": "이마트 유가증권상장법인 회사코드 139480",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-01-27",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "이마트",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "이마트",
+            "to": "139480 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/01/28/000318/20260128001057/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-01-27",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "이마트",
+          "english_name": "E-MART Inc.",
+          "established_date": "20110503",
+          "homepage": "https://emartcompany.com/ko/main.do",
+          "legal_name": "(주)이마트",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "139480",
+          "stock_name": "이마트"
+        }
+      },
+      {
+        "company": "하림",
+        "stock_code": "136480",
+        "ticker": "136480",
+        "market": "KOSDAQ",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 136480",
+        "company_description": "KOSDAQ 상장기업, 종목코드 136480",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm",
+            "title": "하림 코스닥상장법인 회사코드 136480",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-02-25",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "하림",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "하림",
+            "to": "136480 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-02-25",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "하림",
+          "english_name": "HARIM Co., Ltd.",
+          "established_date": "20110104",
+          "homepage": "https://-",
+          "legal_name": "(주)하림",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "136480",
+          "stock_name": "하림"
+        }
+      },
+      {
+        "company": "한성기업",
+        "stock_code": "003680",
+        "ticker": "003680",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 한성기업 → 003680 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 한성기업 → 003680 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 003680",
+        "company_description": "KOSPI 상장기업, 종목코드 003680",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2025/03/24/000127/20250324000721/00636.htm",
+            "title": "한성기업 유가증권상장법인 회사코드 003680",
+            "evidence_type": "official_listing_record",
+            "published_at": "2025-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "한성기업",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "한성기업",
+            "to": "003680 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2025/03/24/000127/20250324000721/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2025-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "한성기업",
+          "english_name": "HANSUNG ENTERPRISE CO.,LTD",
+          "established_date": "19630314",
+          "homepage": "https://www.hsep.com",
+          "legal_name": "한성기업(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "003680",
+          "stock_name": "한성기업"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "대상",
+        "stock_code": "001680",
+        "ticker": "001680",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 대상 → 001680 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 대상 → 001680 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 001680",
+        "company_description": "KOSPI 상장기업, 종목코드 001680",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2024/07/02/000240/20240702000603/00637.htm",
+            "title": "대상 유가증권상장법인 회사코드 001680",
+            "evidence_type": "official_listing_record",
+            "published_at": "2024-07-01",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "대상",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "대상",
+            "to": "001680 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2024/07/02/000240/20240702000603/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2024-07-01",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "대상",
+          "english_name": "DAESANG CORPORATION",
+          "established_date": "19560131",
+          "homepage": "https://www.daesang.co.kr",
+          "legal_name": "대상(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "001680",
+          "stock_name": "대상"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "001680",
+          "name": "대상",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 18010.0,
+              "high": 18520.0,
+              "low": 17860.0,
+              "close": 18220.0,
+              "volume": 140041.0,
+              "change_pct": 1.901565995525727
+            },
+            {
+              "date": "2026-07-31",
+              "open": 18220.0,
+              "high": 18220.0,
+              "low": 17545.0,
+              "close": 17720.0,
+              "volume": 115468.0,
+              "change_pct": -2.7442371020856204
+            },
+            {
+              "date": "2026-08-03",
+              "open": 17550.0,
+              "high": 17900.0,
+              "low": 17400.0,
+              "close": 17480.0,
+              "volume": 65026.0,
+              "change_pct": -1.3544018058690745
+            },
+            {
+              "date": "2026-08-04",
+              "open": 17410.0,
+              "high": 17810.0,
+              "low": 17370.0,
+              "close": 17740.0,
+              "volume": 46582.0,
+              "change_pct": 1.4874141876430207
+            },
+            {
+              "date": "2026-08-05",
+              "open": 17640.0,
+              "high": 18040.0,
+              "low": 17640.0,
+              "close": 17710.0,
+              "volume": 69451.0,
+              "change_pct": -0.16910935738444194
+            },
+            {
+              "date": "2026-08-06",
+              "open": 17720.0,
+              "high": 18290.0,
+              "low": 17720.0,
+              "close": 18260.0,
+              "volume": 91276.0,
+              "change_pct": 3.1055900621118013
+            },
+            {
+              "date": "2026-08-07",
+              "open": 18080.0,
+              "high": 18640.0,
+              "low": 18070.0,
+              "close": 18550.0,
+              "volume": 105049.0,
+              "change_pct": 1.5881708652792992
+            },
+            {
+              "date": "2026-08-10",
+              "open": 18550.0,
+              "high": 18600.0,
+              "low": 18170.0,
+              "close": 18370.0,
+              "volume": 52536.0,
+              "change_pct": -0.9703504043126685
+            },
+            {
+              "date": "2026-08-11",
+              "open": 18380.0,
+              "high": 18610.0,
+              "low": 18230.0,
+              "close": 18320.0,
+              "volume": 71082.0,
+              "change_pct": -0.2721829069134458
+            },
+            {
+              "date": "2026-08-12",
+              "open": 18240.0,
+              "high": 18350.0,
+              "low": 17860.0,
+              "close": 17880.0,
+              "volume": 122410.0,
+              "change_pct": -2.4017467248908297
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 18240.0,
+            "high": 18350.0,
+            "low": 17860.0,
+            "close": 17880.0,
+            "volume": 122410.0,
+            "change_pct": -2.4017467248908297
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 17880,
+            "daily_change_pct": -2.4,
+            "volume": 122410
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -2.08,
+            "five_vs_previous_volume_ratio": 1.01,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "마니커",
+        "stock_code": "027740",
+        "ticker": "027740",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 027740",
+        "company_description": "KOSPI 상장기업, 종목코드 027740",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm",
+            "title": "마니커 유가증권상장법인 회사코드 027740",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-03-18",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "마니커",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "마니커",
+            "to": "027740 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-03-18",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "마니커",
+          "english_name": "MANIKER CO.,LTD.",
+          "established_date": "19850927",
+          "homepage": "https://www.maniker.co.kr",
+          "legal_name": "(주)마니커",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "027740",
+          "stock_name": "마니커"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "027740",
+          "name": "마니커",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 1032.0,
+              "high": 1134.0,
+              "low": 1032.0,
+              "close": 1065.0,
+              "volume": 324296.0,
+              "change_pct": 3.0977734753146176
+            },
+            {
+              "date": "2026-07-31",
+              "open": 1065.0,
+              "high": 1070.0,
+              "low": 1020.0,
+              "close": 1058.0,
+              "volume": 99641.0,
+              "change_pct": -0.6572769953051643
+            },
+            {
+              "date": "2026-08-03",
+              "open": 1058.0,
+              "high": 1086.0,
+              "low": 1042.0,
+              "close": 1054.0,
+              "volume": 67658.0,
+              "change_pct": -0.3780718336483932
+            },
+            {
+              "date": "2026-08-04",
+              "open": 1060.0,
+              "high": 1115.0,
+              "low": 1041.0,
+              "close": 1096.0,
+              "volume": 152843.0,
+              "change_pct": 3.984819734345351
+            },
+            {
+              "date": "2026-08-05",
+              "open": 1097.0,
+              "high": 1158.0,
+              "low": 1097.0,
+              "close": 1140.0,
+              "volume": 213718.0,
+              "change_pct": 4.014598540145985
+            },
+            {
+              "date": "2026-08-06",
+              "open": 1151.0,
+              "high": 1235.0,
+              "low": 1133.0,
+              "close": 1220.0,
+              "volume": 270503.0,
+              "change_pct": 7.017543859649122
+            },
+            {
+              "date": "2026-08-07",
+              "open": 1209.0,
+              "high": 1229.0,
+              "low": 1180.0,
+              "close": 1182.0,
+              "volume": 114668.0,
+              "change_pct": -3.114754098360656
+            },
+            {
+              "date": "2026-08-10",
+              "open": 1190.0,
+              "high": 1193.0,
+              "low": 1160.0,
+              "close": 1177.0,
+              "volume": 96081.0,
+              "change_pct": -0.4230118443316413
+            },
+            {
+              "date": "2026-08-11",
+              "open": 1168.0,
+              "high": 1197.0,
+              "low": 1160.0,
+              "close": 1188.0,
+              "volume": 61047.0,
+              "change_pct": 0.9345794392523363
+            },
+            {
+              "date": "2026-08-12",
+              "open": 1188.0,
+              "high": 1225.0,
+              "low": 1175.0,
+              "close": 1209.0,
+              "volume": 107559.0,
+              "change_pct": 1.7676767676767675
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 1188.0,
+            "high": 1225.0,
+            "low": 1175.0,
+            "close": 1209.0,
+            "volume": 107559.0,
+            "change_pct": 1.7676767676767675
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 1209,
+            "daily_change_pct": 1.77,
+            "volume": 107559
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -0.9,
+            "five_vs_previous_volume_ratio": 0.76,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "신세계푸드",
+        "stock_code": "031440",
+        "ticker": "031440",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 신세계푸드 → 031440 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 신세계푸드 → 031440 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 031440",
+        "company_description": "KOSPI 상장기업, 종목코드 031440",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/01/07/000327/20260107001105/00634.htm",
+            "title": "신세계푸드 유가증권상장법인 회사코드 031440",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-01-07",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "신세계푸드",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "신세계푸드",
+            "to": "031440 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/01/07/000327/20260107001105/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-01-07",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "신세계푸드",
+          "english_name": "SHINSEGAE FOOD Inc.",
+          "established_date": "19791011",
+          "homepage": "https://www.shinsegaefood.com",
+          "legal_name": "(주)신세계푸드",
+          "market_class": "E",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "031440",
+          "stock_name": "신세계푸드"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "031440",
+          "name": "신세계푸드",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-28",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-07-29",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-07-30",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-07-31",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-03",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-04",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-05",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-06",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-07",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-10",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 38150.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-10",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 38150.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          "summary": {
+            "as_of": "2026-08-10",
+            "close": 38150,
+            "daily_change_pct": 0.0,
+            "volume": 0
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 0.0,
+            "five_vs_previous_volume_ratio": null,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "이마트",
+        "stock_code": "139480",
+        "ticker": "139480",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 이마트 → 139480 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 이마트 → 139480 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 139480",
+        "company_description": "KOSPI 상장기업, 종목코드 139480",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/01/28/000318/20260128001057/00634.htm",
+            "title": "이마트 유가증권상장법인 회사코드 139480",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-01-27",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "이마트",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "이마트",
+            "to": "139480 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/01/28/000318/20260128001057/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-01-27",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "이마트",
+          "english_name": "E-MART Inc.",
+          "established_date": "20110503",
+          "homepage": "https://emartcompany.com/ko/main.do",
+          "legal_name": "(주)이마트",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "139480",
+          "stock_name": "이마트"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "139480",
+          "name": "이마트",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 75800.0,
+              "high": 79900.0,
+              "low": 75800.0,
+              "close": 77800.0,
+              "volume": 92510.0,
+              "change_pct": 0.9079118028534372
+            },
+            {
+              "date": "2026-07-31",
+              "open": 79500.0,
+              "high": 80000.0,
+              "low": 77600.0,
+              "close": 79800.0,
+              "volume": 124222.0,
+              "change_pct": 2.570694087403599
+            },
+            {
+              "date": "2026-08-03",
+              "open": 78800.0,
+              "high": 79200.0,
+              "low": 77400.0,
+              "close": 78200.0,
+              "volume": 93485.0,
+              "change_pct": -2.0050125313283207
+            },
+            {
+              "date": "2026-08-04",
+              "open": 77800.0,
+              "high": 80100.0,
+              "low": 77100.0,
+              "close": 80100.0,
+              "volume": 89887.0,
+              "change_pct": 2.4296675191815855
+            },
+            {
+              "date": "2026-08-05",
+              "open": 80500.0,
+              "high": 81600.0,
+              "low": 79300.0,
+              "close": 79700.0,
+              "volume": 87577.0,
+              "change_pct": -0.4993757802746567
+            },
+            {
+              "date": "2026-08-06",
+              "open": 79700.0,
+              "high": 81400.0,
+              "low": 79000.0,
+              "close": 81400.0,
+              "volume": 90013.0,
+              "change_pct": 2.132998745294856
+            },
+            {
+              "date": "2026-08-07",
+              "open": 80800.0,
+              "high": 83100.0,
+              "low": 80600.0,
+              "close": 81600.0,
+              "volume": 108421.0,
+              "change_pct": 0.2457002457002457
+            },
+            {
+              "date": "2026-08-10",
+              "open": 81600.0,
+              "high": 82400.0,
+              "low": 80300.0,
+              "close": 81800.0,
+              "volume": 111368.0,
+              "change_pct": 0.24509803921568626
+            },
+            {
+              "date": "2026-08-11",
+              "open": 81800.0,
+              "high": 82800.0,
+              "low": 80300.0,
+              "close": 80600.0,
+              "volume": 88216.0,
+              "change_pct": -1.466992665036675
+            },
+            {
+              "date": "2026-08-12",
+              "open": 80700.0,
+              "high": 80900.0,
+              "low": 79700.0,
+              "close": 79900.0,
+              "volume": 94687.0,
+              "change_pct": -0.8684863523573202
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 80700.0,
+            "high": 80900.0,
+            "low": 79700.0,
+            "close": 79900.0,
+            "volume": 94687.0,
+            "change_pct": -0.8684863523573202
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 79900,
+            "daily_change_pct": -0.87,
+            "volume": 94687
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -1.84,
+            "five_vs_previous_volume_ratio": 1.01,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "하림",
+        "stock_code": "136480",
+        "ticker": "136480",
+        "market": "KOSDAQ",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 136480",
+        "company_description": "KOSDAQ 상장기업, 종목코드 136480",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm",
+            "title": "하림 코스닥상장법인 회사코드 136480",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-02-25",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "하림",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "하림",
+            "to": "136480 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-02-25",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "하림",
+          "english_name": "HARIM Co., Ltd.",
+          "established_date": "20110104",
+          "homepage": "https://-",
+          "legal_name": "(주)하림",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "136480",
+          "stock_name": "하림"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "136480",
+          "name": "하림",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 2550.0,
+              "high": 2660.0,
+              "low": 2550.0,
+              "close": 2595.0,
+              "volume": 324007.0,
+              "change_pct": -0.19230769230769232
+            },
+            {
+              "date": "2026-07-31",
+              "open": 2630.0,
+              "high": 2660.0,
+              "low": 2610.0,
+              "close": 2655.0,
+              "volume": 369332.0,
+              "change_pct": 2.312138728323699
+            },
+            {
+              "date": "2026-08-03",
+              "open": 2645.0,
+              "high": 2680.0,
+              "low": 2615.0,
+              "close": 2640.0,
+              "volume": 259661.0,
+              "change_pct": -0.5649717514124294
+            },
+            {
+              "date": "2026-08-04",
+              "open": 2630.0,
+              "high": 2690.0,
+              "low": 2630.0,
+              "close": 2680.0,
+              "volume": 350043.0,
+              "change_pct": 1.5151515151515151
+            },
+            {
+              "date": "2026-08-05",
+              "open": 2680.0,
+              "high": 2700.0,
+              "low": 2670.0,
+              "close": 2680.0,
+              "volume": 363191.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-06",
+              "open": 2680.0,
+              "high": 2725.0,
+              "low": 2680.0,
+              "close": 2710.0,
+              "volume": 378485.0,
+              "change_pct": 1.1194029850746268
+            },
+            {
+              "date": "2026-08-07",
+              "open": 2710.0,
+              "high": 2735.0,
+              "low": 2690.0,
+              "close": 2720.0,
+              "volume": 226237.0,
+              "change_pct": 0.36900369003690037
+            },
+            {
+              "date": "2026-08-10",
+              "open": 2720.0,
+              "high": 2745.0,
+              "low": 2695.0,
+              "close": 2730.0,
+              "volume": 200115.0,
+              "change_pct": 0.3676470588235294
+            },
+            {
+              "date": "2026-08-11",
+              "open": 2730.0,
+              "high": 2755.0,
+              "low": 2725.0,
+              "close": 2740.0,
+              "volume": 306534.0,
+              "change_pct": 0.3663003663003663
+            },
+            {
+              "date": "2026-08-12",
+              "open": 2740.0,
+              "high": 2750.0,
+              "low": 2700.0,
+              "close": 2710.0,
+              "volume": 307662.0,
+              "change_pct": -1.094890510948905
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 2740.0,
+            "high": 2750.0,
+            "low": 2700.0,
+            "close": 2710.0,
+            "volume": 307662.0,
+            "change_pct": -1.094890510948905
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 2710,
+            "daily_change_pct": -1.09,
+            "volume": 307662
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 0.0,
+            "five_vs_previous_volume_ratio": 0.85,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "한성기업",
+        "stock_code": "003680",
+        "ticker": "003680",
+        "market": "KOSPI",
+        "relation_type": "associated_consumption_occasion",
+        "strength": "direct",
+        "reason": "관측어 '말복'에서 말복 → 삼계탕 → 한성기업 → 003680 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '말복'에서 말복 → 삼계탕 → 한성기업 → 003680 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 003680",
+        "company_description": "KOSPI 상장기업, 종목코드 003680",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+        "evidence_sources": [
+          {
+            "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+            "title": "세시풍속 - 삼복",
+            "evidence_type": "official_cultural_definition",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002",
+            "title": "즉석삼계탕 비교정보 생산 결과",
+            "evidence_type": "government_product_market_test",
+            "published_at": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2025/03/24/000127/20250324000721/00636.htm",
+            "title": "한성기업 유가증권상장법인 회사코드 003680",
+            "evidence_type": "official_listing_record",
+            "published_at": "2025-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "말복",
+        "matched_ontology_node": "말복",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "말복",
+            "to": "말복",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "말복",
+            "to": "삼계탕",
+            "edge_type": "associated_consumption_occasion",
+            "evidence_urls": [
+              "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1"
+            ],
+            "evidence_type": [
+              "official_cultural_definition"
+            ],
+            "as_of": "2026-08-13T01:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼계탕",
+            "to": "한성기업",
+            "edge_type": "documented_product_market_participant",
+            "evidence_urls": [
+              "https://www.ftc.go.kr/www/selectBbsNttView.do?bordCd=3&key=12&nttSn=41183&pageIndex=32&pageUnit=10&rltnNttSn=42041&searchCnd=all&searchCtgry=01%2C02&searchViolt=000002"
+            ],
+            "evidence_type": [
+              "government_product_market_test"
+            ],
+            "as_of": "2019-07-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "한성기업",
+            "to": "003680 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2025/03/24/000127/20250324000721/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2025-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "official_identity": {
+          "company": "한성기업",
+          "english_name": "HANSUNG ENTERPRISE CO.,LTD",
+          "established_date": "19630314",
+          "homepage": "https://www.hsep.com",
+          "legal_name": "한성기업(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "003680",
+          "stock_name": "한성기업"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "003680",
+          "name": "한성기업",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 5880.0,
+              "high": 6390.0,
+              "low": 5760.0,
+              "close": 5840.0,
+              "volume": 868137.0,
+              "change_pct": -2.341137123745819
+            },
+            {
+              "date": "2026-07-31",
+              "open": 6300.0,
+              "high": 6700.0,
+              "low": 5930.0,
+              "close": 6130.0,
+              "volume": 1087440.0,
+              "change_pct": 4.965753424657534
+            },
+            {
+              "date": "2026-08-03",
+              "open": 6260.0,
+              "high": 6560.0,
+              "low": 5940.0,
+              "close": 6200.0,
+              "volume": 530900.0,
+              "change_pct": 1.1419249592169658
+            },
+            {
+              "date": "2026-08-04",
+              "open": 6220.0,
+              "high": 6840.0,
+              "low": 6000.0,
+              "close": 6480.0,
+              "volume": 1394118.0,
+              "change_pct": 4.516129032258064
+            },
+            {
+              "date": "2026-08-05",
+              "open": 6400.0,
+              "high": 6610.0,
+              "low": 6320.0,
+              "close": 6440.0,
+              "volume": 383783.0,
+              "change_pct": -0.6172839506172839
+            },
+            {
+              "date": "2026-08-06",
+              "open": 6480.0,
+              "high": 6600.0,
+              "low": 6030.0,
+              "close": 6340.0,
+              "volume": 298792.0,
+              "change_pct": -1.5527950310559007
+            },
+            {
+              "date": "2026-08-07",
+              "open": 6340.0,
+              "high": 6470.0,
+              "low": 6040.0,
+              "close": 6080.0,
+              "volume": 231501.0,
+              "change_pct": -4.100946372239748
+            },
+            {
+              "date": "2026-08-10",
+              "open": 6130.0,
+              "high": 6370.0,
+              "low": 6110.0,
+              "close": 6230.0,
+              "volume": 228757.0,
+              "change_pct": 2.4671052631578947
+            },
+            {
+              "date": "2026-08-11",
+              "open": 6190.0,
+              "high": 7150.0,
+              "low": 6100.0,
+              "close": 6490.0,
+              "volume": 3800082.0,
+              "change_pct": 4.173354735152488
+            },
+            {
+              "date": "2026-08-12",
+              "open": 6490.0,
+              "high": 6640.0,
+              "low": 6250.0,
+              "close": 6420.0,
+              "volume": 703466.0,
+              "change_pct": -1.078582434514638
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 6490.0,
+            "high": 6640.0,
+            "low": 6250.0,
+            "close": 6420.0,
+            "volume": 703466.0,
+            "change_pct": -1.078582434514638
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 6420,
+            "daily_change_pct": -1.08,
+            "volume": 703466
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 1.26,
+            "five_vs_previous_volume_ratio": 1.23,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "대상",
+          "마니커",
+          "신세계푸드",
+          "이마트",
+          "하림",
+          "한성기업"
+        ],
+        "candidate_count": 6,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "candidate_company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "대상",
+          "마니커",
+          "신세계푸드",
+          "이마트",
+          "하림",
+          "한성기업"
+        ],
+        "candidate_count": 6,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 6,
+      "role_coverage": [
+        "직접 기업"
+      ],
+      "tier_counts": {
+        "direct": 6,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 1,
+      "candidate_category_count": 1,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "말복",
+            "observation_status": "observed_representative",
+            "ontology_status": "published",
+            "ontology_company_count": 6,
+            "lookup_match": {
+              "match_type": "exact_term",
+              "matched_label": "말복",
+              "target_node_id": "term:reviewed:malbok",
+              "target_node_label": "말복",
+              "review_status": "node_label",
+              "evidence": []
+            }
+          },
+          {
+            "term": "末伏",
+            "observation_status": "approved_ontology_term",
+            "ontology_status": "published",
+            "ontology_company_count": 6,
+            "lookup_match": {
+              "match_type": "reviewed_literal_alias",
+              "alias_id": "alias:reviewed:malbok-hanja",
+              "matched_label": "末伏",
+              "target_node_id": "term:reviewed:malbok",
+              "target_node_label": "말복",
+              "review_status": "approved",
+              "evidence": [
+                {
+                  "id": "evidence:reviewed:mcst-sambok",
+                  "title": "세시풍속 - 삼복",
+                  "publisher": "문화체육관광부",
+                  "url": "https://www.mcst.go.kr/usr/child/cultureStory/season/custom.jsp?pTab=1",
+                  "evidence_type": "official_cultural_definition",
+                  "summary": "초복·중복·말복을 삼복으로 설명하고 대표 복달임 음식으로 삼계탕을 명시한다.",
+                  "published_at": null,
+                  "review_status": "approved",
+                  "provenance": {
+                    "method": "manual_url_review",
+                    "reviewed_at": "2026-08-12",
+                    "scope": "term_to_product"
+                  }
+                }
+              ],
+              "provenance": {
+                "method": "manual_url_review",
+                "reviewed_at": "2026-08-12"
+              }
+            }
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "증거 온톨로지 경로가 완결된 고유 상장기업 3개 이상을 내부 Gold 후보층으로 보존"
+    },
+    "rank": 325,
+    "observed_rank": 325,
+    "home_rank": 14,
+    "rising_rank": 4,
+    "classification": "일반 트렌드",
+    "persistence_rank": 100,
+    "momentum_rank": 279,
+    "main_rank": 27,
+    "home_context_status": "resolved",
+    "home_context_reason": "context_resolved",
+    "home_eligible": true,
+    "company_card_status": "ready",
+    "company_card_reason": "evidence_backed_three_or_more",
+    "company_status": "ready",
+    "frontend_readiness_status": "ready",
+    "frontend_readiness_missing": [],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 6,
+    "publication_rank": null,
+    "ranking_availability_status": "provisional_history"
+  }
+}
