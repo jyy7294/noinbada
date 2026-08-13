@@ -17,6 +17,7 @@ from .hourly_store import HourlyObservation, collect_current, coverage, floor_ho
 from .intelligence import build_intelligence
 from .company_adapters import enrich_company_identities, pykrx_stock
 from .enrichment_queue import sync_enrichment_queue
+from .editorial_review import build_editorial_review_pack
 from .keyword_candidates import sync_provider_keyword_candidates
 from .normalization_evaluation import evaluate_regression_set
 from .provider_verification import (
@@ -747,10 +748,17 @@ def _write_frontend_delivery(
     stage.replace(bundle_dir)
 
     compatibility_documents = {}
-    for kind in ("intelligence", "metadata", "status"):
-        path = latest / f"{kind}.json"
+    for kind, filename in (
+        ("intelligence", "intelligence.json"),
+        ("metadata", "metadata.json"),
+        ("status", "status.json"),
+        ("editorial_review", "editorial-review.json"),
+    ):
+        path = latest / filename
+        if kind == "editorial_review" and not path.exists():
+            continue
         compatibility_documents[kind] = {
-            "path": f"{kind}.json",
+            "path": filename,
             "sha256": _sha256_file(path),
         }
     manifest = {
@@ -1367,6 +1375,10 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         at=at,
     )
     intelligence = _enrich_market_references(intelligence, previous_intelligence, at)
+    intelligence["editorial_review_pack"] = build_editorial_review_pack(
+        intelligence,
+        generated_at=at,
+    )
     stats = coverage(database_path)
 
     finished_at = datetime.now(UTC)
@@ -1430,6 +1442,10 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
     _write_json(root / "latest" / "normalization_evaluation.json", normalization_evaluation)
     _write_json(root / "latest" / "coverage.json", stats)
     _write_json(root / "latest" / "intelligence.json", intelligence)
+    _write_json(
+        root / "latest" / "editorial-review.json",
+        intelligence["editorial_review_pack"],
+    )
     _write_json(root / "latest" / "metadata.json", metadata)
     _write_json(root / "latest" / "status.json", status)
     persisted_intelligence = _read_json(root / "latest" / "intelligence.json", {})

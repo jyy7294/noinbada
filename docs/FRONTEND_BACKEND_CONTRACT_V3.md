@@ -131,6 +131,23 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 - 기간 목록: `ranking_periods`를 `daily(24h)`, `weekly(168h)`, `monthly(720h)` 순서로 제공
 - 기간별 결과: `ranking_views.{period}.unified_ranking`, `period_top10`, `window`, `data_readiness`
 - 기존 최상위 `unified_ranking`, `trend_top10`, `public_top10`은 7일(`weekly`) 기간 집계의 상세정보 결합 호환 별칭
+
+## 팀 검수용 3배 후보 팩
+
+`latest/editorial-review.json`은 사용자 화면에 바로 노출하는 확정 데이터가 아니라
+팀이 취사선택하기 위한 별도 검수 문서입니다. manifest의
+`compatibility_documents.editorial_review` 경로와 SHA로 읽습니다.
+
+- 트렌드 후보: 실측 X·Google 순위를 보존한 제품형 후보 최대 30개
+- `related_keyword_candidates`: 후보당 15개, 최종 5개 선택용
+- `company_candidates`: 후보당 국내외 상장사 9개, 최종 3개 이상 선택용
+- 회사 후보는 공식 계약 확인이 필수인 확정 관계가 아니라 직접·가치사슬·인접
+  생태계 검토 가설일 수 있습니다. `basis`, `reason`, `evidence_urls`,
+  `review_status`를 함께 표시해야 합니다.
+- `review_status=unreviewed` 후보는 기존 `keywords`·`companies`에 자동 병합하지
+  않습니다. 팀 승인 이후에만 공개 필드로 승격합니다.
+- 이 후보 팩은 점수·순위에 영향을 주지 않으며 프론트가 사용하지 않아도 기존
+  공개 계약은 그대로 동작합니다.
 - 각 기간은 동일한 적격 `observed` X·Google 원장에서 **그 기간 안에 실제 관측된 모든 사건**을 후보로 사용함
 - 점수는 `40 기간강도 + 20 비교기간 모멘텀 + 20 출처별 지속성 + 15 마지막 관측 신선도 + 5 기간 내 X·Google 교차관측`이며, 기업·분류 결과는 점수에 들어가지 않음
 - 기간강도는 출처별 정규화 위치의 `70% 신선도 가중 평균 + 30% 기간 최고점`을 출처 간 평균함

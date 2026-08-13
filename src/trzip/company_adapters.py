@@ -26,14 +26,39 @@ OHLCV_COLUMNS = {
     "등락률": "change_pct",
 }
 
+FUNDAMENTAL_COLUMNS = {
+    "BPS": "bps",
+    "PER": "per",
+    "PBR": "pbr",
+    "EPS": "eps",
+    "DIV": "dividend_yield_pct",
+    "DPS": "dps",
+}
+
+REPORT_LABELS = {
+    "11013": "1분기보고서",
+    "11012": "반기보고서",
+    "11014": "3분기보고서",
+    "11011": "사업보고서",
+}
+
+FINANCIAL_ACCOUNT_ALIASES = {
+    "revenue": ("매출액", "영업수익"),
+    "operating_profit": ("영업이익", "영업이익(손실)"),
+    "net_income": ("당기순이익", "당기순이익(손실)"),
+    "assets": ("자산총계",),
+    "liabilities": ("부채총계",),
+    "equity": ("자본총계",),
+}
+
 
 def integration_status() -> dict:
     load_local_env()
     return {
         "opendart": {"configured": bool(os.environ.get("OPENDART_API_KEY", "").strip()),
-                     "role": "issuer identity, company overview and filing evidence"},
+                     "role": "issuer identity, company overview and latest available major financial accounts"},
         "pykrx": {"configured": True,
-                  "role": "Korean ticker name and daily OHLCV reference; never realtime quote or trend ranking"},
+                  "role": "Korean ticker name, daily OHLCV and PER/PBR/EPS/BPS/DIV/DPS reference; never realtime quote or trend ranking"},
     }
 
 
@@ -96,9 +121,15 @@ def opendart_company(company_name: str, stock_code: str | None = None) -> dict:
         overview = _json_request("https://opendart.fss.or.kr/api/company.json?" + overview_query)
         if overview.get("status") != "000":
             return {"status": "error", "company": company_name, "reason": overview.get("message", "OpenDART error")}
+        financial_snapshot = opendart_financial_snapshot(
+            match["corp_code"],
+            company_name=company_name,
+            stock_code=match.get("stock_code") or str(stock_code or ""),
+        )
         return {"status": "verified", "company": company_name, "corp_code": match["corp_code"],
                 "stock_code": match.get("stock_code") or None, "modify_date": match.get("modify_date"),
-                "overview": {key: overview.get(key) for key in ("corp_name", "corp_name_eng", "stock_name", "stock_code", "ceo_nm", "corp_cls", "adres", "hm_url", "est_dt")}}
+                "overview": {key: overview.get(key) for key in ("corp_name", "corp_name_eng", "stock_name", "stock_code", "ceo_nm", "corp_cls", "adres", "hm_url", "est_dt")},
+                "financial_snapshot": financial_snapshot}
     except Exception as exc:
         return {"status": "error", "company": company_name, "reason": f"{type(exc).__name__}: {exc}"}
 
@@ -138,6 +169,13 @@ def _public_opendart_identity(
         "market_class": str(overview.get("corp_cls") or "").strip() or None,
         "homepage": homepage or None,
         "established_date": str(overview.get("est_dt") or "").strip() or None,
+        "corp_code": str(result.get("corp_code") or "").strip() or None,
+        "financial_snapshot": _public_financial_snapshot(
+            result.get("financial_snapshot"),
+            company_name=company_name,
+            stock_code=stock_code,
+            observed_at=observed_at,
+        ),
         "retrieved_at": observed_at.astimezone(UTC).isoformat(),
         "ranking_effect": "none",
         "relationship_evidence": False,
@@ -250,16 +288,203 @@ def enrich_company_identities(
     for payload in resolved.values():
         status = str(payload.get("status") or "error")
         counts[status] = counts.get(status, 0) + 1
+    financial_counts: dict[str, int] = {}
+    for payload in resolved.values():
+        financial_status = str(
+            (payload.get("financial_snapshot") or {}).get("status") or "unavailable"
+        )
+        financial_counts[financial_status] = financial_counts.get(financial_status, 0) + 1
     return resolved, {
         "provider": "opendart",
         "requested": len(requested),
         "fetched": fetched,
         "reused": reused,
         "status_counts": counts,
+        "financial_status_counts": financial_counts,
         "verified_ttl_days": max(1, verified_ttl_days),
         "retry_ttl_hours": max(1, retry_ttl_hours),
         "ranking_effect": "none",
         "relationship_evidence": False,
+    }
+
+
+def _report_candidates(as_of: datetime) -> list[tuple[int, str]]:
+    """Return bounded newest-to-oldest OpenDART report candidates."""
+
+    year = as_of.year
+    candidates: list[tuple[int, str]] = []
+    if as_of.month >= 11:
+        candidates.append((year, "11014"))
+    if as_of.month >= 8:
+        candidates.append((year, "11012"))
+    if as_of.month >= 5:
+        candidates.append((year, "11013"))
+    candidates.append((year - 1, "11011"))
+    return candidates
+
+
+def _amount(value: object) -> int | None:
+    text = str(value or "").strip().replace(",", "")
+    if not text or text == "-":
+        return None
+    negative = text.startswith("(") and text.endswith(")")
+    if negative:
+        text = text[1:-1]
+    try:
+        parsed = int(text)
+    except ValueError:
+        return None
+    return -parsed if negative else parsed
+
+
+def _pick_financial_accounts(rows: list[dict]) -> dict[str, dict]:
+    preferred = [row for row in rows if row.get("fs_div") == "CFS"] or [
+        row for row in rows if row.get("fs_div") == "OFS"
+    ]
+    accounts: dict[str, dict] = {}
+    for key, aliases in FINANCIAL_ACCOUNT_ALIASES.items():
+        matches = [
+            row for row in preferred
+            if str(row.get("account_nm") or "").strip() in aliases
+        ]
+        if not matches:
+            continue
+        row = sorted(matches, key=lambda item: int(item.get("ord") or 999999))[0]
+        current = _amount(row.get("thstrm_add_amount") or row.get("thstrm_amount"))
+        previous = _amount(row.get("frmtrm_add_amount") or row.get("frmtrm_amount"))
+        accounts[key] = {
+            "label": str(row.get("account_nm") or "").strip(),
+            "current": current,
+            "previous": previous,
+            "currency": str(row.get("currency") or "KRW").strip() or "KRW",
+        }
+    return accounts
+
+
+def opendart_financial_snapshot(
+    corp_code: str,
+    *,
+    company_name: str,
+    stock_code: str,
+    as_of: datetime | None = None,
+) -> dict:
+    """Fetch the latest available bounded major-account snapshot from OpenDART.
+
+    This is issuer disclosure context only. It is never rank evidence, relation
+    evidence, a realtime value, or a forecast.
+    """
+
+    load_local_env()
+    key = os.environ.get("OPENDART_API_KEY", "").strip()
+    observed_at = (as_of or datetime.now(UTC)).astimezone(UTC)
+    if not key:
+        return {
+            "status": "unavailable",
+            "provider": "opendart",
+            "company": company_name,
+            "stock_code": stock_code,
+            "reason": "opendart_api_key_not_configured",
+        }
+    for business_year, report_code in _report_candidates(observed_at):
+        query = urllib.parse.urlencode({
+            "crtfc_key": key,
+            "corp_code": corp_code,
+            "bsns_year": str(business_year),
+            "reprt_code": report_code,
+        })
+        try:
+            response = _json_request(
+                "https://opendart.fss.or.kr/api/fnlttSinglAcnt.json?" + query
+            )
+        except Exception:
+            continue
+        if response.get("status") != "000" or not isinstance(response.get("list"), list):
+            continue
+        rows = [row for row in response["list"] if isinstance(row, dict)]
+        accounts = _pick_financial_accounts(rows)
+        if not accounts:
+            continue
+        first = rows[0]
+        receipt_no = str(first.get("rcept_no") or "").strip()
+        fs_div = "CFS" if any(row.get("fs_div") == "CFS" for row in rows) else "OFS"
+        return {
+            "status": "observed",
+            "provider": "opendart",
+            "company": company_name,
+            "stock_code": stock_code,
+            "corp_code": corp_code,
+            "business_year": business_year,
+            "report_code": report_code,
+            "report_label": REPORT_LABELS[report_code],
+            "financial_statement_division": fs_div,
+            "accounts": accounts,
+            "filing_receipt_no": receipt_no or None,
+            "filing_url": (
+                f"https://dart.fss.or.kr/dsaf001/main.do?rcpNo={receipt_no}"
+                if receipt_no else None
+            ),
+            "retrieved_at": observed_at.isoformat(),
+            "ranking_effect": "none",
+            "relationship_evidence": False,
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+        }
+    return {
+        "status": "not_found",
+        "provider": "opendart",
+        "company": company_name,
+        "stock_code": stock_code,
+        "reason": "latest_major_accounts_not_found",
+    }
+
+
+def _public_financial_snapshot(
+    value: object,
+    *,
+    company_name: str,
+    stock_code: str,
+    observed_at: datetime,
+) -> dict:
+    snapshot = value if isinstance(value, dict) else {}
+    status = str(snapshot.get("status") or "unavailable")
+    if status != "observed":
+        safe_status = status if status in {"unavailable", "not_found", "error"} else "unavailable"
+        return {
+            "status": safe_status,
+            "provider": "opendart",
+            "company": company_name,
+            "stock_code": stock_code,
+            "reason": str(snapshot.get("reason") or f"financial_snapshot_{safe_status}"),
+            "retrieved_at": observed_at.astimezone(UTC).isoformat(),
+            "ranking_effect": "none",
+            "relationship_evidence": False,
+        }
+    accounts = {}
+    for name in FINANCIAL_ACCOUNT_ALIASES:
+        row = (snapshot.get("accounts") or {}).get(name)
+        if isinstance(row, dict):
+            accounts[name] = {
+                "label": str(row.get("label") or name),
+                "current": row.get("current") if isinstance(row.get("current"), int) else None,
+                "previous": row.get("previous") if isinstance(row.get("previous"), int) else None,
+                "currency": str(row.get("currency") or "KRW"),
+            }
+    return {
+        "status": "observed",
+        "provider": "opendart",
+        "company": company_name,
+        "stock_code": stock_code,
+        "corp_code": str(snapshot.get("corp_code") or "") or None,
+        "business_year": int(snapshot.get("business_year")),
+        "report_code": str(snapshot.get("report_code")),
+        "report_label": str(snapshot.get("report_label")),
+        "financial_statement_division": str(snapshot.get("financial_statement_division")),
+        "accounts": accounts,
+        "filing_receipt_no": snapshot.get("filing_receipt_no"),
+        "filing_url": snapshot.get("filing_url"),
+        "retrieved_at": str(snapshot.get("retrieved_at") or observed_at.astimezone(UTC).isoformat()),
+        "ranking_effect": "none",
+        "relationship_evidence": False,
+        "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
     }
 
 

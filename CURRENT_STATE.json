@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T00:57:38.0603000+00:00",
+    "updated_at":  "2026-08-13T01:39:49.2472744+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,38 +8,30 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "9cdc33e4f2ee11c5e0db743750e18a8b459ec19f",
+                       "base_remote_main_sha":  "0c8d9c45ffe38973226c3248defe43b351cbcd80",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "docs/BACKEND_TEAM_PROMPT.md",
                                              "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "docs/PRODUCT_DIRECTION_TRANSCRIPT.md",
-                                             "docs/PRODUCT_POLICY.md",
-                                             "README.md",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "scripts/checkpoint-main.ps1",
-                                             "tests/test_local_runtime_contract.py",
-                                             "tests/test_public_contract_schema.py"
+                                             "src/trzip/company_adapters.py",
+                                             "src/trzip/editorial_review.py",
+                                             "src/trzip/publication_pipeline.py",
+                                             "tests/test_editorial_review.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/BACKEND_TEAM_PROMPT.md":  "b84eea4d156628963ae5d0d4e57f6fa075fa2a89f358c50dceaae5b12d58dba0",
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "f6eba5ba027972995202360cfaa19d4e478b407730c912347ecd1435a13ec953",
-                                                    "docs/PRODUCT_DIRECTION_TRANSCRIPT.md":  "3fc6f5babc8158b9ae6bf7d096e076007e75386836420ace9aa8611d8aa90d93",
-                                                    "docs/PRODUCT_POLICY.md":  "d045a66a0e0d0974c60fa74372d5632379b003a40d361442e065a63894ea324f",
-                                                    "README.md":  "c96cd54ae33d9d600c4f0a94b3a3c0409613208aa32c932ff7c05a5b51814e39",
-                                                    "schemas/intelligence-v3.schema.json":  "273627db902ac8ed645a14fdeb4ba47fc1ac30d3c1185f9f087621d81eff8fe1",
-                                                    "scripts/checkpoint-main.ps1":  "900e83067713e173cf2964666fbf4775b99e0f33f72792ea6634840894cd8be2",
-                                                    "tests/test_local_runtime_contract.py":  "68d70947856a20ca80f03a1c3552917f9bf5a29e9c4480bfafa05d52159a3176",
-                                                    "tests/test_public_contract_schema.py":  "03c3c6f0bb0e3ed05c08fadc3d56c4c3399feef0da12ba202b42826288c8e905"
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "86b4023dcf35b31f9c08f48e0b26b80654737277ec8a7a340bb99bd56c165ea7",
+                                                    "src/trzip/company_adapters.py":  "47ca9cb585580ca35398a7d15e9ebb255d2086b258466d27a8d1c134e2a3252d",
+                                                    "src/trzip/editorial_review.py":  "48e78741ad43de1997726715a246a1325fa7ff0cab3d84357da222dede57465b",
+                                                    "src/trzip/publication_pipeline.py":  "752f01d0f26fcb26aa20b33b4639765df29d464cc41cc84e45b7760cdb36ae06",
+                                                    "tests/test_editorial_review.py":  "f182c3a46984705cc4525865646954a784b89e2da39fbad56266af13870f0ce4"
                                                 },
-                       "commit_message":  "chore: align product contract with team decisions",
+                       "commit_message":  "feat: add editorial trend review candidates",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  229
+                                      "count":  231
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -61,27 +53,21 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Align the product, ranking, S# handoff, KPI, mock-data, and evidence contracts with the team meeting while preserving verified live rankings.",
+                    "objective":  "Publish a backend-only 3x editorial review pack for team selection without changing the approved UI or observed ranking.",
                     "completed":  [
-                                      "Updated period ranking descriptions to match the implemented daily, weekly, and monthly formula.",
-                                      "Recorded the single persona, S# integration boundary, behavioral KPI events, and meme-portfolio mock boundary.",
-                                      "Strengthened news non-ranking and company investment-warning schema requirements.",
-                                      "Fixed checkpoint pytest count parsing to use the final summary line.",
-                                      "Validated the full suite with 230 passing tests before checkpoint."
+                                      "Added 30 trend, 15 keyword, and 9 global company candidate review contract.",
+                                      "Published editorial-review.json through the immutable manifest.",
+                                      "Preserved observed ranking and required explicit team approval before public promotion.",
+                                      "Extended Korean market and OpenDART company reference fields."
                                   ],
                     "next_actions":  [
-                                         "Continue hourly X and Google collection until at least 96 clean hours exist.",
-                                         "Complete evidence-backed related keywords and five-company Gold coverage for the weekly Top 10.",
-                                         "Verify the S# deep-link and unauthenticated browsing policy with Kiwoom before claiming integration complete."
+                                         "Run the next supported live publication to emit the new editorial review artifact."
                                      ],
                     "blockers":  [
-                                     "Clean live history remains below the 96-hour maturity gate.",
-                                     "Eight of the weekly Top 10 still lack complete five-keyword and five-company evidence coverage."
+
                                  ],
                     "known_limitations":  [
-                                              "Current daily, weekly, and monthly rankings are provisional and similar because only 10 clean hours are available.",
-                                              "The analytics event names are a measurement contract; no analytics collector is implemented in this repository.",
-                                              "Meme-portfolio metrics remain explicitly labeled frontend mock data."
+                                              "Candidate companies are editorial ecosystem hypotheses, not verified commercial relationships or investment recommendations."
                                           ]
                 },
     "runtime_contract":  {
