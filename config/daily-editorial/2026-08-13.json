@@ -1,0 +1,87 @@
+{
+  "schema_version": "trzip-daily-editorial-v1",
+  "date": "2026-08-13",
+  "ranking_effect": "none",
+  "items": [
+    {
+      "event_key": "#MakeAWishForJaemin",
+      "display_name": "재민 생일 해시태그",
+      "source_event_keys": ["#MakeAWishForJaemin"],
+      "category": "music_performance",
+      "broad_category": "content",
+      "trend_definition": "NCT DREAM 재민의 생일을 계기로 팬덤 해시태그와 축하 콘텐츠가 확산된 참여형 팬덤 트렌드입니다.",
+      "observation_summary": "선택 기간 X 실시간 트렌드에서 해시태그가 관측됐습니다.",
+      "related_keywords": ["NCT DREAM", "재민", "생일 카페", "팬덤 해시태그", "버블"],
+      "companies": [
+        {"company":"SM Entertainment","ticker":"041510","market":"KRX","company_description":"NCT DREAM의 소속 레이블을 운영하는 엔터테인먼트 기업입니다.","relation_tier":"direct","reason":"NCT DREAM 공식 아티스트 채널과 콘텐츠를 운영합니다.","evidence_url":"https://www.smentertainment.com/","evidence_owner":"SM Entertainment","evidence_type":"official_company_site"},
+        {"company":"DearU","ticker":"376300","market":"KOSDAQ","company_description":"아티스트 팬 커뮤니케이션 서비스 버블을 운영하는 기업입니다.","relation_tier":"distribution","reason":"팬덤의 아티스트 메시지·구독 경험과 연결되는 서비스입니다.","evidence_url":"https://dearu.com/","evidence_owner":"DearU","evidence_type":"official_company_site"},
+        {"company":"Kakao","ticker":"035720","market":"KRX","company_description":"음원·팬 커뮤니티·콘텐츠 유통 플랫폼을 운영하는 디지털 기업입니다.","relation_tier":"adjacent","reason":"팬덤 콘텐츠가 확산되는 국내 디지털 플랫폼 생태계의 관찰 기업입니다.","evidence_url":"https://www.kakaocorp.com/page/service/service/KakaoEntertainment","evidence_owner":"Kakao","evidence_type":"official_service_page"}
+      ]
+    },
+    {
+      "event_key": "개기일식",
+      "display_name": "개기일식",
+      "source_event_keys": ["개기일식", "페르세우스"],
+      "category": "place_experience",
+      "broad_category": "lifestyle",
+      "trend_definition": "개기일식과 페르세우스 유성우 관측 정보가 함께 확산된 천문 관측·촬영 경험 트렌드입니다.",
+      "observation_summary": "선택 기간 X와 Google Trends에서 천문 현상 관련 검색어가 각각 관측됐습니다.",
+      "related_keywords": ["개기일식", "페르세우스 유성우", "별똥별", "천문 관측", "야간 촬영"],
+      "companies": [
+        {"company":"Canon","ticker":"7751","market":"TSE","company_description":"카메라와 교환렌즈 제품을 제공하는 영상 장비 기업입니다.","relation_tier":"adjacent","reason":"천체·야간 촬영에 쓰이는 카메라 제품군을 제공하는 관찰 기업입니다.","evidence_url":"https://global.canon/en/imaging/","evidence_owner":"Canon","evidence_type":"official_product_page"},
+        {"company":"Nikon","ticker":"7731","market":"TSE","company_description":"카메라·광학 장비를 제조하는 영상 기술 기업입니다.","relation_tier":"adjacent","reason":"천체 관측과 촬영에 활용되는 광학·카메라 제품군을 제공합니다.","evidence_url":"https://www.nikon.com/products/","evidence_owner":"Nikon","evidence_type":"official_product_page"},
+        {"company":"Sony Group","ticker":"SONY","market":"NYSE","company_description":"이미지 센서와 카메라 제품을 제공하는 글로벌 전자 기업입니다.","relation_tier":"adjacent","reason":"야간 촬영에 사용되는 이미지 센서·카메라 제품 생태계의 관찰 기업입니다.","evidence_url":"https://www.sony.com/en/SonyInfo/technology/stories/IMX890/","evidence_owner":"Sony","evidence_type":"official_technology_page"}
+      ]
+    },
+    {
+      "event_key": "스네즈나",
+      "display_name": "스네즈나",
+      "source_event_keys": ["스네즈나"],
+      "category": "gaming_digital",
+      "broad_category": "content",
+      "trend_definition": "게임 세계관의 지역·업데이트 정보가 팬 커뮤니티에서 확산된 게임 콘텐츠 트렌드입니다.",
+      "observation_summary": "선택 기간 X 실시간 트렌드에서 게임 세계관 관련 표현이 관측됐습니다.",
+      "related_keywords": ["원신", "HoYoverse", "업데이트", "캐릭터", "게임 세계관"],
+      "companies": [
+        {"company":"Sony Group","ticker":"SONY","market":"NYSE","company_description":"PlayStation 게임 플랫폼을 운영하는 글로벌 엔터테인먼트 기업입니다.","relation_tier":"distribution","reason":"HoYoverse 게임이 서비스되는 PlayStation 플랫폼을 운영합니다.","evidence_url":"https://www.playstation.com/en-us/games/genshin-impact/","evidence_owner":"PlayStation","evidence_type":"official_platform_page"},
+        {"company":"Apple","ticker":"AAPL","market":"NASDAQ","company_description":"iOS 앱 유통 플랫폼을 운영하는 글로벌 기술 기업입니다.","relation_tier":"distribution","reason":"원신이 서비스되는 iOS App Store 플랫폼을 운영합니다.","evidence_url":"https://apps.apple.com/us/app/genshin-impact/id1517783697","evidence_owner":"Apple","evidence_type":"official_app_store_page"},
+        {"company":"Tencent Holdings","ticker":"0700","market":"HKEX","company_description":"게임·디지털 콘텐츠 사업을 보유한 글로벌 플랫폼 기업입니다.","relation_tier":"adjacent","reason":"글로벌 게임·콘텐츠 생태계의 비교 관찰 기업입니다.","evidence_url":"https://www.tencent.com/en-us/business.html","evidence_owner":"Tencent","evidence_type":"official_company_site"}
+      ]
+    },
+    {
+      "event_key": "리사",
+      "display_name": "리사",
+      "source_event_keys": ["리사"],
+      "category": "music_performance",
+      "broad_category": "content",
+      "trend_definition": "아티스트 리사 관련 음악·공연·패션 콘텐츠가 함께 검색된 엔터테인먼트 트렌드입니다.",
+      "observation_summary": "선택 기간 Google Trends에서 아티스트명이 관측됐습니다.",
+      "related_keywords": ["BLACKPINK", "솔로 앨범", "공연", "음원 스트리밍", "패션 캠페인"],
+      "companies": [
+        {"company":"Sony Group","ticker":"SONY","market":"NYSE","company_description":"음원·영상·엔터테인먼트 사업을 보유한 글로벌 기업입니다.","relation_tier":"distribution","reason":"글로벌 음원 유통과 아티스트 콘텐츠 생태계의 관찰 기업입니다.","evidence_url":"https://www.sonymusic.com/","evidence_owner":"Sony Music","evidence_type":"official_company_site"},
+        {"company":"Live Nation Entertainment","ticker":"LYV","market":"NYSE","company_description":"글로벌 공연 기획·티켓 사업을 운영하는 라이브 엔터테인먼트 기업입니다.","relation_tier":"adjacent","reason":"아티스트 투어·공연 수요와 연결되는 글로벌 공연 생태계의 관찰 기업입니다.","evidence_url":"https://www.livenationentertainment.com/","evidence_owner":"Live Nation","evidence_type":"official_company_site"},
+        {"company":"LVMH","ticker":"MC","market":"EURONEXT_PARIS","company_description":"럭셔리 패션·뷰티 브랜드를 보유한 글로벌 기업입니다.","relation_tier":"adjacent","reason":"아티스트 패션 캠페인과 럭셔리 브랜드 협업 흐름을 관찰하는 기업입니다.","evidence_url":"https://www.lvmh.com/","evidence_owner":"LVMH","evidence_type":"official_company_site"}
+      ]
+    },
+    {
+      "event_key": "KF-21 보라매",
+      "display_name": "KF-21 보라매",
+      "source_event_keys": ["kf-21 보라매"],
+      "category": "technology_tool",
+      "broad_category": "technology",
+      "trend_definition": "KF-21 보라매 개발·운용과 연계된 항공우주·방산 기술 트렌드입니다.",
+      "observation_summary": "선택 기간 Google Trends에서 KF-21 보라매가 관측됐습니다.",
+      "related_keywords": ["한국형 전투기", "KAI", "항공우주", "방산", "FA-50"],
+      "companies": [
+        {"company":"Korea Aerospace Industries","ticker":"047810","market":"KRX","company_description":"KF-21 체계개발을 수행하는 항공기 제조 기업입니다.","relation_tier":"direct","reason":"KF-21 보라매 개발 주관 기업입니다.","evidence_url":"https://www.koreaaero.com/EN/Business/FixedWing/KF21.aspx","evidence_owner":"KAI","evidence_type":"official_program_page"},
+        {"company":"Hanwha Aerospace","ticker":"012450","market":"KRX","company_description":"항공 엔진·방산 체계 사업을 수행하는 기업입니다.","relation_tier":"value_chain","reason":"국내 항공엔진·방산 공급망을 구성하는 관찰 기업입니다.","evidence_url":"https://www.hanwhaaerospace.com/eng/business/aircraft-engine.do","evidence_owner":"Hanwha Aerospace","evidence_type":"official_business_page"},
+        {"company":"LIG Nex1","ticker":"079550","market":"KRX","company_description":"정밀 유도무기와 방산 전자 체계를 개발하는 기업입니다.","relation_tier":"value_chain","reason":"국내 항공방산 전자·무장 체계 공급망의 관찰 기업입니다.","evidence_url":"https://www.lignex1.com/eng/business/defense/defense.do","evidence_owner":"LIG Nex1","evidence_type":"official_business_page"}
+      ]
+    },
+    {"event_key":"불꽃축제","display_name":"불꽃축제","source_event_keys":["불꽃축제"],"category":"place_experience","broad_category":"lifestyle","enrichment_key":"불꽃축제"},
+    {"event_key":"데이즈드","display_name":"데이즈드","source_event_keys":["데이즈드"],"category":"fashion_collectible","broad_category":"lifestyle","enrichment_key":"데이즈드"},
+    {"event_key":"지스타","display_name":"지스타","source_event_keys":["지스타"],"category":"gaming_digital","broad_category":"content","enrichment_key":"지스타"},
+    {"event_key":"아이폰","display_name":"아이폰","source_event_keys":["아이폰"],"category":"product_brand","broad_category":"consumer","enrichment_key":"아이폰"},
+    {"event_key":"삼전닉스","display_name":"삼전닉스","source_event_keys":["삼전닉스"],"category":"technology_tool","broad_category":"technology","enrichment_key":"삼전닉스"}
+  ]
+}

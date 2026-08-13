@@ -1,0 +1,687 @@
+{
+  "demo_label": "MVP 완성 시나리오 시연 (실시간 순위 아님)",
+  "generated_at": "2026-08-13T05:12:47.304604+00:00",
+  "live_eligible": false,
+  "mode": "mvp_showcase",
+  "observed_at": null,
+  "publication_id": "mvp-showcase-5-v1",
+  "ranking_effect": "none",
+  "schema_version": "trzip-mvp-showcase-v1",
+  "trends": [
+    {
+      "category": "seasonal_food_ritual",
+      "company_candidates": [
+        {
+          "candidate_rank": 1,
+          "company": "CJ제일제당",
+          "company_description": "가정간편식과 비비고 브랜드를 운영하는 식품기업",
+          "evidence_owner": "CJ제일제당",
+          "evidence_type": "official_company_release",
+          "evidence_url": "https://www.cj.co.kr/kr/newsroom/pressreleases/news-detail/1345",
+          "industry_node": "식품/HMR/보양식",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "말복",
+            "식품/HMR/보양식",
+            "CJ제일제당"
+          ],
+          "ontology_relation": "core",
+          "ranking_effect": "none",
+          "reason": "비비고 삼계탕을 생산·판매하고 복날 보양식 매출을 공식 발표",
+          "relation_tier": "core",
+          "relation_type": "direct",
+          "review_status": "unreviewed",
+          "ticker": "097950",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 2,
+          "company": "하림",
+          "company_description": "닭고기 생산·가공과 삼계탕 제품을 운영하는 식품기업",
+          "evidence_owner": "하림",
+          "evidence_type": "official_product_page",
+          "evidence_url": "https://www.harim.com/main/?menu=98",
+          "industry_node": "식품/HMR/보양식",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "말복",
+            "식품/HMR/보양식",
+            "하림"
+          ],
+          "ontology_relation": "core",
+          "ranking_effect": "none",
+          "reason": "하림 공식 제품관에서 자사 삼계탕 제품을 판매",
+          "relation_tier": "core",
+          "relation_type": "direct",
+          "review_status": "unreviewed",
+          "ticker": "136480",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 3,
+          "company": "동원F&B",
+          "company_description": "양반 브랜드의 국·탕·보양식 HMR을 생산하는 종합식품기업",
+          "evidence_owner": "동원그룹",
+          "evidence_type": "official_company_release",
+          "evidence_url": "https://www.dongwon.com/kr/media/2507",
+          "industry_node": "식품/HMR/보양식",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "말복",
+            "식품/HMR/보양식",
+            "동원F&B"
+          ],
+          "ontology_relation": "core",
+          "ranking_effect": "none",
+          "reason": "복날용 양반 보양식과 통다리 삼계탕을 생산·판매",
+          "relation_tier": "core",
+          "relation_type": "direct",
+          "review_status": "unreviewed",
+          "ticker": "049770",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        }
+      ],
+      "company_display_policy": {
+        "investment_recommendation": false,
+        "minimum_company_count": 3,
+        "ranking_effect": "none"
+      },
+      "data_lineage": {
+        "enrichment_source": "reviewed_term_specific_cache",
+        "observation_mode": "mvp_showcase",
+        "ranking_effect": "none"
+      },
+      "display_contract_status": "complete",
+      "display_name": "말복",
+      "event_key": "말복",
+      "observation_summary": "60일 재현 시연 데이터와 검토된 관련어·기업 온톨로지를 결합한 MVP 시나리오입니다.",
+      "presentation_order": 1,
+      "ranking_effect": "none",
+      "ranking_kind": "mvp_showcase_order",
+      "related_keywords": [
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 1,
+          "review_status": "approved_for_display",
+          "text": "삼계탕"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 2,
+          "review_status": "approved_for_display",
+          "text": "보양식"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 3,
+          "review_status": "approved_for_display",
+          "text": "복날 음식"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 4,
+          "review_status": "approved_for_display",
+          "text": "간편식 삼계탕"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 5,
+          "review_status": "approved_for_display",
+          "text": "하림 삼계탕"
+        }
+      ],
+      "source_evidence_urls": [
+        "https://www.cj.co.kr/kr/newsroom/pressreleases/news-detail/1345",
+        "https://www.harim.com/main/?menu=98",
+        "https://www.dongwon.com/kr/media/2507"
+      ],
+      "trend_definition": "‘말복’은(는) 특정 시기와 소비 행동이 결합된 계절성 음식 문화입니다."
+    },
+    {
+      "category": "gaming_digital",
+      "company_candidates": [
+        {
+          "candidate_rank": 1,
+          "company": "크래프톤",
+          "company_description": "지스타에서 신작 시연과 대형 체험 부스를 운영하는 게임기업",
+          "evidence_owner": "KRAFTON",
+          "evidence_type": "official_event_page",
+          "evidence_url": "https://www.krafton.com/en/gstar2025/",
+          "industry_node": "게임전시/신작마케팅",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "지스타",
+            "게임전시/신작마케팅",
+            "크래프톤"
+          ],
+          "ontology_relation": "core",
+          "ranking_effect": "none",
+          "reason": "지스타 공식 전시관 참가사이자 자체 지스타 전용 페이지 운영",
+          "relation_tier": "core",
+          "relation_type": "direct",
+          "review_status": "unreviewed",
+          "ticker": "259960",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 2,
+          "company": "넷마블",
+          "company_description": "지스타에서 다수 신작과 체험 부스를 공개하는 모바일·PC 게임기업",
+          "evidence_owner": "G-STAR",
+          "evidence_type": "official_exhibitor_list",
+          "evidence_url": "https://gstar.or.kr/eng/gstar/gstar_booth_info.do?classNm=&page=3",
+          "industry_node": "게임전시/신작마케팅",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "지스타",
+            "게임전시/신작마케팅",
+            "넷마블"
+          ],
+          "ontology_relation": "core",
+          "ranking_effect": "none",
+          "reason": "지스타 공식 부스 목록에 참가사로 등재되고 신작 5종을 전시",
+          "relation_tier": "core",
+          "relation_type": "direct",
+          "review_status": "unreviewed",
+          "ticker": "251270",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 3,
+          "company": "엔씨소프트",
+          "company_description": "지스타 메인 스폰서와 대형 전시관으로 참가한 게임기업",
+          "evidence_owner": "Korea.net",
+          "evidence_type": "government_event_report",
+          "evidence_url": "https://www.korea.net/NewsFocus/Culture/view?articleId=282098",
+          "industry_node": "게임전시/신작마케팅",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "지스타",
+            "게임전시/신작마케팅",
+            "엔씨소프트"
+          ],
+          "ontology_relation": "core",
+          "ranking_effect": "none",
+          "reason": "지스타 메인 스폰서 및 참가사로 확인",
+          "relation_tier": "core",
+          "relation_type": "direct",
+          "review_status": "unreviewed",
+          "ticker": "036570",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        }
+      ],
+      "company_display_policy": {
+        "investment_recommendation": false,
+        "minimum_company_count": 3,
+        "ranking_effect": "none"
+      },
+      "data_lineage": {
+        "enrichment_source": "reviewed_term_specific_cache",
+        "observation_mode": "mvp_showcase",
+        "ranking_effect": "none"
+      },
+      "display_contract_status": "complete",
+      "display_name": "지스타",
+      "event_key": "지스타",
+      "observation_summary": "60일 재현 시연 데이터와 검토된 관련어·기업 온톨로지를 결합한 MVP 시나리오입니다.",
+      "presentation_order": 2,
+      "ranking_effect": "none",
+      "ranking_kind": "mvp_showcase_order",
+      "related_keywords": [
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 1,
+          "review_status": "approved_for_display",
+          "text": "지스타 일정"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 2,
+          "review_status": "approved_for_display",
+          "text": "지스타 참가사"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 3,
+          "review_status": "approved_for_display",
+          "text": "지스타 신작"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 4,
+          "review_status": "approved_for_display",
+          "text": "지스타 부스"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 5,
+          "review_status": "approved_for_display",
+          "text": "지스타 티켓"
+        }
+      ],
+      "source_evidence_urls": [
+        "https://www.krafton.com/en/gstar2025/",
+        "https://gstar.or.kr/eng/gstar/gstar_booth_info.do?classNm=&page=3",
+        "https://www.korea.net/NewsFocus/Culture/view?articleId=282098"
+      ],
+      "trend_definition": "‘지스타’은(는) 게임·업데이트·플랫폼 활동과 연결된 디지털 콘텐츠입니다."
+    },
+    {
+      "category": "screen_content",
+      "company_candidates": [
+        {
+          "candidate_rank": 1,
+          "company": "CJ ENM",
+          "company_description": "티빙의 콘텐츠와 플랫폼 사업을 주도하는 미디어·엔터테인먼트 기업",
+          "evidence_owner": "CJ ENM",
+          "evidence_type": "official_company_release",
+          "evidence_url": "https://www.cjenm.com/ko/news/ott-%ED%8B%B0%EB%B9%99tving-%EB%84%A4%EC%9D%B4%EB%B2%84-%ED%95%A9%EB%A5%98%EB%A1%9C-%EC%82%AC%EC%97%85-%ED%99%95%EC%9E%A5-%EC%86%8D%EB%8F%84-%EB%86%92%EC%9D%B8%EB%8B%A4/",
+          "industry_node": "OTT/콘텐츠/통신유통",
+          "investment_recommendation": false,
+          "market": "KOSDAQ",
+          "ontology_path": [
+            "티빙",
+            "OTT/콘텐츠/통신유통",
+            "CJ ENM"
+          ],
+          "ontology_relation": "core",
+          "ranking_effect": "none",
+          "reason": "CJ ENM이 자사 OTT 티빙의 사업 확장과 투자 관계를 공식 발표",
+          "relation_tier": "core",
+          "relation_type": "direct",
+          "review_status": "unreviewed",
+          "ticker": "035760",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 2,
+          "company": "NAVER",
+          "company_description": "티빙 지분투자와 멤버십 결합을 통해 가입자 유입을 지원한 플랫폼기업",
+          "evidence_owner": "CJ ENM",
+          "evidence_type": "official_partnership_release",
+          "evidence_url": "https://www.cjenm.com/ko/news/ott-%ED%8B%B0%EB%B9%99tving-%EB%84%A4%EC%9D%B4%EB%B2%84-%ED%95%A9%EB%A5%98%EB%A1%9C-%EC%82%AC%EC%97%85-%ED%99%95%EC%9E%A5-%EC%86%8D%EB%8F%84-%EB%86%92%EC%9D%B8%EB%8B%A4/",
+          "industry_node": "OTT/콘텐츠/통신유통",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "티빙",
+            "OTT/콘텐츠/통신유통",
+            "NAVER"
+          ],
+          "ontology_relation": "value_chain",
+          "ranking_effect": "none",
+          "reason": "티빙 지분투자 및 네이버플러스 멤버십 결합 상품 협력",
+          "relation_tier": "value_chain",
+          "relation_type": "value_chain",
+          "review_status": "unreviewed",
+          "ticker": "035420",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 3,
+          "company": "KT",
+          "company_description": "통신 요금제와 구독 상품을 통해 티빙 이용권을 유통하는 통신기업",
+          "evidence_owner": "KT",
+          "evidence_type": "official_distribution_page",
+          "evidence_url": "https://m.product.kt.com/static/prodetail/1486/mobile/itemForte/detail_view/tving/m_ott_pop_tving.html",
+          "industry_node": "OTT/콘텐츠/통신유통",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "티빙",
+            "OTT/콘텐츠/통신유통",
+            "KT"
+          ],
+          "ontology_relation": "value_chain",
+          "ranking_effect": "none",
+          "reason": "KT 공식 상품에서 티빙 구독과 계정 연동을 제공",
+          "relation_tier": "value_chain",
+          "relation_type": "distribution",
+          "review_status": "unreviewed",
+          "ticker": "030200",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        }
+      ],
+      "company_display_policy": {
+        "investment_recommendation": false,
+        "minimum_company_count": 3,
+        "ranking_effect": "none"
+      },
+      "data_lineage": {
+        "enrichment_source": "reviewed_term_specific_cache",
+        "observation_mode": "mvp_showcase",
+        "ranking_effect": "none"
+      },
+      "display_contract_status": "complete",
+      "display_name": "티빙",
+      "event_key": "티빙",
+      "observation_summary": "60일 재현 시연 데이터와 검토된 관련어·기업 온톨로지를 결합한 MVP 시나리오입니다.",
+      "presentation_order": 3,
+      "ranking_effect": "none",
+      "ranking_kind": "mvp_showcase_order",
+      "related_keywords": [
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 1,
+          "review_status": "approved_for_display",
+          "text": "티빙 신작"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 2,
+          "review_status": "approved_for_display",
+          "text": "티빙 오리지널"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 3,
+          "review_status": "approved_for_display",
+          "text": "티빙 드라마"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 4,
+          "review_status": "approved_for_display",
+          "text": "티빙 예능"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 5,
+          "review_status": "approved_for_display",
+          "text": "티빙 스포츠 중계"
+        }
+      ],
+      "source_evidence_urls": [
+        "https://www.cjenm.com/ko/news/ott-%ED%8B%B0%EB%B9%99tving-%EB%84%A4%EC%9D%B4%EB%B2%84-%ED%95%A9%EB%A5%98%EB%A1%9C-%EC%82%AC%EC%97%85-%ED%99%95%EC%9E%A5-%EC%86%8D%EB%8F%84-%EB%86%92%EC%9D%B8%EB%8B%A4/",
+        "https://www.cjenm.com/ko/news/ott-%ED%8B%B0%EB%B9%99tving-%EB%84%A4%EC%9D%B4%EB%B2%84-%ED%95%A9%EB%A5%98%EB%A1%9C-%EC%82%AC%EC%97%85-%ED%99%95%EC%9E%A5-%EC%86%8D%EB%8F%84-%EB%86%92%EC%9D%B8%EB%8B%A4/",
+        "https://m.product.kt.com/static/prodetail/1486/mobile/itemForte/detail_view/tving/m_ott_pop_tving.html"
+      ],
+      "trend_definition": "‘티빙’은(는) 영화·드라마·예능·OTT 등 화면 기반 콘텐츠입니다."
+    },
+    {
+      "category": "place_experience",
+      "company_candidates": [
+        {
+          "candidate_rank": 1,
+          "company": "한화",
+          "company_description": "서울세계불꽃축제를 주최하고 연화 기술을 제공하는 한화그룹 지주 성격의 상장사",
+          "evidence_owner": "Hanwha",
+          "evidence_type": "official_group_profile",
+          "evidence_url": "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf",
+          "industry_node": "문화행사/연화/현장소비",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "불꽃축제",
+            "문화행사/연화/현장소비",
+            "한화"
+          ],
+          "ontology_relation": "core",
+          "ranking_effect": "none",
+          "reason": "한화가 2000년부터 서울세계불꽃축제를 진행",
+          "relation_tier": "core",
+          "relation_type": "direct",
+          "review_status": "unreviewed",
+          "ticker": "000880",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 2,
+          "company": "GS리테일",
+          "company_description": "GS25를 운영하며 대형 지역행사 인근의 식음료·행사용품 수요에 노출되는 유통기업",
+          "evidence_owner": "연합뉴스TV",
+          "evidence_type": "reported_sales_evidence",
+          "evidence_url": "https://www.youtube.com/watch?v=FCShe4_bSQ4",
+          "industry_node": "문화행사/연화/현장소비",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "불꽃축제",
+            "문화행사/연화/현장소비",
+            "GS리테일"
+          ],
+          "ontology_relation": "adjacent",
+          "ranking_effect": "none",
+          "reason": "불꽃축제 인근 GS25 매장의 매출과 행사용품 판매가 급증한 실측 사례",
+          "relation_tier": "adjacent",
+          "relation_type": "adjacent",
+          "review_status": "unreviewed",
+          "ticker": "007070",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 3,
+          "company": "BGF리테일",
+          "company_description": "CU를 운영하며 축제 관람객의 식음료·간편식·행사용품 수요에 노출되는 유통기업",
+          "evidence_owner": "BGF리테일",
+          "evidence_type": "business_exposure_evidence",
+          "evidence_url": "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf",
+          "industry_node": "문화행사/연화/현장소비",
+          "investment_recommendation": false,
+          "market": "KRX",
+          "ontology_path": [
+            "불꽃축제",
+            "문화행사/연화/현장소비",
+            "BGF리테일"
+          ],
+          "ontology_relation": "adjacent",
+          "ranking_effect": "none",
+          "reason": "CU 편의점망을 통해 대형 행사 주변 소비 수요에 노출되는 비교 유통사",
+          "relation_tier": "adjacent",
+          "relation_type": "adjacent",
+          "review_status": "unreviewed",
+          "ticker": "282330",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        }
+      ],
+      "company_display_policy": {
+        "investment_recommendation": false,
+        "minimum_company_count": 3,
+        "ranking_effect": "none"
+      },
+      "data_lineage": {
+        "enrichment_source": "reviewed_term_specific_cache",
+        "observation_mode": "mvp_showcase",
+        "ranking_effect": "none"
+      },
+      "display_contract_status": "complete",
+      "display_name": "불꽃축제",
+      "event_key": "불꽃축제",
+      "observation_summary": "60일 재현 시연 데이터와 검토된 관련어·기업 온톨로지를 결합한 MVP 시나리오입니다.",
+      "presentation_order": 4,
+      "ranking_effect": "none",
+      "ranking_kind": "mvp_showcase_order",
+      "related_keywords": [
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 1,
+          "review_status": "approved_for_display",
+          "text": "불꽃축제 일정"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 2,
+          "review_status": "approved_for_display",
+          "text": "불꽃축제 장소"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 3,
+          "review_status": "approved_for_display",
+          "text": "불꽃축제 명당"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 4,
+          "review_status": "approved_for_display",
+          "text": "불꽃축제 교통"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 5,
+          "review_status": "approved_for_display",
+          "text": "불꽃축제 티켓"
+        }
+      ],
+      "source_evidence_urls": [
+        "https://www.hanwha.com/profile/src/pdf/2024%20Hanwha%20Profile%20Full%20Page%20KR.pdf",
+        "https://www.youtube.com/watch?v=FCShe4_bSQ4",
+        "https://www.bgfretail.com/assets/file/bgf-retail/BGF%EB%A6%AC%ED%85%8C%EC%9D%BC_%EC%A7%80%EC%86%8D%EA%B0%80%EB%8A%A5%EA%B2%BD%EC%98%81%EB%B3%B4%EA%B3%A0%EC%84%9C%202022-2023%20%EC%B5%9C%EC%A2%85.pdf"
+      ],
+      "trend_definition": "‘불꽃축제’은(는) 행사·관광·공간 방문처럼 현장 경험과 연결된 흐름입니다."
+    },
+    {
+      "category": "product_brand",
+      "company_candidates": [
+        {
+          "candidate_rank": 1,
+          "company": "Apple",
+          "company_description": "아이폰을 개발·판매하는 글로벌 소비자 전자기업",
+          "evidence_owner": "Apple",
+          "evidence_type": "official_product_page",
+          "evidence_url": "https://www.apple.com/iphone/",
+          "industry_node": "스마트폰/전자부품/위탁생산",
+          "investment_recommendation": false,
+          "market": "NASDAQ",
+          "ontology_path": [
+            "아이폰",
+            "스마트폰/전자부품/위탁생산",
+            "Apple"
+          ],
+          "ontology_relation": "core",
+          "ranking_effect": "none",
+          "reason": "아이폰의 개발·판매 주체",
+          "relation_tier": "core",
+          "relation_type": "direct",
+          "review_status": "unreviewed",
+          "ticker": "AAPL",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 2,
+          "company": "Hon Hai Precision",
+          "company_description": "전자제품 위탁생산과 조립을 수행하는 글로벌 제조기업",
+          "evidence_owner": "Apple",
+          "evidence_type": "official_supplier_document",
+          "evidence_url": "https://www.apple.com/newsroom/kr/pdfs/product/support/standard/Apple%20Supplier%20Clean%20Energy%20Program_KR_221026.pdf",
+          "industry_node": "스마트폰/전자부품/위탁생산",
+          "investment_recommendation": false,
+          "market": "TWSE",
+          "ontology_path": [
+            "아이폰",
+            "스마트폰/전자부품/위탁생산",
+            "Hon Hai Precision"
+          ],
+          "ontology_relation": "value_chain",
+          "ranking_effect": "none",
+          "reason": "Apple이 공개한 공급업체 명단에 Hon Hai Precision이 포함",
+          "relation_tier": "value_chain",
+          "relation_type": "value_chain",
+          "review_status": "unreviewed",
+          "ticker": "2317",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        },
+        {
+          "candidate_rank": 3,
+          "company": "TSMC",
+          "company_description": "첨단 반도체를 위탁생산하는 글로벌 파운드리 기업",
+          "evidence_owner": "Apple",
+          "evidence_type": "official_supplier_document",
+          "evidence_url": "https://www.apple.com/newsroom/kr/pdfs/product/support/standard/Apple%20Supplier%20Clean%20Energy%20Program_KR_221026.pdf",
+          "industry_node": "스마트폰/전자부품/위탁생산",
+          "investment_recommendation": false,
+          "market": "NYSE",
+          "ontology_path": [
+            "아이폰",
+            "스마트폰/전자부품/위탁생산",
+            "TSMC"
+          ],
+          "ontology_relation": "value_chain",
+          "ranking_effect": "none",
+          "reason": "Apple이 공개한 공급업체 명단에 TSMC가 포함",
+          "relation_tier": "value_chain",
+          "relation_type": "value_chain",
+          "review_status": "unreviewed",
+          "ticker": "TSM",
+          "verification_status": "evidence_verified",
+          "verified_at": "2026-08-13T05:12:47.304604+00:00"
+        }
+      ],
+      "company_display_policy": {
+        "investment_recommendation": false,
+        "minimum_company_count": 3,
+        "ranking_effect": "none"
+      },
+      "data_lineage": {
+        "enrichment_source": "reviewed_term_specific_cache",
+        "observation_mode": "mvp_showcase",
+        "ranking_effect": "none"
+      },
+      "display_contract_status": "complete",
+      "display_name": "아이폰",
+      "event_key": "아이폰",
+      "observation_summary": "60일 재현 시연 데이터와 검토된 관련어·기업 온톨로지를 결합한 MVP 시나리오입니다.",
+      "presentation_order": 5,
+      "ranking_effect": "none",
+      "ranking_kind": "mvp_showcase_order",
+      "related_keywords": [
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 1,
+          "review_status": "approved_for_display",
+          "text": "아이폰 신제품"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 2,
+          "review_status": "approved_for_display",
+          "text": "아이폰 출시일"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 3,
+          "review_status": "approved_for_display",
+          "text": "아이폰 가격"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 4,
+          "review_status": "approved_for_display",
+          "text": "아이폰 사전예약"
+        },
+        {
+          "basis": "term_specific_enrichment_cache",
+          "candidate_rank": 5,
+          "review_status": "approved_for_display",
+          "text": "아이폰 카메라"
+        }
+      ],
+      "source_evidence_urls": [
+        "https://www.apple.com/iphone/",
+        "https://www.apple.com/newsroom/kr/pdfs/product/support/standard/Apple%20Supplier%20Clean%20Energy%20Program_KR_221026.pdf",
+        "https://www.apple.com/newsroom/kr/pdfs/product/support/standard/Apple%20Supplier%20Clean%20Energy%20Program_KR_221026.pdf"
+      ],
+      "trend_definition": "‘아이폰’은(는) 특정 제품이나 브랜드를 중심으로 형성된 관심 흐름입니다."
+    }
+  ]
+}

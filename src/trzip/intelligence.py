@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import json
+import re
 import sqlite3
 from collections import Counter, defaultdict
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from .curation import CATEGORY_BY_TERM, is_sensitive_context
+from .curation import is_sensitive_context
 from .hourly_store import (
     ELIGIBLE_COLLECTOR_SQL,
     KST,
@@ -89,14 +90,11 @@ def _provider_issue_context_titles(providers: dict, representative: str) -> list
 
 
 def _category(topic: str) -> str:
-    if topic == "말복":
-        return "seasonal_food_ritual"
-    explicit = CATEGORY_BY_TERM.get(topic)
-    if explicit:
-        return explicit
     lowered = topic.casefold()
+    if re.fullmatch(r"[초중말]복", lowered):
+        return "seasonal_food_ritual"
     heuristic_categories = (
-        (("밥", "초밥", "치킨", "라면", "빵", "쿠키", "초콜릿", "커피", "맛집", "음식", "삼계탕", "디저트"), "food_culinary"),
+        (("밥", "초밥", "치킨", "라면", "닭", "빵", "쿠키", "초콜릿", "커피", "맛집", "음식", "삼계탕", "보양식", "디저트"), "food_culinary"),
         ((
             "영화", "드라마", "예능", "웹툰", "애니", "극장", "방송",
             "티빙", "넷플릭스", "ott", "시리즈", "사건반장", "블랙박스 리뷰",
@@ -111,7 +109,7 @@ def _category(topic: str) -> str:
         ), "sports_participation"),
         ((
             "게임", "패치", "롤 ", "오버워치", "스팀", "리그 오브 레전드",
-            "검은사막", "지스타", "펄어비스", "펍지",
+            "mmorpg", "콘솔", "이스포츠", "e스포츠",
         ), "gaming_digital"),
         (("패션", "유니폼", "가방", "신발", "화장품"), "fashion_collectible"),
         (("여행", "호텔", "축제", "팝업", "전시"), "place_experience"),
@@ -120,8 +118,11 @@ def _category(topic: str) -> str:
             "상장폐지", "가상자산", "나스닥", "다우 존스", "cpi", "국채",
             "업비트", "미래에셋",
         ), "investment_market"),
-        (("아이폰", "스마트폰", "폴더블", "메르세데스-amg"), "product_brand"),
-        (("휴머노이드 로봇", "광 통신", "광통신", "smr"), "technology_tool"),
+        (("스마트폰", "폴더블", "휴대폰", "신제품", "신모델"), "product_brand"),
+        ((
+            "로봇", "휴머노이드", "광 통신", "광통신", "인공지능", "원자로",
+            "원전", "반도체", "데이터센터", "배터리", "자율주행",
+        ), "technology_tool"),
     )
     for markers, category in heuristic_categories:
         if any(marker in lowered for marker in markers):
@@ -1051,19 +1052,34 @@ def build_intelligence(
                 else None
             )
         phenomenon_summary = observation_summary(representative_term, sources)
+        observed_keyword_items = _related_term_evidence(
+            observations,
+            representative_term,
+        )
         keyword_items = _merge_reviewed_ontology_keywords(
-            _related_term_evidence(observations, representative_term),
+            observed_keyword_items,
             graph=ontology_graph,
             representative=representative_term,
         )
-        detected_category = event_resolution["category"] or _category(event_key)
-        if detected_category == "unclassified" and keyword_items:
+        # Manual reference/alias data may help a reviewer understand a term,
+        # but it must not promote the term into the product-fit lane. Category
+        # selection starts from general lexical rules and observed related
+        # terms only.
+        detected_category = _category(event_key)
+        category_basis = (
+            "raw_expression_general_rule"
+            if detected_category != "unclassified"
+            else "unclassified"
+        )
+        if detected_category == "unclassified" and observed_keyword_items:
             # Google related queries are observed source evidence, not an LLM
-            # guess. They may disambiguate a person or short noun without
-            # replacing the representative source title.
+            # guess. Reviewed ontology/cache keywords are intentionally not
+            # consulted here because they must not affect product fit.
             detected_category = _category(" ".join(
-                [event_key, *(item["text"] for item in keyword_items)]
+                [event_key, *(item["text"] for item in observed_keyword_items)]
             ))
+            if detected_category != "unclassified":
+                category_basis = "observed_related_terms_general_rule"
         context_keys = {
             "".join(str(value).casefold().split())
             for value in [representative_term, event_key, *{item["topic"] for item in observations}]
@@ -1088,7 +1104,7 @@ def build_intelligence(
         fit_assessment = assess_trend_fit(
             representative_term,
             category=detected_category,
-            context_terms=[item["text"] for item in keyword_items],
+            context_terms=[item["text"] for item in observed_keyword_items],
             issue_context_terms=provider_issue_context,
             news_claim_types=news_claim_types,
         )
@@ -1284,6 +1300,7 @@ def build_intelligence(
             "context_status": context_status,
             "ground_truth_match": event_resolution["ground_truth_match"],
             "category": detected_category,
+            "category_basis": category_basis,
             "broad_category": _broad_category(detected_category),
             "lane": lane,
             "selection_reason": reason,

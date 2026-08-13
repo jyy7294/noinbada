@@ -119,17 +119,18 @@ def test_three_evidence_backed_companies_remain_candidates_but_gold_is_hidden(tm
     assert queued["affects_score"] is False
 
 
-def test_person_name_is_ranked_and_can_expose_verified_business_relation(tmp_path):
+def test_registered_person_name_stays_ranked_but_manual_reference_does_not_promote_it(tmp_path):
     from trzip.hourly_store import HourlyObservation
     target = tmp_path / "person-issue.sqlite3"
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
     upsert([HourlyObservation(at.isoformat(), "google_trends", "지드래곤", 1, 100, "observed")], target)
     result = build_intelligence(at, hours=1, path=target)
     person = next(item for item in result["unified_ranking"] if item["topic"] == "지드래곤")
-    assert person["classification"] == "일반 트렌드"
+    assert person["classification"] == "맥락 확인"
+    assert person["lane"] == "review"
     assert person["companies"] == []
     assert person["company_candidates"] == []
-    assert person["company_resolution"]["status"] == "ontology_incomplete"
+    assert person["company_resolution"]["status"] == "excluded_by_context"
 
 
 def test_policy_issue_stays_ranked_but_has_no_company_candidates(tmp_path):
@@ -336,25 +337,11 @@ def test_public_top10_keeps_unresolved_non_issue_with_review_state(tmp_path):
     assert generic["company_card_status"] == "enrichment_pending"
     stock = next(item for item in result["unified_ranking"] if item["topic"] == "005930")
     assert stock["resolved_entity_name"] == "삼성전자"
-    assert stock["home_context_status"] == "resolved"
-    assert stock["home_context_reason"] == "context_resolved"
-    assert stock in result["trend_top10"]
-    assert stock["company_card_status"] == "ready"
-    assert {company["stock_code"] for company in stock["companies"]} == {
-        "000660",
-        "005930",
-        "006400",
-        "009150",
-        "066570",
-    }
-    assert next(
-        company for company in stock["companies"] if company["stock_code"] == "005930"
-    )["relation_tier"] == "core"
-    assert {
-        company["relation_tier"]
-        for company in stock["companies"]
-        if company["stock_code"] != "005930"
-    } == {"adjacent"}
+    assert stock["home_context_status"] == "review_required"
+    assert stock["home_context_reason"] == "not_main_lane"
+    assert stock not in result["trend_top10"]
+    assert stock["company_card_status"] == "not_applicable"
+    assert stock["companies"] == []
 
 
 def test_home_subset_holds_needs_context_term_without_any_disambiguation_evidence(tmp_path):
@@ -400,15 +387,13 @@ def test_investment_terms_do_not_receive_unrelated_generic_companies(tmp_path):
     generic = next(item for item in result["unified_ranking"] if item["resolved_entity_name"] == "관리종목")
     samsung = next(item for item in result["unified_ranking"] if item["resolved_entity_name"] == "삼성전자")
 
-    # A generic market term receives no companies.  A reviewed company term
-    # may expose its own stock plus clearly-labelled industry observations.
-    assert generic["company_eligible"] is True
+    # Manual reference membership cannot promote either expression into the
+    # product-fit lane. Both remain ranked and wait for automatic context.
+    assert generic["company_eligible"] is False
     assert generic["companies"] == []
-    assert {company["stock_code"] for company in samsung["companies"]} == {
-        "000660", "005930", "006400", "009150", "066570"
-    }
-    assert samsung["company_resolution"]["publish_status"] == "published"
-    assert samsung["company_resolution"]["published_count"] == 5
+    assert samsung["company_eligible"] is False
+    assert samsung["companies"] == []
+    assert samsung["company_resolution"]["publish_status"] == "excluded_by_context"
 
 
 def test_quality_summary_detects_unchanged_source_snapshots(tmp_path):
@@ -788,7 +773,7 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
     assert all(company["relation_type"] != "listed_as" for company in companies.values())
 
 
-def test_gstar_exposes_five_reviewed_keywords_and_five_companies(tmp_path):
+def test_registered_gstar_enrichment_does_not_promote_an_unclassified_observation(tmp_path):
     target = tmp_path / "gstar-enrichment.sqlite3"
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)
     upsert(
@@ -802,22 +787,11 @@ def test_gstar_exposes_five_reviewed_keywords_and_five_companies(tmp_path):
         "G-STAR", "G-CON", "팰월드 모바일", "산나비 외전", "오디세이 모니터",
     }
     assert all(keyword["affects_score"] is False for keyword in item["keywords"])
-    assert {company["stock_code"] for company in item["companies"]} == {
-        "005930", "036570", "095660", "251270", "259960",
-    }
-    assert item["company_resolution"]["publish_status"] == "published"
-    assert item["company_resolution"]["direct_count"] == 4
-    assert item["company_resolution"]["tier_counts"] == {
-        "core": 4,
-        "value_chain": 1,
-        "adjacent": 0,
-        "excluded": 0,
-    }
-    assert all(
-        source["review_status"] == "approved" and source["url"].startswith("https://")
-        for company in item["companies"]
-        for source in company["evidence_sources"]
-    )
+    assert item["lane"] == "review"
+    assert item["company_eligible"] is False
+    assert item["company_candidates"] == []
+    assert item["companies"] == []
+    assert item["company_resolution"]["publish_status"] == "excluded_by_context"
 
 
 def test_tving_exposes_five_reviewed_related_keywords_and_five_companies(tmp_path):
@@ -906,7 +880,7 @@ def test_humanoid_robot_exposes_five_keywords_and_three_core_two_industry_observ
     }
 
 
-def test_stock_code_has_reviewed_company_and_four_labelled_industry_peers(tmp_path):
+def test_stock_code_reference_data_does_not_promote_or_company_enrich_it(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 
     target = tmp_path / "stock-code-enrichment.sqlite3"
@@ -930,12 +904,11 @@ def test_stock_code_has_reviewed_company_and_four_labelled_industry_peers(tmp_pa
         "파운드리",
     }
     assert all(keyword["affects_score"] is False for keyword in item["keywords"])
-    assert {company["stock_code"] for company in item["company_candidates"]} == {
-        "000660", "005930", "006400", "009150", "066570"
-    }
-    assert item["companies"] == item["company_candidates"]
-    assert item["company_resolution"]["publish_status"] == "published"
-    assert item["company_resolution"]["published_count"] == 5
+    assert item["lane"] == "review"
+    assert item["company_candidates"] == []
+    assert item["companies"] == []
+    assert item["company_resolution"]["publish_status"] == "excluded_by_context"
+    assert item["company_resolution"]["published_count"] == 0
     assert not any(
         queue["representative"] == "005930"
         for queue in result["ontology_enrichment_queue"]
@@ -985,7 +958,7 @@ def test_listed_securities_company_has_self_and_four_reviewed_sector_peers(tmp_p
     } == {"adjacent"}
 
 
-def test_unresearched_person_expression_stays_zero_candidate_and_enters_queue(tmp_path):
+def test_unresearched_person_expression_stays_zero_candidate_and_review_only(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 
     target = tmp_path / "person-no-filler.sqlite3"
@@ -1001,9 +974,8 @@ def test_unresearched_person_expression_stays_zero_candidate_and_enters_queue(tm
     assert item["display_name"] == "지드래곤"
     assert item["company_candidates"] == []
     assert item["companies"] == []
-    queue = result["ontology_enrichment_queue"][0]
-    assert queue["lookup_status"] == "no_reviewed_ontology_match"
-    assert queue["research_stages"][-1] == "team_review"
+    assert item["lane"] == "review"
+    assert result["ontology_enrichment_queue"] == []
 
 
 def test_intelligence_exposes_daily_weekly_monthly_period_aggregate_views(tmp_path):
