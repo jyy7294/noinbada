@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T01:48:24.8316849+00:00",
+    "updated_at":  "2026-08-13T01:50:45.0534173+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,20 +8,18 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "8298d1cb8d54f6287ef4741e0db92172f085c7b4",
+                       "base_remote_main_sha":  "8aef8e35f331b3c95bed0c6e27ed6c85704d866a",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
                                              "src/trzip/editorial_review.py",
                                              "tests/test_editorial_review.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "1681d3a14f12fc8a35637c5c49026b42efd563ae6667171703582e99a7238df1",
-                                                    "src/trzip/editorial_review.py":  "bb0082686a2e13144ab7685cca49d5ea9edbf3ac9c5ed418fd11801c7ea3c239",
-                                                    "tests/test_editorial_review.py":  "976690fab997019f0d018884e12838cfebb11c8ad1d9b735635d08d1576c22ab"
+                                                    "src/trzip/editorial_review.py":  "c08ce0d3de4dff9c979ce080bbaedde2cfd9532ff9f8c9a87e40bc4465c2912e",
+                                                    "tests/test_editorial_review.py":  "108f73d44b992ca63690f83fce6f96b596815b8bcf7e747978572dfa9ef78a3a"
                                                 },
-                       "commit_message":  "fix: require evidence for editorial company candidates",
+                       "commit_message":  "feat: align editorial candidates with approved product fit",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -49,20 +47,20 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Remove broad trend terms and generic sector-company padding from the editorial review pack.",
+                    "objective":  "Use the team-approved concrete trend examples as the review candidate vocabulary while preserving source observation requirements.",
                     "completed":  [
-                                      "Rejected broad nouns such as food, driving, and anime.",
-                                      "Required term-specific company evidence URL, owner, type, and verification timestamp.",
-                                      "Marked trends with fewer than three verified companies as insufficient instead of padding."
+                                      "Added concrete candidates for fireworks festival, Dazed, G-Star, TVING, Conan movie, seal meme, humanoid robots, and Samjeon-Nix.",
+                                      "Removed coffee mix from the approved product-fit candidate registry.",
+                                      "Kept company candidates empty until relation-specific evidence exists."
                                   ],
                     "next_actions":  [
-                                         "Research additional concrete observed trends and company relationships before team selection."
+                                         "Verify at least three relation-specific listed companies for each selected trend."
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "Only concrete trends with checked-in term-specific evidence are currently included, so the review pack may contain fewer than 30 trends."
+                                              "Only iPhone and Black Desert currently have three verified listed-company relations; no padding is used."
                                           ]
                 },
     "runtime_contract":  {

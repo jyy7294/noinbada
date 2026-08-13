@@ -40,9 +40,9 @@ def test_editorial_review_pack_does_not_modify_observed_rank_or_score():
 
 def test_company_shortfall_is_reported_without_padding():
     source = {"unified_ranking": [{
-        "rank": 1, "event_key": "coffee", "display_name": "커피믹스", "score": 50,
+        "rank": 1, "event_key": "fireworks", "display_name": "불꽃축제", "score": 50,
         "period_sources": ["google_trends"],
     }]}
     item = build_editorial_review_pack(source)["trends"][0]
-    assert len(item["company_candidates"]) == 1
+    assert len(item["company_candidates"]) == 0
     assert item["company_verification_status"] == "insufficient_verified_companies"
