@@ -1,7 +1,7 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-13e9003c4a32482b8c2e0232abcb0a13",
-  "generated_at": "2026-08-13T16:31:45.388182+00:00",
+  "publication_id": "pub-e1473be87e9442b6957a49490194a6c5",
+  "generated_at": "2026-08-13T16:38:44.935143+00:00",
   "observed_at": "2026-08-13T16:00:00+00:00",
   "mode": "live",
   "publishable": true,
@@ -50,24 +50,24 @@
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 36,
-    "newly_observed": 1,
-    "reused_company_rows": 42,
+    "requested_stock_codes": 40,
+    "newly_observed": 5,
+    "reused_company_rows": 44,
     "unavailable_company_rows": 38
   },
   "company_identity_data": {
     "provider": "opendart",
-    "requested": 67,
-    "fetched": 0,
-    "reused": 67,
+    "requested": 71,
+    "fetched": 3,
+    "reused": 68,
     "status_counts": {
-      "verified": 29,
+      "verified": 33,
       "unavailable": 6,
       "invalid": 32
     },
     "financial_status_counts": {
-      "observed": 12,
-      "unavailable": 55
+      "observed": 15,
+      "unavailable": 56
     },
     "verified_ttl_days": 30,
     "retry_ttl_hours": 24,
@@ -137,8 +137,8 @@
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-13e9003c4a32482b8c2e0232abcb0a13",
-    "rankings_path": "latest/delivery/pub-13e9003c4a32482b8c2e0232abcb0a13/rankings.json",
+    "bundle_path": "latest/delivery/pub-e1473be87e9442b6957a49490194a6c5",
+    "rankings_path": "latest/delivery/pub-e1473be87e9442b6957a49490194a6c5/rankings.json",
     "trend_detail_count": 569,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }
