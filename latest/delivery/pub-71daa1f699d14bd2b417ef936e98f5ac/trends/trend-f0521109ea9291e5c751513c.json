@@ -1,0 +1,105 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-71daa1f699d14bd2b417ef936e98f5ac",
+  "generated_at": "2026-08-13T20:05:30.889908+00:00",
+  "observed_at": "2026-08-13T20:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "rank": 417,
+    "observed_rank": 417,
+    "main_rank": null,
+    "home_rank": null,
+    "publication_rank": null,
+    "rising_rank": null,
+    "event_key": "경기도",
+    "display_name": "경기도",
+    "topic": "경기도",
+    "broad_category": "other",
+    "category": "unclassified",
+    "category_label": "기타·검토",
+    "trend_definition": "'경기도'은(는) 구체적인 대상과 그 이용 맥락에 관심이 모이는 흐름입니다. X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다.",
+    "lane": "review",
+    "home_eligible": false,
+    "score": 15.26,
+    "score_components": {
+      "period_strength_points": 6.91,
+      "momentum_points": 0.0,
+      "persistence_points": 0.21,
+      "recency_points": 8.14,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 15.26
+    },
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "period_strength": 0.197566,
+    "current_source_position": 0.197566,
+    "momentum": 0.0,
+    "momentum_delta": null,
+    "persistence": 0.020833,
+    "freshness": {
+      "signal": 0.813594,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 25.0
+    },
+    "hours_since_last_seen": 25.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-12T19:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 118
+    },
+    "rank_change_by_source": {
+      "google_trends": 1
+    },
+    "source_rank_change": {
+      "google_trends": 1
+    },
+    "source_badge": "단일출처",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 21,
+      "history_maturity": 0.0236,
+      "ranking_status": "provisional"
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.077381,
+        "google_trends": 0.125
+      },
+      "momentum_status": "unavailable",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "company_card_status": "enrichment_pending",
+    "company_status": "enrichment_pending",
+    "keyword_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_six"
+    ],
+    "frontend_keyword_count": 0,
+    "frontend_company_count": 0,
+    "detail_event_key": "경기도",
+    "detail_status": "period_summary_only",
+    "shared_detail_fields": [
+      "keywords",
+      "companies",
+      "company_candidates",
+      "company_resolution",
+      "verification_layer",
+      "news_context"
+    ]
+  }
+}

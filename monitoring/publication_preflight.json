@@ -1,18 +1,18 @@
 {
   "policy_version": "hourly-publication-preflight-v1",
-  "observed_at": "2026-08-13T19:00:00+00:00",
+  "observed_at": "2026-08-13T20:00:00+00:00",
   "passed": true,
   "source_gate": {
     "policy_version": "hourly-source-proof-v2",
     "passed": true,
     "sources": {
       "google_trends": {
-        "row_count": 222,
-        "unique_topics": 222,
-        "unique_ranks": 222,
+        "row_count": 217,
+        "unique_topics": 217,
+        "unique_ranks": 217,
         "minimum_rank": 1,
-        "maximum_rank": 222,
-        "observed_rows": 222
+        "maximum_rank": 217,
+        "observed_rows": 217
       },
       "x": {
         "row_count": 30,
@@ -27,9 +27,9 @@
           "profile": "current_logged_in_chrome",
           "region": "KR",
           "region_verified": true,
-          "observed_at": "2026-08-13T19:02:18.085000+00:00",
-          "scheduled_for": "2026-08-13T19:00:00+00:00",
-          "schedule_delay_seconds": 138.085,
+          "observed_at": "2026-08-13T20:03:21.857628+00:00",
+          "scheduled_for": "2026-08-13T20:00:00+00:00",
+          "schedule_delay_seconds": 201.857628,
           "evidence_row_count": 30,
           "evidence_consistent": true,
           "timing_verified": true
@@ -62,7 +62,7 @@
       {
         "publication_rank": 2,
         "display_name": "커피믹스",
-        "observed_rank": 32,
+        "observed_rank": 29,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -86,7 +86,7 @@
       {
         "publication_rank": 4,
         "display_name": "용인반도체클러스터",
-        "observed_rank": 186,
+        "observed_rank": 184,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -98,8 +98,19 @@
       },
       {
         "publication_rank": 5,
+        "display_name": "한복상점",
+        "observed_rank": 295,
+        "keyword_count": 5,
+        "company_count": 6,
+        "role_categories": [
+          "platform_service"
+        ],
+        "passed": true
+      },
+      {
+        "publication_rank": 6,
         "display_name": "광 통신",
-        "observed_rank": 307,
+        "observed_rank": 308,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -110,20 +121,9 @@
         "passed": true
       },
       {
-        "publication_rank": 6,
-        "display_name": "한복상점",
-        "observed_rank": 310,
-        "keyword_count": 5,
-        "company_count": 6,
-        "role_categories": [
-          "platform_service"
-        ],
-        "passed": true
-      },
-      {
         "publication_rank": 7,
         "display_name": "불꽃축제",
-        "observed_rank": 314,
+        "observed_rank": 319,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -136,7 +136,7 @@
       {
         "publication_rank": 8,
         "display_name": "지스타",
-        "observed_rank": 381,
+        "observed_rank": 390,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -148,7 +148,7 @@
       {
         "publication_rank": 9,
         "display_name": "롤 패치 노트",
-        "observed_rank": 480,
+        "observed_rank": 490,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -161,7 +161,7 @@
       {
         "publication_rank": 10,
         "display_name": "코난 극장판",
-        "observed_rank": 493,
+        "observed_rank": 503,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
