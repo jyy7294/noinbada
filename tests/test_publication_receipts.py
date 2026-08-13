@@ -7,6 +7,7 @@ import pytest
 from trzip.result_quality import (
     _publication_receipt,
     assert_publication_receipt_available,
+    publication_receipt_exists,
     record_publication_receipt,
 )
 
@@ -16,6 +17,7 @@ def test_remote_publication_receipt_is_required_and_persisted(tmp_path: Path):
     stamp = "2026-08-13T16:00:00+00:00"
 
     assert _publication_receipt(database, stamp)["passed"] is False
+    assert publication_receipt_exists(database, stamp) is False
 
     record_publication_receipt(
         database,
@@ -40,6 +42,7 @@ def test_remote_publication_receipt_is_required_and_persisted(tmp_path: Path):
     assert receipt["source_gate"]["sources"]["x"]["row_count"] == 30
     assert receipt["manifest_sha256"] == "c" * 64
     assert receipt["remote_manifest_blob"] == "d" * 40
+    assert publication_receipt_exists(database, stamp) is True
 
 
 def test_legacy_receipt_without_contract_cannot_pass(tmp_path: Path):

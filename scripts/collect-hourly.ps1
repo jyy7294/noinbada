@@ -87,6 +87,16 @@ try {
     }
     New-Item -ItemType Directory -Force -Path $PublicationRoot,(Split-Path -Parent $DatabasePath) | Out-Null
 
+    # A verified exact hour is a completed immutable unit. Re-running within
+    # that hour must not rewrite local publication files or create another id.
+    $CurrentHour = [DateTimeOffset]::UtcNow.ToString("yyyy-MM-ddTHH:00:00+00:00")
+    & $Python -m trzip.result_quality --database $DatabasePath `
+        --end $CurrentHour --receipt-exists
+    if ($LASTEXITCODE -eq 0) {
+        Write-RunLog -Phase "idempotency" -Status "already_verified" -Detail $CurrentHour
+        exit 0
+    }
+
     Set-Location $ProjectRoot
     # Raw ledger and published daily aggregates are retained indefinitely by
     # default. Pruning requires an explicit positive --retention-days value.

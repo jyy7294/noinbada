@@ -150,6 +150,24 @@ def assert_publication_receipt_available(
         )
 
 
+def publication_receipt_exists(path: Path, observed_at: str) -> bool:
+    """Return whether an exact hour has already completed remote verification."""
+
+    connection = sqlite3.connect(path)
+    try:
+        table = connection.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' AND name='publication_receipts'"
+        ).fetchone()
+        if not table:
+            return False
+        return connection.execute(
+            "SELECT 1 FROM publication_receipts WHERE observed_at=?",
+            (observed_at,),
+        ).fetchone() is not None
+    finally:
+        connection.close()
+
+
 def _publication_receipt(path: Path, observed_at: str) -> dict:
     connection = sqlite3.connect(path)
     try:
@@ -482,12 +500,18 @@ def main() -> int:
     parser.add_argument("--manifest", type=Path)
     parser.add_argument("--remote-manifest-blob")
     parser.add_argument("--assert-receipt-available", action="store_true")
+    parser.add_argument("--receipt-exists", action="store_true")
     parser.add_argument(
         "--preflight",
         action="store_true",
         help="validate same-hour sources and frontend contract before remote publication",
     )
     args = parser.parse_args()
+    if args.receipt_exists:
+        normalized_end = args.end.astimezone(UTC).replace(
+            minute=0, second=0, microsecond=0
+        ).isoformat()
+        return 0 if publication_receipt_exists(args.database, normalized_end) else 1
     if args.assert_receipt_available:
         if not args.publication_id:
             parser.error("--assert-receipt-available requires --publication-id")
