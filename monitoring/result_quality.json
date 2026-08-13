@@ -2,8 +2,8 @@
   "policy_version": "consecutive-actual-result-v1",
   "required_consecutive_hours": 8,
   "passed": false,
-  "current_consecutive_success_count": 1,
-  "remaining_success_hours": 7,
+  "current_consecutive_success_count": 0,
+  "remaining_success_hours": 8,
   "evaluations": [
     {
       "observed_at": "2026-08-13T09:00:00+00:00",
@@ -1144,7 +1144,7 @@
     },
     {
       "observed_at": "2026-08-13T16:00:00+00:00",
-      "passed": true,
+      "passed": false,
       "source_gate": {
         "passed": true,
         "sources": {
@@ -1305,7 +1305,7 @@
         "ranking_effect": "none"
       },
       "publication": {
-        "passed": true,
+        "passed": false,
         "publication_id": "pub-b19de93bd9794d84bee82d65bf0e9351",
         "remote_sha": "e291855dd4a10e98305a83d4f2a0c99804ce390a",
         "verified_at": "2026-08-13T16:43:36.578577+00:00",
@@ -1448,7 +1448,8 @@
             }
           ],
           "ranking_effect": "none"
-        }
+        },
+        "source_gate": null
       }
     }
   ],
