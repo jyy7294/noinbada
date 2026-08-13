@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T01:39:49.2472744+00:00",
+    "updated_at":  "2026-08-13T01:48:24.8316849+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,30 +8,26 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "0c8d9c45ffe38973226c3248defe43b351cbcd80",
+                       "base_remote_main_sha":  "8298d1cb8d54f6287ef4741e0db92172f085c7b4",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "src/trzip/company_adapters.py",
                                              "src/trzip/editorial_review.py",
-                                             "src/trzip/publication_pipeline.py",
                                              "tests/test_editorial_review.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "86b4023dcf35b31f9c08f48e0b26b80654737277ec8a7a340bb99bd56c165ea7",
-                                                    "src/trzip/company_adapters.py":  "47ca9cb585580ca35398a7d15e9ebb255d2086b258466d27a8d1c134e2a3252d",
-                                                    "src/trzip/editorial_review.py":  "48e78741ad43de1997726715a246a1325fa7ff0cab3d84357da222dede57465b",
-                                                    "src/trzip/publication_pipeline.py":  "752f01d0f26fcb26aa20b33b4639765df29d464cc41cc84e45b7760cdb36ae06",
-                                                    "tests/test_editorial_review.py":  "f182c3a46984705cc4525865646954a784b89e2da39fbad56266af13870f0ce4"
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "1681d3a14f12fc8a35637c5c49026b42efd563ae6667171703582e99a7238df1",
+                                                    "src/trzip/editorial_review.py":  "bb0082686a2e13144ab7685cca49d5ea9edbf3ac9c5ed418fd11801c7ea3c239",
+                                                    "tests/test_editorial_review.py":  "976690fab997019f0d018884e12838cfebb11c8ad1d9b735635d08d1576c22ab"
                                                 },
-                       "commit_message":  "feat: add editorial trend review candidates",
+                       "commit_message":  "fix: require evidence for editorial company candidates",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  231
+                                      "count":  232
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -53,21 +49,20 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Publish a backend-only 3x editorial review pack for team selection without changing the approved UI or observed ranking.",
+                    "objective":  "Remove broad trend terms and generic sector-company padding from the editorial review pack.",
                     "completed":  [
-                                      "Added 30 trend, 15 keyword, and 9 global company candidate review contract.",
-                                      "Published editorial-review.json through the immutable manifest.",
-                                      "Preserved observed ranking and required explicit team approval before public promotion.",
-                                      "Extended Korean market and OpenDART company reference fields."
+                                      "Rejected broad nouns such as food, driving, and anime.",
+                                      "Required term-specific company evidence URL, owner, type, and verification timestamp.",
+                                      "Marked trends with fewer than three verified companies as insufficient instead of padding."
                                   ],
                     "next_actions":  [
-                                         "Run the next supported live publication to emit the new editorial review artifact."
+                                         "Research additional concrete observed trends and company relationships before team selection."
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "Candidate companies are editorial ecosystem hypotheses, not verified commercial relationships or investment recommendations."
+                                              "Only concrete trends with checked-in term-specific evidence are currently included, so the review pack may contain fewer than 30 trends."
                                           ]
                 },
     "runtime_contract":  {

@@ -138,12 +138,14 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 팀이 취사선택하기 위한 별도 검수 문서입니다. manifest의
 `compatibility_documents.editorial_review` 경로와 SHA로 읽습니다.
 
-- 트렌드 후보: 실측 X·Google 순위를 보존한 제품형 후보 최대 30개
+- 트렌드 후보: 실측 X·Google 순위를 보존한 구체적인 명명 개체 최대 30개
 - `related_keyword_candidates`: 후보당 15개, 최종 5개 선택용
-- `company_candidates`: 후보당 국내외 상장사 9개, 최종 3개 이상 선택용
-- 회사 후보는 공식 계약 확인이 필수인 확정 관계가 아니라 직접·가치사슬·인접
-  생태계 검토 가설일 수 있습니다. `basis`, `reason`, `evidence_urls`,
-  `review_status`를 함께 표시해야 합니다.
+- `company_candidates`: 해당 트렌드와의 개별 관계 자료가 확인된 국내외 상장사만 수록
+- `음식`, `운전`, `애니` 같은 포괄어와 업종별 회사 채우기는 금지합니다.
+- 회사마다 `reason`, `evidence_url`, `evidence_owner`, `evidence_type`,
+  `verified_at`, `verification_status`를 제공합니다.
+- 검증 기업이 3개 미만이면 `insufficient_verified_companies`로 남기며 임의로
+  채우지 않습니다.
 - `review_status=unreviewed` 후보는 기존 `keywords`·`companies`에 자동 병합하지
   않습니다. 팀 승인 이후에만 공개 필드로 승격합니다.
 - 이 후보 팩은 점수·순위에 영향을 주지 않으며 프론트가 사용하지 않아도 기존
