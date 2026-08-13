@@ -1,18 +1,18 @@
 {
   "policy_version": "hourly-publication-preflight-v1",
-  "observed_at": "2026-08-13T20:00:00+00:00",
+  "observed_at": "2026-08-13T21:00:00+00:00",
   "passed": true,
   "source_gate": {
     "policy_version": "hourly-source-proof-v2",
     "passed": true,
     "sources": {
       "google_trends": {
-        "row_count": 217,
-        "unique_topics": 217,
-        "unique_ranks": 217,
+        "row_count": 198,
+        "unique_topics": 198,
+        "unique_ranks": 198,
         "minimum_rank": 1,
-        "maximum_rank": 217,
-        "observed_rows": 217
+        "maximum_rank": 198,
+        "observed_rows": 198
       },
       "x": {
         "row_count": 30,
@@ -27,9 +27,9 @@
           "profile": "current_logged_in_chrome",
           "region": "KR",
           "region_verified": true,
-          "observed_at": "2026-08-13T20:03:21.857628+00:00",
-          "scheduled_for": "2026-08-13T20:00:00+00:00",
-          "schedule_delay_seconds": 201.857628,
+          "observed_at": "2026-08-13T21:03:08.584000+00:00",
+          "scheduled_for": "2026-08-13T21:00:00+00:00",
+          "schedule_delay_seconds": 188.584,
           "evidence_row_count": 30,
           "evidence_consistent": true,
           "timing_verified": true
@@ -38,7 +38,7 @@
     }
   },
   "contract": {
-    "policy_version": "frontend-result-quality-v4",
+    "policy_version": "frontend-result-quality-v5",
     "passed": true,
     "trend_count": 10,
     "required_trend_count": 10,
@@ -62,7 +62,7 @@
       {
         "publication_rank": 2,
         "display_name": "커피믹스",
-        "observed_rank": 29,
+        "observed_rank": 27,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -74,7 +74,7 @@
       {
         "publication_rank": 3,
         "display_name": "아시안 게임",
-        "observed_rank": 129,
+        "observed_rank": 122,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -86,7 +86,7 @@
       {
         "publication_rank": 4,
         "display_name": "용인반도체클러스터",
-        "observed_rank": 184,
+        "observed_rank": 162,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -98,25 +98,28 @@
       },
       {
         "publication_rank": 5,
-        "display_name": "한복상점",
-        "observed_rank": 295,
-        "keyword_count": 5,
-        "company_count": 6,
-        "role_categories": [
-          "platform_service"
-        ],
-        "passed": true
-      },
-      {
-        "publication_rank": 6,
         "display_name": "광 통신",
-        "observed_rank": 308,
+        "observed_rank": 293,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
           "ownership_investment",
           "platform_service",
           "raw_materials_components"
+        ],
+        "passed": true
+      },
+      {
+        "publication_rank": 6,
+        "display_name": "한복상점",
+        "observed_rank": 312,
+        "keyword_count": 5,
+        "company_count": 6,
+        "role_categories": [
+          "brand_marketing",
+          "manufacturing_development",
+          "raw_materials_components",
+          "retail_sales"
         ],
         "passed": true
       },
@@ -136,7 +139,7 @@
       {
         "publication_rank": 8,
         "display_name": "지스타",
-        "observed_rank": 390,
+        "observed_rank": 392,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -148,7 +151,7 @@
       {
         "publication_rank": 9,
         "display_name": "롤 패치 노트",
-        "observed_rank": 490,
+        "observed_rank": 498,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [
@@ -161,7 +164,7 @@
       {
         "publication_rank": 10,
         "display_name": "코난 극장판",
-        "observed_rank": 503,
+        "observed_rank": 499,
         "keyword_count": 5,
         "company_count": 6,
         "role_categories": [

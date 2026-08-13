@@ -1,0 +1,105 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-f96fc8197a8645d5b0ecda14bc1a78f8",
+  "generated_at": "2026-08-13T21:04:37.478775+00:00",
+  "observed_at": "2026-08-13T21:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "rank": 435,
+    "observed_rank": 435,
+    "main_rank": null,
+    "home_rank": null,
+    "publication_rank": null,
+    "rising_rank": null,
+    "event_key": "김도영",
+    "display_name": "김도영",
+    "topic": "김도영",
+    "broad_category": "other",
+    "category": "unclassified",
+    "category_label": "기타·검토",
+    "trend_definition": "'김도영'은(는) 구체적인 대상과 그 이용 맥락에 관심이 모이는 흐름입니다. X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다.",
+    "lane": "review",
+    "home_eligible": false,
+    "score": 14.93,
+    "score_components": {
+      "period_strength_points": 7.09,
+      "momentum_points": 0.0,
+      "persistence_points": 0.03,
+      "recency_points": 7.81,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 14.93
+    },
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "period_strength": 0.202564,
+    "current_source_position": 0.202564,
+    "momentum": 0.0,
+    "momentum_delta": null,
+    "persistence": 0.002976,
+    "freshness": {
+      "signal": 0.780709,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 30.0
+    },
+    "hours_since_last_seen": 30.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "first_seen_at": "2026-08-12T15:00:00+00:00",
+    "last_seen_at": "2026-08-12T15:00:00+00:00",
+    "latest_source_ranks": {
+      "google_trends": 117
+    },
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "source_rank_change": {
+      "google_trends": null
+    },
+    "source_badge": "단일출처",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 22,
+      "history_maturity": 0.025,
+      "ranking_status": "provisional"
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.083333,
+        "google_trends": 0.130952
+      },
+      "momentum_status": "unavailable",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "company_card_status": "enrichment_pending",
+    "company_status": "enrichment_pending",
+    "keyword_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_six"
+    ],
+    "frontend_keyword_count": 0,
+    "frontend_company_count": 0,
+    "detail_event_key": "김도영",
+    "detail_status": "period_summary_only",
+    "shared_detail_fields": [
+      "keywords",
+      "companies",
+      "company_candidates",
+      "company_resolution",
+      "verification_layer",
+      "news_context"
+    ]
+  }
+}

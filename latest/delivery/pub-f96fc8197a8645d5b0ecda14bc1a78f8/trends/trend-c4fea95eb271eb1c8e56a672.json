@@ -1,0 +1,717 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-f96fc8197a8645d5b0ecda14bc1a78f8",
+  "generated_at": "2026-08-13T21:04:37.478775+00:00",
+  "observed_at": "2026-08-13T21:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "업 비트",
+    "topic": "업 비트",
+    "display_name": "업 비트",
+    "observed_representative_term": "업 비트",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "업 비트",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 12,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.180558,
+      "best_source_rank": 3
+    },
+    "raw_terms": [
+      "업 비트"
+    ],
+    "phenomenon_summary": "\"업 비트\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "investment_market",
+    "category_basis": "verification_context_general_rule",
+    "broad_category": "market",
+    "category_label": "금융·시장",
+    "trend_definition": "'업 비트'은(는) 시장·자산·금융 서비스의 변화와 이용에 관심이 모이는 흐름입니다. 실측 데이터에서는 업비트 같은 표현과 함께 나타났습니다. X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "context_review_queue",
+    "company_eligible": true,
+    "score": 21.24,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 0.353553,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 18.0
+    },
+    "hours_since_last_seen": 18.0,
+    "previous_period_rank": 6,
+    "rank_change": -265,
+    "rank_change_status": "measured",
+    "period_strength": 0.482037,
+    "current_source_position": 0.482037,
+    "momentum": 0.0,
+    "persistence": 0.0833,
+    "momentum_delta": -0.01864,
+    "score_components": {
+      "period_strength_points": 16.87,
+      "momentum_points": 0.0,
+      "persistence_points": 0.83,
+      "recency_points": 3.54,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 21.24
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.964074
+      },
+      "momentum_deltas": {
+        "google_trends": -0.01864
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 4,
+          "comparison": 8
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 13,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 14,
+          "observed_hours": 4,
+          "presence_rate": 0.166667,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.541667,
+        "google_trends": 0.583333
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T03:00:00+00:00",
+      "observed_hours": 12,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 12
+    },
+    "rank_change_by_source": {
+      "google_trends": 0
+    },
+    "source_rank_change": {
+      "google_trends": 0
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T03:00:00+00:00",
+    "age_hours": 32,
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 22,
+      "history_maturity": 0.5625,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "업 비트",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T16:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T16:00:00+00:00",
+          "status": "failed",
+          "matched": null,
+          "error_code": "024",
+          "metrics": {
+            "blog_total_reported": null,
+            "news_total_reported": null,
+            "partial_provider_error_count": 2,
+            "stored_evidence_count": 0
+          },
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T16:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 65353,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "LlSqTaijPAA",
+              "title": "[스토리지 코인] 업비트 상장폐지 발표 직전, 탈출 기회? '이렇게만' 준비해두세요 !!",
+              "url": "https://www.youtube.com/watch?v=LlSqTaijPAA",
+              "published_at": "2026-08-12T08:45:34Z",
+              "publisher": "크립토월드 [CRYPTO_WORLD]",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 5,
+                "viewCount": 1502
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "opu05evmT0E",
+              "title": "\"다시는 6만 달러 밑은 없다\"…낙관론의 근거와 허점을 모두 따져봤다 | Daily WRAP UP Ch.1 디지털 자산 시황 (8/10) | 업비트",
+              "url": "https://www.youtube.com/watch?v=opu05evmT0E",
+              "published_at": "2026-08-10T14:51:37Z",
+              "publisher": "업비트 - Upbit Official",
+              "metrics": {
+                "likeCount": 166,
+                "viewCount": 5677
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "yM1Sb1UlG5Q",
+              "title": "[썬더코어 코인] 빗썸 60% 급등시작, 업비트도 조만간? 물량 10억치도 안된다. 탈출기회 임박. '이 가격' 놓치면 정말 큰일납니다. #TT",
+              "url": "https://www.youtube.com/watch?v=yM1Sb1UlG5Q",
+              "published_at": "2026-08-11T05:00:37Z",
+              "publisher": "머니코인",
+              "metrics": {
+                "commentCount": 0,
+                "viewCount": 1101
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "EmcscFStvg4",
+              "title": "주식 토큰화, 이번엔 진짜다…SEC가 금요일 발표할 '혁신 면제'의 전부 | Daily WRAP UP Ch.1 디지털 자산 시황 (8/12) | 업비트",
+              "url": "https://www.youtube.com/watch?v=EmcscFStvg4",
+              "published_at": "2026-08-12T14:00:10Z",
+              "publisher": "업비트 - Upbit Official",
+              "metrics": {
+                "likeCount": 47,
+                "viewCount": 473
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "BVhLQhTWWzM",
+              "title": "🎤 EP.16 #CORTIS | 영어를 쓰는 순간! 물총 빵야🔫 \"Okay\"무새를 위한 참교육(?) 들어갑니다🫡 방심은 곧 물벼락(； ･`д･´)💦 #UP코노",
+              "url": "https://www.youtube.com/watch?v=BVhLQhTWWzM",
+              "published_at": "2026-08-06T10:00:08Z",
+              "publisher": "SBSKPOP X INKIGAYO",
+              "metrics": {
+                "commentCount": 1812,
+                "likeCount": 59869,
+                "viewCount": 628299
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "업 비트",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T16:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T16:00:00+00:00",
+          "status": "failed",
+          "matched": null,
+          "error_code": "024",
+          "metrics": {
+            "blog_total_reported": null,
+            "news_total_reported": null,
+            "partial_provider_error_count": 2,
+            "stored_evidence_count": 0
+          },
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T16:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 65353,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "LlSqTaijPAA",
+              "title": "[스토리지 코인] 업비트 상장폐지 발표 직전, 탈출 기회? '이렇게만' 준비해두세요 !!",
+              "url": "https://www.youtube.com/watch?v=LlSqTaijPAA",
+              "published_at": "2026-08-12T08:45:34Z",
+              "publisher": "크립토월드 [CRYPTO_WORLD]",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 5,
+                "viewCount": 1502
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "opu05evmT0E",
+              "title": "\"다시는 6만 달러 밑은 없다\"…낙관론의 근거와 허점을 모두 따져봤다 | Daily WRAP UP Ch.1 디지털 자산 시황 (8/10) | 업비트",
+              "url": "https://www.youtube.com/watch?v=opu05evmT0E",
+              "published_at": "2026-08-10T14:51:37Z",
+              "publisher": "업비트 - Upbit Official",
+              "metrics": {
+                "likeCount": 166,
+                "viewCount": 5677
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "yM1Sb1UlG5Q",
+              "title": "[썬더코어 코인] 빗썸 60% 급등시작, 업비트도 조만간? 물량 10억치도 안된다. 탈출기회 임박. '이 가격' 놓치면 정말 큰일납니다. #TT",
+              "url": "https://www.youtube.com/watch?v=yM1Sb1UlG5Q",
+              "published_at": "2026-08-11T05:00:37Z",
+              "publisher": "머니코인",
+              "metrics": {
+                "commentCount": 0,
+                "viewCount": 1101
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "EmcscFStvg4",
+              "title": "주식 토큰화, 이번엔 진짜다…SEC가 금요일 발표할 '혁신 면제'의 전부 | Daily WRAP UP Ch.1 디지털 자산 시황 (8/12) | 업비트",
+              "url": "https://www.youtube.com/watch?v=EmcscFStvg4",
+              "published_at": "2026-08-12T14:00:10Z",
+              "publisher": "업비트 - Upbit Official",
+              "metrics": {
+                "likeCount": 47,
+                "viewCount": 473
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "BVhLQhTWWzM",
+              "title": "🎤 EP.16 #CORTIS | 영어를 쓰는 순간! 물총 빵야🔫 \"Okay\"무새를 위한 참교육(?) 들어갑니다🫡 방심은 곧 물벼락(； ･`д･´)💦 #UP코노",
+              "url": "https://www.youtube.com/watch?v=BVhLQhTWWzM",
+              "published_at": "2026-08-06T10:00:08Z",
+              "publisher": "SBSKPOP X INKIGAYO",
+              "metrics": {
+                "commentCount": 1812,
+                "likeCount": 59869,
+                "viewCount": 628299
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T16:00:00Z",
+                "query_term": "업 비트",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 7,
+        "value": 94.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 7, \"started_text\": \"8시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[\"업비트\"]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 7,
+        "value": 94.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 7, \"started_text\": \"9시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"업비트\"]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 4,
+        "value": 97.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 4, \"started_text\": \"10시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"업비트\"]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 4,
+        "value": 97.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 4, \"started_text\": \"11시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"업비트\"]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 3,
+        "value": 98.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 3, \"started_text\": \"12시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"업비트\"]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 4,
+        "value": 97.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 4, \"started_text\": \"13시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"업비트\"]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 4,
+        "value": 97.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 4, \"started_text\": \"13시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"업비트\"]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 7,
+        "value": 94.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 7, \"started_text\": \"16시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"업비트\"]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 8,
+        "value": 93.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 8, \"started_text\": \"17시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 7,
+        "value": 94.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 7, \"started_text\": \"19시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 12,
+        "value": 89.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 12, \"started_text\": \"20시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 12,
+        "value": 89.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 12, \"started_text\": \"22시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "업비트",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 8,
+        "status": "observed_related_query",
+        "role": "alias_or_variant",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "업비트",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 8,
+        "status": "observed_related_query",
+        "role": "alias_or_variant",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 1,
+      "observed_source_count": 1,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "업 비트",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "업비트",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 후보층 공개를 보류"
+    },
+    "rank": 271,
+    "observed_rank": 271,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 55,
+    "momentum_rank": 315,
+    "main_rank": 23,
+    "home_context_status": "review_required",
+    "home_context_reason": "market_context_evidence_missing",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_six_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_six"
+    ],
+    "frontend_keyword_count": 1,
+    "frontend_company_count": 0,
+    "publication_rank": null,
+    "ranking_availability_status": "provisional_history"
+  }
+}
