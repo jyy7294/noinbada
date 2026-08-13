@@ -71,6 +71,11 @@ def test_new_pc_bootstrap_installs_runtime_automation_and_runs_tests():
     assert "collect-hourly.ps1" in prompt
     assert "GitHub Actions" in prompt
     assert "Windows 작업 스케줄러" in prompt
+    assert "hourly-source-proof-v2" in prompt
+    assert "frontend-result-quality-v2" in prompt
+    assert "관련 키워드 정확히 5개" in prompt
+    assert "국내외 상장기업 최소 6개" in prompt
+    assert "8시간 연속 성공" in prompt
     assert "로그인 쿠키와 토큰을 자동 복사하지 않는" in guide
 
 
