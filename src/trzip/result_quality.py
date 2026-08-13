@@ -205,7 +205,7 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
             "passed": not item_failures,
         })
     return {
-        "policy_version": "frontend-result-quality-v1",
+        "policy_version": "frontend-result-quality-v2",
         "passed": not failures,
         "trend_count": len(top),
         "required_trend_count": 10,
@@ -339,6 +339,12 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
             "failure": "legacy_source_gate_policy",
         }
     contract = publication.get("contract")
+    if contract is not None and contract.get("policy_version") != "frontend-result-quality-v2":
+        contract = {
+            **contract,
+            "passed": False,
+            "failure": "legacy_frontend_result_policy",
+        }
     if contract is None:
         intelligence = build_intelligence(normalized, hours=24, path=path)
         apply_frontend_enrichment_cache(intelligence, verified_at=stamp)

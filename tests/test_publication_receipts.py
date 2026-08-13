@@ -15,7 +15,11 @@ def test_remote_publication_receipt_is_required_and_persisted(tmp_path: Path):
         observed_at=stamp,
         publication_id="pub-example",
         remote_sha="a" * 40,
-        contract={"passed": True, "trends": [{"display_name": "당시 결과"}]},
+        contract={
+            "policy_version": "frontend-result-quality-v2",
+            "passed": True,
+            "trends": [{"display_name": "당시 결과"}],
+        },
         source_gate={"passed": True, "sources": {"x": {"row_count": 30}}},
         manifest_sha256="c" * 64,
         remote_manifest_blob="d" * 40,

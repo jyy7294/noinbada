@@ -45,6 +45,7 @@ def test_complete_frontend_result_passes_quality_gate():
     result = evaluate_frontend_result({"home_top10": [_trend(rank) for rank in range(1, 11)]})
 
     assert result["passed"] is True
+    assert result["policy_version"] == "frontend-result-quality-v2"
     assert result["trend_count"] == 10
     assert all(row["keyword_count"] == 5 and row["company_count"] == 6 for row in result["trends"])
 

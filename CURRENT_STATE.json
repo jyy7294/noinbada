@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T17:32:19.4042088+00:00",
+    "updated_at":  "2026-08-13T17:35:07.6815156+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,18 +8,20 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "ade002004d0dd6606379de9beb81dfd1df639d4f",
+                       "base_remote_main_sha":  "8b706cd37a04a4177ece3764d43d7bf61cd8c52b",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "src/trzip/result_quality.py",
+                                             "tests/test_publication_receipts.py",
                                              "tests/test_result_quality.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/result_quality.py":  "4d85880ff689130049046727a757ea2189321ec5ba8571ad0ae007e1fbf8fa79",
-                                                    "tests/test_result_quality.py":  "846d4d675d26f6dc061a60609d804b40ea6d5a123a1eb6fa9ae8a51802661f86"
+                                                    "src/trzip/result_quality.py":  "753ad95e988fd3d752b4ae80f6fdd453fbfd84aacaad8f02263a33ae86e59f43",
+                                                    "tests/test_publication_receipts.py":  "014e830c5696c4d09717d14c0a9e0eda319fa3f74371500f42352a025b8c893b",
+                                                    "tests/test_result_quality.py":  "fcd019e72168856fe153edef7a6c20107d9e390112d348d63539ed34656e8c9c"
                                                 },
-                       "commit_message":  "fix: validate complete frontend trend context",
+                       "commit_message":  "fix: version complete frontend result policy",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,12 +49,12 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Require every hourly Top10 item to expose a valid category, definition, distinct sourced keywords, and complete company ontology path.",
+                    "objective":  "Count only receipts produced under the final complete Top10 frontend contract during the 8-hour live proof.",
                     "completed":  [
-                                      "Strengthen the immutable frontend result receipt contract beyond simple item counts."
+                                      "Version the strengthened frontend result policy as v2 and reject legacy policy receipts."
                                   ],
                     "next_actions":  [
-                                         "Accumulate 8 consecutive exact-hour live receipts under the fixed quality policy."
+                                         "Accumulate 8 consecutive exact-hour live receipts under the fixed source and frontend v2 policies."
                                      ],
                     "blockers":  [
 
