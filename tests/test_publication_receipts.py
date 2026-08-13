@@ -7,6 +7,7 @@ import pytest
 from trzip.result_quality import (
     _publication_receipt,
     assert_publication_receipt_available,
+    evaluate_actual_hour,
     publication_receipt_exists,
     record_publication_receipt,
 )
@@ -62,6 +63,26 @@ def test_legacy_receipt_without_contract_cannot_pass(tmp_path: Path):
     receipt = _publication_receipt(database, "2026-08-13T15:00:00+00:00")
     assert receipt["passed"] is False
     assert receipt["contract"] is None
+
+
+def test_previous_frontend_policy_receipt_does_not_count_for_new_streak(tmp_path: Path):
+    database = tmp_path / "previous-policy.sqlite3"
+    stamp = "2026-08-13T16:00:00+00:00"
+    record_publication_receipt(
+        database,
+        observed_at=stamp,
+        publication_id="pub-v4",
+        remote_sha="a" * 40,
+        contract={"policy_version": "frontend-result-quality-v4", "passed": True},
+        source_gate={"policy_version": "hourly-source-proof-v2", "passed": True},
+        manifest_sha256="c" * 64,
+        remote_manifest_blob="d" * 40,
+    )
+
+    result = evaluate_actual_hour(database, datetime.fromisoformat(stamp))
+
+    assert result["passed"] is False
+    assert result["contract"]["failure"] == "legacy_frontend_result_policy"
 
 
 def test_receipt_is_immutable_for_the_same_hour(tmp_path: Path):
