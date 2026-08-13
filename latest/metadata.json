@@ -1,8 +1,8 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-1fea9aabf78f4e25b815f23fcdf05cb0",
-  "generated_at": "2026-08-13T01:53:18.679250+00:00",
-  "observed_at": "2026-08-13T01:00:00+00:00",
+  "publication_id": "pub-5b024ebc15d443d2a899325fa1a3957e",
+  "generated_at": "2026-08-13T03:23:07.277661+00:00",
+  "observed_at": "2026-08-13T03:00:00+00:00",
   "mode": "live",
   "storage": "local-sqlite-published-to-live-data",
   "retention_days": null,
@@ -11,7 +11,7 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-13.json",
   "collection": {
-    "observed": 258,
+    "observed": 256,
     "errors": {},
     "rank_sources": [
       "x",
@@ -28,21 +28,21 @@
       },
       "google_geo_kr": {
         "status": "observed",
-        "row_count": 228,
+        "row_count": 226,
         "detail": "verified_current_hour_snapshot",
-        "declared_total": 228,
+        "declared_total": 226,
         "page_count": 10,
         "completion_verified": true
       }
     },
-    "observed_at": "2026-08-13T01:00:00+00:00"
+    "observed_at": "2026-08-13T03:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T13:00:00+00:00",
-    "last_hour": "2026-08-13T01:00:00+00:00",
-    "hours": 11,
-    "rows": 2365,
-    "observed_rows": 2365,
+    "last_hour": "2026-08-13T03:00:00+00:00",
+    "hours": 12,
+    "rows": 2621,
+    "observed_rows": 2621,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
@@ -72,11 +72,11 @@
   },
   "collection_health": {
     "measurement_window_hours": 168,
-    "recorded_runs": 9,
-    "successful_runs": 2,
-    "success_rate": 0.2222,
+    "recorded_runs": 10,
+    "successful_runs": 3,
+    "success_rate": 0.3,
     "source_success_rate": {
-      "x": 0.2222,
+      "x": 0.3,
       "google_trends": 1.0
     },
     "source_failure_counts": {
@@ -106,19 +106,19 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.2222,
-    "latest_delay_seconds": 1098,
-    "latest_duration_seconds": 12.44,
-    "current_publication_scheduled_at": "2026-08-13T01:00:00+00:00",
-    "current_publication_attempt_type": "recovery",
-    "current_publication_status": "republished_complete",
+    "on_time_within_15m_rate": 0.2,
+    "latest_delay_seconds": 1375,
+    "latest_duration_seconds": 12.06,
+    "current_publication_scheduled_at": "2026-08-13T03:00:00+00:00",
+    "current_publication_attempt_type": "scheduled",
+    "current_publication_status": "scheduled_complete",
     "current_publication_success": true,
     "current_publication_source_success": {
       "x": true,
       "google_trends": true
     },
     "current_schedule_initial_attempt_success": true,
-    "latest_scheduled_at": "2026-08-13T01:00:00+00:00",
+    "latest_scheduled_at": "2026-08-13T03:00:00+00:00",
     "latest_scheduled_attempt_success": true,
     "latest_scheduled_attempt_source_success": {
       "x": true,
@@ -126,16 +126,16 @@
     },
     "recovered_from_scheduled_failure": false,
     "status": "collecting_baseline",
-    "remaining_runs_for_3d": 63,
-    "remaining_runs_for_7d": 159,
+    "remaining_runs_for_3d": 62,
+    "remaining_runs_for_7d": 158,
     "warning": "Codex 정각 자동화 실측 기록이며 노트북·Codex·Chrome 종료 또는 로그아웃 중에는 실행되지 않을 수 있음"
   },
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-1fea9aabf78f4e25b815f23fcdf05cb0",
-    "rankings_path": "latest/delivery/pub-1fea9aabf78f4e25b815f23fcdf05cb0/rankings.json",
-    "trend_detail_count": 357,
+    "bundle_path": "latest/delivery/pub-5b024ebc15d443d2a899325fa1a3957e",
+    "rankings_path": "latest/delivery/pub-5b024ebc15d443d2a899325fa1a3957e/rankings.json",
+    "trend_detail_count": 381,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }
 }

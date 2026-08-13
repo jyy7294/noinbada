@@ -1,6 +1,6 @@
 {
   "schema_version": "trzip-editorial-review-v2",
-  "generated_at": "2026-08-13T01:00:00+00:00",
+  "generated_at": "2026-08-13T03:00:00+00:00",
   "ranking_policy": "preserve_observed_rank_and_score_no_reranking",
   "candidate_policy": {
     "trend_candidate_maximum": 30,
@@ -13,10 +13,10 @@
   "trends": [
     {
       "review_rank": 1,
-      "observed_rank": 48,
+      "observed_rank": 51,
       "event_key": "불꽃축제",
       "display_name": "불꽃축제",
-      "score": 74.78,
+      "score": 73.79,
       "period_sources": [
         "x"
       ],
@@ -127,159 +127,10 @@
     },
     {
       "review_rank": 2,
-      "observed_rank": 52,
-      "event_key": "말복",
-      "display_name": "말복",
-      "score": 74.57,
-      "period_sources": [
-        "google_trends"
-      ],
-      "source_evidence_urls": [
-        "https://trends.google.com/trending?geo=KR"
-      ],
-      "selection_basis": "concrete_observed_term_and_term_specific_registry",
-      "related_keyword_candidates": [
-        {
-          "text": "삼계탕",
-          "candidate_rank": 1,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "보양식",
-          "candidate_rank": 2,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "복날 음식",
-          "candidate_rank": 3,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "간편식 삼계탕",
-          "candidate_rank": 4,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "하림 삼계탕",
-          "candidate_rank": 5,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "비비고 삼계탕",
-          "candidate_rank": 6,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "닭고기",
-          "candidate_rank": 7,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "복날 외식",
-          "candidate_rank": 8,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "삼계탕 판매량",
-          "candidate_rank": 9,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "보양식 신메뉴",
-          "candidate_rank": 10,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "복날 배달",
-          "candidate_rank": 11,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "초복",
-          "candidate_rank": 12,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "중복",
-          "candidate_rank": 13,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "말복 날짜",
-          "candidate_rank": 14,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "복날 소비",
-          "candidate_rank": 15,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        }
-      ],
-      "company_candidates": [
-        {
-          "company": "CJ제일제당",
-          "ticker": "097950",
-          "market": "KRX",
-          "company_description": "가정간편식과 비비고 브랜드를 운영하는 식품기업",
-          "relation_tier": "direct",
-          "reason": "비비고 삼계탕을 생산·판매하고 복날 보양식 매출을 공식 발표",
-          "evidence_url": "https://www.cj.co.kr/kr/newsroom/pressreleases/news-detail/1345",
-          "evidence_owner": "CJ제일제당",
-          "evidence_type": "official_company_release",
-          "candidate_rank": 1,
-          "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
-          "review_status": "unreviewed",
-          "ranking_effect": "none",
-          "investment_recommendation": false
-        },
-        {
-          "company": "하림",
-          "ticker": "136480",
-          "market": "KRX",
-          "company_description": "닭고기 생산·가공과 삼계탕 제품을 운영하는 식품기업",
-          "relation_tier": "direct",
-          "reason": "하림 공식 제품관에서 자사 삼계탕 제품을 판매",
-          "evidence_url": "https://www.harim.com/main/?menu=98",
-          "evidence_owner": "하림",
-          "evidence_type": "official_product_page",
-          "candidate_rank": 2,
-          "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
-          "review_status": "unreviewed",
-          "ranking_effect": "none",
-          "investment_recommendation": false
-        }
-      ],
-      "company_display_policy": {
-        "show_category_groups": false,
-        "default_layout": "company_description_list",
-        "grouping_reason": "few_companies_are_clearer_without_category_tabs"
-      },
-      "company_verification_status": "insufficient_verified_companies",
-      "review_status": "unreviewed"
-    },
-    {
-      "review_rank": 3,
-      "observed_rank": 60,
+      "observed_rank": 67,
       "event_key": "데이즈드",
       "display_name": "데이즈드",
-      "score": 73.48,
+      "score": 72.19,
       "period_sources": [
         "x"
       ],
@@ -389,11 +240,11 @@
       "review_status": "unreviewed"
     },
     {
-      "review_rank": 4,
-      "observed_rank": 85,
+      "review_rank": 3,
+      "observed_rank": 76,
       "event_key": "지스타",
       "display_name": "지스타",
-      "score": 68.91,
+      "score": 70.25,
       "period_sources": [
         "google_trends"
       ],
@@ -503,11 +354,11 @@
       "review_status": "unreviewed"
     },
     {
-      "review_rank": 5,
+      "review_rank": 4,
       "observed_rank": 112,
       "event_key": "아이폰",
       "display_name": "아이폰",
-      "score": 65.6,
+      "score": 66.22,
       "period_sources": [
         "google_trends"
       ],
@@ -620,7 +471,7 @@
           "evidence_type": "official_product_page",
           "candidate_rank": 1,
           "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
+          "verified_at": "2026-08-13T03:00:00+00:00",
           "review_status": "unreviewed",
           "ranking_effect": "none",
           "investment_recommendation": false
@@ -637,7 +488,7 @@
           "evidence_type": "official_supplier_document",
           "candidate_rank": 2,
           "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
+          "verified_at": "2026-08-13T03:00:00+00:00",
           "review_status": "unreviewed",
           "ranking_effect": "none",
           "investment_recommendation": false
@@ -654,7 +505,7 @@
           "evidence_type": "official_supplier_document",
           "candidate_rank": 3,
           "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
+          "verified_at": "2026-08-13T03:00:00+00:00",
           "review_status": "unreviewed",
           "ranking_effect": "none",
           "investment_recommendation": false
@@ -669,11 +520,11 @@
       "review_status": "unreviewed"
     },
     {
-      "review_rank": 6,
-      "observed_rank": 130,
+      "review_rank": 5,
+      "observed_rank": 139,
       "event_key": "티빙",
       "display_name": "티빙",
-      "score": 63.3,
+      "score": 62.82,
       "period_sources": [
         "google_trends"
       ],
@@ -783,11 +634,125 @@
       "review_status": "unreviewed"
     },
     {
+      "review_rank": 6,
+      "observed_rank": 244,
+      "event_key": "삼전닉스",
+      "display_name": "삼전닉스",
+      "score": 51.84,
+      "period_sources": [
+        "google_trends"
+      ],
+      "source_evidence_urls": [
+        "https://trends.google.com/trending?geo=KR"
+      ],
+      "selection_basis": "concrete_observed_term_and_term_specific_registry",
+      "related_keyword_candidates": [
+        {
+          "text": "삼성전자",
+          "candidate_rank": 1,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "SK하이닉스",
+          "candidate_rank": 2,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "HBM",
+          "candidate_rank": 3,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "메모리 반도체",
+          "candidate_rank": 4,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "AI 반도체",
+          "candidate_rank": 5,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "DRAM",
+          "candidate_rank": 6,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "NAND",
+          "candidate_rank": 7,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "반도체 실적",
+          "candidate_rank": 8,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "반도체 수출",
+          "candidate_rank": 9,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "반도체 공급망",
+          "candidate_rank": 10,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "반도체 투자",
+          "candidate_rank": 11,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "반도체 주가",
+          "candidate_rank": 12,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "HBM 경쟁",
+          "candidate_rank": 13,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "메모리 가격",
+          "candidate_rank": 14,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        },
+        {
+          "text": "AI 데이터센터",
+          "candidate_rank": 15,
+          "basis": "term_specific_editorial_query_candidate",
+          "review_status": "unreviewed"
+        }
+      ],
+      "company_candidates": [],
+      "company_display_policy": {
+        "show_category_groups": false,
+        "default_layout": "company_description_list",
+        "grouping_reason": "few_companies_are_clearer_without_category_tabs"
+      },
+      "company_verification_status": "insufficient_verified_companies",
+      "review_status": "unreviewed"
+    },
+    {
       "review_rank": 7,
-      "observed_rank": 239,
+      "observed_rank": 254,
       "event_key": "코난 극장판",
       "display_name": "코난 극장판",
-      "score": 51.34,
+      "score": 50.55,
       "period_sources": [
         "x"
       ],
@@ -898,10 +863,10 @@
     },
     {
       "review_rank": 8,
-      "observed_rank": 241,
+      "observed_rank": 258,
       "event_key": "검은사막",
       "display_name": "검은사막",
-      "score": 51.33,
+      "score": 49.73,
       "period_sources": [
         "google_trends"
       ],
@@ -1014,7 +979,7 @@
           "evidence_type": "official_product_page",
           "candidate_rank": 1,
           "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
+          "verified_at": "2026-08-13T03:00:00+00:00",
           "review_status": "unreviewed",
           "ranking_effect": "none",
           "investment_recommendation": false
@@ -1031,7 +996,7 @@
           "evidence_type": "official_platform_release",
           "candidate_rank": 2,
           "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
+          "verified_at": "2026-08-13T03:00:00+00:00",
           "review_status": "unreviewed",
           "ranking_effect": "none",
           "investment_recommendation": false
@@ -1048,7 +1013,7 @@
           "evidence_type": "official_platform_release",
           "candidate_rank": 3,
           "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
+          "verified_at": "2026-08-13T03:00:00+00:00",
           "review_status": "unreviewed",
           "ranking_effect": "none",
           "investment_recommendation": false
@@ -1064,124 +1029,10 @@
     },
     {
       "review_rank": 9,
-      "observed_rank": 245,
-      "event_key": "삼전닉스",
-      "display_name": "삼전닉스",
-      "score": 50.86,
-      "period_sources": [
-        "google_trends"
-      ],
-      "source_evidence_urls": [
-        "https://trends.google.com/trending?geo=KR"
-      ],
-      "selection_basis": "concrete_observed_term_and_term_specific_registry",
-      "related_keyword_candidates": [
-        {
-          "text": "삼성전자",
-          "candidate_rank": 1,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "SK하이닉스",
-          "candidate_rank": 2,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "HBM",
-          "candidate_rank": 3,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "메모리 반도체",
-          "candidate_rank": 4,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "AI 반도체",
-          "candidate_rank": 5,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "DRAM",
-          "candidate_rank": 6,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "NAND",
-          "candidate_rank": 7,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "반도체 실적",
-          "candidate_rank": 8,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "반도체 수출",
-          "candidate_rank": 9,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "반도체 공급망",
-          "candidate_rank": 10,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "반도체 투자",
-          "candidate_rank": 11,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "반도체 주가",
-          "candidate_rank": 12,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "HBM 경쟁",
-          "candidate_rank": 13,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "메모리 가격",
-          "candidate_rank": 14,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        },
-        {
-          "text": "AI 데이터센터",
-          "candidate_rank": 15,
-          "basis": "term_specific_editorial_query_candidate",
-          "review_status": "unreviewed"
-        }
-      ],
-      "company_candidates": [],
-      "company_display_policy": {
-        "show_category_groups": false,
-        "default_layout": "company_description_list",
-        "grouping_reason": "few_companies_are_clearer_without_category_tabs"
-      },
-      "company_verification_status": "insufficient_verified_companies",
-      "review_status": "unreviewed"
-    },
-    {
-      "review_rank": 10,
-      "observed_rank": 258,
+      "observed_rank": 267,
       "event_key": "챱챱 물개",
       "display_name": "챱챱 물개",
-      "score": 49.22,
+      "score": 49.18,
       "period_sources": [
         "x"
       ],
@@ -1291,11 +1142,11 @@
       "review_status": "unreviewed"
     },
     {
-      "review_rank": 11,
-      "observed_rank": 304,
+      "review_rank": 10,
+      "observed_rank": 325,
       "event_key": "smr",
       "display_name": "smr",
-      "score": 43.95,
+      "score": 42.65,
       "period_sources": [
         "google_trends"
       ],
@@ -1408,7 +1259,7 @@
           "evidence_type": "official_company_release",
           "candidate_rank": 1,
           "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
+          "verified_at": "2026-08-13T03:00:00+00:00",
           "review_status": "unreviewed",
           "ranking_effect": "none",
           "investment_recommendation": false
@@ -1425,7 +1276,7 @@
           "evidence_type": "official_company_release",
           "candidate_rank": 2,
           "verification_status": "evidence_verified",
-          "verified_at": "2026-08-13T01:00:00+00:00",
+          "verified_at": "2026-08-13T03:00:00+00:00",
           "review_status": "unreviewed",
           "ranking_effect": "none",
           "investment_recommendation": false
@@ -1440,11 +1291,11 @@
       "review_status": "unreviewed"
     },
     {
-      "review_rank": 12,
-      "observed_rank": 332,
+      "review_rank": 11,
+      "observed_rank": 353,
       "event_key": "휴머노이드 로봇",
       "display_name": "휴머노이드 로봇",
-      "score": 39.41,
+      "score": 38.11,
       "period_sources": [
         "google_trends"
       ],

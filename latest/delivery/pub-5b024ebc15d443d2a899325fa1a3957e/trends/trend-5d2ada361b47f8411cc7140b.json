@@ -1,0 +1,555 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-5b024ebc15d443d2a899325fa1a3957e",
+  "generated_at": "2026-08-13T03:23:07.277661+00:00",
+  "observed_at": "2026-08-13T03:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "cpi",
+    "topic": "cpi 발표",
+    "display_name": "cpi 발표",
+    "observed_representative_term": "cpi 발표",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "cpi",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 12,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.079269,
+      "best_source_rank": 51
+    },
+    "raw_terms": [
+      "cpi",
+      "cpi 발표"
+    ],
+    "phenomenon_summary": "\"cpi 발표\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "investment_market",
+    "broad_category": "market",
+    "lane": "main",
+    "selection_reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "제품·콘텐츠·문화·소비·생활·스포츠·기술 또는 참여 행동 신호",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 70.08,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "period_strength": 0.627085,
+    "current_source_position": 0.627085,
+    "momentum": 0.5,
+    "persistence": 1.0,
+    "score_components": {
+      "period_strength_points": 25.08,
+      "momentum_points": 10.0,
+      "persistence_points": 20.0,
+      "recency_points": 15.0,
+      "cross_source_points": 0.0,
+      "formula_version": "period40_momentum20_persistence20_recency15_cross5_v1",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 70.08
+    },
+    "score_explanation": {
+      "formula": "40 period strength + 20 comparable-period momentum + 20 per-source persistence + 15 last-seen recency + 5 period cross-source",
+      "momentum_status": "neutral_no_comparable_window",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.627085
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "persistence": {
+        "google_trends": {
+          "eligible_hours": 12,
+          "observed_hours": 12,
+          "presence_rate": 1.0
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.029762,
+        "google_trends": 0.071429
+      },
+      "momentum_status": "neutral_no_comparable_window"
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T03:00:00+00:00",
+      "observed_hours": 12,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 165
+    },
+    "rank_change_by_source": {
+      "google_trends": -2
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T03:00:00+00:00",
+    "age_hours": 14,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 12,
+      "history_maturity": 0.0506,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "cpi 발표",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T19:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T19:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T19:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 22085,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "41nqf6pw4dI",
+              "title": "[속보] 미국 CPI 발표! 9월 FOMC가 달라질 중요한 숫자 나왔다! 연준 추가 긴축 막아준 CPI, 이제 남은 변수는? 미국증시 일단 최악의 시나리오는 피했다?!",
+              "url": "https://www.youtube.com/watch?v=41nqf6pw4dI",
+              "published_at": "2026-08-12T14:04:00Z",
+              "publisher": "힐링여행자",
+              "metrics": {
+                "commentCount": 19,
+                "likeCount": 254,
+                "viewCount": 1638
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "cpi 발표",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "SUDk-BvbCy4",
+              "title": "[김현석의 브레이킹 뉴스] 7월 소비자물가지수(CPI) 발표! 8월 12일 오후 9시 30분 L.I.V.E",
+              "url": "https://www.youtube.com/watch?v=SUDk-BvbCy4",
+              "published_at": "2026-08-12T12:46:38Z",
+              "publisher": "한경 글로벌마켓",
+              "metrics": {
+                "commentCount": 12,
+                "likeCount": 1002,
+                "viewCount": 24140
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "cpi 발표",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "cz3wwZ32lUI",
+              "title": "7월 CPI가 발표되었습니다. 이 정도면 다행입니다.",
+              "url": "https://www.youtube.com/watch?v=cz3wwZ32lUI",
+              "published_at": "2026-08-12T13:04:09Z",
+              "publisher": "TQQQ 연구소",
+              "metrics": {
+                "commentCount": 2,
+                "likeCount": 65,
+                "viewCount": 1433
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "cpi 발표",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "me00WQmQtE4",
+              "title": "[긴급] 미국 CPI 발표, 금값 상승 조금만 더 기다려봅시다",
+              "url": "https://www.youtube.com/watch?v=me00WQmQtE4",
+              "published_at": "2026-08-12T14:06:56Z",
+              "publisher": "금사빠 김대리",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 36,
+                "viewCount": 260
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "cpi 발표",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "kfsZ9bo3Y4E",
+              "title": "(실시간) 7월 CPI 물가지수 발표 | 이란, 내부 권력 다툼 격화 | 실적발표: 시스코, 코헤런트, 세브라스 | 미국 증시 실시간",
+              "url": "https://www.youtube.com/watch?v=kfsZ9bo3Y4E",
+              "published_at": "2026-08-12T11:48:35Z",
+              "publisher": "미국 주식 채널 - 에디 Eddie",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 2599,
+                "viewCount": 121748
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T19:00:00Z",
+                "query_term": "cpi 발표",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 30,
+        "value": 71.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"400%\", \"page\": 2, \"row_on_page\": 5, \"started_text\": \"22시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 51,
+        "value": 50.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"600%\", \"page\": 3, \"row_on_page\": 1, \"started_text\": \"1시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[\"미국 cpi\"]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 30,
+        "value": 71.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"300%\", \"page\": 2, \"row_on_page\": 5, \"started_text\": \"23시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 54,
+        "value": 47.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"400%\", \"page\": 3, \"row_on_page\": 4, \"started_text\": \"2시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[\"미국 cpi\"]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 64,
+        "value": 37.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"300%\", \"page\": 3, \"row_on_page\": 14, \"started_text\": \"3시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[\"미국 cpi\"]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 75,
+        "value": 26.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"300%\", \"page\": 3, \"row_on_page\": 25, \"started_text\": \"4시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 78,
+        "value": 23.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"300%\", \"page\": 4, \"row_on_page\": 3, \"started_text\": \"5시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 76,
+        "value": 25.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"300%\", \"page\": 4, \"row_on_page\": 1, \"started_text\": \"6시간 전\", \"status_text\": \"6시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 78,
+        "value": 23.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"300%\", \"page\": 4, \"row_on_page\": 3, \"started_text\": \"7시간 전\", \"status_text\": \"6시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 109,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"300%\", \"page\": 5, \"row_on_page\": 9, \"started_text\": \"9시간 전\", \"status_text\": \"6시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 155,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"300%\", \"page\": 7, \"row_on_page\": 5, \"started_text\": \"11시간 전\", \"status_text\": \"6시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 154,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"300%\", \"page\": 7, \"row_on_page\": 4, \"started_text\": \"12시간 전\", \"status_text\": \"6시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[\"나스닥 100\", \"미국 cpi\"]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 163,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"300%\", \"page\": 7, \"row_on_page\": 13, \"started_text\": \"13시간 전\", \"status_text\": \"6시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[\"나스닥 100\", \"미국 cpi\"]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 165,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"300%\", \"page\": 7, \"row_on_page\": 15, \"started_text\": \"15시간 전\", \"status_text\": \"6시간 동안 지속됨\", \"volume_text\": \"1천+\"}",
+        "related_terms_json": "[\"미국 cpi\"]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "미국 cpi",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 6,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "cpi",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 2,
+        "status": "observed_ranked_term",
+        "role": "alias_or_variant",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "나스닥 100",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 2,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "keyword_evidence": {
+      "total": 3,
+      "observed_source_count": 3,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 5,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "core": 0,
+        "value_chain": 0,
+        "adjacent": 0,
+        "excluded": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json"
+        ],
+        "minimum_gold_companies": 5,
+        "matched_terms": [
+          {
+            "term": "cpi 발표",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "미국 cpi",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "cpi",
+            "observation_status": "observed_ranked_term",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "나스닥 100",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 5개 미만이라 기업 Gold 공개를 보류"
+    },
+    "rank": 79,
+    "classification": "일반 트렌드",
+    "persistence_rank": 45,
+    "momentum_rank": 79,
+    "main_rank": 12,
+    "home_context_status": "resolved",
+    "home_context_reason": "observed_or_reviewed_related_expression",
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_five_evidence_backed_companies",
+    "ranking_availability_status": "provisional_history"
+  }
+}
