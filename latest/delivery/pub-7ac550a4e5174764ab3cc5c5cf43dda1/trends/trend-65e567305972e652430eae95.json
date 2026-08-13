@@ -1,0 +1,744 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-7ac550a4e5174764ab3cc5c5cf43dda1",
+  "generated_at": "2026-08-13T20:17:22.834287+00:00",
+  "observed_at": "2026-08-13T20:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "아들",
+    "topic": "아들",
+    "display_name": "아들",
+    "observed_representative_term": "아들",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "아들",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 12,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.140927,
+      "best_source_rank": 6
+    },
+    "raw_terms": [
+      "아들"
+    ],
+    "phenomenon_summary": "\"아들\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "unclassified",
+    "category_basis": "unclassified",
+    "broad_category": "other",
+    "category_label": "기타·검토",
+    "trend_definition": "'아들'은(는) 구체적인 대상과 그 이용 맥락에 관심이 모이는 흐름입니다. 실측 데이터에서는 신상출시 편스토랑, 전경철 같은 표현과 함께 나타났습니다. X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다.",
+    "lane": "main",
+    "selection_reason": "소비 행동 · 제품화 신호 · 교차 맥락 확산",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": true,
+      "generic_category_word": false,
+      "labels": [
+        "consumer_action",
+        "productization",
+        "cross_context"
+      ],
+      "reason": "소비 행동 · 제품화 신호 · 교차 맥락 확산",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "context_review_queue",
+    "company_eligible": true,
+    "score": 50.96,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.452468,
+    "current_source_position": 0.452468,
+    "momentum": 0.9049,
+    "persistence": 0.25,
+    "momentum_delta": 0.904935,
+    "score_components": {
+      "period_strength_points": 15.84,
+      "momentum_points": 22.62,
+      "persistence_points": 2.5,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 50.96
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.904935
+      },
+      "momentum_deltas": {
+        "google_trends": 0.904935
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 12,
+          "comparison": 0
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 13,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 14,
+          "observed_hours": 12,
+          "presence_rate": 0.5,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.541667,
+        "google_trends": 0.583333
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-13T00:00:00+00:00",
+      "last_seen_at": "2026-08-13T20:00:00+00:00",
+      "observed_hours": 12,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 40
+    },
+    "rank_change_by_source": {
+      "google_trends": -9
+    },
+    "source_rank_change": {
+      "google_trends": -9
+    },
+    "first_seen_at": "2026-08-13T00:00:00+00:00",
+    "last_seen_at": "2026-08-13T20:00:00+00:00",
+    "age_hours": 20,
+    "lifecycle": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 21,
+      "history_maturity": 0.5625,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "representative_term": "아들",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T17:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T17:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T17:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 146914,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "N-8SCxYWlUg",
+              "title": "\"며느리라서 예뻐하는게 아니야\".시어머니의 진짜 속마음. #shorts #참교육 #고부갈등 #며느리 #아들",
+              "url": "https://www.youtube.com/watch?v=N-8SCxYWlUg",
+              "published_at": "2026-08-13T08:00:17Z",
+              "publisher": "썰푼이야기",
+              "metrics": {
+                "commentCount": 2,
+                "likeCount": 235,
+                "viewCount": 7183
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "gNYgm10w7pY",
+              "title": "아들과 딸, 부모를 대하는 방식이 이렇게 다릅니다.",
+              "url": "https://www.youtube.com/watch?v=gNYgm10w7pY",
+              "published_at": "2026-08-13T07:05:35Z",
+              "publisher": "땡큐손머치 스튜디오",
+              "metrics": {
+                "commentCount": 5,
+                "likeCount": 152,
+                "viewCount": 97191
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "pfc8_tZfB9M",
+              "title": "김용건 할아버지 없는 별장에서 첫 여름방학 보낸 황보라 아들ㅣ별장 공개, 현실육아",
+              "url": "https://www.youtube.com/watch?v=pfc8_tZfB9M",
+              "published_at": "2026-08-11T09:00:07Z",
+              "publisher": "황보라 보라이어티",
+              "metrics": {
+                "commentCount": 125,
+                "likeCount": 2344,
+                "viewCount": 214399
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "8RAyEQVJK94",
+              "title": "66살 엄마가 6년간 매달 200만원씩 보내던 아들에게 “이제 안 보낸다” 말한 이유#시니어이야기 #부모자식 #엄마이야기 #감동사연 #인생이야기 #가족이야기 #쇼츠 #유튜브쇼츠",
+              "url": "https://www.youtube.com/watch?v=8RAyEQVJK94",
+              "published_at": "2026-08-10T10:02:07Z",
+              "publisher": "매일 감동 드라마",
+              "metrics": {
+                "commentCount": 619,
+                "likeCount": 16102,
+                "viewCount": 597566
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "xGHXSK62SVQ",
+              "title": "잘 키운 딸이 아들보다 나은 이유 #참교육",
+              "url": "https://www.youtube.com/watch?v=xGHXSK62SVQ",
+              "published_at": "2026-08-13T05:01:39Z",
+              "publisher": "썰나무",
+              "metrics": {
+                "commentCount": 31,
+                "likeCount": 1831,
+                "viewCount": 21374
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "representative_term": "아들",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T17:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T17:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T17:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 146914,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "N-8SCxYWlUg",
+              "title": "\"며느리라서 예뻐하는게 아니야\".시어머니의 진짜 속마음. #shorts #참교육 #고부갈등 #며느리 #아들",
+              "url": "https://www.youtube.com/watch?v=N-8SCxYWlUg",
+              "published_at": "2026-08-13T08:00:17Z",
+              "publisher": "썰푼이야기",
+              "metrics": {
+                "commentCount": 2,
+                "likeCount": 235,
+                "viewCount": 7183
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "gNYgm10w7pY",
+              "title": "아들과 딸, 부모를 대하는 방식이 이렇게 다릅니다.",
+              "url": "https://www.youtube.com/watch?v=gNYgm10w7pY",
+              "published_at": "2026-08-13T07:05:35Z",
+              "publisher": "땡큐손머치 스튜디오",
+              "metrics": {
+                "commentCount": 5,
+                "likeCount": 152,
+                "viewCount": 97191
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "pfc8_tZfB9M",
+              "title": "김용건 할아버지 없는 별장에서 첫 여름방학 보낸 황보라 아들ㅣ별장 공개, 현실육아",
+              "url": "https://www.youtube.com/watch?v=pfc8_tZfB9M",
+              "published_at": "2026-08-11T09:00:07Z",
+              "publisher": "황보라 보라이어티",
+              "metrics": {
+                "commentCount": 125,
+                "likeCount": 2344,
+                "viewCount": 214399
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "8RAyEQVJK94",
+              "title": "66살 엄마가 6년간 매달 200만원씩 보내던 아들에게 “이제 안 보낸다” 말한 이유#시니어이야기 #부모자식 #엄마이야기 #감동사연 #인생이야기 #가족이야기 #쇼츠 #유튜브쇼츠",
+              "url": "https://www.youtube.com/watch?v=8RAyEQVJK94",
+              "published_at": "2026-08-10T10:02:07Z",
+              "publisher": "매일 감동 드라마",
+              "metrics": {
+                "commentCount": 619,
+                "likeCount": 16102,
+                "viewCount": 597566
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "xGHXSK62SVQ",
+              "title": "잘 키운 딸이 아들보다 나은 이유 #참교육",
+              "url": "https://www.youtube.com/watch?v=xGHXSK62SVQ",
+              "published_at": "2026-08-13T05:01:39Z",
+              "publisher": "썰나무",
+              "metrics": {
+                "commentCount": 31,
+                "likeCount": 1831,
+                "viewCount": 21374
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T17:00:00Z",
+                "query_term": "아들",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 4, \"started_text\": \"1시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 15,
+        "value": 86.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 15, \"started_text\": \"2시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 6,
+        "value": 95.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 6, \"started_text\": \"4시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 10,
+        "value": 91.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 245, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 10, \"started_text\": \"10시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "google_trends",
+        "rank": 11,
+        "value": 90.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 237, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 11, \"started_text\": \"11시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "google_trends",
+        "rank": 44,
+        "value": 57.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 242, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 19, \"started_text\": \"13시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"전경철\"]"
+      },
+      {
+        "at": "2026-08-13T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 45,
+        "value": 56.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 238, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 20, \"started_text\": \"14시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"신상출시 편스토랑\"]"
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 36,
+        "value": 65.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 229, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 11, \"started_text\": \"17시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"신상출시 편스토랑\"]"
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 35,
+        "value": 66.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 236, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 10, \"started_text\": \"18시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"신상출시 편스토랑\"]"
+      },
+      {
+        "at": "2026-08-13T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 25,
+        "value": 76.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 227, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 25, \"started_text\": \"19시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"신상출시 편스토랑\"]"
+      },
+      {
+        "at": "2026-08-13T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 31,
+        "value": 70.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 6, \"started_text\": \"20시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"신상출시 편스토랑\"]"
+      },
+      {
+        "at": "2026-08-13T20:00:00+00:00",
+        "source": "google_trends",
+        "rank": 40,
+        "value": 61.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 217, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 15, \"started_text\": \"21시간 전\", \"status_text\": \"12시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "신상출시 편스토랑",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 5,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "전경철",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "신상출시 편스토랑",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 5,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "전경철",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 2,
+      "observed_source_count": 2,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "아들",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "신상출시 편스토랑",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "전경철",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 후보층 공개를 보류"
+    },
+    "rank": 20,
+    "observed_rank": 20,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 285,
+    "momentum_rank": 28,
+    "main_rank": 4,
+    "home_context_status": "review_required",
+    "home_context_reason": "unclassified",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_six_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_six"
+    ],
+    "frontend_keyword_count": 2,
+    "frontend_company_count": 0,
+    "publication_rank": null,
+    "ranking_availability_status": "provisional_history"
+  }
+}

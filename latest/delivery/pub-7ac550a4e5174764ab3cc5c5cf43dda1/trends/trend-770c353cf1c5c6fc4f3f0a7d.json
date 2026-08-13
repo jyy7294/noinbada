@@ -1,0 +1,294 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-7ac550a4e5174764ab3cc5c5cf43dda1",
+  "generated_at": "2026-08-13T20:17:22.834287+00:00",
+  "observed_at": "2026-08-13T20:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "안판석 감독님",
+    "topic": "안판석 감독님",
+    "display_name": "안판석 감독님",
+    "observed_representative_term": "안판석 감독님",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "안판석 감독님",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 4,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.048196,
+      "best_source_rank": 22
+    },
+    "raw_terms": [
+      "안판석 감독님"
+    ],
+    "phenomenon_summary": "\"안판석 감독님\" · X 한국 실시간에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "unclassified",
+    "category_basis": "unclassified",
+    "broad_category": "other",
+    "category_label": "기타·검토",
+    "trend_definition": "'안판석 감독님'은(는) 구체적인 대상과 그 이용 맥락에 관심이 모이는 흐름입니다. X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다.",
+    "lane": "review",
+    "selection_reason": "원문은 보존하되 대표 사건·현상의 문맥을 아직 확인하지 못함",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "review",
+      "main_eligible": false,
+      "hard_issue": false,
+      "ambiguous": true,
+      "generic_category_word": false,
+      "labels": [],
+      "reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "review",
+      "label": "맥락 검토",
+      "affects_score": false
+    },
+    "selection_layer": "review_queue",
+    "company_eligible": true,
+    "score": 8.57,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "x"
+    ],
+    "freshness": {
+      "signal": 0.33371,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 19.0
+    },
+    "hours_since_last_seen": 19.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.125686,
+    "current_source_position": 0.125686,
+    "momentum": 0.0,
+    "persistence": 0.0833,
+    "momentum_delta": null,
+    "score_components": {
+      "period_strength_points": 4.4,
+      "momentum_points": 0.0,
+      "persistence_points": 0.83,
+      "recency_points": 3.34,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 8.57
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "unavailable",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "x": 0.251372
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "momentum_event_observations": {},
+      "persistence": {
+        "x": {
+          "eligible_hours": 13,
+          "observed_hours": 4,
+          "presence_rate": 0.166667,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 14,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.541667,
+        "google_trends": 0.583333
+      },
+      "momentum_status": "unavailable",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T21:00:00+00:00",
+      "last_seen_at": "2026-08-13T01:00:00+00:00",
+      "observed_hours": 4,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "x": 23
+    },
+    "rank_change_by_source": {
+      "x": 1
+    },
+    "source_rank_change": {
+      "x": 1
+    },
+    "first_seen_at": "2026-08-12T21:00:00+00:00",
+    "last_seen_at": "2026-08-13T01:00:00+00:00",
+    "age_hours": 23,
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 21,
+      "history_maturity": 0.5625,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "x",
+        "rank": 23,
+        "value": 78.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "x",
+        "rank": 22,
+        "value": 79.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "x",
+        "rank": 24,
+        "value": 77.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "x",
+        "rank": 23,
+        "value": 78.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "안판석 감독님",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 후보층 공개를 보류"
+    },
+    "rank": 483,
+    "observed_rank": 483,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "맥락 확인",
+    "persistence_rank": 231,
+    "momentum_rank": 484,
+    "main_rank": null,
+    "home_context_status": "review_required",
+    "home_context_reason": "not_main_lane",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_six_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_six"
+    ],
+    "frontend_keyword_count": 0,
+    "frontend_company_count": 0,
+    "publication_rank": null,
+    "ranking_availability_status": "provisional_history"
+  }
+}

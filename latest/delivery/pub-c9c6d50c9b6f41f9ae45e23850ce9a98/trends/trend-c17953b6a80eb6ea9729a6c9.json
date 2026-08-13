@@ -1,0 +1,3323 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-c9c6d50c9b6f41f9ae45e23850ce9a98",
+  "generated_at": "2026-08-13T20:16:21.635927+00:00",
+  "observed_at": "2026-08-13T20:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "용인반도체클러스터",
+    "topic": "용인반도체클러스터",
+    "display_name": "용인반도체클러스터",
+    "observed_representative_term": "용인반도체클러스터",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "용인반도체클러스터",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 9,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.046415,
+      "best_source_rank": 121
+    },
+    "raw_terms": [
+      "용인반도체클러스터"
+    ],
+    "phenomenon_summary": "\"용인반도체클러스터\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "technology_tool",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "technology",
+    "category_label": "기술·도구",
+    "trend_definition": "'용인반도체클러스터'은(는) 기술·장비·인프라의 개발과 활용에 관심이 모이는 흐름입니다. X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "main_subset",
+    "company_eligible": true,
+    "score": 30.72,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.221688,
+    "current_source_position": 0.221688,
+    "momentum": 0.4434,
+    "persistence": 0.1875,
+    "momentum_delta": 0.443376,
+    "score_components": {
+      "period_strength_points": 7.76,
+      "momentum_points": 11.08,
+      "persistence_points": 1.88,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 30.72
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.443376
+      },
+      "momentum_deltas": {
+        "google_trends": 0.443376
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 9,
+          "comparison": 0
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 13,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 14,
+          "observed_hours": 9,
+          "presence_rate": 0.375,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.541667,
+        "google_trends": 0.583333
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-13T09:00:00+00:00",
+      "last_seen_at": "2026-08-13T20:00:00+00:00",
+      "observed_hours": 9,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 131
+    },
+    "rank_change_by_source": {
+      "google_trends": 5
+    },
+    "source_rank_change": {
+      "google_trends": 5
+    },
+    "first_seen_at": "2026-08-13T09:00:00+00:00",
+    "last_seen_at": "2026-08-13T20:00:00+00:00",
+    "age_hours": 11,
+    "lifecycle": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 21,
+      "history_maturity": 0.5625,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 121,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 245, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 5, \"row_on_page\": 21, \"started_text\": \"5시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "google_trends",
+        "rank": 121,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 237, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 5, \"row_on_page\": 21, \"started_text\": \"6시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "google_trends",
+        "rank": 140,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 242, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 15, \"started_text\": \"8시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 136,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 238, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 11, \"started_text\": \"10시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 141,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 229, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 16, \"started_text\": \"12시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 142,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 236, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 17, \"started_text\": \"13시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 140,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 227, \"collection_page_count\": 10, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 15, \"started_text\": \"14시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 136,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 11, \"started_text\": \"15시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T20:00:00+00:00",
+        "source": "google_trends",
+        "rank": 131,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 217, \"collection_page_count\": 9, \"growth_text\": \"400%\", \"page\": 6, \"row_on_page\": 6, \"started_text\": \"16시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [
+      {
+        "text": "용인 반도체 국가산단",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "SK하이닉스 용인 팹",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "삼성전자 용인 클러스터",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "반도체 메가 클러스터",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      },
+      {
+        "text": "반도체 전력 인프라",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "reviewed_related_expression",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [
+      {
+        "company": "SK하이닉스",
+        "stock_code": "000660",
+        "ticker": "000660",
+        "market": "KOSPI",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "SK하이닉스 공식 자료가 용인 클러스터 첫 팹 투자 계획을 직접 명시",
+        "relationship_reason": "SK하이닉스 공식 자료가 용인 클러스터 첫 팹 투자 계획을 직접 명시",
+        "company_summary": "용인 반도체 클러스터에 대규모 팹 투자를 진행하는 국내 상장 메모리기업",
+        "company_description": "용인 반도체 클러스터에 대규모 팹 투자를 진행하는 국내 상장 메모리기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "official_investment_release",
+        "evidence_url": "https://news.skhynix.co.kr/fact-04/",
+        "evidence_sources": [
+          {
+            "url": "https://news.skhynix.co.kr/fact-04/",
+            "title": "SK hynix",
+            "evidence_type": "official_investment_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://news.skhynix.co.kr/fact-04/"
+            ],
+            "evidence_type": "official_investment_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "SK하이닉스",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://news.skhynix.co.kr/fact-04/"
+            ],
+            "evidence_type": "official_investment_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "SK하이닉스",
+          "english_name": "SK hynix Inc.",
+          "established_date": "19491015",
+          "homepage": "https://www.skhynix.com",
+          "legal_name": "에스케이하이닉스(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "000660",
+          "stock_name": "SK하이닉스"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "000660",
+          "name": "SK하이닉스",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 1697000.0,
+              "high": 1718000.0,
+              "low": 1586000.0,
+              "close": 1718000.0,
+              "volume": 10499619.0,
+              "change_pct": 29.954614220877456
+            },
+            {
+              "date": "2026-08-03",
+              "open": 1642000.0,
+              "high": 1645000.0,
+              "low": 1562000.0,
+              "close": 1567000.0,
+              "volume": 5432833.0,
+              "change_pct": -8.78928987194412
+            },
+            {
+              "date": "2026-08-04",
+              "open": 1620000.0,
+              "high": 1630000.0,
+              "low": 1483000.0,
+              "close": 1577000.0,
+              "volume": 5391210.0,
+              "change_pct": 0.6381620931716656
+            },
+            {
+              "date": "2026-08-05",
+              "open": 1693000.0,
+              "high": 1701000.0,
+              "low": 1647000.0,
+              "close": 1668000.0,
+              "volume": 3945674.0,
+              "change_pct": 5.7704502219403935
+            },
+            {
+              "date": "2026-08-06",
+              "open": 1600000.0,
+              "high": 1606000.0,
+              "low": 1481000.0,
+              "close": 1495000.0,
+              "volume": 5498295.0,
+              "change_pct": -10.371702637889687
+            },
+            {
+              "date": "2026-08-07",
+              "open": 1521000.0,
+              "high": 1542000.0,
+              "low": 1409000.0,
+              "close": 1422000.0,
+              "volume": 5002539.0,
+              "change_pct": -4.882943143812709
+            },
+            {
+              "date": "2026-08-10",
+              "open": 1443000.0,
+              "high": 1487000.0,
+              "low": 1397000.0,
+              "close": 1420000.0,
+              "volume": 3295283.0,
+              "change_pct": -0.14064697609001406
+            },
+            {
+              "date": "2026-08-11",
+              "open": 1405000.0,
+              "high": 1455000.0,
+              "low": 1373000.0,
+              "close": 1425000.0,
+              "volume": 3817655.0,
+              "change_pct": 0.35211267605633806
+            },
+            {
+              "date": "2026-08-12",
+              "open": 1456000.0,
+              "high": 1549000.0,
+              "low": 1440000.0,
+              "close": 1504000.0,
+              "volume": 4566672.0,
+              "change_pct": 5.543859649122807
+            },
+            {
+              "date": "2026-08-13",
+              "open": 1582000.0,
+              "high": 1634000.0,
+              "low": 1567000.0,
+              "close": 1593000.0,
+              "volume": 4599305.0,
+              "change_pct": 5.917553191489362
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 1582000.0,
+            "high": 1634000.0,
+            "low": 1567000.0,
+            "close": 1593000.0,
+            "volume": 4599305.0,
+            "change_pct": 5.917553191489362
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 1593000,
+            "daily_change_pct": 5.92,
+            "volume": 4599305
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 12.03,
+            "five_vs_previous_volume_ratio": 0.69,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "ticker": "005930",
+        "market": "KOSPI",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Samsung Semiconductor 공식 연혁이 용인 반도체 클러스터 구축 계획을 명시",
+        "relationship_reason": "Samsung Semiconductor 공식 연혁이 용인 반도체 클러스터 구축 계획을 명시",
+        "company_summary": "용인 반도체 클러스터를 연구·생산 거점으로 추진하는 국내 상장 반도체기업",
+        "company_description": "용인 반도체 클러스터를 연구·생산 거점으로 추진하는 국내 상장 반도체기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "official_corporate_history",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/our-story/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/our-story/",
+            "title": "Samsung Semiconductor",
+            "evidence_type": "official_corporate_history",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/our-story/"
+            ],
+            "evidence_type": "official_corporate_history",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "삼성전자",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/our-story/"
+            ],
+            "evidence_type": "official_corporate_history",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "삼성전자",
+          "english_name": "SAMSUNG ELECTRONICS CO,.LTD",
+          "established_date": "19690113",
+          "homepage": "https://www.samsung.com/sec",
+          "legal_name": "삼성전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005930",
+          "stock_name": "삼성전자"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "005930",
+          "name": "삼성전자",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 214000.0,
+              "high": 226000.0,
+              "low": 202000.0,
+              "close": 207000.0,
+              "volume": 46694193.0,
+              "change_pct": -0.7194244604316548
+            },
+            {
+              "date": "2026-07-31",
+              "open": 257000.0,
+              "high": 267000.0,
+              "low": 243000.0,
+              "close": 262500.0,
+              "volume": 58478873.0,
+              "change_pct": 26.811594202898554
+            },
+            {
+              "date": "2026-08-03",
+              "open": 248000.0,
+              "high": 249500.0,
+              "low": 238000.0,
+              "close": 239500.0,
+              "volume": 27825493.0,
+              "change_pct": -8.761904761904763
+            },
+            {
+              "date": "2026-08-04",
+              "open": 244500.0,
+              "high": 244500.0,
+              "low": 228000.0,
+              "close": 240000.0,
+              "volume": 29433821.0,
+              "change_pct": 0.20876826722338201
+            },
+            {
+              "date": "2026-08-05",
+              "open": 254000.0,
+              "high": 254500.0,
+              "low": 244000.0,
+              "close": 246000.0,
+              "volume": 22577128.0,
+              "change_pct": 2.5
+            },
+            {
+              "date": "2026-08-06",
+              "open": 241500.0,
+              "high": 246000.0,
+              "low": 228000.0,
+              "close": 230500.0,
+              "volume": 26101823.0,
+              "change_pct": -6.300813008130081
+            },
+            {
+              "date": "2026-08-07",
+              "open": 235000.0,
+              "high": 239500.0,
+              "low": 229000.0,
+              "close": 231000.0,
+              "volume": 20546010.0,
+              "change_pct": 0.21691973969631237
+            },
+            {
+              "date": "2026-08-10",
+              "open": 236000.0,
+              "high": 238500.0,
+              "low": 228500.0,
+              "close": 230000.0,
+              "volume": 16327805.0,
+              "change_pct": -0.4329004329004329
+            },
+            {
+              "date": "2026-08-11",
+              "open": 229500.0,
+              "high": 243000.0,
+              "low": 227500.0,
+              "close": 239500.0,
+              "volume": 23310969.0,
+              "change_pct": 4.130434782608695
+            },
+            {
+              "date": "2026-08-12",
+              "open": 243500.0,
+              "high": 260500.0,
+              "low": 241000.0,
+              "close": 255500.0,
+              "volume": 27102479.0,
+              "change_pct": 6.6805845511482245
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 243500.0,
+            "high": 260500.0,
+            "low": 241000.0,
+            "close": 255500.0,
+            "volume": 27102479.0,
+            "change_pct": 6.6805845511482245
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 255500,
+            "daily_change_pct": 6.68,
+            "volume": 27102479
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 10.85,
+            "five_vs_previous_volume_ratio": 0.61,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "가온전선",
+        "stock_code": "000500",
+        "ticker": "000500",
+        "market": "KOSPI",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "LS전선 공식 보도가 가온전선의 SK하이닉스 용인 클러스터 배전 케이블 공급을 명시",
+        "relationship_reason": "LS전선 공식 보도가 가온전선의 SK하이닉스 용인 클러스터 배전 케이블 공급을 명시",
+        "company_summary": "반도체 클러스터 전력 인프라용 케이블을 공급하는 국내 상장 전선기업",
+        "company_description": "반도체 클러스터 전력 인프라용 케이블을 공급하는 국내 상장 전선기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "official_supply_release",
+        "evidence_url": "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD",
+        "evidence_sources": [
+          {
+            "url": "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD",
+            "title": "LS Cable & System",
+            "evidence_type": "official_supply_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD"
+            ],
+            "evidence_type": "official_supply_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "가온전선",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD"
+            ],
+            "evidence_type": "official_supply_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "가온전선",
+          "corp_code": "00104768",
+          "english_name": "GAON CABLE CO.,LTD",
+          "established_date": "19470924",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 1515590835000,
+                "label": "자산총계",
+                "previous": 1377927912000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 501086268000,
+                "label": "자본총계",
+                "previous": 483788805000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 1014504567000,
+                "label": "부채총계",
+                "previous": 894139107000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 19677232000,
+                "label": "당기순이익(손실)",
+                "previous": 15336972000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 27834588000,
+                "label": "영업이익",
+                "previous": 21884131000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 763576373000,
+                "label": "매출액",
+                "previous": 639297449000
+              }
+            },
+            "business_year": 2026,
+            "company": "가온전선",
+            "corp_code": "00104768",
+            "filing_receipt_no": "20260515000427",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515000427",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:38:36.229603+00:00",
+            "status": "observed",
+            "stock_code": "000500"
+          },
+          "homepage": "https://www.gaoncable.com",
+          "legal_name": "가온전선(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "000500",
+          "stock_name": "가온전선"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "000500",
+          "name": "가온전선",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 122100.0,
+              "high": 137300.0,
+              "low": 119000.0,
+              "close": 134200.0,
+              "volume": 436905.0,
+              "change_pct": 24.721189591078065
+            },
+            {
+              "date": "2026-08-03",
+              "open": 131700.0,
+              "high": 142000.0,
+              "low": 126900.0,
+              "close": 135600.0,
+              "volume": 163604.0,
+              "change_pct": 1.0432190760059614
+            },
+            {
+              "date": "2026-08-04",
+              "open": 153800.0,
+              "high": 154000.0,
+              "low": 140200.0,
+              "close": 146500.0,
+              "volume": 239936.0,
+              "change_pct": 8.03834808259587
+            },
+            {
+              "date": "2026-08-05",
+              "open": 154500.0,
+              "high": 161900.0,
+              "low": 150700.0,
+              "close": 158900.0,
+              "volume": 210462.0,
+              "change_pct": 8.464163822525597
+            },
+            {
+              "date": "2026-08-06",
+              "open": 162500.0,
+              "high": 164300.0,
+              "low": 151100.0,
+              "close": 155100.0,
+              "volume": 146852.0,
+              "change_pct": -2.391441157960982
+            },
+            {
+              "date": "2026-08-07",
+              "open": 159400.0,
+              "high": 159500.0,
+              "low": 143500.0,
+              "close": 147700.0,
+              "volume": 129046.0,
+              "change_pct": -4.771115409413282
+            },
+            {
+              "date": "2026-08-10",
+              "open": 152100.0,
+              "high": 156700.0,
+              "low": 150100.0,
+              "close": 156500.0,
+              "volume": 138634.0,
+              "change_pct": 5.9580230196343935
+            },
+            {
+              "date": "2026-08-11",
+              "open": 160100.0,
+              "high": 162200.0,
+              "low": 153100.0,
+              "close": 157200.0,
+              "volume": 155153.0,
+              "change_pct": 0.44728434504792336
+            },
+            {
+              "date": "2026-08-12",
+              "open": 161200.0,
+              "high": 163300.0,
+              "low": 158900.0,
+              "close": 162000.0,
+              "volume": 147476.0,
+              "change_pct": 3.0534351145038165
+            },
+            {
+              "date": "2026-08-13",
+              "open": 172600.0,
+              "high": 178000.0,
+              "low": 165000.0,
+              "close": 167000.0,
+              "volume": 207872.0,
+              "change_pct": 3.0864197530864197
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 172600.0,
+            "high": 178000.0,
+            "low": 165000.0,
+            "close": 167000.0,
+            "volume": 207872.0,
+            "change_pct": 3.0864197530864197
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 167000,
+            "daily_change_pct": 3.09,
+            "volume": 207872
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 13.07,
+            "five_vs_previous_volume_ratio": 0.65,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "LS",
+        "stock_code": "006260",
+        "ticker": "006260",
+        "market": "KOSPI",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "LS전선 공식 보도가 용인 클러스터에 초고압 케이블을 공급한다고 명시",
+        "relationship_reason": "LS전선 공식 보도가 용인 클러스터에 초고압 케이블을 공급한다고 명시",
+        "company_summary": "용인 반도체 클러스터 전력 인프라 공급 계열사를 둔 국내 상장 지주기업",
+        "company_description": "용인 반도체 클러스터 전력 인프라 공급 계열사를 둔 국내 상장 지주기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "official_supply_release",
+        "evidence_url": "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD",
+        "evidence_sources": [
+          {
+            "url": "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD",
+            "title": "LS Cable & System",
+            "evidence_type": "official_supply_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD"
+            ],
+            "evidence_type": "official_supply_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "LS",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD"
+            ],
+            "evidence_type": "official_supply_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "LS",
+          "corp_code": "00105952",
+          "english_name": "LS Corp.",
+          "established_date": "19620515",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 27620017000000,
+                "label": "자산총계",
+                "previous": 24994792000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 7752113000000,
+                "label": "자본총계",
+                "previous": 7679588000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 19867904000000,
+                "label": "부채총계",
+                "previous": 17315204000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 241907000000,
+                "label": "당기순이익(손실)",
+                "previous": 141111000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 476090000000,
+                "label": "영업이익",
+                "previous": 304505000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 9504447000000,
+                "label": "매출액",
+                "previous": 6913573000000
+              }
+            },
+            "business_year": 2026,
+            "company": "LS",
+            "corp_code": "00105952",
+            "filing_receipt_no": "20260527000198",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260527000198",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:17.648670+00:00",
+            "status": "observed",
+            "stock_code": "006260"
+          },
+          "homepage": "https://www.lsholdings.co.kr",
+          "legal_name": "(주)LS",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "006260",
+          "stock_name": "LS"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "006260",
+          "name": "LS",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 253500.0,
+              "high": 270500.0,
+              "low": 244500.0,
+              "close": 267000.0,
+              "volume": 193549.0,
+              "change_pct": 19.463087248322147
+            },
+            {
+              "date": "2026-08-03",
+              "open": 262000.0,
+              "high": 278000.0,
+              "low": 260000.0,
+              "close": 273000.0,
+              "volume": 119332.0,
+              "change_pct": 2.247191011235955
+            },
+            {
+              "date": "2026-08-04",
+              "open": 280000.0,
+              "high": 301500.0,
+              "low": 277500.0,
+              "close": 300500.0,
+              "volume": 168198.0,
+              "change_pct": 10.073260073260073
+            },
+            {
+              "date": "2026-08-05",
+              "open": 317500.0,
+              "high": 335000.0,
+              "low": 311500.0,
+              "close": 329000.0,
+              "volume": 176261.0,
+              "change_pct": 9.484193011647255
+            },
+            {
+              "date": "2026-08-06",
+              "open": 328000.0,
+              "high": 354500.0,
+              "low": 326500.0,
+              "close": 328500.0,
+              "volume": 219985.0,
+              "change_pct": -0.1519756838905775
+            },
+            {
+              "date": "2026-08-07",
+              "open": 332000.0,
+              "high": 341000.0,
+              "low": 304500.0,
+              "close": 317000.0,
+              "volume": 193052.0,
+              "change_pct": -3.50076103500761
+            },
+            {
+              "date": "2026-08-10",
+              "open": 325500.0,
+              "high": 342000.0,
+              "low": 323500.0,
+              "close": 330000.0,
+              "volume": 138588.0,
+              "change_pct": 4.100946372239748
+            },
+            {
+              "date": "2026-08-11",
+              "open": 330000.0,
+              "high": 334500.0,
+              "low": 316500.0,
+              "close": 322500.0,
+              "volume": 130876.0,
+              "change_pct": -2.272727272727273
+            },
+            {
+              "date": "2026-08-12",
+              "open": 331000.0,
+              "high": 344500.0,
+              "low": 324000.0,
+              "close": 337000.0,
+              "volume": 148023.0,
+              "change_pct": 4.496124031007752
+            },
+            {
+              "date": "2026-08-13",
+              "open": 346000.0,
+              "high": 359000.0,
+              "low": 322500.0,
+              "close": 326000.0,
+              "volume": 208349.0,
+              "change_pct": -3.2640949554896146
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 346000.0,
+            "high": 359000.0,
+            "low": 322500.0,
+            "close": 326000.0,
+            "volume": 208349.0,
+            "change_pct": -3.2640949554896146
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 326000,
+            "daily_change_pct": -3.26,
+            "volume": 208349
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 2.84,
+            "five_vs_previous_volume_ratio": 0.93,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "SG",
+        "stock_code": "255220",
+        "ticker": "255220",
+        "market": "KOSDAQ",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "보도 자료가 SG의 SK하이닉스 용인 클러스터 아스콘 단독 공급 사실을 명시",
+        "relationship_reason": "보도 자료가 SG의 SK하이닉스 용인 클러스터 아스콘 단독 공급 사실을 명시",
+        "company_summary": "용인 반도체 클러스터 건설 현장에 포장 소재를 공급하는 국내 상장 아스콘기업",
+        "company_description": "용인 반도체 클러스터 건설 현장에 포장 소재를 공급하는 국내 상장 아스콘기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "reported_supply_disclosure",
+        "evidence_url": "https://biz.chosun.com/stock/stock_general/2026/07/08/KPI33IKYMRAP7EZTEPDBDMPEOM/",
+        "evidence_sources": [
+          {
+            "url": "https://biz.chosun.com/stock/stock_general/2026/07/08/KPI33IKYMRAP7EZTEPDBDMPEOM/",
+            "title": "ChosunBiz",
+            "evidence_type": "reported_supply_disclosure",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://biz.chosun.com/stock/stock_general/2026/07/08/KPI33IKYMRAP7EZTEPDBDMPEOM/"
+            ],
+            "evidence_type": "reported_supply_disclosure",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "SG",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://biz.chosun.com/stock/stock_general/2026/07/08/KPI33IKYMRAP7EZTEPDBDMPEOM/"
+            ],
+            "evidence_type": "reported_supply_disclosure",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "SG",
+          "corp_code": "00963976",
+          "english_name": "SG CO., LTD.",
+          "established_date": "20091211",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 205096305874,
+                "label": "자산총계",
+                "previous": 224392841651
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 105881479971,
+                "label": "자본총계",
+                "previous": 102177350973
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 99214825903,
+                "label": "부채총계",
+                "previous": 122215490678
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": -10020479345,
+                "label": "당기순이익(손실)",
+                "previous": 1624204835
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": -6035488732,
+                "label": "영업이익",
+                "previous": -2430894807
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 8952511032,
+                "label": "매출액",
+                "previous": 14273735630
+              }
+            },
+            "business_year": 2026,
+            "company": "SG",
+            "corp_code": "00963976",
+            "filing_receipt_no": "20260515002529",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002529",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:38:37.204137+00:00",
+            "status": "observed",
+            "stock_code": "255220"
+          },
+          "homepage": "https://www.sgholdings.co.kr",
+          "legal_name": "에스지이(주)",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "255220",
+          "stock_name": "SG"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "255220",
+          "name": "SG",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 1102.0,
+              "high": 1197.0,
+              "low": 1102.0,
+              "close": 1185.0,
+              "volume": 734462.0,
+              "change_pct": 8.516483516483516
+            },
+            {
+              "date": "2026-08-03",
+              "open": 1185.0,
+              "high": 1243.0,
+              "low": 1132.0,
+              "close": 1220.0,
+              "volume": 761998.0,
+              "change_pct": 2.9535864978902953
+            },
+            {
+              "date": "2026-08-04",
+              "open": 1300.0,
+              "high": 1427.0,
+              "low": 1278.0,
+              "close": 1337.0,
+              "volume": 3407504.0,
+              "change_pct": 9.59016393442623
+            },
+            {
+              "date": "2026-08-05",
+              "open": 1338.0,
+              "high": 1397.0,
+              "low": 1335.0,
+              "close": 1372.0,
+              "volume": 1049939.0,
+              "change_pct": 2.6178010471204187
+            },
+            {
+              "date": "2026-08-06",
+              "open": 1372.0,
+              "high": 1389.0,
+              "low": 1345.0,
+              "close": 1377.0,
+              "volume": 693522.0,
+              "change_pct": 0.36443148688046645
+            },
+            {
+              "date": "2026-08-07",
+              "open": 1367.0,
+              "high": 1418.0,
+              "low": 1367.0,
+              "close": 1417.0,
+              "volume": 697207.0,
+              "change_pct": 2.904865649963689
+            },
+            {
+              "date": "2026-08-10",
+              "open": 1417.0,
+              "high": 1487.0,
+              "low": 1359.0,
+              "close": 1473.0,
+              "volume": 789857.0,
+              "change_pct": 3.952011291460833
+            },
+            {
+              "date": "2026-08-11",
+              "open": 1471.0,
+              "high": 1515.0,
+              "low": 1413.0,
+              "close": 1432.0,
+              "volume": 864086.0,
+              "change_pct": -2.7834351663272234
+            },
+            {
+              "date": "2026-08-12",
+              "open": 1432.0,
+              "high": 1454.0,
+              "low": 1363.0,
+              "close": 1416.0,
+              "volume": 521896.0,
+              "change_pct": -1.1173184357541899
+            },
+            {
+              "date": "2026-08-13",
+              "open": 1450.0,
+              "high": 1455.0,
+              "low": 1386.0,
+              "close": 1386.0,
+              "volume": 554439.0,
+              "change_pct": -2.11864406779661
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 1450.0,
+            "high": 1455.0,
+            "low": 1386.0,
+            "close": 1386.0,
+            "volume": 554439.0,
+            "change_pct": -2.11864406779661
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 1386,
+            "daily_change_pct": -2.12,
+            "volume": 554439
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -2.19,
+            "five_vs_previous_volume_ratio": 0.52,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "현대건설",
+        "stock_code": "000720",
+        "ticker": "000720",
+        "market": "KOSPI",
+        "relation_type": "industry_watch",
+        "strength": "industry_watch",
+        "reason": "산단 조성공사 발주 보도가 현대건설을 1공구 입찰 참여 후보로 명시",
+        "relationship_reason": "산단 조성공사 발주 보도가 현대건설을 1공구 입찰 참여 후보로 명시",
+        "company_summary": "용인 첨단시스템반도체 국가산단 조성공사 입찰 참여가 보도된 국내 상장 건설기업",
+        "company_description": "용인 첨단시스템반도체 국가산단 조성공사 입찰 참여가 보도된 국내 상장 건설기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "reported_tender_participation",
+        "evidence_url": "https://biz.chosun.com/real_estate/real_estate_general/2025/12/18/RC7MFPVPYBAAPN62N54KSYQ3QQ/",
+        "evidence_sources": [
+          {
+            "url": "https://biz.chosun.com/real_estate/real_estate_general/2025/12/18/RC7MFPVPYBAAPN62N54KSYQ3QQ/",
+            "title": "ChosunBiz",
+            "evidence_type": "reported_tender_participation",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://biz.chosun.com/real_estate/real_estate_general/2025/12/18/RC7MFPVPYBAAPN62N54KSYQ3QQ/"
+            ],
+            "evidence_type": "reported_tender_participation",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "현대건설",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://biz.chosun.com/real_estate/real_estate_general/2025/12/18/RC7MFPVPYBAAPN62N54KSYQ3QQ/"
+            ],
+            "evidence_type": "reported_tender_participation",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "현대건설",
+          "corp_code": "00164478",
+          "english_name": "HYUNDAI ENGINEERING & CONSTRUCTION CO.,LTD",
+          "established_date": "19500110",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 28405874000000,
+                "label": "자산총계",
+                "previous": 28108714000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 11028599000000,
+                "label": "자본총계",
+                "previous": 10436144000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 17377275000000,
+                "label": "부채총계",
+                "previous": 17672570000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 206753000000,
+                "label": "당기순이익(손실)",
+                "previous": 166742000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 180890000000,
+                "label": "영업이익",
+                "previous": 213697000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 6281265000000,
+                "label": "매출액",
+                "previous": 7455579000000
+              }
+            },
+            "business_year": 2026,
+            "company": "현대건설",
+            "corp_code": "00164478",
+            "filing_receipt_no": "20260515002899",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002899",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:38:36.805782+00:00",
+            "status": "observed",
+            "stock_code": "000720"
+          },
+          "homepage": "https://www.hdec.kr",
+          "legal_name": "현대건설(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "000720",
+          "stock_name": "현대건설"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "000720",
+          "name": "현대건설",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 85500.0,
+              "high": 94600.0,
+              "low": 85500.0,
+              "close": 94600.0,
+              "volume": 1391976.0,
+              "change_pct": 15.789473684210526
+            },
+            {
+              "date": "2026-08-03",
+              "open": 94500.0,
+              "high": 97300.0,
+              "low": 89000.0,
+              "close": 95600.0,
+              "volume": 477597.0,
+              "change_pct": 1.0570824524312896
+            },
+            {
+              "date": "2026-08-04",
+              "open": 97300.0,
+              "high": 101900.0,
+              "low": 94300.0,
+              "close": 101500.0,
+              "volume": 622625.0,
+              "change_pct": 6.171548117154812
+            },
+            {
+              "date": "2026-08-05",
+              "open": 104600.0,
+              "high": 110600.0,
+              "low": 102400.0,
+              "close": 110100.0,
+              "volume": 732453.0,
+              "change_pct": 8.472906403940888
+            },
+            {
+              "date": "2026-08-06",
+              "open": 112900.0,
+              "high": 115800.0,
+              "low": 109200.0,
+              "close": 112600.0,
+              "volume": 643555.0,
+              "change_pct": 2.2706630336058127
+            },
+            {
+              "date": "2026-08-07",
+              "open": 110300.0,
+              "high": 111900.0,
+              "low": 105200.0,
+              "close": 109900.0,
+              "volume": 440302.0,
+              "change_pct": -2.3978685612788633
+            },
+            {
+              "date": "2026-08-10",
+              "open": 110400.0,
+              "high": 110800.0,
+              "low": 105800.0,
+              "close": 110600.0,
+              "volume": 324857.0,
+              "change_pct": 0.6369426751592357
+            },
+            {
+              "date": "2026-08-11",
+              "open": 112000.0,
+              "high": 117500.0,
+              "low": 110100.0,
+              "close": 112300.0,
+              "volume": 608973.0,
+              "change_pct": 1.5370705244122964
+            },
+            {
+              "date": "2026-08-12",
+              "open": 114800.0,
+              "high": 117500.0,
+              "low": 112200.0,
+              "close": 113800.0,
+              "volume": 391227.0,
+              "change_pct": 1.335707925200356
+            },
+            {
+              "date": "2026-08-13",
+              "open": 115900.0,
+              "high": 117200.0,
+              "low": 111800.0,
+              "close": 113700.0,
+              "volume": 458053.0,
+              "change_pct": -0.08787346221441124
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 115900.0,
+            "high": 117200.0,
+            "low": 111800.0,
+            "close": 113700.0,
+            "volume": 458053.0,
+            "change_pct": -0.08787346221441124
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 113700,
+            "daily_change_pct": -0.09,
+            "volume": 458053
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 3.46,
+            "five_vs_previous_volume_ratio": 0.57,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "SK하이닉스",
+        "stock_code": "000660",
+        "ticker": "000660",
+        "market": "KOSPI",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "SK하이닉스 공식 자료가 용인 클러스터 첫 팹 투자 계획을 직접 명시",
+        "relationship_reason": "SK하이닉스 공식 자료가 용인 클러스터 첫 팹 투자 계획을 직접 명시",
+        "company_summary": "용인 반도체 클러스터에 대규모 팹 투자를 진행하는 국내 상장 메모리기업",
+        "company_description": "용인 반도체 클러스터에 대규모 팹 투자를 진행하는 국내 상장 메모리기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "official_investment_release",
+        "evidence_url": "https://news.skhynix.co.kr/fact-04/",
+        "evidence_sources": [
+          {
+            "url": "https://news.skhynix.co.kr/fact-04/",
+            "title": "SK hynix",
+            "evidence_type": "official_investment_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://news.skhynix.co.kr/fact-04/"
+            ],
+            "evidence_type": "official_investment_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "SK하이닉스",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://news.skhynix.co.kr/fact-04/"
+            ],
+            "evidence_type": "official_investment_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "SK하이닉스",
+          "english_name": "SK hynix Inc.",
+          "established_date": "19491015",
+          "homepage": "https://www.skhynix.com",
+          "legal_name": "에스케이하이닉스(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "000660",
+          "stock_name": "SK하이닉스"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "000660",
+          "name": "SK하이닉스",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 1697000.0,
+              "high": 1718000.0,
+              "low": 1586000.0,
+              "close": 1718000.0,
+              "volume": 10499619.0,
+              "change_pct": 29.954614220877456
+            },
+            {
+              "date": "2026-08-03",
+              "open": 1642000.0,
+              "high": 1645000.0,
+              "low": 1562000.0,
+              "close": 1567000.0,
+              "volume": 5432833.0,
+              "change_pct": -8.78928987194412
+            },
+            {
+              "date": "2026-08-04",
+              "open": 1620000.0,
+              "high": 1630000.0,
+              "low": 1483000.0,
+              "close": 1577000.0,
+              "volume": 5391210.0,
+              "change_pct": 0.6381620931716656
+            },
+            {
+              "date": "2026-08-05",
+              "open": 1693000.0,
+              "high": 1701000.0,
+              "low": 1647000.0,
+              "close": 1668000.0,
+              "volume": 3945674.0,
+              "change_pct": 5.7704502219403935
+            },
+            {
+              "date": "2026-08-06",
+              "open": 1600000.0,
+              "high": 1606000.0,
+              "low": 1481000.0,
+              "close": 1495000.0,
+              "volume": 5498295.0,
+              "change_pct": -10.371702637889687
+            },
+            {
+              "date": "2026-08-07",
+              "open": 1521000.0,
+              "high": 1542000.0,
+              "low": 1409000.0,
+              "close": 1422000.0,
+              "volume": 5002539.0,
+              "change_pct": -4.882943143812709
+            },
+            {
+              "date": "2026-08-10",
+              "open": 1443000.0,
+              "high": 1487000.0,
+              "low": 1397000.0,
+              "close": 1420000.0,
+              "volume": 3295283.0,
+              "change_pct": -0.14064697609001406
+            },
+            {
+              "date": "2026-08-11",
+              "open": 1405000.0,
+              "high": 1455000.0,
+              "low": 1373000.0,
+              "close": 1425000.0,
+              "volume": 3817655.0,
+              "change_pct": 0.35211267605633806
+            },
+            {
+              "date": "2026-08-12",
+              "open": 1456000.0,
+              "high": 1549000.0,
+              "low": 1440000.0,
+              "close": 1504000.0,
+              "volume": 4566672.0,
+              "change_pct": 5.543859649122807
+            },
+            {
+              "date": "2026-08-13",
+              "open": 1582000.0,
+              "high": 1634000.0,
+              "low": 1567000.0,
+              "close": 1593000.0,
+              "volume": 4599305.0,
+              "change_pct": 5.917553191489362
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 1582000.0,
+            "high": 1634000.0,
+            "low": 1567000.0,
+            "close": 1593000.0,
+            "volume": 4599305.0,
+            "change_pct": 5.917553191489362
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 1593000,
+            "daily_change_pct": 5.92,
+            "volume": 4599305
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 12.03,
+            "five_vs_previous_volume_ratio": 0.69,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "ticker": "005930",
+        "market": "KOSPI",
+        "relation_type": "direct",
+        "strength": "direct",
+        "reason": "Samsung Semiconductor 공식 연혁이 용인 반도체 클러스터 구축 계획을 명시",
+        "relationship_reason": "Samsung Semiconductor 공식 연혁이 용인 반도체 클러스터 구축 계획을 명시",
+        "company_summary": "용인 반도체 클러스터를 연구·생산 거점으로 추진하는 국내 상장 반도체기업",
+        "company_description": "용인 반도체 클러스터를 연구·생산 거점으로 추진하는 국내 상장 반도체기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "official_corporate_history",
+        "evidence_url": "https://semiconductor.samsung.com/kr/about-us/our-story/",
+        "evidence_sources": [
+          {
+            "url": "https://semiconductor.samsung.com/kr/about-us/our-story/",
+            "title": "Samsung Semiconductor",
+            "evidence_type": "official_corporate_history",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "직접 관계",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/our-story/"
+            ],
+            "evidence_type": "official_corporate_history",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "삼성전자",
+            "edge_type": "direct",
+            "evidence_urls": [
+              "https://semiconductor.samsung.com/kr/about-us/our-story/"
+            ],
+            "evidence_type": "official_corporate_history",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "삼성전자",
+          "english_name": "SAMSUNG ELECTRONICS CO,.LTD",
+          "established_date": "19690113",
+          "homepage": "https://www.samsung.com/sec",
+          "legal_name": "삼성전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005930",
+          "stock_name": "삼성전자"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "005930",
+          "name": "삼성전자",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 214000.0,
+              "high": 226000.0,
+              "low": 202000.0,
+              "close": 207000.0,
+              "volume": 46694193.0,
+              "change_pct": -0.7194244604316548
+            },
+            {
+              "date": "2026-07-31",
+              "open": 257000.0,
+              "high": 267000.0,
+              "low": 243000.0,
+              "close": 262500.0,
+              "volume": 58478873.0,
+              "change_pct": 26.811594202898554
+            },
+            {
+              "date": "2026-08-03",
+              "open": 248000.0,
+              "high": 249500.0,
+              "low": 238000.0,
+              "close": 239500.0,
+              "volume": 27825493.0,
+              "change_pct": -8.761904761904763
+            },
+            {
+              "date": "2026-08-04",
+              "open": 244500.0,
+              "high": 244500.0,
+              "low": 228000.0,
+              "close": 240000.0,
+              "volume": 29433821.0,
+              "change_pct": 0.20876826722338201
+            },
+            {
+              "date": "2026-08-05",
+              "open": 254000.0,
+              "high": 254500.0,
+              "low": 244000.0,
+              "close": 246000.0,
+              "volume": 22577128.0,
+              "change_pct": 2.5
+            },
+            {
+              "date": "2026-08-06",
+              "open": 241500.0,
+              "high": 246000.0,
+              "low": 228000.0,
+              "close": 230500.0,
+              "volume": 26101823.0,
+              "change_pct": -6.300813008130081
+            },
+            {
+              "date": "2026-08-07",
+              "open": 235000.0,
+              "high": 239500.0,
+              "low": 229000.0,
+              "close": 231000.0,
+              "volume": 20546010.0,
+              "change_pct": 0.21691973969631237
+            },
+            {
+              "date": "2026-08-10",
+              "open": 236000.0,
+              "high": 238500.0,
+              "low": 228500.0,
+              "close": 230000.0,
+              "volume": 16327805.0,
+              "change_pct": -0.4329004329004329
+            },
+            {
+              "date": "2026-08-11",
+              "open": 229500.0,
+              "high": 243000.0,
+              "low": 227500.0,
+              "close": 239500.0,
+              "volume": 23310969.0,
+              "change_pct": 4.130434782608695
+            },
+            {
+              "date": "2026-08-12",
+              "open": 243500.0,
+              "high": 260500.0,
+              "low": 241000.0,
+              "close": 255500.0,
+              "volume": 27102479.0,
+              "change_pct": 6.6805845511482245
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 243500.0,
+            "high": 260500.0,
+            "low": 241000.0,
+            "close": 255500.0,
+            "volume": 27102479.0,
+            "change_pct": 6.6805845511482245
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 255500,
+            "daily_change_pct": 6.68,
+            "volume": 27102479
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 10.85,
+            "five_vs_previous_volume_ratio": 0.61,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "가온전선",
+        "stock_code": "000500",
+        "ticker": "000500",
+        "market": "KOSPI",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "LS전선 공식 보도가 가온전선의 SK하이닉스 용인 클러스터 배전 케이블 공급을 명시",
+        "relationship_reason": "LS전선 공식 보도가 가온전선의 SK하이닉스 용인 클러스터 배전 케이블 공급을 명시",
+        "company_summary": "반도체 클러스터 전력 인프라용 케이블을 공급하는 국내 상장 전선기업",
+        "company_description": "반도체 클러스터 전력 인프라용 케이블을 공급하는 국내 상장 전선기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "official_supply_release",
+        "evidence_url": "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD",
+        "evidence_sources": [
+          {
+            "url": "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD",
+            "title": "LS Cable & System",
+            "evidence_type": "official_supply_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD"
+            ],
+            "evidence_type": "official_supply_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "가온전선",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD"
+            ],
+            "evidence_type": "official_supply_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "가온전선",
+          "corp_code": "00104768",
+          "english_name": "GAON CABLE CO.,LTD",
+          "established_date": "19470924",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 1515590835000,
+                "label": "자산총계",
+                "previous": 1377927912000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 501086268000,
+                "label": "자본총계",
+                "previous": 483788805000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 1014504567000,
+                "label": "부채총계",
+                "previous": 894139107000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 19677232000,
+                "label": "당기순이익(손실)",
+                "previous": 15336972000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 27834588000,
+                "label": "영업이익",
+                "previous": 21884131000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 763576373000,
+                "label": "매출액",
+                "previous": 639297449000
+              }
+            },
+            "business_year": 2026,
+            "company": "가온전선",
+            "corp_code": "00104768",
+            "filing_receipt_no": "20260515000427",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515000427",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:38:36.229603+00:00",
+            "status": "observed",
+            "stock_code": "000500"
+          },
+          "homepage": "https://www.gaoncable.com",
+          "legal_name": "가온전선(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "000500",
+          "stock_name": "가온전선"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "000500",
+          "name": "가온전선",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 122100.0,
+              "high": 137300.0,
+              "low": 119000.0,
+              "close": 134200.0,
+              "volume": 436905.0,
+              "change_pct": 24.721189591078065
+            },
+            {
+              "date": "2026-08-03",
+              "open": 131700.0,
+              "high": 142000.0,
+              "low": 126900.0,
+              "close": 135600.0,
+              "volume": 163604.0,
+              "change_pct": 1.0432190760059614
+            },
+            {
+              "date": "2026-08-04",
+              "open": 153800.0,
+              "high": 154000.0,
+              "low": 140200.0,
+              "close": 146500.0,
+              "volume": 239936.0,
+              "change_pct": 8.03834808259587
+            },
+            {
+              "date": "2026-08-05",
+              "open": 154500.0,
+              "high": 161900.0,
+              "low": 150700.0,
+              "close": 158900.0,
+              "volume": 210462.0,
+              "change_pct": 8.464163822525597
+            },
+            {
+              "date": "2026-08-06",
+              "open": 162500.0,
+              "high": 164300.0,
+              "low": 151100.0,
+              "close": 155100.0,
+              "volume": 146852.0,
+              "change_pct": -2.391441157960982
+            },
+            {
+              "date": "2026-08-07",
+              "open": 159400.0,
+              "high": 159500.0,
+              "low": 143500.0,
+              "close": 147700.0,
+              "volume": 129046.0,
+              "change_pct": -4.771115409413282
+            },
+            {
+              "date": "2026-08-10",
+              "open": 152100.0,
+              "high": 156700.0,
+              "low": 150100.0,
+              "close": 156500.0,
+              "volume": 138634.0,
+              "change_pct": 5.9580230196343935
+            },
+            {
+              "date": "2026-08-11",
+              "open": 160100.0,
+              "high": 162200.0,
+              "low": 153100.0,
+              "close": 157200.0,
+              "volume": 155153.0,
+              "change_pct": 0.44728434504792336
+            },
+            {
+              "date": "2026-08-12",
+              "open": 161200.0,
+              "high": 163300.0,
+              "low": 158900.0,
+              "close": 162000.0,
+              "volume": 147476.0,
+              "change_pct": 3.0534351145038165
+            },
+            {
+              "date": "2026-08-13",
+              "open": 172600.0,
+              "high": 178000.0,
+              "low": 165000.0,
+              "close": 167000.0,
+              "volume": 207872.0,
+              "change_pct": 3.0864197530864197
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 172600.0,
+            "high": 178000.0,
+            "low": 165000.0,
+            "close": 167000.0,
+            "volume": 207872.0,
+            "change_pct": 3.0864197530864197
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 167000,
+            "daily_change_pct": 3.09,
+            "volume": 207872
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 13.07,
+            "five_vs_previous_volume_ratio": 0.65,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "LS",
+        "stock_code": "006260",
+        "ticker": "006260",
+        "market": "KOSPI",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "LS전선 공식 보도가 용인 클러스터에 초고압 케이블을 공급한다고 명시",
+        "relationship_reason": "LS전선 공식 보도가 용인 클러스터에 초고압 케이블을 공급한다고 명시",
+        "company_summary": "용인 반도체 클러스터 전력 인프라 공급 계열사를 둔 국내 상장 지주기업",
+        "company_description": "용인 반도체 클러스터 전력 인프라 공급 계열사를 둔 국내 상장 지주기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "official_supply_release",
+        "evidence_url": "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD",
+        "evidence_sources": [
+          {
+            "url": "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD",
+            "title": "LS Cable & System",
+            "evidence_type": "official_supply_release",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD"
+            ],
+            "evidence_type": "official_supply_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "LS",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.lscns.co.kr/kr/pr/news_view.asp?brd_id=news1&idx=120188&lang_cd=kr&mode=MOD"
+            ],
+            "evidence_type": "official_supply_release",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "LS",
+          "corp_code": "00105952",
+          "english_name": "LS Corp.",
+          "established_date": "19620515",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 27620017000000,
+                "label": "자산총계",
+                "previous": 24994792000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 7752113000000,
+                "label": "자본총계",
+                "previous": 7679588000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 19867904000000,
+                "label": "부채총계",
+                "previous": 17315204000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 241907000000,
+                "label": "당기순이익(손실)",
+                "previous": 141111000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 476090000000,
+                "label": "영업이익",
+                "previous": 304505000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 9504447000000,
+                "label": "매출액",
+                "previous": 6913573000000
+              }
+            },
+            "business_year": 2026,
+            "company": "LS",
+            "corp_code": "00105952",
+            "filing_receipt_no": "20260527000198",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260527000198",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:02:17.648670+00:00",
+            "status": "observed",
+            "stock_code": "006260"
+          },
+          "homepage": "https://www.lsholdings.co.kr",
+          "legal_name": "(주)LS",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "006260",
+          "stock_name": "LS"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "006260",
+          "name": "LS",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 253500.0,
+              "high": 270500.0,
+              "low": 244500.0,
+              "close": 267000.0,
+              "volume": 193549.0,
+              "change_pct": 19.463087248322147
+            },
+            {
+              "date": "2026-08-03",
+              "open": 262000.0,
+              "high": 278000.0,
+              "low": 260000.0,
+              "close": 273000.0,
+              "volume": 119332.0,
+              "change_pct": 2.247191011235955
+            },
+            {
+              "date": "2026-08-04",
+              "open": 280000.0,
+              "high": 301500.0,
+              "low": 277500.0,
+              "close": 300500.0,
+              "volume": 168198.0,
+              "change_pct": 10.073260073260073
+            },
+            {
+              "date": "2026-08-05",
+              "open": 317500.0,
+              "high": 335000.0,
+              "low": 311500.0,
+              "close": 329000.0,
+              "volume": 176261.0,
+              "change_pct": 9.484193011647255
+            },
+            {
+              "date": "2026-08-06",
+              "open": 328000.0,
+              "high": 354500.0,
+              "low": 326500.0,
+              "close": 328500.0,
+              "volume": 219985.0,
+              "change_pct": -0.1519756838905775
+            },
+            {
+              "date": "2026-08-07",
+              "open": 332000.0,
+              "high": 341000.0,
+              "low": 304500.0,
+              "close": 317000.0,
+              "volume": 193052.0,
+              "change_pct": -3.50076103500761
+            },
+            {
+              "date": "2026-08-10",
+              "open": 325500.0,
+              "high": 342000.0,
+              "low": 323500.0,
+              "close": 330000.0,
+              "volume": 138588.0,
+              "change_pct": 4.100946372239748
+            },
+            {
+              "date": "2026-08-11",
+              "open": 330000.0,
+              "high": 334500.0,
+              "low": 316500.0,
+              "close": 322500.0,
+              "volume": 130876.0,
+              "change_pct": -2.272727272727273
+            },
+            {
+              "date": "2026-08-12",
+              "open": 331000.0,
+              "high": 344500.0,
+              "low": 324000.0,
+              "close": 337000.0,
+              "volume": 148023.0,
+              "change_pct": 4.496124031007752
+            },
+            {
+              "date": "2026-08-13",
+              "open": 346000.0,
+              "high": 359000.0,
+              "low": 322500.0,
+              "close": 326000.0,
+              "volume": 208349.0,
+              "change_pct": -3.2640949554896146
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 346000.0,
+            "high": 359000.0,
+            "low": 322500.0,
+            "close": 326000.0,
+            "volume": 208349.0,
+            "change_pct": -3.2640949554896146
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 326000,
+            "daily_change_pct": -3.26,
+            "volume": 208349
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 2.84,
+            "five_vs_previous_volume_ratio": 0.93,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "SG",
+        "stock_code": "255220",
+        "ticker": "255220",
+        "market": "KOSDAQ",
+        "relation_type": "value_chain",
+        "strength": "value_chain",
+        "reason": "보도 자료가 SG의 SK하이닉스 용인 클러스터 아스콘 단독 공급 사실을 명시",
+        "relationship_reason": "보도 자료가 SG의 SK하이닉스 용인 클러스터 아스콘 단독 공급 사실을 명시",
+        "company_summary": "용인 반도체 클러스터 건설 현장에 포장 소재를 공급하는 국내 상장 아스콘기업",
+        "company_description": "용인 반도체 클러스터 건설 현장에 포장 소재를 공급하는 국내 상장 아스콘기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "reported_supply_disclosure",
+        "evidence_url": "https://biz.chosun.com/stock/stock_general/2026/07/08/KPI33IKYMRAP7EZTEPDBDMPEOM/",
+        "evidence_sources": [
+          {
+            "url": "https://biz.chosun.com/stock/stock_general/2026/07/08/KPI33IKYMRAP7EZTEPDBDMPEOM/",
+            "title": "ChosunBiz",
+            "evidence_type": "reported_supply_disclosure",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://biz.chosun.com/stock/stock_general/2026/07/08/KPI33IKYMRAP7EZTEPDBDMPEOM/"
+            ],
+            "evidence_type": "reported_supply_disclosure",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "SG",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://biz.chosun.com/stock/stock_general/2026/07/08/KPI33IKYMRAP7EZTEPDBDMPEOM/"
+            ],
+            "evidence_type": "reported_supply_disclosure",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "SG",
+          "corp_code": "00963976",
+          "english_name": "SG CO., LTD.",
+          "established_date": "20091211",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 205096305874,
+                "label": "자산총계",
+                "previous": 224392841651
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 105881479971,
+                "label": "자본총계",
+                "previous": 102177350973
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 99214825903,
+                "label": "부채총계",
+                "previous": 122215490678
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": -10020479345,
+                "label": "당기순이익(손실)",
+                "previous": 1624204835
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": -6035488732,
+                "label": "영업이익",
+                "previous": -2430894807
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 8952511032,
+                "label": "매출액",
+                "previous": 14273735630
+              }
+            },
+            "business_year": 2026,
+            "company": "SG",
+            "corp_code": "00963976",
+            "filing_receipt_no": "20260515002529",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002529",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:38:37.204137+00:00",
+            "status": "observed",
+            "stock_code": "255220"
+          },
+          "homepage": "https://www.sgholdings.co.kr",
+          "legal_name": "에스지이(주)",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "255220",
+          "stock_name": "SG"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "255220",
+          "name": "SG",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 1102.0,
+              "high": 1197.0,
+              "low": 1102.0,
+              "close": 1185.0,
+              "volume": 734462.0,
+              "change_pct": 8.516483516483516
+            },
+            {
+              "date": "2026-08-03",
+              "open": 1185.0,
+              "high": 1243.0,
+              "low": 1132.0,
+              "close": 1220.0,
+              "volume": 761998.0,
+              "change_pct": 2.9535864978902953
+            },
+            {
+              "date": "2026-08-04",
+              "open": 1300.0,
+              "high": 1427.0,
+              "low": 1278.0,
+              "close": 1337.0,
+              "volume": 3407504.0,
+              "change_pct": 9.59016393442623
+            },
+            {
+              "date": "2026-08-05",
+              "open": 1338.0,
+              "high": 1397.0,
+              "low": 1335.0,
+              "close": 1372.0,
+              "volume": 1049939.0,
+              "change_pct": 2.6178010471204187
+            },
+            {
+              "date": "2026-08-06",
+              "open": 1372.0,
+              "high": 1389.0,
+              "low": 1345.0,
+              "close": 1377.0,
+              "volume": 693522.0,
+              "change_pct": 0.36443148688046645
+            },
+            {
+              "date": "2026-08-07",
+              "open": 1367.0,
+              "high": 1418.0,
+              "low": 1367.0,
+              "close": 1417.0,
+              "volume": 697207.0,
+              "change_pct": 2.904865649963689
+            },
+            {
+              "date": "2026-08-10",
+              "open": 1417.0,
+              "high": 1487.0,
+              "low": 1359.0,
+              "close": 1473.0,
+              "volume": 789857.0,
+              "change_pct": 3.952011291460833
+            },
+            {
+              "date": "2026-08-11",
+              "open": 1471.0,
+              "high": 1515.0,
+              "low": 1413.0,
+              "close": 1432.0,
+              "volume": 864086.0,
+              "change_pct": -2.7834351663272234
+            },
+            {
+              "date": "2026-08-12",
+              "open": 1432.0,
+              "high": 1454.0,
+              "low": 1363.0,
+              "close": 1416.0,
+              "volume": 521896.0,
+              "change_pct": -1.1173184357541899
+            },
+            {
+              "date": "2026-08-13",
+              "open": 1450.0,
+              "high": 1455.0,
+              "low": 1386.0,
+              "close": 1386.0,
+              "volume": 554439.0,
+              "change_pct": -2.11864406779661
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 1450.0,
+            "high": 1455.0,
+            "low": 1386.0,
+            "close": 1386.0,
+            "volume": 554439.0,
+            "change_pct": -2.11864406779661
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 1386,
+            "daily_change_pct": -2.12,
+            "volume": 554439
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -2.19,
+            "five_vs_previous_volume_ratio": 0.52,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "현대건설",
+        "stock_code": "000720",
+        "ticker": "000720",
+        "market": "KOSPI",
+        "relation_type": "industry_watch",
+        "strength": "industry_watch",
+        "reason": "산단 조성공사 발주 보도가 현대건설을 1공구 입찰 참여 후보로 명시",
+        "relationship_reason": "산단 조성공사 발주 보도가 현대건설을 1공구 입찰 참여 후보로 명시",
+        "company_summary": "용인 첨단시스템반도체 국가산단 조성공사 입찰 참여가 보도된 국내 상장 건설기업",
+        "company_description": "용인 첨단시스템반도체 국가산단 조성공사 입찰 참여가 보도된 국내 상장 건설기업",
+        "business_features": [
+          "반도체팹/산업단지/전력인프라"
+        ],
+        "evidence_kind": "reported_tender_participation",
+        "evidence_url": "https://biz.chosun.com/real_estate/real_estate_general/2025/12/18/RC7MFPVPYBAAPN62N54KSYQ3QQ/",
+        "evidence_sources": [
+          {
+            "url": "https://biz.chosun.com/real_estate/real_estate_general/2025/12/18/RC7MFPVPYBAAPN62N54KSYQ3QQ/",
+            "title": "ChosunBiz",
+            "evidence_type": "reported_tender_participation",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "반도체팹/산업단지/전력인프라",
+        "company_role_category": "industry_adjacent",
+        "company_role_label": "산업 연관",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰",
+        "relation_horizon": "documented_relationship",
+        "exposure_status": "not_quantified",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "근거 캐시 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "용인반도체클러스터",
+        "matched_ontology_node": "용인반도체클러스터",
+        "ontology_lookup_match_type": "exact_enrichment_cache",
+        "ontology_source": "term_specific_enrichment_cache",
+        "ontology_path": [
+          {
+            "from": "용인반도체클러스터",
+            "to": "반도체팹/산업단지/전력인프라",
+            "edge_type": "classified_as",
+            "evidence_urls": [
+              "https://biz.chosun.com/real_estate/real_estate_general/2025/12/18/RC7MFPVPYBAAPN62N54KSYQ3QQ/"
+            ],
+            "evidence_type": "reported_tender_participation",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "반도체팹/산업단지/전력인프라",
+            "to": "현대건설",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://biz.chosun.com/real_estate/real_estate_general/2025/12/18/RC7MFPVPYBAAPN62N54KSYQ3QQ/"
+            ],
+            "evidence_type": "reported_tender_participation",
+            "as_of": "2026-08-13T20:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "official_identity": {
+          "company": "현대건설",
+          "corp_code": "00164478",
+          "english_name": "HYUNDAI ENGINEERING & CONSTRUCTION CO.,LTD",
+          "established_date": "19500110",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 28405874000000,
+                "label": "자산총계",
+                "previous": 28108714000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 11028599000000,
+                "label": "자본총계",
+                "previous": 10436144000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 17377275000000,
+                "label": "부채총계",
+                "previous": 17672570000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 206753000000,
+                "label": "당기순이익(손실)",
+                "previous": 166742000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 180890000000,
+                "label": "영업이익",
+                "previous": 213697000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 6281265000000,
+                "label": "매출액",
+                "previous": 7455579000000
+              }
+            },
+            "business_year": 2026,
+            "company": "현대건설",
+            "corp_code": "00164478",
+            "filing_receipt_no": "20260515002899",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002899",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T16:38:36.805782+00:00",
+            "status": "observed",
+            "stock_code": "000720"
+          },
+          "homepage": "https://www.hdec.kr",
+          "legal_name": "현대건설(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T16:00:00+00:00",
+          "status": "verified",
+          "stock_code": "000720",
+          "stock_name": "현대건설"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "000720",
+          "name": "현대건설",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 85500.0,
+              "high": 94600.0,
+              "low": 85500.0,
+              "close": 94600.0,
+              "volume": 1391976.0,
+              "change_pct": 15.789473684210526
+            },
+            {
+              "date": "2026-08-03",
+              "open": 94500.0,
+              "high": 97300.0,
+              "low": 89000.0,
+              "close": 95600.0,
+              "volume": 477597.0,
+              "change_pct": 1.0570824524312896
+            },
+            {
+              "date": "2026-08-04",
+              "open": 97300.0,
+              "high": 101900.0,
+              "low": 94300.0,
+              "close": 101500.0,
+              "volume": 622625.0,
+              "change_pct": 6.171548117154812
+            },
+            {
+              "date": "2026-08-05",
+              "open": 104600.0,
+              "high": 110600.0,
+              "low": 102400.0,
+              "close": 110100.0,
+              "volume": 732453.0,
+              "change_pct": 8.472906403940888
+            },
+            {
+              "date": "2026-08-06",
+              "open": 112900.0,
+              "high": 115800.0,
+              "low": 109200.0,
+              "close": 112600.0,
+              "volume": 643555.0,
+              "change_pct": 2.2706630336058127
+            },
+            {
+              "date": "2026-08-07",
+              "open": 110300.0,
+              "high": 111900.0,
+              "low": 105200.0,
+              "close": 109900.0,
+              "volume": 440302.0,
+              "change_pct": -2.3978685612788633
+            },
+            {
+              "date": "2026-08-10",
+              "open": 110400.0,
+              "high": 110800.0,
+              "low": 105800.0,
+              "close": 110600.0,
+              "volume": 324857.0,
+              "change_pct": 0.6369426751592357
+            },
+            {
+              "date": "2026-08-11",
+              "open": 112000.0,
+              "high": 117500.0,
+              "low": 110100.0,
+              "close": 112300.0,
+              "volume": 608973.0,
+              "change_pct": 1.5370705244122964
+            },
+            {
+              "date": "2026-08-12",
+              "open": 114800.0,
+              "high": 117500.0,
+              "low": 112200.0,
+              "close": 113800.0,
+              "volume": 391227.0,
+              "change_pct": 1.335707925200356
+            },
+            {
+              "date": "2026-08-13",
+              "open": 115900.0,
+              "high": 117200.0,
+              "low": 111800.0,
+              "close": 113700.0,
+              "volume": 458053.0,
+              "change_pct": -0.08787346221441124
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 115900.0,
+            "high": 117200.0,
+            "low": 111800.0,
+            "close": 113700.0,
+            "volume": 458053.0,
+            "change_pct": -0.08787346221441124
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 113700,
+            "daily_change_pct": -0.09,
+            "volume": 458053
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 3.46,
+            "five_vs_previous_volume_ratio": 0.57,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 6,
+      "score_independent_of_company_count": true,
+      "direct_count": 2,
+      "role_coverage": [
+        "반도체팹/산업단지/전력인프라"
+      ],
+      "tier_counts": {
+        "direct": 2,
+        "value_chain": 3,
+        "industry_watch": 1
+      },
+      "category_count": 3,
+      "candidate_category_count": 3,
+      "role_category_counts": {
+        "industry_adjacent": 1,
+        "manufacturing_development": 2,
+        "raw_materials_components": 3
+      },
+      "ontology_diagnostics": {
+        "source": "term_specific_enrichment_cache",
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "용어별 근거 URL과 상장 식별자가 완비된 6개 이상 기업을 공개"
+    },
+    "rank": 184,
+    "observed_rank": 184,
+    "home_rank": 9,
+    "rising_rank": 4,
+    "classification": "일반 트렌드",
+    "persistence_rank": 388,
+    "momentum_rank": 183,
+    "main_rank": 20,
+    "home_context_status": "resolved",
+    "home_context_reason": "specific_observed_expression",
+    "home_eligible": true,
+    "company_card_status": "ready",
+    "company_card_reason": "evidence_backed_six_or_more",
+    "company_status": "ready",
+    "frontend_readiness_status": "ready",
+    "frontend_readiness_missing": [],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 6,
+    "publication_rank": 4,
+    "ranking_availability_status": "provisional_history"
+  }
+}
