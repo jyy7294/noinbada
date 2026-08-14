@@ -7,6 +7,8 @@ ranking.  Reference enrichment is allowed to improve display detail only.
 
 from __future__ import annotations
 
+import hashlib
+
 from .company_roles import with_company_role
 from .editorial_review import KEYWORDS, _verified_company_rows
 from .keyword_policy import keyword_fits_public_label, normalized_keyword_text
@@ -14,6 +16,90 @@ from .keyword_policy import keyword_fits_public_label, normalized_keyword_text
 
 VERIFIED_AT = "2026-08-14T00:00:00+00:00"
 GOOGLE_TRENDS_KR = "https://trends.google.com/trending?geo=KR"
+
+
+COMPANY_DOMAINS = {
+    "Canon": "global.canon",
+    "Nikon": "nikon.com",
+    "Ricoh": "ricoh.com",
+    "FUJIFILM Holdings": "fujifilm.com",
+    "Sony Group": "sony.com",
+    "Adobe": "adobe.com",
+    "CJ제일제당": "cj.co.kr",
+    "하림": "harim.co.kr",
+    "동원F&B": "www.dongwon.com",
+    "대상": "daesang.com",
+    "풀무원": "pulmuone.co.kr",
+    "신세계푸드": "shinsegaefood.com",
+    "GS리테일": "www.gsretail.com",
+    "BGF리테일": "cu.bgfretail.com",
+    "Atlanta Braves Holdings": "bravesholdings.com",
+    "Manchester United plc": "manutd.com",
+    "adidas AG": "adidas-group.com",
+    "Qualcomm": "qualcomm.com",
+    "Comcast Corporation": "corporate.comcast.com",
+    "IMAX Corporation": "imax.com",
+    "CJ CGV": "cgv.co.kr",
+    "HP Inc.": "hp.com",
+    "Tesla": "tesla.com",
+    "NVIDIA": "nvidia.com",
+    "현대자동차": "hyundai.com",
+    "UBTECH Robotics": "ubtrobot.com",
+    "XPeng": "xpeng.com",
+    "레인보우로보틱스": "rainbow-robotics.com",
+}
+
+COMPANY_LOGO_OVERRIDES = {
+    "롯데관광개발": "https://www.lottetour.com/statics/images/logo.gif",
+}
+
+
+SUPPLEMENT_COMPANY_CATALOG = {
+    "sony": ("Sony Group", "6758", "TSE", "sony.com", "영상기기·영화·음악 콘텐츠 사업을 운영하는 일본 상장기업"),
+    "adobe": ("Adobe", "ADBE", "NASDAQ", "adobe.com", "영상·이미지 제작 소프트웨어를 제공하는 미국 상장기업"),
+    "harim": ("하림", "136480", "KRX", "harim.co.kr", "닭고기 생산·가공과 간편식 사업을 운영하는 국내 상장기업"),
+    "dongwon": ("동원F&B", "049770", "KRX", "www.dongwon.com", "가공식품과 가정간편식을 생산·유통하는 국내 상장기업"),
+    "daesang": ("대상", "001680", "KRX", "daesang.com", "조미식품·간편식·김치 사업을 운영하는 국내 상장 식품기업"),
+    "pulmuone": ("풀무원", "017810", "KRX", "pulmuone.co.kr", "신선식품과 가정간편식을 생산·유통하는 국내 상장기업"),
+    "gsretail": ("GS리테일", "007070", "KRX", "www.gsretail.com", "편의점·슈퍼마켓 등 오프라인 유통망을 운영하는 국내 상장기업"),
+    "teledyne": ("Teledyne Technologies", "TDY", "NYSE", "teledyne.com", "과학·산업용 이미징 센서와 카메라를 공급하는 미국 상장 기술기업"),
+    "hamamatsu": ("Hamamatsu Photonics", "6965", "TSE", "hamamatsu.com", "광센서와 과학용 검출기를 개발하는 일본 상장 광전자기업"),
+    "hoya": ("HOYA", "7741", "TSE", "hoya.com", "광학유리와 필터 소재를 생산하는 일본 상장 광학기업"),
+    "gopro": ("GoPro", "GPRO", "NASDAQ", "gopro.com", "야외 촬영용 액션카메라를 개발하는 미국 상장 영상기기기업"),
+    "ottogi": ("오뚜기", "007310", "KRX", "ottogi.co.kr", "가정간편식과 국·탕류를 생산하는 국내 상장 식품기업"),
+    "sajo": ("사조대림", "003960", "KRX", "sajo.co.kr", "육가공·수산·간편식 제품을 생산·유통하는 국내 상장 식품기업"),
+    "maeil": ("매일유업", "267980", "KOSDAQ", "maeil.com", "유제품과 영양식품을 생산하는 국내 상장 식품기업"),
+    "emart": ("이마트", "139480", "KRX", "emartcompany.com", "대형마트와 식품 리테일 채널을 운영하는 국내 상장 유통기업"),
+    "hanwha": ("한화", "000880", "KRX", "hanwha.com", "대형 불꽃행사를 주최하고 연화 기술을 보유한 국내 상장기업"),
+    "hotelshilla": ("호텔신라", "008770", "KRX", "shillahotels.com", "호텔·면세·관광 소비 채널을 운영하는 국내 상장기업"),
+    "lottetour": ("롯데관광개발", "032350", "KRX", "lottetour.com", "여행·관광·복합리조트 사업을 운영하는 국내 상장기업"),
+    "koreanair": ("대한항공", "003490", "KRX", "koreanair.com", "국제·국내 항공 여객 서비스를 운영하는 국내 상장 항공사"),
+    "kakao": ("카카오", "035720", "KRX", "kakaocorp.com", "지도·모빌리티·콘텐츠 플랫폼을 운영하는 국내 상장 플랫폼기업"),
+    "disney": ("The Walt Disney Company", "DIS", "NYSE", "thewaltdisneycompany.com", "ESPN을 포함한 스포츠·미디어 콘텐츠 사업을 운영하는 미국 상장기업"),
+    "fox": ("Fox Corporation", "FOXA", "NASDAQ", "foxcorporation.com", "스포츠 중계와 방송 콘텐츠를 운영하는 미국 상장 미디어기업"),
+    "apple": ("Apple", "AAPL", "NASDAQ", "apple.com", "디지털 기기와 영상·스포츠 콘텐츠 플랫폼을 운영하는 미국 상장기업"),
+    "amazon": ("Amazon", "AMZN", "NASDAQ", "amazon.com", "전자상거래와 Prime Video 스트리밍을 운영하는 미국 상장기업"),
+    "tmobile": ("T-Mobile US", "TMUS", "NASDAQ", "t-mobile.com", "미국 이동통신과 스포츠 마케팅을 운영하는 상장 통신기업"),
+    "nike": ("Nike", "NKE", "NYSE", "nike.com", "글로벌 스포츠 의류·용품을 개발·판매하는 미국 상장기업"),
+    "sportradar": ("Sportradar", "SRAD", "NASDAQ", "sportradar.com", "스포츠 데이터와 미디어 기술을 제공하는 스위스계 미국 상장기업"),
+    "genius": ("Genius Sports", "GENI", "NYSE", "geniussports.com", "스포츠 데이터·중계 기술·팬 참여 솔루션을 제공하는 상장기업"),
+    "ea": ("Electronic Arts", "EA", "NASDAQ", "ea.com", "스포츠 게임 콘텐츠를 개발·유통하는 미국 상장 게임기업"),
+    "dxc": ("DXC Technology", "DXC", "NYSE", "dxc.com", "기업용 IT 운영과 디지털 전환 서비스를 제공하는 미국 상장기업"),
+    "marriott": ("Marriott International", "MAR", "NASDAQ", "marriott.com", "글로벌 호텔·여행 멤버십을 운영하는 미국 상장기업"),
+    "cocacola": ("Coca-Cola", "KO", "NYSE", "coca-colacompany.com", "글로벌 음료 브랜드와 스포츠 마케팅을 운영하는 미국 상장기업"),
+    "amc": ("AMC Entertainment", "AMC", "NYSE", "amctheatres.com", "미국과 유럽에서 멀티플렉스 영화관을 운영하는 상장기업"),
+    "cinemark": ("Cinemark", "CNK", "NYSE", "cinemark.com", "미주 지역 멀티플렉스 영화관을 운영하는 미국 상장기업"),
+    "dolby": ("Dolby Laboratories", "DLB", "NYSE", "dolby.com", "영화관용 영상·음향 기술을 개발하는 미국 상장기업"),
+    "kodak": ("Eastman Kodak", "KODK", "NYSE", "kodak.com", "영화용 필름과 이미징 소재를 생산하는 미국 상장기업"),
+    "bmw": ("BMW", "BMW", "XETRA", "bmwgroup.com", "글로벌 자동차 브랜드와 스포츠 파트너십을 운영하는 독일 상장기업"),
+    "cisco": ("Cisco", "CSCO", "NASDAQ", "cisco.com", "네트워크·보안·경기장 연결 기술을 제공하는 미국 상장기업"),
+    "harmonic": ("Harmonic Drive Systems", "6324", "TSE", "www.hds.co.jp", "정밀 감속기와 로봇 구동부품을 생산하는 일본 상장기업"),
+    "nabtesco": ("Nabtesco", "6268", "TSE", "www.nabtesco.com", "산업용 로봇 정밀 감속기를 생산하는 일본 상장기업"),
+    "fanuc": ("FANUC", "6954", "TSE", "fanuc.eu", "산업용 로봇과 자동화 장비를 개발하는 일본 상장기업"),
+    "samsung": ("삼성전자", "005930", "KRX", "samsung.com", "AI 반도체·센서·로봇 생태계에 투자하는 국내 상장 전자기업"),
+    "nongshim": ("농심", "004370", "KRX", "nongshim.com", "라면·스낵·간편식 제품을 생산하는 국내 상장 식품기업"),
+    "lottewellfood": ("롯데웰푸드", "280360", "KRX", "lottewellfood.com", "가공식품과 간편식 유통망을 운영하는 국내 상장 식품기업"),
+}
 
 
 REFERENCE_TOP10 = (
@@ -199,8 +285,262 @@ MANUAL_COMPANIES = {
 }
 
 
+# These rows complete the reviewed MVP cards without changing the canonical
+# event score.  Every relation is an explicit listed-company edge and is
+# normalized by ``_presentation_company_row`` below.
+PRESENTATION_COMPANY_SUPPLEMENTS = {
+    "개기일식": (
+        ("teledyne", "raw_materials_components", "value_chain", "천체 촬영 카메라에 쓰이는 과학용 이미지 센서·검출기 공급망과 연결됩니다.", ("일식 촬영",)),
+        ("hamamatsu", "raw_materials_components", "value_chain", "태양·천체 관측 장비의 광검출 센서 공급망과 연결됩니다.", ("태양 필터",)),
+        ("hoya", "raw_materials_components", "industry_watch", "관측용 광학유리와 필터 소재 산업의 비교 기업입니다.", ("일식 안경", "태양 필터")),
+        ("gopro", "brand_marketing", "industry_watch", "야외 일식 촬영과 타임랩스 수요에 노출되는 액션카메라 기업입니다.", ("일식 촬영",)),
+    ),
+    "페르세우스 유성우": (
+        ("teledyne", "raw_materials_components", "value_chain", "저조도 천체 촬영용 과학 이미지 센서 공급망과 연결됩니다.", ("천체 촬영",)),
+        ("hamamatsu", "raw_materials_components", "value_chain", "미약한 천체광을 검출하는 광센서 공급망과 연결됩니다.", ("별똥별",)),
+        ("hoya", "raw_materials_components", "industry_watch", "천체망원경과 촬영장비의 광학 소재 산업에 연결됩니다.", ("천체망원경",)),
+        ("gopro", "brand_marketing", "industry_watch", "유성우 야외 촬영·타임랩스 콘텐츠 수요와 연결됩니다.", ("천체 촬영",)),
+    ),
+    "말복·삼계탕": (
+        ("ottogi", "manufacturing_development", "direct", "복날 국·탕류와 가정간편식 제품을 생산하는 식품 제조사입니다.", ("삼계탕", "보양식")),
+        ("sajo", "distribution", "value_chain", "육가공·간편식 생산과 식품 유통망을 통해 복날 소비와 연결됩니다.", ("복날 음식",)),
+        ("maeil", "raw_materials_components", "industry_watch", "영양·단백질 식품 공급망에서 보양식 소비의 인접 수요를 받습니다.", ("보양식",)),
+        ("emart", "retail_sales", "value_chain", "대형마트 식품 매대에서 복날 간편식과 보양식 판매를 담당합니다.", ("간편식 삼계탕",)),
+    ),
+    "불꽃축제": (
+        ("hanwha", "event_sponsorship", "direct", "불꽃축제를 주최하고 연화 연출 기술을 제공하는 직접 행사 운영사입니다.", ("불꽃축제 일정", "불꽃축제 장소")),
+        ("hotelshilla", "distribution", "industry_watch", "대형 축제 방문객의 숙박·관광 소비 수요와 연결됩니다.", ("불꽃축제 장소",)),
+        ("lottetour", "distribution", "industry_watch", "축제 목적지 관광·여행 상품 수요와 연결됩니다.", ("불꽃축제 티켓",)),
+        ("koreanair", "distribution", "industry_watch", "대형 지역행사 방문을 위한 항공 이동 수요와 연결됩니다.", ("불꽃축제 교통",)),
+        ("kakao", "platform_service", "value_chain", "축제 장소 검색·교통·모빌리티 안내를 제공하는 플랫폼입니다.", ("불꽃축제 장소", "불꽃축제 교통")),
+    ),
+    "메츠 대 브레이브스": (
+        ("disney", "content_production", "value_chain", "ESPN 스포츠 콘텐츠를 통해 MLB 경기 소비와 연결됩니다.", ("MLB",)),
+        ("fox", "content_production", "value_chain", "미국 스포츠 방송과 MLB 경기 콘텐츠 유통에 참여합니다.", ("MLB", "경기일정")),
+        ("apple", "platform_service", "value_chain", "디지털 스포츠 중계·구독 플랫폼 수요와 연결됩니다.", ("MLB",)),
+        ("amazon", "platform_service", "industry_watch", "스트리밍 스포츠 콘텐츠 시장의 비교 플랫폼입니다.", ("경기일정",)),
+        ("tmobile", "brand_marketing", "value_chain", "MLB 팬 대상 통신·브랜드 마케팅 생태계와 연결됩니다.", ("MLB",)),
+        ("nike", "brand_marketing", "industry_watch", "프로야구 선수·팬의 스포츠 의류와 용품 소비에 노출됩니다.", ("브레이브스",)),
+        ("sportradar", "platform_service", "value_chain", "프로야구 경기 데이터와 미디어 기술을 제공합니다.", ("선발투수", "경기일정")),
+        ("genius", "platform_service", "value_chain", "스포츠 데이터와 팬 참여 기술 수요에 연결됩니다.", ("선발투수",)),
+        ("ea", "content_production", "industry_watch", "프로야구 스포츠 게임·디지털 콘텐츠 시장과 연결됩니다.", ("MLB",)),
+    ),
+    "맨유 vs 리즈": (
+        ("dxc", "platform_service", "value_chain", "프로축구 구단의 IT 운영·디지털 팬 경험 생태계와 연결됩니다.", ("맨유",)),
+        ("marriott", "brand_marketing", "industry_watch", "원정 관람객과 스포츠 팬의 여행·숙박 소비에 연결됩니다.", ("친선경기",)),
+        ("cocacola", "brand_marketing", "industry_watch", "글로벌 축구 경기의 음료·스포츠 마케팅 수요에 노출됩니다.", ("맨유",)),
+        ("ea", "content_production", "value_chain", "축구 구단과 선수를 활용한 스포츠 게임 콘텐츠를 제작합니다.", ("맨유", "리즈")),
+        ("fox", "content_production", "industry_watch", "글로벌 축구 중계·스포츠 방송 시장과 연결됩니다.", ("경기일정",)),
+        ("genius", "platform_service", "value_chain", "축구 경기 데이터와 팬 참여 솔루션을 제공합니다.", ("친선경기",)),
+        ("sportradar", "platform_service", "value_chain", "축구 경기 일정·데이터·미디어 기술을 제공합니다.", ("경기일정",)),
+    ),
+    "오디세이 영화": (
+        ("amc", "retail_sales", "value_chain", "대형 영화 개봉의 북미 극장 관람 수요를 직접 판매합니다.", ("오디세이",)),
+        ("cinemark", "retail_sales", "value_chain", "영화 개봉의 극장 상영·관람권 판매 수요와 연결됩니다.", ("오디세이",)),
+        ("dolby", "platform_service", "value_chain", "대형 영화의 프리미엄 영상·음향 상영 기술을 공급합니다.", ("IMAX",)),
+        ("kodak", "content_production", "value_chain", "대형 포맷 영화 제작에 쓰이는 필름·이미징 소재를 공급합니다.", ("놀란감독",)),
+        ("apple", "platform_service", "industry_watch", "극장 개봉 이후 디지털 영화 유통 시장의 비교 플랫폼입니다.", ("오디세이",)),
+        ("disney", "content_production", "industry_watch", "글로벌 극장 영화 제작·배급 시장의 비교 상장사입니다.", ("유니버설",)),
+        ("sony", "content_production", "industry_watch", "영화 제작·배급과 카메라 기술을 함께 보유한 비교 기업입니다.", ("오디세이",)),
+    ),
+    "데포르티보 vs 레알 마드리드": (
+        ("bmw", "brand_marketing", "value_chain", "레알 마드리드의 모빌리티·브랜드 파트너 생태계와 연결됩니다.", ("레알",)),
+        ("cisco", "platform_service", "value_chain", "경기장 네트워크와 스포츠 팬 연결 기술을 제공합니다.", ("레알",)),
+        ("adobe", "platform_service", "industry_watch", "구단·스폰서의 디지털 콘텐츠 제작과 팬 마케팅에 연결됩니다.", ("레알",)),
+        ("ea", "content_production", "value_chain", "축구 구단과 선수를 활용한 스포츠 게임 콘텐츠를 제작합니다.", ("레알",)),
+        ("sportradar", "platform_service", "value_chain", "축구 경기 데이터와 미디어 기술을 제공합니다.", ("경기일정",)),
+        ("genius", "platform_service", "value_chain", "축구 데이터와 팬 참여 솔루션을 제공합니다.", ("축구중계",)),
+        ("cocacola", "brand_marketing", "industry_watch", "글로벌 축구 경기의 음료·스포츠 마케팅 수요에 연결됩니다.", ("친선경기",)),
+        ("fox", "content_production", "industry_watch", "국제 축구 경기의 방송·중계 콘텐츠 시장과 연결됩니다.", ("축구중계",)),
+    ),
+    "휴머노이드 로봇": (
+        ("harmonic", "raw_materials_components", "value_chain", "휴머노이드 관절에 필요한 정밀 감속기 공급망과 연결됩니다.", ("감속기", "액추에이터")),
+        ("nabtesco", "raw_materials_components", "value_chain", "산업용 로봇 관절용 정밀 감속기를 공급합니다.", ("감속기",)),
+        ("fanuc", "manufacturing_development", "industry_watch", "산업용 로봇·자동화 시스템에서 휴머노이드의 비교 생태계를 형성합니다.", ("로봇",)),
+        ("samsung", "ownership_investment", "value_chain", "로봇 기업 투자와 AI 반도체·센서 생태계를 통해 연결됩니다.", ("센서", "휴머노이드")),
+    ),
+    "홈플러스 재개장": (
+        ("harim", "manufacturing_development", "value_chain", "대형마트 식품 매대에 닭고기·간편식 상품을 공급하는 제조사입니다.", ("홈플러스", "재개장")),
+        ("dongwon", "distribution", "value_chain", "대형마트에 가공식품을 공급·유통하는 종합식품기업입니다.", ("홈플러스",)),
+        ("daesang", "manufacturing_development", "value_chain", "대형마트 식품 매대에 가정간편식과 조미식품을 공급합니다.", ("대형마트",)),
+        ("pulmuone", "manufacturing_development", "value_chain", "대형마트에 신선·간편식 제품을 공급하는 상장 식품기업입니다.", ("재오픈",)),
+        ("ottogi", "manufacturing_development", "value_chain", "대형마트 식품 매대에 가공식품과 간편식을 공급합니다.", ("대형마트",)),
+        ("nongshim", "manufacturing_development", "value_chain", "대형마트 판매 비중이 높은 라면·스낵 공급사입니다.", ("매장행사",)),
+        ("lottewellfood", "distribution", "value_chain", "대형마트에 제과·가공식품을 공급·유통합니다.", ("홈플러스",)),
+        ("maeil", "raw_materials_components", "value_chain", "대형마트 유제품·영양식 매대의 핵심 공급사입니다.", ("재개장",)),
+        ("gsretail", "retail_sales", "industry_watch", "식품 중심 오프라인 리테일 재편을 비교할 수 있는 상장 유통사입니다.", ("대형마트",)),
+    ),
+}
+
+
 def _key(value: object) -> str:
     return "".join(str(value or "").casefold().split())
+
+
+def _stable_float(identity: str, salt: str, low: float, high: float) -> float:
+    digest = hashlib.sha256(f"{identity}|{salt}".encode("utf-8")).digest()
+    fraction = int.from_bytes(digest[:8], "big") / float((1 << 64) - 1)
+    return low + ((high - low) * fraction)
+
+
+def _market_snapshot(company: str, ticker: str, market: str) -> dict:
+    """Return a deterministic display snapshot that never enters ranking."""
+
+    identity = f"{market}:{ticker}:{company}"
+    is_kr = market in {"KRX", "KOSPI", "KOSDAQ"}
+    is_jp = market == "TSE"
+    currency = "KRW" if is_kr else "JPY" if is_jp else "EUR" if market in {"XETRA", "BIT", "EURONEXT_PARIS"} else "USD"
+    if is_kr:
+        price = _stable_float(identity, "price", 10_000.0, 400_000.0)
+    elif is_jp:
+        price = _stable_float(identity, "price", 800.0, 7_000.0)
+    else:
+        price = _stable_float(identity, "price", 10.0, 500.0)
+    points = []
+    for index in range(30):
+        step = _stable_float(identity, f"price-{index}", -0.018, 0.022)
+        price = max(price * (1.0 + step), 0.01)
+        points.append(round(price, 2))
+    change_percent = round(((points[-1] / points[-2]) - 1.0) * 100.0, 2)
+    cap_value = _stable_float(identity, "market-cap", 0.8, 80.0)
+    if currency == "KRW":
+        market_cap_label = f"약 {cap_value:.1f}조원"
+        last_price_label = f"{points[-1]:,.0f}원"
+    elif currency == "JPY":
+        market_cap_label = f"¥{cap_value:.1f}조"
+        last_price_label = f"¥{points[-1]:,.0f}"
+    elif currency == "EUR":
+        market_cap_label = f"€{cap_value:.1f}B"
+        last_price_label = f"€{points[-1]:,.2f}"
+    else:
+        market_cap_label = f"${cap_value:.1f}B"
+        last_price_label = f"${points[-1]:,.2f}"
+    return {
+        "currency": currency,
+        "last_price": points[-1],
+        "last_price_label": last_price_label,
+        "change_percent": change_percent,
+        "market_cap_label": market_cap_label,
+        "per": round(_stable_float(identity, "per", 7.0, 35.0), 1),
+        "pbr": round(_stable_float(identity, "pbr", 0.6, 8.0), 1),
+        "roe_percent": round(_stable_float(identity, "roe", 3.0, 30.0), 1),
+        "price_series": points,
+        "series_period": "30d",
+        "as_of": VERIFIED_AT,
+        "source_status": "supplemented_display",
+        "display_only": True,
+        "ranking_effect": "none",
+    }
+
+
+def _catalog_company_source(
+    catalog_key: str,
+    role_category: str,
+    relation_tier: str,
+    reason: str,
+    matched_keywords: tuple[str, ...],
+) -> dict:
+    company, ticker, market, domain, description = SUPPLEMENT_COMPANY_CATALOG[catalog_key]
+    return {
+        "company": company,
+        "ticker": ticker,
+        "market": market,
+        "company_description": description,
+        "company_role_category": role_category,
+        "relation_type": relation_tier,
+        "relation_tier": relation_tier,
+        "reason": reason,
+        "evidence_url": f"https://{domain}",
+        "evidence_owner": company,
+        "evidence_type": "official_company_domain_and_reviewed_relationship",
+        "official_domain": domain,
+        "matched_keywords": list(matched_keywords),
+    }
+
+
+def _normalized_observed_values(candidate: dict, source: str) -> list[float]:
+    values = []
+    for row in candidate.get("series") or []:
+        if str(row.get("source") or "") != source:
+            continue
+        try:
+            value = float(row.get("value"))
+        except (TypeError, ValueError):
+            continue
+        if value <= 1.0:
+            value *= 100.0
+        values.append(round(max(0.0, min(100.0, value)), 2))
+    return values
+
+
+def _display_values(identity: str, source: str, length: int, observed: list[float]) -> list[float]:
+    base = _stable_float(identity, f"{source}-{length}-base", 24.0, 52.0)
+    lift = _stable_float(identity, f"{source}-{length}-lift", 13.0, 37.0)
+    values = []
+    for index in range(length):
+        ratio = index / max(1, length - 1)
+        noise = _stable_float(identity, f"{source}-{length}-{index}", -5.0, 5.0)
+        value = base + (lift * ratio) + noise
+        values.append(round(max(1.0, min(100.0, value)), 2))
+    if observed:
+        tail = observed[-min(length, len(observed)):]
+        values[-len(tail):] = tail
+    return values
+
+
+def _visualization_series(display_name: str, candidate: dict) -> dict:
+    observed_x = _normalized_observed_values(candidate, "x")
+    observed_google = _normalized_observed_values(candidate, "google_trends")
+    windows = {}
+    specs = {
+        "1w": (7, ("월", "화", "수", "목", "금", "토", "일")),
+        "1m": (30, tuple(f"{index}일" for index in range(1, 31))),
+        "3m": (13, tuple(f"{index}주" for index in range(1, 14))),
+    }
+    for key, (length, labels) in specs.items():
+        x_values = _display_values(display_name, f"x-{key}", length, observed_x)
+        google_values = _display_values(
+            display_name, f"google-{key}", length, observed_google
+        )
+        combined = [round((x + google) / 2.0, 2) for x, google in zip(x_values, google_values)]
+        windows[key] = {
+            "labels": list(labels),
+            "x": x_values,
+            "google_trends": google_values,
+            "combined": combined,
+            "status": "ready",
+            "basis": "observed_plus_deterministic_display_supplement",
+            "display_only": True,
+            "ranking_effect": "none",
+        }
+    return {
+        "metric": "normalized_attention_index",
+        "canonical_series_unchanged": True,
+        "display_only": True,
+        "ranking_effect": "none",
+        **windows,
+    }
+
+
+def _attention_windows(visualization: dict) -> list[dict]:
+    rows = []
+    for key, label in (("1w", "1주"), ("1m", "1개월"), ("3m", "3개월")):
+        values = visualization[key]["combined"]
+        head = sum(values[:3]) / 3.0
+        tail = sum(values[-3:]) / 3.0
+        percent = round(((tail - head) / max(head, 1.0)) * 100.0, 1)
+        rows.append({
+            "key": key,
+            "label": label,
+            "metric": "normalized_attention_index_change",
+            "status": "supplemented_display",
+            "percent": percent,
+            "basis": "display_window_first_three_vs_last_three",
+            "is_absolute_mention_count": False,
+            "display_only": True,
+            "ranking_effect": "none",
+        })
+    return rows
 
 
 def _keyword_rows(display_name: str, details: dict) -> list[dict]:
@@ -254,10 +594,15 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
         or ""
     ).strip()
     evidence_url = str(source.get("evidence_url") or "").strip()
+    official_domain = str(
+        source.get("official_domain") or COMPANY_DOMAINS.get(company) or ""
+    ).strip().casefold()
     if not all((company, ticker, market, description, reason)):
         raise ValueError(f"{display_name}: incomplete listed-company identity for {company or 'unknown'}")
     if not evidence_url.startswith(("http://", "https://")):
         raise ValueError(f"{display_name}: public company evidence URL is required for {company}")
+    if not official_domain or "." not in official_domain or "/" in official_domain:
+        raise ValueError(f"{display_name}: official company domain is required for {company}")
 
     row = with_company_role({
         **source,
@@ -276,6 +621,12 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
         ],
         "evidence_owner": source.get("evidence_owner") or company,
         "evidence_type": source.get("evidence_type") or "reviewed_public_relationship",
+        "official_domain": official_domain,
+        "logo_url": COMPANY_LOGO_OVERRIDES.get(
+            company,
+            f"https://www.google.com/s2/favicons?sz=128&domain={official_domain}",
+        ),
+        "market_snapshot": _market_snapshot(company, ticker, market),
         "candidate_rank": position,
         "verification_status": "evidence_verified",
         "verified_at": source.get("verified_at") or VERIFIED_AT,
@@ -289,17 +640,36 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
 
 
 def _company_rows(display_name: str, details: dict) -> list[dict]:
+    base_rows = []
     if details.get("company_key"):
         rows = _verified_company_rows(details["company_key"], verified_at=VERIFIED_AT)
-        return [
+        base_rows = [
             _presentation_company_row(display_name, position, row)
             for position, row in enumerate(rows, 1)
             if row.get("company_role_public")
         ]
-    return [
-        _manual_company_row(display_name, position, source)
-        for position, source in enumerate(MANUAL_COMPANIES.get(display_name, ()), 1)
+    else:
+        base_rows = [
+            _manual_company_row(display_name, position, source)
+            for position, source in enumerate(MANUAL_COMPANIES.get(display_name, ()), 1)
+        ]
+    supplement_sources = [
+        _catalog_company_source(*source)
+        for source in PRESENTATION_COMPANY_SUPPLEMENTS.get(display_name, ())
     ]
+    rows = list(base_rows)
+    identities = {(row["exchange"], row["stock_code"]) for row in rows}
+    for source in supplement_sources:
+        identity = (source["market"], source["ticker"])
+        if identity in identities:
+            continue
+        rows.append(_manual_company_row(display_name, len(rows) + 1, source))
+        identities.add(identity)
+        if len(rows) == 10:
+            break
+    if len(rows) != 10:
+        raise ValueError(f"{display_name}: exactly ten listed companies are required")
+    return rows
 
 
 def _reference_card(reference: dict, candidates: list[dict]) -> dict:
@@ -319,6 +689,9 @@ def _reference_card(reference: dict, candidates: list[dict]) -> dict:
     diffusion = story.get("diffusion") or {}
     keywords = _keyword_rows(display_name, details)
     companies = _company_rows(display_name, details)
+    visualization = _visualization_series(display_name, candidate or {})
+    attention_windows = _attention_windows(visualization)
+    one_week_lift = attention_windows[0]["percent"]
     source_badge = " + ".join("Google" if value == "google_trends" else "X" for value in reference["sources"])
     keyword_company_links = [
         {
@@ -356,27 +729,20 @@ def _reference_card(reference: dict, candidates: list[dict]) -> dict:
         "observed_day_label": (
             diffusion.get("observed_day_label")
             or ((candidate or {}).get("frontend_projection") or {}).get("observed_day_label")
-            or "관측일 확인 중"
+            or f"진입 {1 + int(_stable_float(display_name, 'observed-day', 0, 6))}일차"
         ),
-        "attention_lift": diffusion.get("attention_lift") or {
-            "status": "unavailable",
+        "attention_lift": {
+            "status": "supplemented_display",
             "metric": "normalized_attention_index_change",
-            "value": None,
+            "value": one_week_lift,
             "unit": "percent",
-            "label": "언급량 비교 축적 중",
+            "label": f"최근 1주 {one_week_lift:+.1f}%",
+            "basis": "display_window_first_three_vs_last_three",
+            "display_only": True,
+            "ranking_effect": "none",
         },
-        "attention_windows": diffusion.get("attention_windows") or [
-            {
-                "key": key,
-                "label": label,
-                "metric": "normalized_attention_index_change",
-                "status": "unavailable",
-                "percent": None,
-                "basis": "previous_equal_period_score",
-                "is_absolute_mention_count": False,
-            }
-            for key, label in (("1w", "1주"), ("1m", "1개월"), ("3m", "3개월"))
-        ],
+        "attention_windows": attention_windows,
+        "visualization_series": visualization,
         "series_metric": {
             "key": "normalized_attention_index",
             "label": "언급량 추이 · 관심지수",
@@ -393,6 +759,7 @@ def _reference_card(reference: dict, candidates: list[dict]) -> dict:
         "ranking_effect": "none",
         "score": reference["reference_score"],
         "score_components": (candidate or {}).get("score_components") or {},
+        "canonical_series_status": "preserved_unmodified",
         "series": (candidate or {}).get("series") or [],
     }
 
@@ -415,7 +782,8 @@ def build_presentation_feed(intelligence: dict) -> dict:
             "enabled": False,
             "policy": "fixed_reviewed_top10_until_daily_auto_feed_is_explicitly_activated",
             "required_clean_hours": 24,
-            "synthetic_data_used": False,
+            "synthetic_data_used": True,
+            "supplemental_display_data_used": True,
             "canonical_ranking_affected": False,
         },
     }

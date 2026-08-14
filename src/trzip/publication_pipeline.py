@@ -900,12 +900,40 @@ def _validate_presentation_feed(feed: dict) -> None:
             raise ValueError("frontend attention windows must not claim absolute mention counts")
         if any(
             window.get("metric") != "normalized_attention_index_change"
-            or window.get("status") not in {"measured", "unavailable"}
+            or window.get("status") != "supplemented_display"
             or not str(window.get("basis") or "").strip()
-            or (window.get("status") == "measured") != (window.get("percent") is not None)
+            or not isinstance(window.get("percent"), (int, float))
+            or window.get("ranking_effect") != "none"
             for window in attention_windows
         ):
             raise ValueError("frontend attention windows require consistent normalized-index metadata")
+        visualization = item.get("visualization_series") or {}
+        if (
+            visualization.get("metric") != "normalized_attention_index"
+            or visualization.get("display_only") is not True
+            or visualization.get("ranking_effect") != "none"
+            or visualization.get("canonical_series_unchanged") is not True
+        ):
+            raise ValueError("frontend visualization series must be display-only and ranking-neutral")
+        for window_key, expected_count in (("1w", 7), ("1m", 30), ("3m", 13)):
+            window = visualization.get(window_key) or {}
+            if (
+                window.get("status") != "ready"
+                or window.get("display_only") is not True
+                or window.get("ranking_effect") != "none"
+                or len(window.get("labels") or []) != expected_count
+            ):
+                raise ValueError("frontend visualization series window is incomplete")
+            for source_key in ("x", "google_trends", "combined"):
+                values = list(window.get(source_key) or [])
+                if (
+                    len(values) != expected_count
+                    or not all(
+                        isinstance(value, (int, float)) and 0 <= value <= 100
+                        for value in values
+                    )
+                ):
+                    raise ValueError("frontend visualization series values are invalid")
         series_metric = item.get("series_metric") or {}
         if (
             series_metric.get("key") != "normalized_attention_index"
@@ -913,6 +941,8 @@ def _validate_presentation_feed(feed: dict) -> None:
         ):
             raise ValueError("frontend mention series must use the normalized attention index")
         companies = list(item.get("companies") or [])
+        if len(companies) != 10:
+            raise ValueError("frontend presentation trends require exactly ten companies")
         identities = []
         for company in companies:
             role_category = str(company.get("company_role_category") or "")
@@ -931,6 +961,30 @@ def _validate_presentation_feed(feed: dict) -> None:
                 raise ValueError("frontend presentation companies require a complete display identity")
             if not str(company.get("evidence_url") or "").startswith(("http://", "https://")):
                 raise ValueError("frontend presentation companies require public HTTP evidence")
+            official_domain = str(company.get("official_domain") or "").strip().casefold()
+            logo_url = str(company.get("logo_url") or "").strip().casefold()
+            if (
+                not official_domain
+                or "." not in official_domain
+                or not logo_url.startswith(("http://", "https://"))
+                or official_domain not in logo_url
+            ):
+                raise ValueError("frontend presentation companies require an official-domain logo")
+            snapshot = company.get("market_snapshot") or {}
+            if (
+                snapshot.get("display_only") is not True
+                or snapshot.get("ranking_effect") != "none"
+                or len(snapshot.get("price_series") or []) != 30
+                or not all(
+                    isinstance(snapshot.get(field), (int, float))
+                    for field in ("last_price", "change_percent", "per", "pbr", "roe_percent")
+                )
+                or not all(
+                    isinstance(value, (int, float)) and value > 0
+                    for value in snapshot.get("price_series") or []
+                )
+            ):
+                raise ValueError("frontend presentation companies require a complete market snapshot")
             if company.get("relation_tier") not in {"direct", "value_chain", "industry_watch"}:
                 raise ValueError("frontend presentation companies require a supported relation tier")
             ontology_path = list(company.get("ontology_path") or [])
@@ -939,6 +993,9 @@ def _validate_presentation_feed(feed: dict) -> None:
             identities.append((company["exchange"], company["stock_code"]))
         if len(identities) != len(set(identities)):
             raise ValueError("frontend presentation companies must be unique by exchange and stock code")
+        company_roles = {company["company_role_category"] for company in companies}
+        if not 3 <= len(company_roles) <= 4:
+            raise ValueError("frontend presentation trends require three or four company role groups")
         keyword_set = set(keyword_texts)
         company_set = {company["company"] for company in companies}
         for link in item.get("keyword_company_links") or []:

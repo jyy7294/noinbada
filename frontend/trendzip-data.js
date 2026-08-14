@@ -148,6 +148,7 @@ function normalizeTrend(item) {
     id: topic,
     topic,
     displayName: item.display_name || topic,
+    shortDisplayName: item.short_display_name || item.display_name || topic,
     rank,
     rankLabel: String(rank || '--').padStart(2, '0'),
     category: item.category,
@@ -199,6 +200,7 @@ function normalizeTrend(item) {
     momentum: Number(item.momentum || 0),
     score: Number(item.score || 0),
     series: Array.isArray(item.series) ? item.series : [],
+    visualizationSeries: item.visualization_series || {},
     raw: item,
   };
 }
@@ -430,44 +432,6 @@ export function savePortfolio(input) {
   return record;
 }
 
-function download(filename, text, type) {
-  const blob = new Blob([text], { type });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = filename;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  URL.revokeObjectURL(url);
-}
-
-export function exportPortfoliosJson() {
-  const payload = {
-    schemaVersion: 'trzip-export-v1',
-    exportedAt: new Date().toISOString(),
-    portfolios: listPortfolios(),
-  };
-  download(`trzip-portfolios-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
-  return payload.portfolios.length;
-}
-
-export function exportPortfoliosCsv() {
-  const quote = (value) => `"${String(value ?? '').replaceAll('"', '""')}"`;
-  const rows = [['portfolio_id', 'portfolio_name', 'trend_topic', 'keyword', 'company', 'stock_code', 'relation_category', 'verification_status', 'created_at']];
-  listPortfolios().forEach((portfolio) => {
-    const keywords = portfolio.keywords.length ? portfolio.keywords : [''];
-    const companies = portfolio.companies.length ? portfolio.companies : [{}];
-    keywords.forEach((keyword) => companies.forEach((company) => rows.push([
-      portfolio.id, portfolio.name, portfolio.trendTopic, keyword, company.company,
-      company.stock_code, company.relation_category, company.verification_status, portfolio.createdAt,
-    ])));
-  });
-  const csv = '\ufeff' + rows.map((row) => row.map(quote).join(',')).join('\r\n');
-  download(`trzip-portfolios-${new Date().toISOString().slice(0, 10)}.csv`, csv, 'text/csv;charset=utf-8');
-  return Math.max(0, rows.length - 1);
-}
-
 export const dataContract = Object.freeze({
   manifest: MANIFEST_URL,
   intelligence: INTELLIGENCE_URL,
@@ -475,7 +439,6 @@ export const dataContract = Object.freeze({
   metadata: METADATA_URL,
   cache: CACHE_KEY,
   portfolios: PORTFOLIO_KEY,
-  exportSchema: 'trzip-export-v1',
   freshForMinutes: FRESH_FOR_MINUTES,
   staleAfterMinutes: STALE_AFTER_MINUTES,
 });

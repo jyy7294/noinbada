@@ -37,10 +37,20 @@ def test_reviewed_presentation_feed_is_exact_and_enriched():
         for keyword in item["keywords"]
     )
     assert all(item["companies"] for item in feed["items"])
+    assert all(len(item["companies"]) == 10 for item in feed["items"])
+    assert all(
+        3 <= len({company["company_role_category"] for company in item["companies"]}) <= 4
+        for item in feed["items"]
+    )
     assert all(item["ranking_effect"] == "none" for item in feed["items"])
     assert all(
         [window["key"] for window in item["attention_windows"]] == ["1w", "1m", "3m"]
         for item in feed["items"]
+    )
+    assert all(
+        window["status"] == "supplemented_display" and isinstance(window["percent"], float)
+        for item in feed["items"]
+        for window in item["attention_windows"]
     )
     assert all(
         window["is_absolute_mention_count"] is False
@@ -62,6 +72,51 @@ def test_presentation_company_groups_are_explicit_and_explainable():
             assert company.get("company_description")
             assert company.get("connection_explanation")
             assert str(company.get("evidence_url", "")).startswith("http")
+            assert company.get("official_domain") in company.get("logo_url", "")
+            snapshot = company.get("market_snapshot") or {}
+            assert snapshot.get("display_only") is True
+            assert snapshot.get("ranking_effect") == "none"
+            assert len(snapshot.get("price_series") or []) == 30
+            assert all(
+                isinstance(snapshot.get(field), (int, float))
+                for field in ("last_price", "change_percent", "per", "pbr", "roe_percent")
+            )
+
+
+def test_presentation_visualization_is_complete_deterministic_and_rank_neutral():
+    canonical_series = [
+        {"at": "2026-08-14T00:00:00+00:00", "source": "x", "value": 87},
+        {"at": "2026-08-14T00:00:00+00:00", "source": "google_trends", "value": 72},
+    ]
+    intelligence = {
+        "unified_ranking": [{
+            "event_key": "개기일식",
+            "display_name": "개기일식",
+            "series": canonical_series,
+        }]
+    }
+
+    first = build_presentation_feed(intelligence)
+    second = build_presentation_feed(intelligence)
+    item = first["items"][0]
+
+    assert item["series"] == canonical_series
+    assert intelligence["unified_ranking"][0]["series"] == canonical_series
+    assert first == second
+    visualization = item["visualization_series"]
+    assert visualization["canonical_series_unchanged"] is True
+    assert visualization["ranking_effect"] == "none"
+    for key, count in (("1w", 7), ("1m", 30), ("3m", 13)):
+        window = visualization[key]
+        assert len(window["labels"]) == count
+        assert all(len(window[source]) == count for source in ("x", "google_trends", "combined"))
+        assert all(
+            0 <= value <= 100
+            for source in ("x", "google_trends", "combined")
+            for value in window[source]
+        )
+
+    _validate_presentation_feed(first)
 
 
 def test_invalid_presentation_feed_is_rejected_before_publication():
@@ -94,6 +149,18 @@ def test_invalid_presentation_feed_is_rejected_before_publication():
                 "is_absolute_mention_count", True
             ),
             "must not claim absolute mention counts",
+        ),
+        (
+            lambda feed: feed["items"][0]["companies"][0].pop("logo_url"),
+            "official-domain logo",
+        ),
+        (
+            lambda feed: feed["items"][0]["companies"][0].pop("market_snapshot"),
+            "complete market snapshot",
+        ),
+        (
+            lambda feed: feed["items"][0]["visualization_series"]["1w"]["x"].pop(),
+            "visualization series values",
         ),
     ],
 )

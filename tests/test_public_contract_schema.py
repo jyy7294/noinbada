@@ -112,3 +112,15 @@ def test_latest_generated_publication_conforms_to_all_public_schemas(tmp_path, m
     rankings = json.loads(rankings_path.read_text(encoding="utf-8"))
     assert rankings["presentation_feed"]["frontend_default"] is True
     assert len(rankings["presentation_feed"]["items"]) == 10
+    for item in rankings["presentation_feed"]["items"]:
+        assert len(item["companies"]) == 10
+        assert 3 <= len({row["company_role_category"] for row in item["companies"]}) <= 4
+        assert [row["key"] for row in item["attention_windows"]] == ["1w", "1m", "3m"]
+        assert all(isinstance(row["percent"], (int, float)) for row in item["attention_windows"])
+        for key, size in (("1w", 7), ("1m", 30), ("3m", 13)):
+            assert len(item["visualization_series"][key]["combined"]) == size
+        assert all(
+            company["official_domain"] in company["logo_url"]
+            and len(company["market_snapshot"]["price_series"]) == 30
+            for company in item["companies"]
+        )

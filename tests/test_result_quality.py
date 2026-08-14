@@ -13,11 +13,12 @@ from trzip.result_quality import (
 
 
 def _company(index: int) -> dict:
-    role_category, role_label, stage = (
-        ("manufacturing_development", "제조·개발", "core")
-        if index <= 5
-        else ("distribution", "배급·유통", "downstream")
-    )
+    if index <= 4:
+        role_category, role_label, stage = "manufacturing_development", "제조·개발", "core"
+    elif index <= 7:
+        role_category, role_label, stage = "distribution", "배급·유통", "downstream"
+    else:
+        role_category, role_label, stage = "platform_service", "플랫폼·서비스", "service"
     return {
         "company": f"기업{index}",
         "stock_code": f"00000{index}",
@@ -35,6 +36,18 @@ def _company(index: int) -> dict:
         ],
         "relation_tier": "direct",
         "evidence_sources": [{"url": f"https://example.com/{index}"}],
+        "official_domain": "example.com",
+        "logo_url": "https://www.google.com/s2/favicons?sz=128&domain=example.com",
+        "market_snapshot": {
+            "last_price": 10000 + index,
+            "change_percent": 1.2,
+            "per": 12.0,
+            "pbr": 1.3,
+            "roe_percent": 10.0,
+            "price_series": [10000 + index + point for point in range(30)],
+            "display_only": True,
+            "ranking_effect": "none",
+        },
     }
 
 
@@ -43,6 +56,7 @@ def _trend(rank: int) -> dict:
         "publication_rank": rank,
         "event_key": f"event:{rank}",
         "display_name": f"트렌드 {rank}",
+        "selection_origin": "reviewed_observed_reference_test",
         "observed_rank": rank * 2,
         "broad_category": "technology",
         "trend_definition": (
@@ -69,6 +83,20 @@ def _trend(rank: int) -> dict:
             for index in range(5)
         ],
         "companies": [_company(index) for index in range(1, 11)],
+        "visualization_series": {
+            "display_only": True,
+            "ranking_effect": "none",
+            "canonical_series_unchanged": True,
+            **{
+                key: {
+                    "labels": [str(index) for index in range(size)],
+                    "x": [50.0] * size,
+                    "google_trends": [55.0] * size,
+                    "combined": [52.5] * size,
+                }
+                for key, size in (("1w", 7), ("1m", 30), ("3m", 13))
+            },
+        },
         "keyword_company_links": [
             {
                 "keyword": f"키워드 {index}",
@@ -160,6 +188,20 @@ def test_quality_gate_rejects_invalid_relation_url_and_ontology_destination():
     assert any("invalid_relation_tier" in failure for failure in result["failures"])
     assert any("invalid_company_evidence_url" in failure for failure in result["failures"])
     assert any("ontology_path_not_to_company" in failure for failure in result["failures"])
+
+
+def test_quality_gate_rejects_missing_logo_market_snapshot_and_display_series():
+    trends = [_trend(rank) for rank in range(1, 11)]
+    trends[0]["companies"][0].pop("logo_url")
+    trends[0]["companies"][1].pop("market_snapshot")
+    trends[0]["visualization_series"]["1w"]["x"].pop()
+
+    result = evaluate_frontend_result({"home_top10": trends})
+
+    assert result["passed"] is False
+    assert any("missing_official_logo" in failure for failure in result["failures"])
+    assert any("market_snapshot_incomplete" in failure for failure in result["failures"])
+    assert any("visualization_series_incomplete:1w" in failure for failure in result["failures"])
 
 
 def test_quality_gate_allows_multiple_evidence_complete_food_trends():

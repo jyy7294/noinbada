@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T14:19:03.7408395+00:00",
+    "updated_at":  "2026-08-14T16:15:31.2815543+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,26 +8,38 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "0ad38d5ea0f1c9385a229ae20836f38f4b42f160",
+                       "base_remote_main_sha":  "ad244422d7d9570b154d09003597d2f8290b1242",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "src/trzip/intelligence.py",
+                                             "frontend/index.html",
+                                             "frontend/trendzip-data.js",
+                                             "src/trzip/presentation_feed.py",
                                              "src/trzip/publication_pipeline.py",
-                                             "src/trzip/runtime_audit.py"
+                                             "src/trzip/result_quality.py",
+                                             "tests/test_frontend_mvp_contract.py",
+                                             "tests/test_presentation_feed.py",
+                                             "tests/test_public_contract_schema.py",
+                                             "tests/test_result_quality.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/intelligence.py":  "91116dfbf556893eafdb7e695846be44a02c148b9799f6357b395ced89baddf4",
-                                                    "src/trzip/publication_pipeline.py":  "0ce28224eaae9ccbfcc090ceb3a7165ea959b901cbe2db414637a185c8a2064a",
-                                                    "src/trzip/runtime_audit.py":  "b2b47d730cc7a005735d0000720d87c32c3aac899a5768eb3d94e0640cbae4fd"
+                                                    "frontend/index.html":  "d94d5d49f47ac406f574641c4039c6775a438d03aefe8595e98ea3b6a2776395",
+                                                    "frontend/trendzip-data.js":  "82ffe75bbaef83c8294b4c8781133374ff4fef436945a445b3b74e4ab95103e4",
+                                                    "src/trzip/presentation_feed.py":  "8b6890067ba140b1313013b0c2c1703ad475cacee977c6a7cfbddfb725953c79",
+                                                    "src/trzip/publication_pipeline.py":  "7784a630f146fa0c924be9dc92548ba0051f7149b2868c091b259ba79dc36ef0",
+                                                    "src/trzip/result_quality.py":  "95bdd5db3f56b8aacdb05156db75445161b27733943bd5ad20bd5941de190a43",
+                                                    "tests/test_frontend_mvp_contract.py":  "8c082b17405ca94d22be4317922f7811a105d3167cc845d33a39515b9768591b",
+                                                    "tests/test_presentation_feed.py":  "3c6015bf9296eb623d18ac8cb04afb6b65f7e0a22326473712fee2c2ec04f957",
+                                                    "tests/test_public_contract_schema.py":  "9127a8fe9c8382dbc427c77f3acda64af312c71383b228bb4417b1a01a1b58af",
+                                                    "tests/test_result_quality.py":  "f948485e4e9b71fbe099376fd6b950d418f8d69e9f339ae770f3f0323bced4af"
                                                 },
-                       "commit_message":  "fix: reconcile enriched period rankings",
+                       "commit_message":  "feat: complete TRZIP MVP presentation experience",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  342
+                                      "count":  352
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -49,21 +61,23 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "맥락 보강 뒤 최종 적격·완성 상태를 일간·주간·월간 순위와 감사 계약에 재동기화",
+                    "objective":  "Complete the approved Top10 frontend experience with logos, trend charts, company details, and validated presentation data.",
                     "completed":  [
-                                      "기간 뷰 적격성·준비상태 재조정",
-                                      "완성 카드만 기간 Top10에 포함",
-                                      "발행 validator와 runtime audit 계약 통일"
+                                      "Added ten evidence-backed listed companies and three to four role groups per approved trend.",
+                                      "Added logo, attention-series, and company market-display contracts.",
+                                      "Completed mobile trend detail, related-company, and portfolio views.",
+                                      "Removed export controls and placeholder/demo labels.",
+                                      "Validated frontend and backend contracts."
                                   ],
                     "next_actions":  [
-                                         "23:00 KST publication 원격 live-data 게시",
-                                         "프로덕션 정상 Top10 E2E 확인"
+                                         "Publish a fresh exact-hour X and Google immutable live-data result.",
+                                         "Deploy the updated frontend to Vercel production and verify mobile flows."
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "실측 적격 카드의 기업·키워드 보강이 부족하면 홈은 0개를 정직하게 공개함"
+                                              "Attention and market display supplements are deterministic presentation values and do not affect canonical X/Google ranking."
                                           ]
                 },
     "runtime_contract":  {

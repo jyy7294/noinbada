@@ -317,10 +317,36 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
                 for company in companies
                 if str(company.get("company_role_category") or "").strip()
             }
-            if not 2 <= len(company_role_categories) <= 4:
+            if not 3 <= len(company_role_categories) <= 4:
                 item_failures.append(
                     f"company_role_category_count:{len(company_role_categories)}"
                 )
+        presentation_display_contract = str(
+            item.get("selection_origin") or ""
+        ).startswith("reviewed_observed_reference")
+        if presentation_display_contract:
+            visualization = item.get("visualization_series") or {}
+            if (
+                visualization.get("display_only") is not True
+                or visualization.get("ranking_effect") != "none"
+                or visualization.get("canonical_series_unchanged") is not True
+            ):
+                item_failures.append("visualization_series_not_rank_neutral")
+            for window_key, expected_count in (("1w", 7), ("1m", 30), ("3m", 13)):
+                window = visualization.get(window_key) or {}
+                if (
+                    len(window.get("labels") or []) != expected_count
+                    or any(
+                        len(window.get(source_key) or []) != expected_count
+                        for source_key in ("x", "google_trends", "combined")
+                    )
+                    or any(
+                        not isinstance(value, (int, float)) or not 0 <= value <= 100
+                        for source_key in ("x", "google_trends", "combined")
+                        for value in window.get(source_key) or []
+                    )
+                ):
+                    item_failures.append(f"visualization_series_incomplete:{window_key}")
         for company in companies:
             company_name = str(company.get("company") or "").strip()
             evidence_urls = [
@@ -353,6 +379,30 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
                 item_failures.append(f"invalid_relation_tier:{company_name}")
             if not _ontology_path_reaches_company(company.get("ontology_path"), company_name):
                 item_failures.append(f"ontology_path_not_to_company:{company_name}")
+            if presentation_display_contract:
+                official_domain = str(company.get("official_domain") or "").strip().casefold()
+                logo_url = str(company.get("logo_url") or "").strip().casefold()
+                snapshot = company.get("market_snapshot") or {}
+                if (
+                    not official_domain
+                    or official_domain not in logo_url
+                    or not _valid_public_url(logo_url)
+                ):
+                    item_failures.append(f"missing_official_logo:{company_name}")
+                if (
+                    snapshot.get("display_only") is not True
+                    or snapshot.get("ranking_effect") != "none"
+                    or len(snapshot.get("price_series") or []) != 30
+                    or not all(
+                        isinstance(snapshot.get(field), (int, float))
+                        for field in ("last_price", "change_percent", "per", "pbr", "roe_percent")
+                    )
+                    or not all(
+                        isinstance(value, (int, float)) and value > 0
+                        for value in snapshot.get("price_series") or []
+                    )
+                ):
+                    item_failures.append(f"market_snapshot_incomplete:{company_name}")
         keyword_company_links = list(item.get("keyword_company_links") or [])
         linked_keywords = {
             " ".join(str(link.get("keyword") or "").casefold().split())
