@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T16:15:31.2815543+00:00",
+    "updated_at":  "2026-08-14T16:27:14.3265344+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,32 +8,16 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "ad244422d7d9570b154d09003597d2f8290b1242",
+                       "base_remote_main_sha":  "76966a930b354743e6a61d0f5bce4b53cf807be2",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "frontend/index.html",
-                                             "frontend/trendzip-data.js",
-                                             "src/trzip/presentation_feed.py",
-                                             "src/trzip/publication_pipeline.py",
-                                             "src/trzip/result_quality.py",
-                                             "tests/test_frontend_mvp_contract.py",
-                                             "tests/test_presentation_feed.py",
-                                             "tests/test_public_contract_schema.py",
-                                             "tests/test_result_quality.py"
+                                             "frontend/index.html"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "d94d5d49f47ac406f574641c4039c6775a438d03aefe8595e98ea3b6a2776395",
-                                                    "frontend/trendzip-data.js":  "82ffe75bbaef83c8294b4c8781133374ff4fef436945a445b3b74e4ab95103e4",
-                                                    "src/trzip/presentation_feed.py":  "8b6890067ba140b1313013b0c2c1703ad475cacee977c6a7cfbddfb725953c79",
-                                                    "src/trzip/publication_pipeline.py":  "7784a630f146fa0c924be9dc92548ba0051f7149b2868c091b259ba79dc36ef0",
-                                                    "src/trzip/result_quality.py":  "95bdd5db3f56b8aacdb05156db75445161b27733943bd5ad20bd5941de190a43",
-                                                    "tests/test_frontend_mvp_contract.py":  "8c082b17405ca94d22be4317922f7811a105d3167cc845d33a39515b9768591b",
-                                                    "tests/test_presentation_feed.py":  "3c6015bf9296eb623d18ac8cb04afb6b65f7e0a22326473712fee2c2ec04f957",
-                                                    "tests/test_public_contract_schema.py":  "9127a8fe9c8382dbc427c77f3acda64af312c71383b228bb4417b1a01a1b58af",
-                                                    "tests/test_result_quality.py":  "f948485e4e9b71fbe099376fd6b950d418f8d69e9f339ae770f3f0323bced4af"
+                                                    "frontend/index.html":  "2d5cdf0120753aa6d95c562e1de78a12fa27aa61810b69668f23dc7057976ede"
                                                 },
-                       "commit_message":  "feat: complete TRZIP MVP presentation experience",
+                       "commit_message":  "fix: bootstrap live-data before design runtime",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -61,23 +45,20 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Complete the approved Top10 frontend experience with logos, trend charts, company details, and validated presentation data.",
+                    "objective":  "Ensure the frontend loads the immutable presentation feed before the design runtime mounts.",
                     "completed":  [
-                                      "Added ten evidence-backed listed companies and three to four role groups per approved trend.",
-                                      "Added logo, attention-series, and company market-display contracts.",
-                                      "Completed mobile trend detail, related-company, and portfolio views.",
-                                      "Removed export controls and placeholder/demo labels.",
-                                      "Validated frontend and backend contracts."
+                                      "Moved the live-data module bootstrap to the page shell.",
+                                      "Reused the shared module promise inside the component loader.",
+                                      "Verified frontend contract tests."
                                   ],
                     "next_actions":  [
-                                         "Publish a fresh exact-hour X and Google immutable live-data result.",
-                                         "Deploy the updated frontend to Vercel production and verify mobile flows."
+                                         "Deploy and verify the preview before production promotion."
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "Attention and market display supplements are deterministic presentation values and do not affect canonical X/Google ranking."
+                                              "Attention and market display supplements remain display-only and do not affect canonical ranking."
                                           ]
                 },
     "runtime_contract":  {

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>window.TRZIP_DATA_API_PROMISE = import('./trendzip-data.js');</script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -1599,7 +1600,7 @@ class Component extends DCLogic {
       return (value > 0 ? '+' : '') + value.toFixed(1) + '%';
     };
     try {
-      const api = await import('./trendzip-data.js');
+      const api = await window.TRZIP_DATA_API_PROMISE;
       const view = await api.loadTrends({ mode: 'live' });
       const feed = view.raw && view.raw.presentation_feed;
       if (!feed || feed.frontend_default !== true || !Array.isArray(feed.items) || feed.items.length !== 10) {
