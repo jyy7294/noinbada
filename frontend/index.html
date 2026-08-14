@@ -3838,7 +3838,7 @@ class Component extends DCLogic {
       tier: tierLabel[company.relation_tier] || tierLabel[company.relation_grade] || company.relation_tier || '관계 검수됨',
       verified: company.verification_status === 'evidence_verified' ? '근거 검증' : '근거 확인',
       evidenceUrl: company.evidence_url || '',
-      price: formatPrice(lastPrice),
+      price: snapshot.last_price_label || formatPrice(lastPrice),
       change: (change > 0 ? '+' : '') + change.toFixed(2) + '%',
       changeStyle: 'font-weight:800;font-size:13px;color:' + (change > 0 ? '#E5395F' : change < 0 ? '#2E6BE6' : '#8B8D98') + ';',
       marketCap: snapshot.market_cap_label || snapshot.market_cap || ['1.8조', '4.2조', '12.6조', '38.4조', '92.1조'][seed % 5],

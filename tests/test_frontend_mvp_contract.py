@@ -53,6 +53,7 @@ def test_company_sheet_contains_price_chart_and_valuation_metrics() -> None:
         "market_snapshot",
     ):
         assert token in INDEX
+    assert "snapshot.last_price_label || formatPrice(lastPrice)" in INDEX
 
 
 def test_long_home_names_use_two_line_clamp_and_short_name() -> None:

@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T16:54:17.9383977+00:00",
+    "updated_at":  "2026-08-14T17:00:53.0184494+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,7 +8,7 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "3cf5e8b911e89efcc47447ec4bfddc14421742b6",
+                       "base_remote_main_sha":  "8dcd100e0d97250044ba571a1c7ca9c6d7d1a4d6",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
@@ -16,10 +16,10 @@
                                              "tests/test_frontend_mvp_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "6a354b416aba5b30d21cb10a4afd4345291177960a251ecd2f8013b8ed2f66b8",
-                                                    "tests/test_frontend_mvp_contract.py":  "518694ae8079daacc65e329ea06de86c1737ed0d40e2df9849799e786515060c"
+                                                    "frontend/index.html":  "0a3b7c033a1d4fa565e04d462af79892b63060bf89787bb6a5923bc0c0352485",
+                                                    "tests/test_frontend_mvp_contract.py":  "73239470b383932c2b30bb948ea1fabd54649554240c3f960cb196d7fbf148db"
                                                 },
-                       "commit_message":  "fix: accept compact official company favicons",
+                       "commit_message":  "fix: honor market-specific company price labels",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,7 +47,7 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Render every verified company logo instead of falling back to initials for compact official favicon assets.",
+                    "objective":  "Display won, yen, dollar and other published market labels correctly in company detail sheets.",
                     "completed":  [
 
                                   ],
