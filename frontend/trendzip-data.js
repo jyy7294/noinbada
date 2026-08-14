@@ -59,7 +59,11 @@ function normalizedSourceStatus(payload, metadata, runtimeStatus) {
 }
 
 function dataStatus(payload, metadata, runtimeStatus, { fromCache = false, now = new Date() } = {}) {
-  const payloadAt = asDate(payload.window?.to || payload.generated_at);
+  // Immutable rankings publish a distinct generation timestamp, which can be
+  // several minutes after the exact-hour observation. Freshness and snapshot
+  // consistency must therefore compare observation timestamps first; using
+  // generated_at here incorrectly labels a healthy publication as a saved copy.
+  const payloadAt = asDate(payload.observed_at || payload.window?.to || payload.generated_at);
   const metadataAt = asDate(runtimeStatus?.observed_at || metadata.observed_at || metadata.collection?.observed_at);
   const observedAt = metadataAt || payloadAt;
   const ageMinutes = observedAt
