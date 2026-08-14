@@ -1620,7 +1620,10 @@ class Component extends DCLogic {
           if (!name) return;
           const desc = company.reason || company.company_description || company.company_summary || '연결 근거 확인';
           groups.get(key).push([name.slice(0, 1), name, desc, company]);
-          if (company.logo_url) this.registerLogo(name, company.logo_url);
+          const logo = company.official_domain
+            ? `https://www.google.com/s2/favicons?sz=128&domain_url=https%3A%2F%2F${company.official_domain}`
+            : company.logo_url;
+          if (logo) this.registerLogo(name, logo);
         });
         const stages = [...groups.entries()].slice(0, 4).map(([key, companies]) => ({
           title: ((ROLE_META[key] || [item.companies[0]?.company_role || '기업 역할'])[0]) + ' 관련 기업',

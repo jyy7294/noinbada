@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T16:27:14.3265344+00:00",
+    "updated_at":  "2026-08-14T16:38:41.1933213+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,16 +8,18 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "76966a930b354743e6a61d0f5bce4b53cf807be2",
+                       "base_remote_main_sha":  "d54cbe99cbfb6530eef6a1188d8438b1eb18ea3e",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "frontend/index.html"
+                                             "frontend/index.html",
+                                             "src/trzip/presentation_feed.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "2d5cdf0120753aa6d95c562e1de78a12fa27aa61810b69668f23dc7057976ede"
+                                                    "frontend/index.html":  "021d4c7132618e743dc8a5f87c15aac1e940119bd97f42c1d571bb4199f24f22",
+                                                    "src/trzip/presentation_feed.py":  "1d3a502bb549104b2d83561b6dbc65c92bf5e68ac0926529eccd20371751020e"
                                                 },
-                       "commit_message":  "fix: bootstrap live-data before design runtime",
+                       "commit_message":  "fix: resolve official company logos consistently",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -45,20 +47,18 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Ensure the frontend loads the immutable presentation feed before the design runtime mounts.",
+                    "objective":  "Render official-domain company logos consistently across related-company and portfolio screens without changing canonical trend ranking.",
                     "completed":  [
-                                      "Moved the live-data module bootstrap to the page shell.",
-                                      "Reused the shared module promise inside the component loader.",
-                                      "Verified frontend contract tests."
+
                                   ],
                     "next_actions":  [
-                                         "Deploy and verify the preview before production promotion."
+
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "Attention and market display supplements remain display-only and do not affect canonical ranking."
+
                                           ]
                 },
     "runtime_contract":  {

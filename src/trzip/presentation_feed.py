@@ -624,7 +624,12 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
         "official_domain": official_domain,
         "logo_url": COMPANY_LOGO_OVERRIDES.get(
             company,
-            f"https://www.google.com/s2/favicons?sz=128&domain={official_domain}",
+            # domain_url asks Google's favicon endpoint to resolve the official
+            # site's declared icon. The older domain form returned letter
+            # placeholders for otherwise valid companies (for example Nikon,
+            # Teledyne and Hamamatsu), which made the company screens look
+            # incomplete even though the logo field was populated.
+            f"https://www.google.com/s2/favicons?sz=128&domain_url=https%3A%2F%2F{official_domain}",
         ),
         "market_snapshot": _market_snapshot(company, ticker, market),
         "candidate_rank": position,
