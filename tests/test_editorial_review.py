@@ -26,7 +26,7 @@ def _automatic_row(
     name: str,
     *,
     keywords: int = 5,
-    companies: int = 6,
+    companies: int = 10,
     lane: str = "main",
     category: str = "product_brand",
     broad_category: str = "consumer",
@@ -107,7 +107,7 @@ def test_incomplete_automatic_candidate_is_hidden_and_enters_enrichment_queue():
         "keyword_count": 2,
         "company_count": 1,
         "missing_keywords": 3,
-        "missing_companies": 5,
+        "missing_companies": 9,
         "status": "enrichment_pending",
         "selection_reason": "automatic_product_fit",
     }]
@@ -116,13 +116,11 @@ def test_incomplete_automatic_candidate_is_hidden_and_enters_enrichment_queue():
 def test_enrichment_cache_is_applied_only_after_automatic_selection():
     row = _automatic_row(7, "개기일식", keywords=0, companies=0)
 
-    item = build_editorial_review_pack({"unified_ranking": [row]})["trends"][0]
+    pack = build_editorial_review_pack({"unified_ranking": [row]})
 
-    assert item["observed_rank"] == 7
-    assert item["score"] == 93
-    assert len(item["related_keywords"]) == 5
-    assert len(item["company_candidates"]) >= 6
-    assert all(company["ranking_effect"] == "none" for company in item["company_candidates"])
+    assert pack["trends"] == []
+    assert pack["enrichment_queue"][0]["observed_rank"] == 7
+    assert pack["enrichment_queue"][0]["company_count"] == 6
 
 
 def test_frontend_cache_completes_display_data_without_changing_rank_or_selection():
@@ -144,9 +142,9 @@ def test_frontend_cache_completes_display_data_without_changing_rank_or_selectio
     item = payload["unified_ranking"][0]
     assert {field: item[field] for field in immutable} == immutable
     assert len(item["related_keywords"]) == 5
-    assert len({company["stock_code"] for company in item["companies"]}) >= 6
-    assert all(company["ontology_complete"] is True for company in item["companies"])
-    assert all(company["evidence_sources"] for company in item["companies"])
+    assert item["companies"] == []
+    assert len({company["stock_code"] for company in item["company_candidates"]}) == 6
+    assert item["company_status"] == "enrichment_pending"
 
 
 def test_frontend_cache_preserves_observed_keyword_provenance_before_filling_slots():
@@ -186,12 +184,10 @@ def test_frontend_cache_replaces_three_structurally_incomplete_companies():
 
     apply_frontend_enrichment_cache(payload, verified_at="2026-08-13T12:00:00+00:00")
 
-    companies = payload["unified_ranking"][0]["companies"]
-    assert len({company["stock_code"] for company in companies}) >= 6
-    assert all(company["ontology_complete"] is True for company in companies)
-    assert all(company["company_description"] for company in companies)
-    assert all(company["relationship_reason"] for company in companies)
-    assert all(company["evidence_sources"][0]["url"] for company in companies)
+    item = payload["unified_ranking"][0]
+    assert item["companies"] == []
+    assert len({company["stock_code"] for company in item["company_candidates"]}) == 6
+    assert item["company_status"] == "enrichment_pending"
 
 
 def test_astronomy_trends_share_evidence_backed_equipment_ontology_without_rank_changes():
@@ -222,12 +218,13 @@ def test_astronomy_trends_share_evidence_backed_equipment_ontology_without_rank_
     for row in rows:
         assert row["keyword_status"] == "ready"
         assert len(row["related_keywords"]) == 5
-        assert row["company_status"] == "ready"
-        assert {company["company"] for company in row["companies"]} == {
+        assert row["company_status"] == "enrichment_pending"
+        assert row["companies"] == []
+        assert {company["company"] for company in row["company_candidates"]} == {
             "Canon", "Nikon", "Ricoh", "FUJIFILM Holdings", "Sony Group", "Adobe",
         }
-        assert all(company["ontology_complete"] is True for company in row["companies"])
-        assert all(company["evidence_sources"][0]["url"] for company in row["companies"])
+        assert all(company["ontology_complete"] is True for company in row["company_candidates"])
+        assert all(company["evidence_sources"][0]["url"] for company in row["company_candidates"])
 
 
 def test_additional_live_enrichment_caches_are_complete_and_do_not_select_trends():
@@ -242,24 +239,26 @@ def test_additional_live_enrichment_caches_are_complete_and_do_not_select_trends
         assert row["score"] == 100 - index
         assert len(row["related_keywords"]) == 5
         assert row["keyword_status"] == "ready"
-        assert len(row["companies"]) == 6
-        assert row["company_status"] == "ready"
+        assert row["companies"] == []
+        assert len(row["company_candidates"]) == 6
+        assert row["company_status"] == "enrichment_pending"
 
 
-def test_coffee_mix_cache_has_six_evidence_backed_listed_companies():
+def test_coffee_mix_cache_keeps_six_verified_candidates_pending():
     row = _automatic_row(8, "커피믹스", keywords=0, companies=0)
     payload = {"unified_ranking": [row]}
 
     apply_frontend_enrichment_cache(payload, verified_at="2026-08-13T13:00:00+00:00")
 
     assert len(row["related_keywords"]) == 5
-    assert len(row["companies"]) == 6
-    assert row["company_status"] == "ready"
-    assert all(company["ontology_complete"] is True for company in row["companies"])
-    assert all(company["evidence_sources"][0]["url"] for company in row["companies"])
+    assert row["companies"] == []
+    assert len(row["company_candidates"]) == 6
+    assert row["company_status"] == "enrichment_pending"
+    assert all(company["ontology_complete"] is True for company in row["company_candidates"])
+    assert all(company["evidence_sources"][0]["url"] for company in row["company_candidates"])
 
 
-def test_live_frontend_caches_publish_six_companies_with_specific_role_categories():
+def test_live_frontend_caches_keep_six_role_categorized_candidates_pending():
     names = ["불꽃축제", "광 통신", "지스타", "코난 극장판", "휴머노이드 로봇"]
     rows = [_automatic_row(index, name, keywords=0, companies=0) for index, name in enumerate(names, 1)]
     payload = {"unified_ranking": rows}
@@ -273,16 +272,17 @@ def test_live_frontend_caches_publish_six_companies_with_specific_role_categorie
     }
     for row in rows:
         assert len(row["related_keywords"]) == 5
-        assert len(row["companies"]) >= 6
-        assert row["company_status"] == "ready"
-        assert all(company["company_role_category"] in allowed_roles for company in row["companies"])
-        assert all(company["company_role_label"] for company in row["companies"])
-        assert all(company["evidence_sources"][0]["url"] for company in row["companies"])
+        assert row["companies"] == []
+        assert len(row["company_candidates"]) >= 6
+        assert row["company_status"] == "enrichment_pending"
+        assert all(company["company_role_category"] in allowed_roles for company in row["company_candidates"])
+        assert all(company["company_role_label"] for company in row["company_candidates"])
+        assert all(company["evidence_sources"][0]["url"] for company in row["company_candidates"])
         assert row["company_resolution"]["category_count"] >= 1
 
     conan = next(row for row in rows if row["display_name"] == "코난 극장판")
-    assert {company["market"] for company in conan["companies"]} == {"TSE"}
-    assert {company["company_role_category"] for company in conan["companies"]} >= {
+    assert {company["market"] for company in conan["company_candidates"]} == {"TSE"}
+    assert {company["company_role_category"] for company in conan["company_candidates"]} >= {
         "content_production", "distribution", "brand_marketing",
     }
 

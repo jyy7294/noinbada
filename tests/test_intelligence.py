@@ -26,7 +26,7 @@ def test_frontend_refresh_reconciles_company_reason_and_excludes_expired_rising(
             "evidence_sources": [{"url": f"https://example.com/{index}"}],
             "ontology_complete": True,
         }
-        for index in range(6)
+        for index in range(10)
     ]
     expired = {
         "event_key": "expired-rising",
@@ -40,7 +40,7 @@ def test_frontend_refresh_reconciles_company_reason_and_excludes_expired_rising(
         "company_eligible": True,
         "company_card_status": "enrichment_pending",
         "company_status": "enrichment_pending",
-        "company_card_reason": "fewer_than_six_evidence_backed_companies",
+        "company_card_reason": "fewer_than_ten_evidence_backed_companies",
         "ranking_data_readiness": {"momentum_status": "measured"},
         "momentum_delta": 1.0,
         "period_strength": 1.0,
@@ -58,7 +58,7 @@ def test_frontend_refresh_reconciles_company_reason_and_excludes_expired_rising(
     refresh_frontend_readiness(intelligence)
 
     assert expired["company_card_status"] == "ready"
-    assert expired["company_card_reason"] == "evidence_backed_six_or_more"
+    assert expired["company_card_reason"] == "evidence_backed_ten_or_more"
     assert intelligence["rising_top10"] == []
 
 
@@ -264,7 +264,7 @@ def test_three_evidence_backed_companies_are_publishable_gold(tmp_path):
     assert trend["company_resolution"]["publish_status"] == "published"
     assert trend["company_resolution"]["minimum_gold_companies"] == 3
     assert trend["company_card_status"] == "enrichment_pending"
-    assert trend["company_card_reason"] == "fewer_than_six_evidence_backed_companies"
+    assert trend["company_card_reason"] == "fewer_than_ten_evidence_backed_companies"
     assert result["ontology_enrichment_queue"] == []
 
 
@@ -530,7 +530,7 @@ def test_home_subset_holds_needs_context_term_without_any_disambiguation_evidenc
     assert ambiguous["home_context_reason"] == "not_main_lane"
     assert ambiguous["selection_layer"] == "review_queue"
     assert ambiguous not in result["trend_top10"]
-    assert [item["topic"] for item in result["trend_top10"]] == ["말복"]
+    assert result["trend_top10"] == []
     assert result["public_top10"] == result["trend_top10"]
     assert result["home_quality_gate"]["ranking_effect"] == "none"
     assert result["home_quality_gate"]["unified_ranking_preserved"] is True
@@ -806,8 +806,75 @@ def test_unified_ranking_preserves_main_issue_and_review_without_score_calibrati
         "main_subset", "issue_context", "review_queue",
     }
     assert all(item["trend_fit"]["affects_score"] is False for item in result["unified_ranking"])
-    assert [item["topic"] for item in result["trend_top10"]] == ["말복"]
+    assert result["trend_top10"] == []
     assert result["public_top10"] == result["trend_top10"]
+
+
+def test_balanced_home_selection_prioritises_current_without_food_quota():
+    from trzip.intelligence import select_balanced_home_top10
+
+    def row(key, score, rank, category, current=True, lifecycle="sustained"):
+        return {
+            "event_key": key,
+            "score": score,
+            "observed_rank": rank,
+            "broad_category": category,
+            "is_current": current,
+            "lifecycle": lifecycle,
+            "publication_rank": None,
+        }
+
+    rows = [
+        row("food-a", 100, 1, "food"),
+        row("food-b", 99, 2, "food"),
+        row("tech-a", 98, 3, "technology", lifecycle="rising"),
+        row("tech-b", 97, 4, "technology"),
+        row("tech-c", 96, 5, "technology"),
+        row("content-a", 95, 6, "content"),
+        row("culture-a", 94, 7, "culture"),
+        row("market-a", 93, 8, "market"),
+        row("life-a", 92, 9, "lifestyle"),
+        row("sport-a", 91, 10, "sports"),
+        row("expired-a", 1000, 11, "consumer", False, "expired"),
+    ]
+
+    selected = select_balanced_home_top10(rows)
+
+    assert [item["event_key"] for item in selected[:9]] == [
+        "food-a", "food-b", "tech-a", "tech-b", "content-a", "culture-a",
+        "market-a", "life-a", "sport-a",
+    ]
+    assert selected[9]["event_key"] == "tech-c"
+    assert sum(item["broad_category"] == "food" for item in selected) == 2
+    assert all(item["event_key"] != "expired-a" for item in selected)
+    assert [item["publication_rank"] for item in selected] == list(range(1, 11))
+
+
+def test_balanced_home_selection_uses_expired_only_as_rolling_window_fallback():
+    from trzip.intelligence import select_balanced_home_top10
+
+    rows = [
+        {
+            "event_key": f"current-{index}", "score": 100 - index,
+            "observed_rank": index, "broad_category": "content",
+            "is_current": True, "lifecycle": "sustained",
+        }
+        for index in range(1, 9)
+    ] + [
+        {
+            "event_key": f"expired-{index}", "score": 200 - index,
+            "observed_rank": 100 + index, "broad_category": "culture",
+            "is_current": False, "lifecycle": "expired",
+        }
+        for index in range(1, 4)
+    ]
+
+    selected = select_balanced_home_top10(rows)
+
+    assert [item["event_key"] for item in selected[:8]] == [
+        f"current-{index}" for index in range(1, 9)
+    ]
+    assert [item["event_key"] for item in selected[8:]] == ["expired-1", "expired-2"]
 
 
 def test_weekly_period_retains_recent_history_with_explicit_stale_status(tmp_path):
@@ -1079,7 +1146,7 @@ def test_stock_code_reference_data_does_not_promote_or_company_enrich_it(tmp_pat
     )
 
 
-def test_frontend_enrichment_queue_reports_six_company_target(tmp_path):
+def test_frontend_enrichment_queue_reports_ten_company_target(tmp_path):
     from trzip.hourly_store import HourlyObservation, upsert
 
     target = tmp_path / "frontend-enrichment-target.sqlite3"
@@ -1092,9 +1159,9 @@ def test_frontend_enrichment_queue_reports_six_company_target(tmp_path):
     result = build_intelligence(at, hours=1, path=target)
     queue = result["ontology_enrichment_queue"][0]
 
-    assert queue["minimum_required"] == 6
+    assert queue["minimum_required"] == 10
     assert queue["missing_company_paths"] == max(
-        0, 6 - queue["evidence_backed_company_count"]
+        0, 10 - queue["evidence_backed_company_count"]
     )
 
 
@@ -1215,7 +1282,7 @@ def test_intelligence_exposes_daily_weekly_monthly_period_aggregate_views(tmp_pa
         assert view["company_detail_policy"] == "shared_by_detail_event_key"
         assert view["unified_ranking"][0]["detail_event_key"] == "말복"
         assert "companies" not in view["unified_ranking"][0]
-        assert view["period_top10"] == [view["unified_ranking"][0]]
+        assert view["period_top10"] == []
     daily = result["ranking_views"]["daily"]
     assert [item["event_key"] for item in daily["unified_ranking"]] == [
         item["event_key"] for item in result["unified_ranking"]

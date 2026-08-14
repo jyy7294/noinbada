@@ -6,6 +6,7 @@ import pytest
 from jsonschema import Draft202012Validator
 
 from trzip.demo_replay import (
+    _materialise_observations,
     _read_current_ledger,
     _resolve_reference_ranks,
     _score_at,
@@ -16,6 +17,45 @@ from trzip.demo_replay import (
 
 ROOT = Path(__file__).resolve().parents[1]
 AT = datetime(2026, 8, 12, 23, tzinfo=UTC)
+
+
+def test_reconstruction_fills_only_completely_missing_source_hour():
+    observed = {
+        "observed_at": AT.isoformat(),
+        "source": "x",
+        "topic": "실측 트렌드",
+        "event_key": "실측 트렌드",
+        "source_rank": 1,
+        "raw_rank": 1,
+        "resolved_rank": 1,
+        "value": 100.0,
+        "provenance": "historical_reference",
+    }
+
+    rows = _materialise_observations(
+        at=AT,
+        days=1,
+        score_window_days=1,
+        topics=["복원 후보"],
+        reference_rows=[observed],
+        research_events=[],
+        fixture_curve=[1.0],
+    )
+
+    same_x_slot = [
+        row for row in rows
+        if row["observed_at"] == AT.isoformat() and row["source"] == "x"
+    ]
+    same_google_slot = [
+        row for row in rows
+        if row["observed_at"] == AT.isoformat() and row["source"] == "google_trends"
+    ]
+    assert len(same_x_slot) == 1
+    assert same_x_slot[0]["topic"] == "실측 트렌드"
+    assert same_x_slot[0]["provenance"] == "historical_reference"
+    assert same_google_slot
+    assert all(row["provenance"] != "historical_reference" for row in same_google_slot)
+    assert all(row["live_eligible"] is False for row in rows)
 
 
 def test_demo_replay_is_deterministic_60d_and_separate_from_live(tmp_path):

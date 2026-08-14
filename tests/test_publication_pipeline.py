@@ -88,10 +88,11 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
         "x": "observed", "google_trends": "observed"
     }
     trend = intelligence["unified_ranking"][0]
-    assert {company["stock_code"] for company in trend["companies"]} == {
-        "001680", "003680", "027740", "031440", "136480", "139480",
-    }
-    assert trend["company_resolution"]["publish_status"] == "published"
+    assert trend["companies"] == []
+    assert len({company["stock_code"] for company in trend["company_candidates"]}) == 6
+    assert all(company["ontology_complete"] is True for company in trend["company_candidates"])
+    assert trend["company_resolution"]["publish_status"] == "not_published"
+    assert trend["company_resolution"]["reason"] == "fewer_than_ten_evidence_backed_companies"
     assert len(trend["company_candidates"]) == 6
     assert list((tmp_path / "observations").glob("*.json"))
     status = json.loads((tmp_path / "latest" / "status.json").read_text(encoding="utf-8"))

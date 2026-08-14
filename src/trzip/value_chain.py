@@ -40,7 +40,7 @@ ROLE_CATEGORY_STAGE = {
     "platform_service": "downstream",
     "brand_marketing": "consumer",
     "event_sponsorship": "consumer",
-    "industry_adjacent": "other",
+    "industry_adjacent": "consumer",
 }
 
 

@@ -225,10 +225,6 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
     event_keys = [str(item.get("event_key") or "") for item in top]
     if not all(event_keys) or len(event_keys) != len(set(event_keys)):
         failures.append("duplicate_or_empty_event_key")
-    food_count = sum(item.get("broad_category") == "food" for item in top)
-    if food_count > 1:
-        failures.append(f"food_category_count:{food_count}")
-
     rising = list(intelligence.get("rising_top10") or [])
     for item in rising:
         name = str(item.get("display_name") or item.get("event_key") or "")
@@ -266,8 +262,17 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
         if len(unique_codes - {""}) >= MINIMUM_FRONTEND_COMPANIES:
             if item.get("company_card_status") != "ready":
                 item_failures.append("company_card_not_ready")
-            if item.get("company_card_reason") != "evidence_backed_six_or_more":
+            if item.get("company_card_reason") != "evidence_backed_ten_or_more":
                 item_failures.append("company_card_reason_mismatch")
+            value_chain_stages = {
+                str(company.get("value_chain_stage") or "").strip()
+                for company in companies
+                if str(company.get("value_chain_stage") or "").strip()
+            }
+            if not 2 <= len(value_chain_stages) <= 4:
+                item_failures.append(
+                    f"company_role_category_count:{len(value_chain_stages)}"
+                )
         for company in companies:
             company_name = str(company.get("company") or "").strip()
             evidence_urls = [

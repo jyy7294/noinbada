@@ -33,8 +33,17 @@ def _write_runtime(root: Path) -> None:
         ],
     }
     companies = [
-        {**company, "ticker": f"00000{index}", "stock_code": f"00000{index}"}
-        for index in range(1, 7)
+        {
+            **company,
+            "ticker": f"0000{index:02d}",
+            "stock_code": f"0000{index:02d}",
+            "company_role_category": (
+                "manufacturing_development" if index <= 5 else "distribution"
+            ),
+            "company_role_label": "제조·개발" if index <= 5 else "유통",
+            "value_chain_stage": "core" if index <= 5 else "downstream",
+        }
+        for index in range(1, 11)
     ]
     item = {
         "event_key": "event:test",
@@ -84,15 +93,16 @@ def _write_runtime(root: Path) -> None:
         "frontend_readiness_status": "ready",
         "frontend_readiness_missing": [],
         "frontend_keyword_count": 5,
-        "frontend_company_count": 6,
-        "company_card_reason": "evidence_backed_six_or_more",
+        "frontend_company_count": 10,
+        "frontend_company_role_category_count": 2,
+        "company_card_reason": "evidence_backed_ten_or_more",
         "keywords": [
             {"text": f"관련어{index}", "affects_score": False} for index in range(1, 6)
         ],
         "companies": companies,
         "company_resolution": {
             "publish_status": "published",
-            "minimum_gold_companies": 6,
+            "minimum_gold_companies": 10,
         },
         "ranking_data_readiness": {
             "status": "ready",
@@ -177,7 +187,7 @@ def _write_runtime(root: Path) -> None:
             "pending_count": 0,
             "publication_ready": False,
             "required_keyword_count": 5,
-            "minimum_company_count": 6,
+            "minimum_company_count": 10,
             "padding_forbidden": True,
             "ranking_effect": "none",
             "rule": "Only complete trends enter frontend Top10 arrays.",

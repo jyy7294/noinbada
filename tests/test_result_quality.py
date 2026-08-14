@@ -6,14 +6,20 @@ from trzip.result_quality import _source_gate, evaluate_frontend_result
 
 
 def _company(index: int) -> dict:
+    role_category, role_label, stage = (
+        ("manufacturing_development", "제조·개발", "core")
+        if index <= 5
+        else ("distribution", "배급·유통", "downstream")
+    )
     return {
         "company": f"기업{index}",
         "stock_code": f"00000{index}",
         "market": "KRX",
         "company_description": "설명",
         "relationship_reason": "관계 이유",
-        "company_role_category": "manufacturing_development",
-        "company_role_label": "제조·개발",
+        "company_role_category": role_category,
+        "company_role_label": role_label,
+        "value_chain_stage": stage,
         "ontology_complete": True,
         "ontology_path": [
             {"from": "event", "to": "industry"},
@@ -38,12 +44,12 @@ def _trend(rank: int) -> dict:
         ),
         "frontend_readiness_status": "ready",
         "company_card_status": "ready",
-        "company_card_reason": "evidence_backed_six_or_more",
+        "company_card_reason": "evidence_backed_ten_or_more",
         "related_keywords": [
             {"text": f"키워드 {index}", "source": ["google_trends"]}
             for index in range(5)
         ],
-        "companies": [_company(index) for index in range(1, 7)],
+        "companies": [_company(index) for index in range(1, 11)],
     }
 
 
@@ -53,13 +59,13 @@ def test_complete_frontend_result_passes_quality_gate():
     assert result["passed"] is True
     assert result["policy_version"] == "frontend-result-quality-v5"
     assert result["trend_count"] == 10
-    assert all(row["keyword_count"] == 5 and row["company_count"] == 6 for row in result["trends"])
+    assert all(row["keyword_count"] == 5 and row["company_count"] == 10 for row in result["trends"])
 
 
 def test_quality_gate_rejects_company_state_mismatch_and_expired_rising():
     trends = [_trend(rank) for rank in range(1, 11)]
     trends[0]["company_card_status"] = "enrichment_pending"
-    trends[0]["company_card_reason"] = "fewer_than_six_evidence_backed_companies"
+    trends[0]["company_card_reason"] = "fewer_than_ten_evidence_backed_companies"
     expired = {
         "event_key": "expired-event",
         "display_name": "Expired event",
@@ -112,15 +118,14 @@ def test_quality_gate_rejects_invalid_relation_url_and_ontology_destination():
     assert any("ontology_path_not_to_company" in failure for failure in result["failures"])
 
 
-def test_quality_gate_rejects_more_than_one_food_trend():
+def test_quality_gate_allows_multiple_evidence_complete_food_trends():
     trends = [_trend(rank) for rank in range(1, 11)]
     trends[0]["broad_category"] = "food"
     trends[1]["broad_category"] = "food"
 
     result = evaluate_frontend_result({"home_top10": trends})
 
-    assert result["passed"] is False
-    assert "food_category_count:2" in result["failures"]
+    assert result["passed"] is True
 
 
 def test_quality_gate_rejects_duplicate_keyword_and_missing_trend_context():

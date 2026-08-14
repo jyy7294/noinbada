@@ -113,7 +113,7 @@
         "pending_count": {"type": "integer", "minimum": 0},
         "publication_ready": {"type": "boolean"},
         "required_keyword_count": {"const": 5},
-        "minimum_company_count": {"const": 6},
+        "minimum_company_count": {"const": 10},
         "padding_forbidden": {"const": true},
         "ranking_effect": {"const": "none"},
         "rule": {"type": "string", "minLength": 1}
@@ -199,10 +199,11 @@
         "required_evidence_count": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["related_keywords", "company_ontology"],
+          "required": ["trend_context", "related_keywords", "company_ontology"],
           "properties": {
+            "trend_context": {"const": 1},
             "related_keywords": {"const": 5},
-            "company_ontology": {"const": 6}
+            "company_ontology": {"const": 10}
           }
         },
         "counts": {"type": "object"},
@@ -221,8 +222,8 @@
               "evidence_policy", "affects_score"
             ],
             "properties": {
-              "task_kind": {"enum": ["related_keywords", "company_ontology"]},
-              "required_count": {"enum": [5, 6]},
+              "task_kind": {"enum": ["trend_context", "related_keywords", "company_ontology"]},
+              "required_count": {"enum": [1, 5, 10]},
               "affects_score": {"const": false}
             }
           }
@@ -311,6 +312,25 @@
     }
   },
   "$defs": {
+    "attentionChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["24h", "7d"],
+      "properties": {
+        "24h": {"$ref": "#/$defs/changeMetric"},
+        "7d": {"$ref": "#/$defs/changeMetric"}
+      }
+    },
+    "changeMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "percent", "basis"],
+      "properties": {
+        "status": {"enum": ["measured", "unavailable"]},
+        "percent": {"type": ["number", "null"]},
+        "basis": {"const": "previous_equal_period_score"}
+      }
+    },
     "rankingWindow": {
       "type": "object",
       "additionalProperties": false,
@@ -391,6 +411,7 @@
         "source_badge": {"type": "string", "minLength": 1},
         "data_confidence": {"type": "object"},
         "ranking_data_readiness": {"type": "object"},
+        "attention_change": {"$ref": "#/$defs/attentionChange"},
         "company_card_status": {"enum": ["ready", "enrichment_pending", "not_applicable"]},
         "company_status": {"enum": ["ready", "enrichment_pending", "not_applicable"]},
         "keyword_status": {"enum": ["ready", "enrichment_pending"]},
@@ -398,10 +419,11 @@
         "frontend_readiness_missing": {
           "type": "array",
           "uniqueItems": true,
-          "items": {"enum": ["related_keywords_exactly_five", "evidence_backed_listed_companies_at_least_six"]}
+          "items": {"enum": ["related_keywords_exactly_five", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_two_and_four"]}
         },
         "frontend_keyword_count": {"type": "integer", "minimum": 0, "maximum": 5},
         "frontend_company_count": {"type": "integer", "minimum": 0},
+        "frontend_company_role_category_count": {"type": "integer", "minimum": 0, "maximum": 4},
         "detail_event_key": {"type": "string", "minLength": 1},
         "detail_status": {"enum": ["shared_full_detail", "period_summary_only"]},
         "shared_detail_fields": {
@@ -610,6 +632,7 @@
         "score_explanation": {"type": "object"},
         "source_metrics": {"type": "object"},
         "ranking_data_readiness": {"type": "object"},
+        "attention_change": {"$ref": "#/$defs/attentionChange"},
         "lifecycle": {"enum": ["new", "rising", "sustained", "rebounding", "cooling", "expired", "insufficient_data"]},
         "lifecycle_reason": {"type": "string", "minLength": 1},
         "lifecycle_baseline": {"type": "object"},
@@ -626,10 +649,11 @@
         "frontend_readiness_missing": {
           "type": "array",
           "uniqueItems": true,
-          "items": {"enum": ["related_keywords_exactly_five", "evidence_backed_listed_companies_at_least_six"]}
+          "items": {"enum": ["related_keywords_exactly_five", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_two_and_four"]}
         },
         "frontend_keyword_count": {"type": "integer", "minimum": 0, "maximum": 5},
         "frontend_company_count": {"type": "integer", "minimum": 0},
+        "frontend_company_role_category_count": {"type": "integer", "minimum": 0, "maximum": 4},
         "companies": {
           "type": "array",
           "items": {"$ref": "#/$defs/company"},
@@ -664,8 +688,8 @@
         "company_status": {"enum": ["ready", "enrichment_pending", "not_applicable"]},
         "company_card_reason": {
           "enum": [
-            "evidence_backed_six_or_more",
-            "fewer_than_six_evidence_backed_companies",
+            "evidence_backed_ten_or_more",
+            "fewer_than_ten_evidence_backed_companies",
             "company_linking_not_allowed_for_lane_or_context"
           ]
         },

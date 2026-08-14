@@ -14,7 +14,11 @@ from pathlib import Path
 from uuid import uuid4
 
 from .hourly_store import HourlyObservation, collect_current, coverage, floor_hour, latest_audit
-from .intelligence import build_intelligence, refresh_frontend_readiness
+from .intelligence import (
+    build_intelligence,
+    refresh_frontend_readiness,
+    select_balanced_home_top10,
+)
 from .company_adapters import enrich_company_identities, pykrx_stock
 from .enrichment_queue import sync_enrichment_queue
 from .editorial_review import apply_frontend_enrichment_cache, build_editorial_review_pack
@@ -87,6 +91,7 @@ RANKING_SUMMARY_FIELDS = (
     "confidence",
     "data_confidence",
     "ranking_data_readiness",
+    "attention_change",
     "company_resolution",
     "company_card_status",
     "company_status",
@@ -95,6 +100,7 @@ RANKING_SUMMARY_FIELDS = (
     "frontend_readiness_missing",
     "frontend_keyword_count",
     "frontend_company_count",
+    "frontend_company_role_category_count",
     "detail_event_key",
     "detail_status",
 )
@@ -486,16 +492,7 @@ def _validate_period_views(intelligence: dict) -> None:
             item for item in main
             if item.get("frontend_readiness_status") == "ready"
         ]
-        expected_top10 = []
-        food_count = 0
-        for item in completed:
-            if item.get("broad_category") == "food":
-                if food_count >= 1:
-                    continue
-                food_count += 1
-            expected_top10.append(item)
-            if len(expected_top10) == 10:
-                break
+        expected_top10 = select_balanced_home_top10(completed)
         if period_top10 != expected_top10:
             raise ValueError(f"period_top10 must contain only completed home trends: {key}")
 
@@ -583,16 +580,7 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         item for item in home_ranking
         if item.get("frontend_readiness_status") == "ready"
     ]
-    expected_trend_top10 = []
-    food_count = 0
-    for item in completed_home_ranking:
-        if item.get("broad_category") == "food":
-            if food_count >= 1:
-                continue
-            food_count += 1
-        expected_trend_top10.append(item)
-        if len(expected_trend_top10) == 10:
-            break
+    expected_trend_top10 = select_balanced_home_top10(completed_home_ranking)
     if trend_top10 != expected_trend_top10:
         raise ValueError("trend_top10 must contain only completed home trends")
     if home_top10 != trend_top10 or public_top10 != trend_top10:
@@ -603,7 +591,7 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
     readiness = intelligence.get("publication_readiness") or {}
     if (
         readiness.get("required_keyword_count") != 5
-        or readiness.get("minimum_company_count") != 6
+        or readiness.get("minimum_company_count") != MINIMUM_FRONTEND_COMPANIES
         or readiness.get("ready_count") != len(completed_home_ranking)
         or readiness.get("published_count") != len(trend_top10)
         or readiness.get("publication_ready") is not (len(expected_trend_top10) >= 10)
@@ -929,7 +917,7 @@ def validate_frontend_delivery(root: Path) -> dict:
 
     expected_company_ready = [
         item for item in main_ranking
-        if int(item.get("frontend_company_count") or 0) >= 6
+        if int(item.get("frontend_company_count") or 0) >= MINIMUM_FRONTEND_COMPANIES
     ]
     company_ready = intelligence.get("company_ready_trends", [])
     if company_ready != expected_company_ready:
@@ -942,8 +930,8 @@ def validate_frontend_delivery(root: Path) -> dict:
             for company in item.get("companies") or []
             if str(company.get("stock_code") or "").strip()
         }
-        if len(unique_stocks) < 6:
-            raise ValueError("Frontend company-ready trends require six unique listed stocks")
+        if len(unique_stocks) < MINIMUM_FRONTEND_COMPANIES:
+            raise ValueError("Frontend company-ready trends require ten unique listed stocks")
         if (item.get("company_resolution") or {}).get("publish_status") != "published":
             raise ValueError("Company-ready trends require a published company resolution")
 

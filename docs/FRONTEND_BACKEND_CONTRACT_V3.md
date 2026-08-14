@@ -51,7 +51,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 
 `home_context_status`와 `home_context_reason`은 동음이의어·짧은 인물명 등 사건 맥락의
 해결 여부만 나타냅니다. 기업 준비 여부는 `company_card_status`로 분리합니다.
-`ready`는 URL 증거가 이어진 서로 다른 국내외 상장종목이 6개 이상인 경우,
+`ready`는 URL 증거가 이어진 서로 다른 국내외 상장종목이 10개 이상이고 역할 카테고리가 2~4개인 경우,
 `enrichment_pending`은 근거 보강 중인 경우, `not_applicable`은 이슈·민감 맥락 등
 기업 연결 대상이 아닌 경우입니다. 기업 수를 맞추기 위한 padding은 금지하며,
 준비된 항목만 `company_ready_trends`에도 포함합니다.
@@ -75,7 +75,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 변화·지속 | `previous_period_rank`, `rank_change`, `rank_change_status`, `rank_change_by_source`, `lifecycle`, `persistence_rank`, `momentum_rank` |
 | 신뢰 상태 | `data_confidence`, `home_context_status`, `home_context_reason` |
 | 관련어 | `keywords` (0~5), 원천 관측 또는 검수된 온톨로지 표현만 허용하고 `affects_score=false` |
-| 기업 Gold | `companies` (0 또는 6개 이상) |
+| 기업 Gold | `companies` (0 또는 10개 이상, 역할 카테고리 2~4개) |
 | 기업 역할 | `companies[].company_role_category`, `companies[].company_role_label` (제조·개발/원재료·핵심부품/콘텐츠 제작/배급·유통/판매·리테일/브랜드·마케팅/플랫폼·서비스/투자·소유/행사 후원·운영/산업 연관) |
 | 관계 강도 | `companies[].relation_tier` (`direct`/`value_chain`/`industry_watch`) |
 | 기업 카드 준비 상태 | `company_card_status`, `company_card_reason` |
@@ -147,12 +147,12 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 - `음식`, `운전`, `애니` 같은 포괄어와 업종별 회사 채우기는 금지합니다.
 - 회사마다 `reason`, `evidence_url`, `evidence_owner`, `evidence_type`,
   `verified_at`, `verification_status`, `company_description`을 제공합니다.
-- 검증 기업이 6개 미만이거나 관련 키워드가 5개 미만이어도 자동 제품 적합 조건을
+- 검증 기업이 10개 미만이거나 관련 키워드가 5개 미만이어도 자동 제품 적합 조건을
   통과한 트렌드는 유지합니다. 부족한 필드는 `enrichment_pending`으로 표시하며 임의로 채우지 않습니다.
 - 미충족 후보를 빈 기업이나 임의 기업으로 채우는 것은 금지합니다.
 - 키워드·기업 레지스트리는 자동 선발 뒤에만 사용하는 보강 캐시입니다. 등록 여부는
   원본 점수·순위, 레인, 제품 적합 판정, 상위 30개 진입에 영향을 주지 않습니다.
-- 기본 화면은 `company_description_list`입니다. 검증 기업이 6개 이상으로
+- 기본 화면은 `company_description_list`입니다. 검증 기업이 10개 이상으로
   많아질 때만 `company_display_policy.show_category_groups=true`로 제공하며,
   그 전에는 카테고리 탭을 만들지 않습니다.
 - `review_status=unreviewed` 후보는 기존 `keywords`·`companies`에 자동 병합하지

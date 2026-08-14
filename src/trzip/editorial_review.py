@@ -1150,7 +1150,27 @@ def apply_frontend_enrichment_cache(intelligence: dict, *, verified_at: str) -> 
                         "padding_forbidden": True,
                         "ranking_effect": "none",
                     },
-                    "reason": "용어별 근거 URL과 상장 식별자가 완비된 6개 이상 기업을 공개",
+                    "reason": "용어별 근거 URL과 상장 식별자가 완비된 10개 이상 기업을 공개",
+                }
+            else:
+                # A reviewed cache is research input, not permission to publish
+                # an incomplete company card. Keep verified rows as candidates
+                # and fail closed until the ten-company contract is satisfied.
+                item["company_candidates"] = companies
+                item["companies"] = []
+                item["company_eligible"] = False
+                item["company_card_status"] = "enrichment_pending"
+                item["company_status"] = "enrichment_pending"
+                item["company_resolution"] = {
+                    "status": "enrichment_pending",
+                    "publish_status": "not_published",
+                    "candidate_count": len(companies),
+                    "ontology_complete_count": len(companies),
+                    "published_count": 0,
+                    "minimum_gold_companies": MINIMUM_VERIFIED_COMPANY_COUNT,
+                    "score_independent_of_company_count": True,
+                    "category_count": len({row["company_role_category"] for row in companies}),
+                    "reason": "fewer_than_ten_evidence_backed_companies",
                 }
     return intelligence
 
@@ -1331,10 +1351,10 @@ def build_editorial_review_pack(
             "related_keywords": keyword_rows,
             "company_candidates": company_rows,
             "company_display_policy": {
-                "show_category_groups": len(company_rows) >= 6,
+                "show_category_groups": len(company_rows) >= MINIMUM_VERIFIED_COMPANY_COUNT,
                 "default_layout": "company_description_list",
                 "grouping_reason": (
-                    "many_companies_need_navigation" if len(company_rows) >= 6
+                    "many_companies_need_navigation" if len(company_rows) >= MINIMUM_VERIFIED_COMPANY_COUNT
                     else "few_companies_are_clearer_without_category_tabs"
                 ),
             },

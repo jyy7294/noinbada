@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from .ontology import MINIMUM_FRONTEND_COMPANIES
+from .intelligence import select_balanced_home_top10
 
 
 ALLOWED_RANKING_SOURCES = {"x", "google_trends"}
@@ -532,16 +533,7 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
             item for item in main
             if item.get("frontend_readiness_status") == "ready"
         ]
-        expected_top10 = []
-        food_count = 0
-        for item in completed:
-            if item.get("broad_category") == "food":
-                if food_count >= 1:
-                    continue
-                food_count += 1
-            expected_top10.append(item)
-            if len(expected_top10) == 10:
-                break
+        expected_top10 = select_balanced_home_top10(completed)
         if (
             [item.get("main_rank") for item in main] != list(range(1, len(main) + 1))
             or top10 != expected_top10
@@ -746,24 +738,14 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         item for item in home_ranking
         if item.get("frontend_readiness_status") == "ready"
     ]
-    expected_home_top10 = []
-    food_count = 0
-    for item in completed_home_ranking:
-        if item.get("broad_category") == "food":
-            if food_count >= 1:
-                continue
-            food_count += 1
-        expected_home_top10.append(item)
-        if len(expected_home_top10) == 10:
-            break
+    from .intelligence import select_balanced_home_top10
+    expected_home_top10 = select_balanced_home_top10(completed_home_ranking)
     if (
         all_observed != unified
         or home_top10 != expected_home_top10
         or trend_top10 != home_top10
         or public_top10 != home_top10
     ):
-        home_failures += 1
-    if sum(item.get("broad_category") == "food" for item in home_top10) > 1:
         home_failures += 1
     if any(
         (item.get("ranking_data_readiness") or {}).get("momentum_status") != "measured"

@@ -1,5 +1,6 @@
 param(
-    [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot)
+    [string]$ProjectRoot = (Split-Path -Parent $PSScriptRoot),
+    [ValidateRange(0,23)][int]$DailyPublishHourKst = 6
 )
 
 $ErrorActionPreference = "Stop"
@@ -117,6 +118,24 @@ try {
             $PublicationStatus.source_status.x,$PublicationStatus.source_status.google_trends
         Write-RunLog -Phase "publish" -Status "local_only" `
             -Detail "same-hour X+Google gate not met; $SourceDetail"
+        exit 0
+    }
+
+    # Collection, ledger updates, rolling analysis and enrichment queues run
+    # every hour above. The public frontend snapshot is intentionally promoted
+    # only once per KST day, preventing transient hourly noise from replacing
+    # the stable daily product view.
+    $ObservedAt = [DateTimeOffset]::Parse(
+        [string]$PublicationStatus.observed_at,
+        [Globalization.CultureInfo]::InvariantCulture
+    )
+    $KstHour = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId(
+        $ObservedAt,
+        "Korea Standard Time"
+    ).Hour
+    if ($KstHour -ne $DailyPublishHourKst) {
+        Write-RunLog -Phase "publish" -Status "deferred_daily_cadence" `
+            -Detail "hourly collection and analysis complete; next frontend promotion hour KST=$DailyPublishHourKst"
         exit 0
     }
 

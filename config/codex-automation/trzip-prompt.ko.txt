@@ -4,11 +4,11 @@ chrome:control-chrome으로 현재 사용자가 로그인한 Chrome의 https://x
 
 결과를 schema_version=1, source=x, collector=codex_chrome_current_session, observed_at=실제 UTC 시각, scheduled_for=해당 정각 UTC, trigger=codex_hourly_direct, url, region=KR, region_verified=true, row_count=30, trends=[rank,topic] 형식으로 {{X_INBOX}}에 원자적으로 저장한다. 누락되거나 로그인·한국 지역을 검증하지 못하면 실패로 기록하며 이전 시간 자료를 재사용하지 않는다.
 
-{{PROJECT_ROOT}}\scripts\collect-hourly.ps1을 ProjectRoot={{PROJECT_ROOT}}로 실행한다. Google 대한민국 인기 급상승 전체를 같은 시간에 수집하고 SQLite 원장, 최근 24시간 순위, 관련 키워드, 온톨로지 기반 기업 결과와 publication을 갱신한다.
+{{PROJECT_ROOT}}\scripts\collect-hourly.ps1을 ProjectRoot={{PROJECT_ROOT}}로 실행한다. Google 대한민국 인기 급상승 전체를 같은 시간에 수집하고 SQLite 원장, 최근 24시간·7일 분석, 관련 키워드, 트렌드 맥락 조사 큐와 온톨로지 기반 기업 결과를 매시간 갱신한다. 프런트용 live-data 공개 승격은 매일 06:00 KST에만 수행한다.
 
 hourly-source-proof-v2 기준으로 X 30개와 Google 전체가 모두 해당 시각 observed인지 확인한다. X의 30개 행은 모두 동일한 현재 로그인 Chrome·대한민국·정각 후 15분 이내 수집 증거를 가져야 한다. 순위에는 X와 Google만 사용한다. YouTube·Naver·Instagram은 검증 신호일 뿐 순위에 반영하지 않는다.
 
-frontend-result-quality-v5 기준으로 24시간 home_top10이 10개인지 검증한다. 각 트렌드는 허용된 8개 대분류, 80자 이상의 의미 있는 트렌드 정의, 출처가 있고 서로 다른 관련 키워드 정확히 5개, 국내외 상장기업 최소 6개를 가져야 한다. 트렌드 정의에는 X와 Google 대한민국 관측값에 근거한다는 범위와 투자 추천이 아니라는 경계를 포함한다. 각 기업은 기업명, 종목코드, 거래소, 설명, 연결 이유, 유효한 HTTP(S) 근거 URL, 기업까지 도달하는 최소 2단계 온톨로지 경로, direct/value_chain/industry_watch 관계등급, 기업 역할 카테고리가 모두 있어야 한다. 기업이 6개 이상 완비되면 회사 카드 상태와 이유가 ready/evidence_backed_six_or_more로 일치해야 하며, rising_top10에는 현재 관측 중인 비만료 트렌드만 허용한다.
+frontend-result-quality-v5 기준으로 24시간 home_top10이 10개인지 검증한다. 각 트렌드는 허용된 8개 대분류, 80자 이상의 의미 있는 트렌드 정의, 출처가 있고 서로 다른 관련 키워드 정확히 5개, 국내외 상장기업 최소 10개를 가져야 한다. 트렌드 정의에는 X와 Google 대한민국 관측값에 근거한다는 범위와 투자 추천이 아니라는 경계를 포함한다. 각 기업은 기업명, 종목코드, 거래소, 설명, 연결 이유, 유효한 HTTP(S) 근거 URL, 기업까지 도달하는 최소 2단계 온톨로지 경로, direct/value_chain/industry_watch 관계등급, 기업 역할 카테고리가 모두 있어야 한다. 기업이 10개 이상 완비되면 회사 카드 상태와 이유가 ready/evidence_backed_ten_or_more로 일치해야 하며, rising_top10에는 현재 관측 중인 비만료 트렌드만 허용한다.
 
 불변 manifest의 SHA-256, Git 객체와 publication_id를 검증한다. live-data 원격 게시 성공과 로컬·원격 SHA 일치를 확인하고 해당 정각 결과의 불변 영수증을 저장한다.
 

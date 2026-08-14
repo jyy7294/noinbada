@@ -1052,7 +1052,7 @@ def _build_period_views(
                     "frontend_readiness_missing",
                     [
                         "related_keywords_exactly_five",
-                        "evidence_backed_listed_companies_at_least_six",
+                        "evidence_backed_listed_companies_at_least_ten",
                     ],
                 ),
                 "frontend_keyword_count": int(base.get("frontend_keyword_count") or 0),
@@ -1092,9 +1092,86 @@ def _build_period_views(
             "company_detail_policy": "shared_by_detail_event_key",
             "company_count_affects_rank": False,
             "unified_ranking": ranking,
-            "period_top10": completed_ranking[:10],
+            "period_top10": select_balanced_home_top10(completed_ranking),
         }
     return periods, period_views
+
+
+def select_balanced_home_top10(rows: list[dict], *, limit: int = 10) -> list[dict]:
+    """Select a deterministic, current-first and category-balanced home list.
+
+    Source score and observed rank are never rewritten.  Readiness controls
+    whether a card can be published, while this selector only decides which
+    ready cards receive a publication position.  Current observations are
+    exhausted before a rolling-window historical fallback is considered.
+    """
+
+    def ordered(values: list[dict]) -> list[dict]:
+        return sorted(values, key=lambda item: (
+            -float(item.get("score") or 0.0),
+            int(item.get("observed_rank") or 10**9),
+            str(item.get("event_key") or ""),
+        ))
+
+    current = ordered([item for item in rows if item.get("is_current") is True])
+    historical = ordered([item for item in rows if item.get("is_current") is not True])
+    selected: list[dict] = []
+    category_counts: Counter[str] = Counter()
+
+    def take(pool: list[dict], *, enforce_caps: bool) -> None:
+        for item in pool:
+            if len(selected) >= limit or item in selected:
+                continue
+            category = str(item.get("broad_category") or "")
+            cap = 2
+            if enforce_caps and category_counts[category] >= cap:
+                continue
+            selected.append(item)
+            category_counts[category] += 1
+
+    # The first pass improves variety without imposing a product-category
+    # quota. The second pass always relaxes it, so food (or any other valid
+    # category) is never excluded merely because another item shares its type.
+    take(current, enforce_caps=True)
+    # Exhaust current cards before using any
+    # rolling-window fallback. This prevents an expired topic from displacing
+    # something that is still being observed merely for category cosmetics.
+    take(current, enforce_caps=False)
+    # A historical card is an explicit rolling-24h fallback only.  Diversity
+    # caps are tried first and relaxed only when required to fill the contract.
+    take(historical, enforce_caps=True)
+    take(historical, enforce_caps=False)
+
+    for position, item in enumerate(selected, 1):
+        item["publication_rank"] = position
+    return selected
+
+
+def _period_change_metrics(period_views: dict[str, dict]) -> dict[str, dict]:
+    """Return honest 24h/7d relative score changes from equal-period data."""
+
+    output: dict[str, dict] = {}
+    for key, label in (("daily", "24h"), ("weekly", "7d")):
+        for item in (period_views.get(key) or {}).get("unified_ranking") or []:
+            previous = item.get("previous_period_score")
+            current = item.get("score")
+            if previous is None or current is None or float(previous) <= 0:
+                metric = {
+                    "status": "unavailable",
+                    "percent": None,
+                    "basis": "previous_equal_period_score",
+                }
+            else:
+                metric = {
+                    "status": "measured",
+                    "percent": round(
+                        (float(current) - float(previous)) / float(previous) * 100.0,
+                        2,
+                    ),
+                    "basis": "previous_equal_period_score",
+                }
+            output.setdefault(str(item["event_key"]), {})[label] = metric
+    return output
 
 
 def refresh_frontend_readiness(intelligence: dict) -> dict:
@@ -1123,15 +1200,23 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
         complete_company_count = len({
             str(company["stock_code"]).strip() for company in complete_companies
         })
+        role_category_count = len({
+            str(company.get("value_chain_stage") or "").strip()
+            for company in complete_companies
+            if str(company.get("value_chain_stage") or "").strip()
+        })
         missing = []
         if item.get("keyword_status") != "ready" or keyword_count != 5:
             missing.append("related_keywords_exactly_five")
         if complete_company_count < MINIMUM_FRONTEND_COMPANIES:
-            missing.append("evidence_backed_listed_companies_at_least_six")
+            missing.append("evidence_backed_listed_companies_at_least_ten")
+        elif not 2 <= role_category_count <= 4:
+            missing.append("company_role_categories_between_two_and_four")
         item["frontend_readiness_status"] = "ready" if not missing else "enrichment_pending"
         item["frontend_readiness_missing"] = missing
         item["frontend_keyword_count"] = keyword_count
         item["frontend_company_count"] = complete_company_count
+        item["frontend_company_role_category_count"] = role_category_count
         # Enrichment can be attached after the initial candidate pass.  Keep
         # the public card state and its explanation derived from the final
         # evidence-complete company set so they can never contradict each
@@ -1140,11 +1225,11 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
             if complete_company_count >= MINIMUM_FRONTEND_COMPANIES:
                 item["company_card_status"] = "ready"
                 item["company_status"] = "ready"
-                item["company_card_reason"] = "evidence_backed_six_or_more"
+                item["company_card_reason"] = "evidence_backed_ten_or_more"
             else:
                 item["company_card_status"] = "enrichment_pending"
                 item["company_status"] = "enrichment_pending"
-                item["company_card_reason"] = "fewer_than_six_evidence_backed_companies"
+                item["company_card_reason"] = "fewer_than_ten_evidence_backed_companies"
         item["publication_rank"] = None
 
     home = [
@@ -1154,20 +1239,6 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
     for rank, item in enumerate(home, 1):
         item["home_rank"] = rank
     complete = [item for item in home if item["frontend_readiness_status"] == "ready"]
-    def select_frontend_top10(rows: list[dict]) -> list[dict]:
-        """Preserve score order while limiting the broad food lane to one."""
-
-        selected = []
-        food_count = 0
-        for row in rows:
-            if row.get("broad_category") == "food":
-                if food_count >= 1:
-                    continue
-                food_count += 1
-            selected.append(row)
-            if len(selected) == 10:
-                break
-        return selected
     rising = [
         item for item in complete
         if item.get("is_current") is True
@@ -1185,9 +1256,7 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
     for rank, item in enumerate(rising, 1):
         item["rising_rank"] = rank
 
-    top = select_frontend_top10(complete)
-    for rank, item in enumerate(top, 1):
-        item["publication_rank"] = rank
+    top = select_balanced_home_top10(complete)
     intelligence["home_top10"] = top
     intelligence["trend_top10"] = list(top)
     intelligence["public_top10"] = list(top)
@@ -1232,9 +1301,7 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
             item for item in period_home
             if item.get("frontend_readiness_status") == "ready"
         ]
-        period_top = select_frontend_top10(period_complete)
-        for rank, item in enumerate(period_top, 1):
-            item["publication_rank"] = rank
+        period_top = select_balanced_home_top10(period_complete)
         view["period_top10"] = period_top
     return intelligence
 
@@ -1824,10 +1891,10 @@ def build_intelligence(
         )
         if company_published:
             item["company_card_status"] = "ready"
-            item["company_card_reason"] = "evidence_backed_six_or_more"
+            item["company_card_reason"] = "evidence_backed_ten_or_more"
         elif item.get("company_eligible"):
             item["company_card_status"] = "enrichment_pending"
-            item["company_card_reason"] = "fewer_than_six_evidence_backed_companies"
+            item["company_card_reason"] = "fewer_than_ten_evidence_backed_companies"
         else:
             item["company_card_status"] = "not_applicable"
             item["company_card_reason"] = "company_linking_not_allowed_for_lane_or_context"
@@ -1855,18 +1922,26 @@ def build_intelligence(
             str(company["stock_code"]).strip() for company in complete_companies
         })
         readiness_missing = []
+        role_category_count = len({
+            str(company.get("value_chain_stage") or "").strip()
+            for company in complete_companies
+            if str(company.get("value_chain_stage") or "").strip()
+        })
         if item["keyword_status"] != "ready" or keyword_count != 5:
             readiness_missing.append("related_keywords_exactly_five")
         if (
             complete_company_count < MINIMUM_FRONTEND_COMPANIES
         ):
-            readiness_missing.append("evidence_backed_listed_companies_at_least_six")
+            readiness_missing.append("evidence_backed_listed_companies_at_least_ten")
+        elif not 2 <= role_category_count <= 4:
+            readiness_missing.append("company_role_categories_between_two_and_four")
         item["frontend_readiness_status"] = (
             "ready" if not readiness_missing else "enrichment_pending"
         )
         item["frontend_readiness_missing"] = readiness_missing
         item["frontend_keyword_count"] = keyword_count
         item["frontend_company_count"] = complete_company_count
+        item["frontend_company_role_category_count"] = role_category_count
         item["publication_rank"] = None
 
     home_candidates = [
@@ -1899,7 +1974,7 @@ def build_intelligence(
     for rising_rank, item in enumerate(rising_candidates, 1):
         item["rising_rank"] = rising_rank
 
-    home_top10 = completed_home_candidates[:10]
+    home_top10 = select_balanced_home_top10(completed_home_candidates)
     rising_top10 = rising_candidates[:10]
     trend_top10 = list(home_top10)
     # Backwards-compatible alias for the existing frontend. It must remain
@@ -1933,6 +2008,12 @@ def build_intelligence(
         period_base_candidates,
         full_detail_event_keys={item["event_key"] for item in candidates},
     )
+    change_metrics = _period_change_metrics(ranking_views)
+    for item in candidates:
+        item["attention_change"] = change_metrics.get(item["event_key"], {
+            "24h": {"status": "unavailable", "percent": None, "basis": "previous_equal_period_score"},
+            "7d": {"status": "unavailable", "percent": None, "basis": "previous_equal_period_score"},
+        })
     default_view = ranking_views[period_ranking_contract["default_period"]]
     if [item["event_key"] for item in default_view["unified_ranking"]] != [
         item["event_key"] for item in candidates
@@ -1958,7 +2039,8 @@ def build_intelligence(
         "ranking_effect": "none",
         "rule": (
             "Only score-ordered, product-fit trends with exactly five evidence-backed "
-            "related keywords and at least six complete listed-company relationships "
+            "related keywords and at least ten complete listed-company relationships "
+            "across two to four value-chain groups "
             "may enter frontend Top10 arrays."
         ),
     }
@@ -1998,8 +2080,8 @@ def build_intelligence(
             "observed_terms": [item["display_name"], *[keyword["text"] for keyword in item["keywords"]]],
             "evidence_backed_company_count": item["company_resolution"]["candidate_count"],
             # The queue serves the frontend contract, which is stricter than
-            # the ontology Gold publication floor.  Report the actual six-
-            # company completion target so operators do not stop at three.
+            # the ontology Gold publication floor. Report the actual ten-
+            # company completion target so operators do not stop early.
             "minimum_required": MINIMUM_FRONTEND_COMPANIES,
             "missing_company_paths": max(
                 0,

@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-13T18:49:14.3726469+00:00",
+    "updated_at":  "2026-08-14T00:26:52.5620057+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,78 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "f4a9279106b07d0e111e9e5b3f0ae1c05a7215e7",
+                       "base_remote_main_sha":  "998e16d42defebae823c6e5a9d5023f01ea12bfd",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
+                                             "config/codex-automation/trzip-prompt.ko.txt",
                                              "CURRENT_STATE.json",
+                                             "docs/BACKEND_TEAM_HANDOFF.md",
+                                             "docs/BACKEND_TEAM_PROMPT.md",
+                                             "docs/CODEX_CONTINUITY.md",
+                                             "docs/COMPANY_RELATION_POLICY.md",
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
+                                             "docs/FRONTEND_COMPLETION_CONTRACT.md",
+                                             "docs/PRODUCT_AND_DATA_FLOW.md",
+                                             "docs/PRODUCT_POLICY.md",
+                                             "README.md",
+                                             "schemas/intelligence-v3.schema.json",
+                                             "scripts/collect-hourly.ps1",
+                                             "src/trzip/demo_replay.py",
+                                             "src/trzip/editorial_review.py",
+                                             "src/trzip/enrichment_queue.py",
+                                             "src/trzip/intelligence.py",
+                                             "src/trzip/ontology.py",
+                                             "src/trzip/publication_pipeline.py",
                                              "src/trzip/result_quality.py",
-                                             "tests/test_publication_receipts.py"
+                                             "src/trzip/runtime_audit.py",
+                                             "src/trzip/value_chain.py",
+                                             "tests/test_demo_replay.py",
+                                             "tests/test_editorial_review.py",
+                                             "tests/test_enrichment_queue.py",
+                                             "tests/test_intelligence.py",
+                                             "tests/test_local_runtime_contract.py",
+                                             "tests/test_publication_pipeline.py",
+                                             "tests/test_result_quality.py",
+                                             "tests/test_runtime_audit.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/result_quality.py":  "da5e6271822f8e2b987ae388ac6b5327fd24f76fa11fdce02cd19658f31c5832",
-                                                    "tests/test_publication_receipts.py":  "4d5e8911928efe292bb6a8d9fcdfc6f24989d139a3d5cfef8ace055e6a3946e8"
+                                                    "config/codex-automation/trzip-prompt.ko.txt":  "1e9e80a2a9d54e720e4ddffad0a8442a794c7ec6c7fa934d5fffaeef0c350b0e",
+                                                    "docs/BACKEND_TEAM_HANDOFF.md":  "815deb4be24593778ef6d2225a80e06960d7cabd2dfd7759cb4015051462e9cb",
+                                                    "docs/BACKEND_TEAM_PROMPT.md":  "8009f6905c7c784753e704370d612742cac90c70fd76636d499901aae7ce99db",
+                                                    "docs/CODEX_CONTINUITY.md":  "065b307679f0012e2281b33ce66733ad5478f5f0ef230064c13ff40bab8445b7",
+                                                    "docs/COMPANY_RELATION_POLICY.md":  "1aa9ca1ccd408e57bb43b264e4457aef3924b0a36546e38f05e518819461ebf6",
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "f0279981fdbc6c6e6fef9cb78f5d99cc4d76d053030909fa8d6f2879091898e4",
+                                                    "docs/FRONTEND_COMPLETION_CONTRACT.md":  "8612f47e93efca83f6cff1a5d636b193663d54d47ef67b639b05cb5352223a1c",
+                                                    "docs/PRODUCT_AND_DATA_FLOW.md":  "e7635e24346a80ce9a01fedc3e42d10f3fb0f8e554a07be8ca86e4c42fff49fa",
+                                                    "docs/PRODUCT_POLICY.md":  "bb4b13ab16b521ebbd0913a0cefbfb89eff4d4f56b8344d33243298baa2d932b",
+                                                    "README.md":  "90f4e733ebfe67aa58cc46e4660fcc9fe6d67b80e4b39cbe355ce5a0fd9748eb",
+                                                    "schemas/intelligence-v3.schema.json":  "2b4b89166a598fb6f3b1203ffb1741fa44377c2f90ef2241c3adcf45400fa864",
+                                                    "scripts/collect-hourly.ps1":  "d789a11106a181bebb077985fd4c260cbbbdda69d2bfbb8b796b1c473d7afbf7",
+                                                    "src/trzip/demo_replay.py":  "b650482ef4b796f3632c48b4eafc55ec851ba45ee4aac9a182f5ada2b759c109",
+                                                    "src/trzip/editorial_review.py":  "6b7a91f29950e3a811b795006b41b9d7f12f187ebe7a02820c1d16378ab9c72b",
+                                                    "src/trzip/enrichment_queue.py":  "9ae9101ea3f821e6ee88a7789fa94a583cb574a0222109f021d1a106dbbcce4d",
+                                                    "src/trzip/intelligence.py":  "c8747943950922f08ccea62d4749a426450231e4e6c3960a1b3494cfc6836638",
+                                                    "src/trzip/ontology.py":  "36aff71ee52d83150d42bd0d5c0a90cde0dacdce30321fe336cbb4971e44ca9a",
+                                                    "src/trzip/publication_pipeline.py":  "b73d8838a4cb0a782daf53de38253aa42e3ae9027c409832bafbc7d03343f8dd",
+                                                    "src/trzip/result_quality.py":  "e9c3b424382b7f2610a6d620fb3adb9047957984ffa1bfde0044141a8869a40e",
+                                                    "src/trzip/runtime_audit.py":  "12a0b875ccf42bb7ebeabf47f73aed08300ce721ca649152dc9e7ac0ab7912df",
+                                                    "src/trzip/value_chain.py":  "a74a13795bb01890af17176626820d3200c15dc7cd616eb13b2723cf85fba87e",
+                                                    "tests/test_demo_replay.py":  "cf56388292e5ba2d0035153dc76df310c4393858fafc2e1fb45b1248489f9839",
+                                                    "tests/test_editorial_review.py":  "18b860761ddbcb89c9da2be5cc0f8d3f752c2f34f50a0dda541a56d2c86bf75a",
+                                                    "tests/test_enrichment_queue.py":  "fc592bdd9a16126769a39383249d131ed86354d77d07850ad76aa5ab4383d688",
+                                                    "tests/test_intelligence.py":  "e6bc79be135de395c530ced601207cfab308f5e8c0141a22d7dd82523897d63a",
+                                                    "tests/test_local_runtime_contract.py":  "107f1384ae339ddcaa6afe734cfd6f9611663dbea837ce980baca628047d4cbb",
+                                                    "tests/test_publication_pipeline.py":  "12a1572a6c2d77ea8717535dcf86155aa0d56439d3e1b034fda0c958d006269e",
+                                                    "tests/test_result_quality.py":  "829336e6f1306afcf9e5313743ad1e3f4766f05fd4d17297d0a1735637af1408",
+                                                    "tests/test_runtime_audit.py":  "0da93284141981925c5b6d6d62060be789eb2e42ce8f57122c6f720589b455a0"
                                                 },
-                       "commit_message":  "fix: validate immutable remote publication proofs",
+                       "commit_message":  "feat: finalize daily trend intelligence backend",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  287
+                                      "count":  296
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,23 +101,23 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Validate eight consecutive exact-hour TRZIP publications with product-fit Top10, five sourced keywords, six evidence-backed companies, valid ontology relations, and verified remote delivery",
+                    "objective":  "매시간 X·Google 수집·내부 분석과 매일 1회 프런트 공개를 분리하고, 결측 시간대만 복원하는 격리 데모 및 키워드·기업 완성 계약을 구현한다.",
                     "completed":  [
-                                      "Rejected malformed remote commit and manifest proof values",
-                                      "Made stored receipt validation fail closed for non-hex proof",
-                                      "Added immutable receipt regression coverage",
-                                      "Verified 287 passed and 1 skipped"
+                                      "매시간 24시간·7일 분석과 맥락 조사 큐",
+                                      "매일 06:00 KST 공개 승격",
+                                      "최근 한 달 결측 출처·시간 슬롯만 데모 복원",
+                                      "관련어 5개 및 증거 기업 10개·역할 2~4개 계약",
+                                      "24시간·7일 관심도 변화와 생애주기 공개"
                                   ],
                     "next_actions":  [
-                                         "Run and audit the next exact-hour v4 publication",
-                                         "Verify remote SHA and manifest proof",
-                                         "Continue eight consecutive exact-hour validations"
+
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "The exact-hour v4 streak begins with the next publication"
+                                              "관심도 변화율은 절대 언급량이 아니라 X·Google 순위 기반 점수의 동일 기간 대비 변화",
+                                              "검증 기업 10개 미달 트렌드는 후보를 보존하되 기업 카드는 보강 대기"
                                           ]
                 },
     "runtime_contract":  {

@@ -13,14 +13,16 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 
-TASK_KINDS = {"related_keywords", "company_ontology"}
+TASK_KINDS = {"trend_context", "related_keywords", "company_ontology"}
 REQUIRED_COUNTS = {
+    "trend_context": 1,
     "related_keywords": 5,
-    "company_ontology": 6,
+    "company_ontology": 10,
 }
 LLM_CANDIDATE_TARGETS = {
+    "trend_context": 8,
     "related_keywords": 15,
-    "company_ontology": 18,
+    "company_ontology": 30,
 }
 ONTOLOGY_EXPANSION_PATHS = (
     "trend -> user_activity -> equipment_or_service -> listed_company",
@@ -41,6 +43,14 @@ def _llm_research_prompt(row: dict) -> str:
 
     representative = row["representative_term"]
     observed = ", ".join(row["observed_terms"][:20])
+    if row["task_kind"] == "trend_context":
+        return (
+            f"X 또는 Google 대한민국에서 관측된 트렌드 '{representative}'의 관측 표현({observed})이 "
+            "왜 지금 검색·언급됐는지 조사하라. Google 관련검색어, 공식 발표, 신뢰 가능한 뉴스, "
+            "네이버·네이트 뉴스, YouTube 최신 콘텐츠를 교차 확인하고 촉발 사건·날짜·대상을 "
+            "한 문장으로 요약하라. 각 주장에 URL·제목·발행시각·출처를 붙이고 동음이의어·기업명·"
+            "일반 산업어 가능성을 반드시 검토하라. 확인되지 않으면 원인 미확인으로 남기며 추측하지 마라."
+        )
     if row["task_kind"] == "related_keywords":
         return (
             f"트렌드 '{representative}'의 관측 표현({observed})을 바탕으로 관련 검색어 후보를 "
@@ -65,11 +75,63 @@ def _iso(value: datetime) -> str:
 def initialize_enrichment_queue(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(path) as connection:
+        existing = connection.execute(
+            "SELECT sql FROM sqlite_master WHERE type='table' AND name='enrichment_tasks'"
+        ).fetchone()
+        # SQLite cannot alter a CHECK constraint in place. Preserve all queued
+        # research when upgrading installations created before trend_context
+        # became a first-class task kind.
+        if existing and "'trend_context'" not in str(existing[0] or ""):
+            connection.execute("PRAGMA foreign_keys=OFF")
+            connection.executescript(
+                """
+                BEGIN IMMEDIATE;
+                CREATE TABLE enrichment_tasks_v2 (
+                    event_key TEXT NOT NULL,
+                    task_kind TEXT NOT NULL CHECK(task_kind IN ('trend_context','related_keywords','company_ontology')),
+                    representative_term TEXT NOT NULL,
+                    first_seen_at TEXT NOT NULL,
+                    last_seen_at TEXT NOT NULL,
+                    latest_rank INTEGER NOT NULL CHECK(latest_rank > 0),
+                    latest_lane TEXT NOT NULL,
+                    priority INTEGER NOT NULL,
+                    current_count INTEGER NOT NULL CHECK(current_count >= 0),
+                    required_count INTEGER NOT NULL CHECK(required_count > 0),
+                    missing_count INTEGER NOT NULL CHECK(missing_count >= 0),
+                    status TEXT NOT NULL CHECK(status IN ('pending','complete')),
+                    observed_terms_json TEXT NOT NULL,
+                    evidence_policy_json TEXT NOT NULL,
+                    affects_score INTEGER NOT NULL DEFAULT 0 CHECK(affects_score = 0),
+                    PRIMARY KEY(event_key, task_kind)
+                );
+                INSERT INTO enrichment_tasks_v2 SELECT * FROM enrichment_tasks;
+                CREATE TABLE enrichment_task_observations_v2 (
+                    event_key TEXT NOT NULL,
+                    task_kind TEXT NOT NULL,
+                    observed_at TEXT NOT NULL,
+                    rank INTEGER NOT NULL CHECK(rank > 0),
+                    current_count INTEGER NOT NULL CHECK(current_count >= 0),
+                    status TEXT NOT NULL CHECK(status IN ('pending','complete')),
+                    PRIMARY KEY(event_key, task_kind, observed_at),
+                    FOREIGN KEY(event_key, task_kind)
+                        REFERENCES enrichment_tasks_v2(event_key, task_kind)
+                );
+                INSERT INTO enrichment_task_observations_v2
+                    SELECT * FROM enrichment_task_observations;
+                DROP TABLE enrichment_task_observations;
+                DROP TABLE enrichment_tasks;
+                ALTER TABLE enrichment_tasks_v2 RENAME TO enrichment_tasks;
+                ALTER TABLE enrichment_task_observations_v2
+                    RENAME TO enrichment_task_observations;
+                COMMIT;
+                """
+            )
+            connection.execute("PRAGMA foreign_keys=ON")
         connection.executescript(
             """
             CREATE TABLE IF NOT EXISTS enrichment_tasks (
                 event_key TEXT NOT NULL,
-                task_kind TEXT NOT NULL CHECK(task_kind IN ('related_keywords','company_ontology')),
+                task_kind TEXT NOT NULL CHECK(task_kind IN ('trend_context','related_keywords','company_ontology')),
                 representative_term TEXT NOT NULL,
                 first_seen_at TEXT NOT NULL,
                 last_seen_at TEXT NOT NULL,
@@ -136,6 +198,9 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
             ],
         })
         counts = {
+            "trend_context": int(
+                (item.get("context_research") or {}).get("status") == "ready"
+            ),
             # The frontend consumes the reviewed ``related_keywords`` field.
             # Falling back to raw ``keywords`` keeps pre-enrichment candidates
             # visible, while preventing an already complete trend from being
@@ -150,6 +215,20 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
             ),
         }
         policies = {
+            "trend_context": {
+                "accepted_evidence": [
+                    "google_related_query", "official_announcement", "reputable_news",
+                    "naver_news", "nate_news", "youtube_recent_content",
+                ],
+                "minimum_evidence_count": 1,
+                "cause_must_be_explicit": True,
+                "homonym_check_required": True,
+                "invented_explanation_forbidden": True,
+                "llm_role": "evidence_research_and_summary",
+                "llm_candidate_target": LLM_CANDIDATE_TARGETS["trend_context"],
+                "promotion_gate": "one_or_more_timestamped_urls_supporting_why_now",
+                "ranking_effect": "none",
+            },
             "related_keywords": {
                 "accepted_evidence": [
                     "x_or_google_observed_expression",
@@ -176,7 +255,7 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
                 "llm_candidate_target": LLM_CANDIDATE_TARGETS["company_ontology"],
                 "creative_path_templates": list(ONTOLOGY_EXPANSION_PATHS),
                 "allowed_relation_tiers": ["direct", "value_chain", "industry_watch"],
-                "promotion_gate": "minimum_6_complete_evidence_verified_listed_companies",
+                "promotion_gate": "minimum_10_complete_evidence_verified_listed_companies_with_2_to_4_roles",
             },
         }
         for task_kind in sorted(TASK_KINDS):

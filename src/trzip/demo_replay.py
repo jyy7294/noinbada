@@ -817,14 +817,19 @@ def _materialise_observations(
     fixture_curve: Sequence[float],
 ) -> list[dict[str, Any]]:
     earliest_date = (at - timedelta(days=days - 1)).date()
-    hourly_start = at - timedelta(days=score_window_days) + timedelta(hours=1)
+    # Keep the requested newest 30 days at hourly granularity. The older half
+    # of the existing 60-day lifecycle baseline remains one daily point. Real
+    # or historical rows always win; reconstruction happens only when an
+    # entire source/hour is absent and never enters the live SQLite ledger.
+    hourly_days = min(30, days)
+    hourly_start = at - timedelta(days=hourly_days) + timedelta(hours=1)
     stamps = [
         datetime.combine(earliest_date + timedelta(days=index), time(at.hour), UTC)
-        for index in range(days - score_window_days)
+        for index in range(days - hourly_days)
     ]
     stamps.extend(
         hourly_start + timedelta(hours=index)
-        for index in range(score_window_days * 24)
+        for index in range(hourly_days * 24)
     )
     stamps = sorted(set(stamps))
     references: dict[tuple[datetime, str], list[dict[str, Any]]] = defaultdict(list)
@@ -843,6 +848,19 @@ def _materialise_observations(
         day_index = (stamp.date() - earliest_date).days
         for source in RANK_SOURCES:
             observed = _resolve_reference_ranks(references.get((stamp, source), []))
+            if observed:
+                for row in observed:
+                    row = dict(row)
+                    row.update({
+                        "mode": "demo_replay",
+                        "live_eligible": False,
+                        "ranking_effect": "demo_replay_only",
+                        "quality_status": "eligible",
+                        "seed_version": SEED_VERSION,
+                    })
+                    row.setdefault("demo_ranking_eligible", True)
+                    observations.append(row)
+                continue
             used_keys = {row["event_key"] for row in observed}
             used_ranks = {int(row["source_rank"]) for row in observed}
             research_candidates = _research_seed_candidates(
@@ -1433,7 +1451,7 @@ def _trend_item(
         "company_candidates": list(template.get("company_candidates") or []),
         "company_resolution": dict(template.get("company_resolution") or {}),
         "company_card_status": str(template.get("company_card_status") or "enrichment_pending"),
-        "company_card_reason": str(template.get("company_card_reason") or "fewer_than_six_evidence_backed_companies"),
+        "company_card_reason": str(template.get("company_card_reason") or "fewer_than_ten_evidence_backed_companies"),
         "series": list(series),
         "data_provenance": {
             "counts": dict(sorted(provenance_counts.items())),
