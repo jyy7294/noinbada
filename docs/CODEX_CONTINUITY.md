@@ -125,7 +125,8 @@ powershell -ExecutionPolicy Bypass -File "$runtime\scripts\collect-hourly.ps1" -
 - 세 latest 문서의 `publication_id`, `generated_at`, `observed_at`이 일치합니다.
 - 공개 운영 상태에 사용자명, 로컬 경로, 토큰, 비밀키, 요청 쿼리가 없습니다.
 - `live-data` 로컬 HEAD와 원격 SHA가 같습니다.
-- 운영 감사 `failures`가 비어 있습니다. `blockers`는 X 미연결·통합 순위 미확정·96시간 미성숙을 명시하며, 이 상태를 완료로 표현하지 않습니다.
+- 운영 감사 `failures`가 비어 있습니다. `blockers`는 X 미연결·통합 결과 미확정·24시간 MVP 원장 미충족을 명시하며, 이 상태를 완료로 표현하지 않습니다. 48시간·96시간은 각각 운영 안정도와 장기 관찰 단계로만 보고합니다.
+- 최근 8회 정각은 로컬 수집·프런트 계약 성공을 연속 검증하며, 원격 배포 영수증은 매일 06:00 KST 공개본에 한 번 요구합니다.
 
 ## 8. 현재 허용된 외부 보조 데이터
 

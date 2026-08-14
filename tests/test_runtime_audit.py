@@ -9,12 +9,15 @@ from trzip.runtime_audit import audit_runtime
 from trzip.publication_pipeline import _write_frontend_delivery
 
 
-def _write_runtime(root: Path) -> None:
+def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
     latest = root / "publication" / "latest"
     latest.mkdir(parents=True)
     publication_id = "pub-" + ("a" * 32)
     generated_at = "2026-08-12T18:00:01+00:00"
     observed_at = "2026-08-12T18:00:00+00:00"
+    first_hour = (
+        datetime.fromisoformat(observed_at) - timedelta(hours=history_hours - 1)
+    ).isoformat()
     company = {
         "company": "검증기업",
         "ticker": "000001",
@@ -278,11 +281,11 @@ def _write_runtime(root: Path) -> None:
             },
         },
         "coverage": {
-            "first_hour": "2026-08-08T19:00:00+00:00",
+            "first_hour": first_hour,
             "last_hour": observed_at,
-            "hours": 96,
-            "rows": 12480,
-            "observed_rows": 12480,
+            "hours": history_hours,
+            "rows": history_hours * 130,
+            "observed_rows": history_hours * 130,
         },
         "collection_health": {
             "current_publication_scheduled_at": observed_at,
@@ -343,7 +346,7 @@ def _write_runtime(root: Path) -> None:
         """
     )
     last_hour = datetime.fromisoformat(observed_at)
-    for offset in range(95, -1, -1):
+    for offset in range(history_hours - 1, -1, -1):
         observed = (last_hour - timedelta(hours=offset)).isoformat()
         for source, count, version in (
             ("x", 30, "x_current_session_kr_v1"),
@@ -381,6 +384,29 @@ def test_runtime_audit_passes_complete_combined_runtime(tmp_path: Path) -> None:
     assert result["failures"] == []
     assert result["blockers"] == []
     assert result["metrics"]["clean_history_hours"] == 96
+    assert result["metrics"]["history_stage"] == "long_horizon"
+
+
+def test_runtime_audit_accepts_24_hour_mvp_and_warns_before_48_hours(
+    tmp_path: Path,
+) -> None:
+    _write_runtime(tmp_path, history_hours=24)
+
+    result = audit_runtime(tmp_path)
+
+    assert "clean_history_under_24_hours" not in result["blockers"]
+    assert "operational_history_under_48_hours" in result["warnings"]
+    assert result["metrics"]["history_stage"] == "mvp_ready"
+
+
+def test_runtime_audit_blocks_history_shorter_than_one_day(tmp_path: Path) -> None:
+    _write_runtime(tmp_path, history_hours=23)
+
+    result = audit_runtime(tmp_path)
+
+    assert result["status"] == "provisional"
+    assert "clean_history_under_24_hours" in result["blockers"]
+    assert result["metrics"]["history_stage"] == "initial"
 
 
 def test_runtime_audit_keeps_daily_publication_coverage_stable_after_hourly_collection(

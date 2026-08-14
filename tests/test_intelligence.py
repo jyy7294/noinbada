@@ -766,23 +766,28 @@ def test_period_persistence_uses_source_eligible_snapshot_denominator(tmp_path):
     rows = [
         HourlyObservation(
             (start + timedelta(hours=offset)).isoformat(),
-            "x",
+            source,
             "불닭",
             1,
             100,
             "observed",
         )
-        for offset in range(96)
+        for offset in range(48)
+        for source in ("x", "google_trends")
     ]
     upsert(rows, target)
 
-    halfway = build_intelligence(start + timedelta(hours=47), hours=48, path=target)
-    mature = build_intelligence(start + timedelta(hours=95), hours=96, path=target)
+    initial = build_intelligence(start + timedelta(hours=22), hours=24, path=target)
+    mvp = build_intelligence(start + timedelta(hours=23), hours=24, path=target)
+    operational = build_intelligence(start + timedelta(hours=47), hours=48, path=target)
 
-    assert halfway["unified_ranking"][0]["persistence"] == 0.5
-    assert halfway["quality_summary"]["ranking_maturity_status"] == "provisional"
-    assert mature["unified_ranking"][0]["persistence"] == 0.5
-    assert mature["quality_summary"]["ranking_maturity_status"] == "mature"
+    assert initial["quality_summary"]["ranking_maturity_status"] == "provisional"
+    assert initial["quality_summary"]["history_stage"] == "initial"
+    assert mvp["quality_summary"]["ranking_maturity_status"] == "mature"
+    assert mvp["quality_summary"]["history_stage"] == "mvp_ready"
+    assert mvp["ranking_availability"]["status"] == "mature_combined"
+    assert operational["quality_summary"]["history_stage"] == "operational"
+    assert operational["unified_ranking"][0]["persistence"] == 1.0
 
 
 def test_duplicate_rank_source_hour_is_quarantined_not_deleted(tmp_path):

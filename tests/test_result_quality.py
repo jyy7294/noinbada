@@ -1,8 +1,15 @@
 from pathlib import Path
 import json
+from datetime import UTC, datetime, timedelta
 
 from trzip.hourly_store import HourlyObservation, connect, upsert
-from trzip.result_quality import _source_gate, evaluate_frontend_result
+from trzip.result_quality import (
+    _source_gate,
+    evaluate_consecutive_hours,
+    evaluate_frontend_result,
+    evaluate_local_consecutive_hours,
+    record_publication_receipt,
+)
 
 
 def _company(index: int) -> dict:
@@ -280,3 +287,80 @@ def test_source_gate_rejects_unapproved_collector_and_duplicate_rank(tmp_path: P
     assert result["passed"] is False
     assert "x" not in result["sources"]
     assert result["sources"]["google_trends"]["unique_ranks"] == 2
+
+
+def _write_complete_source_hour(database: Path, at: datetime) -> None:
+    stamp = at.astimezone(UTC).replace(minute=0, second=0, microsecond=0).isoformat()
+    actual = (datetime.fromisoformat(stamp) + timedelta(minutes=3)).isoformat()
+    x_evidence = json.dumps({
+        "collector": "codex_chrome_current_session",
+        "transport": "codex_browser_snapshot",
+        "profile": "current_logged_in_chrome",
+        "region": "KR",
+        "region_verified": True,
+        "observed_at": actual,
+        "scheduled_for": stamp,
+        "schedule_delay_seconds": 180,
+    })
+    rows = [
+        HourlyObservation(
+            stamp,
+            "x",
+            f"x-{stamp}-{rank}",
+            rank,
+            100 - rank,
+            "observed",
+            source_payload_json=x_evidence,
+            collector_version="x_current_session_kr_v1",
+        )
+        for rank in range(1, 31)
+    ] + [
+        HourlyObservation(
+            stamp,
+            "google_trends",
+            f"g-{stamp}-{rank}",
+            rank,
+            100 - rank,
+            "observed",
+            collector_version="google_trending_now_kr_v1",
+        )
+        for rank in range(1, 4)
+    ]
+    upsert(rows, database)
+
+
+def test_eight_hour_local_streak_requires_only_daily_end_publication(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "runtime.sqlite3"
+    end = datetime(2026, 8, 14, 21, tzinfo=UTC)
+    for offset in reversed(range(8)):
+        _write_complete_source_hour(database, end - timedelta(hours=offset))
+
+    local = evaluate_local_consecutive_hours(database, end=end, count=8)
+    before_publication = evaluate_consecutive_hours(database, end=end, count=8)
+
+    assert local["passed"] is True
+    assert local["current_consecutive_success_count"] == 8
+    assert local["content_ready_hour_count"] == 0
+    assert before_publication["passed"] is False
+    assert before_publication["daily_publication_verified"] is False
+
+    last = local["evaluations"][-1]
+    record_publication_receipt(
+        database,
+        observed_at=end.isoformat(),
+        publication_id="pub-" + ("d" * 32),
+        remote_sha="a" * 40,
+        contract=last["contract"],
+        source_gate=last["source_gate"],
+        manifest_sha256="b" * 64,
+        remote_manifest_blob="c" * 40,
+    )
+
+    after_publication = evaluate_consecutive_hours(database, end=end, count=8)
+
+    assert after_publication["policy_version"] == "consecutive-actual-result-v3"
+    assert after_publication["passed"] is True
+    assert after_publication["daily_publication_verified"] is True
+    assert after_publication["presentation_ready"] is False

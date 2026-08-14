@@ -13,6 +13,12 @@ from typing import Any, Iterable
 
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .intelligence import select_balanced_home_top10
+from .readiness import (
+    LONG_HORIZON_HISTORY_HOURS,
+    MVP_HISTORY_HOURS,
+    OPERATIONAL_HISTORY_TARGET_HOURS,
+    history_stage,
+)
 
 
 ALLOWED_RANKING_SOURCES = {"x", "google_trends"}
@@ -971,8 +977,17 @@ def _audit_database(
             report.fail("google_v3_history_missing")
         if "x" not in current_sources:
             report.block("x_v3_history_missing")
-        if report.metrics["clean_history_hours"] < 96:
-            report.block("clean_history_under_96_hours")
+        clean_history_hours = report.metrics["clean_history_hours"]
+        report.metrics["history_stage"] = history_stage(clean_history_hours)
+        report.metrics["mvp_required_history_hours"] = MVP_HISTORY_HOURS
+        report.metrics["operational_target_history_hours"] = (
+            OPERATIONAL_HISTORY_TARGET_HOURS
+        )
+        report.metrics["long_horizon_history_hours"] = LONG_HORIZON_HISTORY_HOURS
+        if clean_history_hours < MVP_HISTORY_HOURS:
+            report.block("clean_history_under_24_hours")
+        elif clean_history_hours < OPERATIONAL_HISTORY_TARGET_HOURS:
+            report.warn("operational_history_under_48_hours")
         v3_row_count = sum(int(row[2]) for row in publication_rows)
         coverage = metadata.get("coverage") or {}
         expected_first = min((row[0] for row in publication_rows), default=None)

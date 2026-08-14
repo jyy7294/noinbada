@@ -11,6 +11,7 @@ from urllib.parse import urlparse
 from .company_roles import COMPANY_ROLE_LABELS
 from .hourly_store import ELIGIBLE_COLLECTOR_SQL
 from .ontology import MINIMUM_FRONTEND_COMPANIES
+from .readiness import MVP_CONSECUTIVE_SOURCE_HOURS
 
 
 PUBLIC_BROAD_CATEGORIES = {
@@ -515,30 +516,74 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
         apply_frontend_enrichment_cache(intelligence, verified_at=stamp)
         refresh_frontend_readiness(intelligence)
         contract = evaluate_frontend_result(intelligence)
+    local_passed = source_gate["passed"] and contract["passed"]
     return {
         "observed_at": stamp,
-        "passed": source_gate["passed"] and contract["passed"] and publication["passed"],
+        # Hourly collection and contract proof is local. Remote publication is
+        # daily, so requiring a remote receipt for every hour would make an
+        # eight-hour validation streak impossible by construction.
+        "local_passed": local_passed,
+        "content_ready": contract.get("home_content_ready") is True,
+        "passed": local_passed and publication["passed"],
         "source_gate": source_gate,
         "contract": contract,
         "publication": publication,
     }
 
 
-def evaluate_consecutive_hours(path: Path, *, end: datetime, count: int = 8) -> dict:
+def evaluate_local_consecutive_hours(
+    path: Path, *, end: datetime, count: int = MVP_CONSECUTIVE_SOURCE_HOURS
+) -> dict:
     hours = [end - timedelta(hours=offset) for offset in reversed(range(count))]
     evaluations = [evaluate_actual_hour(path, at) for at in hours]
     current_streak = 0
     for row in reversed(evaluations):
-        if not row["passed"]:
+        if not row["local_passed"]:
             break
         current_streak += 1
     return {
-        "policy_version": "consecutive-actual-result-v2",
+        "policy_version": "consecutive-local-result-v1",
         "required_consecutive_hours": count,
-        "passed": len(evaluations) == count and all(row["passed"] for row in evaluations),
+        "passed": (
+            len(evaluations) == count
+            and all(row["local_passed"] for row in evaluations)
+        ),
         "current_consecutive_success_count": current_streak,
         "remaining_success_hours": max(0, count - current_streak),
+        "content_ready_hour_count": sum(
+            1 for row in evaluations if row["content_ready"]
+        ),
         "evaluations": evaluations,
+        "ranking_effect": "none",
+    }
+
+
+def evaluate_consecutive_hours(
+    path: Path, *, end: datetime, count: int = MVP_CONSECUTIVE_SOURCE_HOURS
+) -> dict:
+    local = evaluate_local_consecutive_hours(path, end=end, count=count)
+    end_publication = (
+        local["evaluations"][-1]["publication"]
+        if local["evaluations"]
+        else {"passed": False}
+    )
+    end_content_ready = bool(
+        local["evaluations"]
+        and local["evaluations"][-1]["content_ready"]
+    )
+    integrity_passed = local["passed"] and end_publication["passed"]
+    return {
+        "policy_version": "consecutive-actual-result-v3",
+        "required_consecutive_hours": count,
+        "passed": integrity_passed,
+        "presentation_ready": integrity_passed and end_content_ready,
+        "end_hour_content_ready": end_content_ready,
+        "current_consecutive_success_count": local["current_consecutive_success_count"],
+        "remaining_success_hours": local["remaining_success_hours"],
+        "local_hourly_validation": local,
+        "daily_publication_verified": end_publication["passed"],
+        "publication": end_publication,
+        "evaluations": local["evaluations"],
         "ranking_effect": "none",
     }
 
@@ -547,7 +592,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Audit consecutive actual TRZIP frontend results")
     parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--end", type=datetime.fromisoformat, required=True)
-    parser.add_argument("--count", type=int, default=8)
+    parser.add_argument(
+        "--count", type=int, default=MVP_CONSECUTIVE_SOURCE_HOURS
+    )
     parser.add_argument("--output", type=Path)
     parser.add_argument("--record-publication", action="store_true")
     parser.add_argument("--publication-id")

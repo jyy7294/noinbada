@@ -36,6 +36,12 @@ from .ontology import (
 from .provider_verification import latest_verification_by_trend
 from .ranking_v2 import build_period_rankings_v2
 from .trend_fit import assess_trend_fit
+from .readiness import (
+    LONG_HORIZON_HISTORY_HOURS,
+    MVP_HISTORY_HOURS,
+    OPERATIONAL_HISTORY_TARGET_HOURS,
+    history_stage,
+)
 
 
 ONTOLOGY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "ontology_seed.json"
@@ -2188,18 +2194,22 @@ def build_intelligence(
             "issue": "issue_context",
             "review": "review_queue",
         }[lane]
-        if eligible_hour_count >= 96 and len(sources) >= 2 and observed_hours >= 6:
+        if (
+            eligible_hour_count >= OPERATIONAL_HISTORY_TARGET_HOURS
+            and len(sources) >= 2
+            and observed_hours >= 6
+        ):
             data_confidence = {"level": "high", "label": "높음",
-                               "reason": "96시간 이상 원장과 양 플랫폼 반복 관측",
+                               "reason": "48시간 이상 원장과 양 플랫폼 반복 관측",
                                "window_observed_hours": eligible_hour_count,
                                "history_maturity": round(history_maturity, 4),
                                "ranking_status": "mature"}
-        elif eligible_hour_count >= 24 and observed_hours >= 2:
+        elif eligible_hour_count >= MVP_HISTORY_HOURS and observed_hours >= 2:
             data_confidence = {"level": "medium", "label": "보통",
-                               "reason": "반복 관측됐지만 96시간 성숙 게이트 전의 잠정 순위",
+                               "reason": "24시간 MVP 원장과 반복 관측을 충족한 운영 초기 결과",
                                "window_observed_hours": eligible_hour_count,
                                "history_maturity": round(history_maturity, 4),
-                               "ranking_status": "provisional"}
+                               "ranking_status": "mature"}
         elif eligible_hour_count >= 6:
             data_confidence = {"level": "low", "label": "낮음",
                                "reason": "원장 축적이 24시간 미만인 잠정 순위",
@@ -2794,23 +2804,23 @@ def build_intelligence(
             "missing_sources": missing_current_sources,
             "reason": "X와 Google 중 한 출처만 현재 시간에 관측되어 통합 순위로 확정할 수 없음",
         }
-    elif eligible_hour_count < 96:
+    elif eligible_hour_count < MVP_HISTORY_HOURS:
         ranking_availability = {
             "status": "provisional_history",
             "label": "양출처 잠정 순위",
             "is_combined_rank": True,
             "current_sources": sorted(current_available_sources),
             "missing_sources": [],
-            "reason": "X·Google은 모두 관측됐지만 96시간 성숙 게이트 전",
+            "reason": "X·Google은 모두 관측됐지만 24시간 MVP 이력이 아직 부족함",
         }
     else:
         ranking_availability = {
             "status": "mature_combined",
-            "label": "양출처 성숙 순위",
+            "label": "양출처 24시간 순위",
             "is_combined_rank": True,
             "current_sources": sorted(current_available_sources),
             "missing_sources": [],
-            "reason": "X·Google 현재 관측과 96시간 원장 성숙 게이트 충족",
+            "reason": "X·Google 현재 관측과 최근 24시간 MVP 원장 기준 충족",
         }
 
     for item in candidates:
@@ -2926,7 +2936,13 @@ def build_intelligence(
             "current_available_sources": sorted(current_available_sources),
             "missing_current_sources": missing_current_sources,
             "ranking_availability_status": ranking_availability["status"],
-            "ranking_maturity_status": "mature" if eligible_hour_count >= 96 else "provisional",
+            "ranking_maturity_status": (
+                "mature" if eligible_hour_count >= MVP_HISTORY_HOURS else "provisional"
+            ),
+            "history_stage": history_stage(eligible_hour_count),
+            "mvp_required_history_hours": MVP_HISTORY_HOURS,
+            "operational_target_history_hours": OPERATIONAL_HISTORY_TARGET_HOURS,
+            "long_horizon_history_hours": LONG_HORIZON_HISTORY_HOURS,
             "quarantined_source_hour_count": len(quarantined_source_hours),
             "quarantined_source_hours": quarantined_source_hours,
             "source_snapshot_quality": snapshot_quality,

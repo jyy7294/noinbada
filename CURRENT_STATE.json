@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T00:30:40.3880806+00:00",
+    "updated_at":  "2026-08-14T11:28:59.9249871+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,40 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "2402b6afc3e0abf012e05988c11252496eb305ff",
+                       "base_remote_main_sha":  "52ed0eca57d58e90aa946ea5318bd12e72da1b12",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "scripts/promote-runtime.ps1",
-                                             "tests/test_local_runtime_contract.py"
+                                             "docs/CODEX_CONTINUITY.md",
+                                             "docs/PRODUCT_POLICY.md",
+                                             "README.md",
+                                             "src/trzip/intelligence.py",
+                                             "src/trzip/readiness.py",
+                                             "src/trzip/result_quality.py",
+                                             "src/trzip/runtime_audit.py",
+                                             "tests/test_intelligence.py",
+                                             "tests/test_result_quality.py",
+                                             "tests/test_runtime_audit.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "scripts/promote-runtime.ps1":  "d9342a4d8ff7c7bd87b9477aee918af7158264a4ae74f15d5a901ec75bbc80e1",
-                                                    "tests/test_local_runtime_contract.py":  "3effe63dab89ab50185df6c7ce4c214229c65ce8a6003d7c17aa22bbf060960b"
+                                                    "docs/CODEX_CONTINUITY.md":  "84c8e638de37280463548ed0348c77b206ab4c97a5c004f4e549432256e0bbe5",
+                                                    "docs/PRODUCT_POLICY.md":  "1d7fc866413418650b0d06348386130a61f829082c25bd24b3a92655e32a2b20",
+                                                    "README.md":  "94dfe8656676c69f55d213c20db85b838581eda87e7787ebcfcb5b90a75c7955",
+                                                    "src/trzip/intelligence.py":  "e6b478c185599d435e4846aef626bd5792cdfba55c4d3f6da30e7463086c2be0",
+                                                    "src/trzip/readiness.py":  "21bec98c0061e8fcf3065d9dc97ad6edbad33762c39afbe3be40a80024912dcb",
+                                                    "src/trzip/result_quality.py":  "a86bbc5bbc9c93d5366804f58783acdd994e4f53b8091512ce38528bee6d2a7e",
+                                                    "src/trzip/runtime_audit.py":  "c033f6284e01388eb0754355dff8b9438609c642198f651aeaf179f233a9f164",
+                                                    "tests/test_intelligence.py":  "0e7b78933c5d928623bb0d8be046ec42b1d77a891eda0196107083607d184d8b",
+                                                    "tests/test_result_quality.py":  "7f9f415ad75cf44caea2ca74885464d60c1bec102eb9638280769ecd9911a0c2",
+                                                    "tests/test_runtime_audit.py":  "863bbfe536511643c48fa840d8261f6b4594abacc556b7fb6492ec6280db51b3"
                                                 },
-                       "commit_message":  "fix: discover active trzip automation during promotion",
+                       "commit_message":  "fix: align MVP readiness with daily publication",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  296
+                                      "count":  328
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,20 +63,23 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "현재 Codex 자동화 ID 경로와 종료시각이 포함된 시간 규칙을 실행 체크아웃 승격 도구가 자동 인식하도록 한다.",
+                    "objective":  "Replace the impossible 96-hour MVP blocker with a 24-hour ledger plus eight consecutive local exact-hour proofs and one daily remote publication receipt.",
                     "completed":  [
-                                      "현재 TRZIP 자동화 경로 자동 탐색",
-                                      "UNTIL이 포함된 매시간 정각 규칙 검증",
-                                      "다른 PC의 레거시 경로 호환 유지"
+                                      "Set 24h MVP, 48h operational, and 96h long-horizon readiness stages.",
+                                      "Separated hourly local source and contract validation from daily remote publication proof.",
+                                      "Added presentation readiness distinct from empty but structurally valid home feeds.",
+                                      "Updated automation policy documentation and regression coverage."
                                   ],
                     "next_actions":  [
-
+                                         "Collect X and Google successfully for eight consecutive exact hours.",
+                                         "Generate a non-empty evidence-complete daily home feed before presentation."
                                      ],
                     "blockers":  [
-
+                                     "Current live publication was generated under the previous policy and still fails verification_may_affect_score.",
+                                     "Current consecutive exact-hour success count is zero."
                                  ],
                     "known_limitations":  [
-
+                                              "The current live home feed has zero evidence-complete cards."
                                           ]
                 },
     "runtime_contract":  {
