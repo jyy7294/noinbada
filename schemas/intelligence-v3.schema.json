@@ -289,7 +289,8 @@
         "status": {
           "enum": [
             "completed", "skipped_no_candidates",
-            "skipped_already_recorded_for_hour", "failed_non_blocking"
+            "skipped_already_recorded_for_hour", "failed_non_blocking",
+            "disabled_by_runtime_policy"
           ]
         },
         "requested_terms": {"type": "integer", "minimum": 0, "maximum": 20},
@@ -306,7 +307,7 @@
           "items": false
         },
         "ranking_effect": {"const": "none"},
-        "home_ranking_effect": {"const": "naver_equal_weight_after_coverage_gate"},
+        "home_ranking_effect": {"enum": ["none_auxiliary_research_disabled", "none_news_context_only"]},
         "affects_collection_partial": {"const": false},
         "blocks_publication": {"const": false},
         "error": {"type": ["string", "null"]}
@@ -320,7 +321,7 @@
       "required": ["status", "groups", "selection_policy", "legacy_alias_status"],
       "properties": {
         "status": {"enum": ["ready", "empty"]},
-        "selection_policy": {"const": "home-feed-selection-v1"},
+        "selection_policy": {"const": "home-feed-selection-v2-x-google-only"},
         "legacy_alias_status": {"const": "deprecated_flattened_home_feed"},
         "groups": {
           "type": "array",
@@ -404,12 +405,12 @@
         "home_platform_score": {"type": "number", "minimum": 0, "maximum": 100},
         "home_platform_components": {"type": "object"},
         "home_platform_weights": {"type": "object"},
-        "naver_home_rank_status": {"enum": ["active_equal_weight", "shadow_insufficient_coverage"]},
-        "youtube_home_rank_status": {"enum": ["active_equal_weight", "shadow_insufficient_coverage"]},
+        "naver_home_rank_status": {"enum": ["context_only_not_comparable_rank_signal"]},
+        "youtube_home_rank_status": {"enum": ["disabled_by_home_feed_policy"]},
         "naver_candidate_signal": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
         "youtube_candidate_signal": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
         "home_platform_coverage": {"type": "object"},
-        "home_source_policy": {"const": "multisource-home-rank-v1"},
+        "home_source_policy": {"const": "home-feed-selection-v2-x-google-only"},
         "home_rank_input_sources": {"type": "array", "uniqueItems": true, "items": {"enum": ["x", "google_trends", "naver", "youtube"]}},
         "canonical_observed_rank_preserved": {"const": true},
         "home_mix_bucket": {"enum": ["emerging", "established", "recent_context"]},
@@ -496,7 +497,8 @@
         "company_detail_policy": {"const": "shared_by_detail_event_key"},
         "company_count_affects_rank": {"const": false},
         "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/periodTrend"}},
-        "period_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/periodTrend"}}
+        "period_top10": {"type": "array", "maxItems": 10, "items": {"$ref": "#/$defs/periodTrend"}},
+        "period_home_feed": {"$ref": "#/$defs/homeFeed"}
       }
     },
     "rankingAvailability": {
@@ -645,12 +647,12 @@
         "home_platform_score": {"type": "number", "minimum": 0, "maximum": 100},
         "home_platform_components": {"type": "object"},
         "home_platform_weights": {"type": "object"},
-        "naver_home_rank_status": {"enum": ["active_equal_weight", "shadow_insufficient_coverage"]},
-        "youtube_home_rank_status": {"enum": ["active_equal_weight", "shadow_insufficient_coverage"]},
+        "naver_home_rank_status": {"enum": ["context_only_not_comparable_rank_signal"]},
+        "youtube_home_rank_status": {"enum": ["disabled_by_home_feed_policy"]},
         "naver_candidate_signal": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
         "youtube_candidate_signal": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
         "home_platform_coverage": {"type": "object"},
-        "home_source_policy": {"const": "multisource-home-rank-v1"},
+        "home_source_policy": {"const": "home-feed-selection-v2-x-google-only"},
         "home_rank_input_sources": {"type": "array", "uniqueItems": true, "items": {"enum": ["x", "google_trends", "naver", "youtube"]}},
         "canonical_observed_rank_preserved": {"const": true},
         "home_mix_bucket": {"enum": ["emerging", "established", "recent_context"]},

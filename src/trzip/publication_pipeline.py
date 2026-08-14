@@ -748,8 +748,16 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         for item in flattened_feed
     ):
         raise ValueError("home_feed cards must not expose ranks or selection scores")
-    if trend_top10 != flattened_feed or home_top10 != flattened_feed or public_top10 != flattened_feed:
-        raise ValueError("legacy arrays must be deprecated flattened home_feed aliases")
+    compatibility_top10 = select_balanced_home_top10(completed_home_ranking)
+    compatibility_keys = [item.get("event_key") for item in compatibility_top10]
+    if (
+        [item.get("event_key") for item in trend_top10] != compatibility_keys
+        or home_top10 != trend_top10
+        or public_top10 != trend_top10
+        or [item.get("publication_rank") for item in trend_top10]
+        != list(range(1, len(trend_top10) + 1))
+    ):
+        raise ValueError("legacy arrays must preserve the numbered compatibility Top10")
     if intelligence.get("all_observed_ranking") != ranking:
         raise ValueError("all_observed_ranking must preserve the unified observed ranking")
 
@@ -758,7 +766,7 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         readiness.get("required_keyword_count") != 5
         or readiness.get("minimum_company_count") != MINIMUM_FRONTEND_COMPANIES
         or readiness.get("ready_count") != len(completed_home_ranking)
-        or readiness.get("published_count") != len(flattened_feed)
+        or readiness.get("published_count") != len(compatibility_top10)
         or readiness.get("publication_ready") is not bool(flattened_feed)
         or readiness.get("home_status") != ("ready" if flattened_feed else "empty")
         or intelligence.get("home_status") != readiness.get("home_status")

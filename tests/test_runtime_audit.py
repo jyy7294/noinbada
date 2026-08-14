@@ -383,6 +383,34 @@ def test_runtime_audit_passes_complete_combined_runtime(tmp_path: Path) -> None:
     assert result["metrics"]["clean_history_hours"] == 96
 
 
+def test_runtime_audit_keeps_daily_publication_coverage_stable_after_hourly_collection(
+    tmp_path: Path,
+) -> None:
+    _write_runtime(tmp_path)
+    connection = sqlite3.connect(tmp_path / "data" / "trzip-hourly.sqlite3")
+    later_hour = "2026-08-12T19:00:00+00:00"
+    for source, count, version in (
+        ("x", 30, "x_current_session_kr_v1"),
+        ("google_trends", 100, "google_trending_now_kr_v1"),
+    ):
+        for rank in range(1, count + 1):
+            connection.execute(
+                "INSERT INTO hourly_observations VALUES (?, ?, ?, 'observed', ?)",
+                (later_hour, source, rank, version),
+            )
+    connection.commit()
+    connection.close()
+
+    result = audit_runtime(tmp_path)
+
+    assert result["status"] == "pass"
+    assert "published_coverage_does_not_match_sqlite" not in result["failures"]
+    assert result["metrics"]["publication_clean_history_hours"] == 96
+    assert result["metrics"]["operational_clean_history_hours"] == 97
+    assert result["metrics"]["post_publication_source_hour_count"] == 2
+    assert result["metrics"]["post_publication_observation_count"] == 130
+
+
 def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
     _write_runtime(tmp_path)
     intelligence_path = tmp_path / "publication" / "latest" / "intelligence.json"

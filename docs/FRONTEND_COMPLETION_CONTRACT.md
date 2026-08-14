@@ -1,22 +1,23 @@
 # Frontend trend and enrichment contract
 
-The home selector and the enrichment pipeline are deliberately separate.
-Missing keywords or companies must be shown honestly, but must not suppress a
-real, explainable trend or change its X+Google score.
+The observed selector and the enrichment pipeline are deliberately separate.
+Missing keywords or companies never change the X+Google score: the event stays
+in `all_observed_ranking`, but it does not enter the complete `home_feed` until
+the public card contract is satisfied.
 
 ## Home selection gate
 
-`home_top10`, `trend_top10`, `public_top10`, and each `period_top10` may contain
-a trend when all of the following are true:
+`home_feed`, the numbered compatibility arrays, and each `period_top10` may
+contain a trend when all of the following are true:
 
 1. It was actually observed in X Korea or Google Trending Now Korea during the
    selected period. Only those two sources affect score and rank.
 2. It is a concrete product, work, event, brand, meme, technology, market topic,
    or similarly identifiable object rather than an unresolved broad noun.
 3. `context_research` provides a concrete current trigger, a `why_now`
-   explanation, and at least one public HTTP(S) evidence URL. News, YouTube,
-   Naver, Instagram, official pages, and reviewed industry sources may support
-   this context but never alter rank.
+   explanation, and at least one public HTTP(S) evidence URL. NAVER News,
+   official pages, and reviewed industry sources may support this context but
+   never alter rank.
 4. It is current and does not match the manipulation-risk rule for an
    uncorroborated one-hour, single-source hashtag burst.
 
@@ -39,8 +40,9 @@ complete:
 - company name, symbol, exchange, description, connection reason, ontology
   path, relationship tier, and public evidence URL for every exposed company.
 
-`frontend_readiness_status=enrichment_pending` is therefore a valid home-card
-state. `frontend_readiness_missing`, `frontend_keyword_count`,
+`frontend_readiness_status=enrichment_pending` is a valid observed/detail
+state, but not a complete home-feed card. `frontend_readiness_missing`,
+`frontend_keyword_count`,
 `frontend_company_count`, and `frontend_company_role_category_count` tell the
 frontend and operators exactly what remains. Missing items are warnings for
 enrichment work, not rank or home-selection inputs. Padding with invented

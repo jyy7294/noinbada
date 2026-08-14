@@ -27,9 +27,8 @@ detail screen can distinguish X/Google observed ranks from NAVER News context.
 
 The private ordering formula is `35V + 25B + 20A + 10P + 10R`: measured
 velocity, X+Google cross-platform spread, current attention, persistence, and
-recency. NAVER News joins current attention at equal weight only when at least
-ten candidates and 80 percent candidate coverage have usable news signals.
-Keywords, companies, manual aliases and LLM prose cannot change this score.
+recency. Only X and Google feed these measurements. NAVER News is context-only;
+keywords, companies, manual aliases and LLM prose cannot change this score.
 
 ## Card gate
 
@@ -42,4 +41,6 @@ by this policy.
 ## Compatibility
 
 `home_top10`, `trend_top10`, `public_top10`, and `rising_top10` are deprecated
-one-release aliases flattened from `home_feed`. They contain no numeric rank.
+one-release compatibility arrays for the existing frontend. They contain at
+most ten of the same ready events and retain contiguous `publication_rank`.
+Their presence does not turn the rank-free `home_feed` into a leaderboard.

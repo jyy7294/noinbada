@@ -1,10 +1,10 @@
 # TRZIP — 한국 실시간 트렌드에서 관련 상장기업까지
 
-TRZIP 백엔드는 찬희님 Windows 노트북에서 매시 정각 한국 X 실시간 트렌드 1~30위와 Google Trending Now 대한민국 전체 목록을 수집합니다. 실제 원천 표현을 누적해 전체 순위를 계산하고, 약한 큐레이션과 증거 온톨로지로 관련 상장기업을 연결합니다.
+TRZIP 백엔드는 설정된 Windows 수집 노드에서 매시 정각 한국 X 실시간 트렌드 1~30위와 Google Trending Now 대한민국 전체 목록을 수집합니다. 실제 원천 표현을 누적해 전체 순위를 계산하고, 결정론적 분류와 증거 온톨로지로 관련 상장기업을 연결합니다.
 
 - 저장소: <https://github.com/jyy7294/noinbada>
 - 공개 데이터: `live-data` 브랜치
-- 실행 환경: 찬희님 노트북의 Codex 정각 자동화 + 로컬 Python
+- 실행 환경: 로그인된 Chrome을 사용할 수 있는 Windows 수집 노드 + Codex 정각 자동화 + Python
 - 사용하지 않음: GitHub Actions, Render, Google RSS, Trends MCP 자동호출, X API, 생성·백필 데이터
 - 프런트: 별도 교체 가능. 이 저장소의 JSON 계약만 준수
 
@@ -21,8 +21,8 @@ TRZIP 백엔드는 찬희님 Windows 노트북에서 매시 정각 한국 X 실�
           ↓
 관련어 정확히 5개 → 증거 온톨로지 → 국내외 상장기업 10개 준비 게이트
           ↓
-NAVER 후보별 관심·확산 측정 (커버리지 충족 시 홈 순위 동등 반영)
-YouTube·Instagram·기사 맥락 별도 검증
+NAVER 뉴스 맥락 검증 (순위 영향 없음)
+YouTube·Instagram 활성 홈 분석 비활성
           ↓
 latest / observations / monitoring JSON을 live-data에 게시
 ```
@@ -35,12 +35,11 @@ latest / observations / monitoring JSON을 live-data에 게시
 |---|---|---|
 | Core rank | X 한국 실시간 1~30 | 시간별 현재 관심 순위 |
 | Core rank | Google Trending Now KR 전체 | 페이지 총건수까지 검증한 급상승 목록 |
-| Home platform | NAVER Search Trend·뉴스·블로그 | 후보 커버리지 충족 시 X·Google과 홈 순위 동등 반영 |
-| Context only | YouTube Data API | 한국·한국어 최근 콘텐츠 반응 |
-| Context only | Instagram | 토큰이 있을 때만 검증, 현재 없으면 `unavailable` |
-| Discovery only | 검수 기사 | 후보 발견·소비/제품화 설명 |
+| Context only | NAVER 뉴스 | 관측 후보의 촉발 사건·왜 지금 떴는지 설명, 순위 영향 없음 |
+| Disabled | YouTube·Instagram·NAVER 블로그·검색트렌드 | 현재 홈 선발·점수·보강에서 사용하지 않음 |
+| Discovery only | 공식 발표·검수 기사 | 후보의 소비·제품화 맥락 설명 |
 
-보조 원천은 별도 SQLite 원장에 저장합니다. 기사만으로 관측 순위에 항목을 넣지 않습니다. NAVER는 상위 후보의 80% 이상·최소 10개가 같은 정책으로 측정된 경우에만 홈 순위에서 동등 플랫폼으로 활성화됩니다.
+기사만으로 관측 순위에 항목을 넣지 않습니다. NAVER 뉴스는 후보의 맥락 근거일 뿐 X·Google 점수와 순위를 바꾸지 않습니다.
 
 ## 순위
 
@@ -54,7 +53,8 @@ latest / observations / monitoring JSON을 live-data에 게시
 
 - `ranking_views`: 일간 24시간·주간 168시간·월간 720시간에 실제 관측된 전체 후보
 - `unified_ranking`, `all_observed_ranking`: 최근 24시간 전체 실측 순위
-- `home_top10`: 자동 제품 적합 규칙을 통과한 최근 24시간 상위 10개
+- `home_feed`: 완성 계약을 통과한 카드를 `spreading`·`sustained`·`emerging`으로 제공하는 무순위 보드
+- `home_top10`: 현재 프런트 전환용 번호형 호환 배열(최대 10개)
 - `rising_top10`: 비교 가능한 구간에서 실제 양의 상승이 측정된 상위 10개
 - `trend_top10`, `public_top10`: 호환성을 위한 `home_top10` 동일 별칭
 - `company_ready_trends`: 증거 기반 상장기업 10개 이상 준비된 별도 목록
@@ -64,7 +64,7 @@ latest / observations / monitoring JSON을 live-data에 게시
 - 자동 선발 순위는 기업 수와 독립적으로 유지합니다. 다만 프런트 완성 Top10과 기업 카드는 관련 키워드 정확히 5개·검수된 기업 10개 이상·역할 카테고리 2~4개를 충족해야 게시됩니다.
 - 각 기간의 원천별 관측 커버리지가 80% 미만이면 `provisional`; 운영 전체 성숙 판정은 깨끗한 이력 96시간 이상을 별도로 요구
 
-관측 순위의 관심 강도는 X와 Google의 원천 순위를 각각 정규화해 같은 비중으로 계산합니다. 홈 순위는 NAVER 커버리지 게이트가 열리면 X·Google·NAVER를 각각 1/3로 반영하고, 열리기 전에는 X·Google 50:50을 유지합니다. 상승 속도는 직전 동일 기간을 우선 비교하고, 불가능하면 현 기간 전반부와 후반부를 비교합니다. 정상 스냅샷이 부족하면 `unavailable`·0점이며 중립점수를 주지 않습니다. 원시 검색량·게시량을 플랫폼 간 직접 합산하지 않고 각 플랫폼 안에서 정규화합니다. 카테고리·기업 수는 점수에 영향을 주지 않습니다.
+관측 순위의 관심 강도는 X와 Google의 원천 순위를 각각 정규화해 같은 비중으로 계산합니다. NAVER 뉴스·키워드·기업·LLM 문구는 점수와 순위를 바꾸지 않습니다. 상승 속도는 직전 동일 기간을 우선 비교하고, 불가능하면 현 기간 전반부와 후반부를 비교합니다. 정상 스냅샷이 부족하면 `unavailable`·0점이며 중립점수를 주지 않습니다. 원시 검색량·게시량을 플랫폼 간 직접 합산하지 않고 각 플랫폼 안에서 정규화합니다. 카테고리·기업 수는 점수에 영향을 주지 않습니다.
 
 ### v3 컷오버
 
@@ -76,7 +76,7 @@ latest / observations / monitoring JSON을 live-data에 게시
 - 정규화 사건명은 그룹 키일 뿐 실제 제목을 임의 설명문으로 바꾸지 않습니다.
 - 관련어는 동일 사건의 실제 원천 표현·Google 관련 검색어·URL 근거가 있는 검수 온톨로지 동의어만 최대 5개입니다.
 - 근거가 없으면 0개가 정상입니다.
-- NAVER·YouTube 문서에서 지유님 후보 추출 규칙으로 찾은 표현은 별도 검토 대기열에 누적하며, 승인 전에는 관련어 칩이나 순위에 넣지 않습니다.
+- NAVER 뉴스에서 찾은 표현은 맥락 후보로만 보존하며, 원천 관련어 또는 검수 근거가 없으면 관련어 칩이나 순위에 넣지 않습니다.
 
 ## 관련기업 온톨로지
 

@@ -1,0 +1,43 @@
+{
+  "schema_version": "trzip-observed-top10-reference-v1",
+  "artifact_role": "verified_reference_output_not_ranking_input",
+  "window": {
+    "from": "2026-08-12T07:00:00+00:00",
+    "to": "2026-08-14T07:00:00+00:00",
+    "hours": 48
+  },
+  "source_status": {
+    "x": {"valid_snapshots": 16, "observed_rows": 480},
+    "google_trends": {"valid_snapshots": 24, "observed_rows": 5112}
+  },
+  "input_sha256": {
+    "x_final_adjudication": "6C6557195610F562049A2B9AF56FD652E63B5A7FED2827F10826E345E9496FE8",
+    "google_final_adjudication": "16B9B6B360AE87451A81519F3E06837408591D536A0CBCCD11FB94CEB4A50AD7"
+  },
+  "output_sha256": "E5C3E493AEFB07AA44C3B10CB106393141F983A738202B8679A24E1EC8F82DFD",
+  "ranking_policy": {
+    "source_score": "100 * (0.45*persistence + 0.35*position + 0.20*recency)",
+    "combined_score": "0.44*x_score + 0.44*google_score + 12*cross_source_observed",
+    "manual_or_enrichment_score_effect": "none",
+    "home_diversity": {"max_per_category": 3, "minimum_categories_when_available": 6}
+  },
+  "home_context_exclusions": [
+    {"canonical_name": "아이폰", "combined_rank": 5},
+    {"canonical_name": "영훈 팬미팅", "combined_rank": 10},
+    {"canonical_name": "돌싱글즈", "combined_rank": 16},
+    {"canonical_name": "KF-21 보라매", "combined_rank": 39},
+    {"canonical_name": "SMR", "combined_rank": 79}
+  ],
+  "top10": [
+    {"rank": 1, "trend": "개기일식", "category": "culture", "category_label": "문화", "sources": ["x", "google_trends"], "score": 80.8439},
+    {"rank": 2, "trend": "페르세우스 유성우", "category": "culture", "category_label": "문화", "sources": ["x", "google_trends"], "score": 77.6087},
+    {"rank": 3, "trend": "말복·삼계탕", "category": "food", "category_label": "음식", "sources": ["google_trends"], "score": 38.1451},
+    {"rank": 4, "trend": "불꽃축제", "category": "culture", "category_label": "문화", "sources": ["x"], "score": 36.1313},
+    {"rank": 5, "trend": "메츠 대 브레이브스", "category": "sports", "category_label": "스포츠·야구", "sources": ["google_trends"], "score": 35.6321},
+    {"rank": 6, "trend": "맨유 vs 리즈", "canonical_name": "맨체스터 유나이티드 vs 리즈 유나이티드", "category": "sports", "category_label": "스포츠·축구", "sources": ["google_trends"], "score": 34.9404},
+    {"rank": 7, "trend": "오디세이 영화", "category": "content", "category_label": "콘텐츠·영화", "sources": ["google_trends"], "score": 33.9079},
+    {"rank": 8, "trend": "데포르티보 vs 레알 마드리드", "category": "sports", "category_label": "스포츠·축구", "sources": ["google_trends"], "score": 33.8521},
+    {"rank": 9, "trend": "휴머노이드 로봇", "category": "technology", "category_label": "기술", "sources": ["google_trends"], "score": 33.1473},
+    {"rank": 10, "trend": "홈플러스 재개장", "category": "consumer", "category_label": "제품·브랜드", "sources": ["google_trends"], "score": 32.7291}
+  ]
+}

@@ -29,7 +29,8 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 
 - 전체 순위: `unified_ranking`
 - 순위 확정도: `ranking_availability` (`단일출처 잠정` / `양출처 잠정` / `성숙 통합`)
-- 홈 최대 10개: `trend_top10` (`lanes.main`의 점수 순 앞 10개)
+- 오늘의 흐름: `home_feed` (무순위 `spreading`·`sustained`·`emerging` 그룹)
+- 홈 최대 10개: `home_top10` (현재 프런트 전환용 번호형 호환 배열)
 - 기존 홈 필드: `public_top10` (`trend_top10`과 값이 같은 마이그레이션 별칭)
 - 기업 카드 준비 목록: `company_ready_trends` (기업 Gold가 준비된 main 항목을 전역 순위 그대로 보존)
 - 홈 계약 설명: `home_quality_gate` (`ranking_effect=none`, 기업 수가 홈 순위에 영향 없음)
@@ -55,10 +56,9 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 `enrichment_pending`은 근거 보강 중인 경우, `not_applicable`은 이슈·민감 맥락 등
 기업 연결 대상이 아닌 경우입니다. 기업 수를 맞추기 위한 padding은 금지하며,
 준비된 항목만 `company_ready_trends`에도 포함합니다.
-플랫폼 측정 스케줄러는 `public_top10`만이 아니라 현재 `main`·검토 후보를 포함해
-한 시간 최대 20개를 조회합니다. NAVER는 상위 후보 80% 이상·최소 10개가 관측된
-경우에만 홈 순위에 X·Google과 동등하게 반영됩니다. 일부 후보만 조회된 상태는
-`shadow_insufficient_coverage`이며 관측 순위와 홈 순위를 바꾸지 않습니다.
+NAVER 뉴스는 현재 `main`·검토 후보의 촉발 맥락을 확인하는 보조 근거입니다.
+기사·블로그·YouTube·Instagram 신호는 X·Google 관측 순위와 내부 선별점수를
+바꾸지 않습니다.
 
 ## 트렌드 카드 필드
 
@@ -83,7 +83,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 기업 카드 준비 상태 | `company_card_status`, `company_card_reason` |
 | 기업 후보 감사 | `company_candidates`, `company_resolution` |
 | 보조 검증 | `verification_layer` |
-| 플랫폼 측정 실행상태 | `verification_run` (`ranking_effect=none`, `home_ranking_effect=naver_news_equal_weight_after_coverage_gate`) |
+| 플랫폼 측정 실행상태 | `verification_run` (`ranking_effect=none`, `home_ranking_effect=none_news_context_only`) |
 | 근거 보강 작업상태 | `enrichment_work_queue` (`ranking_effect=none`) |
 | 보조 문서 키워드 후보 | `provider_keyword_candidate_queue` (`publishable=false`, 승인 전 칩 금지) |
 | 기사 맥락 | `news_context` |

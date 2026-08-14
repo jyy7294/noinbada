@@ -1358,12 +1358,107 @@ def _build_period_views(
 
 
 def select_balanced_home_top10(rows: list[dict], *, limit: int = 10) -> list[dict]:
-    """Deprecated legacy alias: flatten the rank-free home feed.
+    """Build the ranked compatibility Top10 without changing source rank.
 
-    ``limit`` is accepted only to avoid breaking old callers and is ignored.
+    The new ``home_feed`` remains rank-free.  This helper exists for the
+    current frontend contract: current evidence-complete events are preferred,
+    a two-per-category soft cap improves early diversity, and any remaining
+    slots are filled by score.  Recently observed resolved events may backfill
+    only when the current pool has fewer than ``limit`` rows.
     """
 
-    return [item for group in _build_home_feed(rows)["groups"] for item in group["trends"]]
+    if limit <= 0:
+        return []
+
+    def order_key(item: dict) -> tuple:
+        measured_rise = (
+            (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
+            and float(item.get("momentum_delta") or 0.0) > 0.0
+        )
+        return (
+            -int(measured_rise),
+            -float(item.get("_home_selection_score") or 0.0),
+            -float(item.get("score") or 0.0),
+            int(item.get("observed_rank") or item.get("rank") or 10**9),
+            str(item.get("event_key") or ""),
+        )
+
+    current = [
+        item for item in rows
+        if item.get("is_current") is True and item.get("lifecycle") != "expired"
+    ]
+    recent = [
+        item for item in rows
+        if item.get("is_current") is not True
+        and item.get("candidate_status") == "period_observed"
+        and item.get("lifecycle") in {"cooling", "sustained", "rebounding"}
+        and float(item.get("hours_since_last_seen") or 10**9) <= 24.0
+    ]
+
+    selected: list[dict] = []
+    selected_keys: set[str] = set()
+
+    def extend(pool: list[dict], *, recent_context: bool = False) -> None:
+        ordered = sorted(pool, key=order_key)
+        category_counts: dict[str, int] = {}
+        # A verified positive slope is the primary product signal.  It must
+        # remain ahead of steady cards even when several rising events share
+        # one category; diversity is a soft rule for the remaining slots.
+        rising = [
+            item for item in ordered
+            if (item.get("ranking_data_readiness") or {}).get("momentum_status")
+            == "measured"
+            and float(item.get("momentum_delta") or 0.0) > 0.0
+        ]
+        for item in rising:
+            if len(selected) >= limit:
+                return
+            key = str(item.get("event_key") or "")
+            if not key or key in selected_keys:
+                continue
+            selected_item = dict(item)
+            selected_item["home_mix_bucket"] = (
+                "recent_context" if recent_context else "emerging"
+            )
+            selected_item["home_mix_policy"] = "multisource_velocity_mix_v4"
+            selected.append(selected_item)
+            selected_keys.add(key)
+            category = str(item.get("broad_category") or "other")
+            category_counts[category] = category_counts.get(category, 0) + 1
+        for soft_cap in (2, None):
+            for item in ordered:
+                if len(selected) >= limit:
+                    return
+                key = str(item.get("event_key") or "")
+                if not key or key in selected_keys:
+                    continue
+                category = str(item.get("broad_category") or "other")
+                if soft_cap is not None and category_counts.get(category, 0) >= soft_cap:
+                    continue
+                selected_item = dict(item)
+                measured_rise = (
+                    (item.get("ranking_data_readiness") or {}).get("momentum_status")
+                    == "measured"
+                    and float(item.get("momentum_delta") or 0.0) > 0.0
+                )
+                selected_item["home_mix_bucket"] = (
+                    "recent_context"
+                    if recent_context
+                    else "emerging"
+                    if measured_rise
+                    else "established"
+                )
+                selected_item["home_mix_policy"] = "multisource_velocity_mix_v4"
+                selected.append(selected_item)
+                selected_keys.add(key)
+                category_counts[category] = category_counts.get(category, 0) + 1
+
+    extend(current)
+    if len(selected) < limit:
+        extend(recent, recent_context=True)
+    for publication_rank, item in enumerate(selected, 1):
+        item["publication_rank"] = publication_rank
+    return selected
 
 
 def _flow_group(item: dict) -> str | None:
@@ -1568,6 +1663,7 @@ def apply_equal_platform_home_scores(rows: list[dict]) -> list[dict]:
         }
         item["home_platform_weights"] = {source: round(weight, 6) for source, weight in weights.items()}
         item["naver_home_rank_status"] = source_coverage["naver"]["status"]
+        item["youtube_home_rank_status"] = "disabled_by_home_feed_policy"
         item["naver_candidate_signal"] = _naver_candidate_signal(item)
         item["home_platform_coverage"] = {
             "candidate_pool_size": len(rows),
@@ -1723,16 +1819,16 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
     # remain available only through the audit/detail arrays.
     feed = _build_home_feed(complete)
     flattened = [item for group in feed["groups"] for item in group["trends"]]
+    compatibility_top10 = select_balanced_home_top10(complete)
     intelligence["home_feed"] = feed
     # One-release compatibility aliases.  They intentionally flatten the
     # exact same cards and are documented as deprecated.
-    intelligence["home_top10"] = list(flattened)
-    intelligence["trend_top10"] = list(flattened)
-    intelligence["public_top10"] = list(flattened)
-    intelligence["rising_top10"] = [
-        item for group in feed["groups"] if group["key"] == "spreading"
-        for item in group["trends"]
-    ]
+    intelligence["home_top10"] = list(compatibility_top10)
+    intelligence["trend_top10"] = list(compatibility_top10)
+    intelligence["public_top10"] = list(compatibility_top10)
+    intelligence["rising_top10"] = select_balanced_home_top10([
+        item for item in complete if _flow_group(item) == "spreading"
+    ])
     intelligence["company_ready_trends"] = [
         item for item in home
         if int(item.get("frontend_company_count") or 0) >= MINIMUM_FRONTEND_COMPANIES
@@ -1742,7 +1838,7 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
     readiness.update({
         "policy_version": "home-feed-contract-v1",
         "ready_count": len(complete),
-        "published_count": len(flattened),
+        "published_count": len(compatibility_top10),
         "pending_count": len(home) - len(complete),
         "publication_ready": bool(flattened),
         "home_status": home_status,
@@ -1771,16 +1867,17 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
                 "home_platform_weights", "home_platform_coverage",
                 "home_source_policy", "home_rank_input_sources",
                 "canonical_observed_rank_preserved", "naver_home_rank_status",
-                "naver_candidate_signal", "_home_selection_score",
-                "_home_selection_components",
+                "naver_candidate_signal",
                 "keyword_status", "company_card_status", "company_status",
                 "frontend_readiness_status", "frontend_readiness_missing",
                 "frontend_keyword_count", "frontend_company_count",
                 "verification_layer",
             ):
-                summary[field] = source.get(field)
-            summary.pop("home_rank", None)
-            summary.pop("publication_rank", None)
+                value = source.get(field)
+                if value is None:
+                    summary.pop(field, None)
+                else:
+                    summary[field] = value
         period_home = [
             item for item in view.get("unified_ranking", [])
             if item.get("lane") == "main"
@@ -1788,10 +1885,7 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
             and item.get("frontend_readiness_status") == "ready"
         ]
         view["period_home_feed"] = _build_home_feed(period_home)
-        view["period_top10"] = [
-            item for group in view["period_home_feed"]["groups"]
-            for item in group["trends"]
-        ]
+        view["period_top10"] = select_balanced_home_top10(period_home)
     _attach_frontend_story(candidates)
     return intelligence
 
@@ -2756,22 +2850,28 @@ def build_intelligence(
             "default_period": "daily",
             "canonical_observed_rank_sources": ["x", "google_trends"],
             "home_rank_policy": HOME_SOURCE_POLICY_VERSION,
-            "home_rank_inputs": ["x", "google_trends", "naver", "youtube"],
-            "optional_home_input_policy": "per-source candidate signal must cover 80 percent of the canonical top-20 pool and at least ten candidates",
+            "home_rank_inputs": ["x", "google_trends"],
+            "optional_home_input_policy": "disabled; verification sources cannot alter selection score or order",
         },
         "home_quality_gate": home_quality_gate,
         "publication_readiness": publication_readiness,
         "context_evidence_policy": {
-            "news_is_ranking_source": "home_rank_only_after_coverage_gate",
-            "news_layers": ["discovery", "context", "company_evidence"],
-            "promotion_gate": "뉴스·YouTube 발견 신호는 사건 병합과 맥락 검증을 거친 뒤 home rank 입력으로만 사용하며 canonical observed rank에는 직접 삽입하지 않음",
+            "news_is_ranking_source": False,
+            "news_layers": ["context", "company_evidence"],
+            "promotion_gate": "NAVER 뉴스는 맥락 근거를 완성할 수 있지만 X·Google 점수·정렬·적격성은 변경하지 않음",
             "context_affects_score": False,
         },
         "verification_policy": {
-            "planned_platforms": ["naver", "youtube", "instagram"],
+            "active_platforms": ["naver_news"],
+            "disabled_platforms": [
+                "youtube",
+                "instagram",
+                "naver_blog",
+                "naver_search_trend",
+            ],
             "storage": "provider_verification_ledger_sqlite",
             "unavailable_platform_penalty": 0,
-            "verification_affects_score": "canonical_false_home_rank_coverage_gated",
+            "verification_affects_score": False,
         },
         "hourly_rankings": hourly_ranking,
         "daily_aggregates": daily_aggregates,

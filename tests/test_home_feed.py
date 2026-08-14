@@ -39,7 +39,10 @@ def test_home_feed_is_rank_free_and_groups_positive_cross_platform_candidate():
     assert not {"observed_rank", "home_rank", "publication_rank", "score"} & set(card)
     assert card["platform_observation_summary"]["x"]["observed"] is True
     assert card["platform_observation_summary"]["naver_news"]["selection_input"] is False
-    assert intelligence["home_top10"] == [card]
+    # The new feed stays rank-free, while the one-release compatibility array
+    # keeps a numbered Top10 for the current frontend.
+    assert [row["event_key"] for row in intelligence["home_top10"]] == [card["event_key"]]
+    assert intelligence["home_top10"][0]["publication_rank"] == 1
 
 
 def test_naver_news_is_context_only_and_never_changes_x_google_weights():

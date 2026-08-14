@@ -679,6 +679,9 @@ def test_source_value_never_changes_score_or_rank(tmp_path):
         (item["topic"], item["score"]) for item in result_b["unified_ranking"]
     ]
     assert result_a["score_policy"]["source_values_used"] is False
+    assert result_a["score_policy"]["home_rank_inputs"] == ["x", "google_trends"]
+    assert result_a["context_evidence_policy"]["news_is_ranking_source"] is False
+    assert result_a["verification_policy"]["verification_affects_score"] is False
 
 
 def test_representative_prefers_repeated_observed_term_before_best_rank(tmp_path):
@@ -969,7 +972,7 @@ def test_home_selection_can_fill_short_gap_with_recent_resolved_context():
     ]
 
 
-def test_naver_becomes_an_equal_home_platform_only_after_coverage_gate():
+def test_naver_news_remains_context_only_even_with_broad_coverage():
     from trzip.intelligence import apply_equal_platform_home_scores
 
     rows = []
@@ -1001,15 +1004,18 @@ def test_naver_becomes_an_equal_home_platform_only_after_coverage_gate():
 
     apply_equal_platform_home_scores(rows)
 
-    assert all(item["naver_home_rank_status"] == "active_equal_weight" for item in rows)
+    assert all(
+        item["naver_home_rank_status"] == "context_only_not_comparable_rank_signal"
+        for item in rows
+    )
     assert all(item["home_platform_weights"] == {
-        "x": 0.333333, "google_trends": 0.333333, "naver": 0.333333,
+        "x": 0.5, "google_trends": 0.5,
     } for item in rows)
-    assert sorted(item["home_rank"] for item in rows) == list(range(1, 11))
+    assert all(item["home_rank_input_sources"] == ["x", "google_trends"] for item in rows)
     assert all(item["canonical_observed_rank_preserved"] is True for item in rows)
 
 
-def test_youtube_chart_signal_becomes_equal_home_platform_only_after_coverage_gate():
+def test_youtube_chart_signal_is_disabled_for_home_selection():
     from trzip.intelligence import apply_equal_platform_home_scores
 
     rows = [
@@ -1029,11 +1035,14 @@ def test_youtube_chart_signal_becomes_equal_home_platform_only_after_coverage_ga
 
     apply_equal_platform_home_scores(rows)
 
-    assert all(item["youtube_home_rank_status"] == "active_equal_weight" for item in rows)
+    assert all(item["youtube_home_rank_status"] == "disabled_by_home_feed_policy" for item in rows)
     assert all(item["home_platform_weights"] == {
-        "x": 0.333333, "google_trends": 0.333333, "youtube": 0.333333,
+        "x": 0.5, "google_trends": 0.5,
     } for item in rows)
-    assert all(item["naver_home_rank_status"] == "shadow_insufficient_coverage" for item in rows)
+    assert all(
+        item["naver_home_rank_status"] == "context_only_not_comparable_rank_signal"
+        for item in rows
+    )
 
 
 def test_home_selection_prioritises_verified_positive_slope():
