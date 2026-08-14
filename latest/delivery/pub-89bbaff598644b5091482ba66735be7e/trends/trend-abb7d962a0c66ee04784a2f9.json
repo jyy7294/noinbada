@@ -1,0 +1,3841 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-89bbaff598644b5091482ba66735be7e",
+  "generated_at": "2026-08-14T18:09:37.563190+00:00",
+  "observed_at": "2026-08-14T18:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "한복상점",
+    "topic": "한복상점",
+    "display_name": "한복상점",
+    "observed_representative_term": "한복상점",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "한복상점",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 11,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.127247,
+      "best_source_rank": 21
+    },
+    "raw_terms": [
+      "한복상점"
+    ],
+    "phenomenon_summary": "\"한복상점\" · X 한국 실시간에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "fashion_collectible",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "lifestyle",
+    "category_label": "패션·뷰티·여행·생활",
+    "category_ontology": {
+      "version": "category-ontology-v1",
+      "category": "fashion_collectible",
+      "entity_slots": [
+        "product",
+        "brand",
+        "style_or_ingredient",
+        "creator_or_celebrity",
+        "sales_channel"
+      ],
+      "trigger_types": [
+        "product_launch",
+        "sellout",
+        "restock",
+        "celebrity_use",
+        "shortform_spread",
+        "collaboration"
+      ],
+      "recommended_company_roles": [
+        "brand_marketing",
+        "manufacturing_development",
+        "raw_materials_components",
+        "retail_sales"
+      ],
+      "affects_score": false
+    },
+    "trend_definition": "'한복상점'은(는) 장소·행사·스타일 또는 생활 경험에 관심이 모이는 흐름입니다. 실측 데이터에서는 한복 박람회, 한복 같은 표현과 함께 나타났습니다. X와 Google 대한민국 관측값에서 확인된 맥락을 설명합니다.",
+    "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "context_review_queue",
+    "company_eligible": true,
+    "score": 13.52,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "x"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": 338,
+    "rank_change": -36,
+    "rank_change_status": "measured",
+    "period_strength": 0.064898,
+    "current_source_position": 0.064898,
+    "momentum": 0.0,
+    "persistence": 0.125,
+    "momentum_delta": -0.076061,
+    "score_components": {
+      "period_strength_points": 2.27,
+      "momentum_points": 0.0,
+      "persistence_points": 1.25,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 13.52
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "x": 0.129795
+      },
+      "momentum_deltas": {
+        "x": -0.076061
+      },
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "x": {
+          "current": 6,
+          "comparison": 5
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 8,
+          "observed_hours": 6,
+          "presence_rate": 0.25,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 9,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.333333,
+        "google_trends": 0.375
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-13T09:00:00+00:00",
+      "last_seen_at": "2026-08-14T18:00:00+00:00",
+      "observed_hours": 11,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "x": 30
+    },
+    "rank_change_by_source": {
+      "x": -1
+    },
+    "source_rank_change": {
+      "x": -1
+    },
+    "first_seen_at": "2026-08-13T09:00:00+00:00",
+    "last_seen_at": "2026-08-14T18:00:00+00:00",
+    "age_hours": 33,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "medium",
+      "label": "보통",
+      "reason": "24시간 MVP 원장과 반복 관측을 충족한 운영 초기 결과",
+      "window_observed_hours": 28,
+      "history_maturity": 0.3542,
+      "ranking_status": "mature"
+    },
+    "verification_layer": {
+      "status": "disabled_by_runtime_policy",
+      "observed_platforms": [],
+      "affects_score": false,
+      "affects_home_rank": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "context_research": {
+      "status": "incomplete",
+      "trigger_title": "",
+      "why_now": "",
+      "trigger_type": "",
+      "published_at": null,
+      "evidence_urls": [],
+      "evidence_records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "x",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "x",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "x",
+        "rank": 21,
+        "value": 80.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "x",
+        "rank": 25,
+        "value": 76.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T18:00:00+00:00",
+        "source": "x",
+        "rank": 25,
+        "value": 76.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T18:03:47.936000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 227.936, \"scheduled_for\": \"2026-08-13T18:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T19:00:00+00:00",
+        "source": "x",
+        "rank": 26,
+        "value": 75.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T19:02:18.085000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 138.085, \"scheduled_for\": \"2026-08-13T19:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T20:00:00+00:00",
+        "source": "x",
+        "rank": 22,
+        "value": 79.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T20:03:21.857628+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 201.857628, \"scheduled_for\": \"2026-08-13T20:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T21:00:00+00:00",
+        "source": "x",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T21:03:08.584000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 188.584, \"scheduled_for\": \"2026-08-13T21:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-14T14:00:00+00:00",
+        "source": "x",
+        "rank": 27,
+        "value": 74.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-14T14:01:10.500000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 70.5, \"scheduled_for\": \"2026-08-14T14:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-14T16:00:00+00:00",
+        "source": "x",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-14T16:02:20+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 140.0, \"scheduled_for\": \"2026-08-14T16:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-14T18:00:00+00:00",
+        "source": "x",
+        "rank": 30,
+        "value": 71.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-14T18:08:36.769000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 516.769, \"scheduled_for\": \"2026-08-14T18:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      }
+    ],
+    "keywords": [
+      {
+        "text": "한복 박람회",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "event_format",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "한복",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "event_subject",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+        ],
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "한복 박람회",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "event_format",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "한복",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "event_subject",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+        ],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 2,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 2,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [
+      {
+        "company": "F&F",
+        "stock_code": "383220",
+        "ticker": "383220",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 383220",
+        "company_description": "KOSPI 상장기업, 종목코드 383220",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.fnf.co.kr/about/identity",
+            "title": "F&F 공식 기업 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "brand_marketing",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "F&F",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://www.fnf.co.kr/about/identity"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "F&F",
+            "to": "383220 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.fnf.co.kr/about/identity"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "브랜드·마케팅",
+        "company_role_public": true,
+        "relation_category": "공간·현장 소비",
+        "value_chain_stage": "consumer",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 F&F은(는) '브랜드·마케팅' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "F&F",
+          "corp_code": "01568413",
+          "english_name": "F&F CO.,Ltd",
+          "established_date": "20210503",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 2832461268117,
+                "label": "자산총계",
+                "previous": 2651445897849
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 1981063533390,
+                "label": "자본총계",
+                "previous": 1878678882040
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 851397734727,
+                "label": "부채총계",
+                "previous": 772767015809
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 197556497674,
+                "label": "당기순이익(손실)",
+                "previous": 82569404768
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 153481999734,
+                "label": "영업이익",
+                "previous": 123616388060
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 560898180961,
+                "label": "매출액",
+                "previous": 505616173458
+              }
+            },
+            "business_year": 2026,
+            "company": "F&F",
+            "corp_code": "01568413",
+            "filing_receipt_no": "20260515002764",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002764",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:33:38.239906+00:00",
+            "status": "observed",
+            "stock_code": "383220"
+          },
+          "homepage": "https://www.fnf.co.kr",
+          "legal_name": "주식회사 에프앤에프",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "383220",
+          "stock_name": "F&F"
+        }
+      },
+      {
+        "company": "영원무역",
+        "stock_code": "111770",
+        "ticker": "111770",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 111770",
+        "company_description": "KOSPI 상장기업, 종목코드 111770",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://youngonecorporation.com/products/",
+            "title": "영원무역 공식 의류 제조 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "영원무역",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://youngonecorporation.com/products/"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "영원무역",
+            "to": "111770 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://youngonecorporation.com/products/"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 영원무역은(는) '제조·개발' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "영원무역",
+          "corp_code": "00776820",
+          "english_name": "Youngone Corporation",
+          "established_date": "20090702",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 6065200493129,
+                "label": "자산총계",
+                "previous": 5716939046441
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 4314906724833,
+                "label": "자본총계",
+                "previous": 4105477128835
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 1750293768296,
+                "label": "부채총계",
+                "previous": 1611461917606
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 149716026700,
+                "label": "당기순이익(손실)",
+                "previous": 70225516970
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 120402536595,
+                "label": "영업이익",
+                "previous": 82321576910
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 895795359601,
+                "label": "매출액",
+                "previous": 811347715731
+              }
+            },
+            "business_year": 2026,
+            "company": "영원무역",
+            "corp_code": "00776820",
+            "filing_receipt_no": "20260514001455",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260514001455",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:33:37.634844+00:00",
+            "status": "observed",
+            "stock_code": "111770"
+          },
+          "homepage": "https://-",
+          "legal_name": "(주)영원무역",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "111770",
+          "stock_name": "영원무역"
+        }
+      },
+      {
+        "company": "코오롱인더",
+        "stock_code": "120110",
+        "ticker": "120110",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 120110",
+        "company_description": "KOSPI 상장기업, 종목코드 120110",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.kolon.com/kr/subsidiary/fashion",
+            "title": "코오롱인더스트리 FnC 공식 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "brand_marketing",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "코오롱인더",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://www.kolon.com/kr/subsidiary/fashion"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "코오롱인더",
+            "to": "120110 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.kolon.com/kr/subsidiary/fashion"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "브랜드·마케팅",
+        "company_role_public": true,
+        "relation_category": "공간·현장 소비",
+        "value_chain_stage": "consumer",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 코오롱인더은(는) '브랜드·마케팅' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "코오롱인더",
+          "corp_code": "00795135",
+          "english_name": "KOLON INDUSTRIES, INC.",
+          "established_date": "20100105",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 8017879599468,
+                "label": "자산총계",
+                "previous": 7682530168368
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 4283796419744,
+                "label": "자본총계",
+                "previous": 4065013253023
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 3734083179724,
+                "label": "부채총계",
+                "previous": 3617516915345
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 79706654219,
+                "label": "당기순이익(손실)",
+                "previous": 19773831513
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 61916101210,
+                "label": "영업이익",
+                "previous": 26931854081
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 1237420819717,
+                "label": "매출액",
+                "previous": 1231582942453
+              }
+            },
+            "business_year": 2026,
+            "company": "코오롱인더",
+            "corp_code": "00795135",
+            "filing_receipt_no": "20260515001496",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515001496",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:25:48.124219+00:00",
+            "status": "observed",
+            "stock_code": "120110"
+          },
+          "homepage": "https://www.kolonindustries.com/",
+          "legal_name": "코오롱인더스트리(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "120110",
+          "stock_name": "코오롱인더"
+        }
+      },
+      {
+        "company": "한섬",
+        "stock_code": "020000",
+        "ticker": "020000",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 020000",
+        "company_description": "KOSPI 상장기업, 종목코드 020000",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.handsome.co.kr/ko/company/aboutHandsome.do",
+            "title": "한섬 공식 기업 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "retail_sales",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "한섬",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://www.handsome.co.kr/ko/company/aboutHandsome.do"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "한섬",
+            "to": "020000 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.handsome.co.kr/ko/company/aboutHandsome.do"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "판매·리테일",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 한섬은(는) '판매·리테일' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "한섬",
+          "corp_code": "00188089",
+          "english_name": "HANDSOME CORPORATION",
+          "established_date": "19870525",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 1719418757000,
+                "label": "자산총계",
+                "previous": 1734833488000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 1447983916000,
+                "label": "자본총계",
+                "previous": 1437094095000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 271434841000,
+                "label": "부채총계",
+                "previous": 297739393000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 27342835000,
+                "label": "당기순이익(손실)",
+                "previous": 18354940000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 36527785000,
+                "label": "영업이익",
+                "previous": 21781293000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 410365517000,
+                "label": "매출액",
+                "previous": 380324142000
+              }
+            },
+            "business_year": 2026,
+            "company": "한섬",
+            "corp_code": "00188089",
+            "filing_receipt_no": "20260515001264",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515001264",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:25:47.746863+00:00",
+            "status": "observed",
+            "stock_code": "020000"
+          },
+          "homepage": "https://www.handsome.co.kr",
+          "legal_name": "(주)한섬",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "020000",
+          "stock_name": "한섬"
+        }
+      },
+      {
+        "company": "한세실업",
+        "stock_code": "105630",
+        "ticker": "105630",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 105630",
+        "company_description": "KOSPI 상장기업, 종목코드 105630",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.hansae.com/",
+            "title": "한세실업 공식 기업 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "한세실업",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.hansae.com/"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "한세실업",
+            "to": "105630 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.hansae.com/"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 한세실업은(는) '제조·개발' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "한세실업",
+          "corp_code": "00728638",
+          "english_name": "HANSAE CO.,LTD.",
+          "established_date": "20090106",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 1577511881348,
+                "label": "자산총계",
+                "previous": 1535658846708
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 721841243707,
+                "label": "자본총계",
+                "previous": 734724634343
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 855670637641,
+                "label": "부채총계",
+                "previous": 800934212365
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": -3744581931,
+                "label": "당기순이익(손실)",
+                "previous": 9440045321
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 10450391108,
+                "label": "영업이익",
+                "previous": 20281084926
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 467216300289,
+                "label": "매출액",
+                "previous": 467269123439
+              }
+            },
+            "business_year": 2026,
+            "company": "한세실업",
+            "corp_code": "00728638",
+            "filing_receipt_no": "20260515002128",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002128",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:33:37.258340+00:00",
+            "status": "observed",
+            "stock_code": "105630"
+          },
+          "homepage": "https://www.hansae.com",
+          "legal_name": "한세실업(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "105630",
+          "stock_name": "한세실업"
+        }
+      },
+      {
+        "company": "효성티앤씨",
+        "stock_code": "298020",
+        "ticker": "298020",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 298020",
+        "company_description": "KOSPI 상장기업, 종목코드 298020",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.hyosungtnc.com/kr/business/textile/fabric",
+            "title": "효성티앤씨 공식 섬유 사업",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "raw_materials_components",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "효성티앤씨",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://www.hyosungtnc.com/kr/business/textile/fabric"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "효성티앤씨",
+            "to": "298020 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.hyosungtnc.com/kr/business/textile/fabric"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "원재료·핵심부품",
+        "company_role_public": true,
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 효성티앤씨은(는) '원재료·핵심부품' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "효성티앤씨",
+          "corp_code": "01316227",
+          "english_name": "Hyosung TNC Corporation",
+          "established_date": "20180604",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 6340864569133,
+                "label": "자산총계",
+                "previous": 5739089251365
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 2200330942702,
+                "label": "자본총계",
+                "previous": 1956911565949
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 4140533626431,
+                "label": "부채총계",
+                "previous": 3782177685416
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 174790709480,
+                "label": "당기순이익(손실)",
+                "previous": 45815443398
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 275004370926,
+                "label": "영업이익",
+                "previous": 150705619122
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 4510392505992,
+                "label": "매출액",
+                "previous": 3841872712800
+              }
+            },
+            "business_year": 2026,
+            "company": "효성티앤씨",
+            "corp_code": "01316227",
+            "filing_receipt_no": "20260813001535",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260813001535",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11012",
+            "report_label": "반기보고서",
+            "retrieved_at": "2026-08-13T19:33:37.978942+00:00",
+            "status": "observed",
+            "stock_code": "298020"
+          },
+          "homepage": "https://www.hyosungtnc.com",
+          "legal_name": "효성티앤씨(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "298020",
+          "stock_name": "효성티앤씨"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "F&F",
+        "stock_code": "383220",
+        "ticker": "383220",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 383220",
+        "company_description": "KOSPI 상장기업, 종목코드 383220",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.fnf.co.kr/about/identity",
+            "title": "F&F 공식 기업 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "brand_marketing",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "F&F",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://www.fnf.co.kr/about/identity"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "F&F",
+            "to": "383220 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.fnf.co.kr/about/identity"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "브랜드·마케팅",
+        "company_role_public": true,
+        "relation_category": "공간·현장 소비",
+        "value_chain_stage": "consumer",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 F&F은(는) '브랜드·마케팅' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "F&F",
+          "corp_code": "01568413",
+          "english_name": "F&F CO.,Ltd",
+          "established_date": "20210503",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 2832461268117,
+                "label": "자산총계",
+                "previous": 2651445897849
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 1981063533390,
+                "label": "자본총계",
+                "previous": 1878678882040
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 851397734727,
+                "label": "부채총계",
+                "previous": 772767015809
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 197556497674,
+                "label": "당기순이익(손실)",
+                "previous": 82569404768
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 153481999734,
+                "label": "영업이익",
+                "previous": 123616388060
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 560898180961,
+                "label": "매출액",
+                "previous": 505616173458
+              }
+            },
+            "business_year": 2026,
+            "company": "F&F",
+            "corp_code": "01568413",
+            "filing_receipt_no": "20260515002764",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002764",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:33:38.239906+00:00",
+            "status": "observed",
+            "stock_code": "383220"
+          },
+          "homepage": "https://www.fnf.co.kr",
+          "legal_name": "주식회사 에프앤에프",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "383220",
+          "stock_name": "F&F"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "383220",
+          "name": "F&F",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 78900.0,
+              "high": 80600.0,
+              "low": 75900.0,
+              "close": 80500.0,
+              "volume": 106753.0,
+              "change_pct": 2.027883396704689
+            },
+            {
+              "date": "2026-08-03",
+              "open": 73900.0,
+              "high": 74000.0,
+              "low": 61400.0,
+              "close": 61800.0,
+              "volume": 403680.0,
+              "change_pct": -23.229813664596275
+            },
+            {
+              "date": "2026-08-04",
+              "open": 61300.0,
+              "high": 63700.0,
+              "low": 59900.0,
+              "close": 63300.0,
+              "volume": 249521.0,
+              "change_pct": 2.4271844660194173
+            },
+            {
+              "date": "2026-08-05",
+              "open": 63800.0,
+              "high": 67500.0,
+              "low": 62900.0,
+              "close": 65000.0,
+              "volume": 155070.0,
+              "change_pct": 2.6856240126382307
+            },
+            {
+              "date": "2026-08-06",
+              "open": 65300.0,
+              "high": 67700.0,
+              "low": 65300.0,
+              "close": 67000.0,
+              "volume": 79656.0,
+              "change_pct": 3.076923076923077
+            },
+            {
+              "date": "2026-08-07",
+              "open": 66500.0,
+              "high": 67300.0,
+              "low": 65700.0,
+              "close": 67000.0,
+              "volume": 73090.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-10",
+              "open": 66600.0,
+              "high": 68200.0,
+              "low": 64400.0,
+              "close": 67900.0,
+              "volume": 61330.0,
+              "change_pct": 1.3432835820895521
+            },
+            {
+              "date": "2026-08-11",
+              "open": 68300.0,
+              "high": 68600.0,
+              "low": 66700.0,
+              "close": 67000.0,
+              "volume": 29443.0,
+              "change_pct": -1.3254786450662739
+            },
+            {
+              "date": "2026-08-12",
+              "open": 67000.0,
+              "high": 67600.0,
+              "low": 65300.0,
+              "close": 66200.0,
+              "volume": 61622.0,
+              "change_pct": -1.1940298507462688
+            },
+            {
+              "date": "2026-08-13",
+              "open": 66200.0,
+              "high": 68900.0,
+              "low": 66200.0,
+              "close": 68800.0,
+              "volume": 124079.0,
+              "change_pct": 3.927492447129909
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 66200.0,
+            "high": 68900.0,
+            "low": 66200.0,
+            "close": 68800.0,
+            "volume": 124079.0,
+            "change_pct": 3.927492447129909
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 68800,
+            "daily_change_pct": 3.93,
+            "volume": 124079
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 2.69,
+            "five_vs_previous_volume_ratio": 0.35,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "영원무역",
+        "stock_code": "111770",
+        "ticker": "111770",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 111770",
+        "company_description": "KOSPI 상장기업, 종목코드 111770",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://youngonecorporation.com/products/",
+            "title": "영원무역 공식 의류 제조 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "영원무역",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://youngonecorporation.com/products/"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "영원무역",
+            "to": "111770 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://youngonecorporation.com/products/"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 영원무역은(는) '제조·개발' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "영원무역",
+          "corp_code": "00776820",
+          "english_name": "Youngone Corporation",
+          "established_date": "20090702",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 6065200493129,
+                "label": "자산총계",
+                "previous": 5716939046441
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 4314906724833,
+                "label": "자본총계",
+                "previous": 4105477128835
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 1750293768296,
+                "label": "부채총계",
+                "previous": 1611461917606
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 149716026700,
+                "label": "당기순이익(손실)",
+                "previous": 70225516970
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 120402536595,
+                "label": "영업이익",
+                "previous": 82321576910
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 895795359601,
+                "label": "매출액",
+                "previous": 811347715731
+              }
+            },
+            "business_year": 2026,
+            "company": "영원무역",
+            "corp_code": "00776820",
+            "filing_receipt_no": "20260514001455",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260514001455",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:33:37.634844+00:00",
+            "status": "observed",
+            "stock_code": "111770"
+          },
+          "homepage": "https://-",
+          "legal_name": "(주)영원무역",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "111770",
+          "stock_name": "영원무역"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "111770",
+          "name": "영원무역",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 89100.0,
+              "high": 92400.0,
+              "low": 85000.0,
+              "close": 89400.0,
+              "volume": 107982.0,
+              "change_pct": 0.33670033670033667
+            },
+            {
+              "date": "2026-08-03",
+              "open": 88000.0,
+              "high": 90000.0,
+              "low": 86600.0,
+              "close": 87900.0,
+              "volume": 54681.0,
+              "change_pct": -1.6778523489932886
+            },
+            {
+              "date": "2026-08-04",
+              "open": 86200.0,
+              "high": 89900.0,
+              "low": 85500.0,
+              "close": 89200.0,
+              "volume": 43486.0,
+              "change_pct": 1.4789533560864618
+            },
+            {
+              "date": "2026-08-05",
+              "open": 88600.0,
+              "high": 89800.0,
+              "low": 87000.0,
+              "close": 88200.0,
+              "volume": 88261.0,
+              "change_pct": -1.1210762331838564
+            },
+            {
+              "date": "2026-08-06",
+              "open": 88900.0,
+              "high": 95000.0,
+              "low": 88200.0,
+              "close": 95000.0,
+              "volume": 85007.0,
+              "change_pct": 7.709750566893423
+            },
+            {
+              "date": "2026-08-07",
+              "open": 93100.0,
+              "high": 95000.0,
+              "low": 91600.0,
+              "close": 93400.0,
+              "volume": 51305.0,
+              "change_pct": -1.6842105263157894
+            },
+            {
+              "date": "2026-08-10",
+              "open": 92600.0,
+              "high": 92700.0,
+              "low": 86300.0,
+              "close": 90500.0,
+              "volume": 68200.0,
+              "change_pct": -3.1049250535331905
+            },
+            {
+              "date": "2026-08-11",
+              "open": 90600.0,
+              "high": 92700.0,
+              "low": 89500.0,
+              "close": 90700.0,
+              "volume": 34390.0,
+              "change_pct": 0.22099447513812157
+            },
+            {
+              "date": "2026-08-12",
+              "open": 90500.0,
+              "high": 93200.0,
+              "low": 85200.0,
+              "close": 85200.0,
+              "volume": 79501.0,
+              "change_pct": -6.063947078280044
+            },
+            {
+              "date": "2026-08-13",
+              "open": 85400.0,
+              "high": 86500.0,
+              "low": 82600.0,
+              "close": 84700.0,
+              "volume": 91769.0,
+              "change_pct": -0.5868544600938966
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 85400.0,
+            "high": 86500.0,
+            "low": 82600.0,
+            "close": 84700.0,
+            "volume": 91769.0,
+            "change_pct": -0.5868544600938966
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 84700,
+            "daily_change_pct": -0.59,
+            "volume": 91769
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": -9.31,
+            "five_vs_previous_volume_ratio": 0.86,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "코오롱인더",
+        "stock_code": "120110",
+        "ticker": "120110",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 120110",
+        "company_description": "KOSPI 상장기업, 종목코드 120110",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.kolon.com/kr/subsidiary/fashion",
+            "title": "코오롱인더스트리 FnC 공식 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "brand_marketing",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "코오롱인더",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://www.kolon.com/kr/subsidiary/fashion"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "코오롱인더",
+            "to": "120110 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.kolon.com/kr/subsidiary/fashion"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "브랜드·마케팅",
+        "company_role_public": true,
+        "relation_category": "공간·현장 소비",
+        "value_chain_stage": "consumer",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 코오롱인더은(는) '브랜드·마케팅' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "코오롱인더",
+          "corp_code": "00795135",
+          "english_name": "KOLON INDUSTRIES, INC.",
+          "established_date": "20100105",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 8017879599468,
+                "label": "자산총계",
+                "previous": 7682530168368
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 4283796419744,
+                "label": "자본총계",
+                "previous": 4065013253023
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 3734083179724,
+                "label": "부채총계",
+                "previous": 3617516915345
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 79706654219,
+                "label": "당기순이익(손실)",
+                "previous": 19773831513
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 61916101210,
+                "label": "영업이익",
+                "previous": 26931854081
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 1237420819717,
+                "label": "매출액",
+                "previous": 1231582942453
+              }
+            },
+            "business_year": 2026,
+            "company": "코오롱인더",
+            "corp_code": "00795135",
+            "filing_receipt_no": "20260515001496",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515001496",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:25:48.124219+00:00",
+            "status": "observed",
+            "stock_code": "120110"
+          },
+          "homepage": "https://www.kolonindustries.com/",
+          "legal_name": "코오롱인더스트리(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "120110",
+          "stock_name": "코오롱인더"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "120110",
+          "name": "코오롱인더",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 46450.0,
+              "high": 48850.0,
+              "low": 46450.0,
+              "close": 48050.0,
+              "volume": 254936.0,
+              "change_pct": 4.3431053203040175
+            },
+            {
+              "date": "2026-08-03",
+              "open": 44400.0,
+              "high": 49650.0,
+              "low": 44400.0,
+              "close": 48650.0,
+              "volume": 147598.0,
+              "change_pct": 1.2486992715920915
+            },
+            {
+              "date": "2026-08-04",
+              "open": 48200.0,
+              "high": 52200.0,
+              "low": 48000.0,
+              "close": 52100.0,
+              "volume": 99887.0,
+              "change_pct": 7.091469681397738
+            },
+            {
+              "date": "2026-08-05",
+              "open": 53100.0,
+              "high": 54200.0,
+              "low": 52800.0,
+              "close": 53800.0,
+              "volume": 58316.0,
+              "change_pct": 3.262955854126679
+            },
+            {
+              "date": "2026-08-06",
+              "open": 53600.0,
+              "high": 58700.0,
+              "low": 53000.0,
+              "close": 56900.0,
+              "volume": 190460.0,
+              "change_pct": 5.762081784386617
+            },
+            {
+              "date": "2026-08-07",
+              "open": 57000.0,
+              "high": 59500.0,
+              "low": 53900.0,
+              "close": 58600.0,
+              "volume": 173903.0,
+              "change_pct": 2.987697715289982
+            },
+            {
+              "date": "2026-08-10",
+              "open": 59300.0,
+              "high": 59400.0,
+              "low": 54300.0,
+              "close": 58600.0,
+              "volume": 276085.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-11",
+              "open": 58700.0,
+              "high": 61100.0,
+              "low": 56200.0,
+              "close": 56600.0,
+              "volume": 220498.0,
+              "change_pct": -3.4129692832764507
+            },
+            {
+              "date": "2026-08-12",
+              "open": 56200.0,
+              "high": 56800.0,
+              "low": 54800.0,
+              "close": 55900.0,
+              "volume": 254033.0,
+              "change_pct": -1.2367491166077738
+            },
+            {
+              "date": "2026-08-13",
+              "open": 56300.0,
+              "high": 57300.0,
+              "low": 54400.0,
+              "close": 55700.0,
+              "volume": 185989.0,
+              "change_pct": -0.35778175313059035
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 56300.0,
+            "high": 57300.0,
+            "low": 54400.0,
+            "close": 55700.0,
+            "volume": 185989.0,
+            "change_pct": -0.35778175313059035
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 55700,
+            "daily_change_pct": -0.36,
+            "volume": 185989
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -4.95,
+            "five_vs_previous_volume_ratio": 1.48,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "한섬",
+        "stock_code": "020000",
+        "ticker": "020000",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 020000",
+        "company_description": "KOSPI 상장기업, 종목코드 020000",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.handsome.co.kr/ko/company/aboutHandsome.do",
+            "title": "한섬 공식 기업 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "retail_sales",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "한섬",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://www.handsome.co.kr/ko/company/aboutHandsome.do"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "한섬",
+            "to": "020000 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.handsome.co.kr/ko/company/aboutHandsome.do"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "판매·리테일",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 한섬은(는) '판매·리테일' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "한섬",
+          "corp_code": "00188089",
+          "english_name": "HANDSOME CORPORATION",
+          "established_date": "19870525",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 1719418757000,
+                "label": "자산총계",
+                "previous": 1734833488000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 1447983916000,
+                "label": "자본총계",
+                "previous": 1437094095000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 271434841000,
+                "label": "부채총계",
+                "previous": 297739393000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 27342835000,
+                "label": "당기순이익(손실)",
+                "previous": 18354940000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 36527785000,
+                "label": "영업이익",
+                "previous": 21781293000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 410365517000,
+                "label": "매출액",
+                "previous": 380324142000
+              }
+            },
+            "business_year": 2026,
+            "company": "한섬",
+            "corp_code": "00188089",
+            "filing_receipt_no": "20260515001264",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515001264",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:25:47.746863+00:00",
+            "status": "observed",
+            "stock_code": "020000"
+          },
+          "homepage": "https://www.handsome.co.kr",
+          "legal_name": "(주)한섬",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "020000",
+          "stock_name": "한섬"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "020000",
+          "name": "한섬",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 19710.0,
+              "high": 19750.0,
+              "low": 18400.0,
+              "close": 19700.0,
+              "volume": 137011.0,
+              "change_pct": 1.337448559670782
+            },
+            {
+              "date": "2026-08-03",
+              "open": 19830.0,
+              "high": 20150.0,
+              "low": 17340.0,
+              "close": 17460.0,
+              "volume": 153593.0,
+              "change_pct": -11.370558375634518
+            },
+            {
+              "date": "2026-08-04",
+              "open": 17690.0,
+              "high": 17690.0,
+              "low": 15550.0,
+              "close": 16470.0,
+              "volume": 917257.0,
+              "change_pct": -5.670103092783505
+            },
+            {
+              "date": "2026-08-05",
+              "open": 16560.0,
+              "high": 16660.0,
+              "low": 16100.0,
+              "close": 16310.0,
+              "volume": 269482.0,
+              "change_pct": -0.9714632665452339
+            },
+            {
+              "date": "2026-08-06",
+              "open": 16270.0,
+              "high": 16300.0,
+              "low": 15750.0,
+              "close": 16100.0,
+              "volume": 208098.0,
+              "change_pct": -1.2875536480686696
+            },
+            {
+              "date": "2026-08-07",
+              "open": 16160.0,
+              "high": 16490.0,
+              "low": 16120.0,
+              "close": 16240.0,
+              "volume": 132530.0,
+              "change_pct": 0.8695652173913043
+            },
+            {
+              "date": "2026-08-10",
+              "open": 16400.0,
+              "high": 16490.0,
+              "low": 15960.0,
+              "close": 16390.0,
+              "volume": 207199.0,
+              "change_pct": 0.9236453201970444
+            },
+            {
+              "date": "2026-08-11",
+              "open": 16420.0,
+              "high": 16440.0,
+              "low": 16170.0,
+              "close": 16190.0,
+              "volume": 112152.0,
+              "change_pct": -1.2202562538133008
+            },
+            {
+              "date": "2026-08-12",
+              "open": 16210.0,
+              "high": 16420.0,
+              "low": 16000.0,
+              "close": 16090.0,
+              "volume": 197861.0,
+              "change_pct": -0.6176652254478072
+            },
+            {
+              "date": "2026-08-13",
+              "open": 16140.0,
+              "high": 16260.0,
+              "low": 15760.0,
+              "close": 15900.0,
+              "volume": 243880.0,
+              "change_pct": -1.1808576755748912
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 16140.0,
+            "high": 16260.0,
+            "low": 15760.0,
+            "close": 15900.0,
+            "volume": 243880.0,
+            "change_pct": -1.1808576755748912
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 15900,
+            "daily_change_pct": -1.18,
+            "volume": 243880
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -2.09,
+            "five_vs_previous_volume_ratio": 0.53,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "한세실업",
+        "stock_code": "105630",
+        "ticker": "105630",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 105630",
+        "company_description": "KOSPI 상장기업, 종목코드 105630",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.hansae.com/",
+            "title": "한세실업 공식 기업 소개",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "한세실업",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://www.hansae.com/"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "한세실업",
+            "to": "105630 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.hansae.com/"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 한세실업은(는) '제조·개발' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "한세실업",
+          "corp_code": "00728638",
+          "english_name": "HANSAE CO.,LTD.",
+          "established_date": "20090106",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 1577511881348,
+                "label": "자산총계",
+                "previous": 1535658846708
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 721841243707,
+                "label": "자본총계",
+                "previous": 734724634343
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 855670637641,
+                "label": "부채총계",
+                "previous": 800934212365
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": -3744581931,
+                "label": "당기순이익(손실)",
+                "previous": 9440045321
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 10450391108,
+                "label": "영업이익",
+                "previous": 20281084926
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 467216300289,
+                "label": "매출액",
+                "previous": 467269123439
+              }
+            },
+            "business_year": 2026,
+            "company": "한세실업",
+            "corp_code": "00728638",
+            "filing_receipt_no": "20260515002128",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002128",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:33:37.258340+00:00",
+            "status": "observed",
+            "stock_code": "105630"
+          },
+          "homepage": "https://www.hansae.com",
+          "legal_name": "한세실업(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "105630",
+          "stock_name": "한세실업"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "105630",
+          "name": "한세실업",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 9170.0,
+              "high": 9250.0,
+              "low": 8960.0,
+              "close": 9120.0,
+              "volume": 44600.0,
+              "change_pct": 1.3333333333333335
+            },
+            {
+              "date": "2026-08-03",
+              "open": 9100.0,
+              "high": 9200.0,
+              "low": 8970.0,
+              "close": 9000.0,
+              "volume": 26987.0,
+              "change_pct": -1.3157894736842104
+            },
+            {
+              "date": "2026-08-04",
+              "open": 8940.0,
+              "high": 9250.0,
+              "low": 8940.0,
+              "close": 9230.0,
+              "volume": 45135.0,
+              "change_pct": 2.555555555555556
+            },
+            {
+              "date": "2026-08-05",
+              "open": 9290.0,
+              "high": 9350.0,
+              "low": 9180.0,
+              "close": 9210.0,
+              "volume": 25931.0,
+              "change_pct": -0.21668472372697722
+            },
+            {
+              "date": "2026-08-06",
+              "open": 9220.0,
+              "high": 9350.0,
+              "low": 9100.0,
+              "close": 9190.0,
+              "volume": 32574.0,
+              "change_pct": -0.21715526601520088
+            },
+            {
+              "date": "2026-08-07",
+              "open": 9230.0,
+              "high": 9320.0,
+              "low": 9110.0,
+              "close": 9170.0,
+              "volume": 32193.0,
+              "change_pct": -0.2176278563656148
+            },
+            {
+              "date": "2026-08-10",
+              "open": 9170.0,
+              "high": 9210.0,
+              "low": 8930.0,
+              "close": 9170.0,
+              "volume": 44662.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-11",
+              "open": 9110.0,
+              "high": 9280.0,
+              "low": 9110.0,
+              "close": 9120.0,
+              "volume": 44517.0,
+              "change_pct": -0.5452562704471101
+            },
+            {
+              "date": "2026-08-12",
+              "open": 9210.0,
+              "high": 9220.0,
+              "low": 9000.0,
+              "close": 9020.0,
+              "volume": 41919.0,
+              "change_pct": -1.0964912280701753
+            },
+            {
+              "date": "2026-08-13",
+              "open": 9030.0,
+              "high": 9080.0,
+              "low": 8930.0,
+              "close": 8980.0,
+              "volume": 37870.0,
+              "change_pct": -0.4434589800443459
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 9030.0,
+            "high": 9080.0,
+            "low": 8930.0,
+            "close": 8980.0,
+            "volume": 37870.0,
+            "change_pct": -0.4434589800443459
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 8980,
+            "daily_change_pct": -0.44,
+            "volume": 37870
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -2.07,
+            "five_vs_previous_volume_ratio": 1.15,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "효성티앤씨",
+        "stock_code": "298020",
+        "ticker": "298020",
+        "market": "KOSPI",
+        "relation_type": "observed_event",
+        "strength": "indirect",
+        "reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 298020",
+        "company_description": "KOSPI 상장기업, 종목코드 298020",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+        "evidence_sources": [
+          {
+            "url": "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+            "title": "2026 한복상점 공식 안내",
+            "evidence_type": "official_event_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.hyosungtnc.com/kr/business/textile/fabric",
+            "title": "효성티앤씨 공식 섬유 사업",
+            "evidence_type": "official_company_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "raw_materials_components",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "한복상점",
+        "matched_ontology_node": "한복상점",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "한복상점",
+            "to": "한복상점",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "한복상점",
+            "to": "2026 한복상점",
+            "edge_type": "observed_event",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "evidence_type": [
+              "official_event_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "2026 한복상점",
+            "to": "효성티앤씨",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://www.hyosungtnc.com/kr/business/textile/fabric"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "효성티앤씨",
+            "to": "298020 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.hyosungtnc.com/kr/business/textile/fabric"
+            ],
+            "evidence_type": [
+              "official_company_page"
+            ],
+            "as_of": "2026-08-14T18:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "원재료·핵심부품",
+        "company_role_public": true,
+        "relation_category": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "matched_keywords": [
+          "한복 박람회",
+          "한복"
+        ],
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 효성티앤씨은(는) '원재료·핵심부품' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "효성티앤씨",
+          "corp_code": "01316227",
+          "english_name": "Hyosung TNC Corporation",
+          "established_date": "20180604",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 6340864569133,
+                "label": "자산총계",
+                "previous": 5739089251365
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 2200330942702,
+                "label": "자본총계",
+                "previous": 1956911565949
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 4140533626431,
+                "label": "부채총계",
+                "previous": 3782177685416
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 174790709480,
+                "label": "당기순이익(손실)",
+                "previous": 45815443398
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 275004370926,
+                "label": "영업이익",
+                "previous": 150705619122
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 4510392505992,
+                "label": "매출액",
+                "previous": 3841872712800
+              }
+            },
+            "business_year": 2026,
+            "company": "효성티앤씨",
+            "corp_code": "01316227",
+            "filing_receipt_no": "20260813001535",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260813001535",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11012",
+            "report_label": "반기보고서",
+            "retrieved_at": "2026-08-13T19:33:37.978942+00:00",
+            "status": "observed",
+            "stock_code": "298020"
+          },
+          "homepage": "https://www.hyosungtnc.com",
+          "legal_name": "효성티앤씨(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "298020",
+          "stock_name": "효성티앤씨"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "298020",
+          "name": "효성티앤씨",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 299000.0,
+              "high": 311500.0,
+              "low": 291000.0,
+              "close": 308000.0,
+              "volume": 26620.0,
+              "change_pct": 3.1825795644891124
+            },
+            {
+              "date": "2026-08-03",
+              "open": 318000.0,
+              "high": 325000.0,
+              "low": 295000.0,
+              "close": 314000.0,
+              "volume": 30369.0,
+              "change_pct": 1.948051948051948
+            },
+            {
+              "date": "2026-08-04",
+              "open": 312000.0,
+              "high": 322000.0,
+              "low": 293000.0,
+              "close": 320500.0,
+              "volume": 42124.0,
+              "change_pct": 2.0700636942675157
+            },
+            {
+              "date": "2026-08-05",
+              "open": 323000.0,
+              "high": 343000.0,
+              "low": 323000.0,
+              "close": 330000.0,
+              "volume": 20221.0,
+              "change_pct": 2.9641185647425896
+            },
+            {
+              "date": "2026-08-06",
+              "open": 329500.0,
+              "high": 347500.0,
+              "low": 328000.0,
+              "close": 345500.0,
+              "volume": 21409.0,
+              "change_pct": 4.696969696969696
+            },
+            {
+              "date": "2026-08-07",
+              "open": 341000.0,
+              "high": 343000.0,
+              "low": 328000.0,
+              "close": 339000.0,
+              "volume": 21924.0,
+              "change_pct": -1.881331403762663
+            },
+            {
+              "date": "2026-08-10",
+              "open": 337000.0,
+              "high": 350000.0,
+              "low": 330000.0,
+              "close": 349500.0,
+              "volume": 18405.0,
+              "change_pct": 3.0973451327433628
+            },
+            {
+              "date": "2026-08-11",
+              "open": 347000.0,
+              "high": 348500.0,
+              "low": 330000.0,
+              "close": 331000.0,
+              "volume": 20166.0,
+              "change_pct": -5.293276108726753
+            },
+            {
+              "date": "2026-08-12",
+              "open": 331500.0,
+              "high": 336000.0,
+              "low": 316500.0,
+              "close": 318500.0,
+              "volume": 34466.0,
+              "change_pct": -3.7764350453172204
+            },
+            {
+              "date": "2026-08-13",
+              "open": 321500.0,
+              "high": 323500.0,
+              "low": 316000.0,
+              "close": 323000.0,
+              "volume": 19436.0,
+              "change_pct": 1.4128728414442702
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 321500.0,
+            "high": 323500.0,
+            "low": 316000.0,
+            "close": 323000.0,
+            "volume": 19436.0,
+            "change_pct": 1.4128728414442702
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 323000,
+            "daily_change_pct": 1.41,
+            "volume": 19436
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -4.72,
+            "five_vs_previous_volume_ratio": 0.81,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_categories": [
+      {
+        "name": "공간·현장 소비",
+        "value_chain_stage": "consumer",
+        "companies": [
+          "F&F",
+          "코오롱인더"
+        ],
+        "candidate_count": 2,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "영원무역",
+          "한세실업"
+        ],
+        "candidate_count": 2,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "companies": [
+          "한섬"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "companies": [
+          "효성티앤씨"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "candidate_company_categories": [
+      {
+        "name": "공간·현장 소비",
+        "value_chain_stage": "consumer",
+        "companies": [
+          "F&F",
+          "코오롱인더"
+        ],
+        "candidate_count": 2,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "영원무역",
+          "한세실업"
+        ],
+        "candidate_count": 2,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "companies": [
+          "한섬"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "원재료·부품·인프라",
+        "value_chain_stage": "upstream",
+        "companies": [
+          "효성티앤씨"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [
+        "플랫폼·채널"
+      ],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 6,
+        "industry_watch": 0
+      },
+      "category_count": 4,
+      "candidate_category_count": 4,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "한복상점",
+            "observation_status": "observed_representative",
+            "ontology_status": "published",
+            "ontology_company_count": 6,
+            "lookup_match": {
+              "match_type": "exact_term",
+              "matched_label": "한복상점",
+              "target_node_id": "term:reviewed:hanbokexpo",
+              "target_node_label": "한복상점",
+              "review_status": "node_label",
+              "evidence": []
+            }
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "증거 온톨로지 경로가 완결된 고유 상장기업 3개 이상을 내부 Gold 후보층으로 보존"
+    },
+    "rank": 374,
+    "observed_rank": 374,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 124,
+    "momentum_rank": 383,
+    "main_rank": 21,
+    "keyword_company_links": [
+      {
+        "keyword": "한복 박람회",
+        "company": "F&F",
+        "stock_code": "383220",
+        "company_role_category": "brand_marketing",
+        "company_role_label": "브랜드·마케팅",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 F&F은(는) '브랜드·마케팅' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.fnf.co.kr/about/identity"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복",
+        "company": "F&F",
+        "stock_code": "383220",
+        "company_role_category": "brand_marketing",
+        "company_role_label": "브랜드·마케팅",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 F&F은(는) '브랜드·마케팅' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → F&F → 383220 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.fnf.co.kr/about/identity"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복 박람회",
+        "company": "영원무역",
+        "stock_code": "111770",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 영원무역은(는) '제조·개발' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://youngonecorporation.com/products/"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복",
+        "company": "영원무역",
+        "stock_code": "111770",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 영원무역은(는) '제조·개발' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 영원무역 → 111770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://youngonecorporation.com/products/"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복 박람회",
+        "company": "코오롱인더",
+        "stock_code": "120110",
+        "company_role_category": "brand_marketing",
+        "company_role_label": "브랜드·마케팅",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 코오롱인더은(는) '브랜드·마케팅' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.kolon.com/kr/subsidiary/fashion"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복",
+        "company": "코오롱인더",
+        "stock_code": "120110",
+        "company_role_category": "brand_marketing",
+        "company_role_label": "브랜드·마케팅",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 코오롱인더은(는) '브랜드·마케팅' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 코오롱인더 → 120110 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.kolon.com/kr/subsidiary/fashion"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복 박람회",
+        "company": "한섬",
+        "stock_code": "020000",
+        "company_role_category": "retail_sales",
+        "company_role_label": "판매·리테일",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 한섬은(는) '판매·리테일' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.handsome.co.kr/ko/company/aboutHandsome.do"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복",
+        "company": "한섬",
+        "stock_code": "020000",
+        "company_role_category": "retail_sales",
+        "company_role_label": "판매·리테일",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 한섬은(는) '판매·리테일' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한섬 → 020000 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.handsome.co.kr/ko/company/aboutHandsome.do"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복 박람회",
+        "company": "한세실업",
+        "stock_code": "105630",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 한세실업은(는) '제조·개발' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.hansae.com/"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복",
+        "company": "한세실업",
+        "stock_code": "105630",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 한세실업은(는) '제조·개발' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 한세실업 → 105630 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.hansae.com/"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복 박람회",
+        "company": "효성티앤씨",
+        "stock_code": "298020",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 효성티앤씨은(는) '원재료·핵심부품' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.hyosungtnc.com/kr/business/textile/fabric"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "한복",
+        "company": "효성티앤씨",
+        "stock_code": "298020",
+        "company_role_category": "raw_materials_components",
+        "company_role_label": "원재료·핵심부품",
+        "relationship_reason": "관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "한복 박람회, 한복 관련 맥락에서 효성티앤씨은(는) '원재료·핵심부품' 역할로 연결됩니다. 관측어 '한복상점'에서 한복상점 → 2026 한복상점 → 효성티앤씨 → 298020 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216",
+          "https://www.hyosungtnc.com/kr/business/textile/fabric"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      }
+    ],
+    "linked_keyword_count": 2,
+    "keyword_company_link_status": "ready",
+    "unlinked_related_keywords": [],
+    "home_context_status": "review_required",
+    "home_context_reason": "trigger_evidence_incomplete",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_ten_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_ten"
+    ],
+    "frontend_keyword_count": 2,
+    "frontend_company_count": 6,
+    "frontend_company_role_category_count": 4,
+    "publication_rank": null,
+    "attention_change": {
+      "1w": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "1m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "3m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "insufficient_90_day_observed_history"
+      }
+    },
+    "trend_story": {
+      "schema_version": "trend-story-v1",
+      "status": "observed_context_only",
+      "origin": {
+        "observed_term": "한복상점",
+        "first_observed_at": "2026-08-13T09:00:00+00:00",
+        "trigger_title": "",
+        "trigger_type": "",
+        "why_now": "",
+        "evidence_urls": [],
+        "assertion": "observed_trigger_or_context_not_causal_origin"
+      },
+      "relationship_graph": {
+        "interpretation": "observed_context_graph_not_causal_lineage",
+        "nodes": [
+          {
+            "id": "trend:root",
+            "label": "한복상점",
+            "node_type": "observed_trend_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:1",
+            "label": "한복 박람회",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:2",
+            "label": "한복",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          }
+        ],
+        "edges": [
+          {
+            "from": "trend:root",
+            "to": "keyword:1",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:2",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://www.kcdf.or.kr/hanbokexpo/brd/board/244/L/menu/216"
+            ],
+            "causality": "not_inferred"
+          }
+        ]
+      },
+      "diffusion": {
+        "lifecycle": "sustained",
+        "trend_stage": {
+          "key": "mainstream",
+          "label": "대중화",
+          "index": 3
+        },
+        "phase_label": "대중화",
+        "stage_index": 3,
+        "progress_percent": 88,
+        "observed_day_label": "관측 2일차",
+        "observed_hours": 11,
+        "caption": "반복 관측되며 대중 관심이 유지되는 구간입니다.",
+        "attention_lift": {
+          "status": "normalized_signal",
+          "metric": "source_rank_velocity_index",
+          "value": -7.61,
+          "unit": "points",
+          "label": "관심 속도 지표 -7.6p"
+        },
+        "attention_windows": [
+          {
+            "key": "1w",
+            "label": "1주",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "1m",
+            "label": "1개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "3m",
+            "label": "3개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "insufficient_90_day_observed_history",
+            "is_absolute_mention_count": false
+          }
+        ],
+        "channels": [
+          {
+            "source": "x",
+            "label": "X",
+            "latest_rank": 30,
+            "rank_change": -1,
+            "movement_label": "직전 관측 대비 순위 -1",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": true,
+            "affects_multisource_home_rank": false
+          }
+        ],
+        "ranking_input_policy": "home-feed-selection-v2-x-google-only"
+      }
+    },
+    "frontend_projection": {
+      "trend_name": "한복상점",
+      "trend_category": "패션·뷰티·여행·생활",
+      "trend_core": "한복상점",
+      "observed_day_label": "관측 2일차",
+      "phase_label": "대중화",
+      "stage_index": 3,
+      "progress_percent": 88,
+      "attention_lift": {
+        "status": "normalized_signal",
+        "metric": "source_rank_velocity_index",
+        "value": -7.61,
+        "unit": "points",
+        "label": "관심 속도 지표 -7.6p"
+      },
+      "attention_windows": [
+        {
+          "key": "1w",
+          "label": "1주",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "1m",
+          "label": "1개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "3m",
+          "label": "3개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "insufficient_90_day_observed_history",
+          "is_absolute_mention_count": false
+        }
+      ],
+      "current_rank": 374,
+      "caption": "반복 관측되며 대중 관심이 유지되는 구간입니다.",
+      "related_keyword_count": 2,
+      "company_grouping": "company_role_category",
+      "is_mock": false
+    },
+    "ranking_availability_status": "mature_combined",
+    "semantic_adjudication_status": "not_eligible"
+  }
+}

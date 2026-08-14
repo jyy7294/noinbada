@@ -1,0 +1,105 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-89bbaff598644b5091482ba66735be7e",
+  "generated_at": "2026-08-14T18:09:37.563190+00:00",
+  "observed_at": "2026-08-14T18:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "rank": 443,
+    "observed_rank": 443,
+    "main_rank": null,
+    "home_rank": null,
+    "publication_rank": null,
+    "rising_rank": null,
+    "event_key": "데이즈드",
+    "display_name": "데이즈드",
+    "topic": "데이즈드",
+    "broad_category": "other",
+    "category": "unclassified",
+    "category_label": "기타·검토",
+    "trend_definition": "'데이즈드'은(는) 구체적인 대상과 그 이용 맥락에 관심이 모이는 흐름입니다. X와 Google 대한민국 관측값에서 확인된 맥락을 설명합니다.",
+    "lane": "review",
+    "home_eligible": false,
+    "score": 17.73,
+    "score_components": {
+      "period_strength_points": 9.39,
+      "momentum_points": 0.0,
+      "persistence_points": 0.27,
+      "recency_points": 8.07,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 17.73
+    },
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "x"
+    ],
+    "period_strength": 0.268213,
+    "current_source_position": 0.268213,
+    "momentum": 0.0,
+    "momentum_delta": null,
+    "persistence": 0.026786,
+    "freshness": {
+      "signal": 0.806908,
+      "half_life_hours": 84.0,
+      "hours_since_last_seen": 26.0
+    },
+    "hours_since_last_seen": 26.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "unavailable_no_previous_period_coverage",
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "first_seen_at": "2026-08-12T21:00:00+00:00",
+    "last_seen_at": "2026-08-13T16:00:00+00:00",
+    "latest_source_ranks": {
+      "x": 22
+    },
+    "rank_change_by_source": {
+      "x": 8
+    },
+    "source_rank_change": {
+      "x": 8
+    },
+    "source_badge": "단일출처",
+    "data_confidence": {
+      "level": "medium",
+      "label": "보통",
+      "reason": "24시간 MVP 원장과 반복 관측을 충족한 운영 초기 결과",
+      "window_observed_hours": 28,
+      "history_maturity": 0.0326,
+      "ranking_status": "mature"
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.113095,
+        "google_trends": 0.166667
+      },
+      "momentum_status": "unavailable",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "company_card_status": "enrichment_pending",
+    "company_status": "enrichment_pending",
+    "keyword_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_ten"
+    ],
+    "frontend_keyword_count": 0,
+    "frontend_company_count": 0,
+    "detail_event_key": "데이즈드",
+    "detail_status": "period_summary_only",
+    "shared_detail_fields": [
+      "keywords",
+      "companies",
+      "company_candidates",
+      "company_resolution",
+      "verification_layer",
+      "news_context"
+    ]
+  }
+}

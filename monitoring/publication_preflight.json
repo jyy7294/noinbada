@@ -1,6 +1,6 @@
 {
   "policy_version": "hourly-publication-preflight-v1",
-  "observed_at": "2026-08-14T16:00:00+00:00",
+  "observed_at": "2026-08-14T18:00:00+00:00",
   "passed": true,
   "source_gate": {
     "policy_version": "hourly-source-proof-v2",
@@ -27,9 +27,9 @@
           "profile": "current_logged_in_chrome",
           "region": "KR",
           "region_verified": true,
-          "observed_at": "2026-08-14T16:02:20+00:00",
-          "scheduled_for": "2026-08-14T16:00:00+00:00",
-          "schedule_delay_seconds": 140.0,
+          "observed_at": "2026-08-14T18:08:36.769000+00:00",
+          "scheduled_for": "2026-08-14T18:00:00+00:00",
+          "schedule_delay_seconds": 516.769,
           "evidence_row_count": 30,
           "evidence_consistent": true,
           "timing_verified": true
