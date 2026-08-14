@@ -30,6 +30,14 @@ REFERENCE_TOP10 = (
 )
 
 
+PRESENTATION_STAGES = {
+    "entry": {"label": "진입", "index": 0},
+    "detected": {"label": "포착", "index": 1},
+    "spreading": {"label": "확산", "index": 2},
+    "mainstream": {"label": "대중화", "index": 3},
+}
+
+
 REFERENCE_DETAILS = {
     "개기일식": {
         "keyword_key": "개기일식",
@@ -221,35 +229,73 @@ def _manual_company_row(display_name: str, position: int, source: dict) -> dict:
     ontology_relation = {
         "direct": "core", "value_chain": "value_chain", "industry_watch": "adjacent",
     }[relation_tier]
-    return with_company_role({
+    return _presentation_company_row(display_name, position, {
         **source,
-        "company_role_label": "",
-        "company_role_public": True,
-        "company_summary": source["company_description"],
-        "relationship_reason": source["reason"],
-        "connection_explanation": source["reason"],
-        "stock_code": source["ticker"],
-        "exchange": source["market"],
-        "evidence_sources": [{"url": source["evidence_url"], "source_status": "researched"}],
-        "evidence_owner": source["company"],
-        "evidence_type": "reviewed_public_relationship",
         "ontology_relation_tier": ontology_relation,
         "ontology_relation": ontology_relation,
         "industry_node": source["company_role_category"],
         "ontology_path": [display_name, source["company_role_category"], source["company"]],
+    })
+
+
+def _presentation_company_row(display_name: str, position: int, source: dict) -> dict:
+    """Normalize every company to one frontend-readable evidence contract."""
+
+    company = str(source.get("company") or "").strip()
+    ticker = str(source.get("stock_code") or source.get("ticker") or "").strip()
+    market = str(source.get("exchange") or source.get("market") or "").strip()
+    description = str(
+        source.get("company_description") or source.get("company_summary") or ""
+    ).strip()
+    reason = str(
+        source.get("connection_explanation")
+        or source.get("relationship_reason")
+        or source.get("reason")
+        or ""
+    ).strip()
+    evidence_url = str(source.get("evidence_url") or "").strip()
+    if not all((company, ticker, market, description, reason)):
+        raise ValueError(f"{display_name}: incomplete listed-company identity for {company or 'unknown'}")
+    if not evidence_url.startswith(("http://", "https://")):
+        raise ValueError(f"{display_name}: public company evidence URL is required for {company}")
+
+    row = with_company_role({
+        **source,
+        "ticker": ticker,
+        "stock_code": ticker,
+        "market": market,
+        "exchange": market,
+        "company_description": description,
+        "company_summary": description,
+        "reason": reason,
+        "relationship_reason": reason,
+        "connection_explanation": reason,
+        "evidence_url": evidence_url,
+        "evidence_sources": source.get("evidence_sources") or [
+            {"url": evidence_url, "source_status": "researched"}
+        ],
+        "evidence_owner": source.get("evidence_owner") or company,
+        "evidence_type": source.get("evidence_type") or "reviewed_public_relationship",
         "candidate_rank": position,
         "verification_status": "evidence_verified",
-        "verified_at": VERIFIED_AT,
+        "verified_at": source.get("verified_at") or VERIFIED_AT,
         "review_status": "reviewed_reference",
         "ranking_effect": "none",
         "investment_recommendation": False,
     })
+    if not row.get("company_role_public"):
+        raise ValueError(f"{display_name}: explicit public company role is required for {company}")
+    return row
 
 
 def _company_rows(display_name: str, details: dict) -> list[dict]:
     if details.get("company_key"):
         rows = _verified_company_rows(details["company_key"], verified_at=VERIFIED_AT)
-        return [row for row in rows if row.get("company_role_public")]
+        return [
+            _presentation_company_row(display_name, position, row)
+            for position, row in enumerate(rows, 1)
+            if row.get("company_role_public")
+        ]
     return [
         _manual_company_row(display_name, position, source)
         for position, source in enumerate(MANUAL_COMPANIES.get(display_name, ()), 1)
@@ -305,7 +351,7 @@ def _reference_card(reference: dict, candidates: list[dict]) -> dict:
         "lifecycle": (candidate or {}).get("lifecycle") or "new",
         "lifecycle_reason": (candidate or {}).get("lifecycle_reason") or "검수된 당일 관측 사건",
         "trend_stage": diffusion.get("trend_stage") or {
-            "key": "capture", "label": "포착", "index": 1,
+            "key": "detected", "label": "포착", "index": 1,
         },
         "observed_day_label": (
             diffusion.get("observed_day_label")
@@ -358,6 +404,8 @@ def build_presentation_feed(intelligence: dict) -> dict:
     items = [_reference_card(item, candidates) for item in REFERENCE_TOP10]
     for position, item in enumerate(items, 1):
         item["presentation_position"] = position
+        item["presentation_rank"] = position
+        item["current_rank"] = position
     return {
         "schema_version": "trzip-presentation-feed-v2",
         "status": "ready",

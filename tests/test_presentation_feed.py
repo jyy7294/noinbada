@@ -27,6 +27,8 @@ def test_reviewed_presentation_feed_is_exact_and_enriched():
     assert feed["schema_version"] == "trzip-presentation-feed-v2"
     assert [item["display_name"] for item in feed["items"]] == EXPECTED
     assert [item["presentation_position"] for item in feed["items"]] == list(range(1, 11))
+    assert [item["presentation_rank"] for item in feed["items"]] == list(range(1, 11))
+    assert [item["current_rank"] for item in feed["items"]] == list(range(1, 11))
     assert [item["display_name"] for item in REFERENCE_TOP10] == EXPECTED
     assert all(len(item["keywords"]) == 5 for item in feed["items"])
     assert all(
@@ -55,7 +57,10 @@ def test_presentation_company_groups_are_explicit_and_explainable():
         for company in item["companies"]:
             assert company["company_role_public"] is True
             assert company["company_role_label"] != "역할 미확정"
-            assert company.get("reason")
+            assert company.get("stock_code")
+            assert company.get("exchange")
+            assert company.get("company_description")
+            assert company.get("connection_explanation")
             assert str(company.get("evidence_url", "")).startswith("http")
 
 
@@ -64,4 +69,37 @@ def test_invalid_presentation_feed_is_rejected_before_publication():
     feed["items"][0]["keywords"][0]["text"] = "여섯글자초과키워드"
 
     with pytest.raises(ValueError, match="five unique keywords"):
+        _validate_presentation_feed(feed)
+
+
+@pytest.mark.parametrize(
+    ("mutate", "message"),
+    [
+        (
+            lambda feed: feed["items"][0].__setitem__("display_name", "순서변경"),
+            "approved Top10 order",
+        ),
+        (
+            lambda feed: feed["items"][0].__setitem__(
+                "trend_stage", {"key": "capture", "label": "포착", "index": 1}
+            ),
+            "trend stage",
+        ),
+        (
+            lambda feed: feed["items"][0]["companies"][0].pop("connection_explanation"),
+            "complete display identity",
+        ),
+        (
+            lambda feed: feed["items"][0]["attention_windows"][0].__setitem__(
+                "is_absolute_mention_count", True
+            ),
+            "must not claim absolute mention counts",
+        ),
+    ],
+)
+def test_invalid_presentation_contract_variants_are_rejected(mutate, message):
+    feed = build_presentation_feed({"unified_ranking": []})
+    mutate(feed)
+
+    with pytest.raises(ValueError, match=message):
         _validate_presentation_feed(feed)

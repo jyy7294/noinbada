@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T13:06:09.1883383+00:00",
+    "updated_at":  "2026-08-14T13:50:41.4470922+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,32 +8,36 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "3a67f51891bafc34922ae0552cdb8e7d6417e522",
+                       "base_remote_main_sha":  "8fbde036524ca233f472db19b0fcaf23e2c93dd8",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
+                                             "design/qa-implementation-home-error.png",
+                                             "design/Trend App Zip v2.dc.html",
+                                             "design-qa.md",
                                              "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
                                              "frontend/index.html",
-                                             "frontend/trendzip-data.js",
                                              "src/trzip/presentation_feed.py",
                                              "src/trzip/publication_pipeline.py",
                                              "tests/test_presentation_feed.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "cae67b53e2c8c2f64be1d648b99bcc44196240a97fca1ca4afa8a5bce800a264",
-                                                    "frontend/index.html":  "73abfddf032566d5150af5ff4eb7b49f3723f7f5f17f04f98154b5a88e68dda1",
-                                                    "frontend/trendzip-data.js":  "a75141b5b4b4438c79aa940ada80303eb767c2c2f87e71633636a50fd7859c6e",
-                                                    "src/trzip/presentation_feed.py":  "c7103581771a8eac9e17dd1c779ac68a030976cfa845d2f7a6d7876c51395ac5",
-                                                    "src/trzip/publication_pipeline.py":  "6205bcd4132bd59329107040b5f9bf658f7930cc6fb2007e8705b2b3f8d1115a",
-                                                    "tests/test_presentation_feed.py":  "c4b45fbf76ea0ef73ff24de58d2221f4b08e2d16ac8f518312c1ebf9329e493a"
+                                                    "design/qa-implementation-home-error.png":  "8d5ebc5c8f7dd81ecf927352e4cb67dba1dc2e26541e819eaf44558779c8eeaf",
+                                                    "design/Trend App Zip v2.dc.html":  "5679c3e043174b7167f2546453ef3e48cd927ccaf3cbd98d9ceef97debe9d066",
+                                                    "design-qa.md":  "c9a0fd7a2f64c6811be39cdd7438f74e6ea1c025be1fa1950806412f64c0f6bd",
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "bfefd7ebad14c907f905e3ad7f0bf2dff47a5afa14f18afb2fe99f8fa1255d6b",
+                                                    "frontend/index.html":  "93e248fffcd31cb4d2c997adbcb10504d624a4e05d9d95b73da48b0607f444f9",
+                                                    "src/trzip/presentation_feed.py":  "48090991f5f9f7368d15dda3c44c75a59e2ec13913897571355ecdd89c1a9478",
+                                                    "src/trzip/publication_pipeline.py":  "a9ecc53e9da8c9becc1e347826203749802f17b38e40c54ed7c874f1ffb26953",
+                                                    "tests/test_presentation_feed.py":  "79eb583060f1194af941d7c3ae737d55e7771e675e538aa945c75ad142a11d31"
                                                 },
-                       "commit_message":  "fix: center trend detail on mention momentum",
+                       "commit_message":  "feat: connect final TRZIP frontend",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  337
+                                      "count":  341
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -55,23 +59,22 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Keep provenance internal while making trend stage and 1-week, 1-month, and 3-month mention momentum the primary detail experience.",
+                    "objective":  "승인 Top10 백엔드 계약과 최종 모바일 프런트를 연결해 main 및 운영 런타임에 게시",
                     "completed":  [
-                                      "Added normalized mention-momentum windows to every reviewed presentation card.",
-                                      "Changed the frontend detail summary from publication order to mention-momentum status.",
-                                      "Kept source provenance and observed-reference mode for audit without foregrounding it to users.",
-                                      "Blocked any publication that mislabels normalized attention as an absolute mention count."
+                                      "최종 디자인 재구현과 실데이터 loadTrends 연동",
+                                      "Top10 순서·신선도·관심창·기업 온톨로지 계약 강화",
+                                      "로컬 저장·JSON·CSV 내보내기 및 분석 이벤트 연결"
                                   ],
                     "next_actions":  [
-                                         "Publish a fresh verified live-data bundle containing the new presentation feed.",
-                                         "Wire the same immutable rankings contract into the exported Claude design source when it becomes available."
+                                         "Vercel 프로덕션 직접 배포 및 브라우저 E2E 검증",
+                                         "23:00 KST 실데이터 발행본으로 정상 Top10 재검증"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "The interest index is not an absolute cross-platform post count because X and Google do not expose one common mention-volume unit.",
-                                              "Historical 1-month and 3-month changes remain unavailable until measured or separately reconstructed coverage is present."
+                                              "기존 live-data에는 아직 새 presentation_feed가 없어 새 발행 전까지 정직한 오류 상태를 표시함",
+                                              "일부 트렌드는 근거가 있는 상장기업 10개를 아직 충족하지 못함"
                                           ]
                 },
     "runtime_contract":  {

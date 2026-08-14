@@ -20,6 +20,7 @@ from .intelligence import (
     select_balanced_home_top10,
 )
 from .company_adapters import enrich_company_identities, pykrx_stock
+from .company_roles import COMPANY_ROLE_LABELS
 from .enrichment_queue import sync_enrichment_queue
 from .editorial_review import apply_frontend_enrichment_cache, build_editorial_review_pack
 from .event_resolution import normalize_event_key
@@ -27,7 +28,7 @@ from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .keyword_candidates import sync_provider_keyword_candidates
 from .keyword_policy import keyword_fits_public_label
 from .normalization_evaluation import evaluate_regression_set
-from .presentation_feed import build_presentation_feed
+from .presentation_feed import PRESENTATION_STAGES, REFERENCE_TOP10, build_presentation_feed
 from .semantic_adjudication import run_semantic_adjudication
 from .provider_verification import (
     TrendReference,
@@ -853,9 +854,30 @@ def _validate_presentation_feed(feed: dict) -> None:
     display_names = [str(item.get("display_name") or "").strip() for item in items]
     if not all(display_names) or len(set(display_names)) != 10:
         raise ValueError("frontend presentation_feed display names must be unique and non-empty")
+    approved_names = [item["display_name"] for item in REFERENCE_TOP10]
+    if display_names != approved_names:
+        raise ValueError("frontend presentation_feed must preserve the approved Top10 order")
     for item in items:
+        position = item["presentation_position"]
+        if item.get("presentation_rank") != position or item.get("current_rank") != position:
+            raise ValueError("frontend presentation rank aliases must match the Top10 position")
         if item.get("ranking_effect") != "none":
             raise ValueError("frontend presentation_feed cannot affect canonical ranking")
+        if not str(item.get("trend_definition") or "").strip():
+            raise ValueError("frontend presentation trends require a concise definition")
+        if not str(item.get("why_now") or "").strip():
+            raise ValueError("frontend presentation trends require a why-now explanation")
+        if not all(
+            str(url).startswith(("http://", "https://"))
+            for url in item.get("evidence_urls") or []
+        ):
+            raise ValueError("frontend presentation trends require public HTTP evidence")
+        stage = item.get("trend_stage") or {}
+        expected_stage = PRESENTATION_STAGES.get(str(stage.get("key") or ""))
+        if expected_stage is None or any(
+            stage.get(field) != expected_stage[field] for field in ("label", "index")
+        ):
+            raise ValueError("frontend presentation trend stage must be 진입, 포착, 확산, or 대중화")
         keywords = list(item.get("keywords") or [])
         keyword_texts = [str(keyword.get("text") or "").strip() for keyword in keywords]
         if (
@@ -869,13 +891,63 @@ def _validate_presentation_feed(feed: dict) -> None:
         attention_windows = list(item.get("attention_windows") or [])
         if [window.get("key") for window in attention_windows] != ["1w", "1m", "3m"]:
             raise ValueError("frontend presentation_feed requires 1w, 1m, and 3m attention windows")
+        if [window.get("label") for window in attention_windows] != ["1주", "1개월", "3개월"]:
+            raise ValueError("frontend attention window labels must match the product periods")
         if any(window.get("is_absolute_mention_count") is not False for window in attention_windows):
             raise ValueError("frontend attention windows must not claim absolute mention counts")
-        for company in item.get("companies") or []:
-            if not company.get("company_role_public") or not company.get("company_role_label"):
+        if any(
+            window.get("metric") != "normalized_attention_index_change"
+            or window.get("status") not in {"measured", "unavailable"}
+            or not str(window.get("basis") or "").strip()
+            or (window.get("status") == "measured") != (window.get("percent") is not None)
+            for window in attention_windows
+        ):
+            raise ValueError("frontend attention windows require consistent normalized-index metadata")
+        series_metric = item.get("series_metric") or {}
+        if (
+            series_metric.get("key") != "normalized_attention_index"
+            or series_metric.get("is_absolute_mention_count") is not False
+        ):
+            raise ValueError("frontend mention series must use the normalized attention index")
+        companies = list(item.get("companies") or [])
+        identities = []
+        for company in companies:
+            role_category = str(company.get("company_role_category") or "")
+            if (
+                not company.get("company_role_public")
+                or COMPANY_ROLE_LABELS.get(role_category) != company.get("company_role_label")
+            ):
                 raise ValueError("frontend presentation companies require an explicit public role")
+            if not all(
+                str(company.get(field) or "").strip()
+                for field in (
+                    "company", "stock_code", "exchange", "company_description",
+                    "connection_explanation",
+                )
+            ):
+                raise ValueError("frontend presentation companies require a complete display identity")
             if not str(company.get("evidence_url") or "").startswith(("http://", "https://")):
                 raise ValueError("frontend presentation companies require public HTTP evidence")
+            if company.get("relation_tier") not in {"direct", "value_chain", "industry_watch"}:
+                raise ValueError("frontend presentation companies require a supported relation tier")
+            ontology_path = list(company.get("ontology_path") or [])
+            if len(ontology_path) < 3 or ontology_path[-1] != company.get("company"):
+                raise ValueError("frontend presentation companies require an explainable ontology path")
+            identities.append((company["exchange"], company["stock_code"]))
+        if len(identities) != len(set(identities)):
+            raise ValueError("frontend presentation companies must be unique by exchange and stock code")
+        keyword_set = set(keyword_texts)
+        company_set = {company["company"] for company in companies}
+        for link in item.get("keyword_company_links") or []:
+            if link.get("keyword") not in keyword_set or link.get("company") not in company_set:
+                raise ValueError("frontend keyword-company links must reference the card payload")
+            if not str(link.get("connection_explanation") or "").strip():
+                raise ValueError("frontend keyword-company links require a connection explanation")
+            if not all(
+                str(url).startswith(("http://", "https://"))
+                for url in link.get("evidence_urls") or []
+            ):
+                raise ValueError("frontend keyword-company links require public HTTP evidence")
 
 
 def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:

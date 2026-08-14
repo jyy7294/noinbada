@@ -39,11 +39,12 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 `intelligence.json.presentation_feed`에도 들어갑니다.
 
 - `frontend_default=true`인 경우 프런트는 이 배열의 순서와 표시명을 그대로 사용합니다.
+- 화면의 현재 순위는 `presentation_position`·`presentation_rank`·`current_rank`가 같은 1~10 값이며, 프런트는 이를 다시 계산하지 않습니다.
 - 이 피드는 사용자 검수 결과를 고정한 `observed_reference` 표시층이며, 원천 `unified_ranking`과 점수를 변경하지 않습니다.
 - `data_mode`와 출처 상태는 감사·오류 진단용 내부 정보입니다. 사용자 기본 화면은 이를 전면에 내세우지 않습니다.
 - 기본 상세 화면은 `trend_stage`와 `attention_windows`의 1주·1개월·3개월 변화를 보여줍니다.
 - 원천이 공통 절대 언급량을 제공하지 않으므로 화면의 “언급량 추이”는 정규화 관심지수입니다. 절대 게시물 수로 표시하거나 해석하지 않습니다.
-- 항목별 `related_keywords`는 서로 다른 5개이며, 공백을 제외하고 최대 6자입니다.
+- 항목별 `keywords`는 서로 다른 5개이며, 공백을 제외하고 최대 6자입니다.
 - 기업 연결은 확인된 상장기업만 담고, 10개 미만이면 `enrichment_pending`을 그대로 표시합니다. 숫자를 맞추기 위한 기업 패딩은 금지합니다.
 - 새 디자인 구현은 mutable 호환 문서보다 manifest가 검증한 불변 `rankings.json`을 우선 사용해야 합니다.
 
@@ -103,8 +104,8 @@ NAVER 뉴스는 현재 `main`·검토 후보의 촉발 맥락을 확인하는 �
 | 기업 Gold | `companies` (0 또는 10개 이상, 역할 카테고리 2~4개) |
 | 기업 역할 | `companies[].company_role_category`, `companies[].company_role_label` (제조·개발/원재료·핵심부품/콘텐츠 제작/배급·유통/판매·리테일/브랜드·마케팅/플랫폼·서비스/투자·소유/행사 후원·운영) |
 | 기업 연결 설명 | `companies[].connection_explanation`, `keyword_company_links[]` |
-| 관심 구간 | `trend_story.diffusion.attention_windows[]`의 1주·1개월·3개월 |
-| 단계 | `trend_story.diffusion.trend_stage`의 진입·포착·확산·대중화 |
+| 관심 구간 | `attention_windows[]`와 `trend_story.diffusion.attention_windows[]`의 1주·1개월·3개월. 단위는 절대 게시물 수가 아닌 정규화 관심지수 변화 |
+| 단계 | `trend_stage`와 `trend_story.diffusion.trend_stage`의 진입·포착·확산·대중화 |
 | 관계 강도 | `companies[].relation_tier` (`direct`/`value_chain`/`industry_watch`) |
 | 기업 카드 준비 상태 | `company_card_status`, `company_card_reason` |
 | 기업 후보 감사 | `company_candidates`, `company_resolution` |
