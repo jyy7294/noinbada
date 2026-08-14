@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T17:41:56.8965897+00:00",
+    "updated_at":  "2026-08-14T17:47:41.9683935+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,7 +8,7 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "f2e8f722011601e1d9d345b3b80eb8d6da0702fc",
+                       "base_remote_main_sha":  "b4d10f5e44ebddf9a29ef8c1b4c7f59c906996ae",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
@@ -16,10 +16,10 @@
                                              "tests/test_frontend_mvp_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "aa5c96f86535e22541db9b4a8fd88c3dddabf41ca02607723eebefb983eef5f0",
-                                                    "tests/test_frontend_mvp_contract.py":  "5124495719ee3c4941657664b609ddb9626ac115e1f66d9b0711eb39fa190588"
+                                                    "frontend/index.html":  "cfc3b2763b55f7e74d6557f3c66bd49cdff7ee49c3c4cc5537dbeb6829ac9d20",
+                                                    "tests/test_frontend_mvp_contract.py":  "a9f5e0b99d47c34f78651846c916aad40d271a2ee41faf872f0bf7d58f93343a"
                                                 },
-                       "commit_message":  "fix: hydrate valid delayed publications on first render",
+                       "commit_message":  "fix: repaint the active prototype screen after live hydration",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,13 +47,13 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Show a valid published presentation feed immediately even when its freshness label is delayed.",
+                    "objective":  "Render the approved presentation feed on the first visit without requiring a navigation click.",
                     "completed":  [
-                                      "Decoupled UI hydration from the LIVE-only label",
-                                      "Added a regression assertion for publication-driven hydration"
+                                      "Repainted the active prototype screen after publication hydration",
+                                      "Added a regression assertion for automatic active-screen repaint"
                                   ],
                     "next_actions":  [
-                                         "Redeploy production and verify first render",
+                                         "Redeploy and run no-click first-visit QA",
                                          "Publish the next exact-hour lightweight live-data bundle"
                                      ],
                     "blockers":  [

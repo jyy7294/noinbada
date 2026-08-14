@@ -75,3 +75,4 @@ def test_live_data_loader_has_timeout_and_retry_guards() -> None:
     assert "TRZIP_DATA_API_PROMISE" not in INDEX
     assert "manifest?.bundle?.presentation || manifest?.bundle?.rankings" in DATA
     assert "if (this.publishedView)" in INDEX
+    assert "window.__singleScreen(activeScreen)" in INDEX

@@ -1669,6 +1669,10 @@ class Component extends DCLogic {
         this.patchHomeLabels();
         this.hydrateMaker();
         this.renderSavedPortfolios();
+        const activeScreen = document.querySelector('[data-proto-active]');
+        if (activeScreen && typeof window.__singleScreen === 'function') {
+          window.__singleScreen(activeScreen);
+        }
         this.trends.forEach((trend) => this.track('trend_card_impression', {
           trend_id: trend.id, presentation_position: Number(trend.rank.replace('\uc704', ''))
         }));
