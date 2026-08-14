@@ -164,7 +164,7 @@
 
         <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:0 16px 8px;">
           <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:3px 16px 0;">
-            <span style="font-weight:500; font-size:12px; color:#8B8D98;">8월 8일 09:41 기준</span>
+            <span data-home-observed="1" style="font-weight:500; font-size:12px; color:#8B8D98;">발행 기준 확인 중</span>
             <span data-view-btn2="toggle" style="flex:none; font-weight:600; font-size:12px; color:#5B21C0; text-decoration:underline; text-underline-offset:3px; cursor:pointer;">List View</span>
           </div>
 
@@ -212,6 +212,10 @@
             <div data-vd="8" data-label="요아정" style="position:absolute; left:0; top:0; display:flex; align-items:center; white-space:nowrap; cursor:pointer; will-change:transform;">
               <span data-vd-dot="1" style="flex:none; width:7px; height:7px; border-radius:999px; background:#C9BCE8;"></span>
               <span data-vd-pill="1" style="margin-left:16px; background:#FBF6C9; color:#6E5F10; border-radius:999px; padding:9px 17px; font-weight:600; font-size:13.5px; letter-spacing:-0.03em;">요아정</span>
+            </div>
+            <div data-vd="9" data-label="편의점 신상" style="position:absolute; left:0; top:0; display:flex; align-items:center; white-space:nowrap; cursor:pointer; will-change:transform;">
+              <span data-vd-dot="1" style="flex:none; width:7px; height:7px; border-radius:999px; background:#C9BCE8;"></span>
+              <span data-vd-pill="1" style="margin-left:16px; background:#F0F4D6; color:#53611B; border-radius:999px; padding:9px 17px; font-weight:600; font-size:13.5px; letter-spacing:-0.03em;">편의점 신상</span>
             </div>
           </div>
           <div style="text-align:center; font-weight:500; font-size:11.5px; color:#9A8BC9; margin-top:12px;">키워드를 눌러 자세히 알아보세요</div>
@@ -3268,6 +3272,35 @@ class Component extends DCLogic {
         }
       });
     });
+
+    const escape = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    })[char]);
+    const observed = document.querySelector('[data-home-observed]');
+    if (observed && this.publishedView && this.publishedView.observedAt) {
+      observed.textContent = new Date(this.publishedView.observedAt).toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'
+      }) + ' 기준';
+    }
+
+    const list = document.querySelector('[data-list-view2]');
+    if (list && this.trends.length) {
+      list.innerHTML = this.trends.slice(0, 10).map((trend, index) => {
+        const lift = String(trend.lift || '축적 중');
+        const liftColor = lift.startsWith('+') ? '#E5395F' : lift.startsWith('-') ? '#2E6BE6' : '#8B8D98';
+        const divider = index ? '<div style="height:1px;background:#F1EEF9;"></div>' : '';
+        return divider + '<button type="button" data-home-topic="' + escape(trend.name)
+          + '" style="width:100%;border:0;background:#FFFFFF;display:flex;align-items:center;gap:12px;padding:11px 2px;text-align:left;cursor:pointer;">'
+          + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:15px;color:#7B3FF2;">' + (index + 1) + '</span>'
+          + '<span style="flex:1;min-width:0;display:flex;align-items:baseline;gap:7px;">'
+          + '<span style="flex:none;max-width:190px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:800;font-size:14.5px;color:#1A1A22;letter-spacing:-0.03em;">' + escape(trend.name) + '</span>'
+          + '<span style="min-width:0;overflow:hidden;text-overflow:ellipsis;font-weight:500;font-size:11px;color:#9A9DA8;white-space:nowrap;">' + escape(trend.cat) + '</span></span>'
+          + '<span style="flex:none;font-weight:600;font-size:12px;color:' + liftColor + ';">' + escape(lift) + '</span></button>';
+      }).join('');
+      list.querySelectorAll('[data-home-topic]').forEach((row) => {
+        row.onclick = () => this.dialGo(row.getAttribute('data-home-topic'));
+      });
+    }
   }
 
   dialGo(label) {
