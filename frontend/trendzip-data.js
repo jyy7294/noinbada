@@ -258,7 +258,7 @@ function publicationIdentity(payload, metadata, runtimeStatus) {
   };
 }
 
-export function validatedBundle(payload, metadata, runtimeStatus = null) {
+function validatedBundle(payload, metadata, runtimeStatus = null) {
   if (payload?.mode !== 'live' || !Array.isArray(payload.unified_ranking)) {
     throw new Error('실시간 순위 데이터 계약이 올바르지 않습니다.');
   }
@@ -365,7 +365,7 @@ function viewModel(bundle, { source, fromCache }) {
   };
 }
 
-export async function loadTrends({ mode = 'live' } = {}) {
+async function loadTrends({ mode = 'live' } = {}) {
   if (mode !== 'live') throw new Error('운영 화면은 live-data만 사용합니다.');
   try {
     const nonce = Date.now();
@@ -396,7 +396,7 @@ export async function loadTrends({ mode = 'live' } = {}) {
   }
 }
 
-export function sortTrends(trends, mode = 'score') {
+function sortTrends(trends, mode = 'score') {
   const rows = [...trends];
   if (mode === 'persistence') return rows.sort((a, b) => b.persistence - a.persistence || a.rank - b.rank);
   if (mode === 'momentum') return rows.sort((a, b) => b.momentum - a.momentum || a.rank - b.rank);
@@ -420,16 +420,16 @@ function normalizePortfolio(record) {
   };
 }
 
-export function listPortfolios() {
+function listPortfolios() {
   const stored = readJson(PORTFOLIO_KEY, []);
   return Array.isArray(stored) ? stored.map(normalizePortfolio).filter(Boolean) : [];
 }
 
-export function getPortfolio(id) {
+function getPortfolio(id) {
   return listPortfolios().find((portfolio) => portfolio.id === String(id)) || null;
 }
 
-export function savePortfolio(input) {
+function savePortfolio(input) {
   const portfolios = listPortfolios();
   const keywords = [...new Set((input.keywords || [])
     .map((keyword) => String(keyword).trim())
@@ -454,7 +454,7 @@ export function savePortfolio(input) {
   return record;
 }
 
-export const dataContract = Object.freeze({
+const dataContract = Object.freeze({
   manifest: MANIFEST_URL,
   intelligence: INTELLIGENCE_URL,
   status: STATUS_URL,
@@ -463,4 +463,14 @@ export const dataContract = Object.freeze({
   portfolios: PORTFOLIO_KEY,
   freshForMinutes: FRESH_FOR_MINUTES,
   staleAfterMinutes: STALE_AFTER_MINUTES,
+});
+
+globalThis.TRZIP_DATA_API = Object.freeze({
+  validatedBundle,
+  loadTrends,
+  sortTrends,
+  listPortfolios,
+  getPortfolio,
+  savePortfolio,
+  dataContract,
 });

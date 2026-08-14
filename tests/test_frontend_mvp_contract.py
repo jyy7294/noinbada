@@ -68,3 +68,7 @@ def test_live_data_loader_has_timeout_and_retry_guards() -> None:
     assert "async function fetchWithRetry" in DATA
     assert "new AbortController()" in DATA
     assert "fetchManifestRankings(nonce)" in DATA
+    assert '<script src="./trendzip-data.js"></script>' in INDEX
+    assert "window.TRZIP_DATA_API" in INDEX
+    assert "globalThis.TRZIP_DATA_API = Object.freeze" in DATA
+    assert "TRZIP_DATA_API_PROMISE" not in INDEX

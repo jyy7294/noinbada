@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T17:00:53.0184494+00:00",
+    "updated_at":  "2026-08-14T17:11:53.9326921+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,18 +8,20 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "8dcd100e0d97250044ba571a1c7ca9c6d7d1a4d6",
+                       "base_remote_main_sha":  "ce4e3e6fae9351570d2ab329a3819ad9b7d0a0f2",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "frontend/index.html",
+                                             "frontend/trendzip-data.js",
                                              "tests/test_frontend_mvp_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "0a3b7c033a1d4fa565e04d462af79892b63060bf89787bb6a5923bc0c0352485",
-                                                    "tests/test_frontend_mvp_contract.py":  "73239470b383932c2b30bb948ea1fabd54649554240c3f960cb196d7fbf148db"
+                                                    "frontend/index.html":  "73e2afdd4aa41139e1b48dddbfab680f2a41fab7c66d667db81f0d7b8eebc49c",
+                                                    "frontend/trendzip-data.js":  "299de093b0061ee5cb9ed30cec96f065a3ca291979ba0b576bbccde597a59d76",
+                                                    "tests/test_frontend_mvp_contract.py":  "284e4ae13784855d5075d5ad1276d4a5860bc9bc1d06343e38b3411824179d95"
                                                 },
-                       "commit_message":  "fix: honor market-specific company price labels",
+                       "commit_message":  "fix: initialize live-data before the prototype runtime",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,7 +49,7 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Display won, yen, dollar and other published market labels correctly in company detail sheets.",
+                    "objective":  "Ensure a first-time visitor receives the approved publication without requiring a reload.",
                     "completed":  [
 
                                   ],
