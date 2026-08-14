@@ -311,9 +311,9 @@ async function fetchManifestRankings(nonce) {
   const manifestResponse = await fetchWithRetry(`${MANIFEST_URL}?t=${nonce}`, { cache: 'no-store' });
   if (!manifestResponse.ok) throw new Error(`TRZIP manifest ${manifestResponse.status}`);
   const manifest = await manifestResponse.json();
-  const entry = manifest?.bundle?.rankings || {};
+  const entry = manifest?.bundle?.presentation || manifest?.bundle?.rankings || {};
   const relativePath = String(entry.path || '').replace(/^latest\//, '');
-  if (!/^delivery\/[A-Za-z0-9._-]+\/rankings\.json$/.test(relativePath)) {
+  if (!/^delivery\/[A-Za-z0-9._-]+\/(presentation|rankings)\.json$/.test(relativePath)) {
     throw new Error('TRZIP manifest의 순위 파일 경로가 올바르지 않습니다.');
   }
   if (!/^[a-f0-9]{64}$/i.test(String(entry.sha256 || ''))) {

@@ -828,6 +828,7 @@ def _delivery_descriptor(publication_id: str, trend_count: int) -> dict:
         "manifest_path": "latest/manifest.json",
         "bundle_path": f"latest/delivery/{safe_id}",
         "rankings_path": f"latest/delivery/{safe_id}/rankings.json",
+        "presentation_path": f"latest/delivery/{safe_id}/presentation.json",
         "trend_detail_count": int(trend_count),
         "contract": "manifest-last immutable bundle; existing three documents retained",
     }
@@ -1050,6 +1051,24 @@ def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
     ) != identity:
         raise ValueError("frontend rankings identity mismatch")
     _validate_presentation_feed(rankings.get("presentation_feed") or {})
+
+    presentation_entry = bundle.get("presentation") or {}
+    presentation_path = _validated_child(
+        latest, str(presentation_entry.get("path") or "")
+    )
+    if (
+        not presentation_path.is_file()
+        or _sha256_file(presentation_path) != presentation_entry.get("sha256")
+    ):
+        raise ValueError("frontend presentation hash mismatch")
+    presentation = _read_json(presentation_path, {})
+    if (
+        presentation.get("publication_id"),
+        presentation.get("generated_at"),
+        presentation.get("observed_at"),
+    ) != identity:
+        raise ValueError("frontend presentation identity mismatch")
+    _validate_presentation_feed(presentation.get("presentation_feed") or {})
     home_feed = rankings.get("home_feed") or {}
     if home_feed.get("status") not in {"ready", "empty"}:
         raise ValueError("frontend home_feed status is invalid")
@@ -1207,6 +1226,20 @@ def _write_frontend_delivery(
     rankings_stage = stage / "rankings.json"
     _write_json(rankings_stage, rankings_payload)
     rankings_sha256 = _sha256_file(rankings_stage)
+    presentation_payload = {
+        "schema_version": "trzip-presentation-payload-v1",
+        "publication_id": publication_id,
+        "generated_at": generated_at,
+        "observed_at": observed_at,
+        "mode": "live",
+        # Keep the lightweight payload compatible with the browser bundle
+        # validator while avoiding the multi-megabyte operational ranking.
+        "unified_ranking": [],
+        "presentation_feed": rankings_payload["presentation_feed"],
+    }
+    presentation_stage = stage / "presentation.json"
+    _write_json(presentation_stage, presentation_payload)
+    presentation_sha256 = _sha256_file(presentation_stage)
     stage.replace(bundle_dir)
 
     compatibility_documents = {}
@@ -1235,6 +1268,10 @@ def _write_frontend_delivery(
             "rankings": {
                 "path": f"delivery/{publication_id}/rankings.json",
                 "sha256": rankings_sha256,
+            },
+            "presentation": {
+                "path": f"delivery/{publication_id}/presentation.json",
+                "sha256": presentation_sha256,
             },
             "trend_count": len(detail_index),
             "trend_index": detail_index,

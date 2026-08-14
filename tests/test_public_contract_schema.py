@@ -110,6 +110,16 @@ def test_latest_generated_publication_conforms_to_all_public_schemas(tmp_path, m
         "latest/"
     )
     rankings = json.loads(rankings_path.read_text(encoding="utf-8"))
+    presentation_path = latest / manifest["bundle"]["presentation"]["path"].removeprefix(
+        "latest/"
+    )
+    presentation = json.loads(presentation_path.read_text(encoding="utf-8"))
+    assert presentation["publication_id"] == rankings["publication_id"]
+    assert presentation["generated_at"] == rankings["generated_at"]
+    assert presentation["observed_at"] == rankings["observed_at"]
+    assert presentation["unified_ranking"] == []
+    assert presentation["presentation_feed"] == rankings["presentation_feed"]
+    assert presentation_path.stat().st_size < rankings_path.stat().st_size
     assert rankings["presentation_feed"]["frontend_default"] is True
     assert len(rankings["presentation_feed"]["items"]) == 10
     for item in rankings["presentation_feed"]["items"]:

@@ -72,3 +72,4 @@ def test_live_data_loader_has_timeout_and_retry_guards() -> None:
     assert "window.TRZIP_DATA_API" in INDEX
     assert "globalThis.TRZIP_DATA_API = Object.freeze" in DATA
     assert "TRZIP_DATA_API_PROMISE" not in INDEX
+    assert "manifest?.bundle?.presentation || manifest?.bundle?.rankings" in DATA

@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T17:11:53.9326921+00:00",
+    "updated_at":  "2026-08-14T17:24:05.0291015+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,20 +8,22 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "ce4e3e6fae9351570d2ab329a3819ad9b7d0a0f2",
+                       "base_remote_main_sha":  "518cf92d31844c47b2f51829227b6e86ccd233db",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "frontend/index.html",
                                              "frontend/trendzip-data.js",
-                                             "tests/test_frontend_mvp_contract.py"
+                                             "src/trzip/publication_pipeline.py",
+                                             "tests/test_frontend_mvp_contract.py",
+                                             "tests/test_public_contract_schema.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "73e2afdd4aa41139e1b48dddbfab680f2a41fab7c66d667db81f0d7b8eebc49c",
-                                                    "frontend/trendzip-data.js":  "299de093b0061ee5cb9ed30cec96f065a3ca291979ba0b576bbccde597a59d76",
-                                                    "tests/test_frontend_mvp_contract.py":  "284e4ae13784855d5075d5ad1276d4a5860bc9bc1d06343e38b3411824179d95"
+                                                    "frontend/trendzip-data.js":  "dcfa9f1e9463c63066a48fc3aafa1ae35445db522be274ce282cb9510af0802c",
+                                                    "src/trzip/publication_pipeline.py":  "bf0109c85b7208ac64ad08ec5f0bf536c1ba7b567d10c38951d2baa7d7c36e40",
+                                                    "tests/test_frontend_mvp_contract.py":  "7dda2b6ce5d414051cd3329174d5babf8e2af205a00bc135d88e5d21a4694281",
+                                                    "tests/test_public_contract_schema.py":  "e9b82930af53e8b2e0736935014eb1f3485d90b852e6b5a77de371ec71c45aef"
                                                 },
-                       "commit_message":  "fix: initialize live-data before the prototype runtime",
+                       "commit_message":  "perf: publish a lightweight immutable presentation bundle",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -49,18 +51,21 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Ensure a first-time visitor receives the approved publication without requiring a reload.",
+                    "objective":  "Ensure first-time visitors load the approved presentation feed without downloading the full operational ranking payload.",
                     "completed":  [
-
+                                      "Added immutable presentation.json delivery bundle",
+                                      "Made the frontend prefer the lightweight bundle with legacy fallback",
+                                      "Added public contract and frontend loader regression tests"
                                   ],
                     "next_actions":  [
-
+                                         "Publish a fresh live-data bundle",
+                                         "Verify first-load behavior and promote Vercel production"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-
+                                              "Operational rankings remain large but are no longer required for the initial presentation UI"
                                           ]
                 },
     "runtime_contract":  {
