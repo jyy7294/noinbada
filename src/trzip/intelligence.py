@@ -2001,6 +2001,44 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
         if item.get("lane") == "main" and item.get("home_eligible") is True
     ]
     apply_equal_platform_home_scores(home)
+    for item in candidates:
+        item["home_rank"] = None
+    for home_rank, item in enumerate(home, 1):
+        item["home_rank"] = home_rank
+
+    # Period views are created before provider/context enrichment finishes.
+    # Reconcile their non-scoring eligibility/readiness fields here so an
+    # article that resolves context cannot leave stale ranks or Top10 aliases.
+    final_state = {
+        str(item.get("event_key") or ""): {
+            "home_eligible": item.get("home_eligible") is True,
+            "frontend_readiness_status": item.get("frontend_readiness_status"),
+        }
+        for item in candidates
+        if str(item.get("event_key") or "")
+    }
+    for view in (intelligence.get("ranking_views") or {}).values():
+        period_rows = view.get("unified_ranking") or []
+        for row in period_rows:
+            state = final_state.get(str(row.get("event_key") or ""))
+            if state:
+                row.update(state)
+            row["main_rank"] = None
+            row["home_rank"] = None
+            row["publication_rank"] = None
+        period_main = [
+            row for row in period_rows
+            if row.get("lane") == "main" and row.get("home_eligible") is True
+        ]
+        for main_rank, row in enumerate(period_main, 1):
+            row["main_rank"] = main_rank
+            row["home_rank"] = main_rank
+        ready_period_main = [
+            row for row in period_main
+            if row.get("frontend_readiness_status") == "ready"
+        ]
+        view["period_top10"] = select_balanced_home_top10(ready_period_main)
+
     complete = [item for item in home if item.get("frontend_readiness_status") == "ready"]
     # ``home_feed`` is the only new public home surface.  It contains neither
     # cardinal ranks nor internal selection scores; incomplete observed rows

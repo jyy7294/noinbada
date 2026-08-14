@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T14:08:03.0631687+00:00",
+    "updated_at":  "2026-08-14T14:19:03.7408395+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,18 +8,20 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "0e23b399b72d8babd8a5c38e1a64bc6252228a16",
+                       "base_remote_main_sha":  "0ad38d5ea0f1c9385a229ae20836f38f4b42f160",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "src/trzip/intelligence.py",
-                                             "tests/test_home_feed.py"
+                                             "src/trzip/publication_pipeline.py",
+                                             "src/trzip/runtime_audit.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "src/trzip/intelligence.py":  "5f7f01710da715379e2f61175c4af5a6a258ae973d5bf7008a8d32613fb2b7ea",
-                                                    "tests/test_home_feed.py":  "5795df155a3e777adc38400a066db55ec5ad9e7f1acf6a168f6401e83484b5c8"
+                                                    "src/trzip/intelligence.py":  "91116dfbf556893eafdb7e695846be44a02c148b9799f6357b395ced89baddf4",
+                                                    "src/trzip/publication_pipeline.py":  "0ce28224eaae9ccbfcc090ceb3a7165ea959b901cbe2db414637a185c8a2064a",
+                                                    "src/trzip/runtime_audit.py":  "b2b47d730cc7a005735d0000720d87c32c3aac899a5768eb3d94e0640cbae4fd"
                                                 },
-                       "commit_message":  "fix: accept structured freshness signals",
+                       "commit_message":  "fix: reconcile enriched period rankings",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,20 +49,21 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "실데이터 기간별 freshness 계약을 홈 선별 점수와 일치시켜 23시 E2E 파이프라인을 복구",
+                    "objective":  "맥락 보강 뒤 최종 적격·완성 상태를 일간·주간·월간 순위와 감사 계약에 재동기화",
                     "completed":  [
-                                      "freshness 객체에서 signal 값을 안전하게 정규화",
-                                      "기간 freshness 회귀 테스트 추가"
+                                      "기간 뷰 적격성·준비상태 재조정",
+                                      "완성 카드만 기간 Top10에 포함",
+                                      "발행 validator와 runtime audit 계약 통일"
                                   ],
                     "next_actions":  [
-                                         "23:00 KST 실데이터 파이프라인 재실행 및 live-data 발행",
-                                         "프로덕션 정상 Top10 브라우저 E2E 검증"
+                                         "23:00 KST publication 원격 live-data 게시",
+                                         "프로덕션 정상 Top10 E2E 확인"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "일부 트렌드는 근거가 있는 상장기업 10개를 아직 충족하지 못함"
+                                              "실측 적격 카드의 기업·키워드 보강이 부족하면 홈은 0개를 정직하게 공개함"
                                           ]
                 },
     "runtime_contract":  {

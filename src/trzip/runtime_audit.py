@@ -537,7 +537,11 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
             item for item in ranking
             if item.get("lane") == "main" and item.get("home_eligible") is True
         ]
-        expected_top10 = select_balanced_home_top10(main)
+        ready_main = [
+            item for item in main
+            if item.get("frontend_readiness_status") == "ready"
+        ]
+        expected_top10 = select_balanced_home_top10(ready_main)
         if (
             [item.get("main_rank") for item in main] != list(range(1, len(main) + 1))
             or [item.get("event_key") for item in top10]

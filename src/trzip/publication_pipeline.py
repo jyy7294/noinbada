@@ -643,7 +643,6 @@ def _validate_period_views(intelligence: dict) -> None:
             item for item in ranking
             if item.get("lane") == "main"
             and item.get("home_eligible") is True
-            and item.get("frontend_readiness_status") == "ready"
         ]
         if [item.get("main_rank") for item in main] != list(range(1, len(main) + 1)):
             raise ValueError(f"period main ranks must be continuous: {key}")
@@ -653,7 +652,11 @@ def _validate_period_views(intelligence: dict) -> None:
             if item.get("lane") != "main" or item.get("home_eligible") is not True
         ):
             raise ValueError(f"period home ranks must preserve home-eligible score order: {key}")
-        expected_top10 = select_balanced_home_top10(main)
+        ready_main = [
+            item for item in main
+            if item.get("frontend_readiness_status") == "ready"
+        ]
+        expected_top10 = select_balanced_home_top10(ready_main)
         if [item.get("event_key") for item in period_top10] != [
             item.get("event_key") for item in expected_top10
         ]:
