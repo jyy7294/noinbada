@@ -50,6 +50,9 @@ COMPANY_DOMAINS = {
 }
 
 COMPANY_LOGO_OVERRIDES = {
+    "Nikon": "https://www.nikon.com/favicon.ico",
+    "Teledyne Technologies": "https://cdn.teledyne.com/assets/common/images/favicon.ico",
+    "Hamamatsu Photonics": "https://www.hamamatsu.com/etc.clientlibs/hpk-global-web/clientlibs/clientlib-site-resources/resources/favicon.ico",
     "롯데관광개발": "https://www.lottetour.com/statics/images/logo.gif",
 }
 
