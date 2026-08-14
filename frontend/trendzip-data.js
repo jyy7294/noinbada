@@ -285,8 +285,30 @@ async function sha256Hex(text) {
     .join('');
 }
 
+const FETCH_TIMEOUT_MS = 6500;
+const FETCH_ATTEMPTS = 3;
+
+async function fetchWithRetry(url, options = {}) {
+  let lastError = null;
+  for (let attempt = 0; attempt < FETCH_ATTEMPTS; attempt += 1) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+    try {
+      const response = await fetch(url, { ...options, signal: controller.signal });
+      if (response.ok || attempt === FETCH_ATTEMPTS - 1) return response;
+      lastError = new Error(`TRZIP request ${response.status}`);
+    } catch (error) {
+      lastError = error;
+    } finally {
+      clearTimeout(timer);
+    }
+    await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
+  }
+  throw lastError || new Error('TRZIP request failed');
+}
+
 async function fetchManifestRankings(nonce) {
-  const manifestResponse = await fetch(`${MANIFEST_URL}?t=${nonce}`, { cache: 'no-store' });
+  const manifestResponse = await fetchWithRetry(`${MANIFEST_URL}?t=${nonce}`, { cache: 'no-store' });
   if (!manifestResponse.ok) throw new Error(`TRZIP manifest ${manifestResponse.status}`);
   const manifest = await manifestResponse.json();
   const entry = manifest?.bundle?.rankings || {};
@@ -297,7 +319,7 @@ async function fetchManifestRankings(nonce) {
   if (!/^[a-f0-9]{64}$/i.test(String(entry.sha256 || ''))) {
     throw new Error('TRZIP manifest의 순위 파일 해시가 올바르지 않습니다.');
   }
-  const rankingsResponse = await fetch(
+  const rankingsResponse = await fetchWithRetry(
     `${LIVE_DATA_BASE}/${relativePath}?t=${nonce}`,
     { cache: 'no-store' },
   );
@@ -349,8 +371,8 @@ export async function loadTrends({ mode = 'live' } = {}) {
     const nonce = Date.now();
     const [rankings, statusResponse, metadataResponse] = await Promise.all([
       fetchManifestRankings(nonce),
-      fetch(`${STATUS_URL}?t=${nonce}`, { cache: 'no-store' }),
-      fetch(`${METADATA_URL}?t=${nonce}`, { cache: 'no-store' }),
+      fetchWithRetry(`${STATUS_URL}?t=${nonce}`, { cache: 'no-store' }),
+      fetchWithRetry(`${METADATA_URL}?t=${nonce}`, { cache: 'no-store' }),
     ]);
     if (!statusResponse.ok) throw new Error(`TRZIP status ${statusResponse.status}`);
     if (!metadataResponse.ok) throw new Error(`TRZIP metadata ${metadataResponse.status}`);

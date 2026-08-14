@@ -58,3 +58,11 @@ def test_long_home_names_use_two_line_clamp_and_short_name() -> None:
     assert "shortDisplayName: item.short_display_name" in DATA
     assert "trend.shortName || trend.name" in INDEX or "t.shortName || t.name" in INDEX
     assert "-webkit-line-clamp:2" in INDEX
+
+
+def test_live_data_loader_has_timeout_and_retry_guards() -> None:
+    assert "FETCH_TIMEOUT_MS = 6500" in DATA
+    assert "FETCH_ATTEMPTS = 3" in DATA
+    assert "async function fetchWithRetry" in DATA
+    assert "new AbortController()" in DATA
+    assert "fetchManifestRankings(nonce)" in DATA

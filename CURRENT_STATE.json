@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T16:43:53.0528655+00:00",
+    "updated_at":  "2026-08-14T16:49:10.4613443+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "fd7e0bf52b2cf8a31eca0a0befe26f67b71a4744",
+                       "base_remote_main_sha":  "87a076150be1220a86cc48c52de4519b24cea6dc",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "frontend/index.html",
-                                             "src/trzip/presentation_feed.py"
+                                             "frontend/trendzip-data.js",
+                                             "tests/test_frontend_mvp_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "ee060a8731a62b2f4786297927ce64db45b2a3742a2826f0a27020297e656db4",
-                                                    "src/trzip/presentation_feed.py":  "3e074e9a0210c62653ed5857c24c92062d1bc66f1501f94295cfc96870d07b54"
+                                                    "frontend/trendzip-data.js":  "dc02294c217e7059b7a2a8a62a1c61f8ab91bf1e2f2c3096a9acc998f4a1b744",
+                                                    "tests/test_frontend_mvp_contract.py":  "44fdd2c1e67442e9b430aa47f74e9d9f3e9d270fad55ac3dbee7ac0af9e3b5d8"
                                                 },
-                       "commit_message":  "fix: use verified official logo assets for remaining companies",
+                       "commit_message":  "fix: retry immutable live-data loading with timeouts",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  352
+                                      "count":  353
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,7 +47,7 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Eliminate letter fallbacks for Nikon, Teledyne and Hamamatsu across company screens.",
+                    "objective":  "Prevent first-load stalls by bounding and retrying manifest, rankings, status and metadata requests.",
                     "completed":  [
 
                                   ],
