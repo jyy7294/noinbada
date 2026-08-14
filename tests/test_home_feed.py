@@ -62,3 +62,23 @@ def test_naver_news_is_context_only_and_never_changes_x_google_weights():
         for row in rows
     )
     assert all(row["home_rank_input_sources"] == ["x", "google_trends"] for row in rows)
+
+
+def test_home_score_accepts_period_freshness_record():
+    rows = [{
+        "event_key": "period-freshness",
+        "score": 80,
+        "observed_rank": 1,
+        "latest_source_ranks": {"x": 1, "google_trends": 2},
+        "momentum_delta": 0.4,
+        "persistence": 0.5,
+        "freshness": {
+            "signal": 0.5,
+            "half_life_hours": 12.0,
+            "hours_since_last_seen": 12.0,
+        },
+    }]
+
+    apply_equal_platform_home_scores(rows)
+
+    assert rows[0]["_home_selection_components"]["recency"] == 50.0

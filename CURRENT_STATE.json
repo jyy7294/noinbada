@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T13:50:41.4470922+00:00",
+    "updated_at":  "2026-08-14T14:08:03.0631687+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,36 +8,24 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "8fbde036524ca233f472db19b0fcaf23e2c93dd8",
+                       "base_remote_main_sha":  "0e23b399b72d8babd8a5c38e1a64bc6252228a16",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "design/qa-implementation-home-error.png",
-                                             "design/Trend App Zip v2.dc.html",
-                                             "design-qa.md",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "frontend/index.html",
-                                             "src/trzip/presentation_feed.py",
-                                             "src/trzip/publication_pipeline.py",
-                                             "tests/test_presentation_feed.py"
+                                             "src/trzip/intelligence.py",
+                                             "tests/test_home_feed.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "design/qa-implementation-home-error.png":  "8d5ebc5c8f7dd81ecf927352e4cb67dba1dc2e26541e819eaf44558779c8eeaf",
-                                                    "design/Trend App Zip v2.dc.html":  "5679c3e043174b7167f2546453ef3e48cd927ccaf3cbd98d9ceef97debe9d066",
-                                                    "design-qa.md":  "c9a0fd7a2f64c6811be39cdd7438f74e6ea1c025be1fa1950806412f64c0f6bd",
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "bfefd7ebad14c907f905e3ad7f0bf2dff47a5afa14f18afb2fe99f8fa1255d6b",
-                                                    "frontend/index.html":  "93e248fffcd31cb4d2c997adbcb10504d624a4e05d9d95b73da48b0607f444f9",
-                                                    "src/trzip/presentation_feed.py":  "48090991f5f9f7368d15dda3c44c75a59e2ec13913897571355ecdd89c1a9478",
-                                                    "src/trzip/publication_pipeline.py":  "a9ecc53e9da8c9becc1e347826203749802f17b38e40c54ed7c874f1ffb26953",
-                                                    "tests/test_presentation_feed.py":  "79eb583060f1194af941d7c3ae737d55e7771e675e538aa945c75ad142a11d31"
+                                                    "src/trzip/intelligence.py":  "5f7f01710da715379e2f61175c4af5a6a258ae973d5bf7008a8d32613fb2b7ea",
+                                                    "tests/test_home_feed.py":  "5795df155a3e777adc38400a066db55ec5ad9e7f1acf6a168f6401e83484b5c8"
                                                 },
-                       "commit_message":  "feat: connect final TRZIP frontend",
+                       "commit_message":  "fix: accept structured freshness signals",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  341
+                                      "count":  342
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -59,21 +47,19 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "승인 Top10 백엔드 계약과 최종 모바일 프런트를 연결해 main 및 운영 런타임에 게시",
+                    "objective":  "실데이터 기간별 freshness 계약을 홈 선별 점수와 일치시켜 23시 E2E 파이프라인을 복구",
                     "completed":  [
-                                      "최종 디자인 재구현과 실데이터 loadTrends 연동",
-                                      "Top10 순서·신선도·관심창·기업 온톨로지 계약 강화",
-                                      "로컬 저장·JSON·CSV 내보내기 및 분석 이벤트 연결"
+                                      "freshness 객체에서 signal 값을 안전하게 정규화",
+                                      "기간 freshness 회귀 테스트 추가"
                                   ],
                     "next_actions":  [
-                                         "Vercel 프로덕션 직접 배포 및 브라우저 E2E 검증",
-                                         "23:00 KST 실데이터 발행본으로 정상 Top10 재검증"
+                                         "23:00 KST 실데이터 파이프라인 재실행 및 live-data 발행",
+                                         "프로덕션 정상 Top10 브라우저 E2E 검증"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "기존 live-data에는 아직 새 presentation_feed가 없어 새 발행 전까지 정직한 오류 상태를 표시함",
                                               "일부 트렌드는 근거가 있는 상장기업 10개를 아직 충족하지 못함"
                                           ]
                 },

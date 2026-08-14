@@ -1763,7 +1763,13 @@ def apply_equal_platform_home_scores(rows: list[dict]) -> list[dict]:
         latest_sources = set((item.get("latest_source_ranks") or {}).keys())
         cross_spread = 1.0 if {"x", "google_trends"}.issubset(latest_sources) else 0.0
         persistence = max(0.0, min(1.0, float(item.get("persistence") or 0.0)))
-        freshness = max(0.0, min(1.0, float(item.get("freshness") or 0.0)))
+        freshness_record = item.get("freshness")
+        freshness_value = (
+            freshness_record.get("signal")
+            if isinstance(freshness_record, dict)
+            else freshness_record
+        )
+        freshness = max(0.0, min(1.0, float(freshness_value or 0.0)))
         item["_home_selection_score"] = round(
             35.0 * momentum
             + 25.0 * cross_spread
