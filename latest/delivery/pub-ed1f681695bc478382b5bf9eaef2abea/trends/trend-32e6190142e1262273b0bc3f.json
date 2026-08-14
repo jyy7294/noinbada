@@ -1,0 +1,1243 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-ed1f681695bc478382b5bf9eaef2abea",
+  "generated_at": "2026-08-14T14:19:50.425998+00:00",
+  "observed_at": "2026-08-14T14:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "페르세우스 유성우",
+    "topic": "페르세우스",
+    "display_name": "페르세우스 유성우",
+    "observed_representative_term": "페르세우스",
+    "display_name_policy": "source_context_event_merge",
+    "resolved_entity_name": "페르세우스 유성우",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 11,
+      "source_count": 2,
+      "reciprocal_rank_support": 0.139955,
+      "best_source_rank": 6
+    },
+    "raw_terms": [
+      "별똥별",
+      "유성우 시간",
+      "페르세우스",
+      "페르세우스 유성우 시간"
+    ],
+    "phenomenon_summary": "\"페르세우스\" · X 한국 실시간·Google Trends KR에서 함께 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "public_observation_event",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "culture",
+    "category_label": "문화·밈·참여",
+    "category_ontology": {
+      "version": "category-ontology-v1",
+      "category": "public_observation_event",
+      "entity_slots": [
+        "phenomenon",
+        "observation_time",
+        "observation_place",
+        "equipment",
+        "science_platform"
+      ],
+      "trigger_types": [
+        "observation_window",
+        "forecast",
+        "live_broadcast",
+        "search_growth",
+        "equipment_demand"
+      ],
+      "recommended_company_roles": [
+        "manufacturing_development",
+        "raw_materials_components",
+        "platform_service",
+        "content_production"
+      ],
+      "affects_score": false
+    },
+    "trend_definition": "'페르세우스 유성우'은(는) 사람들이 관측·공유·참여하며 확산시키는 문화적 흐름입니다. 실측 데이터에서는 유성우 시간, 유성 같은 표현과 함께 나타났습니다. X와 Google 대한민국 관측값에서 확인된 맥락을 설명합니다.",
+    "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
+    "lane": "issue",
+    "selection_reason": "정치·사건사고·재난·단순 기상특보·사생활 논란 맥락",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "issue",
+      "main_eligible": false,
+      "hard_issue": true,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "정치·사건사고·재난·단순 기상특보·사생활 논란 맥락",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "issue",
+      "label": "이슈·주의",
+      "affects_score": false
+    },
+    "selection_layer": "issue_context",
+    "company_eligible": false,
+    "score": 5.2,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "x"
+    ],
+    "freshness": {
+      "signal": 0.297302,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 21.0
+    },
+    "hours_since_last_seen": 21.0,
+    "previous_period_rank": 2,
+    "rank_change": -525,
+    "rank_change_status": "measured",
+    "period_strength": 0.051724,
+    "current_source_position": 0.051724,
+    "momentum": 0.0,
+    "persistence": 0.0417,
+    "momentum_delta": null,
+    "score_components": {
+      "period_strength_points": 1.81,
+      "momentum_points": 0.0,
+      "persistence_points": 0.42,
+      "recency_points": 2.97,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 5.2
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "unavailable",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "x": 0.103448
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "momentum_event_observations": {},
+      "persistence": {
+        "x": {
+          "eligible_hours": 9,
+          "observed_hours": 2,
+          "presence_rate": 0.083333,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.375,
+        "google_trends": 0.416667
+      },
+      "momentum_status": "unavailable",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-13T17:00:00+00:00",
+      "observed_hours": 18,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 2,
+    "current_source_count": 0,
+    "source_badge": "교차출처",
+    "latest_source_ranks": {
+      "google_trends": 196,
+      "x": 27
+    },
+    "rank_change_by_source": {
+      "google_trends": -44,
+      "x": 0
+    },
+    "source_rank_change": {
+      "google_trends": -44,
+      "x": 0
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-13T17:00:00+00:00",
+    "age_hours": 49,
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "data_confidence": {
+      "level": "medium",
+      "label": "보통",
+      "reason": "24시간 MVP 원장과 반복 관측을 충족한 운영 초기 결과",
+      "window_observed_hours": 26,
+      "history_maturity": 0.3958,
+      "ranking_status": "mature"
+    },
+    "verification_layer": {
+      "representative_term": "페르세우스 유성우",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "failed",
+          "matched": null,
+          "error_code": "024",
+          "metrics": {
+            "blog_total_reported": null,
+            "news_total_reported": null,
+            "partial_provider_error_count": 2,
+            "stored_evidence_count": 0
+          },
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 61707,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "tQFiZdl5Dfs",
+              "title": "페르세우스 유성우 절정…오늘 밤에도 별똥별 / 연합뉴스TV (YonhapnewsTV)",
+              "url": "https://www.youtube.com/watch?v=tQFiZdl5Dfs",
+              "published_at": "2026-08-13T04:05:01Z",
+              "publisher": "연합뉴스TV",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 68,
+                "viewCount": 10347
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "52FDhKAhw2Y",
+              "title": "천안홍대용과학관 2026 페르세우스 유성우 생중계",
+              "url": "https://www.youtube.com/watch?v=52FDhKAhw2Y",
+              "published_at": "2026-08-12T16:06:04Z",
+              "publisher": "천안홍대용과학관",
+              "metrics": {
+                "commentCount": 9,
+                "likeCount": 746,
+                "viewCount": 96562
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "XqHExE7OfAM",
+              "title": "새벽 하늘 수놓은 페르세우스 유성우…별똥별 쏟아진 장관 [티조 Clip] #shorts",
+              "url": "https://www.youtube.com/watch?v=XqHExE7OfAM",
+              "published_at": "2026-08-13T01:49:00Z",
+              "publisher": "뉴스TVCHOSUN",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 124,
+                "viewCount": 12212
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "QYcKEVbFRMs",
+              "title": "[4K] 은하수와 별똥별의 장관! 합천 황매산 페르세우스 유성우 (2026.8.13 새벽)",
+              "url": "https://www.youtube.com/watch?v=QYcKEVbFRMs",
+              "published_at": "2026-08-13T12:46:04Z",
+              "publisher": "트래블러버 TRAVEL LOVER",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 7,
+                "viewCount": 146
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "SDU-GTPVTXg",
+              "title": "한여름 밤 별똥별 잔치…내일까지 페르세우스 유성우 / 연합뉴스TV (YonhapnewsTV)",
+              "url": "https://www.youtube.com/watch?v=SDU-GTPVTXg",
+              "published_at": "2026-08-12T20:18:17Z",
+              "publisher": "연합뉴스TV",
+              "metrics": {
+                "commentCount": 14,
+                "likeCount": 42,
+                "viewCount": 15601
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "disabled_by_runtime_policy",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "affects_home_rank": false
+    },
+    "verification_signals": {
+      "representative_term": "페르세우스 유성우",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "failed",
+          "matched": null,
+          "error_code": "024",
+          "metrics": {
+            "blog_total_reported": null,
+            "news_total_reported": null,
+            "partial_provider_error_count": 2,
+            "stored_evidence_count": 0
+          },
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-13T16:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 61707,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "tQFiZdl5Dfs",
+              "title": "페르세우스 유성우 절정…오늘 밤에도 별똥별 / 연합뉴스TV (YonhapnewsTV)",
+              "url": "https://www.youtube.com/watch?v=tQFiZdl5Dfs",
+              "published_at": "2026-08-13T04:05:01Z",
+              "publisher": "연합뉴스TV",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 68,
+                "viewCount": 10347
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "52FDhKAhw2Y",
+              "title": "천안홍대용과학관 2026 페르세우스 유성우 생중계",
+              "url": "https://www.youtube.com/watch?v=52FDhKAhw2Y",
+              "published_at": "2026-08-12T16:06:04Z",
+              "publisher": "천안홍대용과학관",
+              "metrics": {
+                "commentCount": 9,
+                "likeCount": 746,
+                "viewCount": 96562
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "XqHExE7OfAM",
+              "title": "새벽 하늘 수놓은 페르세우스 유성우…별똥별 쏟아진 장관 [티조 Clip] #shorts",
+              "url": "https://www.youtube.com/watch?v=XqHExE7OfAM",
+              "published_at": "2026-08-13T01:49:00Z",
+              "publisher": "뉴스TVCHOSUN",
+              "metrics": {
+                "commentCount": 6,
+                "likeCount": 124,
+                "viewCount": 12212
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "QYcKEVbFRMs",
+              "title": "[4K] 은하수와 별똥별의 장관! 합천 황매산 페르세우스 유성우 (2026.8.13 새벽)",
+              "url": "https://www.youtube.com/watch?v=QYcKEVbFRMs",
+              "published_at": "2026-08-13T12:46:04Z",
+              "publisher": "트래블러버 TRAVEL LOVER",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 7,
+                "viewCount": 146
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "SDU-GTPVTXg",
+              "title": "한여름 밤 별똥별 잔치…내일까지 페르세우스 유성우 / 연합뉴스TV (YonhapnewsTV)",
+              "url": "https://www.youtube.com/watch?v=SDU-GTPVTXg",
+              "published_at": "2026-08-12T20:18:17Z",
+              "publisher": "연합뉴스TV",
+              "metrics": {
+                "commentCount": 14,
+                "likeCount": 42,
+                "viewCount": 15601
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-30T16:00:00Z",
+                "query_term": "페르세우스 유성우",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "context_research": {
+      "status": "ready",
+      "trigger_title": "페르세우스 유성우 절정…오늘 밤에도 별똥별 / 연합뉴스TV (YonhapnewsTV)",
+      "why_now": "페르세우스 유성우 관련 표현이 X·Google 대한민국 관측과 함께 youtube의 최근 공개 콘텐츠·검색 결과 제목에서 확인되었습니다. 이는 현재 맥락을 설명하는 관측 근거이며 인과관계나 투자 판단을 뜻하지 않습니다.",
+      "trigger_type": "youtube_youtube_video",
+      "published_at": "2026-08-13T04:05:01Z",
+      "evidence_urls": [
+        "https://www.youtube.com/watch?v=tQFiZdl5Dfs"
+      ],
+      "evidence_records": [
+        {
+          "provider": "youtube",
+          "title": "페르세우스 유성우 절정…오늘 밤에도 별똥별 / 연합뉴스TV (YonhapnewsTV)",
+          "url": "https://www.youtube.com/watch?v=tQFiZdl5Dfs",
+          "published_at": "2026-08-13T04:05:01Z",
+          "publisher": "연합뉴스TV",
+          "item_type": "youtube_video",
+          "metrics": {
+            "commentCount": 6,
+            "likeCount": 68,
+            "viewCount": 10347
+          }
+        }
+      ],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 25,
+        "value": 76.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"400%\", \"page\": 1, \"row_on_page\": 25, \"started_text\": \"20시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성우 시간\", \"페르세우스 유성우\", \"페르세우스 유성우 시간\"]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 19,
+        "value": 82.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"500%\", \"page\": 1, \"row_on_page\": 19, \"started_text\": \"21시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성우 시간\", \"페르세우스 유성우\", \"페르세우스 유성우 시간\"]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 15,
+        "value": 86.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"500%\", \"page\": 1, \"row_on_page\": 15, \"started_text\": \"22시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성우 시간\", \"유성\", \"페르세우스 유성우 시간\"]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 9,
+        "value": 92.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"600%\", \"page\": 1, \"row_on_page\": 9, \"started_text\": \"23시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성우 시간\", \"유성\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 13,
+        "value": 88.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"500%\", \"page\": 1, \"row_on_page\": 13, \"started_text\": \"6시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스 유성우 시간\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 21,
+        "value": 80.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 1, \"row_on_page\": 21, \"started_text\": \"7시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스\", \"페르세우스 유성우 시간\"]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 27,
+        "value": 74.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 2, \"row_on_page\": 2, \"started_text\": \"7시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스 유성우 시간\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 86,
+        "value": 15.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 4, \"row_on_page\": 11, \"started_text\": \"10시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스 유성우 시간\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "x",
+        "rank": 6,
+        "value": 95.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 124,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 5, \"row_on_page\": 24, \"started_text\": \"11시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스 유성우 시간\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "x",
+        "rank": 6,
+        "value": 95.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 113,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"500%\", \"page\": 5, \"row_on_page\": 13, \"started_text\": \"13시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스 유성우 시간\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "x",
+        "rank": 8,
+        "value": 93.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 107,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"500%\", \"page\": 5, \"row_on_page\": 7, \"started_text\": \"13시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스 유성우 시간\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "x",
+        "rank": 7,
+        "value": 94.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 100,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"500%\", \"page\": 4, \"row_on_page\": 25, \"started_text\": \"16시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스 유성우 시간\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "x",
+        "rank": 10,
+        "value": 91.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 115,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 245, \"collection_page_count\": 10, \"growth_text\": \"500%\", \"page\": 5, \"row_on_page\": 15, \"started_text\": \"21시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스 유성우 시간\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "x",
+        "rank": 13,
+        "value": 88.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "google_trends",
+        "rank": 110,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 237, \"collection_page_count\": 10, \"growth_text\": \"500%\", \"page\": 5, \"row_on_page\": 10, \"started_text\": \"22시간 전\", \"status_text\": \"9시간 동안 지속됨\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"유성\", \"페르세우스 유성우 시간\", \"별똥별 시간\"]"
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "x",
+        "rank": 14,
+        "value": 87.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "google_trends",
+        "rank": 152,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 242, \"collection_page_count\": 10, \"growth_text\": \"300%\", \"page\": 7, \"row_on_page\": 2, \"started_text\": \"23시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[\"별똥별 시간\", \"페르세우스\", \"페르세우스 유성우 방향\"]"
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "x",
+        "rank": 26,
+        "value": 75.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 196,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 238, \"collection_page_count\": 10, \"growth_text\": \"200%\", \"page\": 8, \"row_on_page\": 21, \"started_text\": \"23시간 전\", \"status_text\": \"5시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[\"페르세우스 유성우 방향\", \"유성우 방향\", \"오늘 유성우\"]"
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "x",
+        "rank": 27,
+        "value": 74.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "x",
+        "rank": 27,
+        "value": 74.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      }
+    ],
+    "keywords": [
+      {
+        "text": "유성우 시간",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 14,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "유성",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 12,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "별똥별 시간",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 11,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "별똥별",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 4,
+        "status": "observed_ranked_term",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "오늘 유성우",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "유성우 시간",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 14,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "유성",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 12,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "별똥별 시간",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 11,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "별똥별",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 4,
+        "status": "observed_ranked_term",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "오늘 유성우",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 5,
+      "observed_source_count": 5,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "excluded_by_context",
+      "publish_status": "not_published",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "issue_lane_company_cards_are_disabled",
+      "score_independent": true
+    },
+    "rank": 527,
+    "observed_rank": 527,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "이슈·주의",
+    "persistence_rank": 19,
+    "momentum_rank": 527,
+    "main_rank": null,
+    "keyword_company_links": [],
+    "linked_keyword_count": 0,
+    "keyword_company_link_status": "enrichment_pending",
+    "unlinked_related_keywords": [
+      "유성우 시간",
+      "유성",
+      "별똥별 시간",
+      "별똥별",
+      "오늘 유성우"
+    ],
+    "home_context_status": "review_required",
+    "home_context_reason": "not_main_lane",
+    "home_eligible": false,
+    "company_card_status": "not_applicable",
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_status": "not_applicable",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_linked_to_companies_at_least_two",
+      "evidence_backed_listed_companies_at_least_ten"
+    ],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 0,
+    "frontend_company_role_category_count": 0,
+    "publication_rank": null,
+    "attention_change": {
+      "1w": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "1m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "3m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "insufficient_90_day_observed_history"
+      }
+    },
+    "trend_story": {
+      "schema_version": "trend-story-v1",
+      "status": "ready",
+      "origin": {
+        "observed_term": "페르세우스",
+        "first_observed_at": "2026-08-12T13:00:00+00:00",
+        "trigger_title": "페르세우스 유성우 절정…오늘 밤에도 별똥별 / 연합뉴스TV (YonhapnewsTV)",
+        "trigger_type": "youtube_youtube_video",
+        "why_now": "페르세우스 유성우 관련 표현이 X·Google 대한민국 관측과 함께 youtube의 최근 공개 콘텐츠·검색 결과 제목에서 확인되었습니다. 이는 현재 맥락을 설명하는 관측 근거이며 인과관계나 투자 판단을 뜻하지 않습니다.",
+        "evidence_urls": [
+          "https://www.youtube.com/watch?v=tQFiZdl5Dfs"
+        ],
+        "assertion": "observed_trigger_or_context_not_causal_origin"
+      },
+      "relationship_graph": {
+        "interpretation": "observed_context_graph_not_causal_lineage",
+        "nodes": [
+          {
+            "id": "trend:root",
+            "label": "페르세우스 유성우",
+            "node_type": "observed_trend_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:1",
+            "label": "유성우 시간",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:2",
+            "label": "유성",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:3",
+            "label": "별똥별 시간",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:4",
+            "label": "별똥별",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:5",
+            "label": "오늘 유성우",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          }
+        ],
+        "edges": [
+          {
+            "from": "trend:root",
+            "to": "keyword:1",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:2",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:3",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:4",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:5",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          }
+        ]
+      },
+      "diffusion": {
+        "lifecycle": "expired",
+        "trend_stage": {
+          "key": "mainstream",
+          "label": "대중화",
+          "index": 3
+        },
+        "phase_label": "대중화",
+        "stage_index": 3,
+        "progress_percent": 100,
+        "observed_day_label": "관측 3일차",
+        "observed_hours": 18,
+        "caption": "대중화 이력은 있으나 현재 관측은 종료된 상태입니다.",
+        "attention_lift": {
+          "status": "unavailable",
+          "metric": "source_rank_velocity_index",
+          "value": null,
+          "unit": "points",
+          "label": "비교 관측 축적 중"
+        },
+        "attention_windows": [
+          {
+            "key": "1w",
+            "label": "1주",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "1m",
+            "label": "1개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "3m",
+            "label": "3개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "insufficient_90_day_observed_history",
+            "is_absolute_mention_count": false
+          }
+        ],
+        "channels": [
+          {
+            "source": "x",
+            "label": "X",
+            "latest_rank": 27,
+            "rank_change": 0,
+            "movement_label": "직전 관측 대비 순위 +0",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": true,
+            "affects_multisource_home_rank": false
+          },
+          {
+            "source": "google_trends",
+            "label": "Google Trends",
+            "latest_rank": 196,
+            "rank_change": -44,
+            "movement_label": "직전 관측 대비 순위 -44",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": true,
+            "affects_multisource_home_rank": false
+          },
+          {
+            "source": "naver",
+            "label": "NAVER 검색·뉴스·블로그",
+            "latest_rank": null,
+            "rank_change": null,
+            "movement_label": "직전 비교 자료 없음",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": false,
+            "affects_multisource_home_rank": false
+          },
+          {
+            "source": "youtube",
+            "label": "YouTube KR 차트·검색",
+            "latest_rank": null,
+            "rank_change": null,
+            "movement_label": "직전 비교 자료 없음",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": false,
+            "affects_multisource_home_rank": false
+          }
+        ],
+        "ranking_input_policy": "home-feed-selection-v2-x-google-only"
+      }
+    },
+    "frontend_projection": {
+      "trend_name": "페르세우스 유성우",
+      "trend_category": "문화·밈·참여",
+      "trend_core": "페르세우스 유성우",
+      "observed_day_label": "관측 3일차",
+      "phase_label": "대중화",
+      "stage_index": 3,
+      "progress_percent": 100,
+      "attention_lift": {
+        "status": "unavailable",
+        "metric": "source_rank_velocity_index",
+        "value": null,
+        "unit": "points",
+        "label": "비교 관측 축적 중"
+      },
+      "attention_windows": [
+        {
+          "key": "1w",
+          "label": "1주",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "1m",
+          "label": "1개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "3m",
+          "label": "3개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "insufficient_90_day_observed_history",
+          "is_absolute_mention_count": false
+        }
+      ],
+      "current_rank": 527,
+      "caption": "대중화 이력은 있으나 현재 관측은 종료된 상태입니다.",
+      "related_keyword_count": 5,
+      "company_grouping": "company_role_category",
+      "is_mock": false
+    },
+    "ranking_availability_status": "mature_combined",
+    "semantic_adjudication_status": "hard_issue_not_reviewed",
+    "semantic_adjudication_effect": "hard_issue_lane_preserved"
+  }
+}

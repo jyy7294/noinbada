@@ -1,0 +1,957 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-8ec3f56f8f6440f5b742b69b4af3270c",
+  "generated_at": "2026-08-14T14:15:34.477411+00:00",
+  "observed_at": "2026-08-14T14:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "박성현",
+    "topic": "박성현",
+    "display_name": "박성현",
+    "observed_representative_term": "박성현",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "박성현",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 9,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.08759,
+      "best_source_rank": 29
+    },
+    "raw_terms": [
+      "박성현"
+    ],
+    "phenomenon_summary": "\"박성현\" · Google Trends KR에서 관측",
+    "context_status": "resolved_by_observed_context",
+    "ground_truth_match": false,
+    "category": "sports_participation",
+    "category_basis": "verification_context_general_rule",
+    "broad_category": "sports",
+    "category_label": "스포츠",
+    "category_ontology": {
+      "version": "category-ontology-v1",
+      "category": "sports_participation",
+      "entity_slots": [
+        "competition",
+        "team",
+        "athlete",
+        "venue",
+        "equipment_or_sponsor"
+      ],
+      "trigger_types": [
+        "fixture",
+        "result",
+        "record",
+        "selection",
+        "tournament_stage"
+      ],
+      "recommended_company_roles": [
+        "event_sponsorship",
+        "manufacturing_development",
+        "retail_sales",
+        "platform_service"
+      ],
+      "affects_score": false
+    },
+    "trend_definition": "'박성현'은(는) 경기·대회·선수 또는 관람 활동에 관심이 모이는 흐름입니다. X와 Google 대한민국 관측값에서 확인된 맥락을 설명합니다.",
+    "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": true,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "context_review_queue",
+    "company_eligible": true,
+    "score": 43.79,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 0.749154,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 5.0
+    },
+    "hours_since_last_seen": 5.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.404927,
+    "current_source_position": 0.404927,
+    "momentum": 0.8099,
+    "persistence": 0.1875,
+    "momentum_delta": 0.809853,
+    "score_components": {
+      "period_strength_points": 14.17,
+      "momentum_points": 20.25,
+      "persistence_points": 1.88,
+      "recency_points": 7.49,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 43.79
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.809853
+      },
+      "momentum_deltas": {
+        "google_trends": 0.809853
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 9,
+          "comparison": 0
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 9,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 9,
+          "presence_rate": 0.375,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.375,
+        "google_trends": 0.416667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-13T16:00:00+00:00",
+      "last_seen_at": "2026-08-14T09:00:00+00:00",
+      "observed_hours": 9,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 34
+    },
+    "rank_change_by_source": {
+      "google_trends": 0
+    },
+    "source_rank_change": {
+      "google_trends": 0
+    },
+    "first_seen_at": "2026-08-13T16:00:00+00:00",
+    "last_seen_at": "2026-08-14T09:00:00+00:00",
+    "age_hours": 22,
+    "lifecycle": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "data_confidence": {
+      "level": "medium",
+      "label": "보통",
+      "reason": "24시간 MVP 원장과 반복 관측을 충족한 운영 초기 결과",
+      "window_observed_hours": 26,
+      "history_maturity": 0.3958,
+      "ranking_status": "mature"
+    },
+    "verification_layer": {
+      "representative_term": "박성현",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-14T03:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-14T03:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-14T03:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 13284,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "JOLuegKskkg",
+              "title": "[현장직캠] \"무릎을 꿇었다..\" 갤러리가 소리까지 지른 박성현의 대실수?_메디힐 1R",
+              "url": "https://www.youtube.com/watch?v=JOLuegKskkg",
+              "published_at": "2026-08-13T08:30:36Z",
+              "publisher": "SBS Golf",
+              "metrics": {
+                "commentCount": 71,
+                "likeCount": 419,
+                "viewCount": 48896
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "U-lLtvDEAyY",
+              "title": "박성현 선수가 직접 말하는 스파이더 투어 F 🕷️⛳",
+              "url": "https://www.youtube.com/watch?v=U-lLtvDEAyY",
+              "published_at": "2026-08-13T06:40:52Z",
+              "publisher": "TaylorMade Golf Korea",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 16,
+                "viewCount": 1488
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "jpyA0xS-fYI",
+              "title": "버디로 끝낸 박성현",
+              "url": "https://www.youtube.com/watch?v=jpyA0xS-fYI",
+              "published_at": "2026-08-13T04:51:24Z",
+              "publisher": "웨이브 골프",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 12,
+                "viewCount": 1103
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "5FpujTsk5fs",
+              "title": "제20회 아이치-나고야 아시안게임_박성현 선수",
+              "url": "https://www.youtube.com/watch?v=5FpujTsk5fs",
+              "published_at": "2026-08-14T00:00:03Z",
+              "publisher": "대한사격연맹",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 6,
+                "viewCount": 930
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "IUPSrYSLQtY",
+              "title": "[딧딧] EP.12 장용훈과 박성현",
+              "url": "https://www.youtube.com/watch?v=IUPSrYSLQtY",
+              "published_at": "2026-08-11T12:30:28Z",
+              "publisher": "IDID",
+              "metrics": {
+                "commentCount": 91,
+                "likeCount": 640,
+                "viewCount": 4983
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "disabled_by_runtime_policy",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "affects_home_rank": false
+    },
+    "verification_signals": {
+      "representative_term": "박성현",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-14T03:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-14T03:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-14T03:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 13284,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "JOLuegKskkg",
+              "title": "[현장직캠] \"무릎을 꿇었다..\" 갤러리가 소리까지 지른 박성현의 대실수?_메디힐 1R",
+              "url": "https://www.youtube.com/watch?v=JOLuegKskkg",
+              "published_at": "2026-08-13T08:30:36Z",
+              "publisher": "SBS Golf",
+              "metrics": {
+                "commentCount": 71,
+                "likeCount": 419,
+                "viewCount": 48896
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "U-lLtvDEAyY",
+              "title": "박성현 선수가 직접 말하는 스파이더 투어 F 🕷️⛳",
+              "url": "https://www.youtube.com/watch?v=U-lLtvDEAyY",
+              "published_at": "2026-08-13T06:40:52Z",
+              "publisher": "TaylorMade Golf Korea",
+              "metrics": {
+                "commentCount": 1,
+                "likeCount": 16,
+                "viewCount": 1488
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "jpyA0xS-fYI",
+              "title": "버디로 끝낸 박성현",
+              "url": "https://www.youtube.com/watch?v=jpyA0xS-fYI",
+              "published_at": "2026-08-13T04:51:24Z",
+              "publisher": "웨이브 골프",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 12,
+                "viewCount": 1103
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "5FpujTsk5fs",
+              "title": "제20회 아이치-나고야 아시안게임_박성현 선수",
+              "url": "https://www.youtube.com/watch?v=5FpujTsk5fs",
+              "published_at": "2026-08-14T00:00:03Z",
+              "publisher": "대한사격연맹",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 6,
+                "viewCount": 930
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "IUPSrYSLQtY",
+              "title": "[딧딧] EP.12 장용훈과 박성현",
+              "url": "https://www.youtube.com/watch?v=IUPSrYSLQtY",
+              "published_at": "2026-08-11T12:30:28Z",
+              "publisher": "IDID",
+              "metrics": {
+                "commentCount": 91,
+                "likeCount": 640,
+                "viewCount": 4983
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-31T03:00:00Z",
+                "query_term": "박성현",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "context_research": {
+      "status": "ready",
+      "trigger_title": "[현장직캠] \"무릎을 꿇었다..\" 갤러리가 소리까지 지른 박성현의 대실수?_메디힐 1R",
+      "why_now": "박성현 관련 표현이 X·Google 대한민국 관측과 함께 youtube의 최근 공개 콘텐츠·검색 결과 제목에서 확인되었습니다. 이는 현재 맥락을 설명하는 관측 근거이며 인과관계나 투자 판단을 뜻하지 않습니다.",
+      "trigger_type": "youtube_youtube_video",
+      "published_at": "2026-08-13T08:30:36Z",
+      "evidence_urls": [
+        "https://www.youtube.com/watch?v=JOLuegKskkg"
+      ],
+      "evidence_records": [
+        {
+          "provider": "youtube",
+          "title": "[현장직캠] \"무릎을 꿇었다..\" 갤러리가 소리까지 지른 박성현의 대실수?_메디힐 1R",
+          "url": "https://www.youtube.com/watch?v=JOLuegKskkg",
+          "published_at": "2026-08-13T08:30:36Z",
+          "publisher": "SBS Golf",
+          "item_type": "youtube_video",
+          "metrics": {
+            "commentCount": 71,
+            "likeCount": 419,
+            "viewCount": 48896
+          }
+        }
+      ],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 43,
+        "value": 58.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 229, \"collection_page_count\": 10, \"growth_text\": \"600%\", \"page\": 2, \"row_on_page\": 18, \"started_text\": \"3시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 67,
+        "value": 34.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 236, \"collection_page_count\": 10, \"growth_text\": \"600%\", \"page\": 3, \"row_on_page\": 17, \"started_text\": \"4시간 전\", \"status_text\": \"4시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 72,
+        "value": 29.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 227, \"collection_page_count\": 10, \"growth_text\": \"600%\", \"page\": 3, \"row_on_page\": 22, \"started_text\": \"5시간 전\", \"status_text\": \"4시간 동안 지속됨\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 43,
+        "value": 58.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"600%\", \"page\": 2, \"row_on_page\": 18, \"started_text\": \"6시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T20:00:00+00:00",
+        "source": "google_trends",
+        "rank": 37,
+        "value": 64.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 217, \"collection_page_count\": 9, \"growth_text\": \"600%\", \"page\": 2, \"row_on_page\": 12, \"started_text\": \"7시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 41,
+        "value": 60.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"600%\", \"page\": 2, \"row_on_page\": 16, \"started_text\": \"8시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-14T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 181, \"collection_page_count\": 8, \"growth_text\": \"800%\", \"page\": 2, \"row_on_page\": 4, \"started_text\": \"14시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-14T07:00:00+00:00",
+        "source": "google_trends",
+        "rank": 34,
+        "value": 67.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 169, \"collection_page_count\": 7, \"growth_text\": \"600%\", \"page\": 2, \"row_on_page\": 9, \"started_text\": \"18시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-14T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 34,
+        "value": 67.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 162, \"collection_page_count\": 7, \"growth_text\": \"500%\", \"page\": 2, \"row_on_page\": 9, \"started_text\": \"20시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2천+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [],
+    "related_keywords": [],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 0,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "insufficient",
+      "reason": "관측되거나 검수된 관련 표현이 없어 키워드를 비워 둠"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "ontology_incomplete",
+      "publish_status": "ontology_incomplete",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "박성현",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "완결된 증거 온톨로지 기업이 3개 미만이라 기업 Gold 후보층 공개를 보류"
+    },
+    "rank": 32,
+    "observed_rank": 32,
+    "home_rank": 1,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 264,
+    "momentum_rank": 30,
+    "main_rank": 1,
+    "keyword_company_links": [],
+    "linked_keyword_count": 0,
+    "keyword_company_link_status": "enrichment_pending",
+    "unlinked_related_keywords": [],
+    "home_context_status": "resolved",
+    "home_context_reason": "verified_trigger_event",
+    "home_eligible": true,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_ten_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "related_keywords_linked_to_companies_at_least_two",
+      "evidence_backed_listed_companies_at_least_ten"
+    ],
+    "frontend_keyword_count": 0,
+    "frontend_company_count": 0,
+    "frontend_company_role_category_count": 0,
+    "publication_rank": null,
+    "attention_change": {
+      "1w": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "1m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "3m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "insufficient_90_day_observed_history"
+      }
+    },
+    "trend_story": {
+      "schema_version": "trend-story-v1",
+      "status": "ready",
+      "origin": {
+        "observed_term": "박성현",
+        "first_observed_at": "2026-08-13T16:00:00+00:00",
+        "trigger_title": "[현장직캠] \"무릎을 꿇었다..\" 갤러리가 소리까지 지른 박성현의 대실수?_메디힐 1R",
+        "trigger_type": "youtube_youtube_video",
+        "why_now": "박성현 관련 표현이 X·Google 대한민국 관측과 함께 youtube의 최근 공개 콘텐츠·검색 결과 제목에서 확인되었습니다. 이는 현재 맥락을 설명하는 관측 근거이며 인과관계나 투자 판단을 뜻하지 않습니다.",
+        "evidence_urls": [
+          "https://www.youtube.com/watch?v=JOLuegKskkg"
+        ],
+        "assertion": "observed_trigger_or_context_not_causal_origin"
+      },
+      "relationship_graph": {
+        "interpretation": "observed_context_graph_not_causal_lineage",
+        "nodes": [
+          {
+            "id": "trend:root",
+            "label": "박성현",
+            "node_type": "observed_trend_expression",
+            "source": "x_google_observation"
+          }
+        ],
+        "edges": []
+      },
+      "diffusion": {
+        "lifecycle": "cooling",
+        "trend_stage": {
+          "key": "mainstream",
+          "label": "대중화",
+          "index": 3
+        },
+        "phase_label": "대중화",
+        "stage_index": 3,
+        "progress_percent": 92,
+        "observed_day_label": "관측 1일차",
+        "observed_hours": 9,
+        "caption": "대중화 뒤 확산 속도가 완만해진 구간입니다.",
+        "attention_lift": {
+          "status": "normalized_signal",
+          "metric": "source_rank_velocity_index",
+          "value": 80.99,
+          "unit": "points",
+          "label": "관심 속도 지표 +81.0p"
+        },
+        "attention_windows": [
+          {
+            "key": "1w",
+            "label": "1주",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "1m",
+            "label": "1개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "3m",
+            "label": "3개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "insufficient_90_day_observed_history",
+            "is_absolute_mention_count": false
+          }
+        ],
+        "channels": [
+          {
+            "source": "google_trends",
+            "label": "Google Trends",
+            "latest_rank": 34,
+            "rank_change": 0,
+            "movement_label": "직전 관측 대비 순위 +0",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": true,
+            "affects_multisource_home_rank": true
+          },
+          {
+            "source": "naver",
+            "label": "NAVER 검색·뉴스·블로그",
+            "latest_rank": null,
+            "rank_change": null,
+            "movement_label": "직전 비교 자료 없음",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": false,
+            "affects_multisource_home_rank": false
+          },
+          {
+            "source": "youtube",
+            "label": "YouTube KR 차트·검색",
+            "latest_rank": null,
+            "rank_change": null,
+            "movement_label": "직전 비교 자료 없음",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": false,
+            "affects_multisource_home_rank": false
+          }
+        ],
+        "ranking_input_policy": "home-feed-selection-v2-x-google-only"
+      }
+    },
+    "frontend_projection": {
+      "trend_name": "박성현",
+      "trend_category": "스포츠",
+      "trend_core": "박성현",
+      "observed_day_label": "관측 1일차",
+      "phase_label": "대중화",
+      "stage_index": 3,
+      "progress_percent": 92,
+      "attention_lift": {
+        "status": "normalized_signal",
+        "metric": "source_rank_velocity_index",
+        "value": 80.99,
+        "unit": "points",
+        "label": "관심 속도 지표 +81.0p"
+      },
+      "attention_windows": [
+        {
+          "key": "1w",
+          "label": "1주",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "1m",
+          "label": "1개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "3m",
+          "label": "3개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "insufficient_90_day_observed_history",
+          "is_absolute_mention_count": false
+        }
+      ],
+      "current_rank": 1,
+      "caption": "대중화 뒤 확산 속도가 완만해진 구간입니다.",
+      "related_keyword_count": 0,
+      "company_grouping": "company_role_category",
+      "is_mock": false
+    },
+    "ranking_availability_status": "mature_combined",
+    "semantic_adjudication_status": "disabled_not_configured",
+    "home_platform_score": 41.62,
+    "home_platform_components": {
+      "x": 0.0,
+      "google_trends": 83.25,
+      "naver": null
+    },
+    "home_platform_weights": {
+      "x": 0.5,
+      "google_trends": 0.5
+    },
+    "naver_home_rank_status": "context_only_not_comparable_rank_signal",
+    "youtube_home_rank_status": "disabled_by_home_feed_policy",
+    "naver_candidate_signal": null,
+    "home_platform_coverage": {
+      "candidate_pool_size": 4,
+      "sources": {
+        "naver": {
+          "active": false,
+          "status": "context_only_not_comparable_rank_signal"
+        }
+      },
+      "activation_threshold": null,
+      "minimum_observed_candidates": null
+    },
+    "home_source_policy": "home-feed-selection-v2-x-google-only",
+    "home_rank_input_sources": [
+      "x",
+      "google_trends"
+    ],
+    "platform_observation_summary": {
+      "x": {
+        "observed": false,
+        "latest_rank": null,
+        "ranking_input": true
+      },
+      "google_trends": {
+        "observed": true,
+        "latest_rank": 34,
+        "ranking_input": true
+      },
+      "naver_news": {
+        "observed": false,
+        "recent_article_count": 0,
+        "independent_publisher_count": 0,
+        "selection_input": false
+      },
+      "youtube": {
+        "status": "disabled_by_home_feed_policy",
+        "ranking_input": false
+      },
+      "instagram": {
+        "status": "disabled_by_home_feed_policy",
+        "ranking_input": false
+      }
+    },
+    "canonical_observed_rank_preserved": true,
+    "_home_selection_score": 46.036268,
+    "_home_selection_components": {
+      "velocity": 80.9853,
+      "cross_platform_spread": 0.0,
+      "current_attention": 41.624365,
+      "persistence": 18.75,
+      "recency": 74.9154
+    }
+  }
+}

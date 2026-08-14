@@ -365,5 +365,53 @@
     "observed_rows": 228,
     "errors": {},
     "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-14T03:00:00+00:00",
+    "started_at": "2026-08-14T03:09:19.415215+00:00",
+    "finished_at": "2026-08-14T03:09:54.767610+00:00",
+    "delay_seconds": 559,
+    "duration_seconds": 35.35,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 211,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-14T07:00:00+00:00",
+    "started_at": "2026-08-14T07:09:18.696475+00:00",
+    "finished_at": "2026-08-14T07:09:40.891247+00:00",
+    "delay_seconds": 559,
+    "duration_seconds": 22.19,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 199,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-14T14:00:00+00:00",
+    "started_at": "2026-08-14T14:08:34.236158+00:00",
+    "finished_at": "2026-08-14T14:09:01.090977+00:00",
+    "delay_seconds": 514,
+    "duration_seconds": 26.85,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 206,
+    "errors": {},
+    "source_failures": {}
   }
 ]
