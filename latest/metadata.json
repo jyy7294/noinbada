@@ -1,8 +1,8 @@
 {
   "schema_version": "trzip-live-data-v3",
-  "publication_id": "pub-ed1f681695bc478382b5bf9eaef2abea",
-  "generated_at": "2026-08-14T14:19:50.425998+00:00",
-  "observed_at": "2026-08-14T14:00:00+00:00",
+  "publication_id": "pub-dc59dfb54b094410b20a1e11d711295c",
+  "generated_at": "2026-08-14T16:16:54.324613+00:00",
+  "observed_at": "2026-08-14T16:00:00+00:00",
   "mode": "live",
   "publishable": true,
   "storage": "local-sqlite-published-to-live-data",
@@ -12,7 +12,7 @@
   "pruned_observation_files": 0,
   "daily_file": "observations/2026-08-14.json",
   "collection": {
-    "observed": 206,
+    "observed": 207,
     "errors": {},
     "rank_sources": [
       "x",
@@ -29,44 +29,44 @@
       },
       "google_geo_kr": {
         "status": "observed",
-        "row_count": 176,
+        "row_count": 177,
         "detail": "verified_current_hour_snapshot",
-        "declared_total": 176,
+        "declared_total": 177,
         "page_count": 8,
         "completion_verified": true
       }
     },
-    "observed_at": "2026-08-14T14:00:00+00:00"
+    "observed_at": "2026-08-14T16:00:00+00:00"
   },
   "coverage": {
     "first_hour": "2026-08-12T13:00:00+00:00",
-    "last_hour": "2026-08-14T14:00:00+00:00",
-    "hours": 26,
-    "rows": 5960,
-    "observed_rows": 5960,
+    "last_hour": "2026-08-14T16:00:00+00:00",
+    "hours": 27,
+    "rows": 6167,
+    "observed_rows": 6167,
     "legacy_observed_rows": 551,
     "legacy_generated_rows": 0
   },
   "market_data": {
     "provider": "pykrx",
     "kind": "daily_reference_not_realtime",
-    "requested_stock_codes": 31,
+    "requested_stock_codes": 29,
     "newly_observed": 1,
-    "reused_company_rows": 40,
-    "unavailable_company_rows": 33
+    "reused_company_rows": 39,
+    "unavailable_company_rows": 31
   },
   "company_identity_data": {
     "provider": "opendart",
-    "requested": 65,
-    "fetched": 0,
-    "reused": 65,
+    "requested": 62,
+    "fetched": 24,
+    "reused": 38,
     "status_counts": {
-      "verified": 35,
-      "invalid": 30
+      "verified": 34,
+      "invalid": 28
     },
     "financial_status_counts": {
-      "observed": 26,
-      "unavailable": 39
+      "observed": 25,
+      "unavailable": 37
     },
     "verified_ttl_days": 30,
     "retry_ttl_hours": 24,
@@ -75,11 +75,11 @@
   },
   "collection_health": {
     "measurement_window_hours": 168,
-    "recorded_runs": 22,
-    "successful_runs": 13,
-    "success_rate": 0.5909,
+    "recorded_runs": 23,
+    "successful_runs": 14,
+    "success_rate": 0.6087,
     "source_success_rate": {
-      "x": 0.5909,
+      "x": 0.6087,
       "google_trends": 1.0
     },
     "source_failure_counts": {
@@ -109,19 +109,19 @@
       "x": false,
       "google_trends": false
     },
-    "on_time_within_15m_rate": 0.6364,
-    "latest_delay_seconds": 514,
-    "latest_duration_seconds": 26.85,
-    "current_publication_scheduled_at": "2026-08-14T14:00:00+00:00",
-    "current_publication_attempt_type": "recovery",
-    "current_publication_status": "republished_complete",
+    "on_time_within_15m_rate": 0.6087,
+    "latest_delay_seconds": 966,
+    "latest_duration_seconds": 47.99,
+    "current_publication_scheduled_at": "2026-08-14T16:00:00+00:00",
+    "current_publication_attempt_type": "scheduled",
+    "current_publication_status": "scheduled_complete",
     "current_publication_success": true,
     "current_publication_source_success": {
       "x": true,
       "google_trends": true
     },
     "current_schedule_initial_attempt_success": true,
-    "latest_scheduled_at": "2026-08-14T14:00:00+00:00",
+    "latest_scheduled_at": "2026-08-14T16:00:00+00:00",
     "latest_scheduled_attempt_success": true,
     "latest_scheduled_attempt_source_success": {
       "x": true,
@@ -129,16 +129,16 @@
     },
     "recovered_from_scheduled_failure": false,
     "status": "collecting_baseline",
-    "remaining_runs_for_3d": 50,
-    "remaining_runs_for_7d": 146,
+    "remaining_runs_for_3d": 49,
+    "remaining_runs_for_7d": 145,
     "warning": "Codex 정각 자동화 실측 기록이며 노트북·Codex·Chrome 종료 또는 로그아웃 중에는 실행되지 않을 수 있음"
   },
   "frontend_delivery": {
     "schema_version": "trzip-frontend-delivery-v1",
     "manifest_path": "latest/manifest.json",
-    "bundle_path": "latest/delivery/pub-ed1f681695bc478382b5bf9eaef2abea",
-    "rankings_path": "latest/delivery/pub-ed1f681695bc478382b5bf9eaef2abea/rankings.json",
-    "trend_detail_count": 813,
+    "bundle_path": "latest/delivery/pub-dc59dfb54b094410b20a1e11d711295c",
+    "rankings_path": "latest/delivery/pub-dc59dfb54b094410b20a1e11d711295c/rankings.json",
+    "trend_detail_count": 833,
     "contract": "manifest-last immutable bundle; existing three documents retained"
   }
 }

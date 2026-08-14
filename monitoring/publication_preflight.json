@@ -1,18 +1,18 @@
 {
   "policy_version": "hourly-publication-preflight-v1",
-  "observed_at": "2026-08-14T14:00:00+00:00",
+  "observed_at": "2026-08-14T16:00:00+00:00",
   "passed": true,
   "source_gate": {
     "policy_version": "hourly-source-proof-v2",
     "passed": true,
     "sources": {
       "google_trends": {
-        "row_count": 176,
-        "unique_topics": 176,
-        "unique_ranks": 176,
+        "row_count": 177,
+        "unique_topics": 177,
+        "unique_ranks": 177,
         "minimum_rank": 1,
-        "maximum_rank": 176,
-        "observed_rows": 176
+        "maximum_rank": 177,
+        "observed_rows": 177
       },
       "x": {
         "row_count": 30,
@@ -27,9 +27,9 @@
           "profile": "current_logged_in_chrome",
           "region": "KR",
           "region_verified": true,
-          "observed_at": "2026-08-14T14:01:10.500000+00:00",
-          "scheduled_for": "2026-08-14T14:00:00+00:00",
-          "schedule_delay_seconds": 70.5,
+          "observed_at": "2026-08-14T16:02:20+00:00",
+          "scheduled_for": "2026-08-14T16:00:00+00:00",
+          "schedule_delay_seconds": 140.0,
           "evidence_row_count": 30,
           "evidence_consistent": true,
           "timing_verified": true

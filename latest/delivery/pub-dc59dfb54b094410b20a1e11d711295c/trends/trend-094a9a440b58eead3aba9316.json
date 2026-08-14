@@ -1,0 +1,2754 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-dc59dfb54b094410b20a1e11d711295c",
+  "generated_at": "2026-08-14T16:16:54.324613+00:00",
+  "observed_at": "2026-08-14T16:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "휴머노이드",
+    "topic": "휴머노이드",
+    "display_name": "휴머노이드",
+    "observed_representative_term": "휴머노이드",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "휴머노이드",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 1,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.007874,
+      "best_source_rank": 67
+    },
+    "raw_terms": [
+      "휴머노이드"
+    ],
+    "phenomenon_summary": "\"휴머노이드\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "technology_tool",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "technology",
+    "category_label": "기술·도구",
+    "category_ontology": {
+      "version": "category-ontology-v1",
+      "category": "technology_tool",
+      "entity_slots": [
+        "technology",
+        "product_or_project",
+        "developer",
+        "component",
+        "application"
+      ],
+      "trigger_types": [
+        "official_announcement",
+        "product_launch",
+        "investment",
+        "deployment",
+        "regulatory_milestone"
+      ],
+      "recommended_company_roles": [
+        "manufacturing_development",
+        "raw_materials_components",
+        "platform_service",
+        "distribution"
+      ],
+      "affects_score": false
+    },
+    "trend_definition": "'휴머노이드'은(는) 기술·장비·인프라의 개발과 활용에 관심이 모이는 흐름입니다. 실측 데이터에서는 구광모, 아틀라스 같은 표현과 함께 나타났습니다. X와 Google 대한민국 관측값에서 확인된 맥락을 설명합니다.",
+    "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "context_review_queue",
+    "company_eligible": true,
+    "score": 17.21,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 0.66742,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 7.0
+    },
+    "hours_since_last_seen": 7.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.295031,
+    "current_source_position": 0.295031,
+    "momentum": 0.0,
+    "persistence": 0.0208,
+    "momentum_delta": null,
+    "score_components": {
+      "period_strength_points": 10.33,
+      "momentum_points": 0.0,
+      "persistence_points": 0.21,
+      "recency_points": 6.67,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 17.21
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "unavailable",
+      "momentum_basis": {},
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.590062
+      },
+      "momentum_deltas": {},
+      "momentum_basis": {},
+      "momentum_event_observations": {},
+      "persistence": {
+        "x": {
+          "eligible_hours": 9,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 1,
+          "presence_rate": 0.041667,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.375,
+        "google_trends": 0.416667
+      },
+      "momentum_status": "unavailable",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-14T09:00:00+00:00",
+      "last_seen_at": "2026-08-14T09:00:00+00:00",
+      "observed_hours": 1,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 67
+    },
+    "rank_change_by_source": {
+      "google_trends": null
+    },
+    "source_rank_change": {
+      "google_trends": null
+    },
+    "first_seen_at": "2026-08-14T09:00:00+00:00",
+    "last_seen_at": "2026-08-14T09:00:00+00:00",
+    "age_hours": 7,
+    "lifecycle": "cooling",
+    "lifecycle_reason": "recently_missing_within_cooling_window",
+    "data_confidence": {
+      "level": "low",
+      "label": "낮음",
+      "reason": "원장 축적이 24시간 미만인 잠정 순위",
+      "window_observed_hours": 27,
+      "history_maturity": 0.3958,
+      "ranking_status": "provisional"
+    },
+    "verification_layer": {
+      "status": "disabled_by_runtime_policy",
+      "observed_platforms": [],
+      "affects_score": false,
+      "affects_home_rank": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "context_research": {
+      "status": "incomplete",
+      "trigger_title": "",
+      "why_now": "",
+      "trigger_type": "",
+      "published_at": null,
+      "evidence_urls": [],
+      "evidence_records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-14T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 67,
+        "value": 34.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 162, \"collection_page_count\": 7, \"growth_text\": \"200%\", \"page\": 3, \"row_on_page\": 17, \"started_text\": \"2시간 전\", \"status_text\": \"활성\", \"volume_text\": \"500+\"}",
+        "related_terms_json": "[\"구광모\"]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "구광모",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "아틀라스",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "named_humanoid_product",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "LG 클로이드",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "adjacent_dual_arm_home_robot",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.lge.co.kr/story/newsroom/234937"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "미래로봇",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_company_program",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+        ],
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "구광모",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "아틀라스",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "named_humanoid_product",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "LG 클로이드",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "adjacent_dual_arm_home_robot",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.lge.co.kr/story/newsroom/234937"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "미래로봇",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "official_company_program",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+        ],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 4,
+      "observed_source_count": 1,
+      "reviewed_ontology_count": 3,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [
+      {
+        "company": "LG전자",
+        "stock_code": "066570",
+        "ticker": "066570",
+        "market": "KOSPI",
+        "relation_type": "develops_adjacent_dual_arm_home_robot",
+        "strength": "sector_watch",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 066570",
+        "company_description": "KOSPI 상장기업, 종목코드 066570",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.lge.co.kr/story/newsroom/234937",
+            "title": "LG전자, CES 2026서 홈로봇 LG 클로이드 공개",
+            "evidence_type": "company_official_adjacent_home_robot_product",
+            "published_at": "2026-01-06",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm",
+            "title": "LG전자 유가증권상장법인 회사코드 066570",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "LG전자",
+            "edge_type": "develops_adjacent_dual_arm_home_robot",
+            "evidence_urls": [
+              "https://www.lge.co.kr/story/newsroom/234937"
+            ],
+            "evidence_type": [
+              "company_official_adjacent_home_robot_product"
+            ],
+            "as_of": "2026-01-06",
+            "review_status": "approved"
+          },
+          {
+            "from": "LG전자",
+            "to": "066570 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [
+          "LG 클로이드"
+        ],
+        "connection_explanation": "LG 클로이드 관련 맥락에서 LG전자은(는) '제조·개발' 역할로 연결됩니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "LG전자",
+          "english_name": "LG ELECTRONICS INC.",
+          "established_date": "20020401",
+          "homepage": "https://www.lge.co.kr",
+          "legal_name": "LG전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "066570",
+          "stock_name": "LG전자"
+        }
+      },
+      {
+        "company": "NAVER",
+        "stock_code": "035420",
+        "ticker": "035420",
+        "market": "KOSPI",
+        "relation_type": "owns_adjacent_dual_arm_robot_rnd_subsidiary",
+        "strength": "sector_watch",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 035420",
+        "company_description": "KOSPI 상장기업, 종목코드 035420",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.naverlabs.com/en/ambidex",
+            "title": "NAVER LABS AMBIDEX",
+            "evidence_type": "company_official_adjacent_dual_arm_robot_platform",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.navercorp.com/media/naverReportsDetail?seq=1663",
+            "title": "NAVER Digital Ecosystem Report 2022",
+            "evidence_type": "company_official_subsidiary_relationship",
+            "published_at": "2022-09-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.navercorp.com/investment/stock",
+            "title": "NAVER 코스피 종목코드 035420",
+            "evidence_type": "official_company_stock_information",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "NAVER",
+            "edge_type": "owns_adjacent_dual_arm_robot_rnd_subsidiary",
+            "evidence_urls": [
+              "https://www.naverlabs.com/en/ambidex",
+              "https://www.navercorp.com/media/naverReportsDetail?seq=1663"
+            ],
+            "evidence_type": [
+              "company_official_adjacent_dual_arm_robot_platform",
+              "company_official_subsidiary_relationship"
+            ],
+            "as_of": "2022-09-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "NAVER",
+            "to": "035420 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.navercorp.com/investment/stock"
+            ],
+            "evidence_type": [
+              "official_company_stock_information"
+            ],
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [],
+        "connection_explanation": "NAVER은(는) '제조·개발' 역할 후보입니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "NAVER",
+          "english_name": "NAVER Corporation",
+          "established_date": "19990602",
+          "homepage": "https://www.navercorp.com",
+          "legal_name": "네이버(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "035420",
+          "stock_name": "NAVER"
+        }
+      },
+      {
+        "company": "두산로보틱스",
+        "stock_code": "454910",
+        "ticker": "454910",
+        "market": "KOSPI",
+        "relation_type": "develops_practical_humanoid_technology",
+        "strength": "direct",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 두산로보틱스 → 454910 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 두산로보틱스 → 454910 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 454910",
+        "company_description": "KOSPI 상장기업, 종목코드 454910",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://v3-origin-robotics.doosan.com/kr/about/promotion/news/",
+            "title": "두산로보틱스, AI 로봇 출시 및 휴머노이드 개발 가속",
+            "evidence_type": "company_official_humanoid_rnd",
+            "published_at": "2025-04-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/06/09/000726/20260609001680/00636.htm",
+            "title": "두산로보틱스 유가증권상장법인 회사코드 454910",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-06-09",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "두산로보틱스",
+            "edge_type": "develops_practical_humanoid_technology",
+            "evidence_urls": [
+              "https://v3-origin-robotics.doosan.com/kr/about/promotion/news/"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_rnd"
+            ],
+            "as_of": "2025-04-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "두산로보틱스",
+            "to": "454910 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/06/09/000726/20260609001680/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-06-09",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [],
+        "connection_explanation": "두산로보틱스은(는) '제조·개발' 역할 후보입니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → 두산로보틱스 → 454910 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "두산로보틱스",
+          "english_name": "Doosan Robotics Inc.",
+          "established_date": "20150731",
+          "homepage": "https://www.doosanrobotics.com",
+          "legal_name": "두산로보틱스 주식회사",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T00:00:00+00:00",
+          "status": "verified",
+          "stock_code": "454910",
+          "stock_name": "두산로보틱스"
+        }
+      },
+      {
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "ticker": "005930",
+        "market": "KOSPI",
+        "relation_type": "develops_humanoid_robot_platform",
+        "strength": "direct",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 005930",
+        "company_description": "KOSPI 상장기업, 종목코드 005930",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+            "title": "삼성전자 유가증권상장법인 회사코드 005930",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "삼성전자",
+            "edge_type": "develops_humanoid_robot_platform",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성전자",
+            "to": "005930 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [],
+        "connection_explanation": "삼성전자은(는) '제조·개발' 역할 후보입니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "삼성전자",
+          "english_name": "SAMSUNG ELECTRONICS CO,.LTD",
+          "established_date": "19690113",
+          "homepage": "https://www.samsung.com/sec",
+          "legal_name": "삼성전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005930",
+          "stock_name": "삼성전자"
+        }
+      },
+      {
+        "company": "현대차",
+        "stock_code": "005380",
+        "ticker": "005380",
+        "market": "KOSPI",
+        "relation_type": "deploys_subsidiary_humanoid_robot",
+        "strength": "direct",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 현대차 → 005380 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 현대차 → 005380 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 005380",
+        "company_description": "KOSPI 상장기업, 종목코드 005380",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html",
+            "title": "Hyundai Motor Brings Atlas Humanoid Robot to FIFA World Cup 2026",
+            "evidence_type": "company_official_humanoid_deployment",
+            "published_at": "2026-07-06",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/04/08/000901/20260408002762/00634.htm",
+            "title": "현대자동차 유가증권상장법인 회사코드 005380",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-04-08",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "현대차",
+            "edge_type": "deploys_subsidiary_humanoid_robot",
+            "evidence_urls": [
+              "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_deployment"
+            ],
+            "as_of": "2026-07-06",
+            "review_status": "approved"
+          },
+          {
+            "from": "현대차",
+            "to": "005380 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/04/08/000901/20260408002762/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-04-08",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [],
+        "connection_explanation": "현대차은(는) '제조·개발' 역할 후보입니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → 현대차 → 005380 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "현대차",
+          "corp_code": "00164742",
+          "english_name": "HYUNDAI MOTOR CO",
+          "established_date": "19671229",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 383834207000000,
+                "label": "자산총계",
+                "previous": 368844849000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 132226735000000,
+                "label": "자본총계",
+                "previous": 127648237000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 251607472000000,
+                "label": "부채총계",
+                "previous": 241196612000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 2584926000000,
+                "label": "당기순이익(손실)",
+                "previous": 3382174000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 2514686000000,
+                "label": "영업이익",
+                "previous": 3633609000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 45938886000000,
+                "label": "매출액",
+                "previous": 44407761000000
+              }
+            },
+            "business_year": 2026,
+            "company": "현대차",
+            "corp_code": "00164742",
+            "filing_receipt_no": "20260515002418",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002418",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-14T14:08:46.251649+00:00",
+            "status": "observed",
+            "stock_code": "005380"
+          },
+          "homepage": "https://www.hyundai.com",
+          "legal_name": "현대자동차(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-14T14:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005380",
+          "stock_name": "현대자동차"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "LG전자",
+        "stock_code": "066570",
+        "ticker": "066570",
+        "market": "KOSPI",
+        "relation_type": "develops_adjacent_dual_arm_home_robot",
+        "strength": "sector_watch",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 066570",
+        "company_description": "KOSPI 상장기업, 종목코드 066570",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.lge.co.kr/story/newsroom/234937",
+            "title": "LG전자, CES 2026서 홈로봇 LG 클로이드 공개",
+            "evidence_type": "company_official_adjacent_home_robot_product",
+            "published_at": "2026-01-06",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm",
+            "title": "LG전자 유가증권상장법인 회사코드 066570",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "LG전자",
+            "edge_type": "develops_adjacent_dual_arm_home_robot",
+            "evidence_urls": [
+              "https://www.lge.co.kr/story/newsroom/234937"
+            ],
+            "evidence_type": [
+              "company_official_adjacent_home_robot_product"
+            ],
+            "as_of": "2026-01-06",
+            "review_status": "approved"
+          },
+          {
+            "from": "LG전자",
+            "to": "066570 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-03-24",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [
+          "LG 클로이드"
+        ],
+        "connection_explanation": "LG 클로이드 관련 맥락에서 LG전자은(는) '제조·개발' 역할로 연결됩니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "LG전자",
+          "english_name": "LG ELECTRONICS INC.",
+          "established_date": "20020401",
+          "homepage": "https://www.lge.co.kr",
+          "legal_name": "LG전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "066570",
+          "stock_name": "LG전자"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "066570",
+          "name": "LG전자",
+          "daily_ohlcv": [
+            {
+              "date": "2026-08-03",
+              "open": 158200.0,
+              "high": 161000.0,
+              "low": 154100.0,
+              "close": 158800.0,
+              "volume": 754750.0,
+              "change_pct": -2.0357803824799507
+            },
+            {
+              "date": "2026-08-04",
+              "open": 160400.0,
+              "high": 167300.0,
+              "low": 156900.0,
+              "close": 165500.0,
+              "volume": 1179360.0,
+              "change_pct": 4.2191435768261965
+            },
+            {
+              "date": "2026-08-05",
+              "open": 170900.0,
+              "high": 181200.0,
+              "low": 169000.0,
+              "close": 179500.0,
+              "volume": 1343478.0,
+              "change_pct": 8.459214501510575
+            },
+            {
+              "date": "2026-08-06",
+              "open": 176700.0,
+              "high": 181200.0,
+              "low": 171600.0,
+              "close": 175200.0,
+              "volume": 910158.0,
+              "change_pct": -2.395543175487465
+            },
+            {
+              "date": "2026-08-07",
+              "open": 187400.0,
+              "high": 187500.0,
+              "low": 178100.0,
+              "close": 185000.0,
+              "volume": 1456931.0,
+              "change_pct": 5.5936073059360725
+            },
+            {
+              "date": "2026-08-10",
+              "open": 184600.0,
+              "high": 190600.0,
+              "low": 180900.0,
+              "close": 190000.0,
+              "volume": 1054814.0,
+              "change_pct": 2.7027027027027026
+            },
+            {
+              "date": "2026-08-11",
+              "open": 187700.0,
+              "high": 187700.0,
+              "low": 181700.0,
+              "close": 181700.0,
+              "volume": 800188.0,
+              "change_pct": -4.368421052631579
+            },
+            {
+              "date": "2026-08-12",
+              "open": 184200.0,
+              "high": 212500.0,
+              "low": 184200.0,
+              "close": 205000.0,
+              "volume": 3086187.0,
+              "change_pct": 12.82333516785911
+            },
+            {
+              "date": "2026-08-13",
+              "open": 209500.0,
+              "high": 211500.0,
+              "low": 202500.0,
+              "close": 206500.0,
+              "volume": 1210921.0,
+              "change_pct": 0.7317073170731708
+            },
+            {
+              "date": "2026-08-14",
+              "open": 212000.0,
+              "high": 225000.0,
+              "low": 206500.0,
+              "close": 215000.0,
+              "volume": 1598040.0,
+              "change_pct": 4.116222760290557
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-14",
+            "open": 212000.0,
+            "high": 225000.0,
+            "low": 206500.0,
+            "close": 215000.0,
+            "volume": 1598040.0,
+            "change_pct": 4.116222760290557
+          },
+          "summary": {
+            "as_of": "2026-08-14",
+            "close": 215000,
+            "daily_change_pct": 4.12,
+            "volume": 1598040
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 13.16,
+            "five_vs_previous_volume_ratio": 1.37,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "NAVER",
+        "stock_code": "035420",
+        "ticker": "035420",
+        "market": "KOSPI",
+        "relation_type": "owns_adjacent_dual_arm_robot_rnd_subsidiary",
+        "strength": "sector_watch",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 035420",
+        "company_description": "KOSPI 상장기업, 종목코드 035420",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.naverlabs.com/en/ambidex",
+            "title": "NAVER LABS AMBIDEX",
+            "evidence_type": "company_official_adjacent_dual_arm_robot_platform",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.navercorp.com/media/naverReportsDetail?seq=1663",
+            "title": "NAVER Digital Ecosystem Report 2022",
+            "evidence_type": "company_official_subsidiary_relationship",
+            "published_at": "2022-09-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.navercorp.com/investment/stock",
+            "title": "NAVER 코스피 종목코드 035420",
+            "evidence_type": "official_company_stock_information",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "인프라·서비스",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "industry_watch",
+        "ontology_relation_tier": "adjacent",
+        "relation_tier_label": "산업 관찰기업",
+        "relation_horizon": "근거 확인 산업 관찰 관계",
+        "exposure_status": "evidence_backed_industry_observation",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "산업 관찰",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "NAVER",
+            "edge_type": "owns_adjacent_dual_arm_robot_rnd_subsidiary",
+            "evidence_urls": [
+              "https://www.naverlabs.com/en/ambidex",
+              "https://www.navercorp.com/media/naverReportsDetail?seq=1663"
+            ],
+            "evidence_type": [
+              "company_official_adjacent_dual_arm_robot_platform",
+              "company_official_subsidiary_relationship"
+            ],
+            "as_of": "2022-09-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "NAVER",
+            "to": "035420 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.navercorp.com/investment/stock"
+            ],
+            "evidence_type": [
+              "official_company_stock_information"
+            ],
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [],
+        "connection_explanation": "NAVER은(는) '제조·개발' 역할 후보입니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "NAVER",
+          "english_name": "NAVER Corporation",
+          "established_date": "19990602",
+          "homepage": "https://www.navercorp.com",
+          "legal_name": "네이버(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "035420",
+          "stock_name": "NAVER"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "035420",
+          "name": "NAVER",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 198500.0,
+              "high": 205500.0,
+              "low": 194100.0,
+              "close": 194700.0,
+              "volume": 1680475.0,
+              "change_pct": -3.37468982630273
+            },
+            {
+              "date": "2026-07-31",
+              "open": 205000.0,
+              "high": 212500.0,
+              "low": 199600.0,
+              "close": 208000.0,
+              "volume": 1766586.0,
+              "change_pct": 6.831022085259374
+            },
+            {
+              "date": "2026-08-03",
+              "open": 206500.0,
+              "high": 208500.0,
+              "low": 201500.0,
+              "close": 207500.0,
+              "volume": 662318.0,
+              "change_pct": -0.2403846153846154
+            },
+            {
+              "date": "2026-08-04",
+              "open": 219000.0,
+              "high": 231500.0,
+              "low": 215000.0,
+              "close": 226500.0,
+              "volume": 2278507.0,
+              "change_pct": 9.156626506024097
+            },
+            {
+              "date": "2026-08-05",
+              "open": 227000.0,
+              "high": 234000.0,
+              "low": 223500.0,
+              "close": 229000.0,
+              "volume": 1090483.0,
+              "change_pct": 1.1037527593818985
+            },
+            {
+              "date": "2026-08-06",
+              "open": 225000.0,
+              "high": 230500.0,
+              "low": 221500.0,
+              "close": 226000.0,
+              "volume": 961609.0,
+              "change_pct": -1.3100436681222707
+            },
+            {
+              "date": "2026-08-07",
+              "open": 219500.0,
+              "high": 222000.0,
+              "low": 208000.0,
+              "close": 210000.0,
+              "volume": 1755934.0,
+              "change_pct": -7.079646017699115
+            },
+            {
+              "date": "2026-08-10",
+              "open": 210500.0,
+              "high": 211500.0,
+              "low": 206500.0,
+              "close": 211500.0,
+              "volume": 733171.0,
+              "change_pct": 0.7142857142857143
+            },
+            {
+              "date": "2026-08-11",
+              "open": 214000.0,
+              "high": 215500.0,
+              "low": 209500.0,
+              "close": 214000.0,
+              "volume": 649296.0,
+              "change_pct": 1.1820330969267139
+            },
+            {
+              "date": "2026-08-12",
+              "open": 215000.0,
+              "high": 220500.0,
+              "low": 214500.0,
+              "close": 215500.0,
+              "volume": 833014.0,
+              "change_pct": 0.7009345794392523
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 215000.0,
+            "high": 220500.0,
+            "low": 214500.0,
+            "close": 215500.0,
+            "volume": 833014.0,
+            "change_pct": 0.7009345794392523
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 215500,
+            "daily_change_pct": 0.7,
+            "volume": 833014
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -4.65,
+            "five_vs_previous_volume_ratio": 0.66,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "두산로보틱스",
+        "stock_code": "454910",
+        "ticker": "454910",
+        "market": "KOSPI",
+        "relation_type": "develops_practical_humanoid_technology",
+        "strength": "direct",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 두산로보틱스 → 454910 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 두산로보틱스 → 454910 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 454910",
+        "company_description": "KOSPI 상장기업, 종목코드 454910",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://v3-origin-robotics.doosan.com/kr/about/promotion/news/",
+            "title": "두산로보틱스, AI 로봇 출시 및 휴머노이드 개발 가속",
+            "evidence_type": "company_official_humanoid_rnd",
+            "published_at": "2025-04-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/06/09/000726/20260609001680/00636.htm",
+            "title": "두산로보틱스 유가증권상장법인 회사코드 454910",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-06-09",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "두산로보틱스",
+            "edge_type": "develops_practical_humanoid_technology",
+            "evidence_urls": [
+              "https://v3-origin-robotics.doosan.com/kr/about/promotion/news/"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_rnd"
+            ],
+            "as_of": "2025-04-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "두산로보틱스",
+            "to": "454910 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/06/09/000726/20260609001680/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-06-09",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [],
+        "connection_explanation": "두산로보틱스은(는) '제조·개발' 역할 후보입니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → 두산로보틱스 → 454910 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "두산로보틱스",
+          "english_name": "Doosan Robotics Inc.",
+          "established_date": "20150731",
+          "homepage": "https://www.doosanrobotics.com",
+          "legal_name": "두산로보틱스 주식회사",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T00:00:00+00:00",
+          "status": "verified",
+          "stock_code": "454910",
+          "stock_name": "두산로보틱스"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "454910",
+          "name": "두산로보틱스",
+          "daily_ohlcv": [
+            {
+              "date": "2026-08-03",
+              "open": 61600.0,
+              "high": 67100.0,
+              "low": 60000.0,
+              "close": 64400.0,
+              "volume": 874266.0,
+              "change_pct": 4.545454545454546
+            },
+            {
+              "date": "2026-08-04",
+              "open": 64100.0,
+              "high": 68800.0,
+              "low": 63400.0,
+              "close": 68500.0,
+              "volume": 532911.0,
+              "change_pct": 6.366459627329192
+            },
+            {
+              "date": "2026-08-05",
+              "open": 70500.0,
+              "high": 73400.0,
+              "low": 68800.0,
+              "close": 73000.0,
+              "volume": 585651.0,
+              "change_pct": 6.569343065693431
+            },
+            {
+              "date": "2026-08-06",
+              "open": 75700.0,
+              "high": 76000.0,
+              "low": 69000.0,
+              "close": 70700.0,
+              "volume": 798346.0,
+              "change_pct": -3.1506849315068495
+            },
+            {
+              "date": "2026-08-07",
+              "open": 72000.0,
+              "high": 73400.0,
+              "low": 68100.0,
+              "close": 70700.0,
+              "volume": 395004.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-10",
+              "open": 70800.0,
+              "high": 74700.0,
+              "low": 69300.0,
+              "close": 74700.0,
+              "volume": 532734.0,
+              "change_pct": 5.657708628005658
+            },
+            {
+              "date": "2026-08-11",
+              "open": 74800.0,
+              "high": 75600.0,
+              "low": 71700.0,
+              "close": 74100.0,
+              "volume": 449135.0,
+              "change_pct": -0.8032128514056224
+            },
+            {
+              "date": "2026-08-12",
+              "open": 74200.0,
+              "high": 77200.0,
+              "low": 73100.0,
+              "close": 76300.0,
+              "volume": 479922.0,
+              "change_pct": 2.968960863697706
+            },
+            {
+              "date": "2026-08-13",
+              "open": 76900.0,
+              "high": 79600.0,
+              "low": 76700.0,
+              "close": 78000.0,
+              "volume": 599214.0,
+              "change_pct": 2.2280471821756227
+            },
+            {
+              "date": "2026-08-14",
+              "open": 78600.0,
+              "high": 82000.0,
+              "low": 76600.0,
+              "close": 79200.0,
+              "volume": 619023.0,
+              "change_pct": 1.5384615384615385
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-14",
+            "open": 78600.0,
+            "high": 82000.0,
+            "low": 76600.0,
+            "close": 79200.0,
+            "volume": 619023.0,
+            "change_pct": 1.5384615384615385
+          },
+          "summary": {
+            "as_of": "2026-08-14",
+            "close": 79200,
+            "daily_change_pct": 1.54,
+            "volume": 619023
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 6.02,
+            "five_vs_previous_volume_ratio": 0.84,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "ticker": "005930",
+        "market": "KOSPI",
+        "relation_type": "develops_humanoid_robot_platform",
+        "strength": "direct",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 005930",
+        "company_description": "KOSPI 상장기업, 종목코드 005930",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+            "title": "삼성전자 유가증권상장법인 회사코드 005930",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "삼성전자",
+            "edge_type": "develops_humanoid_robot_platform",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성전자",
+            "to": "005930 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [],
+        "connection_explanation": "삼성전자은(는) '제조·개발' 역할 후보입니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "삼성전자",
+          "english_name": "SAMSUNG ELECTRONICS CO,.LTD",
+          "established_date": "19690113",
+          "homepage": "https://www.samsung.com/sec",
+          "legal_name": "삼성전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005930",
+          "stock_name": "삼성전자"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "005930",
+          "name": "삼성전자",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 214000.0,
+              "high": 226000.0,
+              "low": 202000.0,
+              "close": 207000.0,
+              "volume": 46694193.0,
+              "change_pct": -0.7194244604316548
+            },
+            {
+              "date": "2026-07-31",
+              "open": 257000.0,
+              "high": 267000.0,
+              "low": 243000.0,
+              "close": 262500.0,
+              "volume": 58478873.0,
+              "change_pct": 26.811594202898554
+            },
+            {
+              "date": "2026-08-03",
+              "open": 248000.0,
+              "high": 249500.0,
+              "low": 238000.0,
+              "close": 239500.0,
+              "volume": 27825493.0,
+              "change_pct": -8.761904761904763
+            },
+            {
+              "date": "2026-08-04",
+              "open": 244500.0,
+              "high": 244500.0,
+              "low": 228000.0,
+              "close": 240000.0,
+              "volume": 29433821.0,
+              "change_pct": 0.20876826722338201
+            },
+            {
+              "date": "2026-08-05",
+              "open": 254000.0,
+              "high": 254500.0,
+              "low": 244000.0,
+              "close": 246000.0,
+              "volume": 22577128.0,
+              "change_pct": 2.5
+            },
+            {
+              "date": "2026-08-06",
+              "open": 241500.0,
+              "high": 246000.0,
+              "low": 228000.0,
+              "close": 230500.0,
+              "volume": 26101823.0,
+              "change_pct": -6.300813008130081
+            },
+            {
+              "date": "2026-08-07",
+              "open": 235000.0,
+              "high": 239500.0,
+              "low": 229000.0,
+              "close": 231000.0,
+              "volume": 20546010.0,
+              "change_pct": 0.21691973969631237
+            },
+            {
+              "date": "2026-08-10",
+              "open": 236000.0,
+              "high": 238500.0,
+              "low": 228500.0,
+              "close": 230000.0,
+              "volume": 16327805.0,
+              "change_pct": -0.4329004329004329
+            },
+            {
+              "date": "2026-08-11",
+              "open": 229500.0,
+              "high": 243000.0,
+              "low": 227500.0,
+              "close": 239500.0,
+              "volume": 23310969.0,
+              "change_pct": 4.130434782608695
+            },
+            {
+              "date": "2026-08-12",
+              "open": 243500.0,
+              "high": 260500.0,
+              "low": 241000.0,
+              "close": 255500.0,
+              "volume": 27102479.0,
+              "change_pct": 6.6805845511482245
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 243500.0,
+            "high": 260500.0,
+            "low": 241000.0,
+            "close": 255500.0,
+            "volume": 27102479.0,
+            "change_pct": 6.6805845511482245
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 255500,
+            "daily_change_pct": 6.68,
+            "volume": 27102479
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 10.85,
+            "five_vs_previous_volume_ratio": 0.61,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "현대차",
+        "stock_code": "005380",
+        "ticker": "005380",
+        "market": "KOSPI",
+        "relation_type": "deploys_subsidiary_humanoid_robot",
+        "strength": "direct",
+        "reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 현대차 → 005380 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → 현대차 → 005380 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 005380",
+        "company_description": "KOSPI 상장기업, 종목코드 005380",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+        "evidence_sources": [
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+            "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+            "evidence_type": "company_official_humanoid_development",
+            "published_at": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html",
+            "title": "Hyundai Motor Brings Atlas Humanoid Robot to FIFA World Cup 2026",
+            "evidence_type": "company_official_humanoid_deployment",
+            "published_at": "2026-07-06",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/04/08/000901/20260408002762/00634.htm",
+            "title": "현대자동차 유가증권상장법인 회사코드 005380",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-04-08",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "직접 기업",
+        "company_role_category": "manufacturing_development",
+        "relation_tier": "direct",
+        "ontology_relation_tier": "core",
+        "relation_tier_label": "핵심 사업자",
+        "relation_horizon": "근거 확인 직접 관계",
+        "exposure_status": "evidence_backed_direct_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "직접 관계",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "휴머노이드",
+        "matched_ontology_node": "휴머노이드 로봇",
+        "ontology_lookup_match_type": "reviewed_literal_alias",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-14T09:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "휴머노이드",
+            "to": "휴머노이드 로봇",
+            "edge_type": "reviewed_literal_alias",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_development"
+            ],
+            "as_of": "2024-12-31",
+            "review_status": "approved"
+          },
+          {
+            "from": "휴머노이드 로봇",
+            "to": "현대차",
+            "edge_type": "deploys_subsidiary_humanoid_robot",
+            "evidence_urls": [
+              "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html"
+            ],
+            "evidence_type": [
+              "company_official_humanoid_deployment"
+            ],
+            "as_of": "2026-07-06",
+            "review_status": "approved"
+          },
+          {
+            "from": "현대차",
+            "to": "005380 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/04/08/000901/20260408002762/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-04-08",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "제조·개발",
+        "company_role_public": true,
+        "relation_category": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "matched_keywords": [],
+        "connection_explanation": "현대차은(는) '제조·개발' 역할 후보입니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → 현대차 → 005380 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "현대차",
+          "corp_code": "00164742",
+          "english_name": "HYUNDAI MOTOR CO",
+          "established_date": "19671229",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 383834207000000,
+                "label": "자산총계",
+                "previous": 368844849000000
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 132226735000000,
+                "label": "자본총계",
+                "previous": 127648237000000
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 251607472000000,
+                "label": "부채총계",
+                "previous": 241196612000000
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 2584926000000,
+                "label": "당기순이익(손실)",
+                "previous": 3382174000000
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 2514686000000,
+                "label": "영업이익",
+                "previous": 3633609000000
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 45938886000000,
+                "label": "매출액",
+                "previous": 44407761000000
+              }
+            },
+            "business_year": 2026,
+            "company": "현대차",
+            "corp_code": "00164742",
+            "filing_receipt_no": "20260515002418",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515002418",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-14T14:08:46.251649+00:00",
+            "status": "observed",
+            "stock_code": "005380"
+          },
+          "homepage": "https://www.hyundai.com",
+          "legal_name": "현대자동차(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-14T14:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005380",
+          "stock_name": "현대자동차"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "005380",
+          "name": "현대차",
+          "daily_ohlcv": [
+            {
+              "date": "2026-08-03",
+              "open": 383000.0,
+              "high": 401500.0,
+              "low": 376000.0,
+              "close": 393000.0,
+              "volume": 826843.0,
+              "change_pct": 1.2886597938144329
+            },
+            {
+              "date": "2026-08-04",
+              "open": 395500.0,
+              "high": 396500.0,
+              "low": 376000.0,
+              "close": 392500.0,
+              "volume": 680354.0,
+              "change_pct": -0.1272264631043257
+            },
+            {
+              "date": "2026-08-05",
+              "open": 401500.0,
+              "high": 411000.0,
+              "low": 400500.0,
+              "close": 404500.0,
+              "volume": 545657.0,
+              "change_pct": 3.0573248407643314
+            },
+            {
+              "date": "2026-08-06",
+              "open": 401000.0,
+              "high": 415000.0,
+              "low": 390000.0,
+              "close": 400000.0,
+              "volume": 527513.0,
+              "change_pct": -1.1124845488257107
+            },
+            {
+              "date": "2026-08-07",
+              "open": 401000.0,
+              "high": 406000.0,
+              "low": 387000.0,
+              "close": 395500.0,
+              "volume": 415672.0,
+              "change_pct": -1.125
+            },
+            {
+              "date": "2026-08-10",
+              "open": 396000.0,
+              "high": 410500.0,
+              "low": 392500.0,
+              "close": 408000.0,
+              "volume": 458584.0,
+              "change_pct": 3.16055625790139
+            },
+            {
+              "date": "2026-08-11",
+              "open": 406000.0,
+              "high": 411000.0,
+              "low": 400500.0,
+              "close": 403000.0,
+              "volume": 327064.0,
+              "change_pct": -1.2254901960784315
+            },
+            {
+              "date": "2026-08-12",
+              "open": 403000.0,
+              "high": 413000.0,
+              "low": 400500.0,
+              "close": 409500.0,
+              "volume": 411565.0,
+              "change_pct": 1.6129032258064515
+            },
+            {
+              "date": "2026-08-13",
+              "open": 419500.0,
+              "high": 431500.0,
+              "low": 415000.0,
+              "close": 418500.0,
+              "volume": 590756.0,
+              "change_pct": 2.197802197802198
+            },
+            {
+              "date": "2026-08-14",
+              "open": 424000.0,
+              "high": 456000.0,
+              "low": 421500.0,
+              "close": 453000.0,
+              "volume": 1203960.0,
+              "change_pct": 8.24372759856631
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-14",
+            "open": 424000.0,
+            "high": 456000.0,
+            "low": 421500.0,
+            "close": 453000.0,
+            "volume": 1203960.0,
+            "change_pct": 8.24372759856631
+          },
+          "summary": {
+            "as_of": "2026-08-14",
+            "close": 453000,
+            "daily_change_pct": 8.24,
+            "volume": 1203960
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 11.03,
+            "five_vs_previous_volume_ratio": 1.0,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "LG전자",
+          "NAVER",
+          "두산로보틱스",
+          "삼성전자",
+          "현대차"
+        ],
+        "candidate_count": 5,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "candidate_company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "LG전자",
+          "NAVER",
+          "두산로보틱스",
+          "삼성전자",
+          "현대차"
+        ],
+        "candidate_count": 5,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 5,
+      "ontology_complete_count": 5,
+      "published_count": 5,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 3,
+      "role_coverage": [
+        "인프라·서비스",
+        "직접 기업"
+      ],
+      "tier_counts": {
+        "direct": 3,
+        "value_chain": 0,
+        "industry_watch": 2
+      },
+      "category_count": 1,
+      "candidate_category_count": 1,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "휴머노이드",
+            "observation_status": "observed_representative",
+            "ontology_status": "published",
+            "ontology_company_count": 5,
+            "lookup_match": {
+              "match_type": "reviewed_literal_alias",
+              "alias_id": "alias:reviewed:humanoid",
+              "matched_label": "휴머노이드",
+              "target_node_id": "term:reviewed:humanoid-robot",
+              "target_node_label": "휴머노이드 로봇",
+              "review_status": "approved",
+              "evidence": [
+                {
+                  "id": "evidence:reviewed:samsung-humanoid",
+                  "title": "삼성전자, 레인보우로보틱스 최대주주 지위 확보…미래로봇 개발 가속화",
+                  "publisher": "삼성전자",
+                  "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+                  "evidence_type": "company_official_humanoid_development",
+                  "summary": "삼성전자는 미래로봇추진단을 신설하고 레인보우로보틱스 기술과 자사 AI·소프트웨어를 결합해 지능형 첨단 휴머노이드 개발을 가속한다고 밝혔다.",
+                  "published_at": "2024-12-31",
+                  "review_status": "approved",
+                  "provenance": {
+                    "method": "manual_url_review",
+                    "reviewed_at": "2026-08-13",
+                    "scope": "trend_to_company"
+                  }
+                }
+              ],
+              "provenance": {
+                "method": "manual_url_review",
+                "reviewed_at": "2026-08-13"
+              }
+            }
+          },
+          {
+            "term": "구광모",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "증거 온톨로지 경로가 완결된 고유 상장기업 3개 이상을 내부 Gold 후보층으로 보존"
+    },
+    "rank": 291,
+    "observed_rank": 291,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 459,
+    "momentum_rank": 305,
+    "main_rank": 14,
+    "keyword_company_links": [
+      {
+        "keyword": "LG 클로이드",
+        "company": "LG전자",
+        "stock_code": "066570",
+        "company_role_category": "manufacturing_development",
+        "company_role_label": "제조·개발",
+        "relationship_reason": "관측어 '휴머노이드'에서 휴머노이드 로봇 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "LG 클로이드 관련 맥락에서 LG전자은(는) '제조·개발' 역할로 연결됩니다. 관측어 '휴머노이드'에서 휴머노이드 로봇 → LG전자 → 066570 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4",
+          "https://www.lge.co.kr/story/newsroom/234937",
+          "https://kind.krx.co.kr/external/2026/03/24/001446/20260324004395/00636.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      }
+    ],
+    "linked_keyword_count": 1,
+    "keyword_company_link_status": "enrichment_pending",
+    "unlinked_related_keywords": [
+      "구광모",
+      "아틀라스",
+      "미래로봇"
+    ],
+    "home_context_status": "review_required",
+    "home_context_reason": "trigger_evidence_incomplete",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_ten_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "related_keywords_linked_to_companies_at_least_two",
+      "evidence_backed_listed_companies_at_least_ten"
+    ],
+    "frontend_keyword_count": 4,
+    "frontend_company_count": 5,
+    "frontend_company_role_category_count": 1,
+    "publication_rank": null,
+    "attention_change": {
+      "1w": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "1m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "3m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "insufficient_90_day_observed_history"
+      }
+    },
+    "trend_story": {
+      "schema_version": "trend-story-v1",
+      "status": "observed_context_only",
+      "origin": {
+        "observed_term": "휴머노이드",
+        "first_observed_at": "2026-08-14T09:00:00+00:00",
+        "trigger_title": "",
+        "trigger_type": "",
+        "why_now": "",
+        "evidence_urls": [],
+        "assertion": "observed_trigger_or_context_not_causal_origin"
+      },
+      "relationship_graph": {
+        "interpretation": "observed_context_graph_not_causal_lineage",
+        "nodes": [
+          {
+            "id": "trend:root",
+            "label": "휴머노이드",
+            "node_type": "observed_trend_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:1",
+            "label": "구광모",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:2",
+            "label": "아틀라스",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:3",
+            "label": "LG 클로이드",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:4",
+            "label": "미래로봇",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          }
+        ],
+        "edges": [
+          {
+            "from": "trend:root",
+            "to": "keyword:1",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:2",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://www.hyundai.com/content/hyundai/worldwide/en/newsroom/detail/0000001215.html"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:3",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://www.lge.co.kr/story/newsroom/234937"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:4",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0%EB%A1%9C%EB%B3%B4%ED%8B%B1%EC%8A%A4-%EC%B5%9C%EB%8C%80%EC%A3%BC%EC%A3%BC-%EC%A7%80%EC%9C%84-%ED%99%95%EB%B3%B4"
+            ],
+            "causality": "not_inferred"
+          }
+        ]
+      },
+      "diffusion": {
+        "lifecycle": "cooling",
+        "trend_stage": {
+          "key": "mainstream",
+          "label": "대중화",
+          "index": 3
+        },
+        "phase_label": "대중화",
+        "stage_index": 3,
+        "progress_percent": 92,
+        "observed_day_label": "관측 1일차",
+        "observed_hours": 1,
+        "caption": "대중화 뒤 확산 속도가 완만해진 구간입니다.",
+        "attention_lift": {
+          "status": "unavailable",
+          "metric": "source_rank_velocity_index",
+          "value": null,
+          "unit": "points",
+          "label": "비교 관측 축적 중"
+        },
+        "attention_windows": [
+          {
+            "key": "1w",
+            "label": "1주",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "1m",
+            "label": "1개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "3m",
+            "label": "3개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "insufficient_90_day_observed_history",
+            "is_absolute_mention_count": false
+          }
+        ],
+        "channels": [
+          {
+            "source": "google_trends",
+            "label": "Google Trends",
+            "latest_rank": 67,
+            "rank_change": null,
+            "movement_label": "직전 비교 자료 없음",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": true,
+            "affects_multisource_home_rank": false
+          }
+        ],
+        "ranking_input_policy": "home-feed-selection-v2-x-google-only"
+      }
+    },
+    "frontend_projection": {
+      "trend_name": "휴머노이드",
+      "trend_category": "기술·도구",
+      "trend_core": "휴머노이드",
+      "observed_day_label": "관측 1일차",
+      "phase_label": "대중화",
+      "stage_index": 3,
+      "progress_percent": 92,
+      "attention_lift": {
+        "status": "unavailable",
+        "metric": "source_rank_velocity_index",
+        "value": null,
+        "unit": "points",
+        "label": "비교 관측 축적 중"
+      },
+      "attention_windows": [
+        {
+          "key": "1w",
+          "label": "1주",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "1m",
+          "label": "1개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "3m",
+          "label": "3개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "insufficient_90_day_observed_history",
+          "is_absolute_mention_count": false
+        }
+      ],
+      "current_rank": 291,
+      "caption": "대중화 뒤 확산 속도가 완만해진 구간입니다.",
+      "related_keyword_count": 4,
+      "company_grouping": "company_role_category",
+      "is_mock": false
+    },
+    "ranking_availability_status": "mature_combined",
+    "semantic_adjudication_status": "not_eligible"
+  }
+}

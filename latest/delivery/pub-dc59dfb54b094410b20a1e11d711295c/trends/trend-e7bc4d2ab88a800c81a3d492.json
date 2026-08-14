@@ -1,0 +1,3696 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-dc59dfb54b094410b20a1e11d711295c",
+  "generated_at": "2026-08-14T16:16:54.324613+00:00",
+  "observed_at": "2026-08-14T16:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "노랑통닭",
+    "topic": "노랑통닭",
+    "display_name": "노랑통닭",
+    "observed_representative_term": "노랑통닭",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "노랑통닭",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": false,
+      "current_source_count": 0,
+      "observed_hours": 8,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.109581,
+      "best_source_rank": 7
+    },
+    "raw_terms": [
+      "노랑통닭"
+    ],
+    "phenomenon_summary": "\"노랑통닭\" · X 한국 실시간에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "food_culinary",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "food",
+    "category_label": "음식·식품",
+    "category_ontology": {
+      "version": "category-ontology-v1",
+      "category": "food_culinary",
+      "entity_slots": [
+        "product",
+        "brand",
+        "ingredient",
+        "recipe_or_format",
+        "sales_channel"
+      ],
+      "trigger_types": [
+        "product_launch",
+        "sellout",
+        "sales_growth",
+        "creator_spread",
+        "seasonal_demand"
+      ],
+      "recommended_company_roles": [
+        "raw_materials_components",
+        "manufacturing_development",
+        "distribution",
+        "retail_sales"
+      ],
+      "affects_score": false
+    },
+    "trend_definition": "'노랑통닭'은(는) 제품·메뉴·식문화에 대한 소비자 관심이 모이는 흐름입니다. 실측 데이터에서는 노랑푸드, 닭고기 같은 표현과 함께 나타났습니다. X와 Google 대한민국 관측값에서 확인된 맥락을 설명합니다.",
+    "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "context_review_queue",
+    "company_eligible": true,
+    "score": 13.98,
+    "candidate_status": "period_observed",
+    "is_current": false,
+    "period_sources": [
+      "x"
+    ],
+    "freshness": {
+      "signal": 0.33371,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 19.0
+    },
+    "hours_since_last_seen": 19.0,
+    "previous_period_rank": 83,
+    "rank_change": -298,
+    "rank_change_status": "measured",
+    "period_strength": 0.274358,
+    "current_source_position": 0.274358,
+    "momentum": 0.0,
+    "persistence": 0.1042,
+    "momentum_delta": -0.144189,
+    "score_components": {
+      "period_strength_points": 9.6,
+      "momentum_points": 0.0,
+      "persistence_points": 1.04,
+      "recency_points": 3.34,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 13.98
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "x": 0.548716
+      },
+      "momentum_deltas": {
+        "x": -0.144189
+      },
+      "momentum_basis": {
+        "x": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "x": {
+          "current": 5,
+          "comparison": 3
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 9,
+          "observed_hours": 5,
+          "presence_rate": 0.208333,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.375,
+        "google_trends": 0.416667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-13T10:00:00+00:00",
+      "last_seen_at": "2026-08-13T21:00:00+00:00",
+      "observed_hours": 8,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 0,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "x": 14
+    },
+    "rank_change_by_source": {
+      "x": -1
+    },
+    "source_rank_change": {
+      "x": -1
+    },
+    "first_seen_at": "2026-08-13T10:00:00+00:00",
+    "last_seen_at": "2026-08-13T21:00:00+00:00",
+    "age_hours": 30,
+    "lifecycle": "expired",
+    "lifecycle_reason": "missing_beyond_cooling_window",
+    "data_confidence": {
+      "level": "medium",
+      "label": "보통",
+      "reason": "24시간 MVP 원장과 반복 관측을 충족한 운영 초기 결과",
+      "window_observed_hours": 27,
+      "history_maturity": 0.3958,
+      "ranking_status": "mature"
+    },
+    "verification_layer": {
+      "status": "disabled_by_runtime_policy",
+      "observed_platforms": [],
+      "affects_score": false,
+      "affects_home_rank": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "context_research": {
+      "status": "incomplete",
+      "trigger_title": "",
+      "why_now": "",
+      "trigger_type": "",
+      "published_at": null,
+      "evidence_urls": [],
+      "evidence_records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "x",
+        "rank": 7,
+        "value": 94.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "x",
+        "rank": 10,
+        "value": 91.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T16:00:00+00:00",
+        "source": "x",
+        "rank": 15,
+        "value": 86.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T17:00:00+00:00",
+        "source": "x",
+        "rank": 15,
+        "value": 86.0,
+        "provenance": "observed",
+        "source_payload_json": null,
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T18:00:00+00:00",
+        "source": "x",
+        "rank": 15,
+        "value": 86.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T18:03:47.936000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 227.936, \"scheduled_for\": \"2026-08-13T18:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T19:00:00+00:00",
+        "source": "x",
+        "rank": 16,
+        "value": 85.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T19:02:18.085000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 138.085, \"scheduled_for\": \"2026-08-13T19:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T20:00:00+00:00",
+        "source": "x",
+        "rank": 13,
+        "value": 88.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T20:03:21.857628+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 201.857628, \"scheduled_for\": \"2026-08-13T20:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      },
+      {
+        "at": "2026-08-13T21:00:00+00:00",
+        "source": "x",
+        "rank": 14,
+        "value": 87.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collector\": \"codex_chrome_current_session\", \"observed_at\": \"2026-08-13T21:03:08.584000+00:00\", \"profile\": \"current_logged_in_chrome\", \"region\": \"KR\", \"region_verified\": true, \"row_count\": 30, \"schedule_delay_seconds\": 188.584, \"scheduled_for\": \"2026-08-13T21:00:00+00:00\", \"status\": \"observed\", \"transport\": \"codex_browser_snapshot\", \"url\": \"https://x.com/explore/tabs/trending\"}",
+        "related_terms_json": null
+      }
+    ],
+    "keywords": [
+      {
+        "text": "노랑푸드",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "brand_operator",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "닭고기",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "core_ingredient",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.harim.com/main/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "치킨 배달",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "sales_channel",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "후라이드 치킨",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "product_category",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack"
+        ],
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "노랑푸드",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "brand_operator",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "닭고기",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "core_ingredient",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.harim.com/main/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "치킨 배달",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "sales_channel",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "후라이드 치킨",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "product_category",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack"
+        ],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 4,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 4,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [
+      {
+        "company": "교촌에프앤비",
+        "stock_code": "339770",
+        "ticker": "339770",
+        "market": "KOSPI",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 339770",
+        "company_description": "KOSPI 상장기업, 종목코드 339770",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.kyochonfnb.com/",
+            "title": "교촌에프앤비 공식 기업 사이트",
+            "evidence_type": "official_company_site",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.mk.co.kr/news/stock/view/2022/12/1094633/",
+            "title": "카타르월드컵 16강 진출·패배에 치킨·맥주 관련주 등락",
+            "evidence_type": "스포츠·시세",
+            "published_at": "2022-12-05",
+            "review_status": "historical_reference"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "교촌에프앤비",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://www.kyochonfnb.com/"
+            ],
+            "evidence_type": [
+              "official_company_site"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "교촌에프앤비",
+            "to": "339770 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.mk.co.kr/news/stock/view/2022/12/1094633/"
+            ],
+            "evidence_type": [
+              "스포츠·시세"
+            ],
+            "as_of": "2022-12-05",
+            "review_status": "historical_reference"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 교촌에프앤비은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "교촌에프앤비",
+          "corp_code": "00453284",
+          "english_name": "KYOCHON FOOD&BEVERAGE CO., LTD.",
+          "established_date": "19991112",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 357257173382,
+                "label": "자산총계",
+                "previous": 377506755277
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 179929627273,
+                "label": "자본총계",
+                "previous": 188630140930
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 177327546109,
+                "label": "부채총계",
+                "previous": 188876614347
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 3379359529,
+                "label": "당기순이익(손실)",
+                "previous": 6587695567
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 5290695728,
+                "label": "영업이익",
+                "previous": 10710703713
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 123355716532,
+                "label": "매출액",
+                "previous": 124588080709
+              }
+            },
+            "business_year": 2026,
+            "company": "교촌에프앤비",
+            "corp_code": "00453284",
+            "filing_receipt_no": "20260514001182",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260514001182",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:16:10.828883+00:00",
+            "status": "observed",
+            "stock_code": "339770"
+          },
+          "homepage": "https://kyochonfnb.com",
+          "legal_name": "교촌에프앤비(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "339770",
+          "stock_name": "교촌에프앤비"
+        }
+      },
+      {
+        "company": "동우(당시 상장사)",
+        "stock_code": "088910",
+        "ticker": "088910",
+        "market": "KOSDAQ",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 088910",
+        "company_description": "KOSDAQ 상장기업, 종목코드 088910",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.dongwoofarmtotable.com/",
+            "title": "동우팜투테이블 공식 기업 사이트",
+            "evidence_type": "official_company_site",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.klca.or.kr/KLCADownload/eBook/P7013.pdf?Mode=PC",
+            "title": "2010 남아공월드컵 기대에 하림·동우 상승 후 테마 소멸",
+            "evidence_type": "시장 회고",
+            "published_at": "2010년",
+            "review_status": "historical_reference"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "동우(당시 상장사)",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://www.dongwoofarmtotable.com/"
+            ],
+            "evidence_type": [
+              "official_company_site"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "동우(당시 상장사)",
+            "to": "088910 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.klca.or.kr/KLCADownload/eBook/P7013.pdf?Mode=PC"
+            ],
+            "evidence_type": [
+              "시장 회고"
+            ],
+            "as_of": "2010년",
+            "review_status": "historical_reference"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 동우(당시 상장사)은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "동우(당시 상장사)",
+          "corp_code": "00228712",
+          "english_name": "DONGWOO FARM TO TABLE CO., LTD",
+          "established_date": "19930217",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 288387314048,
+                "label": "자산총계",
+                "previous": 282187804378
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 245394948627,
+                "label": "자본총계",
+                "previous": 239575129663
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 42992365421,
+                "label": "부채총계",
+                "previous": 42612674715
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 7111143440,
+                "label": "당기순이익(손실)",
+                "previous": 2158961239
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 4196626096,
+                "label": "영업이익",
+                "previous": 264437784
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 75973181163,
+                "label": "매출액",
+                "previous": 71169230061
+              }
+            },
+            "business_year": 2026,
+            "company": "동우(당시 상장사)",
+            "corp_code": "00228712",
+            "filing_receipt_no": "20260515000105",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515000105",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:16:10.471679+00:00",
+            "status": "observed",
+            "stock_code": "088910"
+          },
+          "homepage": "https://dongwoofarmtotable.com",
+          "legal_name": "동우팜투테이블",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "088910",
+          "stock_name": "동우팜투테이블"
+        }
+      },
+      {
+        "company": "마니커",
+        "stock_code": "027740",
+        "ticker": "027740",
+        "market": "KOSPI",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 027740",
+        "company_description": "KOSPI 상장기업, 종목코드 027740",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.maniker.co.kr/m423.php",
+            "title": "마니커 신선 닭고기 제품",
+            "evidence_type": "official_company_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm",
+            "title": "마니커 유가증권상장법인 회사코드 027740",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-03-18",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "마니커",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://www.maniker.co.kr/m423.php"
+            ],
+            "evidence_type": [
+              "official_company_product_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "마니커",
+            "to": "027740 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-03-18",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 마니커은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "마니커",
+          "english_name": "MANIKER CO.,LTD.",
+          "established_date": "19850927",
+          "homepage": "https://www.maniker.co.kr",
+          "legal_name": "(주)마니커",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "027740",
+          "stock_name": "마니커"
+        }
+      },
+      {
+        "company": "체리부로",
+        "stock_code": "066360",
+        "ticker": "066360",
+        "market": "KOSDAQ",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 066360",
+        "company_description": "KOSDAQ 상장기업, 종목코드 066360",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://cherrybro.com/brand-intro/",
+            "title": "체리부로 브랜드 소개",
+            "evidence_type": "official_company_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "체리부로",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://cherrybro.com/brand-intro/"
+            ],
+            "evidence_type": [
+              "official_company_product_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "체리부로",
+            "to": "066360 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://cherrybro.com/brand-intro/"
+            ],
+            "evidence_type": [
+              "official_company_product_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 체리부로은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "체리부로",
+          "corp_code": "00216434",
+          "english_name": "Cherrybro Co.,Ltd",
+          "established_date": "19910907",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 335625073004,
+                "label": "자산총계",
+                "previous": 327107434896
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 138814211034,
+                "label": "자본총계",
+                "previous": 138803839705
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 196810861970,
+                "label": "부채총계",
+                "previous": 188303595191
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 10371329,
+                "label": "당기순이익(손실)",
+                "previous": 1783458470
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 3204230028,
+                "label": "영업이익",
+                "previous": 3266141739
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 94716259354,
+                "label": "매출액",
+                "previous": 91105546286
+              }
+            },
+            "business_year": 2026,
+            "company": "체리부로",
+            "corp_code": "00216434",
+            "filing_receipt_no": "20260514000188",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260514000188",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:16:10.064988+00:00",
+            "status": "observed",
+            "stock_code": "066360"
+          },
+          "homepage": "https://www.cherrybro.com",
+          "legal_name": "(주)체리부로",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "066360",
+          "stock_name": "체리부로"
+        }
+      },
+      {
+        "company": "팜스코",
+        "stock_code": "036580",
+        "ticker": "036580",
+        "market": "KOSPI",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 036580",
+        "company_description": "KOSPI 상장기업, 종목코드 036580",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://farmsco.com/wp-content/uploads/2024/07/%EC%9C%A1%EA%B3%84%EA%B3%A8%EB%93%9C.pdf",
+            "title": "팜스코 육계 사료 제품",
+            "evidence_type": "official_company_product_document",
+            "published_at": "2024-07-01",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "팜스코",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://farmsco.com/wp-content/uploads/2024/07/%EC%9C%A1%EA%B3%84%EA%B3%A8%EB%93%9C.pdf"
+            ],
+            "evidence_type": [
+              "official_company_product_document"
+            ],
+            "as_of": "2024-07-01",
+            "review_status": "approved"
+          },
+          {
+            "from": "팜스코",
+            "to": "036580 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://farmsco.com/wp-content/uploads/2024/07/%EC%9C%A1%EA%B3%84%EA%B3%A8%EB%93%9C.pdf"
+            ],
+            "evidence_type": [
+              "official_company_product_document"
+            ],
+            "as_of": "2024-07-01",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 팜스코은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "팜스코",
+          "corp_code": "00260408",
+          "english_name": "FARMSCO",
+          "established_date": "19991001",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 1140840261776,
+                "label": "자산총계",
+                "previous": 1073411058408
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 209093909548,
+                "label": "자본총계",
+                "previous": 223353369369
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 931746352228,
+                "label": "부채총계",
+                "previous": 850057689039
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": -12076031563,
+                "label": "당기순이익(손실)",
+                "previous": 44685245212
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 39929063124,
+                "label": "영업이익",
+                "previous": 36998182414
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 832785309566,
+                "label": "매출액",
+                "previous": 757292034060
+              }
+            },
+            "business_year": 2026,
+            "company": "팜스코",
+            "corp_code": "00260408",
+            "filing_receipt_no": "20260812000646",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260812000646",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11012",
+            "report_label": "반기보고서",
+            "retrieved_at": "2026-08-13T19:16:09.816509+00:00",
+            "status": "observed",
+            "stock_code": "036580"
+          },
+          "homepage": "https://www.farmsco.com",
+          "legal_name": "(주)팜스코",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "036580",
+          "stock_name": "팜스코"
+        }
+      },
+      {
+        "company": "하림",
+        "stock_code": "136480",
+        "ticker": "136480",
+        "market": "KOSDAQ",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 136480",
+        "company_description": "KOSDAQ 상장기업, 종목코드 136480",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.harim.com/main/",
+            "title": "하림 닭고기 제품과 기업 소개",
+            "evidence_type": "official_company_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm",
+            "title": "하림 코스닥상장법인 회사코드 136480",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-02-25",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "하림",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://www.harim.com/main/"
+            ],
+            "evidence_type": [
+              "official_company_product_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "하림",
+            "to": "136480 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-02-25",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 하림은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "하림",
+          "english_name": "HARIM Co., Ltd.",
+          "established_date": "20110104",
+          "homepage": "https://-",
+          "legal_name": "(주)하림",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "136480",
+          "stock_name": "하림"
+        }
+      }
+    ],
+    "company_candidates": [
+      {
+        "company": "교촌에프앤비",
+        "stock_code": "339770",
+        "ticker": "339770",
+        "market": "KOSPI",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 339770",
+        "company_description": "KOSPI 상장기업, 종목코드 339770",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.kyochonfnb.com/",
+            "title": "교촌에프앤비 공식 기업 사이트",
+            "evidence_type": "official_company_site",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.mk.co.kr/news/stock/view/2022/12/1094633/",
+            "title": "카타르월드컵 16강 진출·패배에 치킨·맥주 관련주 등락",
+            "evidence_type": "스포츠·시세",
+            "published_at": "2022-12-05",
+            "review_status": "historical_reference"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "교촌에프앤비",
+            "edge_type": "industry_watch",
+            "evidence_urls": [
+              "https://www.kyochonfnb.com/"
+            ],
+            "evidence_type": [
+              "official_company_site"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "교촌에프앤비",
+            "to": "339770 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.mk.co.kr/news/stock/view/2022/12/1094633/"
+            ],
+            "evidence_type": [
+              "스포츠·시세"
+            ],
+            "as_of": "2022-12-05",
+            "review_status": "historical_reference"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 교촌에프앤비은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "교촌에프앤비",
+          "corp_code": "00453284",
+          "english_name": "KYOCHON FOOD&BEVERAGE CO., LTD.",
+          "established_date": "19991112",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 357257173382,
+                "label": "자산총계",
+                "previous": 377506755277
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 179929627273,
+                "label": "자본총계",
+                "previous": 188630140930
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 177327546109,
+                "label": "부채총계",
+                "previous": 188876614347
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 3379359529,
+                "label": "당기순이익(손실)",
+                "previous": 6587695567
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 5290695728,
+                "label": "영업이익",
+                "previous": 10710703713
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 123355716532,
+                "label": "매출액",
+                "previous": 124588080709
+              }
+            },
+            "business_year": 2026,
+            "company": "교촌에프앤비",
+            "corp_code": "00453284",
+            "filing_receipt_no": "20260514001182",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260514001182",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:16:10.828883+00:00",
+            "status": "observed",
+            "stock_code": "339770"
+          },
+          "homepage": "https://kyochonfnb.com",
+          "legal_name": "교촌에프앤비(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "339770",
+          "stock_name": "교촌에프앤비"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "339770",
+          "name": "교촌에프앤비",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 3635.0,
+              "high": 3695.0,
+              "low": 3580.0,
+              "close": 3690.0,
+              "volume": 64282.0,
+              "change_pct": 1.5130674002751032
+            },
+            {
+              "date": "2026-08-03",
+              "open": 3705.0,
+              "high": 3730.0,
+              "low": 3605.0,
+              "close": 3665.0,
+              "volume": 79617.0,
+              "change_pct": -0.6775067750677507
+            },
+            {
+              "date": "2026-08-04",
+              "open": 3640.0,
+              "high": 3730.0,
+              "low": 3640.0,
+              "close": 3710.0,
+              "volume": 40168.0,
+              "change_pct": 1.227830832196453
+            },
+            {
+              "date": "2026-08-05",
+              "open": 3720.0,
+              "high": 3760.0,
+              "low": 3690.0,
+              "close": 3745.0,
+              "volume": 92182.0,
+              "change_pct": 0.9433962264150944
+            },
+            {
+              "date": "2026-08-06",
+              "open": 3740.0,
+              "high": 3750.0,
+              "low": 3695.0,
+              "close": 3715.0,
+              "volume": 25463.0,
+              "change_pct": -0.801068090787717
+            },
+            {
+              "date": "2026-08-07",
+              "open": 3720.0,
+              "high": 3800.0,
+              "low": 3720.0,
+              "close": 3780.0,
+              "volume": 61032.0,
+              "change_pct": 1.7496635262449527
+            },
+            {
+              "date": "2026-08-10",
+              "open": 3830.0,
+              "high": 3830.0,
+              "low": 3740.0,
+              "close": 3805.0,
+              "volume": 49424.0,
+              "change_pct": 0.6613756613756614
+            },
+            {
+              "date": "2026-08-11",
+              "open": 3835.0,
+              "high": 3895.0,
+              "low": 3795.0,
+              "close": 3880.0,
+              "volume": 80727.0,
+              "change_pct": 1.971090670170828
+            },
+            {
+              "date": "2026-08-12",
+              "open": 3920.0,
+              "high": 3930.0,
+              "low": 3830.0,
+              "close": 3885.0,
+              "volume": 57110.0,
+              "change_pct": 0.12886597938144329
+            },
+            {
+              "date": "2026-08-13",
+              "open": 3885.0,
+              "high": 3915.0,
+              "low": 3820.0,
+              "close": 3835.0,
+              "volume": 58979.0,
+              "change_pct": -1.287001287001287
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 3885.0,
+            "high": 3915.0,
+            "low": 3820.0,
+            "close": 3835.0,
+            "volume": 58979.0,
+            "change_pct": -1.287001287001287
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 3835,
+            "daily_change_pct": -1.29,
+            "volume": 58979
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 1.46,
+            "five_vs_previous_volume_ratio": 1.02,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "동우(당시 상장사)",
+        "stock_code": "088910",
+        "ticker": "088910",
+        "market": "KOSDAQ",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 088910",
+        "company_description": "KOSDAQ 상장기업, 종목코드 088910",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.dongwoofarmtotable.com/",
+            "title": "동우팜투테이블 공식 기업 사이트",
+            "evidence_type": "official_company_site",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.klca.or.kr/KLCADownload/eBook/P7013.pdf?Mode=PC",
+            "title": "2010 남아공월드컵 기대에 하림·동우 상승 후 테마 소멸",
+            "evidence_type": "시장 회고",
+            "published_at": "2010년",
+            "review_status": "historical_reference"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "동우(당시 상장사)",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://www.dongwoofarmtotable.com/"
+            ],
+            "evidence_type": [
+              "official_company_site"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "동우(당시 상장사)",
+            "to": "088910 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.klca.or.kr/KLCADownload/eBook/P7013.pdf?Mode=PC"
+            ],
+            "evidence_type": [
+              "시장 회고"
+            ],
+            "as_of": "2010년",
+            "review_status": "historical_reference"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 동우(당시 상장사)은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "동우(당시 상장사)",
+          "corp_code": "00228712",
+          "english_name": "DONGWOO FARM TO TABLE CO., LTD",
+          "established_date": "19930217",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 288387314048,
+                "label": "자산총계",
+                "previous": 282187804378
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 245394948627,
+                "label": "자본총계",
+                "previous": 239575129663
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 42992365421,
+                "label": "부채총계",
+                "previous": 42612674715
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 7111143440,
+                "label": "당기순이익(손실)",
+                "previous": 2158961239
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 4196626096,
+                "label": "영업이익",
+                "previous": 264437784
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 75973181163,
+                "label": "매출액",
+                "previous": 71169230061
+              }
+            },
+            "business_year": 2026,
+            "company": "동우(당시 상장사)",
+            "corp_code": "00228712",
+            "filing_receipt_no": "20260515000105",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260515000105",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:16:10.471679+00:00",
+            "status": "observed",
+            "stock_code": "088910"
+          },
+          "homepage": "https://dongwoofarmtotable.com",
+          "legal_name": "동우팜투테이블",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "088910",
+          "stock_name": "동우팜투테이블"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "088910",
+          "name": "동우팜투테이블",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 2055.0,
+              "high": 2145.0,
+              "low": 2055.0,
+              "close": 2125.0,
+              "volume": 35872.0,
+              "change_pct": 4.166666666666666
+            },
+            {
+              "date": "2026-08-03",
+              "open": 2125.0,
+              "high": 2135.0,
+              "low": 2095.0,
+              "close": 2110.0,
+              "volume": 48891.0,
+              "change_pct": -0.7058823529411765
+            },
+            {
+              "date": "2026-08-04",
+              "open": 2110.0,
+              "high": 2140.0,
+              "low": 2105.0,
+              "close": 2135.0,
+              "volume": 29501.0,
+              "change_pct": 1.1848341232227488
+            },
+            {
+              "date": "2026-08-05",
+              "open": 2140.0,
+              "high": 2160.0,
+              "low": 2140.0,
+              "close": 2150.0,
+              "volume": 26859.0,
+              "change_pct": 0.702576112412178
+            },
+            {
+              "date": "2026-08-06",
+              "open": 2145.0,
+              "high": 2175.0,
+              "low": 2140.0,
+              "close": 2150.0,
+              "volume": 22065.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-07",
+              "open": 2145.0,
+              "high": 2165.0,
+              "low": 2130.0,
+              "close": 2145.0,
+              "volume": 32678.0,
+              "change_pct": -0.23255813953488372
+            },
+            {
+              "date": "2026-08-10",
+              "open": 2155.0,
+              "high": 2190.0,
+              "low": 2155.0,
+              "close": 2180.0,
+              "volume": 27682.0,
+              "change_pct": 1.6317016317016315
+            },
+            {
+              "date": "2026-08-11",
+              "open": 2180.0,
+              "high": 2235.0,
+              "low": 2180.0,
+              "close": 2215.0,
+              "volume": 36640.0,
+              "change_pct": 1.6055045871559634
+            },
+            {
+              "date": "2026-08-12",
+              "open": 2225.0,
+              "high": 2225.0,
+              "low": 2190.0,
+              "close": 2195.0,
+              "volume": 16152.0,
+              "change_pct": -0.9029345372460496
+            },
+            {
+              "date": "2026-08-13",
+              "open": 2195.0,
+              "high": 2210.0,
+              "low": 2165.0,
+              "close": 2175.0,
+              "volume": 31435.0,
+              "change_pct": -0.9111617312072893
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 2195.0,
+            "high": 2210.0,
+            "low": 2165.0,
+            "close": 2175.0,
+            "volume": 31435.0,
+            "change_pct": -0.9111617312072893
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 2175,
+            "daily_change_pct": -0.91,
+            "volume": 31435
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 1.4,
+            "five_vs_previous_volume_ratio": 0.89,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "마니커",
+        "stock_code": "027740",
+        "ticker": "027740",
+        "market": "KOSPI",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 027740",
+        "company_description": "KOSPI 상장기업, 종목코드 027740",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.maniker.co.kr/m423.php",
+            "title": "마니커 신선 닭고기 제품",
+            "evidence_type": "official_company_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm",
+            "title": "마니커 유가증권상장법인 회사코드 027740",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-03-18",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "마니커",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://www.maniker.co.kr/m423.php"
+            ],
+            "evidence_type": [
+              "official_company_product_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "마니커",
+            "to": "027740 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-03-18",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 마니커은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "마니커",
+          "english_name": "MANIKER CO.,LTD.",
+          "established_date": "19850927",
+          "homepage": "https://www.maniker.co.kr",
+          "legal_name": "(주)마니커",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "027740",
+          "stock_name": "마니커"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "027740",
+          "name": "마니커",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 1032.0,
+              "high": 1134.0,
+              "low": 1032.0,
+              "close": 1065.0,
+              "volume": 324296.0,
+              "change_pct": 3.0977734753146176
+            },
+            {
+              "date": "2026-07-31",
+              "open": 1065.0,
+              "high": 1070.0,
+              "low": 1020.0,
+              "close": 1058.0,
+              "volume": 99641.0,
+              "change_pct": -0.6572769953051643
+            },
+            {
+              "date": "2026-08-03",
+              "open": 1058.0,
+              "high": 1086.0,
+              "low": 1042.0,
+              "close": 1054.0,
+              "volume": 67658.0,
+              "change_pct": -0.3780718336483932
+            },
+            {
+              "date": "2026-08-04",
+              "open": 1060.0,
+              "high": 1115.0,
+              "low": 1041.0,
+              "close": 1096.0,
+              "volume": 152843.0,
+              "change_pct": 3.984819734345351
+            },
+            {
+              "date": "2026-08-05",
+              "open": 1097.0,
+              "high": 1158.0,
+              "low": 1097.0,
+              "close": 1140.0,
+              "volume": 213718.0,
+              "change_pct": 4.014598540145985
+            },
+            {
+              "date": "2026-08-06",
+              "open": 1151.0,
+              "high": 1235.0,
+              "low": 1133.0,
+              "close": 1220.0,
+              "volume": 270503.0,
+              "change_pct": 7.017543859649122
+            },
+            {
+              "date": "2026-08-07",
+              "open": 1209.0,
+              "high": 1229.0,
+              "low": 1180.0,
+              "close": 1182.0,
+              "volume": 114668.0,
+              "change_pct": -3.114754098360656
+            },
+            {
+              "date": "2026-08-10",
+              "open": 1190.0,
+              "high": 1193.0,
+              "low": 1160.0,
+              "close": 1177.0,
+              "volume": 96081.0,
+              "change_pct": -0.4230118443316413
+            },
+            {
+              "date": "2026-08-11",
+              "open": 1168.0,
+              "high": 1197.0,
+              "low": 1160.0,
+              "close": 1188.0,
+              "volume": 61047.0,
+              "change_pct": 0.9345794392523363
+            },
+            {
+              "date": "2026-08-12",
+              "open": 1188.0,
+              "high": 1225.0,
+              "low": 1175.0,
+              "close": 1209.0,
+              "volume": 107559.0,
+              "change_pct": 1.7676767676767675
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 1188.0,
+            "high": 1225.0,
+            "low": 1175.0,
+            "close": 1209.0,
+            "volume": 107559.0,
+            "change_pct": 1.7676767676767675
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 1209,
+            "daily_change_pct": 1.77,
+            "volume": 107559
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": -0.9,
+            "five_vs_previous_volume_ratio": 0.76,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "체리부로",
+        "stock_code": "066360",
+        "ticker": "066360",
+        "market": "KOSDAQ",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 066360",
+        "company_description": "KOSDAQ 상장기업, 종목코드 066360",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://cherrybro.com/brand-intro/",
+            "title": "체리부로 브랜드 소개",
+            "evidence_type": "official_company_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "체리부로",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://cherrybro.com/brand-intro/"
+            ],
+            "evidence_type": [
+              "official_company_product_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "체리부로",
+            "to": "066360 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://cherrybro.com/brand-intro/"
+            ],
+            "evidence_type": [
+              "official_company_product_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 체리부로은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "체리부로",
+          "corp_code": "00216434",
+          "english_name": "Cherrybro Co.,Ltd",
+          "established_date": "19910907",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 335625073004,
+                "label": "자산총계",
+                "previous": 327107434896
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 138814211034,
+                "label": "자본총계",
+                "previous": 138803839705
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 196810861970,
+                "label": "부채총계",
+                "previous": 188303595191
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": 10371329,
+                "label": "당기순이익(손실)",
+                "previous": 1783458470
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 3204230028,
+                "label": "영업이익",
+                "previous": 3266141739
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 94716259354,
+                "label": "매출액",
+                "previous": 91105546286
+              }
+            },
+            "business_year": 2026,
+            "company": "체리부로",
+            "corp_code": "00216434",
+            "filing_receipt_no": "20260514000188",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260514000188",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11013",
+            "report_label": "1분기보고서",
+            "retrieved_at": "2026-08-13T19:16:10.064988+00:00",
+            "status": "observed",
+            "stock_code": "066360"
+          },
+          "homepage": "https://www.cherrybro.com",
+          "legal_name": "(주)체리부로",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "066360",
+          "stock_name": "체리부로"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "066360",
+          "name": "체리부로",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 636.0,
+              "high": 691.0,
+              "low": 614.0,
+              "close": 655.0,
+              "volume": 68842.0,
+              "change_pct": 5.9870550161812295
+            },
+            {
+              "date": "2026-08-03",
+              "open": 651.0,
+              "high": 676.0,
+              "low": 619.0,
+              "close": 671.0,
+              "volume": 29323.0,
+              "change_pct": 2.4427480916030535
+            },
+            {
+              "date": "2026-08-04",
+              "open": 665.0,
+              "high": 677.0,
+              "low": 657.0,
+              "close": 670.0,
+              "volume": 22599.0,
+              "change_pct": -0.14903129657228018
+            },
+            {
+              "date": "2026-08-05",
+              "open": 673.0,
+              "high": 677.0,
+              "low": 658.0,
+              "close": 670.0,
+              "volume": 93484.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-06",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 670.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-07",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 670.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-10",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 670.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-11",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 670.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-12",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 670.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-13",
+              "open": 0.0,
+              "high": 0.0,
+              "low": 0.0,
+              "close": 670.0,
+              "volume": 0.0,
+              "change_pct": 0.0
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 0.0,
+            "high": 0.0,
+            "low": 0.0,
+            "close": 670.0,
+            "volume": 0.0,
+            "change_pct": 0.0
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 670,
+            "daily_change_pct": 0.0,
+            "volume": 0
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 0.0,
+            "five_vs_previous_volume_ratio": 0.0,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "팜스코",
+        "stock_code": "036580",
+        "ticker": "036580",
+        "market": "KOSPI",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 036580",
+        "company_description": "KOSPI 상장기업, 종목코드 036580",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://farmsco.com/wp-content/uploads/2024/07/%EC%9C%A1%EA%B3%84%EA%B3%A8%EB%93%9C.pdf",
+            "title": "팜스코 육계 사료 제품",
+            "evidence_type": "official_company_product_document",
+            "published_at": "2024-07-01",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "팜스코",
+            "edge_type": "value_chain",
+            "evidence_urls": [
+              "https://farmsco.com/wp-content/uploads/2024/07/%EC%9C%A1%EA%B3%84%EA%B3%A8%EB%93%9C.pdf"
+            ],
+            "evidence_type": [
+              "official_company_product_document"
+            ],
+            "as_of": "2024-07-01",
+            "review_status": "approved"
+          },
+          {
+            "from": "팜스코",
+            "to": "036580 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://farmsco.com/wp-content/uploads/2024/07/%EC%9C%A1%EA%B3%84%EA%B3%A8%EB%93%9C.pdf"
+            ],
+            "evidence_type": [
+              "official_company_product_document"
+            ],
+            "as_of": "2024-07-01",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 팜스코은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "팜스코",
+          "corp_code": "00260408",
+          "english_name": "FARMSCO",
+          "established_date": "19991001",
+          "financial_snapshot": {
+            "accounts": {
+              "assets": {
+                "currency": "KRW",
+                "current": 1140840261776,
+                "label": "자산총계",
+                "previous": 1073411058408
+              },
+              "equity": {
+                "currency": "KRW",
+                "current": 209093909548,
+                "label": "자본총계",
+                "previous": 223353369369
+              },
+              "liabilities": {
+                "currency": "KRW",
+                "current": 931746352228,
+                "label": "부채총계",
+                "previous": 850057689039
+              },
+              "net_income": {
+                "currency": "KRW",
+                "current": -12076031563,
+                "label": "당기순이익(손실)",
+                "previous": 44685245212
+              },
+              "operating_profit": {
+                "currency": "KRW",
+                "current": 39929063124,
+                "label": "영업이익",
+                "previous": 36998182414
+              },
+              "revenue": {
+                "currency": "KRW",
+                "current": 832785309566,
+                "label": "매출액",
+                "previous": 757292034060
+              }
+            },
+            "business_year": 2026,
+            "company": "팜스코",
+            "corp_code": "00260408",
+            "filing_receipt_no": "20260812000646",
+            "filing_url": "https://dart.fss.or.kr/dsaf001/main.do?rcpNo=20260812000646",
+            "financial_statement_division": "CFS",
+            "note": "OpenDART 공시 주요계정 참고값이며 정정공시로 변경될 수 있음",
+            "provider": "opendart",
+            "ranking_effect": "none",
+            "relationship_evidence": false,
+            "report_code": "11012",
+            "report_label": "반기보고서",
+            "retrieved_at": "2026-08-13T19:16:09.816509+00:00",
+            "status": "observed",
+            "stock_code": "036580"
+          },
+          "homepage": "https://www.farmsco.com",
+          "legal_name": "(주)팜스코",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-13T19:00:00+00:00",
+          "status": "verified",
+          "stock_code": "036580",
+          "stock_name": "팜스코"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "036580",
+          "name": "팜스코",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-31",
+              "open": 2355.0,
+              "high": 2540.0,
+              "low": 2330.0,
+              "close": 2435.0,
+              "volume": 28362.0,
+              "change_pct": 4.05982905982906
+            },
+            {
+              "date": "2026-08-03",
+              "open": 2590.0,
+              "high": 2590.0,
+              "low": 2395.0,
+              "close": 2430.0,
+              "volume": 23142.0,
+              "change_pct": -0.20533880903490762
+            },
+            {
+              "date": "2026-08-04",
+              "open": 2430.0,
+              "high": 2555.0,
+              "low": 2410.0,
+              "close": 2495.0,
+              "volume": 115657.0,
+              "change_pct": 2.674897119341564
+            },
+            {
+              "date": "2026-08-05",
+              "open": 2500.0,
+              "high": 2540.0,
+              "low": 2495.0,
+              "close": 2520.0,
+              "volume": 20610.0,
+              "change_pct": 1.002004008016032
+            },
+            {
+              "date": "2026-08-06",
+              "open": 2520.0,
+              "high": 2535.0,
+              "low": 2475.0,
+              "close": 2535.0,
+              "volume": 9027.0,
+              "change_pct": 0.5952380952380952
+            },
+            {
+              "date": "2026-08-07",
+              "open": 2550.0,
+              "high": 2610.0,
+              "low": 2495.0,
+              "close": 2580.0,
+              "volume": 50039.0,
+              "change_pct": 1.7751479289940828
+            },
+            {
+              "date": "2026-08-10",
+              "open": 2570.0,
+              "high": 2760.0,
+              "low": 2540.0,
+              "close": 2715.0,
+              "volume": 74364.0,
+              "change_pct": 5.232558139534884
+            },
+            {
+              "date": "2026-08-11",
+              "open": 2695.0,
+              "high": 2780.0,
+              "low": 2685.0,
+              "close": 2740.0,
+              "volume": 14584.0,
+              "change_pct": 0.9208103130755065
+            },
+            {
+              "date": "2026-08-12",
+              "open": 2745.0,
+              "high": 2745.0,
+              "low": 2650.0,
+              "close": 2675.0,
+              "volume": 13878.0,
+              "change_pct": -2.3722627737226274
+            },
+            {
+              "date": "2026-08-13",
+              "open": 2700.0,
+              "high": 2730.0,
+              "low": 2585.0,
+              "close": 2675.0,
+              "volume": 245032.0,
+              "change_pct": 0.0
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-13",
+            "open": 2700.0,
+            "high": 2730.0,
+            "low": 2585.0,
+            "close": 2675.0,
+            "volume": 245032.0,
+            "change_pct": 0.0
+          },
+          "summary": {
+            "as_of": "2026-08-13",
+            "close": 2675,
+            "daily_change_pct": 0.0,
+            "volume": 245032
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 3.68,
+            "five_vs_previous_volume_ratio": 2.02,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "하림",
+        "stock_code": "136480",
+        "ticker": "136480",
+        "market": "KOSDAQ",
+        "relation_type": "observed_brand_category",
+        "strength": "indirect",
+        "reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "company_summary": "KOSDAQ 상장기업, 종목코드 136480",
+        "company_description": "KOSDAQ 상장기업, 종목코드 136480",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://litt.ly/norangtongdack",
+        "evidence_sources": [
+          {
+            "url": "https://litt.ly/norangtongdack",
+            "title": "노랑통닭 공식 채널",
+            "evidence_type": "official_brand_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.harim.com/main/",
+            "title": "하림 닭고기 제품과 기업 소개",
+            "evidence_type": "official_company_product_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm",
+            "title": "하림 코스닥상장법인 회사코드 136480",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-02-25",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "노랑통닭",
+        "matched_ontology_node": "노랑통닭",
+        "ontology_lookup_match_type": "exact_term",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "노랑통닭",
+            "to": "노랑통닭",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://x.com/explore/tabs/trending"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "노랑통닭",
+            "to": "치킨 프랜차이즈",
+            "edge_type": "observed_brand_category",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "evidence_type": [
+              "official_brand_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "치킨 프랜차이즈",
+            "to": "하림",
+            "edge_type": "raw_materials_components",
+            "evidence_urls": [
+              "https://www.harim.com/main/"
+            ],
+            "evidence_type": [
+              "official_company_product_page"
+            ],
+            "as_of": "2026-08-13T21:00:00+00:00",
+            "review_status": "approved"
+          },
+          {
+            "from": "하림",
+            "to": "136480 (KOSDAQ)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-02-25",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "치킨 배달",
+          "후라이드 치킨"
+        ],
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 하림은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "official_identity": {
+          "company": "하림",
+          "english_name": "HARIM Co., Ltd.",
+          "established_date": "20110104",
+          "homepage": "https://-",
+          "legal_name": "(주)하림",
+          "market_class": "K",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "136480",
+          "stock_name": "하림"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx",
+          "stock_code": "136480",
+          "name": "하림",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-30",
+              "open": 2550.0,
+              "high": 2660.0,
+              "low": 2550.0,
+              "close": 2595.0,
+              "volume": 324007.0,
+              "change_pct": -0.19230769230769232
+            },
+            {
+              "date": "2026-07-31",
+              "open": 2630.0,
+              "high": 2660.0,
+              "low": 2610.0,
+              "close": 2655.0,
+              "volume": 369332.0,
+              "change_pct": 2.312138728323699
+            },
+            {
+              "date": "2026-08-03",
+              "open": 2645.0,
+              "high": 2680.0,
+              "low": 2615.0,
+              "close": 2640.0,
+              "volume": 259661.0,
+              "change_pct": -0.5649717514124294
+            },
+            {
+              "date": "2026-08-04",
+              "open": 2630.0,
+              "high": 2690.0,
+              "low": 2630.0,
+              "close": 2680.0,
+              "volume": 350043.0,
+              "change_pct": 1.5151515151515151
+            },
+            {
+              "date": "2026-08-05",
+              "open": 2680.0,
+              "high": 2700.0,
+              "low": 2670.0,
+              "close": 2680.0,
+              "volume": 363191.0,
+              "change_pct": 0.0
+            },
+            {
+              "date": "2026-08-06",
+              "open": 2680.0,
+              "high": 2725.0,
+              "low": 2680.0,
+              "close": 2710.0,
+              "volume": 378485.0,
+              "change_pct": 1.1194029850746268
+            },
+            {
+              "date": "2026-08-07",
+              "open": 2710.0,
+              "high": 2735.0,
+              "low": 2690.0,
+              "close": 2720.0,
+              "volume": 226237.0,
+              "change_pct": 0.36900369003690037
+            },
+            {
+              "date": "2026-08-10",
+              "open": 2720.0,
+              "high": 2745.0,
+              "low": 2695.0,
+              "close": 2730.0,
+              "volume": 200115.0,
+              "change_pct": 0.3676470588235294
+            },
+            {
+              "date": "2026-08-11",
+              "open": 2730.0,
+              "high": 2755.0,
+              "low": 2725.0,
+              "close": 2740.0,
+              "volume": 306534.0,
+              "change_pct": 0.3663003663003663
+            },
+            {
+              "date": "2026-08-12",
+              "open": 2740.0,
+              "high": 2750.0,
+              "low": 2700.0,
+              "close": 2710.0,
+              "volume": 307662.0,
+              "change_pct": -1.094890510948905
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-12",
+            "open": 2740.0,
+            "high": 2750.0,
+            "low": 2700.0,
+            "close": 2710.0,
+            "volume": 307662.0,
+            "change_pct": -1.094890510948905
+          },
+          "summary": {
+            "as_of": "2026-08-12",
+            "close": 2710,
+            "daily_change_pct": -1.09,
+            "volume": 307662
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 0.0,
+            "five_vs_previous_volume_ratio": 0.85,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_categories": [
+      {
+        "name": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "companies": [
+          "교촌에프앤비",
+          "동우(당시 상장사)",
+          "마니커",
+          "체리부로",
+          "팜스코",
+          "하림"
+        ],
+        "candidate_count": 6,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "candidate_company_categories": [
+      {
+        "name": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "companies": [
+          "교촌에프앤비",
+          "동우(당시 상장사)",
+          "마니커",
+          "체리부로",
+          "팜스코",
+          "하림"
+        ],
+        "candidate_count": 6,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "company_resolution": {
+      "status": "published",
+      "publish_status": "published",
+      "candidate_count": 6,
+      "ontology_complete_count": 6,
+      "published_count": 6,
+      "minimum_gold_companies": 3,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [
+        "플랫폼·채널"
+      ],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 6,
+        "industry_watch": 0
+      },
+      "category_count": 1,
+      "candidate_category_count": 1,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "노랑통닭",
+            "observation_status": "observed_representative",
+            "ontology_status": "published",
+            "ontology_company_count": 6,
+            "lookup_match": {
+              "match_type": "exact_term",
+              "matched_label": "노랑통닭",
+              "target_node_id": "term:reviewed:norangtongdak",
+              "target_node_label": "노랑통닭",
+              "review_status": "node_label",
+              "evidence": []
+            }
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "증거 온톨로지 경로가 완결된 고유 상장기업 3개 이상을 내부 Gold 후보층으로 보존"
+    },
+    "rank": 381,
+    "observed_rank": 381,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 219,
+    "momentum_rank": 389,
+    "main_rank": 22,
+    "keyword_company_links": [
+      {
+        "keyword": "치킨 배달",
+        "company": "교촌에프앤비",
+        "stock_code": "339770",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 교촌에프앤비은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://www.kyochonfnb.com/",
+          "https://www.mk.co.kr/news/stock/view/2022/12/1094633/"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "후라이드 치킨",
+        "company": "교촌에프앤비",
+        "stock_code": "339770",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 교촌에프앤비은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 교촌에프앤비 → 339770 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://www.kyochonfnb.com/",
+          "https://www.mk.co.kr/news/stock/view/2022/12/1094633/"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "치킨 배달",
+        "company": "동우(당시 상장사)",
+        "stock_code": "088910",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 동우(당시 상장사)은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://www.dongwoofarmtotable.com/",
+          "https://www.klca.or.kr/KLCADownload/eBook/P7013.pdf?Mode=PC"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "후라이드 치킨",
+        "company": "동우(당시 상장사)",
+        "stock_code": "088910",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 동우(당시 상장사)은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 동우(당시 상장사) → 088910 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://www.dongwoofarmtotable.com/",
+          "https://www.klca.or.kr/KLCADownload/eBook/P7013.pdf?Mode=PC"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "치킨 배달",
+        "company": "마니커",
+        "stock_code": "027740",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 마니커은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://www.maniker.co.kr/m423.php",
+          "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "후라이드 치킨",
+        "company": "마니커",
+        "stock_code": "027740",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 마니커은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 마니커 → 027740 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://www.maniker.co.kr/m423.php",
+          "https://kind.krx.co.kr/external/2026/03/18/001449/20260318006694/00636.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "치킨 배달",
+        "company": "체리부로",
+        "stock_code": "066360",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 체리부로은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://cherrybro.com/brand-intro/"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "후라이드 치킨",
+        "company": "체리부로",
+        "stock_code": "066360",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 체리부로은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 체리부로 → 066360 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://cherrybro.com/brand-intro/"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "치킨 배달",
+        "company": "팜스코",
+        "stock_code": "036580",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 팜스코은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://farmsco.com/wp-content/uploads/2024/07/%EC%9C%A1%EA%B3%84%EA%B3%A8%EB%93%9C.pdf"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "후라이드 치킨",
+        "company": "팜스코",
+        "stock_code": "036580",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 팜스코은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 팜스코 → 036580 (KOSPI)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://farmsco.com/wp-content/uploads/2024/07/%EC%9C%A1%EA%B3%84%EA%B3%A8%EB%93%9C.pdf"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "치킨 배달",
+        "company": "하림",
+        "stock_code": "136480",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 하림은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://www.harim.com/main/",
+          "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "후라이드 치킨",
+        "company": "하림",
+        "stock_code": "136480",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "connection_explanation": "치킨 배달, 후라이드 치킨 관련 맥락에서 하림은(는) '플랫폼·서비스' 역할로 연결됩니다. 관측어 '노랑통닭'에서 노랑통닭 → 치킨 프랜차이즈 → 하림 → 136480 (KOSDAQ)로 이어지는 검수된 3단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://litt.ly/norangtongdack",
+          "https://www.harim.com/main/",
+          "https://kind.krx.co.kr/external/2026/02/25/001810/20260225004223/00636.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      }
+    ],
+    "linked_keyword_count": 2,
+    "keyword_company_link_status": "ready",
+    "unlinked_related_keywords": [
+      "노랑푸드",
+      "닭고기"
+    ],
+    "home_context_status": "review_required",
+    "home_context_reason": "trigger_evidence_incomplete",
+    "home_eligible": false,
+    "company_card_status": "enrichment_pending",
+    "company_card_reason": "fewer_than_ten_evidence_backed_companies",
+    "company_status": "enrichment_pending",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "evidence_backed_listed_companies_at_least_ten"
+    ],
+    "frontend_keyword_count": 4,
+    "frontend_company_count": 6,
+    "frontend_company_role_category_count": 1,
+    "publication_rank": null,
+    "attention_change": {
+      "1w": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "1m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "3m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "insufficient_90_day_observed_history"
+      }
+    },
+    "trend_story": {
+      "schema_version": "trend-story-v1",
+      "status": "observed_context_only",
+      "origin": {
+        "observed_term": "노랑통닭",
+        "first_observed_at": "2026-08-13T10:00:00+00:00",
+        "trigger_title": "",
+        "trigger_type": "",
+        "why_now": "",
+        "evidence_urls": [],
+        "assertion": "observed_trigger_or_context_not_causal_origin"
+      },
+      "relationship_graph": {
+        "interpretation": "observed_context_graph_not_causal_lineage",
+        "nodes": [
+          {
+            "id": "trend:root",
+            "label": "노랑통닭",
+            "node_type": "observed_trend_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:1",
+            "label": "노랑푸드",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:2",
+            "label": "닭고기",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:3",
+            "label": "치킨 배달",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:4",
+            "label": "후라이드 치킨",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          }
+        ],
+        "edges": [
+          {
+            "from": "trend:root",
+            "to": "keyword:1",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:2",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://www.harim.com/main/"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:3",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:4",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://litt.ly/norangtongdack"
+            ],
+            "causality": "not_inferred"
+          }
+        ]
+      },
+      "diffusion": {
+        "lifecycle": "expired",
+        "trend_stage": {
+          "key": "mainstream",
+          "label": "대중화",
+          "index": 3
+        },
+        "phase_label": "대중화",
+        "stage_index": 3,
+        "progress_percent": 100,
+        "observed_day_label": "관측 2일차",
+        "observed_hours": 8,
+        "caption": "대중화 이력은 있으나 현재 관측은 종료된 상태입니다.",
+        "attention_lift": {
+          "status": "normalized_signal",
+          "metric": "source_rank_velocity_index",
+          "value": -14.42,
+          "unit": "points",
+          "label": "관심 속도 지표 -14.4p"
+        },
+        "attention_windows": [
+          {
+            "key": "1w",
+            "label": "1주",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "1m",
+            "label": "1개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "3m",
+            "label": "3개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "insufficient_90_day_observed_history",
+            "is_absolute_mention_count": false
+          }
+        ],
+        "channels": [
+          {
+            "source": "x",
+            "label": "X",
+            "latest_rank": 14,
+            "rank_change": -1,
+            "movement_label": "직전 관측 대비 순위 -1",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": true,
+            "affects_multisource_home_rank": false
+          }
+        ],
+        "ranking_input_policy": "home-feed-selection-v2-x-google-only"
+      }
+    },
+    "frontend_projection": {
+      "trend_name": "노랑통닭",
+      "trend_category": "음식·식품",
+      "trend_core": "노랑통닭",
+      "observed_day_label": "관측 2일차",
+      "phase_label": "대중화",
+      "stage_index": 3,
+      "progress_percent": 100,
+      "attention_lift": {
+        "status": "normalized_signal",
+        "metric": "source_rank_velocity_index",
+        "value": -14.42,
+        "unit": "points",
+        "label": "관심 속도 지표 -14.4p"
+      },
+      "attention_windows": [
+        {
+          "key": "1w",
+          "label": "1주",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "1m",
+          "label": "1개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "3m",
+          "label": "3개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "insufficient_90_day_observed_history",
+          "is_absolute_mention_count": false
+        }
+      ],
+      "current_rank": 381,
+      "caption": "대중화 이력은 있으나 현재 관측은 종료된 상태입니다.",
+      "related_keyword_count": 4,
+      "company_grouping": "company_role_category",
+      "is_mock": false
+    },
+    "ranking_availability_status": "mature_combined",
+    "semantic_adjudication_status": "not_eligible"
+  }
+}
