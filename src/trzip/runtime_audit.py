@@ -385,7 +385,9 @@ def _audit_frontend_delivery(
         if published_keys != expected_keys:
             report.fail("frontend_rankings_order_mismatch")
         expected_youtube = intelligence.get("youtube_content_discovery")
-        if expected_youtube is not None:
+        # YouTube is no longer part of the active home-feed contract.  Audit
+        # the legacy lane only when a delivery explicitly publishes it.
+        if expected_youtube is not None and "youtube_content_discovery" in rankings:
             youtube = rankings.get("youtube_content_discovery") or {}
             if (
                 youtube != expected_youtube
@@ -736,7 +738,7 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         if item.get("frontend_readiness_status") == "ready"
     ]
     from .intelligence import select_balanced_home_top10
-    expected_home_top10 = select_balanced_home_top10(home_ranking)
+    expected_home_top10 = select_balanced_home_top10(completed_home_ranking)
     if (
         [
             (item.get("event_key"), item.get("rank"), item.get("score"))
@@ -867,6 +869,18 @@ def _table_exists(connection: sqlite3.Connection, name: str) -> bool:
     return row is not None
 
 
+def _parse_audit_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
+
+
 def _audit_database(
     db_path: Path,
     report: AuditReport,
@@ -901,8 +915,31 @@ def _audit_database(
         ).fetchall()
         report.metrics["sqlite_observation_count"] = total
         report.metrics["sqlite_generated_count"] = generated
+        publication_observed_at = _parse_audit_timestamp(metadata.get("observed_at"))
+        publication_rows: list[tuple[Any, ...]] = []
+        post_publication_rows: list[tuple[Any, ...]] = []
+        for row in rows:
+            row_observed_at = _parse_audit_timestamp(row[0])
+            if publication_observed_at is None or (
+                row_observed_at is not None and row_observed_at <= publication_observed_at
+            ):
+                publication_rows.append(row)
+            else:
+                post_publication_rows.append(row)
+        publication_hours = {row[0] for row in publication_rows}
+        operational_hours = {row[0] for row in rows}
         report.metrics["v3_source_hour_count"] = len(rows)
-        report.metrics["clean_history_hours"] = len({row[0] for row in rows})
+        report.metrics["publication_source_hour_count"] = len(publication_rows)
+        report.metrics["post_publication_source_hour_count"] = len(post_publication_rows)
+        report.metrics["post_publication_observation_count"] = sum(
+            int(row[2]) for row in post_publication_rows
+        )
+        # Publication integrity is evaluated as-of its immutable observed_at.
+        # Later hourly collections are valid operational progress, not drift in
+        # the already-published daily snapshot.
+        report.metrics["clean_history_hours"] = len(publication_hours)
+        report.metrics["publication_clean_history_hours"] = len(publication_hours)
+        report.metrics["operational_clean_history_hours"] = len(operational_hours)
         report.metrics["latest_source_hours"] = [
             {
                 "observed_at": row[0],
@@ -929,17 +966,17 @@ def _audit_database(
         report.metrics["invalid_collector_versions"] = invalid_collector_versions
         if invalid_collector_versions:
             report.fail("collector_version_not_allowlisted")
-        current_sources = {row[1] for row in rows}
+        current_sources = {row[1] for row in publication_rows}
         if "google_trends" not in current_sources:
             report.fail("google_v3_history_missing")
         if "x" not in current_sources:
             report.block("x_v3_history_missing")
         if report.metrics["clean_history_hours"] < 96:
             report.block("clean_history_under_96_hours")
-        v3_row_count = sum(int(row[2]) for row in rows)
+        v3_row_count = sum(int(row[2]) for row in publication_rows)
         coverage = metadata.get("coverage") or {}
-        expected_first = min((row[0] for row in rows), default=None)
-        expected_last = max((row[0] for row in rows), default=None)
+        expected_first = min((row[0] for row in publication_rows), default=None)
+        expected_last = max((row[0] for row in publication_rows), default=None)
         if (
             coverage.get("rows") != v3_row_count
             or coverage.get("observed_rows") != v3_row_count
@@ -948,8 +985,13 @@ def _audit_database(
             or coverage.get("last_hour") != expected_last
         ):
             report.fail("published_coverage_does_not_match_sqlite")
-        current_observed_at = metadata.get("observed_at")
-        latest_rows = [row for row in rows if row[0] == current_observed_at]
+        current_observed_at = publication_observed_at
+        latest_rows = [
+            row
+            for row in publication_rows
+            if current_observed_at is not None
+            and _parse_audit_timestamp(row[0]) == current_observed_at
+        ]
         latest_counts = {row[1]: int(row[2]) for row in latest_rows}
         collection_audit = ((metadata.get("collection") or {}).get("audit") or {})
         if latest_counts.get("google_trends") != (

@@ -46,9 +46,11 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
     assert "ranking_availability" in payload["required"]
     assert {
         "all_observed_ranking", "home_top10", "rising_top10", "category_summary",
-        "trend_top10", "public_top10", "company_ready_trends",
-        "youtube_content_discovery", "youtube_content_ranking", "youtube_content_top10",
+        "trend_top10", "public_top10", "company_ready_trends", "home_feed",
     } <= set(payload["required"])
+    assert not {
+        "youtube_content_discovery", "youtube_content_ranking", "youtube_content_top10",
+    } & set(payload["required"])
     assert {
         "ranking_default_period", "ranking_periods", "ranking_views",
         "ranking_top_level_alias",

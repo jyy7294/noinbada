@@ -12,7 +12,7 @@ TRZIP은 한국에서 지금 관측되는 관심 표현을 지우지 않고 축�
 - 보조 검증: NAVER 뉴스·블로그, YouTube Data API, Instagram(인증 시), 검수된 기사
 - 기업·시장 참고: 증거 온톨로지, pykrx 일별 시장자료, 선택적 OpenDART
 
-기사·기업 수·카테고리는 관측 순위를 바꾸지 않습니다. NAVER는 후보 커버리지 게이트를 통과한 경우에만 홈 순위의 동등 플랫폼 신호로 사용합니다. Google RSS, Trends MCP, X API, GitHub Actions, 생성·백필 데이터는 운영 경로에 없습니다.
+기사·기업 수·카테고리는 관측 순위를 바꾸지 않습니다. NAVER 뉴스는 맥락 근거로만 사용하며 홈 순위에도 참여하지 않습니다. Google RSS, Trends MCP, X API, GitHub Actions, 생성·백필 데이터는 운영 경로에 없습니다.
 
 ## 순위
 
@@ -53,7 +53,7 @@ TRZIP은 한국에서 지금 관측되는 관심 표현을 지우지 않고 축�
 
 ## 기사와 보조 플랫폼
 
-기사는 트렌드 후보를 발견하고 이미 X·Google에서 관측된 표현의 소비·제품화 맥락을 설명할 수 있습니다. 기사만으로 관측 순위에 삽입할 수 없습니다. NAVER 원장은 관측 순위에는 `ranking_effect=none`을 유지하되, 완전한 후보 커버리지를 확보하면 `home_rank`에 X·Google과 동등하게 반영합니다. YouTube·Instagram은 아직 설명·발견 전용입니다.
+기사는 이미 X·Google에서 관측된 표현의 소비·제품화 맥락을 설명할 수 있습니다. 기사만으로 관측 순위에 삽입할 수 없습니다. NAVER 뉴스는 항상 `ranking_effect=none`이고, YouTube·Instagram은 현재 활성 홈 경로에서 제외합니다.
 
 ## 관련기업
 

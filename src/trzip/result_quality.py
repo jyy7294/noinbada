@@ -217,6 +217,7 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
     """Evaluate the completed frontend contract without recomputing rank."""
 
     home_feed = intelligence.get("home_feed") or {}
+    using_rank_free_feed = bool(home_feed)
     top = [
         item for group in home_feed.get("groups") or []
         for item in group.get("trends") or []
@@ -238,12 +239,16 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
         failures.append(
             f"home_status_mismatch:expected_{expected_home_status}:actual_{declared_home_status}"
         )
-    if any(
+    if using_rank_free_feed and any(
         {"observed_rank", "home_rank", "publication_rank", "score", "_home_selection_score"}
         & set(item)
         for item in top
     ):
         failures.append("home_feed_exposes_rank_or_selection_score")
+    if not using_rank_free_feed and top:
+        publication_ranks = [item.get("publication_rank") for item in top]
+        if publication_ranks != list(range(1, len(top) + 1)):
+            failures.append("publication_rank_not_contiguous")
     event_keys = [str(item.get("event_key") or "") for item in top]
     if not all(event_keys) or len(event_keys) != len(set(event_keys)):
         failures.append("duplicate_or_empty_event_key")

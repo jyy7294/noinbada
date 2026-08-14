@@ -7,7 +7,9 @@ def test_ground_truth_has_at_least_thirty_cases():
 
 def test_bloody_game_is_screen_content_not_digital_game():
     event = resolve_event("피의 게임", {"google_trends"})
-    assert event["category"] == "screen_content"
+    assert event["category"] is None
+    assert event["category_hint"] == "screen_content"
+    assert event["category_hint_affects_rank"] is False
     assert "Google Trends KR" in event["phenomenon_summary"]
     assert "X 한국" not in event["phenomenon_summary"]
 
@@ -31,6 +33,8 @@ def test_stock_code_and_fireworks_are_resolved_without_invented_event_names():
     festival = resolve_event("불꽃축제", {"x"})
 
     assert stock["canonical"] == "삼성전자"
-    assert stock["category"] == "investment_market"
+    assert stock["category"] is None
+    assert stock["category_hint"] == "investment_market"
     assert festival["canonical"] == "불꽃축제"
-    assert festival["category"] == "place_experience"
+    assert festival["category"] is None
+    assert festival["category_hint"] == "place_experience"

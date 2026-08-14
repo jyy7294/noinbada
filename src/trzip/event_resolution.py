@@ -81,13 +81,18 @@ def resolve_event(raw: str, sources: set[str]) -> dict:
     key = _lookup_key(compact)
     truth = GROUND_TRUTH.get(key)
     if truth:
-        display, _reference_category, _reference_context, keyword_candidates = truth
+        display, reference_category, _reference_context, keyword_candidates = truth
         # Reference data may normalize a spelling and accelerate enrichment, but
         # never decides category, lane, product fit or rank for a live event.
         category = None
-        context_status = "needs_context"
+        category_hint = reference_category
+        context_status = (
+            "resolved_reference" if reference_category != "unclassified"
+            else "needs_context"
+        )
     else:
         display, category, keyword_candidates = compact, None, ()
+        category_hint = None
         looks_like_person = (
             bool(PERSON_NAME_RE.fullmatch(compact))
             and len(compact) == 3
@@ -101,6 +106,8 @@ def resolve_event(raw: str, sources: set[str]) -> dict:
     return {
         "canonical": display,
         "category": category,
+        "category_hint": category_hint,
+        "category_hint_affects_rank": False,
         "phenomenon_summary": summary,
         "context_status": context_status,
         "keyword_candidates": list(keyword_candidates),

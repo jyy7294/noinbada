@@ -19,9 +19,14 @@ def evaluate_regression_set(path: Path | None = None) -> dict:
     for case in cases:
         actual = resolve_event(case["input"], {"x", "google_trends"})
         expected_context = case.get("context_status")
+        # The registry supplies a non-ranking category hint.  Live category and
+        # home eligibility still require observed context; measuring the hint
+        # here prevents alias regressions without turning the registry into a
+        # promotion whitelist.
+        evaluated_category = actual.get("category_hint", actual.get("category"))
         checks = {
             "display_name": actual["canonical"] == case.get("display_name"),
-            "category": actual["category"] == case.get("category"),
+            "category": evaluated_category == case.get("category"),
             "context_status": actual["context_status"] == expected_context,
         }
         name_correct += checks["display_name"]
@@ -37,6 +42,7 @@ def evaluate_regression_set(path: Path | None = None) -> dict:
                 "actual": {
                     "display_name": actual["canonical"],
                     "category": actual["category"],
+                    "category_hint": actual.get("category_hint"),
                     "context_status": actual["context_status"],
                 },
                 "failed_checks": [key for key, passed in checks.items() if not passed],

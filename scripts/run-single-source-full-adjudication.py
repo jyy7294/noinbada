@@ -34,9 +34,11 @@ def _write_json(path: Path, value: dict) -> str:
     path.parent.mkdir(parents=True, exist_ok=True)
     body = json.dumps(value, ensure_ascii=False, indent=2) + "\n"
     temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(body, encoding="utf-8")
+    # Keep serialized bytes platform-independent so printed and persisted
+    # SHA-256 values cannot disagree on Windows newline translation.
+    temporary.write_bytes(body.encode("utf-8"))
     temporary.replace(path)
-    return hashlib.sha256(body.encode("utf-8")).hexdigest()
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _load_review_overlay(path: Path | None, source: str) -> tuple[dict[str, dict], dict]:
