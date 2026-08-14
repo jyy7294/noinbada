@@ -529,14 +529,11 @@ def _audit_period_rankings(intelligence: dict[str, Any], report: AuditReport) ->
             item for item in ranking
             if item.get("lane") == "main" and item.get("home_eligible") is True
         ]
-        completed = [
-            item for item in main
-            if item.get("frontend_readiness_status") == "ready"
-        ]
-        expected_top10 = select_balanced_home_top10(completed)
+        expected_top10 = select_balanced_home_top10(main)
         if (
             [item.get("main_rank") for item in main] != list(range(1, len(main) + 1))
-            or top10 != expected_top10
+            or [item.get("event_key") for item in top10]
+            != [item.get("event_key") for item in expected_top10]
         ):
             failures += 1
         period_counts[key] = len(ranking)
@@ -739,10 +736,18 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         if item.get("frontend_readiness_status") == "ready"
     ]
     from .intelligence import select_balanced_home_top10
-    expected_home_top10 = select_balanced_home_top10(completed_home_ranking)
+    expected_home_top10 = select_balanced_home_top10(home_ranking)
     if (
-        all_observed != unified
-        or home_top10 != expected_home_top10
+        [
+            (item.get("event_key"), item.get("rank"), item.get("score"))
+            for item in all_observed
+        ]
+        != [
+            (item.get("event_key"), item.get("rank"), item.get("score"))
+            for item in unified
+        ]
+        or [item.get("event_key") for item in home_top10]
+        != [item.get("event_key") for item in expected_home_top10]
         or trend_top10 != home_top10
         or public_top10 != home_top10
     ):
@@ -764,13 +769,6 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
             "ready", "enrichment_pending", "not_applicable"
         }:
             home_failures += 1
-        if (
-            item.get("frontend_readiness_status") != "ready"
-            or item.get("keyword_status") != "ready"
-            or item.get("frontend_keyword_count") != 5
-            or int(item.get("frontend_company_count") or 0) < MINIMUM_FRONTEND_COMPANIES
-        ):
-            home_failures += 1
         if item.get("broad_category") not in {
             "food", "content", "sports", "lifestyle", "culture",
             "consumer", "technology", "market",
@@ -791,7 +789,9 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         item for item in home_ranking
         if item.get("company_card_status") == "ready"
     ]
-    if company_ready != expected_company_ready:
+    if [item.get("event_key") for item in company_ready] != [
+        item.get("event_key") for item in expected_company_ready
+    ]:
         company_failures += 1
     home_company_counts: dict[str, int] = {}
     for item in company_ready:

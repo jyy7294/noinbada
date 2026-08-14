@@ -8,8 +8,9 @@
 
 확정 규칙:
 
-- X·Google만 점수 입력입니다.
-- NAVER·YouTube·Instagram·기사는 검증·발견·설명 전용이며 `ranking_effect=none`입니다.
+- X·Google은 변경할 수 없는 `observed_rank`와 원점수의 입력입니다.
+- 홈 `home_rank`는 NAVER 후보 커버리지가 80% 이상이고 최소 10개일 때 X·Google·NAVER를 1/3씩 동등 반영합니다. NAVER 미충족 시 X·Google 50:50을 유지합니다.
+- YouTube·Instagram·기사는 현재 발견·설명 전용입니다. Instagram은 대한민국 동일범위 자료가 확보된 뒤에만 별도 정책 변경으로 동등 플랫폼 승격이 가능합니다.
 - 화면 제목은 실제 원천 표현입니다. 설명형 이름을 만들지 마십시오.
 - 관련어는 실제 원천 표현·Google 관련 검색어·URL 근거가 있는 검수 온톨로지 표현만 최대 5개이며, 프런트 완성 목록은 서로 다른 출처 기반 표현 정확히 5개를 요구합니다.
 - 모든 관측 후보는 `unified_ranking`에 남기고 `main/issue/review`는 표시만 나눕니다.

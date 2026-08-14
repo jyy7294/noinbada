@@ -81,8 +81,11 @@ def resolve_event(raw: str, sources: set[str]) -> dict:
     key = _lookup_key(compact)
     truth = GROUND_TRUTH.get(key)
     if truth:
-        display, category, _reference_context, keyword_candidates = truth
-        context_status = "needs_context" if category == "unclassified" else "resolved_reference"
+        display, _reference_category, _reference_context, keyword_candidates = truth
+        # Reference data may normalize a spelling and accelerate enrichment, but
+        # never decides category, lane, product fit or rank for a live event.
+        category = None
+        context_status = "needs_context"
     else:
         display, category, keyword_candidates = compact, None, ()
         looks_like_person = (

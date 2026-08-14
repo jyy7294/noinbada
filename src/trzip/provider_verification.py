@@ -12,6 +12,7 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
 from datetime import UTC, datetime, timedelta
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 from typing import Callable, Protocol
 
@@ -21,10 +22,28 @@ from .news_evidence import validate_news_evidence
 RANKING_EFFECT = "none"
 NAVER_NEWS_ENDPOINT = "https://openapi.naver.com/v1/search/news.json"
 NAVER_BLOG_ENDPOINT = "https://openapi.naver.com/v1/search/blog.json"
+NAVER_CAFE_ENDPOINT = "https://openapi.naver.com/v1/search/cafearticle.json"
+NAVER_API_HUB_NEWS_ENDPOINT = (
+    "https://naverapihub.apigw.ntruss.com/search/v1/news"
+)
+NAVER_API_HUB_BLOG_ENDPOINT = (
+    "https://naverapihub.apigw.ntruss.com/search/v1/blog"
+)
+NAVER_API_HUB_CAFE_ENDPOINT = (
+    "https://naverapihub.apigw.ntruss.com/search/v1/cafearticle"
+)
+NAVER_API_HUB_TREND_ENDPOINT = (
+    "https://naverapihub.apigw.ntruss.com/search-trend/v1/search"
+)
 YOUTUBE_SEARCH_ENDPOINT = "https://www.googleapis.com/youtube/v3/search"
 YOUTUBE_VIDEOS_ENDPOINT = "https://www.googleapis.com/youtube/v3/videos"
 PROVIDER_DOCUMENTATION = {
-    "naver": "https://developers.naver.com/docs/serviceapi/search/news",
+    "naver": "https://api.ncloud-docs.com/docs/naver-api-hub-search-news",
+    "naver_blog": "https://api.ncloud-docs.com/docs/naver-api-hub-search-blog",
+    "naver_cafe": "https://developers.naver.com/docs/serviceapi/search/cafearticle/cafearticle.md",
+    "naver_search_trend": (
+        "https://api.ncloud-docs.com/docs/naver-api-hub-search-trend"
+    ),
     "youtube_search": "https://developers.google.com/youtube/v3/docs/search/list",
     "youtube_videos": "https://developers.google.com/youtube/v3/docs/videos/list",
 }
@@ -38,6 +57,7 @@ class ProviderCredentials:
     naver_client_secret: str = field(default="", repr=False)
     youtube_api_key: str = field(default="", repr=False)
     instagram_access_token: str = field(default="", repr=False)
+    naver_api_hub: bool = False
 
 
 @dataclass(frozen=True)
@@ -59,6 +79,15 @@ class JsonTransport(Protocol):
         url: str,
         *,
         headers: dict[str, str],
+        timeout: float,
+    ) -> TransportResponse: ...
+
+    def post(
+        self,
+        url: str,
+        *,
+        headers: dict[str, str],
+        body: bytes,
         timeout: float,
     ) -> TransportResponse: ...
 
@@ -85,6 +114,36 @@ class UrllibJsonTransport:
         timeout: float,
     ) -> TransportResponse:
         request = urllib.request.Request(url, headers=headers, method="GET")
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                return TransportResponse(
+                    status=int(response.status),
+                    body=response.read(),
+                    headers={str(k): str(v) for k, v in response.headers.items()},
+                )
+        except urllib.error.HTTPError as exc:
+            raise ProviderRequestError(
+                f"provider returned HTTP {exc.code}",
+                status=int(exc.code),
+                body=exc.read(),
+            ) from exc
+        except urllib.error.URLError as exc:
+            raise ProviderRequestError("provider network request failed") from exc
+
+    def post(
+        self,
+        url: str,
+        *,
+        headers: dict[str, str],
+        body: bytes,
+        timeout: float,
+    ) -> TransportResponse:
+        request = urllib.request.Request(
+            url,
+            data=body,
+            headers=headers,
+            method="POST",
+        )
         try:
             with urllib.request.urlopen(request, timeout=timeout) as response:
                 return TransportResponse(
@@ -181,6 +240,10 @@ def resolve_provider_credentials(
         "INSTAGRAM_ACCESS_TOKEN",
         "KIWOOM_TRZIP_NAVER_CLIENT_ID",
         "KIWOOM_TRZIP_NAVER_CLIENT_SECRET",
+        "NAVER_API_HUB_CLIENT_ID",
+        "NAVER_API_HUB_CLIENT_SECRET",
+        "KIWOOM_TRZIP_NAVER_API_HUB_CLIENT_ID",
+        "KIWOOM_TRZIP_NAVER_API_HUB_CLIENT_SECRET",
         "KIWOOM_TRZIP_YOUTUBE_API_KEY",
         "TRZIP_YOUTUBE_API_KEY",
         "KIWOOM_TRZIP_INSTAGRAM_ACCESS_TOKEN",
@@ -196,9 +259,18 @@ def resolve_provider_credentials(
                 return value
         return ""
 
+    hub_client_id = first(
+        "NAVER_API_HUB_CLIENT_ID", "KIWOOM_TRZIP_NAVER_API_HUB_CLIENT_ID"
+    )
+    hub_client_secret = first(
+        "NAVER_API_HUB_CLIENT_SECRET", "KIWOOM_TRZIP_NAVER_API_HUB_CLIENT_SECRET"
+    )
+    naver_api_hub = bool(hub_client_id and hub_client_secret)
     return ProviderCredentials(
-        naver_client_id=first("NAVER_CLIENT_ID", "KIWOOM_TRZIP_NAVER_CLIENT_ID"),
-        naver_client_secret=first(
+        naver_client_id=hub_client_id or first(
+            "NAVER_CLIENT_ID", "KIWOOM_TRZIP_NAVER_CLIENT_ID"
+        ),
+        naver_client_secret=hub_client_secret or first(
             "NAVER_CLIENT_SECRET", "KIWOOM_TRZIP_NAVER_CLIENT_SECRET"
         ),
         youtube_api_key=first(
@@ -212,6 +284,7 @@ def resolve_provider_credentials(
         instagram_access_token=first(
             "INSTAGRAM_ACCESS_TOKEN", "KIWOOM_TRZIP_INSTAGRAM_ACCESS_TOKEN"
         ),
+        naver_api_hub=naver_api_hub,
     )
 
 
@@ -222,8 +295,12 @@ def provider_readiness(environment: dict[str, str] | None = None) -> dict[str, d
             "status": "configured_unverified"
             if credentials.naver_client_id and credentials.naver_client_secret
             else "unavailable",
-            "role": "context_and_verification_only",
+            "role": "equal_home_ranking_platform",
             "ranking_effect": RANKING_EFFECT,
+            "home_rerank_effect": "equal_weight_when_candidate_coverage_is_sufficient",
+            "credential_mode": (
+                "api_hub" if credentials.naver_api_hub else "developers_legacy"
+            ),
         },
         "youtube": {
             "status": "configured_unverified"
@@ -317,6 +394,7 @@ def _request_json(
     max_attempts: int,
     timeout: float,
     sleeper: Callable[[float], None],
+    body: bytes | None = None,
 ) -> tuple[dict | None, tuple[RequestAttempt, ...], str | None, str | None]:
     attempts: list[RequestAttempt] = []
     last_code: str | None = None
@@ -324,7 +402,15 @@ def _request_json(
     for attempt_no in range(1, max(1, max_attempts) + 1):
         started = _iso()
         try:
-            response = transport.get(url, headers=headers, timeout=timeout)
+            if body is None:
+                response = transport.get(url, headers=headers, timeout=timeout)
+            else:
+                post = getattr(transport, "post", None)
+                if post is None:
+                    raise ProviderRequestError(
+                        "provider transport does not support POST requests"
+                    )
+                response = post(url, headers=headers, body=body, timeout=timeout)
             if response.status < 200 or response.status >= 300:
                 raise ProviderRequestError(
                     f"provider returned HTTP {response.status}",
@@ -462,17 +548,40 @@ def collect_naver_context(
             reference, "naver", at, "NAVER Search API credentials are not configured"
         )
     client = transport or UrllibJsonTransport()
-    headers = {
-        "Accept": "application/json",
-        "X-Naver-Client-Id": credentials.naver_client_id,
-        "X-Naver-Client-Secret": credentials.naver_client_secret,
-        "User-Agent": "TRZIP/1.0 verification-only",
-    }
+    if credentials.naver_api_hub:
+        headers = {
+            "Accept": "application/json",
+            "X-NCP-APIGW-API-KEY-ID": credentials.naver_client_id,
+            "X-NCP-APIGW-API-KEY": credentials.naver_client_secret,
+            "User-Agent": "TRZIP/1.0 context-ranking",
+        }
+        endpoints = (
+            ("news", NAVER_API_HUB_NEWS_ENDPOINT),
+            ("blog", NAVER_API_HUB_BLOG_ENDPOINT),
+            ("cafe", NAVER_API_HUB_CAFE_ENDPOINT),
+        )
+        credential_mode = "api_hub"
+    else:
+        headers = {
+            "Accept": "application/json",
+            "X-Naver-Client-Id": credentials.naver_client_id,
+            "X-Naver-Client-Secret": credentials.naver_client_secret,
+            "User-Agent": "TRZIP/1.0 context-ranking",
+        }
+        endpoints = (
+            ("news", NAVER_NEWS_ENDPOINT),
+            ("blog", NAVER_BLOG_ENDPOINT),
+            ("cafe", NAVER_CAFE_ENDPOINT),
+        )
+        credential_mode = "developers_legacy"
     evidence: list[EvidenceItem] = []
     attempts: list[RequestAttempt] = []
     totals: dict[str, int] = {}
+    recent_counts: dict[str, int] = {}
+    independent_hosts: dict[str, set[str]] = {kind: set() for kind, _ in endpoints}
     errors: list[tuple[str, str]] = []
-    for kind, endpoint in (("news", NAVER_NEWS_ENDPOINT), ("blog", NAVER_BLOG_ENDPOINT)):
+    cutoff = at.astimezone(UTC) - timedelta(hours=24)
+    for kind, endpoint in endpoints:
         query = urllib.parse.urlencode(
             {"query": term, "display": max(1, min(max_results_per_kind, 100)), "sort": "date"}
         )
@@ -495,6 +604,10 @@ def collect_naver_context(
         )
         if payload is None:
             errors.append((error_code or "provider_error", error_detail or "request failed"))
+            # Bad credentials are not transient. Avoid spending two more calls
+            # against Blog/Cafe in the same candidate request.
+            if str(error_code or "").casefold() in {"024", "unauthorized", "authentication_failed"}:
+                break
             continue
         totals[kind] = max(0, int(payload.get("total") or 0))
         for index, item in enumerate(payload.get("items") or []):
@@ -507,29 +620,57 @@ def collect_naver_context(
             if not link:
                 continue
             item_id = hashlib.sha256(f"{kind}|{link}".encode("utf-8")).hexdigest()[:24]
+            host = (urllib.parse.urlparse(link).hostname or "").casefold()
+            if host:
+                independent_hosts[kind].add(host.removeprefix("www."))
+            published_text = str(item.get("pubDate") or item.get("postdate") or "")
+            try:
+                if len(published_text) == 8 and published_text.isdigit():
+                    published = datetime.strptime(published_text, "%Y%m%d").replace(
+                        tzinfo=UTC
+                    )
+                else:
+                    published = parsedate_to_datetime(published_text)
+                    if published.tzinfo is None:
+                        published = published.replace(tzinfo=UTC)
+                    published = published.astimezone(UTC)
+                if published >= cutoff:
+                    recent_counts[kind] = recent_counts.get(kind, 0) + 1
+            except (TypeError, ValueError, OverflowError):
+                published = None
             evidence.append(
                 EvidenceItem(
                     item_type=f"naver_{kind}",
                     provider_item_id=item_id,
                     title=title,
                     url=link,
-                    published_at=str(item.get("pubDate") or item.get("postdate") or "") or None,
-                    publisher=_strip_markup(item.get("bloggername")) or None,
+                    published_at=(
+                        published.isoformat() if published is not None else published_text or None
+                    ),
+                    publisher=(
+                        _strip_markup(item.get("bloggername"))
+                        or (urllib.parse.urlparse(link).hostname or "")
+                        or None
+                    ),
                     metrics={"result_position": index + 1},
                     provenance={
                         "provider": "naver",
                         "endpoint": endpoint,
                         "query_term": term,
                         "sort": "date",
-                        "documentation": PROVIDER_DOCUMENTATION["naver"],
+                        "documentation": PROVIDER_DOCUMENTATION.get(
+                            f"naver_{kind}", PROVIDER_DOCUMENTATION["naver"]
+                        ),
                         "ranking_effect": RANKING_EFFECT,
+                        "home_rerank_effect": "bounded_context_signal",
                     },
                 )
             )
+
     if evidence:
         status, matched = "observed", True
         error_code = error_detail = None
-    elif errors and len(errors) == 2:
+    elif errors and not evidence:
         status, matched = "failed", None
         error_code, error_detail = errors[-1]
     else:
@@ -542,22 +683,31 @@ def collect_naver_context(
         provider="naver",
         status=status,
         matched=matched,
-        endpoint="naver_news_and_blog_search",
+        endpoint="naver_news_blog_cafe_search",
         attempts=tuple(attempts),
         evidence=tuple(evidence),
         metrics={
             "news_total_reported": totals.get("news"),
             "blog_total_reported": totals.get("blog"),
+            "cafe_total_reported": totals.get("cafe"),
             "stored_evidence_count": len(evidence),
             "partial_provider_error_count": len(errors),
+            "news_recent_24h_sample_count": recent_counts.get("news", 0),
+            "news_independent_host_count": len(independent_hosts["news"]),
+            "blog_recent_24h_sample_count": recent_counts.get("blog", 0),
+            "blog_independent_host_count": len(independent_hosts["blog"]),
+            "cafe_recent_24h_sample_count": recent_counts.get("cafe", 0),
+            "cafe_independent_host_count": len(independent_hosts["cafe"]),
         },
         error_code=error_code,
         error_detail=error_detail,
         provenance={
             "provider": "NAVER Search API",
-            "role": "news_blog_context_and_verification",
+            "role": "candidate_level_naver_news_blog_cafe_context_signal",
             "documentation": PROVIDER_DOCUMENTATION["naver"],
             "ranking_effect": RANKING_EFFECT,
+            "home_rerank_effect": "none_context_only",
+            "credential_mode": credential_mode,
         },
     )
 
@@ -921,11 +1071,12 @@ def verification_trend_keys_at(path: Path, at: datetime) -> set[str]:
 
     initialize_verification_ledger(path)
     with sqlite3.connect(path) as connection:
+        # The active verification policy has one provider: NAVER News.
+        # Historical YouTube/Instagram records may coexist in the append-only
+        # ledger, so do not require the old three-provider shape here.
         rows = connection.execute(
-            """SELECT trend_key FROM provider_verification_runs
-               WHERE observed_at=?
-               GROUP BY trend_key
-               HAVING COUNT(DISTINCT provider)=3""",
+            """SELECT DISTINCT trend_key FROM provider_verification_runs
+               WHERE observed_at=? AND provider='naver'""",
             (_iso(at),),
         ).fetchall()
     return {str(row[0]) for row in rows}
@@ -939,8 +1090,7 @@ def verify_terms(
     credentials: ProviderCredentials | None = None,
     transport: JsonTransport | None = None,
     naver_term_limit: int = 20,
-    youtube_term_limit: int = 3,
-    youtube_daily_search_budget: int = DEFAULT_YOUTUBE_DAILY_SEARCH_BUDGET,
+    youtube_term_limit: int = 20,
     sleeper: Callable[[float], None] = time.sleep,
 ) -> list[ProviderVerificationResult]:
     """Verify a bounded set while leaving X+Google ranking completely untouched."""
@@ -973,37 +1123,19 @@ def verify_terms(
         persist_verification_result(naver, path)
         output.append(naver)
 
-        used = youtube_search_attempts_on_kst_date(path, at)
-        remaining = max(0, youtube_daily_search_budget - used)
-        if index >= youtube_term_limit:
-            youtube = deferred_result(reference, "youtube", at, "hourly YouTube verification limit")
-        elif remaining <= 0:
-            youtube = deferred_result(reference, "youtube", at, "daily YouTube search budget reserved")
-        else:
+        # YouTube is supplementary context only: it cannot affect observed
+        # rank, score, lane, or publication order.  Its independent quota is
+        # deliberately capped below the provider's daily policy ceiling.
+        if index < youtube_term_limit:
             youtube = collect_youtube_context(
                 reference,
                 at=at,
                 credentials=resolved,
                 transport=transport,
-                max_search_attempts=min(2, remaining),
                 sleeper=sleeper,
             )
-        persist_verification_result(youtube, path)
-        output.append(youtube)
-
-        instagram_reason = (
-            "authorized collector is not enabled in this MVP"
-            if resolved.instagram_access_token
-            else "authorized Meta/Instagram data access is not configured"
-        )
-        instagram = _unavailable(
-            reference,
-            "instagram",
-            at,
-            instagram_reason,
-        )
-        persist_verification_result(instagram, path)
-        output.append(instagram)
+            persist_verification_result(youtube, path)
+            output.append(youtube)
     return output
 
 

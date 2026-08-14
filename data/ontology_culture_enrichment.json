@@ -5,7 +5,8 @@
     "reviewed_at": "2026-08-14",
     "ranking_input": false,
     "padding_forbidden": true,
-    "publication_gate": "six unique listed stocks with complete URL-evidenced paths"
+    "graph_candidate_inventory": "reviewed paths may be returned below frontend readiness",
+    "frontend_publication_gate": "ten unique listed stocks with complete URL-evidenced paths across two to four company role categories"
   },
   "nodes": [
     {"id":"term:reviewed:hanbokexpo","type":"term","label":"한복상점","normalized_label":"한복상점","metadata":{"lookup_scope":"observed_term","ranking_input":false}},

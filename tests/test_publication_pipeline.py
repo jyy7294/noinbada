@@ -4,6 +4,8 @@ from datetime import UTC, datetime, timedelta
 import pytest
 
 from trzip.publication_pipeline import (
+    _attach_provider_context_research,
+    _attach_youtube_chart_signals,
     _annotate_x_collection_provenance,
     _collection_health,
     _failure_class,
@@ -19,6 +21,13 @@ from trzip.publication_pipeline import (
     run,
 )
 from trzip.hourly_store import HourlyObservation
+
+
+@pytest.fixture(autouse=True)
+def enable_auxiliary_path_for_legacy_provider_tests(monkeypatch):
+    """Exercise the optional path explicitly; production defaults it off."""
+
+    monkeypatch.setenv("TRZIP_AUXILIARY_RESEARCH_ENABLED", "1")
 
 
 def test_local_cli_is_canonical():
@@ -40,6 +49,89 @@ def test_period_detail_items_include_monthly_only_summary_after_weekly_details()
     }
 
     assert _period_detail_items(intelligence) == [weekly, monthly_only]
+
+
+def test_youtube_chart_signal_requires_exact_observed_event_alias():
+    intelligence = {
+        "youtube_content_ranking": [
+            {
+                "event_key": "youtube:오디세이",
+                "display_topic": "오디세이",
+                "best_video_rank": 2,
+                "youtube_score": 98.0,
+                "supporting_video_count": 2,
+                "youtube_trend_rank_change": 3,
+                "rank_change_status": "measured",
+                "source_evidence": [{"url": "https://www.youtube.com/watch?v=one"}],
+                "ranking_source": "youtube_videos_most_popular_kr",
+            }
+        ],
+        "unified_ranking": [
+            {
+                "event_key": "오디세이",
+                "display_name": "오디세이",
+                "observed_representative_term": "오디세이",
+                "raw_terms": ["오디세이 영화"],
+            },
+            {
+                "event_key": "오디세이아님",
+                "display_name": "오디세이아님",
+                "observed_representative_term": "오디세이아님",
+                "raw_terms": ["오디세이아님"],
+            },
+        ],
+    }
+
+    result = _attach_youtube_chart_signals(intelligence)
+
+    signal = result["unified_ranking"][0]["youtube_chart_signal"]
+    assert signal["status"] == "matched_exact_observed_expression"
+    assert signal["best_video_rank"] == 2
+    assert signal["affects_canonical_observed_rank"] is False
+    assert result["unified_ranking"][1]["youtube_chart_signal"] is None
+
+
+def test_provider_context_research_requires_title_to_contain_observed_alias():
+    ready_candidate = {
+        "event_key": "오디세이",
+        "display_name": "오디세이",
+        "observed_representative_term": "오디세이",
+        "raw_terms": ["오디세이 영화"],
+        "context_research": {"status": "incomplete"},
+        "verification_layer": {
+            "providers": {
+                "youtube": {
+                    "status": "observed",
+                    "matched": True,
+                    "evidence": [{
+                        "item_type": "youtube_video",
+                        "title": "오디세이 공식 예고편",
+                        "url": "https://www.youtube.com/watch?v=odyssey",
+                        "published_at": "2026-08-14T00:00:00+00:00",
+                        "publisher": "Official channel",
+                    }],
+                }
+            }
+        },
+    }
+    unrelated_candidate = {
+        **ready_candidate,
+        "event_key": "다른영화",
+        "display_name": "다른 영화",
+        "observed_representative_term": "다른 영화",
+        "raw_terms": ["다른 영화"],
+        "context_research": {"status": "incomplete"},
+    }
+
+    result = _attach_provider_context_research({
+        "unified_ranking": [ready_candidate, unrelated_candidate]
+    })
+
+    context = result["unified_ranking"][0]["context_research"]
+    assert context["status"] == "ready"
+    assert context["trigger_title"] == "오디세이 공식 예고편"
+    assert context["ranking_source"] is False
+    assert result["unified_ranking"][1]["context_research"]["status"] == "incomplete"
 
 
 def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
@@ -125,10 +217,9 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     ] == [item["event_key"] for item in rankings["unified_ranking"]]
     assert rankings["all_observed_ranking"] == rankings["unified_ranking"]
     assert rankings["home_top10"] == rankings["trend_top10"] == rankings["public_top10"]
-    assert rankings["youtube_content_discovery"] == intelligence["youtube_content_discovery"]
-    assert rankings["youtube_content_ranking"] == intelligence["youtube_content_ranking"]
-    assert rankings["youtube_content_top10"] == intelligence["youtube_content_top10"]
-    assert rankings["youtube_content_discovery"]["affects_x_google_rank"] is False
+    assert rankings["home_feed"] == intelligence["home_feed"]
+    assert rankings["home_feed"]["status"] in {"ready", "empty"}
+    assert "youtube_content_discovery" not in rankings
     assert isinstance(rankings["rising_top10"], list)
     assert len(rankings["category_summary"]) == 8
     assert intelligence["publishable"] is True
@@ -181,7 +272,7 @@ def _public_rows(count=5):
     }
 
 
-def test_hourly_verification_uses_three_non_issue_candidates_and_reuses_ledger(
+def test_hourly_verification_uses_twenty_term_capacity_and_reuses_ledger(
     tmp_path, monkeypatch
 ):
     from trzip.provider_verification import (
@@ -195,7 +286,7 @@ def test_hourly_verification_uses_three_non_issue_candidates_and_reuses_ledger(
     intelligence = _public_rows()
     selected = _verification_references(intelligence, limit=3)
     assert [item.trend_key for item in selected] == ["event:1", "event:2", "event:3"]
-    assert _hourly_verification_term_limit({"TRZIP_PROVIDER_VERIFICATION_TERM_LIMIT": "99"}) == 3
+    assert _hourly_verification_term_limit({"TRZIP_PROVIDER_VERIFICATION_TERM_LIMIT": "99"}) == 20
 
     calls = []
 
@@ -215,18 +306,19 @@ def test_hourly_verification_uses_three_non_issue_candidates_and_reuses_ledger(
     ]
     first = _refresh_verification_layer(intelligence, database, at)
 
-    assert calls == [["event:1", "event:2", "event:3"]]
-    assert len(read_verification_ledger(database)) == 9
+    assert calls == [["event:1", "event:2", "event:3", "event:4", "event:5"]]
+    assert len(read_verification_ledger(database)) == 10
     assert first["verification_run"] == {
         "status": "completed",
-        "requested_terms": 3,
-        "attempted_terms": 3,
-        "hourly_term_limit": 3,
+        "requested_terms": 5,
+        "attempted_terms": 5,
+        "hourly_term_limit": 20,
         "selection_policy": "never_verified_then_oldest_verified_then_current_rank",
         "candidate_count": 5,
         "selection_scope": "current_non_issue_candidates_including_review_lane",
-        "providers": ["naver", "youtube", "instagram"],
+        "providers": ["naver", "youtube"],
         "ranking_effect": "none",
+        "home_ranking_effect": "none_context_only",
         "affects_collection_partial": False,
         "blocks_publication": False,
         "error": None,
@@ -239,13 +331,13 @@ def test_hourly_verification_uses_three_non_issue_candidates_and_reuses_ledger(
 
     second = _refresh_verification_layer(first, database, at)
 
-    assert calls == [["event:1", "event:2", "event:3"]]
-    assert len(read_verification_ledger(database)) == 9
+    assert calls == [["event:1", "event:2", "event:3", "event:4", "event:5"]]
+    assert len(read_verification_ledger(database)) == 10
     assert second["verification_run"]["status"] == "skipped_already_recorded_for_hour"
     assert second["verification_run"]["attempted_terms"] == 0
 
 
-def test_hourly_verification_rotates_across_public_ten_before_rechecking_old_rows(
+def test_hourly_verification_refreshes_public_ten_each_hour(
     tmp_path, monkeypatch
 ):
     from datetime import timedelta
@@ -270,10 +362,10 @@ def test_hourly_verification_rotates_across_public_ten_before_rechecking_old_row
         _refresh_verification_layer(intelligence, database, at + timedelta(hours=offset))
 
     assert batches == [
-        ["event:1", "event:2", "event:3"],
-        ["event:4", "event:5", "event:6"],
-        ["event:7", "event:8", "event:9"],
-        ["event:10", "event:1", "event:2"],
+        [f"event:{index}" for index in range(1, 11)],
+        [f"event:{index}" for index in range(1, 11)],
+        [f"event:{index}" for index in range(1, 11)],
+        [f"event:{index}" for index in range(1, 11)],
     ]
 
 
@@ -383,11 +475,11 @@ def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(
         )
     )
 
-    # The bounded context pass includes review-lane candidates, but remains
-    # rank-independent. Three terms x three providers are recorded.
-    assert len(read_verification_ledger(database)) == 9
+    # The candidate pass includes review-lane candidates. Each optional
+    # provider writes its own auditable result for every candidate.
+    assert len(read_verification_ledger(database)) == 8
     assert first_payload["verification_run"]["status"] == "completed"
-    assert first_payload["verification_run"]["requested_terms"] == 3
+    assert first_payload["verification_run"]["requested_terms"] == 4
     assert first_payload["verification_run"]["ranking_effect"] == "none"
 
     run(tmp_path / "publication", database_path=database, now=at)
@@ -397,7 +489,7 @@ def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(
         )
     )
 
-    assert len(read_verification_ledger(database)) == 9
+    assert len(read_verification_ledger(database)) == 8
     assert second_payload["verification_run"]["status"] == "skipped_already_recorded_for_hour"
 
 

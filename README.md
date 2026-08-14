@@ -21,7 +21,8 @@ TRZIP 백엔드는 찬희님 Windows 노트북에서 매시 정각 한국 X 실�
           ↓
 관련어 정확히 5개 → 증거 온톨로지 → 국내외 상장기업 10개 준비 게이트
           ↓
-NAVER·YouTube·Instagram·기사 맥락 별도 검증 (순위 영향 없음)
+NAVER 후보별 관심·확산 측정 (커버리지 충족 시 홈 순위 동등 반영)
+YouTube·Instagram·기사 맥락 별도 검증
           ↓
 latest / observations / monitoring JSON을 live-data에 게시
 ```
@@ -34,12 +35,12 @@ latest / observations / monitoring JSON을 live-data에 게시
 |---|---|---|
 | Core rank | X 한국 실시간 1~30 | 시간별 현재 관심 순위 |
 | Core rank | Google Trending Now KR 전체 | 페이지 총건수까지 검증한 급상승 목록 |
-| Context only | NAVER 뉴스·블로그 | 국내 문맥·기사 근거 |
+| Home platform | NAVER Search Trend·뉴스·블로그 | 후보 커버리지 충족 시 X·Google과 홈 순위 동등 반영 |
 | Context only | YouTube Data API | 한국·한국어 최근 콘텐츠 반응 |
 | Context only | Instagram | 토큰이 있을 때만 검증, 현재 없으면 `unavailable` |
 | Discovery only | 검수 기사 | 후보 발견·소비/제품화 설명 |
 
-보조 원천은 `ranking_effect=none`으로 별도 SQLite 원장에 저장합니다. 기사만으로 순위에 항목을 넣지 않습니다.
+보조 원천은 별도 SQLite 원장에 저장합니다. 기사만으로 관측 순위에 항목을 넣지 않습니다. NAVER는 상위 후보의 80% 이상·최소 10개가 같은 정책으로 측정된 경우에만 홈 순위에서 동등 플랫폼으로 활성화됩니다.
 
 ## 순위
 
@@ -63,7 +64,7 @@ latest / observations / monitoring JSON을 live-data에 게시
 - 자동 선발 순위는 기업 수와 독립적으로 유지합니다. 다만 프런트 완성 Top10과 기업 카드는 관련 키워드 정확히 5개·검수된 기업 10개 이상·역할 카테고리 2~4개를 충족해야 게시됩니다.
 - 각 기간의 원천별 관측 커버리지가 80% 미만이면 `provisional`; 운영 전체 성숙 판정은 깨끗한 이력 96시간 이상을 별도로 요구
 
-관심 강도는 X와 Google의 원천 순위를 각각 정규화해 같은 비중으로 계산합니다. 상승 속도는 직전 동일 기간을 우선 비교하고, 불가능하면 현 기간 전반부와 후반부를 비교합니다. 양쪽 정상 스냅샷이 각 3회 미만이면 `unavailable`·0점이며 중립점수를 주지 않습니다. 원시 검색량·게시량을 플랫폼 간 합산하지 않으며 카테고리·기사·기업 수는 점수에 영향을 주지 않습니다.
+관측 순위의 관심 강도는 X와 Google의 원천 순위를 각각 정규화해 같은 비중으로 계산합니다. 홈 순위는 NAVER 커버리지 게이트가 열리면 X·Google·NAVER를 각각 1/3로 반영하고, 열리기 전에는 X·Google 50:50을 유지합니다. 상승 속도는 직전 동일 기간을 우선 비교하고, 불가능하면 현 기간 전반부와 후반부를 비교합니다. 정상 스냅샷이 부족하면 `unavailable`·0점이며 중립점수를 주지 않습니다. 원시 검색량·게시량을 플랫폼 간 직접 합산하지 않고 각 플랫폼 안에서 정규화합니다. 카테고리·기업 수는 점수에 영향을 주지 않습니다.
 
 ### v3 컷오버
 

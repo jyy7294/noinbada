@@ -22,9 +22,11 @@ from .intelligence import (
 from .company_adapters import enrich_company_identities, pykrx_stock
 from .enrichment_queue import sync_enrichment_queue
 from .editorial_review import apply_frontend_enrichment_cache, build_editorial_review_pack
+from .event_resolution import normalize_event_key
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .keyword_candidates import sync_provider_keyword_candidates
 from .normalization_evaluation import evaluate_regression_set
+from .semantic_adjudication import run_semantic_adjudication
 from .provider_verification import (
     TrendReference,
     latest_verification_by_trend,
@@ -35,12 +37,11 @@ from .provider_verification import (
     verify_terms,
     resolve_provider_credentials,
 )
-from .youtube_trending import collect_youtube_trending
 
 
 NEWS_DISCOVERY_SEED_PATH = Path(__file__).resolve().parents[2] / "data" / "news_discovery_seed.json"
-DEFAULT_HOURLY_VERIFICATION_TERM_LIMIT = 3
-MAX_HOURLY_VERIFICATION_TERM_LIMIT = 3
+DEFAULT_HOURLY_VERIFICATION_TERM_LIMIT = 20
+MAX_HOURLY_VERIFICATION_TERM_LIMIT = 20
 MONITORING_CONTRACT_VERSION = "trzip-v3-hourly"
 FRONTEND_DELIVERY_SCHEMA_VERSION = "trzip-frontend-delivery-v1"
 FRONTEND_RANKINGS_SCHEMA_VERSION = "trzip-rankings-v1"
@@ -55,8 +56,17 @@ RANKING_SUMMARY_FIELDS = (
     "rank",
     "observed_rank",
     "main_rank",
-    "home_rank",
-    "publication_rank",
+    "home_platform_score",
+    "home_platform_components",
+    "home_platform_weights",
+    "naver_home_rank_status",
+    "naver_candidate_signal",
+    "home_platform_coverage",
+    "home_source_policy",
+    "home_rank_input_sources",
+    "canonical_observed_rank_preserved",
+    "home_mix_bucket",
+    "home_mix_policy",
     "rising_rank",
     "score",
     "score_components",
@@ -283,14 +293,16 @@ def _verification_references(
 
 
 def _refresh_verification_layer(intelligence: dict, database_path: Path, at: datetime) -> dict:
-    """Collect bounded context evidence without changing score or rank.
+    """Collect platform evidence without changing canonical X/Google rank.
 
     Provider failures are recorded as data states and never block publication.
-    Only three current non-issue candidates are queried each hour. Candidates
-    held in the review lane remain eligible for verification, and a retry of
-    the same observation hour reuses the append-only ledger.
+    Up to twenty current non-issue candidates receive NAVER candidate-level
+    measurements each hour. YouTube remains capped independently inside
+    ``verify_terms``. Candidates held in the review lane remain eligible, and
+    a retry of the same observation hour reuses the append-only ledger.
     """
 
+    auxiliary_enabled = os.getenv("TRZIP_AUXILIARY_RESEARCH_ENABLED", "0").strip() == "1"
     ranking_before = [
         (item.get("event_key"), item.get("rank"), item.get("score"))
         for item in intelligence.get("unified_ranking", [])
@@ -306,7 +318,10 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         latest_before_run = latest_verification_by_trend(database_path)
     except Exception:
         latest_before_run = {}
-    if completed_this_hour:
+    if not auxiliary_enabled:
+        references = []
+        pending_references = []
+    elif completed_this_hour:
         current_references = _verification_references(
             intelligence,
             limit=len(intelligence.get("unified_ranking", [])),
@@ -323,11 +338,13 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
             verification_by_trend=latest_before_run,
         )
         pending_references = list(references)
-    run_status = "skipped_no_candidates"
+    run_status = "disabled_by_runtime_policy" if not auxiliary_enabled else "skipped_no_candidates"
     attempted_term_count = 0
     error = None
     try:
-        if ledger_read_error:
+        if not auxiliary_enabled:
+            pass
+        elif ledger_read_error:
             raise RuntimeError("provider verification ledger unavailable")
         if completed_this_hour:
             run_status = "skipped_already_recorded_for_hour"
@@ -338,7 +355,6 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
                 path=database_path,
                 at=at,
                 naver_term_limit=len(pending_references),
-                youtube_term_limit=len(pending_references),
             )
             run_status = "completed"
     except Exception as exc:  # verification must not take down the core collector
@@ -357,6 +373,9 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         item["verification_layer"] = {
             **record,
             "status": (
+                "disabled_by_runtime_policy"
+                if not auxiliary_enabled
+                else
                 "observed"
                 if any(row.get("matched") for row in providers.values())
                 else "unavailable"
@@ -367,6 +386,7 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
                 provider for provider, row in providers.items() if row.get("matched")
             ),
             "affects_score": False,
+            "affects_home_rank": False,
         }
     ranking_after = [
         (item.get("event_key"), item.get("rank"), item.get("score"))
@@ -385,12 +405,151 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
             for item in intelligence.get("unified_ranking", [])
         ),
         "selection_scope": "current_non_issue_candidates_including_review_lane",
-        "providers": ["naver", "youtube", "instagram"],
+        "providers": [] if not auxiliary_enabled else ["naver", "youtube"],
         "ranking_effect": "none",
+        "home_ranking_effect": "none_auxiliary_research_disabled" if not auxiliary_enabled else "none_context_only",
         "affects_collection_partial": False,
         "blocks_publication": False,
         "error": error,
     }
+    return intelligence
+
+
+def _candidate_alias_keys(item: dict) -> set[str]:
+    """Return normalized observed aliases that are safe for an exact join.
+
+    A YouTube chart item is not evidence that a loosely similar term is the
+    same trend.  This join is therefore exact after the same normalization used
+    by event clustering; substring and semantic guesses stay out of the rank
+    path and the context card.
+    """
+
+    values = [
+        item.get("display_name"),
+        item.get("observed_representative_term"),
+        *(item.get("raw_terms") or []),
+    ]
+    return {
+        normalize_event_key(str(value))
+        for value in values
+        if len(normalize_event_key(str(value))) >= 2
+    }
+
+
+def _attach_youtube_chart_signals(intelligence: dict) -> dict:
+    """Attach exact YouTube KR-chart matches as non-canonical source evidence."""
+
+    chart_rows = list(intelligence.get("youtube_content_ranking") or [])
+    chart_by_key: dict[str, list[dict]] = {}
+    for row in chart_rows:
+        key = normalize_event_key(str(row.get("display_topic") or ""))
+        if len(key) >= 2:
+            chart_by_key.setdefault(key, []).append(row)
+
+    for item in intelligence.get("unified_ranking", []):
+        matches = []
+        for key in sorted(_candidate_alias_keys(item)):
+            matches.extend(chart_by_key.get(key, []))
+        # A title can appear through multiple raw aliases; retain one event row.
+        deduplicated = {
+            str(row.get("event_key") or row.get("display_topic") or ""): row
+            for row in matches
+        }
+        matches = sorted(deduplicated.values(), key=lambda row: (
+            int(row.get("best_video_rank") or 10**9),
+            str(row.get("event_key") or ""),
+        ))
+        if not matches:
+            item["youtube_chart_signal"] = None
+            continue
+        best = matches[0]
+        item["youtube_chart_signal"] = {
+            "status": "matched_exact_observed_expression",
+            "display_topic": str(best.get("display_topic") or ""),
+            "best_video_rank": int(best.get("best_video_rank") or 0) or None,
+            "youtube_score": float(best.get("youtube_score") or 0.0),
+            "supporting_video_count": int(best.get("supporting_video_count") or 0),
+            "rank_change": best.get("youtube_trend_rank_change"),
+            "rank_change_status": str(best.get("rank_change_status") or "unavailable"),
+            "evidence": list(best.get("source_evidence") or []),
+            "ranking_source": str(best.get("ranking_source") or "youtube_videos_most_popular_kr"),
+            "affects_canonical_observed_rank": False,
+        }
+    return intelligence
+
+
+def _provider_context_record(item: dict) -> dict | None:
+    """Select one title that explicitly contains an observed event alias.
+
+    We use a provider record as context only when its own title can be linked to
+    the X/Google-observed expression.  The generated text describes co-observed
+    context, never a causal origin or a recommendation.
+    """
+
+    aliases = _candidate_alias_keys(item)
+    providers = ((item.get("verification_layer") or {}).get("providers") or {})
+    # Source-only E2E keeps the collector disabled. If an operator explicitly
+    # enables it, a retained provider may supply exact-title context only.
+    for provider in ("naver", "youtube"):
+        record = providers.get(provider) or {}
+        if record.get("matched") is not True or record.get("status") != "observed":
+            continue
+        for evidence in record.get("evidence") or []:
+            if not isinstance(evidence, dict):
+                continue
+            title = str(evidence.get("title") or "").strip()
+            url = str(evidence.get("url") or "").strip()
+            title_key = normalize_event_key(title)
+            if not title or not url.startswith(("http://", "https://")):
+                continue
+            if not any(alias in title_key for alias in aliases):
+                continue
+            return {
+                "provider": provider,
+                "title": title,
+                "url": url,
+                "published_at": evidence.get("published_at"),
+                "publisher": evidence.get("publisher"),
+                "item_type": evidence.get("item_type"),
+                "metrics": evidence.get("metrics") or {},
+            }
+    return None
+
+
+def _attach_provider_context_research(intelligence: dict) -> dict:
+    """Complete factual `why_now` context from bounded provider evidence.
+
+    An already-ready, evidence-bound context record is retained. This fallback
+    only turns a direct provider title match into an observation-based context
+    record; it does not invent a lineage, event date, business impact, or use
+    a manual display list to select a trend.
+    """
+
+    labels = {"naver": "NAVER 뉴스"}
+    for item in intelligence.get("unified_ranking", []):
+        existing = item.get("context_research") or {}
+        if existing.get("status") == "ready":
+            continue
+        selected = _provider_context_record(item)
+        if not selected:
+            continue
+        display_name = str(item.get("display_name") or item.get("event_key") or "이 트렌드")
+        provider = str(selected["provider"])
+        item["context_research"] = {
+            "status": "ready",
+            "trigger_title": selected["title"],
+            "why_now": (
+                f"{display_name} 관련 표현이 X·Google 대한민국 관측과 함께 "
+                f"{labels.get(provider, provider)}의 최근 공개 콘텐츠·검색 결과 제목에서 확인되었습니다. "
+                "이는 현재 맥락을 설명하는 관측 근거이며 인과관계나 투자 판단을 뜻하지 않습니다."
+            ),
+            "trigger_type": f"{provider}_{selected.get('item_type') or 'context'}",
+            "published_at": selected.get("published_at"),
+            "evidence_urls": [selected["url"]],
+            "evidence_records": [selected],
+            "affects_score": False,
+            "ranking_source": False,
+        }
     return intelligence
 
 
@@ -478,7 +637,9 @@ def _validate_period_views(intelligence: dict) -> None:
             raise ValueError(f"period views must use shared current trend details: {key}")
         main = [
             item for item in ranking
-            if item.get("lane") == "main" and item.get("home_eligible") is True
+            if item.get("lane") == "main"
+            and item.get("home_eligible") is True
+            and item.get("frontend_readiness_status") == "ready"
         ]
         if [item.get("main_rank") for item in main] != list(range(1, len(main) + 1)):
             raise ValueError(f"period main ranks must be continuous: {key}")
@@ -488,13 +649,11 @@ def _validate_period_views(intelligence: dict) -> None:
             if item.get("lane") != "main" or item.get("home_eligible") is not True
         ):
             raise ValueError(f"period home ranks must preserve home-eligible score order: {key}")
-        completed = [
-            item for item in main
-            if item.get("frontend_readiness_status") == "ready"
-        ]
-        expected_top10 = select_balanced_home_top10(completed)
-        if period_top10 != expected_top10:
-            raise ValueError(f"period_top10 must contain only completed home trends: {key}")
+        expected_top10 = select_balanced_home_top10(main)
+        if [item.get("event_key") for item in period_top10] != [
+            item.get("event_key") for item in expected_top10
+        ]:
+            raise ValueError(f"period_top10 must preserve eligible home selection: {key}")
 
     default_view = views["daily"]
     top_level = intelligence.get("unified_ranking") or []
@@ -535,7 +694,7 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         raise ValueError("All publication documents must share one publishable state")
     collection = metadata["collection"]
     if collection.get("rank_sources") != ["x", "google_trends"]:
-        raise ValueError("Production rank sources must be X and Google Trends only")
+        raise ValueError("Canonical observed rank sources must be X and Google Trends")
     if "trends_mcp_used" in collection or "generated" in collection:
         raise ValueError("Legacy collection flags are not allowed in the v3 contract")
     audit = collection.get("audit") or {}
@@ -569,10 +728,6 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         item for item in ranking
         if item.get("lane") == "main" and item.get("home_eligible") is True
     ]
-    if [item.get("home_rank") for item in home_ranking] != list(
-        range(1, len(home_ranking) + 1)
-    ):
-        raise ValueError("Home-eligible trends must have continuous home ranks")
     trend_top10 = intelligence.get("trend_top10", [])
     home_top10 = intelligence.get("home_top10", [])
     public_top10 = intelligence.get("public_top10", [])
@@ -580,11 +735,21 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         item for item in home_ranking
         if item.get("frontend_readiness_status") == "ready"
     ]
-    expected_trend_top10 = select_balanced_home_top10(completed_home_ranking)
-    if trend_top10 != expected_trend_top10:
-        raise ValueError("trend_top10 must contain only completed home trends")
-    if home_top10 != trend_top10 or public_top10 != trend_top10:
-        raise ValueError("home/public/trend Top10 arrays must remain value-identical aliases")
+    home_feed = intelligence.get("home_feed") or {}
+    flattened_feed = [
+        item for group in home_feed.get("groups") or []
+        for item in group.get("trends") or []
+    ]
+    if home_feed.get("status") != ("ready" if flattened_feed else "empty"):
+        raise ValueError("home_feed status is inconsistent")
+    if any(
+        {"observed_rank", "home_rank", "publication_rank", "score", "_home_selection_score"}
+        & set(item)
+        for item in flattened_feed
+    ):
+        raise ValueError("home_feed cards must not expose ranks or selection scores")
+    if trend_top10 != flattened_feed or home_top10 != flattened_feed or public_top10 != flattened_feed:
+        raise ValueError("legacy arrays must be deprecated flattened home_feed aliases")
     if intelligence.get("all_observed_ranking") != ranking:
         raise ValueError("all_observed_ranking must preserve the unified observed ranking")
 
@@ -593,8 +758,10 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         readiness.get("required_keyword_count") != 5
         or readiness.get("minimum_company_count") != MINIMUM_FRONTEND_COMPANIES
         or readiness.get("ready_count") != len(completed_home_ranking)
-        or readiness.get("published_count") != len(trend_top10)
-        or readiness.get("publication_ready") is not (len(expected_trend_top10) >= 10)
+        or readiness.get("published_count") != len(flattened_feed)
+        or readiness.get("publication_ready") is not bool(flattened_feed)
+        or readiness.get("home_status") != ("ready" if flattened_feed else "empty")
+        or intelligence.get("home_status") != readiness.get("home_status")
         or readiness.get("padding_forbidden") is not True
         or readiness.get("ranking_effect") != "none"
     ):
@@ -699,14 +866,9 @@ def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
         rankings.get("observed_at"),
     ) != identity:
         raise ValueError("frontend rankings identity mismatch")
-    youtube = rankings.get("youtube_content_discovery") or {}
-    if (
-        youtube.get("ranking") != rankings.get("youtube_content_ranking")
-        or youtube.get("top10") != rankings.get("youtube_content_top10")
-        or youtube.get("affects_x_google_rank") is not False
-        or youtube.get("ranking_effect") != "separate_content_lane"
-    ):
-        raise ValueError("frontend YouTube content ranking contract mismatch")
+    home_feed = rankings.get("home_feed") or {}
+    if home_feed.get("status") not in {"ready", "empty"}:
+        raise ValueError("frontend home_feed status is invalid")
     _validate_period_views({
         "window": {"to": rankings.get("observed_at")},
         "ranking_default_period": rankings.get("ranking_default_period"),
@@ -827,6 +989,7 @@ def _write_frontend_delivery(
             _ranking_summary(item)
             for item in intelligence.get("all_observed_ranking") or []
         ],
+        "home_feed": intelligence.get("home_feed") or {"status": "empty", "groups": []},
         "home_top10": [
             _ranking_summary(item) for item in intelligence.get("home_top10") or []
         ],
@@ -845,9 +1008,6 @@ def _write_frontend_delivery(
             _ranking_summary(item)
             for item in intelligence.get("company_ready_trends") or []
         ],
-        "youtube_content_discovery": intelligence.get("youtube_content_discovery") or {},
-        "youtube_content_ranking": intelligence.get("youtube_content_ranking") or [],
-        "youtube_content_top10": intelligence.get("youtube_content_top10") or [],
         "trend_detail_index": [
             {"event_key": entry["event_key"], "path": entry["path"]}
             for entry in detail_index
@@ -1483,16 +1643,17 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         path=database_path,
         news_context_by_term=news_context_by_term,
     )
-    # This is a distinct official KR content-discovery chart.  It is never
-    # inserted into the X + Google score, so unlike measurements are not mixed.
-    intelligence["youtube_content_discovery"] = collect_youtube_trending(
+    intelligence = _refresh_verification_layer(intelligence, database_path, at)
+    intelligence = _attach_provider_context_research(intelligence)
+    # Deterministic collection and score calculation finish before this point.
+    # The bounded semantic pass may resolve an ambiguous non-issue expression
+    # only when provider research has already supplied public evidence.  It has
+    # no authority over X/Google measurements or the numerical score.
+    intelligence = run_semantic_adjudication(
+        intelligence,
         path=database_path,
         at=at,
-        credentials=resolve_provider_credentials(),
     )
-    intelligence["youtube_content_ranking"] = intelligence["youtube_content_discovery"]["ranking"]
-    intelligence["youtube_content_top10"] = intelligence["youtube_content_discovery"]["top10"]
-    intelligence = _refresh_verification_layer(intelligence, database_path, at)
     intelligence = apply_frontend_enrichment_cache(
         intelligence,
         verified_at=at.astimezone(UTC).isoformat(),

@@ -35,10 +35,21 @@ class RoutingTransport:
         self.routes = {key: list(value) for key, value in routes.items()}
         self.urls: list[str] = []
         self.headers: list[dict[str, str]] = []
+        self.bodies: list[bytes] = []
 
     def get(self, url, *, headers, timeout):
         self.urls.append(url)
         self.headers.append(headers)
+        route = next(key for key in self.routes if key in url)
+        item = self.routes[route].pop(0)
+        if isinstance(item, Exception):
+            raise item
+        return item
+
+    def post(self, url, *, headers, body, timeout):
+        self.urls.append(url)
+        self.headers.append(headers)
+        self.bodies.append(body)
         route = next(key for key in self.routes if key in url)
         item = self.routes[route].pop(0)
         if isinstance(item, Exception):
@@ -138,14 +149,53 @@ def test_naver_news_and_blog_are_context_evidence_with_retry_and_audit(tmp_path)
     assert run_id == 1
     assert result.status == "observed"
     assert len(result.evidence) == 2
-    assert len(result.attempts) == 3
+    assert len(result.attempts) == 6
     assert result.attempts[0].retryable is True
     ledger = read_verification_ledger(tmp_path / "ledger.sqlite3")
     encoded = json.dumps(ledger, ensure_ascii=False)
     assert ledger[0]["ranking_effect"] == "none"
-    assert ledger[0]["attempt_count"] == 3
+    assert ledger[0]["attempt_count"] == 6
     assert "id-value" not in encoded
     assert "secret-value" not in encoded
+
+
+def test_naver_api_hub_collects_news_context_without_ranking_signal():
+    transport = RoutingTransport({
+        "/search/v1/news": [response({
+            "total": 1,
+            "items": [{
+                "title": "두쫀쿠 확산",
+                "originallink": "https://example.com/news/dubai-cookie",
+                "pubDate": "Wed, 12 Aug 2026 20:00:00 +0900",
+            }],
+        })],
+        "/search/v1/blog": [response({"total": 0, "items": []})],
+        "/search-trend/v1/search": [response({
+            "results": [{
+                "title": "두쫀쿠",
+                "data": [
+                    {"period": "2026-08-11", "ratio": 20},
+                    {"period": "2026-08-12", "ratio": 60},
+                ],
+            }],
+        })],
+    })
+    result = collect_naver_context(
+        TrendReference("event:dubai-cookie", "두쫀쿠"),
+        at=NOW,
+        credentials=ProviderCredentials(
+            naver_client_id="hub-id",
+            naver_client_secret="hub-secret",
+            naver_api_hub=True,
+        ),
+        transport=transport,
+        sleeper=lambda _: None,
+    )
+
+    assert result.status == "observed"
+    assert "search_trend" not in result.metrics
+    assert any("X-NCP-APIGW-API-KEY-ID" in headers for headers in transport.headers)
+    assert transport.bodies == []
 
 
 def test_youtube_uses_kr_context_marks_total_as_approximate_and_stores_stats(tmp_path):
@@ -253,13 +303,13 @@ def test_verify_terms_persists_unavailable_instead_of_fabricated_zero(tmp_path):
         sleeper=lambda _: None,
     )
 
-    assert [row.status for row in results] == ["unavailable", "unavailable", "unavailable"]
+    assert [row.status for row in results] == ["unavailable", "unavailable"]
     assert all(row.matched is None for row in results)
     assert all(row.metrics == {} for row in results)
-    assert len(read_verification_ledger(target)) == 3
+    assert len(read_verification_ledger(target)) == 2
 
 
-def test_instagram_remains_unavailable_when_token_exists_but_collector_does_not(tmp_path):
+def test_verify_terms_does_not_activate_instagram_when_token_exists(tmp_path):
     target = tmp_path / "ledger.sqlite3"
 
     results = verify_terms(
@@ -271,10 +321,7 @@ def test_instagram_remains_unavailable_when_token_exists_but_collector_does_not(
         sleeper=lambda _: None,
     )
 
-    instagram = next(row for row in results if row.provider == "instagram")
-    assert instagram.status == "unavailable"
-    assert instagram.error_code == "not_configured"
-    assert "not enabled" in instagram.error_detail
+    assert [row.provider for row in results] == ["naver", "youtube"]
 
 
 def test_naver_auth_failure_opens_hourly_circuit_and_defers_remaining_terms(tmp_path):
@@ -303,7 +350,7 @@ def test_naver_auth_failure_opens_hourly_circuit_and_defers_remaining_terms(tmp_
     naver = [row for row in results if row.provider == "naver"]
     assert [row.status for row in naver] == ["failed", "deferred"]
     assert naver[0].error_code == "024"
-    assert len(transport.urls) == 2
+    assert len(transport.urls) == 1
 
 
 def test_youtube_daily_budget_counts_attempts_not_runs(tmp_path):

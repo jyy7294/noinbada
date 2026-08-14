@@ -44,6 +44,10 @@ COMPANY_LINK_RELATIONS = frozenset(
     }
 )
 
+# Graph lookup may return a small, honest candidate set for research.  Public
+# frontend publication is a separate fail-closed contract and always requires
+# ten companies.  Keeping these names distinct prevents a 3-company graph
+# lookup from being mistaken for a completed frontend card.
 MINIMUM_PUBLISHED_COMPANIES = 3
 MINIMUM_FRONTEND_COMPANIES = 10
 

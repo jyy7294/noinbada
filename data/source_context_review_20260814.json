@@ -1,0 +1,489 @@
+{
+  "schema_version": "trzip-source-context-review-v1",
+  "review_batch_id": "source-only-48h-20260814-exhaustive",
+  "reviewed_at": "2026-08-14T08:00:00+00:00",
+  "scope": {
+    "sources": ["x", "google_trends"],
+    "window_end": "2026-08-14T07:00:00+00:00",
+    "window_hours": 48,
+    "reviewed_first_pass_not_selected": 660
+  },
+  "policy": {
+    "rank_effect": "none",
+    "manual_whitelist_for_future_rank": false,
+    "unlisted_first_pass_not_selected": "excluded_after_full_expression_review",
+    "note": "이 파일은 해당 48시간 원천 표현의 전수 최종 판정 기록이다. 이후 순위 가점이나 상시 화이트리스트로 사용하지 않는다."
+  },
+  "include_groups": [
+    {
+      "source": "x",
+      "canonical_name": "페르세우스 유성우",
+      "category": "culture",
+      "terms": ["페르세우스", "유성우 보고", "별똥별 보고", "별똥별 하나"],
+      "reason": "동일 천문 관측 현상을 가리키는 구체적 표현군"
+    },
+    {
+      "source": "x",
+      "canonical_name": "데이즈드",
+      "category": "lifestyle",
+      "terms": ["데이즈드"],
+      "reason": "구체적으로 식별되는 패션·문화 매거진 브랜드"
+    },
+    {
+      "source": "x",
+      "canonical_name": "렌티큘러 굿즈",
+      "category": "consumer",
+      "terms": ["렌티큘러"],
+      "reason": "구체적인 시각효과 굿즈·제품 표현"
+    },
+    {
+      "source": "x",
+      "canonical_name": "챱챱 물개",
+      "category": "culture",
+      "terms": ["챱챱 물개"],
+      "reason": "식별 가능한 온라인 밈 표현"
+    },
+    {
+      "source": "x",
+      "canonical_name": "Moonshadow Series EP1",
+      "category": "content",
+      "terms": ["#MoonshadowSeriesEP1"],
+      "reason": "에피소드가 특정되는 작품 공개 해시태그"
+    },
+    {
+      "source": "x",
+      "canonical_name": "시데레우스 폴라 교환",
+      "category": "content",
+      "terms": ["시데레우스 폴라 교환"],
+      "reason": "특정 콘텐츠의 굿즈 교환 행동"
+    },
+    {
+      "source": "x",
+      "canonical_name": "코펠리아",
+      "category": "content",
+      "terms": ["코펠리아"],
+      "reason": "구체적으로 식별 가능한 공연 작품"
+    },
+    {
+      "source": "x",
+      "canonical_name": "가나디 인천",
+      "category": "culture",
+      "terms": ["가나디 인천"],
+      "reason": "캐릭터와 지역 참여 맥락이 함께 특정되는 표현"
+    },
+    {
+      "source": "x",
+      "canonical_name": "카무트 효소",
+      "category": "food",
+      "terms": ["카무트 효소"],
+      "reason": "구체적인 식품 제품군"
+    },
+    {
+      "source": "x",
+      "canonical_name": "That 챌린지",
+      "category": "culture",
+      "terms": ["That 챌린"],
+      "reason": "참여 행동이 특정되는 챌린지 표현"
+    },
+    {
+      "source": "x",
+      "canonical_name": "침대셀카",
+      "category": "culture",
+      "terms": ["침대셀카"],
+      "reason": "구체적인 SNS 참여·촬영 행동"
+    },
+    {
+      "source": "x",
+      "canonical_name": "양의지 쓰리런",
+      "category": "sports",
+      "terms": ["양의지 쓰리런"],
+      "reason": "선수명만이 아니라 경기 결과 행동까지 특정됨"
+    },
+    {
+      "source": "x",
+      "canonical_name": "한태양 시즌 활약",
+      "category": "sports",
+      "terms": ["한태양 시즌"],
+      "reason": "선수의 시즌 경기 맥락이 함께 특정됨"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "오디세이 영화",
+      "category": "content",
+      "terms": ["크리스토퍼 놀란", "오디세이"],
+      "reason": "감독과 작품 표현을 동일 영화 사건으로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "티빙",
+      "category": "content",
+      "terms": ["티빙"],
+      "reason": "구체적으로 식별되는 OTT 플랫폼 브랜드"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "돌싱글즈",
+      "category": "content",
+      "terms": ["돌싱글즈"],
+      "reason": "구체적으로 식별되는 방송 작품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "붉은사막",
+      "category": "content",
+      "terms": ["붉은사막"],
+      "reason": "구체적으로 식별되는 게임 작품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "야구여왕",
+      "category": "content",
+      "terms": ["야구여왕"],
+      "reason": "구체적으로 식별되는 방송 콘텐츠"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "지스타",
+      "category": "culture",
+      "terms": ["지스타"],
+      "reason": "구체적으로 식별되는 게임 전시 행사"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "피의 게임",
+      "category": "content",
+      "terms": ["피의 게임"],
+      "reason": "구체적으로 식별되는 방송 작품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "골 때리는 그녀들",
+      "category": "content",
+      "terms": ["골 때리는 그녀들"],
+      "reason": "구체적으로 식별되는 방송 작품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "그래미 어워드",
+      "category": "culture",
+      "terms": ["그래미 어워드"],
+      "reason": "구체적으로 식별되는 음악 시상 행사"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "황신혜의 같이 삽시다",
+      "category": "content",
+      "terms": ["황신혜의 같이 삽시다"],
+      "reason": "구체적으로 식별되는 방송 작품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "메이플스토리",
+      "category": "content",
+      "terms": ["메이플"],
+      "reason": "통용 축약어가 특정 게임을 식별함"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "리그 오브 레전드 패치",
+      "category": "content",
+      "terms": ["롤 패치 노트"],
+      "reason": "게임과 업데이트 사건이 함께 특정됨"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "홈플러스 재개장",
+      "category": "consumer",
+      "terms": ["홈플러스", "홈플러스 재개장", "홈플러스 재오픈"],
+      "reason": "브랜드 단독 검색을 같은 기간 재개장 표현과 결합해 사건화"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "GV80 하이브리드",
+      "category": "consumer",
+      "terms": ["gv80 하이브리드"],
+      "reason": "구체적인 자동차 제품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "폴스타 3",
+      "category": "consumer",
+      "terms": ["폴스타 3"],
+      "reason": "구체적인 자동차 제품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "검은사막",
+      "category": "content",
+      "terms": ["검은사막"],
+      "reason": "구체적으로 식별되는 게임 작품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "나는 SOLO",
+      "category": "content",
+      "terms": ["나는솔로", "나솔"],
+      "reason": "정식명과 통용 축약어를 동일 방송 작품으로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "리그 오브 레전드",
+      "category": "content",
+      "terms": ["리그 오브 레전드"],
+      "reason": "구체적으로 식별되는 게임 작품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "휴머노이드 로봇",
+      "category": "technology",
+      "terms": ["보스턴 다이내믹스", "보스턴다이내믹스", "휴머노이드 로봇"],
+      "reason": "기업명과 기술 표현이 같은 관측 기간의 로봇 기술 사건을 지칭"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "한문철의 블랙박스 리뷰",
+      "category": "content",
+      "terms": ["한문철의 블랙박스 리뷰", "한문철 의 블랙 박스 리뷰"],
+      "reason": "띄어쓰기 변형을 동일 방송 작품으로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "Spotify",
+      "category": "content",
+      "terms": ["spotify", "스포티파이"],
+      "reason": "한글·영문 표기를 동일 음악 플랫폼으로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "PUBG",
+      "category": "content",
+      "terms": ["펍지"],
+      "reason": "구체적으로 식별되는 게임 브랜드"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "SMR",
+      "category": "technology",
+      "terms": ["smr"],
+      "reason": "구체적으로 식별되는 소형모듈원자로 기술"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "DeepSeek",
+      "category": "technology",
+      "terms": ["deepseek"],
+      "reason": "구체적으로 식별되는 AI 기술·서비스"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "Manus AI",
+      "category": "technology",
+      "terms": ["마누스"],
+      "reason": "해당 기간 기술 검색 맥락의 AI 에이전트 서비스"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "미국 PPI 발표",
+      "category": "market",
+      "terms": ["ppi 발표", "ppi"],
+      "reason": "지표명과 발표 표현을 동일 시장 사건으로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "미국 CPI 발표",
+      "category": "market",
+      "terms": ["cpi 발표", "미국 cpi", "cpi"],
+      "reason": "지표명과 발표 표현을 동일 시장 사건으로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "미스트롯 포유",
+      "category": "content",
+      "terms": ["미스트롯 포유"],
+      "reason": "구체적으로 식별되는 방송 콘텐츠"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "리니지",
+      "category": "content",
+      "terms": ["리니지"],
+      "reason": "구체적으로 식별되는 게임 브랜드"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "UEFA 슈퍼컵",
+      "category": "sports",
+      "terms": ["uefa 슈퍼컵"],
+      "reason": "구체적으로 식별되는 스포츠 대회"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "포틀랜드 클래식",
+      "category": "sports",
+      "terms": ["포틀랜드 클래식"],
+      "reason": "구체적으로 식별되는 골프 대회"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "LIV 골프",
+      "category": "sports",
+      "terms": ["리브 골프"],
+      "reason": "구체적으로 식별되는 골프 대회 브랜드"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "말복·삼계탕",
+      "category": "food",
+      "terms": ["말복", "복날", "삼계탕"],
+      "reason": "계절 시점과 대표 소비 식품을 하나의 음식 소비 사건으로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "한강버스",
+      "category": "lifestyle",
+      "terms": ["한강버스"],
+      "reason": "구체적으로 식별되는 교통·생활 서비스"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "택배 없는 날",
+      "category": "culture",
+      "terms": ["택배없는날"],
+      "reason": "구체적인 사회 참여·생활 일정"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "인천e음",
+      "category": "consumer",
+      "terms": ["인천e음"],
+      "reason": "구체적으로 식별되는 지역 결제 서비스"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "삼전닉스",
+      "category": "market",
+      "terms": ["삼전닉스", "삼전 닉스"],
+      "reason": "동일 시장 묶음 표현의 띄어쓰기 변형"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "사랑이 온다",
+      "category": "content",
+      "terms": ["사랑 이 온다", "사랑이 온다"],
+      "reason": "띄어쓰기 변형을 동일 작품으로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "전설의 사내",
+      "category": "content",
+      "terms": ["전설의 사내"],
+      "reason": "구체적으로 식별되는 콘텐츠 제목"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "기쁜 우리 좋은 날",
+      "category": "content",
+      "terms": ["기쁜 우리 좋은 날"],
+      "reason": "구체적으로 식별되는 콘텐츠 제목"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "자식방생 프로젝트 합숙 맞선",
+      "category": "content",
+      "terms": ["자식방생 프로젝트 합숙 맞선"],
+      "reason": "구체적으로 식별되는 방송 콘텐츠"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "건축탐구 집",
+      "category": "content",
+      "terms": ["건축탐구 - 집"],
+      "reason": "구체적으로 식별되는 방송 콘텐츠"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "슈퍼맨이 돌아왔다",
+      "category": "content",
+      "terms": ["슈퍼맨이 돌아왔다"],
+      "reason": "구체적으로 식별되는 방송 콘텐츠"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "킬러들의 쇼핑몰 시즌3",
+      "category": "content",
+      "terms": ["킬러들의 쇼핑몰 시즌3"],
+      "reason": "작품과 시즌이 특정되는 콘텐츠"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "KF-21 보라매",
+      "category": "technology",
+      "terms": ["kf-21 보라매"],
+      "reason": "구체적으로 식별되는 항공 기술·제품"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "맨체스터 유나이티드 vs 리즈 유나이티드",
+      "category": "sports",
+      "terms": ["맨유 대 리즈 유나이티드", "man united vs leeds", "man utd vs leeds", "แมนยู พบ ลีดส์", "man utd đấu với leeds"],
+      "reason": "다국어 검색어를 동일 경기로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "인터 마이애미 vs 레온",
+      "category": "sports",
+      "terms": ["인터 마이애미 대 레온", "inter miami vs león"],
+      "reason": "다국어 검색어를 동일 경기로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "PSG vs 애스턴 빌라",
+      "category": "sports",
+      "terms": ["psg 대 애스턴 빌라", "psg vs aston villa"],
+      "reason": "다국어 검색어를 동일 경기로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "데포르티보 vs 레알 마드리드",
+      "category": "sports",
+      "terms": ["데포르티보 대 레알 마드리드", "deportivo vs real madrid", "deportivo vs madrid", "депортиво – реал мадрид"],
+      "reason": "다국어 검색어를 동일 경기로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "아스널 vs 코모",
+      "category": "sports",
+      "terms": ["아스널 대 코모", "arsenal vs como"],
+      "reason": "다국어 검색어를 동일 경기로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "LAFC vs 케레타로",
+      "category": "sports",
+      "terms": ["로스앤젤레스 fc 대 케레타로 fc 순위", "엘에이 fc 대 케레타로", "lafc vs querétaro"],
+      "reason": "다국어·약칭 검색어를 동일 경기로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "호주 vs 방글라데시",
+      "category": "sports",
+      "terms": ["australia vs bangladesh", "aus vs ban"],
+      "reason": "약칭 검색어를 동일 국가대표 경기로 병합"
+    },
+    {
+      "source": "google_trends",
+      "canonical_name": "페르세우스 유성우",
+      "category": "culture",
+      "terms": ["페르세우스", "유성우 시간", "유성우 방향", "페르세우스 유성우 시간", "별똥별"],
+      "reason": "동일 천문 관측 현상을 가리키는 검색 표현군"
+    }
+  ],
+  "exclude_terms": [
+    {
+      "source": "x",
+      "term": "밀크티 70",
+      "reason_code": "excluded_ambiguous_numeric_expression",
+      "reason": "제품·행사·작품·행동을 특정하지 못하는 숫자 결합 표현"
+    }
+  ]
+}

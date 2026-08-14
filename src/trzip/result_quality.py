@@ -216,12 +216,34 @@ def _publication_receipt(path: Path, observed_at: str) -> dict:
 def evaluate_frontend_result(intelligence: dict) -> dict:
     """Evaluate the completed frontend contract without recomputing rank."""
 
-    top = list(intelligence.get("home_top10") or [])
+    home_feed = intelligence.get("home_feed") or {}
+    top = [
+        item for group in home_feed.get("groups") or []
+        for item in group.get("trends") or []
+    ]
+    if not home_feed and intelligence.get("home_top10"):
+        # Backward-compatible evaluator input only; immutable publications must
+        # carry home_feed.
+        top = list(intelligence.get("home_top10") or [])
     failures: list[str] = []
-    if len(top) != 10:
-        failures.append(f"home_top10_count:{len(top)}")
-    if [item.get("publication_rank") for item in top] != list(range(1, len(top) + 1)):
-        failures.append("publication_rank_not_contiguous")
+    enrichment_warnings: list[str] = []
+    expected_home_status = "ready" if top else "empty"
+    declared_home_status = intelligence.get("home_status") or (
+        intelligence.get("publication_readiness") or {}
+    ).get("home_status")
+    # Unit callers may pass only the exported arrays.  The immutable
+    # publication schema requires the explicit field; treat its absence here
+    # as legacy input rather than changing a content-quality result.
+    if declared_home_status is not None and declared_home_status != expected_home_status:
+        failures.append(
+            f"home_status_mismatch:expected_{expected_home_status}:actual_{declared_home_status}"
+        )
+    if any(
+        {"observed_rank", "home_rank", "publication_rank", "score", "_home_selection_score"}
+        & set(item)
+        for item in top
+    ):
+        failures.append("home_feed_exposes_rank_or_selection_score")
     event_keys = [str(item.get("event_key") or "") for item in top]
     if not all(event_keys) or len(event_keys) != len(set(event_keys)):
         failures.append("duplicate_or_empty_event_key")
@@ -238,6 +260,21 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
         companies = list(item.get("companies") or [])
         unique_codes = {str(company.get("stock_code") or "").strip() for company in companies}
         item_failures = []
+        item_warnings = []
+        context_research = item.get("context_research") or {}
+        context_urls = [
+            str(url).strip()
+            for url in context_research.get("evidence_urls") or []
+            if str(url).strip()
+        ]
+        if not (
+            context_research.get("status") == "ready"
+            and str(context_research.get("trigger_title") or "").strip()
+            and str(context_research.get("why_now") or "").strip()
+            and context_urls
+            and all(_valid_public_url(url) for url in context_urls)
+        ):
+            item_failures.append("trigger_evidence_incomplete")
         if item.get("broad_category") not in PUBLIC_BROAD_CATEGORIES:
             item_failures.append(f"invalid_category:{item.get('broad_category')}")
         definition = str(item.get("trend_definition") or "").strip()
@@ -264,14 +301,14 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
                 item_failures.append("company_card_not_ready")
             if item.get("company_card_reason") != "evidence_backed_ten_or_more":
                 item_failures.append("company_card_reason_mismatch")
-            value_chain_stages = {
-                str(company.get("value_chain_stage") or "").strip()
+            company_role_categories = {
+                str(company.get("company_role_category") or "").strip()
                 for company in companies
-                if str(company.get("value_chain_stage") or "").strip()
+                if str(company.get("company_role_category") or "").strip()
             }
-            if not 2 <= len(value_chain_stages) <= 4:
+            if not 2 <= len(company_role_categories) <= 4:
                 item_failures.append(
-                    f"company_role_category_count:{len(value_chain_stages)}"
+                    f"company_role_category_count:{len(company_role_categories)}"
                 )
         for company in companies:
             company_name = str(company.get("company") or "").strip()
@@ -305,27 +342,34 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
             if not _ontology_path_reaches_company(company.get("ontology_path"), company_name):
                 item_failures.append(f"ontology_path_not_to_company:{company_name}")
         if item.get("frontend_readiness_status") != "ready":
-            item_failures.append("frontend_not_ready")
+            item_failures.append("frontend_enrichment_pending")
         failures.extend(f"{name}:{reason}" for reason in item_failures)
+        enrichment_warnings.extend(f"{name}:{reason}" for reason in item_warnings)
         trend_checks.append({
-            "publication_rank": item.get("publication_rank"),
             "display_name": name,
-            "observed_rank": item.get("observed_rank"),
             "keyword_count": len(keywords),
             "company_count": len(unique_codes - {""}),
             "role_categories": sorted({
                 str(company.get("company_role_category") or "") for company in companies
             }),
             "passed": not item_failures,
+            "enrichment_ready": not item_warnings,
+            "enrichment_warnings": item_warnings,
         })
     return {
-        "policy_version": "frontend-result-quality-v5",
+        "policy_version": "frontend-result-quality-v6",
         "passed": not failures,
         "trend_count": len(top),
-        "required_trend_count": 10,
+        "target_trend_count": None,
+        "home_status": expected_home_status,
+        "home_content_ready": bool(top),
         "required_keyword_count": 5,
         "minimum_company_count": MINIMUM_FRONTEND_COMPANIES,
         "failures": failures,
+        "enrichment_warnings": enrichment_warnings,
+        "enrichment_ready_count": sum(
+            1 for row in trend_checks if row["enrichment_ready"]
+        ),
         "trends": trend_checks,
         "ranking_effect": "none",
     }
@@ -453,7 +497,9 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
             "failure": "legacy_source_gate_policy",
         }
     contract = publication.get("contract")
-    if contract is not None and contract.get("policy_version") != "frontend-result-quality-v5":
+    if contract is not None and contract.get("policy_version") not in {
+        "frontend-result-quality-v5", "frontend-result-quality-v6",
+    }:
         contract = {
             **contract,
             "passed": False,
@@ -473,7 +519,7 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
     }
 
 
-def evaluate_consecutive_hours(path: Path, *, end: datetime, count: int = 3) -> dict:
+def evaluate_consecutive_hours(path: Path, *, end: datetime, count: int = 8) -> dict:
     hours = [end - timedelta(hours=offset) for offset in reversed(range(count))]
     evaluations = [evaluate_actual_hour(path, at) for at in hours]
     current_streak = 0
@@ -496,7 +542,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Audit consecutive actual TRZIP frontend results")
     parser.add_argument("--database", type=Path, required=True)
     parser.add_argument("--end", type=datetime.fromisoformat, required=True)
-    parser.add_argument("--count", type=int, default=3)
+    parser.add_argument("--count", type=int, default=8)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--record-publication", action="store_true")
     parser.add_argument("--publication-id")
