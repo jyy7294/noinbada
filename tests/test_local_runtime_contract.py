@@ -100,9 +100,11 @@ def test_verified_code_checkpoint_is_explicit_and_non_force():
     assert "--force-with-lease" not in checkpoint
     assert "reset --hard" not in checkpoint
     assert "merge --ff-only origin/main" in promotion
-    assert ".codex\\automations\\trzip\\automation.toml" in promotion
+    assert ".codex\\automations" in promotion
+    assert "trzip-hourly-collection-through-aug-18" in promotion
     assert 'status\\s*=\\s*"ACTIVE"' in promotion
     assert "FREQ=HOURLY;INTERVAL=1;BYMINUTE=0" in promotion
+    assert "(?:;UNTIL=[0-9TZ]+)?" in promotion
     assert "codex_hourly_automation" in promotion
     assert 'pip install -e "$RuntimeCheckout[dev]"' in promotion
     assert 'import jsonschema, pytest' in promotion

@@ -1,13 +1,32 @@
 param(
     [string]$RuntimeCheckout = (Join-Path $env:USERPROFILE "Documents\Codex\noinbada-runtime"),
     [string]$ExpectedSha = "",
-    [string]$AutomationConfig = (Join-Path $env:USERPROFILE ".codex\automations\trzip\automation.toml")
+    [string]$AutomationConfig = ""
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 $RuntimeCheckout = [IO.Path]::GetFullPath($RuntimeCheckout)
-$AutomationConfig = [IO.Path]::GetFullPath($AutomationConfig)
+if (-not $AutomationConfig) {
+    $AutomationRoot = Join-Path $env:USERPROFILE ".codex\automations"
+    $Candidates = @(
+        (Join-Path $AutomationRoot "trzip-hourly-collection-through-aug-18\automation.toml"),
+        (Join-Path $AutomationRoot "trzip\automation.toml")
+    )
+    $AutomationConfig = $Candidates | Where-Object {
+        Test-Path -LiteralPath $_ -PathType Leaf
+    } | Select-Object -First 1
+    if (-not $AutomationConfig -and (Test-Path -LiteralPath $AutomationRoot)) {
+        $AutomationConfig = Get-ChildItem -LiteralPath $AutomationRoot -Filter automation.toml `
+            -File -Recurse | Where-Object {
+                [IO.File]::ReadAllText($_.FullName, [Text.Encoding]::UTF8) -match `
+                    '(?m)^\s*id\s*=\s*"trzip[^\"]*"\s*$'
+            } | Select-Object -ExpandProperty FullName -First 1
+    }
+}
+if ($AutomationConfig) {
+    $AutomationConfig = [IO.Path]::GetFullPath($AutomationConfig)
+}
 $Mutex = [Threading.Mutex]::new($false, "Global\TRZIP-NOINBADA-HOURLY-V1")
 $HasMutex = $false
 
@@ -60,14 +79,14 @@ try {
         throw "Runtime verification dependencies are unavailable after refresh."
     }
 
-    if (-not (Test-Path -LiteralPath $AutomationConfig -PathType Leaf)) {
+    if (-not $AutomationConfig -or -not (Test-Path -LiteralPath $AutomationConfig -PathType Leaf)) {
         throw "Codex hourly automation config is missing."
     }
     $automationText = [IO.File]::ReadAllText($AutomationConfig, [Text.Encoding]::UTF8)
     if ($automationText -notmatch '(?m)^\s*status\s*=\s*"ACTIVE"\s*$') {
         throw "Codex hourly automation is not ACTIVE."
     }
-    if ($automationText -notmatch '(?m)^\s*rrule\s*=\s*"FREQ=HOURLY;INTERVAL=1;BYMINUTE=0"\s*$') {
+    if ($automationText -notmatch '(?m)^\s*rrule\s*=\s*"FREQ=HOURLY;INTERVAL=1;BYMINUTE=0(?:;UNTIL=[0-9TZ]+)?"\s*$') {
         throw "Codex hourly automation schedule is not the required top-of-hour rule."
     }
     $runtimePathCandidates = @(
@@ -91,7 +110,7 @@ try {
         branch = "main"
         sha = $runtimeSha
         scheduler = "codex_hourly_automation"
-        automation_config = "%USERPROFILE%\.codex\automations\trzip\automation.toml"
+        automation_config = $AutomationConfig.Replace($env:USERPROFILE, "%USERPROFILE%")
         scheduler_target_verified = $true
     } | ConvertTo-Json -Compress
 } finally {
