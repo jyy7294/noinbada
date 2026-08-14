@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T17:33:32.6835097+00:00",
+    "updated_at":  "2026-08-14T17:41:56.8965897+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,7 +8,7 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "18419a2d0365df552a72111b92db5583f39c3238",
+                       "base_remote_main_sha":  "f2e8f722011601e1d9d345b3b80eb8d6da0702fc",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
@@ -16,10 +16,10 @@
                                              "tests/test_frontend_mvp_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "11f2ae1d5758c8e0d92818c5b3450ca1ca255f17485e54e87919d9c7388f8981",
-                                                    "tests/test_frontend_mvp_contract.py":  "9ed51c4a4d47d17b01b597ff6a53eea1324d60b702a4c651fb7a9ed7cf1deb9c"
+                                                    "frontend/index.html":  "aa5c96f86535e22541db9b4a8fd88c3dddabf41ca02607723eebefb983eef5f0",
+                                                    "tests/test_frontend_mvp_contract.py":  "5124495719ee3c4941657664b609ddb9626ac115e1f66d9b0711eb39fa190588"
                                                 },
-                       "commit_message":  "fix: version presentation assets for reliable first load",
+                       "commit_message":  "fix: hydrate valid delayed publications on first render",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,14 +47,14 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Prevent browsers from reusing stale prototype scripts after production deployment.",
+                    "objective":  "Show a valid published presentation feed immediately even when its freshness label is delayed.",
                     "completed":  [
-                                      "Versioned the data loader and support script URLs",
-                                      "Added regression assertions for versioned asset URLs"
+                                      "Decoupled UI hydration from the LIVE-only label",
+                                      "Added a regression assertion for publication-driven hydration"
                                   ],
                     "next_actions":  [
-                                         "Redeploy Vercel production",
-                                         "Verify a fresh first visit without reload"
+                                         "Redeploy production and verify first render",
+                                         "Publish the next exact-hour lightweight live-data bundle"
                                      ],
                     "blockers":  [
 

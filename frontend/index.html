@@ -3696,7 +3696,7 @@ class Component extends DCLogic {
   componentDidUpdate() {
     this.snsWire(); this.applySort();
     // 재렌더 뒤에도 발행 트렌드명과 로고를 일관되게 다시 주입합니다.
-    if (this.liveStatus === 'LIVE') {
+    if (this.publishedView) {
       clearTimeout(this.__livePatchT);
       this.__livePatchT = setTimeout(() => { this.patchHomeLabels(); this.patchStockLogos(); }, 250);
     }
