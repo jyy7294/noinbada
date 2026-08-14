@@ -15,100 +15,6 @@
     "content_ready_hour_count": 0,
     "evaluations": [
       {
-        "observed_at": "2026-08-14T07:00:00+00:00",
-        "local_passed": true,
-        "content_ready": false,
-        "passed": false,
-        "source_gate": {
-          "policy_version": "hourly-source-proof-v2",
-          "passed": true,
-          "sources": {
-            "google_trends": {
-              "row_count": 169,
-              "unique_topics": 169,
-              "unique_ranks": 169,
-              "minimum_rank": 1,
-              "maximum_rank": 169,
-              "observed_rows": 169
-            },
-            "x": {
-              "row_count": 30,
-              "unique_topics": 30,
-              "unique_ranks": 30,
-              "minimum_rank": 1,
-              "maximum_rank": 30,
-              "observed_rows": 30,
-              "collection_evidence": {
-                "collector": "codex_chrome_current_session",
-                "transport": "codex_browser_snapshot",
-                "profile": "current_logged_in_chrome",
-                "region": "KR",
-                "region_verified": true,
-                "observed_at": "2026-08-14T07:08:29.874000+00:00",
-                "scheduled_for": "2026-08-14T07:00:00+00:00",
-                "schedule_delay_seconds": 509.874,
-                "evidence_row_count": 30,
-                "evidence_consistent": true,
-                "timing_verified": true
-              }
-            }
-          }
-        },
-        "contract": {
-          "policy_version": "frontend-result-quality-v7",
-          "passed": true,
-          "trend_count": 0,
-          "target_trend_count": null,
-          "home_status": "empty",
-          "home_content_ready": false,
-          "required_keyword_count": 5,
-          "minimum_company_count": 10,
-          "failures": [],
-          "enrichment_warnings": [],
-          "enrichment_ready_count": 0,
-          "trends": [],
-          "ranking_effect": "none"
-        },
-        "publication": {
-          "passed": false,
-          "publication_id": null,
-          "remote_sha": null,
-          "verified_at": null
-        }
-      },
-      {
-        "observed_at": "2026-08-14T08:00:00+00:00",
-        "local_passed": false,
-        "content_ready": false,
-        "passed": false,
-        "source_gate": {
-          "policy_version": "hourly-source-proof-v2",
-          "passed": false,
-          "sources": {}
-        },
-        "contract": {
-          "policy_version": "frontend-result-quality-v7",
-          "passed": true,
-          "trend_count": 0,
-          "target_trend_count": null,
-          "home_status": "empty",
-          "home_content_ready": false,
-          "required_keyword_count": 5,
-          "minimum_company_count": 10,
-          "failures": [],
-          "enrichment_warnings": [],
-          "enrichment_ready_count": 0,
-          "trends": [],
-          "ranking_effect": "none"
-        },
-        "publication": {
-          "passed": false,
-          "publication_id": null,
-          "remote_sha": null,
-          "verified_at": null
-        }
-      },
-      {
         "observed_at": "2026-08-14T09:00:00+00:00",
         "local_passed": false,
         "content_ready": false,
@@ -390,6 +296,152 @@
           "manifest_sha256": "36cceb919570d6e74480ad3502a5e4977ba173d0b3c1ca717aad82ccfd3a2943",
           "remote_manifest_blob": "f70c6cd0c5c0ed5769183eddeaace15f80c4c753"
         }
+      },
+      {
+        "observed_at": "2026-08-14T15:00:00+00:00",
+        "local_passed": false,
+        "content_ready": false,
+        "passed": false,
+        "source_gate": {
+          "policy_version": "hourly-source-proof-v2",
+          "passed": false,
+          "sources": {}
+        },
+        "contract": {
+          "policy_version": "frontend-result-quality-v7",
+          "passed": true,
+          "trend_count": 0,
+          "target_trend_count": null,
+          "home_status": "empty",
+          "home_content_ready": false,
+          "required_keyword_count": 5,
+          "minimum_company_count": 10,
+          "failures": [],
+          "enrichment_warnings": [],
+          "enrichment_ready_count": 0,
+          "trends": [],
+          "ranking_effect": "none"
+        },
+        "publication": {
+          "passed": false,
+          "publication_id": null,
+          "remote_sha": null,
+          "verified_at": null
+        }
+      },
+      {
+        "observed_at": "2026-08-14T16:00:00+00:00",
+        "local_passed": true,
+        "content_ready": false,
+        "passed": true,
+        "source_gate": {
+          "policy_version": "hourly-source-proof-v2",
+          "passed": true,
+          "sources": {
+            "google_trends": {
+              "row_count": 177,
+              "unique_topics": 177,
+              "unique_ranks": 177,
+              "minimum_rank": 1,
+              "maximum_rank": 177,
+              "observed_rows": 177
+            },
+            "x": {
+              "row_count": 30,
+              "unique_topics": 30,
+              "unique_ranks": 30,
+              "minimum_rank": 1,
+              "maximum_rank": 30,
+              "observed_rows": 30,
+              "collection_evidence": {
+                "collector": "codex_chrome_current_session",
+                "transport": "codex_browser_snapshot",
+                "profile": "current_logged_in_chrome",
+                "region": "KR",
+                "region_verified": true,
+                "observed_at": "2026-08-14T16:02:20+00:00",
+                "scheduled_for": "2026-08-14T16:00:00+00:00",
+                "schedule_delay_seconds": 140.0,
+                "evidence_row_count": 30,
+                "evidence_consistent": true,
+                "timing_verified": true
+              }
+            }
+          }
+        },
+        "contract": {
+          "policy_version": "frontend-result-quality-v7",
+          "passed": true,
+          "trend_count": 0,
+          "target_trend_count": null,
+          "home_status": "empty",
+          "home_content_ready": false,
+          "required_keyword_count": 5,
+          "minimum_company_count": 10,
+          "failures": [],
+          "enrichment_warnings": [],
+          "enrichment_ready_count": 0,
+          "trends": [],
+          "ranking_effect": "none"
+        },
+        "publication": {
+          "passed": true,
+          "publication_id": "pub-dc59dfb54b094410b20a1e11d711295c",
+          "remote_sha": "ec46808deecd22919ef67dc898ca98521efbee6d",
+          "verified_at": "2026-08-14T16:18:07.054641+00:00",
+          "contract": {
+            "policy_version": "frontend-result-quality-v7",
+            "passed": true,
+            "trend_count": 0,
+            "target_trend_count": null,
+            "home_status": "empty",
+            "home_content_ready": false,
+            "required_keyword_count": 5,
+            "minimum_company_count": 10,
+            "failures": [],
+            "enrichment_warnings": [],
+            "enrichment_ready_count": 0,
+            "trends": [],
+            "ranking_effect": "none"
+          },
+          "source_gate": {
+            "policy_version": "hourly-source-proof-v2",
+            "passed": true,
+            "sources": {
+              "google_trends": {
+                "row_count": 177,
+                "unique_topics": 177,
+                "unique_ranks": 177,
+                "minimum_rank": 1,
+                "maximum_rank": 177,
+                "observed_rows": 177
+              },
+              "x": {
+                "row_count": 30,
+                "unique_topics": 30,
+                "unique_ranks": 30,
+                "minimum_rank": 1,
+                "maximum_rank": 30,
+                "observed_rows": 30,
+                "collection_evidence": {
+                  "collector": "codex_chrome_current_session",
+                  "transport": "codex_browser_snapshot",
+                  "profile": "current_logged_in_chrome",
+                  "region": "KR",
+                  "region_verified": true,
+                  "observed_at": "2026-08-14T16:02:20+00:00",
+                  "scheduled_for": "2026-08-14T16:00:00+00:00",
+                  "schedule_delay_seconds": 140.0,
+                  "evidence_row_count": 30,
+                  "evidence_consistent": true,
+                  "timing_verified": true
+                }
+              }
+            }
+          },
+          "manifest_sha256": "352dd655b99c5b3532f13f71266fe52092386b7c833332ae8dc212761aba4c1d",
+          "remote_manifest_blob": "aac249490e6f491cec6fae1fc5955c31f532a5b3"
+        }
       }
     ],
     "ranking_effect": "none"
@@ -397,9 +449,9 @@
   "daily_publication_verified": true,
   "publication": {
     "passed": true,
-    "publication_id": "pub-ed1f681695bc478382b5bf9eaef2abea",
-    "remote_sha": "ec0d5dad17238907944f8938b1bb039634f275ce",
-    "verified_at": "2026-08-14T14:21:08.208259+00:00",
+    "publication_id": "pub-dc59dfb54b094410b20a1e11d711295c",
+    "remote_sha": "ec46808deecd22919ef67dc898ca98521efbee6d",
+    "verified_at": "2026-08-14T16:18:07.054641+00:00",
     "contract": {
       "policy_version": "frontend-result-quality-v7",
       "passed": true,
@@ -420,12 +472,12 @@
       "passed": true,
       "sources": {
         "google_trends": {
-          "row_count": 176,
-          "unique_topics": 176,
-          "unique_ranks": 176,
+          "row_count": 177,
+          "unique_topics": 177,
+          "unique_ranks": 177,
           "minimum_rank": 1,
-          "maximum_rank": 176,
-          "observed_rows": 176
+          "maximum_rank": 177,
+          "observed_rows": 177
         },
         "x": {
           "row_count": 30,
@@ -440,9 +492,9 @@
             "profile": "current_logged_in_chrome",
             "region": "KR",
             "region_verified": true,
-            "observed_at": "2026-08-14T14:01:10.500000+00:00",
-            "scheduled_for": "2026-08-14T14:00:00+00:00",
-            "schedule_delay_seconds": 70.5,
+            "observed_at": "2026-08-14T16:02:20+00:00",
+            "scheduled_for": "2026-08-14T16:00:00+00:00",
+            "schedule_delay_seconds": 140.0,
             "evidence_row_count": 30,
             "evidence_consistent": true,
             "timing_verified": true
@@ -450,104 +502,10 @@
         }
       }
     },
-    "manifest_sha256": "36cceb919570d6e74480ad3502a5e4977ba173d0b3c1ca717aad82ccfd3a2943",
-    "remote_manifest_blob": "f70c6cd0c5c0ed5769183eddeaace15f80c4c753"
+    "manifest_sha256": "352dd655b99c5b3532f13f71266fe52092386b7c833332ae8dc212761aba4c1d",
+    "remote_manifest_blob": "aac249490e6f491cec6fae1fc5955c31f532a5b3"
   },
   "evaluations": [
-    {
-      "observed_at": "2026-08-14T07:00:00+00:00",
-      "local_passed": true,
-      "content_ready": false,
-      "passed": false,
-      "source_gate": {
-        "policy_version": "hourly-source-proof-v2",
-        "passed": true,
-        "sources": {
-          "google_trends": {
-            "row_count": 169,
-            "unique_topics": 169,
-            "unique_ranks": 169,
-            "minimum_rank": 1,
-            "maximum_rank": 169,
-            "observed_rows": 169
-          },
-          "x": {
-            "row_count": 30,
-            "unique_topics": 30,
-            "unique_ranks": 30,
-            "minimum_rank": 1,
-            "maximum_rank": 30,
-            "observed_rows": 30,
-            "collection_evidence": {
-              "collector": "codex_chrome_current_session",
-              "transport": "codex_browser_snapshot",
-              "profile": "current_logged_in_chrome",
-              "region": "KR",
-              "region_verified": true,
-              "observed_at": "2026-08-14T07:08:29.874000+00:00",
-              "scheduled_for": "2026-08-14T07:00:00+00:00",
-              "schedule_delay_seconds": 509.874,
-              "evidence_row_count": 30,
-              "evidence_consistent": true,
-              "timing_verified": true
-            }
-          }
-        }
-      },
-      "contract": {
-        "policy_version": "frontend-result-quality-v7",
-        "passed": true,
-        "trend_count": 0,
-        "target_trend_count": null,
-        "home_status": "empty",
-        "home_content_ready": false,
-        "required_keyword_count": 5,
-        "minimum_company_count": 10,
-        "failures": [],
-        "enrichment_warnings": [],
-        "enrichment_ready_count": 0,
-        "trends": [],
-        "ranking_effect": "none"
-      },
-      "publication": {
-        "passed": false,
-        "publication_id": null,
-        "remote_sha": null,
-        "verified_at": null
-      }
-    },
-    {
-      "observed_at": "2026-08-14T08:00:00+00:00",
-      "local_passed": false,
-      "content_ready": false,
-      "passed": false,
-      "source_gate": {
-        "policy_version": "hourly-source-proof-v2",
-        "passed": false,
-        "sources": {}
-      },
-      "contract": {
-        "policy_version": "frontend-result-quality-v7",
-        "passed": true,
-        "trend_count": 0,
-        "target_trend_count": null,
-        "home_status": "empty",
-        "home_content_ready": false,
-        "required_keyword_count": 5,
-        "minimum_company_count": 10,
-        "failures": [],
-        "enrichment_warnings": [],
-        "enrichment_ready_count": 0,
-        "trends": [],
-        "ranking_effect": "none"
-      },
-      "publication": {
-        "passed": false,
-        "publication_id": null,
-        "remote_sha": null,
-        "verified_at": null
-      }
-    },
     {
       "observed_at": "2026-08-14T09:00:00+00:00",
       "local_passed": false,
@@ -829,6 +787,152 @@
         },
         "manifest_sha256": "36cceb919570d6e74480ad3502a5e4977ba173d0b3c1ca717aad82ccfd3a2943",
         "remote_manifest_blob": "f70c6cd0c5c0ed5769183eddeaace15f80c4c753"
+      }
+    },
+    {
+      "observed_at": "2026-08-14T15:00:00+00:00",
+      "local_passed": false,
+      "content_ready": false,
+      "passed": false,
+      "source_gate": {
+        "policy_version": "hourly-source-proof-v2",
+        "passed": false,
+        "sources": {}
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v7",
+        "passed": true,
+        "trend_count": 0,
+        "target_trend_count": null,
+        "home_status": "empty",
+        "home_content_ready": false,
+        "required_keyword_count": 5,
+        "minimum_company_count": 10,
+        "failures": [],
+        "enrichment_warnings": [],
+        "enrichment_ready_count": 0,
+        "trends": [],
+        "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": false,
+        "publication_id": null,
+        "remote_sha": null,
+        "verified_at": null
+      }
+    },
+    {
+      "observed_at": "2026-08-14T16:00:00+00:00",
+      "local_passed": true,
+      "content_ready": false,
+      "passed": true,
+      "source_gate": {
+        "policy_version": "hourly-source-proof-v2",
+        "passed": true,
+        "sources": {
+          "google_trends": {
+            "row_count": 177,
+            "unique_topics": 177,
+            "unique_ranks": 177,
+            "minimum_rank": 1,
+            "maximum_rank": 177,
+            "observed_rows": 177
+          },
+          "x": {
+            "row_count": 30,
+            "unique_topics": 30,
+            "unique_ranks": 30,
+            "minimum_rank": 1,
+            "maximum_rank": 30,
+            "observed_rows": 30,
+            "collection_evidence": {
+              "collector": "codex_chrome_current_session",
+              "transport": "codex_browser_snapshot",
+              "profile": "current_logged_in_chrome",
+              "region": "KR",
+              "region_verified": true,
+              "observed_at": "2026-08-14T16:02:20+00:00",
+              "scheduled_for": "2026-08-14T16:00:00+00:00",
+              "schedule_delay_seconds": 140.0,
+              "evidence_row_count": 30,
+              "evidence_consistent": true,
+              "timing_verified": true
+            }
+          }
+        }
+      },
+      "contract": {
+        "policy_version": "frontend-result-quality-v7",
+        "passed": true,
+        "trend_count": 0,
+        "target_trend_count": null,
+        "home_status": "empty",
+        "home_content_ready": false,
+        "required_keyword_count": 5,
+        "minimum_company_count": 10,
+        "failures": [],
+        "enrichment_warnings": [],
+        "enrichment_ready_count": 0,
+        "trends": [],
+        "ranking_effect": "none"
+      },
+      "publication": {
+        "passed": true,
+        "publication_id": "pub-dc59dfb54b094410b20a1e11d711295c",
+        "remote_sha": "ec46808deecd22919ef67dc898ca98521efbee6d",
+        "verified_at": "2026-08-14T16:18:07.054641+00:00",
+        "contract": {
+          "policy_version": "frontend-result-quality-v7",
+          "passed": true,
+          "trend_count": 0,
+          "target_trend_count": null,
+          "home_status": "empty",
+          "home_content_ready": false,
+          "required_keyword_count": 5,
+          "minimum_company_count": 10,
+          "failures": [],
+          "enrichment_warnings": [],
+          "enrichment_ready_count": 0,
+          "trends": [],
+          "ranking_effect": "none"
+        },
+        "source_gate": {
+          "policy_version": "hourly-source-proof-v2",
+          "passed": true,
+          "sources": {
+            "google_trends": {
+              "row_count": 177,
+              "unique_topics": 177,
+              "unique_ranks": 177,
+              "minimum_rank": 1,
+              "maximum_rank": 177,
+              "observed_rows": 177
+            },
+            "x": {
+              "row_count": 30,
+              "unique_topics": 30,
+              "unique_ranks": 30,
+              "minimum_rank": 1,
+              "maximum_rank": 30,
+              "observed_rows": 30,
+              "collection_evidence": {
+                "collector": "codex_chrome_current_session",
+                "transport": "codex_browser_snapshot",
+                "profile": "current_logged_in_chrome",
+                "region": "KR",
+                "region_verified": true,
+                "observed_at": "2026-08-14T16:02:20+00:00",
+                "scheduled_for": "2026-08-14T16:00:00+00:00",
+                "schedule_delay_seconds": 140.0,
+                "evidence_row_count": 30,
+                "evidence_consistent": true,
+                "timing_verified": true
+              }
+            }
+          }
+        },
+        "manifest_sha256": "352dd655b99c5b3532f13f71266fe52092386b7c833332ae8dc212761aba4c1d",
+        "remote_manifest_blob": "aac249490e6f491cec6fae1fc5955c31f532a5b3"
       }
     }
   ],
