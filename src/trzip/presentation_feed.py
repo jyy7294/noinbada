@@ -270,6 +270,7 @@ def _reference_card(reference: dict, candidates: list[dict]) -> dict:
         }
     ), None)
     story = (candidate or {}).get("trend_story") or {}
+    diffusion = story.get("diffusion") or {}
     keywords = _keyword_rows(display_name, details)
     companies = _company_rows(display_name, details)
     source_badge = " + ".join("Google" if value == "google_trends" else "X" for value in reference["sources"])
@@ -303,14 +304,38 @@ def _reference_card(reference: dict, candidates: list[dict]) -> dict:
         "latest_source_ranks": (candidate or {}).get("latest_source_ranks") or {},
         "lifecycle": (candidate or {}).get("lifecycle") or "new",
         "lifecycle_reason": (candidate or {}).get("lifecycle_reason") or "검수된 당일 관측 사건",
-        "trend_stage": (story.get("diffusion") or {}).get("trend_stage") or {
+        "trend_stage": diffusion.get("trend_stage") or {
             "key": "capture", "label": "포착", "index": 1,
         },
         "observed_day_label": (
-            (story.get("diffusion") or {}).get("observed_day_label")
+            diffusion.get("observed_day_label")
             or ((candidate or {}).get("frontend_projection") or {}).get("observed_day_label")
             or "관측일 확인 중"
         ),
+        "attention_lift": diffusion.get("attention_lift") or {
+            "status": "unavailable",
+            "metric": "normalized_attention_index_change",
+            "value": None,
+            "unit": "percent",
+            "label": "언급량 비교 축적 중",
+        },
+        "attention_windows": diffusion.get("attention_windows") or [
+            {
+                "key": key,
+                "label": label,
+                "metric": "normalized_attention_index_change",
+                "status": "unavailable",
+                "percent": None,
+                "basis": "previous_equal_period_score",
+                "is_absolute_mention_count": False,
+            }
+            for key, label in (("1w", "1주"), ("1m", "1개월"), ("3m", "3개월"))
+        ],
+        "series_metric": {
+            "key": "normalized_attention_index",
+            "label": "언급량 추이 · 관심지수",
+            "is_absolute_mention_count": False,
+        },
         "keywords": keywords,
         "keyword_status": "ready",
         "companies": companies,

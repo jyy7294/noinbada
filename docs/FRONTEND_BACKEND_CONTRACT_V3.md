@@ -40,6 +40,9 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 
 - `frontend_default=true`인 경우 프런트는 이 배열의 순서와 표시명을 그대로 사용합니다.
 - 이 피드는 사용자 검수 결과를 고정한 `observed_reference` 표시층이며, 원천 `unified_ranking`과 점수를 변경하지 않습니다.
+- `data_mode`와 출처 상태는 감사·오류 진단용 내부 정보입니다. 사용자 기본 화면은 이를 전면에 내세우지 않습니다.
+- 기본 상세 화면은 `trend_stage`와 `attention_windows`의 1주·1개월·3개월 변화를 보여줍니다.
+- 원천이 공통 절대 언급량을 제공하지 않으므로 화면의 “언급량 추이”는 정규화 관심지수입니다. 절대 게시물 수로 표시하거나 해석하지 않습니다.
 - 항목별 `related_keywords`는 서로 다른 5개이며, 공백을 제외하고 최대 6자입니다.
 - 기업 연결은 확인된 상장기업만 담고, 10개 미만이면 `enrichment_pending`을 그대로 표시합니다. 숫자를 맞추기 위한 기업 패딩은 금지합니다.
 - 새 디자인 구현은 mutable 호환 문서보다 manifest가 검증한 불변 `rankings.json`을 우선 사용해야 합니다.

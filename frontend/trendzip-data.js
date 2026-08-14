@@ -181,6 +181,13 @@ function normalizeTrend(item) {
     sourceCount: Number(item.source_count || (Array.isArray(item.sources) ? item.sources.length : 0)),
     trendStage,
     observedDayLabel,
+    attentionLift: item.attention_lift || item.trend_story?.diffusion?.attention_lift || null,
+    attentionWindows: item.attention_windows || item.trend_story?.diffusion?.attention_windows || [],
+    seriesMetric: item.series_metric || {
+      key: 'normalized_attention_index',
+      label: '언급량 추이 · 관심지수',
+      is_absolute_mention_count: false,
+    },
     firstSeenAt: item.first_seen_at,
     lastSeenAt: item.last_seen_at,
     ageHours: Number(item.age_hours || 0),

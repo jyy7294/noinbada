@@ -36,6 +36,15 @@ def test_reviewed_presentation_feed_is_exact_and_enriched():
     )
     assert all(item["companies"] for item in feed["items"])
     assert all(item["ranking_effect"] == "none" for item in feed["items"])
+    assert all(
+        [window["key"] for window in item["attention_windows"]] == ["1w", "1m", "3m"]
+        for item in feed["items"]
+    )
+    assert all(
+        window["is_absolute_mention_count"] is False
+        for item in feed["items"]
+        for window in item["attention_windows"]
+    )
     assert feed["transition"]["enabled"] is False
 
 

@@ -866,6 +866,11 @@ def _validate_presentation_feed(feed: dict) -> None:
             raise ValueError(
                 "frontend presentation_feed requires five unique keywords of at most six characters"
             )
+        attention_windows = list(item.get("attention_windows") or [])
+        if [window.get("key") for window in attention_windows] != ["1w", "1m", "3m"]:
+            raise ValueError("frontend presentation_feed requires 1w, 1m, and 3m attention windows")
+        if any(window.get("is_absolute_mention_count") is not False for window in attention_windows):
+            raise ValueError("frontend attention windows must not claim absolute mention counts")
         for company in item.get("companies") or []:
             if not company.get("company_role_public") or not company.get("company_role_label"):
                 raise ValueError("frontend presentation companies require an explicit public role")

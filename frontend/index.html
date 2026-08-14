@@ -267,7 +267,7 @@
           <div style="background:#FFFFFF; border:1.5px solid #6B554A; border-radius:16px; padding:18px 17px 14px;">
             <div style="display:flex; align-items:baseline; justify-content:space-between;">
               <span data-z-detail-delta="1" style="display:inline-block; font-weight:900; font-size:22px; color:#E0453C; letter-spacing:-0.01em; animation:zpCount 0.5s cubic-bezier(0.22,1,0.36,1) 0.15s both;">수집 중</span>
-              <span data-z-detail-period="1" style="font-weight:700; font-size:10.5px; color:#87857B;">관측기간</span>
+              <span data-z-detail-period="1" style="font-weight:700; font-size:10.5px; color:#87857B;">1주 · 1개월 · 3개월</span>
             </div>
             <div data-z-series-bars="1" style="margin-top:12px; display:flex; align-items:flex-end; gap:6px; height:84px;">
               <div style="flex:1; height:32%; background:#FBF7EE; border:1px solid #D8D4C6; border-radius:5px 5px 0 0; transform-origin:bottom; animation:zpGrow 0.62s cubic-bezier(0.22,1,0.36,1) 0.18s both;"></div>
@@ -854,7 +854,7 @@ class Component extends DCLogic {
     set('[data-z-detail-category]', '실시간 데이터 상태');
     set('[data-z-detail-state]', state === 'loading' ? '연결 중' : state === 'empty' ? '공개 대기' : '연결 실패');
     set('[data-z-detail-delta]', '--');
-    set('[data-z-detail-period]', '관측 대기');
+    set('[data-z-detail-period]', '1주 · 1개월 · 3개월');
     set('[data-z-detail-summary]', detailText || '실시간 순위를 확인한 뒤 표시합니다.');
     set('[data-z-detail-source]', 'X · Google 수집 상태 확인');
     set('[data-z-detail-confidence]', '검증 전');
@@ -864,7 +864,7 @@ class Component extends DCLogic {
       bars.replaceChildren();
       var emptySeries = document.createElement('div');
       emptySeries.style.cssText = 'margin:auto;font-weight:700;font-size:11px;color:#87857B;';
-      emptySeries.textContent = '실측 시계열 없음';
+      emptySeries.textContent = '언급량 추이 준비 중';
       bars.appendChild(emptySeries);
     }
     var labels = document.querySelector('[data-z-series-labels]');
@@ -927,10 +927,11 @@ class Component extends DCLogic {
     set('[data-z-detail-confidence]', trend.reviewRequired
       ? '맥락 검토 필요 · 기업 연결 보류'
       : (trend.sourceBadge || '출처 확인') + ' · ' + ((trend.confidence && trend.confidence.label) || '검증 중'));
-    set('[data-z-detail-delta]', trend.rankKind === 'publication'
-      ? '발행 ' + String(trend.rank || '--') + '번'
-      : '통합 ' + Number(trend.score || 0).toFixed(1) + '점');
-    set('[data-z-detail-period]', trend.observedDayLabel || (trend.ageHours + '시간 관측'));
+    var attentionLift = trend.attentionLift || {};
+    set('[data-z-detail-delta]', attentionLift.label || '언급량 비교 축적 중');
+    set('[data-z-detail-period]', (trend.attentionWindows || []).map(function (row) {
+      return row.label;
+    }).filter(Boolean).join(' · ') || '1주 · 1개월 · 3개월');
     var sourceParts = [];
     if (Number.isFinite(trend.sources.x)) sourceParts.push('X ' + trend.sources.x + '위');
     if (Number.isFinite(trend.sources.google_trends)) sourceParts.push('Google ' + trend.sources.google_trends + '위');
@@ -941,7 +942,7 @@ class Component extends DCLogic {
     if (scoreTip) {
       var sc = trend.scoreComponents || {};
       scoreTip.textContent = trend.rankKind === 'publication'
-        ? '발행 순번 · 검수된 Top10 표시 순서이며 X·Google 원천순위는 별도 보존됩니다.'
+        ? '언급량 추이 · 플랫폼별 순위와 검색 관심을 같은 척도의 관심지수로 정규화하며 절대 게시물 수를 뜻하지 않습니다.'
         : '점수 근거 · 순위 ' + Number(sc.rrf_points || 0).toFixed(1)
           + ' + 변화 ' + Number(sc.momentum_points || 0).toFixed(1)
           + ' + 지속 ' + Number(sc.persistence_points || 0).toFixed(1)
@@ -965,7 +966,7 @@ class Component extends DCLogic {
     if (!rows.length) {
       var empty = document.createElement('div');
       empty.style.cssText = 'margin:auto;font-weight:700;font-size:11px;color:#87857B;';
-      empty.textContent = '시계열 관측값 없음';
+      empty.textContent = '언급량 추이 준비 중';
       barHost.appendChild(empty);
       return;
     }
