@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T16:49:10.4613443+00:00",
+    "updated_at":  "2026-08-14T16:54:17.9383977+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,18 +8,18 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "87a076150be1220a86cc48c52de4519b24cea6dc",
+                       "base_remote_main_sha":  "3cf5e8b911e89efcc47447ec4bfddc14421742b6",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "frontend/trendzip-data.js",
+                                             "frontend/index.html",
                                              "tests/test_frontend_mvp_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/trendzip-data.js":  "dc02294c217e7059b7a2a8a62a1c61f8ab91bf1e2f2c3096a9acc998f4a1b744",
-                                                    "tests/test_frontend_mvp_contract.py":  "44fdd2c1e67442e9b430aa47f74e9d9f3e9d270fad55ac3dbee7ac0af9e3b5d8"
+                                                    "frontend/index.html":  "6a354b416aba5b30d21cb10a4afd4345291177960a251ecd2f8013b8ed2f66b8",
+                                                    "tests/test_frontend_mvp_contract.py":  "518694ae8079daacc65e329ea06de86c1737ed0d40e2df9849799e786515060c"
                                                 },
-                       "commit_message":  "fix: retry immutable live-data loading with timeouts",
+                       "commit_message":  "fix: accept compact official company favicons",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -47,7 +47,7 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Prevent first-load stalls by bounding and retrying manifest, rankings, status and metadata requests.",
+                    "objective":  "Render every verified company logo instead of falling back to initials for compact official favicon assets.",
                     "completed":  [
 
                                   ],

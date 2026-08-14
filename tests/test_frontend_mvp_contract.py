@@ -29,6 +29,7 @@ def test_company_logos_are_used_across_company_and_portfolio_surfaces() -> None:
     assert "portfolio.companies.map" in INDEX
     assert "center/contain no-repeat" in INDEX
     assert "center/cover no-repeat" not in INDEX
+    assert "img.naturalWidth >= 16" in INDEX
 
 
 def test_chart_uses_selected_period_and_all_x_google_series() -> None:

@@ -1514,7 +1514,7 @@ class Component extends DCLogic {
       this.__logoBusy++;
       const done = () => { this.__logoBusy--; this.logoRefresh(); setTimeout(() => this.pumpLogoQueue(), 120); };
       const img = new Image();
-      img.onload = () => { if (img.naturalWidth >= 48) this.logoCache[name] = logoUrl; done(); };
+      img.onload = () => { if (img.naturalWidth >= 16) this.logoCache[name] = logoUrl; done(); };
       img.onerror = done;
       img.src = logoUrl;
     }
