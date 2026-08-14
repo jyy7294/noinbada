@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import re
 import sqlite3
 from collections import Counter, defaultdict
@@ -8,6 +9,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from .company_roles import with_company_role
+from .category_ontology import category_ontology
 from .curation import is_sensitive_context
 from .hourly_store import (
     ELIGIBLE_COLLECTOR_SQL,
@@ -55,6 +57,19 @@ ONTOLOGY_ENRICHMENT_PATHS = (
     ONTOLOGY_BRAND_ENRICHMENT_PATH,
     ONTOLOGY_CULTURE_ENRICHMENT_PATH,
 )
+
+
+ # X and Google are the only comparable rank feeds. NAVER News answers
+ # "why now?"; a search-result count is not a population-attention rank and
+ # is never mixed into the mathematical attention score.
+HOME_SOURCE_POLICY_VERSION = "home-feed-selection-v2-x-google-only"
+# NAVER 뉴스만 보조 신호로 사용한다. 블로그·검색트렌드·YouTube·Instagram은
+# 수집/검증/홈 선별 입력에서 제외한다.
+OPTIONAL_HOME_SOURCES: tuple[str, ...] = ()
+PUBLIC_BROAD_CATEGORIES = {
+    "food", "content", "sports", "lifestyle", "culture", "consumer",
+    "technology", "market",
+}
 
 
 def _source_related_terms(raw: str | None) -> list[str]:
@@ -182,8 +197,25 @@ def _category(topic: str) -> str:
             "게임", "패치", "롤 ", "오버워치", "스팀", "리그 오브 레전드",
             "mmorpg", "콘솔", "이스포츠", "e스포츠",
         ), "gaming_digital"),
-        (("패션", "한복", "유니폼", "가방", "신발", "화장품"), "fashion_collectible"),
-        (("여행", "호텔", "축제", "팝업", "전시"), "place_experience"),
+        ((
+            "패션", "한복", "유니폼", "가방", "신발", "화장품", "뷰티",
+            "메이크업", "스킨케어", "향수", "네일", "헤어", "코스메틱",
+        ), "fashion_collectible"),
+        ((
+            "여행", "호텔", "축제", "팝업", "전시", "박람회", "페스티벌",
+            "도서전", "영화제", "행사", "엑스포", "컨벤션",
+        ), "place_experience"),
+        ((
+            "뜨개질", "뜨개", "크로셰", "코바늘", "대바늘", "다꾸", "꾸미기",
+            "홈카페", "캠핑", "피크닉", "취미", "공예", "핸드메이드",
+        ), "lifestyle_behavior"),
+        ((
+            "러닝", "달리기", "요가", "필라테스", "명상", "헬스", "산책",
+            "건강관리", "웰니스", "수면", "회복",
+        ), "wellness_behavior"),
+        ((
+            "챌린지", "밈", "인증샷", "해시태그", "릴스", "숏폼", "바이럴",
+        ), "participation_meme"),
         ((
             "주식", "증시", "코스피", "코스닥", "채권", "금리", "증권",
             "상장폐지", "가상자산", "나스닥", "다우 존스", "cpi", "국채",
@@ -283,6 +315,202 @@ def _trend_definition(
     return definition
 
 
+_LIFECYCLE_PRESENTATION = {
+    "new": (0, "막 포착", 22, "이제 막 관측되기 시작한 구간입니다."),
+    "rising": (1, "확산 중", 58, "관심이 이전 관측 구간보다 커지는 흐름입니다."),
+    "rebounding": (1, "재확산", 62, "관심이 다시 높아지는 흐름입니다."),
+    "sustained": (2, "대중화·지속", 82, "반복 관측되며 관심이 이어지는 구간입니다."),
+    "cooling": (2, "관심 둔화", 88, "관심은 남아 있지만 최근 확산 속도는 완만해진 구간입니다."),
+    "expired": (2, "관측 종료", 100, "선택 기간의 최신 관측에서는 더 이상 확인되지 않은 상태입니다."),
+    "insufficient_data": (0, "판단 자료 부족", 12, "확산 단계를 판단하기 위한 비교 관측이 아직 부족합니다."),
+}
+
+
+def _frontend_story(item: dict) -> dict:
+    """Build a source-faithful story payload for the supplied prototype UI.
+
+    The UI needs more than an opaque score: it visualises a trigger, a small
+    related-expression graph, a lifecycle stage, and source-by-source motion.
+    This projection never creates a historical parent, a causal claim, or an
+    invented percentage.  Each relation is explicitly labelled as observed
+    co-occurrence or reviewed ontology context.
+    """
+
+    lifecycle = str(item.get("lifecycle") or "insufficient_data")
+    stage_index, phase_label, progress, phase_caption = _LIFECYCLE_PRESENTATION.get(
+        lifecycle, _LIFECYCLE_PRESENTATION["insufficient_data"]
+    )
+    age_hours = max(0.0, float(item.get("age_hours") or 0.0))
+    observed_day = max(1, int(age_hours // 24) + 1)
+    context = item.get("context_research") or {}
+    related = list(item.get("related_keywords") or item.get("keywords") or [])[:5]
+    root_id = "trend:root"
+    nodes = [{
+        "id": root_id,
+        "label": str(item.get("display_name") or item.get("event_key") or ""),
+        "node_type": "observed_trend_expression",
+        "source": "x_google_observation",
+    }]
+    edges = []
+    for index, keyword in enumerate(related, 1):
+        text = str(keyword.get("text") or "").strip()
+        if not text:
+            continue
+        status = str(keyword.get("status") or "observed_related_query")
+        observed = status in {"observed_ranked_term", "observed_related_query"}
+        node_id = f"keyword:{index}"
+        nodes.append({
+            "id": node_id,
+            "label": text,
+            "node_type": "observed_related_expression" if observed else "reviewed_related_concept",
+            "source": "x_google_observation" if observed else "reviewed_ontology",
+        })
+        evidence_urls = [
+            str(url) for url in keyword.get("evidence_urls") or []
+            if str(url).startswith(("http://", "https://"))
+        ]
+        edges.append({
+            "from": root_id,
+            "to": node_id,
+            "relation_type": "source_related_query" if observed else "reviewed_related_concept",
+            "relation_label": "동일 관측 맥락" if observed else "검수된 연관 맥락",
+            "evidence_urls": list(dict.fromkeys(evidence_urls)),
+            "causality": "not_inferred",
+        })
+
+    attention_change = (item.get("attention_change") or {}).get("24h") or {}
+    if attention_change.get("status") == "measured" and attention_change.get("percent") is not None:
+        percent = float(attention_change["percent"])
+        lift = {
+            "status": "measured",
+            "metric": "previous_equal_period_score_change",
+            "value": round(percent, 2),
+            "unit": "percent",
+            "label": f"24시간 관심 점수 {percent:+.1f}%",
+        }
+    elif item.get("momentum_delta") is not None:
+        points = float(item.get("momentum_delta") or 0.0) * 100.0
+        lift = {
+            "status": "normalized_signal",
+            "metric": "source_rank_velocity_index",
+            "value": round(points, 2),
+            "unit": "points",
+            "label": f"관심 속도 지표 {points:+.1f}p",
+        }
+    else:
+        lift = {
+            "status": "unavailable",
+            "metric": "source_rank_velocity_index",
+            "value": None,
+            "unit": "points",
+            "label": "비교 관측 축적 중",
+        }
+
+    source_labels = {
+        "x": "X",
+        "google_trends": "Google Trends",
+        "naver": "NAVER 검색·뉴스·블로그",
+        "youtube": "YouTube KR 차트·검색",
+    }
+    latest_ranks = item.get("latest_source_ranks") or {}
+    rank_changes = item.get("rank_change_by_source") or {}
+    channels = []
+    for source in ("x", "google_trends", "naver", "youtube"):
+        if source not in latest_ranks and source != "naver":
+            if source != "youtube":
+                continue
+        providers = ((item.get("verification_layer") or {}).get("providers") or {})
+        if (
+            source == "naver"
+            and not providers.get(source)
+        ):
+            continue
+        if (
+            source == "youtube"
+            and not providers.get(source)
+            and not item.get("youtube_chart_signal")
+        ):
+            continue
+        change = rank_changes.get(source)
+        chart_signal = item.get("youtube_chart_signal") or {}
+        source_rank = latest_ranks.get(source)
+        if source == "youtube" and source_rank is None:
+            source_rank = chart_signal.get("best_video_rank")
+            change = chart_signal.get("rank_change")
+        channels.append({
+            "source": source,
+            "label": source_labels[source],
+            "latest_rank": source_rank,
+            "rank_change": change,
+            "movement_label": (
+                f"직전 관측 대비 순위 {int(change):+d}" if change is not None else "직전 비교 자료 없음"
+            ),
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": source in {"x", "google_trends"},
+            "affects_multisource_home_rank": bool(
+                (item.get("home_platform_weights") or {}).get(source)
+            ),
+        })
+
+    trigger_urls = [
+        str(url) for url in context.get("evidence_urls") or []
+        if str(url).startswith(("http://", "https://"))
+    ]
+    return {
+        "schema_version": "trend-story-v1",
+        "status": "ready" if context.get("status") == "ready" else "observed_context_only",
+        "origin": {
+            "observed_term": str(item.get("observed_representative_term") or ""),
+            "first_observed_at": item.get("first_seen_at"),
+            "trigger_title": str(context.get("trigger_title") or ""),
+            "trigger_type": str(context.get("trigger_type") or ""),
+            "why_now": str(context.get("why_now") or ""),
+            "evidence_urls": list(dict.fromkeys(trigger_urls)),
+            "assertion": "observed_trigger_or_context_not_causal_origin",
+        },
+        "relationship_graph": {
+            "interpretation": "observed_context_graph_not_causal_lineage",
+            "nodes": nodes,
+            "edges": edges,
+        },
+        "diffusion": {
+            "lifecycle": lifecycle,
+            "phase_label": phase_label,
+            "stage_index": stage_index,
+            "progress_percent": progress,
+            "observed_day_label": f"관측 {observed_day}일차",
+            "observed_hours": int((item.get("lifecycle_baseline") or {}).get("observed_hours") or 0),
+            "caption": phase_caption,
+            "attention_lift": lift,
+            "channels": channels,
+            "ranking_input_policy": HOME_SOURCE_POLICY_VERSION,
+        },
+    }
+
+
+def _attach_frontend_story(items: list[dict]) -> None:
+    """Attach the non-scoring prototype projection after all metrics exist."""
+
+    for item in items:
+        story = _frontend_story(item)
+        item["trend_story"] = story
+        item["frontend_projection"] = {
+            "trend_name": item.get("display_name"),
+            "trend_category": item.get("category_label"),
+            "trend_core": item.get("display_name"),
+            "observed_day_label": story["diffusion"]["observed_day_label"],
+            "phase_label": story["diffusion"]["phase_label"],
+            "stage_index": story["diffusion"]["stage_index"],
+            "progress_percent": story["diffusion"]["progress_percent"],
+            "attention_lift": story["diffusion"]["attention_lift"],
+            "current_rank": item.get("home_rank") or item.get("observed_rank"),
+            "caption": story["diffusion"]["caption"],
+            "related_keyword_count": len(item.get("related_keywords") or []),
+            "company_grouping": "company_role_category",
+            "is_mock": False,
+        }
+
+
 def _home_context_gate(item: dict) -> tuple[bool, str]:
     """Apply a non-scoring evidence gate to the home representative subset.
 
@@ -297,7 +525,9 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
 
     if item.get("lane") != "main":
         return False, "not_main_lane"
-    if item.get("category") == "unclassified":
+    if item.get("category") in {"unclassified", "other"}:
+        return False, "unclassified"
+    if item.get("broad_category") not in PUBLIC_BROAD_CATEGORIES:
         return False, "unclassified"
     context_status = str(item.get("context_status") or "")
     if context_status in {"unresolved", "ambiguous_person"}:
@@ -311,7 +541,23 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
         )
         if not has_market_context:
             return False, "market_context_evidence_missing"
-    context_reason = "context_resolved"
+    context_research = item.get("context_research") or {}
+    trigger_title = str(context_research.get("trigger_title") or "").strip()
+    trigger_summary = str(context_research.get("why_now") or "").strip()
+    trigger_urls = {
+        str(value).strip()
+        for value in context_research.get("evidence_urls") or []
+        if str(value).strip().startswith(("http://", "https://"))
+    }
+    if not (
+        context_research.get("status") == "ready"
+        and trigger_title
+        and trigger_summary
+        and trigger_urls
+    ):
+        return False, "trigger_evidence_incomplete"
+
+    context_reason = "verified_trigger_event"
     if context_status == "needs_context":
         basis = str(item.get("category_basis") or "")
         labels = set((item.get("trend_fit") or {}).get("labels") or [])
@@ -328,6 +574,24 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
             return False, "context_evidence_missing"
 
     return True, context_reason
+
+
+def refresh_home_context_eligibility(intelligence: dict) -> dict:
+    """Re-evaluate the non-scoring home context gate after provider research.
+
+    The initial ranking is built before bounded provider requests finish.  A
+    later verified article or video may resolve a concrete trigger, so this
+    refresh is deliberately separate from ranking and category selection.
+    """
+
+    for item in intelligence.get("unified_ranking", []):
+        allowed, reason = _home_context_gate(item)
+        item["home_context_status"] = "resolved" if allowed else "review_required"
+        item["home_context_reason"] = reason
+        item["home_eligible"] = bool(allowed)
+        if item.get("lane") == "main" and not allowed:
+            item["selection_layer"] = "context_review_queue"
+    return intelligence
 
 
 def _series_rows(start: datetime, end: datetime, path: Path | None = None) -> list[sqlite3.Row]:
@@ -1076,11 +1340,7 @@ def _build_period_views(
         for main_rank, item in enumerate(main_ranking, 1):
             item["main_rank"] = main_rank
             item["home_rank"] = main_rank
-        completed_ranking = [
-            item for item in main_ranking
-            if item["frontend_readiness_status"] == "ready"
-        ]
-        for publication_rank, item in enumerate(completed_ranking, 1):
+        for publication_rank, item in enumerate(main_ranking, 1):
             item["publication_rank"] = publication_rank
         period_views[key] = {
             "key": key,
@@ -1092,59 +1352,278 @@ def _build_period_views(
             "company_detail_policy": "shared_by_detail_event_key",
             "company_count_affects_rank": False,
             "unified_ranking": ranking,
-            "period_top10": select_balanced_home_top10(completed_ranking),
+            "period_top10": select_balanced_home_top10(main_ranking),
         }
     return periods, period_views
 
 
 def select_balanced_home_top10(rows: list[dict], *, limit: int = 10) -> list[dict]:
-    """Select a deterministic, current-first and category-balanced home list.
+    """Deprecated legacy alias: flatten the rank-free home feed.
 
-    Source score and observed rank are never rewritten.  Readiness controls
-    whether a card can be published, while this selector only decides which
-    ready cards receive a publication position.  Current observations are
-    exhausted before a rolling-window historical fallback is considered.
+    ``limit`` is accepted only to avoid breaking old callers and is ignored.
     """
 
-    def ordered(values: list[dict]) -> list[dict]:
-        return sorted(values, key=lambda item: (
+    return [item for group in _build_home_feed(rows)["groups"] for item in group["trends"]]
+
+
+def _flow_group(item: dict) -> str | None:
+    """Map an evidence-complete, current candidate to one honest flow state."""
+
+    if item.get("is_current") is not True or item.get("lifecycle") == "expired":
+        return None
+    sources = set((item.get("latest_source_ranks") or {}).keys())
+    measured = (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
+    positive = float(item.get("momentum_delta") or 0.0) > 0.0
+    if measured and positive and {"x", "google_trends"}.issubset(sources):
+        return "spreading"
+    if not measured or item.get("lifecycle") == "new":
+        return "emerging"
+    return "sustained"
+
+
+def _home_card(item: dict, group: str) -> dict:
+    """Return the public projection with ranking and scoring fields removed."""
+
+    allowed = (
+        "event_key", "display_name", "canonical_topic", "broad_category",
+        "category", "category_label", "trend_definition", "lifecycle",
+        "lifecycle_label", "source_badge", "context_research",
+        "related_keywords", "keywords", "companies", "company_status",
+        "company_card_status", "stock_impact_hypothesis", "data_confidence",
+        "observed_at", "why_now", "verification_layer", "platform_observation_summary",
+        "frontend_readiness_status", "company_card_reason",
+    )
+    card = {field: item[field] for field in allowed if field in item}
+    card["flow_group"] = group
+    return card
+
+
+def _build_home_feed(rows: list[dict]) -> dict:
+    """Create a rank-free user-facing feed; no quota, cap or padding applies."""
+
+    labels = {
+        "spreading": ("확산 중", "X·Google에서 함께 관측되고 실제 상승이 측정된 흐름"),
+        "sustained": ("계속 화제", "현재 관측과 맥락은 유지되지만 급상승을 단정하지 않는 흐름"),
+        "emerging": ("막 포착됨", "현재 맥락은 확인됐지만 비교 자료가 부족한 신규 흐름"),
+    }
+    buckets = {key: [] for key in labels}
+    for item in rows:
+        group = _flow_group(item)
+        if group is not None:
+            buckets[group].append(item)
+    groups = []
+    for key in ("spreading", "sustained", "emerging"):
+        ordered = sorted(buckets[key], key=lambda item: (
+            -float(item.get("_home_selection_score") or 0.0),
             -float(item.get("score") or 0.0),
             int(item.get("observed_rank") or 10**9),
             str(item.get("event_key") or ""),
         ))
+        if ordered:
+            label, definition = labels[key]
+            groups.append({
+                "key": key,
+                "label": label,
+                "definition": definition,
+                "trends": [_home_card(item, key) for item in ordered],
+            })
+    return {
+        "status": "ready" if groups else "empty",
+        "groups": groups,
+        "selection_policy": HOME_SOURCE_POLICY_VERSION,
+        "legacy_alias_status": "deprecated_flattened_home_feed",
+    }
 
-    current = ordered([item for item in rows if item.get("is_current") is True])
-    historical = ordered([item for item in rows if item.get("is_current") is not True])
-    selected: list[dict] = []
-    category_counts: Counter[str] = Counter()
 
-    def take(pool: list[dict], *, enforce_caps: bool) -> None:
-        for item in pool:
-            if len(selected) >= limit or item in selected:
-                continue
-            category = str(item.get("broad_category") or "")
-            cap = 2
-            if enforce_caps and category_counts[category] >= cap:
-                continue
-            selected.append(item)
-            category_counts[category] += 1
+def _naver_candidate_signal(item: dict) -> float | None:
+    """Return a NAVER *news* signal without changing canonical rank.
 
-    # The first pass improves variety without imposing a product-category
-    # quota. The second pass always relaxes it, so food (or any other valid
-    # category) is never excluded merely because another item shares its type.
-    take(current, enforce_caps=True)
-    # Exhaust current cards before using any
-    # rolling-window fallback. This prevents an expired topic from displacing
-    # something that is still being observed merely for category cosmetics.
-    take(current, enforce_caps=False)
-    # A historical card is an explicit rolling-24h fallback only.  Diversity
-    # caps are tried first and relaxed only when required to fill the contract.
-    take(historical, enforce_caps=True)
-    take(historical, enforce_caps=False)
+    This is deliberately a bounded candidate-level context signal, not a
+    NAVER keyword rank.  Only fresh news evidence and independent publishers
+    are considered; blog, search-trend and video data cannot influence it.
+    """
 
-    for position, item in enumerate(selected, 1):
-        item["publication_rank"] = position
-    return selected
+    providers = (item.get("verification_layer") or {}).get("providers") or {}
+    record = providers.get("naver") or {}
+    if record.get("matched") is not True or record.get("status") != "observed":
+        return None
+    metrics = record.get("metrics") or {}
+    news_recent = min(10.0, float(metrics.get("news_recent_24h_sample_count") or 0.0)) * 10.0
+    host_breadth = min(10.0, float(metrics.get("news_independent_host_count") or 0.0)) * 10.0
+    return round(news_recent * 0.65 + host_breadth * 0.35, 6)
+
+
+def _youtube_candidate_signal(item: dict) -> float | None:
+    """Return a bounded candidate-level YouTube attention signal.
+
+    ``mostPopular`` is a video chart, not a general Korean search-ranking
+    feed.  The score therefore combines a fresh query match with the public
+    statistics of its returned videos, then becomes comparable only through a
+    percentile across the same candidate pool.  It never claims that views are
+    search volume or that a video caused a trend.
+    """
+
+    providers = (item.get("verification_layer") or {}).get("providers") or {}
+    record = providers.get("youtube") or {}
+    query_signal: float | None = None
+    if record.get("matched") is True and record.get("status") == "observed":
+        metrics = record.get("metrics") or {}
+        evidence = record.get("evidence") or []
+        total = max(0.0, float(metrics.get("approximate_total_results") or 0.0))
+        sample_count = max(0.0, float(metrics.get("stored_evidence_count") or 0.0))
+        largest_view_count = max(
+            [
+                max(0.0, float((entry.get("metrics") or {}).get("viewCount") or 0.0))
+                for entry in evidence
+                if isinstance(entry, dict)
+            ]
+            or [0.0]
+        )
+        # Log scaling prevents a single celebrity MV from overwhelming every
+        # other source.  It is a bounded discovery measure, not search volume.
+        view_strength = min(100.0, math.log10(largest_view_count + 1.0) / 7.0 * 100.0)
+        query_signal = (
+            min(50.0, total) / 50.0 * 35.0
+            + min(5.0, sample_count) / 5.0 * 20.0
+            + view_strength * 0.45
+        )
+
+    chart = item.get("youtube_chart_signal") or {}
+    chart_signal = None
+    if chart.get("status") == "matched_exact_observed_expression":
+        chart_signal = max(0.0, min(100.0, float(chart.get("youtube_score") or 0.0)))
+
+    if query_signal is None and chart_signal is None:
+        return None
+    if query_signal is None:
+        return round(chart_signal or 0.0, 6)
+    if chart_signal is None:
+        return round(query_signal, 6)
+    # Search and official chart are independent content-discovery observations.
+    # Keep the query slightly stronger because it is term-specific; both remain
+    # subject to the equal-pool coverage gate before they affect home_rank.
+    return round(query_signal * 0.60 + chart_signal * 0.40, 6)
+
+
+def _percentiles(raw: dict[str, float | None]) -> dict[str, float]:
+    ordered = sorted(
+        ((key, float(value)) for key, value in raw.items() if value is not None),
+        key=lambda pair: (-pair[1], pair[0]),
+    )
+    if not ordered:
+        return {}
+    return {
+        key: round((len(ordered) - index) / len(ordered) * 100.0, 6)
+        for index, (key, _) in enumerate(ordered)
+    }
+
+
+def apply_equal_platform_home_scores(rows: list[dict]) -> list[dict]:
+    """Attach internal, deterministic selection signals for the home feed.
+
+    The function name remains for one release of call-site compatibility.  It
+    does *not* create a user-facing rank: canonical ``observed_rank`` remains
+    the X/Google audit measure and the private selection score is used only to
+    keep cards stable inside their flow group.
+    """
+
+    if not rows:
+        return rows
+    source_coverage = {
+        "naver": {
+            "active": False,
+            "status": "context_only_not_comparable_rank_signal",
+        }
+    }
+
+    source_max_rank: dict[str, int] = {}
+    for source in ("x", "google_trends"):
+        ranks = [
+            int((item.get("latest_source_ranks") or {}).get(source))
+            for item in rows
+            if (item.get("latest_source_ranks") or {}).get(source) is not None
+        ]
+        source_max_rank[source] = max(ranks, default=1)
+
+    def rank_strength(item: dict, source: str) -> float:
+        value = (item.get("latest_source_ranks") or {}).get(source)
+        if value is None:
+            return 0.0
+        rank = max(1, int(value))
+        maximum = max(rank, source_max_rank[source])
+        if maximum <= 1:
+            return 100.0
+        return max(0.0, min(100.0, (maximum - rank) / (maximum - 1) * 100.0))
+
+    for item in rows:
+        x_score = rank_strength(item, "x")
+        google_score = rank_strength(item, "google_trends")
+        weights = {"x": 0.5, "google_trends": 0.5}
+        home_score = x_score * 0.5 + google_score * 0.5
+        item["home_platform_score"] = round(home_score, 2)
+        item["home_platform_components"] = {
+            "x": round(x_score, 2),
+            "google_trends": round(google_score, 2),
+            "naver": None,
+        }
+        item["home_platform_weights"] = {source: round(weight, 6) for source, weight in weights.items()}
+        item["naver_home_rank_status"] = source_coverage["naver"]["status"]
+        item["naver_candidate_signal"] = _naver_candidate_signal(item)
+        item["home_platform_coverage"] = {
+            "candidate_pool_size": len(rows),
+            "sources": source_coverage,
+            "activation_threshold": None,
+            "minimum_observed_candidates": None,
+        }
+        item["home_source_policy"] = HOME_SOURCE_POLICY_VERSION
+        item["home_rank_input_sources"] = [
+            source for source, weight in weights.items() if weight > 0.0
+        ]
+        naver_record = ((item.get("verification_layer") or {}).get("providers") or {}).get("naver") or {}
+        naver_metrics = naver_record.get("metrics") or {}
+        item["platform_observation_summary"] = {
+            "x": {
+                "observed": (item.get("latest_source_ranks") or {}).get("x") is not None,
+                "latest_rank": (item.get("latest_source_ranks") or {}).get("x"),
+                "ranking_input": True,
+            },
+            "google_trends": {
+                "observed": (item.get("latest_source_ranks") or {}).get("google_trends") is not None,
+                "latest_rank": (item.get("latest_source_ranks") or {}).get("google_trends"),
+                "ranking_input": True,
+            },
+            "naver_news": {
+                "observed": naver_record.get("status") == "observed" and naver_record.get("matched") is True,
+                "recent_article_count": int(naver_metrics.get("news_recent_24h_sample_count") or 0),
+                "independent_publisher_count": int(naver_metrics.get("news_independent_host_count") or 0),
+                "selection_input": False,
+            },
+            "youtube": {"status": "disabled_by_home_feed_policy", "ranking_input": False},
+            "instagram": {"status": "disabled_by_home_feed_policy", "ranking_input": False},
+        }
+        item["canonical_observed_rank_preserved"] = True
+
+        momentum = max(0.0, min(1.0, float(item.get("momentum_delta") or 0.0)))
+        latest_sources = set((item.get("latest_source_ranks") or {}).keys())
+        cross_spread = 1.0 if {"x", "google_trends"}.issubset(latest_sources) else 0.0
+        persistence = max(0.0, min(1.0, float(item.get("persistence") or 0.0)))
+        freshness = max(0.0, min(1.0, float(item.get("freshness") or 0.0)))
+        item["_home_selection_score"] = round(
+            35.0 * momentum
+            + 25.0 * cross_spread
+            + 20.0 * (home_score / 100.0)
+            + 10.0 * persistence
+            + 10.0 * freshness,
+            6,
+        )
+        item["_home_selection_components"] = {
+            "velocity": round(momentum * 100.0, 6),
+            "cross_platform_spread": round(cross_spread * 100.0, 6),
+            "current_attention": round(home_score, 6),
+            "persistence": round(persistence * 100.0, 6),
+            "recency": round(freshness * 100.0, 6),
+        }
+    return rows
 
 
 def _period_change_metrics(period_views: dict[str, dict]) -> dict[str, dict]:
@@ -1177,6 +1656,7 @@ def _period_change_metrics(period_views: dict[str, dict]) -> dict[str, dict]:
 def refresh_frontend_readiness(intelligence: dict) -> dict:
     """Rebuild frontend arrays after score-independent enrichment is attached."""
 
+    refresh_home_context_eligibility(intelligence)
     candidates = intelligence.get("unified_ranking", [])
     for item in candidates:
         keyword_count = len(item.get("related_keywords") or item.get("keywords") or [])
@@ -1201,9 +1681,9 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
             str(company["stock_code"]).strip() for company in complete_companies
         })
         role_category_count = len({
-            str(company.get("value_chain_stage") or "").strip()
+            str(company.get("company_role_category") or "").strip()
             for company in complete_companies
-            if str(company.get("value_chain_stage") or "").strip()
+            if str(company.get("company_role_category") or "").strip()
         })
         missing = []
         if item.get("keyword_status") != "ready" or keyword_count != 5:
@@ -1236,49 +1716,48 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
         item for item in candidates
         if item.get("lane") == "main" and item.get("home_eligible") is True
     ]
-    for rank, item in enumerate(home, 1):
-        item["home_rank"] = rank
-    complete = [item for item in home if item["frontend_readiness_status"] == "ready"]
-    rising = [
-        item for item in complete
-        if item.get("is_current") is True
-        and (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
-        and float(item.get("momentum_delta") or 0.0) > 0.0
+    apply_equal_platform_home_scores(home)
+    complete = [item for item in home if item.get("frontend_readiness_status") == "ready"]
+    # ``home_feed`` is the only new public home surface.  It contains neither
+    # cardinal ranks nor internal selection scores; incomplete observed rows
+    # remain available only through the audit/detail arrays.
+    feed = _build_home_feed(complete)
+    flattened = [item for group in feed["groups"] for item in group["trends"]]
+    intelligence["home_feed"] = feed
+    # One-release compatibility aliases.  They intentionally flatten the
+    # exact same cards and are documented as deprecated.
+    intelligence["home_top10"] = list(flattened)
+    intelligence["trend_top10"] = list(flattened)
+    intelligence["public_top10"] = list(flattened)
+    intelligence["rising_top10"] = [
+        item for group in feed["groups"] if group["key"] == "spreading"
+        for item in group["trends"]
     ]
-    rising.sort(key=lambda item: (
-        -float(item["momentum_delta"]),
-        -float(item["period_strength"]),
-        int(item["observed_rank"]),
-        str(item["event_key"]),
-    ))
-    for item in candidates:
-        item["rising_rank"] = None
-    for rank, item in enumerate(rising, 1):
-        item["rising_rank"] = rank
-
-    top = select_balanced_home_top10(complete)
-    intelligence["home_top10"] = top
-    intelligence["trend_top10"] = list(top)
-    intelligence["public_top10"] = list(top)
-    intelligence["rising_top10"] = rising[:10]
     intelligence["company_ready_trends"] = [
         item for item in home
         if int(item.get("frontend_company_count") or 0) >= MINIMUM_FRONTEND_COMPANIES
     ]
     readiness = intelligence.setdefault("publication_readiness", {})
+    home_status = feed["status"]
     readiness.update({
+        "policy_version": "home-feed-contract-v1",
         "ready_count": len(complete),
-        "published_count": len(top),
+        "published_count": len(flattened),
         "pending_count": len(home) - len(complete),
-        "publication_ready": len(top) >= 10,
+        "publication_ready": bool(flattened),
+        "home_status": home_status,
     })
+    readiness.pop("target_count", None)
+    intelligence["home_status"] = home_status
     for summary in intelligence.get("category_summary", []):
         category = summary.get("category")
-        summary["home_top10_count"] = sum(
-            item.get("broad_category") == category for item in top
+        summary["home_feed_count"] = sum(
+            item.get("broad_category") == category for item in flattened
         )
-        summary["rising_top10_count"] = sum(
-            item.get("broad_category") == category for item in rising[:10]
+        summary["spreading_count"] = sum(
+            item.get("broad_category") == category
+            for group in feed["groups"] if group["key"] == "spreading"
+            for item in group["trends"]
         )
     by_key = {item["event_key"]: item for item in candidates}
     for view in (intelligence.get("ranking_views") or {}).values():
@@ -1287,22 +1766,33 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
             if source is None:
                 continue
             for field in (
+                "home_eligible",
+                "home_platform_score", "home_platform_components",
+                "home_platform_weights", "home_platform_coverage",
+                "home_source_policy", "home_rank_input_sources",
+                "canonical_observed_rank_preserved", "naver_home_rank_status",
+                "naver_candidate_signal", "_home_selection_score",
+                "_home_selection_components",
                 "keyword_status", "company_card_status", "company_status",
                 "frontend_readiness_status", "frontend_readiness_missing",
                 "frontend_keyword_count", "frontend_company_count",
+                "verification_layer",
             ):
                 summary[field] = source.get(field)
-            summary["publication_rank"] = None
+            summary.pop("home_rank", None)
+            summary.pop("publication_rank", None)
         period_home = [
             item for item in view.get("unified_ranking", [])
-            if item.get("lane") == "main" and item.get("home_eligible") is True
+            if item.get("lane") == "main"
+            and item.get("home_eligible") is True
+            and item.get("frontend_readiness_status") == "ready"
         ]
-        period_complete = [
-            item for item in period_home
-            if item.get("frontend_readiness_status") == "ready"
+        view["period_home_feed"] = _build_home_feed(period_home)
+        view["period_top10"] = [
+            item for group in view["period_home_feed"]["groups"]
+            for item in group["trends"]
         ]
-        period_top = select_balanced_home_top10(period_complete)
-        view["period_top10"] = period_top
+    _attach_frontend_story(candidates)
     return intelligence
 
 
@@ -1489,6 +1979,43 @@ def build_intelligence(
             for claim_type in record.get("claim_types", [])
             if claim_type
         })
+        approved_context_records = [
+            evidence
+            for record in news_context_records
+            for evidence in record.get("evidence") or []
+            if isinstance(evidence, dict)
+            and str(evidence.get("review_status") or "") == "approved"
+            and str(evidence.get("url") or "").startswith(("http://", "https://"))
+            and str(evidence.get("title") or "").strip()
+            and any(
+                str(claim.get("text") or "").strip()
+                for claim in evidence.get("claims") or []
+                if isinstance(claim, dict)
+            )
+        ]
+        trigger_record = approved_context_records[0] if approved_context_records else None
+        trigger_claims = (
+            [
+                str(claim.get("text") or "").strip()
+                for claim in trigger_record.get("claims") or []
+                if isinstance(claim, dict) and str(claim.get("text") or "").strip()
+            ]
+            if trigger_record else []
+        )
+        context_research = {
+            "status": "ready" if trigger_record and trigger_claims else "incomplete",
+            "trigger_title": str((trigger_record or {}).get("title") or ""),
+            "why_now": " ".join(trigger_claims),
+            "trigger_type": (
+                str((trigger_record.get("claims") or [{}])[0].get("type") or "")
+                if trigger_record else ""
+            ),
+            "published_at": (trigger_record or {}).get("published_at"),
+            "evidence_urls": [str(trigger_record["url"])] if trigger_record else [],
+            "evidence_records": approved_context_records,
+            "affects_score": False,
+            "ranking_source": False,
+        }
         verification_record = verification_by_trend.get(event_key, {})
         providers = verification_record.get("providers", {})
         provider_issue_context = _provider_issue_context_titles(
@@ -1733,6 +2260,7 @@ def build_intelligence(
             "category_basis": category_basis,
             "broad_category": broad_category,
             "category_label": category_label,
+            "category_ontology": category_ontology(detected_category),
             "trend_definition": _trend_definition(
                 display_name,
                 category_label,
@@ -1785,6 +2313,7 @@ def build_intelligence(
                 "affects_score": False,
                 "ranking_source": False,
             },
+            "context_research": context_research,
             "provenance": sorted({item["provenance"] for item in observations}),
             "series": [{"at": item["observed_at"], "source": item["source"],
                         "rank": item["source_rank"], "value": item["value"],
@@ -1923,9 +2452,9 @@ def build_intelligence(
         })
         readiness_missing = []
         role_category_count = len({
-            str(company.get("value_chain_stage") or "").strip()
+            str(company.get("company_role_category") or "").strip()
             for company in complete_companies
-            if str(company.get("value_chain_stage") or "").strip()
+            if str(company.get("company_role_category") or "").strip()
         })
         if item["keyword_status"] != "ready" or keyword_count != 5:
             readiness_missing.append("related_keywords_exactly_five")
@@ -1948,19 +2477,20 @@ def build_intelligence(
         item for item in candidates
         if item["lane"] == "main" and item["home_eligible"]
     ]
-    for home_rank, item in enumerate(home_candidates, 1):
-        item["home_rank"] = home_rank
+    apply_equal_platform_home_scores(home_candidates)
+    home_candidates.sort(key=lambda item: (
+        int(item.get("home_rank") or 10**9),
+        str(item.get("event_key") or ""),
+    ))
 
     completed_home_candidates = [
         item for item in home_candidates
         if item["frontend_readiness_status"] == "ready"
     ]
-    for publication_rank, item in enumerate(completed_home_candidates, 1):
-        item["publication_rank"] = publication_rank
-
     rising_candidates = [
         item for item in completed_home_candidates
-        if (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
+        if item.get("is_current") is True
+        and (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
         and float(item.get("momentum_delta") or 0.0) > 0.0
     ]
     rising_candidates.sort(
@@ -2014,6 +2544,7 @@ def build_intelligence(
             "24h": {"status": "unavailable", "percent": None, "basis": "previous_equal_period_score"},
             "7d": {"status": "unavailable", "percent": None, "basis": "previous_equal_period_score"},
         })
+    _attach_frontend_story(candidates)
     default_view = ranking_views[period_ranking_contract["default_period"]]
     if [item["event_key"] for item in default_view["unified_ranking"]] != [
         item["event_key"] for item in candidates
@@ -2026,26 +2557,32 @@ def build_intelligence(
     ]:
         raise ValueError("top-level trend_top10 must remain the hydrated default-period alias")
     context_resolved_candidates = list(home_candidates)
+    home_status = (
+        "complete" if len(home_top10) == 10
+        else "partial" if home_top10
+        else "empty"
+    )
     publication_readiness = {
-        "policy_version": "complete-home-contract-v1",
+        "policy_version": "complete-home-contract-v2",
         "target_count": 10,
         "ready_count": len(completed_home_candidates),
         "published_count": len(home_top10),
         "pending_count": len(home_candidates) - len(completed_home_candidates),
-        "publication_ready": len(completed_home_candidates) >= 10,
+        "publication_ready": bool(home_top10),
+        "home_status": home_status,
         "required_keyword_count": 5,
         "minimum_company_count": MINIMUM_FRONTEND_COMPANIES,
         "padding_forbidden": True,
         "ranking_effect": "none",
         "rule": (
-            "Only score-ordered, product-fit trends with exactly five evidence-backed "
-            "related keywords and at least ten complete listed-company relationships "
-            "across two to four value-chain groups "
-            "may enter frontend Top10 arrays."
+            "Only product-fit trends with a concrete current trigger, exactly five "
+            "sourced keywords, and ten complete listed-company relations across two "
+            "to four role categories may enter frontend Top10 arrays. One to nine "
+            "completed cards are published as partial; padding is forbidden."
         ),
     }
     home_quality_gate = {
-        "policy_version": "home-trend-subset-v3",
+        "policy_version": "home-trend-subset-v4",
         "ranking_effect": "none",
         "unified_ranking_preserved": True,
         "main_lane_total": len(lanes["main"]),
@@ -2062,14 +2599,14 @@ def build_intelligence(
         "context_resolved_total": len(context_resolved_candidates),
         "context_review_total": len(lanes["main"]) - len(context_resolved_candidates),
         "context_review_reasons": dict(sorted(Counter(
-            home_gate_results[item["event_key"]][1]
+            item.get("home_context_reason") or "context_unresolved"
             for item in lanes["main"]
-            if not home_gate_results[item["event_key"]][0]
+            if item.get("home_context_status") != "resolved"
         ).items())),
         "rule": (
-            "자동 제품 적합·맥락 규칙을 통과한 main 후보의 실측 점수 순서를 "
-            "보존해 앞 10개를 홈 트렌드로 사용함; 키워드와 기업 보강 상태는 "
-            "별도 필드이며 홈 순위 점수에는 영향을 주지 않음"
+            "자동 제품 적합·맥락 규칙을 통과한 main 후보 중 맥락·키워드·기업 "
+            "계약까지 완성된 항목만 다중 출처 홈 순위로 공개함; 미완성 후보는 "
+            "전체 실측 순위와 보강 큐에는 남지만 홈 카드에 채우기용으로 쓰지 않음"
         ),
     }
     ontology_enrichment_queue = [
@@ -2104,8 +2641,8 @@ def build_intelligence(
             "padding_forbidden": True,
             "affects_score": False,
         }
-        for item in home_candidates
-        if item["company_resolution"]["publish_status"] == "ontology_incomplete"
+        for item in lanes["main"]
+        if item["frontend_readiness_status"] != "ready"
     ]
 
     snapshot_quality = {}
@@ -2217,20 +2754,24 @@ def build_intelligence(
             "active_candidate_gate": "observed in the selected 24h, 7d, or 30d period",
             "candidate_status": "is_current or period_observed; stale items retain last_seen and freshness",
             "default_period": "daily",
+            "canonical_observed_rank_sources": ["x", "google_trends"],
+            "home_rank_policy": HOME_SOURCE_POLICY_VERSION,
+            "home_rank_inputs": ["x", "google_trends", "naver", "youtube"],
+            "optional_home_input_policy": "per-source candidate signal must cover 80 percent of the canonical top-20 pool and at least ten candidates",
         },
         "home_quality_gate": home_quality_gate,
         "publication_readiness": publication_readiness,
         "context_evidence_policy": {
-            "news_is_ranking_source": False,
+            "news_is_ranking_source": "home_rank_only_after_coverage_gate",
             "news_layers": ["discovery", "context", "company_evidence"],
-            "promotion_gate": "뉴스 발견어는 X 또는 Google 원장 관측 전에는 unified ranking에 승격하지 않음",
+            "promotion_gate": "뉴스·YouTube 발견 신호는 사건 병합과 맥락 검증을 거친 뒤 home rank 입력으로만 사용하며 canonical observed rank에는 직접 삽입하지 않음",
             "context_affects_score": False,
         },
         "verification_policy": {
             "planned_platforms": ["naver", "youtube", "instagram"],
             "storage": "provider_verification_ledger_sqlite",
             "unavailable_platform_penalty": 0,
-            "verification_affects_score": False,
+            "verification_affects_score": "canonical_false_home_rank_coverage_gated",
         },
         "hourly_rankings": hourly_ranking,
         "daily_aggregates": daily_aggregates,
@@ -2245,6 +2786,7 @@ def build_intelligence(
         },
         "unified_ranking": candidates,
         "all_observed_ranking": candidates,
+        "home_status": home_status,
         "home_top10": home_top10,
         "rising_top10": rising_top10,
         "category_summary": category_summary,
@@ -2266,6 +2808,7 @@ def build_intelligence(
             "public_top10_count": len(public_top10),
             "frontend_complete_candidate_count": len(completed_home_candidates),
             "frontend_publication_ready": publication_readiness["publication_ready"],
+            "home_status": home_status,
             "trend_top10_count": len(trend_top10),
             "company_ready_trend_count": len(company_ready_trends),
             "excluded_from_public_due_to_non_main_lane": len(candidates) - len(home_candidates),

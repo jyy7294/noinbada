@@ -5,6 +5,7 @@ from trzip.hourly_store import HourlyObservation, upsert
 from trzip.intelligence import (
     _broad_category,
     _category,
+    _frontend_story,
     _home_context_gate,
     _path_relation_tier,
     _provider_issue_context_titles,
@@ -96,6 +97,50 @@ def test_trend_definition_explains_meaning_and_observed_context():
     assert "투자 추천을 의미하지 않습니다" in definition
 
 
+def test_frontend_story_keeps_related_terms_as_context_not_causal_lineage():
+    story = _frontend_story({
+        "event_key": "두쫀쿠",
+        "display_name": "두쫀쿠",
+        "observed_representative_term": "두쫀쿠",
+        "first_seen_at": "2026-08-14T00:00:00+00:00",
+        "age_hours": 28,
+        "lifecycle": "rising",
+        "lifecycle_baseline": {"observed_hours": 5},
+        "related_keywords": [
+            {
+                "text": "두바이 초콜릿",
+                "status": "observed_related_query",
+                "evidence_urls": ["https://trends.google.com/trending?geo=KR"],
+            },
+            {
+                "text": "마시멜로",
+                "status": "approved_ontology_related_term",
+                "evidence_urls": ["https://example.com/ontology"],
+            },
+        ],
+        "context_research": {
+            "status": "ready",
+            "trigger_title": "신제품 영상 확산",
+            "trigger_type": "creator_spread",
+            "why_now": "짧은 영상 공유가 늘었다.",
+            "evidence_urls": ["https://example.com/trigger"],
+        },
+        "attention_change": {
+            "24h": {"status": "measured", "percent": 38.2},
+        },
+        "latest_source_ranks": {"x": 3, "google_trends": 7},
+        "rank_change_by_source": {"x": 2, "google_trends": None},
+    })
+
+    assert story["diffusion"]["phase_label"] == "확산 중"
+    assert story["diffusion"]["observed_day_label"] == "관측 2일차"
+    assert story["diffusion"]["attention_lift"]["label"] == "24시간 관심 점수 +38.2%"
+    assert story["relationship_graph"]["interpretation"] == "observed_context_graph_not_causal_lineage"
+    assert story["relationship_graph"]["edges"][0]["relation_type"] == "source_related_query"
+    assert story["relationship_graph"]["edges"][0]["causality"] == "not_inferred"
+    assert story["diffusion"]["channels"][0]["movement_label"] == "직전 관측 대비 순위 +2"
+
+
 def test_astronomy_aliases_merge_only_with_source_related_query_context():
     assert canonical_topic("일식") == "일식"
     assert canonical_topic("일식", '["개기일식 시간"]') == "개기일식"
@@ -138,11 +183,20 @@ def test_single_source_market_term_needs_extra_home_context():
     consumer_context = {
         **base,
         "trend_fit": {"labels": ["named_object", "consumer_action"]},
+        "context_research": {
+            "status": "ready", "trigger_title": "공식 발표",
+            "why_now": "공식 발표 뒤 관심이 증가했다.",
+            "evidence_urls": ["https://example.com/trigger"],
+        },
     }
-    assert _home_context_gate(consumer_context) == (True, "context_resolved")
+    assert _home_context_gate(consumer_context) == (True, "verified_trigger_event")
 
-    cross_source = {**base, "period_sources": ["x", "google_trends"]}
-    assert _home_context_gate(cross_source) == (True, "context_resolved")
+    cross_source = {
+        **base,
+        "period_sources": ["x", "google_trends"],
+        "context_research": consumer_context["context_research"],
+    }
+    assert _home_context_gate(cross_source) == (True, "verified_trigger_event")
 
 
 def test_listing_edge_alone_never_promotes_a_company_to_direct_relation():
@@ -244,7 +298,10 @@ def test_company_gold_never_fills_missing_companies_with_templates(tmp_path):
     assert all(company["evidence_sources"] for company in published)
     assert trend["company_resolution"]["publish_status"] == "published"
     assert trend["company_resolution"]["ontology_diagnostics"]["padding_forbidden"] is True
-    assert result["ontology_enrichment_queue"] == []
+    queue = result["ontology_enrichment_queue"]
+    assert len(queue) == 1
+    assert queue[0]["missing_company_paths"] == 4
+    assert queue[0]["minimum_required"] == 10
 
 
 def test_three_evidence_backed_companies_are_publishable_gold(tmp_path):
@@ -265,7 +322,10 @@ def test_three_evidence_backed_companies_are_publishable_gold(tmp_path):
     assert trend["company_resolution"]["minimum_gold_companies"] == 3
     assert trend["company_card_status"] == "enrichment_pending"
     assert trend["company_card_reason"] == "fewer_than_ten_evidence_backed_companies"
-    assert result["ontology_enrichment_queue"] == []
+    queue = result["ontology_enrichment_queue"]
+    assert len(queue) == 1
+    assert queue[0]["missing_company_paths"] == 7
+    assert queue[0]["minimum_required"] == 10
 
 
 def test_registered_person_name_stays_ranked_but_manual_reference_does_not_promote_it(tmp_path):
@@ -468,8 +528,8 @@ def test_google_related_queries_can_disambiguate_category_without_renaming_term(
     assert item["category"] == "sports_participation"
     assert item["broad_category"] == "sports"
     assert item["context_status"] == "resolved_by_observed_context"
-    assert item["home_context_status"] == "resolved"
-    assert item["home_context_reason"] == "context_resolved"
+    assert item["home_context_status"] == "review_required"
+    assert item["home_context_reason"] == "trigger_evidence_incomplete"
     assert item["company_card_status"] == "enrichment_pending"
 
 
@@ -534,8 +594,10 @@ def test_home_subset_holds_needs_context_term_without_any_disambiguation_evidenc
     assert result["public_top10"] == result["trend_top10"]
     assert result["home_quality_gate"]["ranking_effect"] == "none"
     assert result["home_quality_gate"]["unified_ranking_preserved"] is True
-    assert result["home_quality_gate"]["home_excluded_total"] == 0
-    assert result["home_quality_gate"]["context_review_reasons"] == {}
+    assert result["home_quality_gate"]["home_excluded_total"] == 1
+    assert result["home_quality_gate"]["context_review_reasons"] == {
+        "trigger_evidence_incomplete": 1,
+    }
 
 
 def test_investment_terms_do_not_receive_unrelated_generic_companies(tmp_path):
@@ -803,7 +865,7 @@ def test_unified_ranking_preserves_main_issue_and_review_without_score_calibrati
 
     assert len(result["unified_ranking"]) == 3
     assert {item["selection_layer"] for item in result["unified_ranking"]} == {
-        "main_subset", "issue_context", "review_queue",
+        "context_review_queue", "issue_context", "review_queue",
     }
     assert all(item["trend_fit"]["affects_score"] is False for item in result["unified_ranking"])
     assert result["trend_top10"] == []
@@ -840,17 +902,16 @@ def test_balanced_home_selection_prioritises_current_without_food_quota():
 
     selected = select_balanced_home_top10(rows)
 
-    assert [item["event_key"] for item in selected[:9]] == [
+    assert [item["event_key"] for item in selected] == [
         "food-a", "food-b", "tech-a", "tech-b", "content-a", "culture-a",
-        "market-a", "life-a", "sport-a",
+        "market-a", "life-a", "sport-a", "tech-c",
     ]
-    assert selected[9]["event_key"] == "tech-c"
     assert sum(item["broad_category"] == "food" for item in selected) == 2
     assert all(item["event_key"] != "expired-a" for item in selected)
     assert [item["publication_rank"] for item in selected] == list(range(1, 11))
 
 
-def test_balanced_home_selection_uses_expired_only_as_rolling_window_fallback():
+def test_balanced_home_selection_never_uses_expired_to_fill_contract():
     from trzip.intelligence import select_balanced_home_top10
 
     rows = [
@@ -874,7 +935,136 @@ def test_balanced_home_selection_uses_expired_only_as_rolling_window_fallback():
     assert [item["event_key"] for item in selected[:8]] == [
         f"current-{index}" for index in range(1, 9)
     ]
-    assert [item["event_key"] for item in selected[8:]] == ["expired-1", "expired-2"]
+    assert len(selected) == 8
+    assert all(not item["event_key"].startswith("expired-") for item in selected)
+
+
+def test_home_selection_can_fill_short_gap_with_recent_resolved_context():
+    from trzip.intelligence import select_balanced_home_top10
+
+    rows = [
+        {
+            "event_key": f"current-{index}", "score": 100 - index,
+            "observed_rank": index, "broad_category": "content",
+            "is_current": True, "candidate_status": "is_current",
+            "lifecycle": "sustained", "source_count": 2,
+        }
+        for index in range(1, 9)
+    ] + [
+        {
+            "event_key": f"recent-{index}", "score": 80 - index,
+            "observed_rank": 20 + index, "broad_category": "culture",
+            "is_current": False, "candidate_status": "period_observed",
+            "lifecycle": "cooling", "hours_since_last_seen": float(index),
+            "source_count": 2,
+        }
+        for index in range(1, 3)
+    ]
+
+    selected = select_balanced_home_top10(rows)
+
+    assert len(selected) == 10
+    assert [item["home_mix_bucket"] for item in selected[-2:]] == [
+        "recent_context", "recent_context",
+    ]
+
+
+def test_naver_becomes_an_equal_home_platform_only_after_coverage_gate():
+    from trzip.intelligence import apply_equal_platform_home_scores
+
+    rows = []
+    for index in range(1, 11):
+        rows.append({
+            "event_key": f"trend-{index}",
+            "score": 101 - index,
+            "observed_rank": index,
+            "latest_source_ranks": {"x": index, "google_trends": 11 - index},
+            "verification_layer": {
+                "providers": {
+                    "naver": {
+                        "status": "observed",
+                        "matched": True,
+                        "metrics": {
+                            "news_recent_24h_sample_count": index,
+                            "blog_recent_24h_sample_count": index,
+                            "news_independent_host_count": min(index, 3),
+                            "blog_independent_host_count": 1,
+                            "search_trend": {
+                                "latest_ratio": index * 10,
+                                "growth_percent": index * 5,
+                            },
+                        },
+                    }
+                }
+            },
+        })
+
+    apply_equal_platform_home_scores(rows)
+
+    assert all(item["naver_home_rank_status"] == "active_equal_weight" for item in rows)
+    assert all(item["home_platform_weights"] == {
+        "x": 0.333333, "google_trends": 0.333333, "naver": 0.333333,
+    } for item in rows)
+    assert sorted(item["home_rank"] for item in rows) == list(range(1, 11))
+    assert all(item["canonical_observed_rank_preserved"] is True for item in rows)
+
+
+def test_youtube_chart_signal_becomes_equal_home_platform_only_after_coverage_gate():
+    from trzip.intelligence import apply_equal_platform_home_scores
+
+    rows = [
+        {
+            "event_key": f"video-trend-{index}",
+            "score": 101 - index,
+            "observed_rank": index,
+            "latest_source_ranks": {"x": index, "google_trends": 11 - index},
+            "verification_layer": {"providers": {}},
+            "youtube_chart_signal": {
+                "status": "matched_exact_observed_expression",
+                "youtube_score": index * 10,
+            },
+        }
+        for index in range(1, 11)
+    ]
+
+    apply_equal_platform_home_scores(rows)
+
+    assert all(item["youtube_home_rank_status"] == "active_equal_weight" for item in rows)
+    assert all(item["home_platform_weights"] == {
+        "x": 0.333333, "google_trends": 0.333333, "youtube": 0.333333,
+    } for item in rows)
+    assert all(item["naver_home_rank_status"] == "shadow_insufficient_coverage" for item in rows)
+
+
+def test_home_selection_prioritises_verified_positive_slope():
+    from trzip.intelligence import select_balanced_home_top10
+
+    rows = []
+    for index in range(1, 9):
+        rows.append({
+            "event_key": f"established-{index}", "score": 100 - index,
+            "observed_rank": index, "broad_category": "content",
+            "is_current": True, "lifecycle": "sustained",
+            "representative_evidence": {"observed_hours": 4},
+        })
+    for index in range(1, 7):
+        rows.append({
+            "event_key": f"emerging-{index}", "score": 120 - index,
+            "observed_rank": 20 + index, "broad_category": "culture",
+            "is_current": True, "lifecycle": "rising", "source_count": 2,
+            "momentum_delta": 0.4,
+            "ranking_data_readiness": {"momentum_status": "measured"},
+            "representative_evidence": {"observed_hours": 2},
+        })
+
+    selected = select_balanced_home_top10(rows)
+
+    assert len(selected) == 10
+    assert sum(item["home_mix_bucket"] == "emerging" for item in selected) == 6
+    assert sum(item["home_mix_bucket"] == "established" for item in selected) == 4
+    assert all(
+        item["home_mix_bucket"] == "emerging" for item in selected[:6]
+    )
 
 
 def test_weekly_period_retains_recent_history_with_explicit_stale_status(tmp_path):

@@ -55,9 +55,10 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 `enrichment_pending`은 근거 보강 중인 경우, `not_applicable`은 이슈·민감 맥락 등
 기업 연결 대상이 아닌 경우입니다. 기업 수를 맞추기 위한 padding은 금지하며,
 준비된 항목만 `company_ready_trends`에도 포함합니다.
-보조 검증 스케줄러는 이 상태를 풀 수 있도록 `public_top10`만이 아니라 현재
-`main` 후보 전체를 순환하며, 한 시간 최대 3개만 조회합니다. 검증 결과는 순위에
-영향을 주지 않습니다.
+플랫폼 측정 스케줄러는 `public_top10`만이 아니라 현재 `main`·검토 후보를 포함해
+한 시간 최대 20개를 조회합니다. NAVER는 상위 후보 80% 이상·최소 10개가 관측된
+경우에만 홈 순위에 X·Google과 동등하게 반영됩니다. 일부 후보만 조회된 상태는
+`shadow_insufficient_coverage`이며 관측 순위와 홈 순위를 바꾸지 않습니다.
 
 ## 트렌드 카드 필드
 
@@ -69,7 +70,8 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 원천 표현 | `raw_terms` |
 | 넓은 분류 | `broad_category` |
 | 표시 레인 | `lane`, `selection_reason` |
-| 공정 순위 | `observed_rank`, `home_rank`, `rising_rank`, `score`, `score_components` |
+| 공정 순위 | `observed_rank`, `score`, `score_components` |
+| 오늘의 흐름 보드 | `home_feed.status`, `home_feed.groups[]` (`spreading`, `sustained`, `emerging`) |
 | 원천 순위 | `latest_source_ranks`, `source_badge` |
 | 기간 상태 | `candidate_status` (`is_current`/`period_observed`), `last_seen_at`, `freshness`, `hours_since_last_seen` |
 | 변화·지속 | `previous_period_rank`, `rank_change`, `rank_change_status`, `rank_change_by_source`, `lifecycle`, `persistence_rank`, `momentum_rank` |
@@ -81,11 +83,30 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 | 기업 카드 준비 상태 | `company_card_status`, `company_card_reason` |
 | 기업 후보 감사 | `company_candidates`, `company_resolution` |
 | 보조 검증 | `verification_layer` |
-| 보조 검증 실행상태 | `verification_run` (`ranking_effect=none`) |
+| 플랫폼 측정 실행상태 | `verification_run` (`ranking_effect=none`, `home_ranking_effect=naver_news_equal_weight_after_coverage_gate`) |
 | 근거 보강 작업상태 | `enrichment_work_queue` (`ranking_effect=none`) |
 | 보조 문서 키워드 후보 | `provider_keyword_candidate_queue` (`publishable=false`, 승인 전 칩 금지) |
 | 기사 맥락 | `news_context` |
 | 공식 기업개황 | `companies[].official_identity` (`provider=opendart`, 순위·관계 근거로 사용 금지) |
+
+## 프로토타입 화면용 서사 데이터
+
+제공된 `트zip html` 프로토타입은 단순 순위표가 아니라 **무엇이 먼저
+포착됐고, 어떤 표현이 함께 붙으며, 어느 단계로 확산됐는지**를 한 카드에서
+보여준다. 백엔드는 UI를 수정하지 않고 각 상세 JSON에 다음 두 객체를 제공한다.
+
+| 객체 | 프론트 표시 용도 | 사실성 경계 |
+|---|---|---|
+| `trend_story.origin` | 관측 대표어, 최초 관측 시각, 현재 촉발 기사·근거 | 기사나 원천 관측으로 확인된 내용만 기록하며 원인을 단정하지 않음 |
+| `trend_story.relationship_graph` | 중심 트렌드와 5개 관련 표현의 그래프 | `source_related_query`는 동일 관측 맥락, `reviewed_related_concept`는 검수된 연관 맥락일 뿐 인과·계보가 아님 |
+| `trend_story.diffusion` | 관측 일차, 막 포착/확산/대중화·지속/둔화, 단계 게이지, 출처별 순위 변화 | 언급량 추정치를 만들지 않음. 비교가 없으면 `unavailable`로 표기 |
+| `frontend_projection` | 프로토타입의 `trendDay`, `trendPhase`, `trendLift`, `trendRank`, `progress`, `stageIdx`, `caption`에 직접 대응 | `is_mock=false`; `attention_lift.metric`과 단위를 함께 전달해 단순 순위변화를 언급량 증가율로 오인하지 않음 |
+
+`trend_story`와 `frontend_projection`은 모두 `ranking_effect=none`의 파생
+표현이다. `observed_rank`와 원천 점수는 바꾸지 않는다. 특히 두바이 초콜릿 →
+두쫀쿠처럼 비슷한 표현이 이어져도, 원천 관련검색어·기사·검수된 온톨로지
+근거가 없는 경우에는 “파생” 또는 “시초”로 확정하지 않고 `동일 관측 맥락`으로만
+표시한다.
 
 `news_context.affects_score`와 `news_context.ranking_source`는 항상 `false`입니다. 기사만으로 순위 항목을 생성하거나 점수를 바꾸지 않습니다.
 

@@ -282,6 +282,10 @@ class SeedBuilder:
                 },
                 "publication_gate": {
                     "minimum_unique_evidence_backed_companies": 3,
+                    "scope": "graph_candidate_lookup_only",
+                    "frontend_minimum_unique_evidence_backed_companies": 10,
+                    "frontend_minimum_company_role_categories": 2,
+                    "frontend_maximum_company_role_categories": 4,
                     "insufficient_status": "ontology_incomplete",
                     "padding_forbidden": True,
                 },

@@ -43,6 +43,17 @@ def _trend(rank: int) -> dict:
             "연결 기업 정보는 이해를 돕기 위한 참고 자료이고 투자 추천을 의미하지 않습니다."
         ),
         "frontend_readiness_status": "ready",
+        "context_research": {
+            "status": "ready",
+            "trigger_title": "공식 발표로 관심이 증가",
+            "why_now": "공식 발표 직후 X와 Google 대한민국에서 관심이 상승했습니다.",
+            "trigger_type": "official_announcement",
+            "published_at": "2026-08-13T00:00:00+00:00",
+            "evidence_urls": [f"https://example.com/context/{rank}"],
+            "evidence_records": [],
+            "affects_score": False,
+            "ranking_source": False,
+        },
         "company_card_status": "ready",
         "company_card_reason": "evidence_backed_ten_or_more",
         "related_keywords": [
@@ -57,9 +68,25 @@ def test_complete_frontend_result_passes_quality_gate():
     result = evaluate_frontend_result({"home_top10": [_trend(rank) for rank in range(1, 11)]})
 
     assert result["passed"] is True
-    assert result["policy_version"] == "frontend-result-quality-v5"
+    assert result["policy_version"] == "frontend-result-quality-v6"
     assert result["trend_count"] == 10
     assert all(row["keyword_count"] == 5 and row["company_count"] == 10 for row in result["trends"])
+
+
+def test_home_selection_rejects_pending_keyword_and_company_enrichment():
+    trends = [_trend(rank) for rank in range(1, 11)]
+    trends[0]["related_keywords"] = trends[0]["related_keywords"][:2]
+    trends[0]["companies"] = trends[0]["companies"][:3]
+    trends[0]["frontend_readiness_status"] = "enrichment_pending"
+    trends[0]["company_card_status"] = "enrichment_pending"
+    trends[0]["company_card_reason"] = "fewer_than_ten_evidence_backed_companies"
+
+    result = evaluate_frontend_result({"home_top10": trends})
+
+    assert result["passed"] is False
+    assert any("keyword_count:2" in failure for failure in result["failures"])
+    assert any("company_count:3" in failure for failure in result["failures"])
+    assert any("frontend_enrichment_pending" in failure for failure in result["failures"])
 
 
 def test_quality_gate_rejects_company_state_mismatch_and_expired_rising():
@@ -128,7 +155,7 @@ def test_quality_gate_allows_multiple_evidence_complete_food_trends():
     assert result["passed"] is True
 
 
-def test_quality_gate_rejects_duplicate_keyword_and_missing_trend_context():
+def test_quality_gate_rejects_duplicate_keyword_and_missing_context():
     trends = [_trend(rank) for rank in range(1, 11)]
     trends[0]["related_keywords"][1]["text"] = trends[0]["related_keywords"][0]["text"]
     trends[0]["trend_definition"] = ""
