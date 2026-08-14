@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T17:24:05.0291015+00:00",
+    "updated_at":  "2026-08-14T17:33:32.6835097+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,22 +8,18 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "518cf92d31844c47b2f51829227b6e86ccd233db",
+                       "base_remote_main_sha":  "18419a2d0365df552a72111b92db5583f39c3238",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "frontend/trendzip-data.js",
-                                             "src/trzip/publication_pipeline.py",
-                                             "tests/test_frontend_mvp_contract.py",
-                                             "tests/test_public_contract_schema.py"
+                                             "frontend/index.html",
+                                             "tests/test_frontend_mvp_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/trendzip-data.js":  "dcfa9f1e9463c63066a48fc3aafa1ae35445db522be274ce282cb9510af0802c",
-                                                    "src/trzip/publication_pipeline.py":  "bf0109c85b7208ac64ad08ec5f0bf536c1ba7b567d10c38951d2baa7d7c36e40",
-                                                    "tests/test_frontend_mvp_contract.py":  "7dda2b6ce5d414051cd3329174d5babf8e2af205a00bc135d88e5d21a4694281",
-                                                    "tests/test_public_contract_schema.py":  "e9b82930af53e8b2e0736935014eb1f3485d90b852e6b5a77de371ec71c45aef"
+                                                    "frontend/index.html":  "11f2ae1d5758c8e0d92818c5b3450ca1ca255f17485e54e87919d9c7388f8981",
+                                                    "tests/test_frontend_mvp_contract.py":  "9ed51c4a4d47d17b01b597ff6a53eea1324d60b702a4c651fb7a9ed7cf1deb9c"
                                                 },
-                       "commit_message":  "perf: publish a lightweight immutable presentation bundle",
+                       "commit_message":  "fix: version presentation assets for reliable first load",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -51,21 +47,20 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Ensure first-time visitors load the approved presentation feed without downloading the full operational ranking payload.",
+                    "objective":  "Prevent browsers from reusing stale prototype scripts after production deployment.",
                     "completed":  [
-                                      "Added immutable presentation.json delivery bundle",
-                                      "Made the frontend prefer the lightweight bundle with legacy fallback",
-                                      "Added public contract and frontend loader regression tests"
+                                      "Versioned the data loader and support script URLs",
+                                      "Added regression assertions for versioned asset URLs"
                                   ],
                     "next_actions":  [
-                                         "Publish a fresh live-data bundle",
-                                         "Verify first-load behavior and promote Vercel production"
+                                         "Redeploy Vercel production",
+                                         "Verify a fresh first visit without reload"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "Operational rankings remain large but are no longer required for the initial presentation UI"
+
                                           ]
                 },
     "runtime_contract":  {
