@@ -8,7 +8,7 @@
     "sources", "ranking_availability", "ranking_data_readiness", "score_formula", "score_policy", "home_quality_gate", "publication_readiness",
     "ranking_default_period", "ranking_periods", "ranking_views", "ranking_top_level_alias",
     "company_identity_status",
-    "unified_ranking", "all_observed_ranking", "home_feed", "home_top10", "home_status", "rising_top10",
+    "unified_ranking", "all_observed_ranking", "presentation_feed", "home_feed", "home_top10", "home_status", "rising_top10",
     "category_summary", "trend_top10", "public_top10", "company_ready_trends",
     "ontology_enrichment_queue", "enrichment_work_queue", "provider_keyword_candidate_queue",
     "lanes", "verification_run", "collection_status"
@@ -133,6 +133,44 @@
     },
     "unified_ranking": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
     "all_observed_ranking": {"type": "array", "items": {"$ref": "#/$defs/trend"}},
+    "presentation_feed": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "status", "frontend_default", "items", "transition"],
+      "properties": {
+        "schema_version": {"const": "trzip-presentation-feed-v2"},
+        "status": {"const": "ready"},
+        "frontend_default": {"const": true},
+        "items": {
+          "type": "array", "minItems": 10, "maxItems": 10,
+          "items": {
+            "type": "object",
+            "required": [
+              "presentation_position", "display_name", "event_key", "category", "category_label",
+              "sources", "data_mode", "trend_definition", "why_now", "keywords", "companies",
+              "keyword_status", "company_card_status", "ranking_effect"
+            ],
+            "properties": {
+              "presentation_position": {"type": "integer", "minimum": 1, "maximum": 10},
+              "display_name": {"type": "string", "minLength": 1},
+              "event_key": {"type": "string", "minLength": 1},
+              "category": {"enum": ["food", "content", "sports", "lifestyle", "culture", "consumer", "technology", "market"]},
+              "category_label": {"type": "string", "minLength": 1},
+              "sources": {"type": "array", "minItems": 1, "items": {"enum": ["x", "google_trends"]}},
+              "data_mode": {"const": "observed_reference"},
+              "trend_definition": {"type": "string", "minLength": 1},
+              "why_now": {"type": "string", "minLength": 1},
+              "keywords": {"type": "array", "minItems": 5, "maxItems": 5, "items": {"type": "object"}},
+              "companies": {"type": "array", "items": {"type": "object"}},
+              "keyword_status": {"const": "ready"},
+              "company_card_status": {"enum": ["ready", "enrichment_pending"]},
+              "ranking_effect": {"const": "none"}
+            }
+          }
+        },
+        "transition": {"type": "object"}
+      }
+    },
     "home_feed": {"$ref": "#/$defs/homeFeed"},
     "home_top10": {"type": "array", "items": {"type": "object"}},
     "home_status": {"enum": ["ready", "empty"]},
@@ -342,10 +380,11 @@
     "attentionChange": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["24h", "7d"],
+      "required": ["1w", "1m", "3m"],
       "properties": {
-        "24h": {"$ref": "#/$defs/changeMetric"},
-        "7d": {"$ref": "#/$defs/changeMetric"}
+        "1w": {"$ref": "#/$defs/changeMetric"},
+        "1m": {"$ref": "#/$defs/changeMetric"},
+        "3m": {"$ref": "#/$defs/changeMetric"}
       }
     },
     "changeMetric": {
@@ -355,7 +394,12 @@
       "properties": {
         "status": {"enum": ["measured", "unavailable"]},
         "percent": {"type": ["number", "null"]},
-        "basis": {"const": "previous_equal_period_score"}
+        "basis": {
+          "enum": [
+            "previous_equal_period_score",
+            "insufficient_90_day_observed_history"
+          ]
+        }
       }
     },
     "rankingWindow": {
@@ -460,7 +504,7 @@
         "frontend_readiness_missing": {
           "type": "array",
           "uniqueItems": true,
-          "items": {"enum": ["verified_trigger_event_with_evidence_url", "related_keywords_exactly_five", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_two_and_four"]}
+          "items": {"enum": ["verified_trigger_event_with_evidence_url", "related_keywords_exactly_five", "related_keywords_max_six_characters", "related_keywords_linked_to_companies_at_least_two", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_two_and_four"]}
         },
         "frontend_keyword_count": {"type": "integer", "minimum": 0, "maximum": 5},
         "frontend_company_count": {"type": "integer", "minimum": 0},
@@ -533,7 +577,7 @@
       "type": "object",
       "required": ["text", "source", "observed_hours", "status", "role", "role_status", "affects_score"],
       "properties": {
-        "text": {"type": "string", "minLength": 1},
+        "text": {"type": "string", "minLength": 1, "pattern": "^(?:\\s*\\S){1,6}\\s*$"},
         "source": {"type": "array", "items": {"enum": ["x", "google_trends", "reviewed_ontology"]}},
         "observed_hours": {"type": "integer", "minimum": 0},
         "status": {"enum": ["observed_ranked_term", "observed_related_query", "approved_ontology_term", "approved_ontology_related_term"]},
@@ -550,7 +594,7 @@
     "company": {
       "type": "object",
       "required": [
-        "company", "stock_code", "ticker", "market", "relationship_reason", "company_summary",
+        "company", "stock_code", "ticker", "market", "relationship_reason", "connection_explanation", "company_summary",
         "company_description", "business_features", "relation_tier", "relation_display_type", "verification_status",
         "company_role_category", "company_role_label",
         "ontology_path", "ontology_complete", "evidence_url", "evidence_sources", "official_identity",
@@ -562,11 +606,13 @@
         "ticker": {"type": "string", "minLength": 1},
         "market": {"type": "string", "minLength": 1},
         "relationship_reason": {"type": "string", "minLength": 1},
+        "connection_explanation": {"type": "string", "minLength": 1},
         "company_summary": {"type": "string", "minLength": 1},
         "company_description": {"type": "string", "minLength": 1},
         "business_features": {"type": "array", "items": {"type": "string"}},
-        "company_role_category": {"enum": ["manufacturing_development", "raw_materials_components", "content_production", "distribution", "retail_sales", "brand_marketing", "platform_service", "ownership_investment", "event_sponsorship", "industry_adjacent"]},
-        "company_role_label": {"enum": ["제조·개발", "원재료·핵심부품", "콘텐츠 제작", "배급·유통", "판매·리테일", "브랜드·마케팅", "플랫폼·서비스", "투자·소유", "행사 후원·운영", "산업 연관"]},
+        "company_role_category": {"enum": ["manufacturing_development", "raw_materials_components", "content_production", "distribution", "retail_sales", "brand_marketing", "platform_service", "ownership_investment", "event_sponsorship", "unclassified"]},
+        "company_role_label": {"enum": ["제조·개발", "원재료·핵심부품", "콘텐츠 제작", "배급·유통", "판매·리테일", "브랜드·마케팅", "플랫폼·서비스", "투자·소유", "행사 후원·운영", "역할 미확정"]},
+        "matched_keywords": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "relation_tier": {"enum": ["direct", "value_chain", "industry_watch"]},
         "relation_display_type": {"enum": ["직접 관계", "가치사슬", "산업 관찰"]},
         "verification_status": {"const": "ontology_evidence"},
@@ -625,7 +671,7 @@
       "required": [
         "rank", "observed_rank", "main_rank", "home_rank", "publication_rank", "rising_rank",
         "event_key", "display_name", "observed_representative_term",
-        "display_name_policy", "raw_terms", "broad_category", "category_label", "category_ontology", "trend_definition",
+        "display_name_policy", "raw_terms", "broad_category", "category_label", "category_ontology", "trend_definition", "disclaimer",
         "lane", "score", "score_components", "candidate_status", "is_current",
         "period_sources", "period_strength", "freshness", "hours_since_last_seen",
         "previous_period_rank", "rank_change", "rank_change_status", "latest_source_ranks",
@@ -678,12 +724,13 @@
             "trigger_types": {"type": "array", "uniqueItems": true, "items": {"type": "string"}},
             "recommended_company_roles": {
               "type": "array", "uniqueItems": true,
-              "items": {"enum": ["manufacturing_development", "raw_materials_components", "content_production", "distribution", "retail_sales", "brand_marketing", "platform_service", "ownership_investment", "event_sponsorship", "industry_adjacent"]}
+              "items": {"enum": ["manufacturing_development", "raw_materials_components", "content_production", "distribution", "retail_sales", "brand_marketing", "platform_service", "ownership_investment", "event_sponsorship"]}
             },
             "affects_score": {"const": false}
           }
         },
         "trend_definition": {"type": "string", "minLength": 1},
+        "disclaimer": {"type": "string", "minLength": 1},
         "lane": {"enum": ["main", "issue", "review"]},
         "score": {"type": "number", "minimum": 0, "maximum": 100},
         "score_components": {"$ref": "#/$defs/period_score_components"},
@@ -720,7 +767,7 @@
         "frontend_readiness_missing": {
           "type": "array",
           "uniqueItems": true,
-          "items": {"enum": ["verified_trigger_event_with_evidence_url", "related_keywords_exactly_five", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_two_and_four"]}
+          "items": {"enum": ["verified_trigger_event_with_evidence_url", "related_keywords_exactly_five", "related_keywords_max_six_characters", "related_keywords_linked_to_companies_at_least_two", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_two_and_four"]}
         },
         "frontend_keyword_count": {"type": "integer", "minimum": 0, "maximum": 5},
         "frontend_company_count": {"type": "integer", "minimum": 0},

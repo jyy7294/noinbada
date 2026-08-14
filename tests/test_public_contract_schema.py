@@ -104,3 +104,11 @@ def test_latest_generated_publication_conforms_to_all_public_schemas(tmp_path, m
         document = json.loads((latest / document_name).read_text(encoding="utf-8"))
         schema = json.loads((ROOT / "schemas" / schema_name).read_text(encoding="utf-8"))
         Draft202012Validator(schema).validate(document)
+
+    manifest = json.loads((latest / "manifest.json").read_text(encoding="utf-8"))
+    rankings_path = latest / manifest["bundle"]["rankings"]["path"].removeprefix(
+        "latest/"
+    )
+    rankings = json.loads(rankings_path.read_text(encoding="utf-8"))
+    assert rankings["presentation_feed"]["frontend_default"] is True
+    assert len(rankings["presentation_feed"]["items"]) == 10

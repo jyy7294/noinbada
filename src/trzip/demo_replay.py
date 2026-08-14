@@ -107,6 +107,10 @@ def build_demo_replay(
     research_event_catalog = _annotate_research_event_catalog(
         research_event_catalog, observations
     )
+    research_templates = {
+        _event_key(item["representative_term"]): item
+        for item in research_event_catalog
+    }
     ranking_views = {
         "daily": _ranking_view(observations, at=current_at, window_days=1, templates=templates),
         "weekly": _ranking_view(
@@ -160,7 +164,10 @@ def build_demo_replay(
     }
     for scored in latest_ranking["ranking"]:
         event_key = scored["event_key"]
-        template = templates.get(event_key, {})
+        template = {
+            **research_templates.get(event_key, {}),
+            **templates.get(event_key, {}),
+        }
         item = _trend_item(
             scored,
             template=template,
@@ -431,6 +438,11 @@ def default_asset_paths() -> dict[str, Any]:
         historical_root / "work" / "current-run.sqlite3",
         historical_root / "work" / "trzip-live-v5-20260809e.sqlite3",
     ]
+    repository = Path(__file__).resolve().parents[2]
+    reconstruction = (
+        repository / "data" / "reconstructed" / "trzip-final-50-20260814"
+        / "events.ndjson"
+    )
     return {
         "live_database": local / "data" / "trzip-hourly.sqlite3",
         "live_intelligence": local / "publication" / "latest" / "intelligence.json",
@@ -439,7 +451,7 @@ def default_asset_paths() -> dict[str, Any]:
             historical_root / "frontend" / "contracts" / "trzip" / "responses"
             / "trend_series.json"
         ),
-        "research_reconstruction_jsonl": None,
+        "research_reconstruction_jsonl": reconstruction if reconstruction.is_file() else None,
     }
 
 
@@ -1394,7 +1406,12 @@ def _trend_item(
     previous_source_ranks: Mapping[str, int],
     publication_id: str,
 ) -> dict[str, Any]:
-    display = str(template.get("display_name") or template.get("topic") or scored["event_key"])
+    display = str(
+        template.get("display_name")
+        or template.get("representative_term")
+        or template.get("topic")
+        or scored["event_key"]
+    )
     provenance_counts = Counter(row["provenance"] for row in series)
     rank_change = {
         source: (
@@ -1428,8 +1445,8 @@ def _trend_item(
         "source_metrics": scored["source_metrics"],
         "ranking_data_readiness": scored["data_readiness"],
         "lane": str(template.get("lane") or "main"),
-        "category": str(template.get("category") or "unclassified"),
-        "broad_category": str(template.get("broad_category") or "other"),
+        "category": str(template.get("source_category") or template.get("category") or "unclassified"),
+        "broad_category": str(template.get("broad_category") or template.get("category") or "other"),
         "lifecycle": lifecycle,
         "lifecycle_label": lifecycle,
         "lifecycle_reason": lifecycle_value.get("reason_code") if isinstance(lifecycle_value, dict) else "demo_replay",
@@ -1446,9 +1463,22 @@ def _trend_item(
             "reason": "실측·과거 참고·합성 백필을 구분한 MVP 재생 데이터",
         },
         "provenance": sorted(provenance_counts),
-        "keywords": list(template.get("keywords") or [])[:5],
+        "trend_definition": str(template.get("trend_definition") or template.get("definition") or ""),
+        "why_now": str(template.get("why_now") or ""),
+        "trigger_event": str(template.get("trigger_event") or ""),
+        "keywords": list(template.get("keywords") or template.get("related_keywords") or [])[:5],
+        "related_keywords": list(template.get("related_keywords") or template.get("keywords") or [])[:5],
         "companies": list(template.get("companies") or []),
         "company_candidates": list(template.get("company_candidates") or []),
+        "keyword_company_links": list(template.get("keyword_company_links") or []),
+        "attention_windows": list(template.get("attention_windows") or []),
+        "period_presence": dict(template.get("period_presence") or {}),
+        "disclaimer": str(template.get("disclaimer") or ""),
+        "research_event_id": template.get("event_id"),
+        "research_frontend_readiness_status": template.get("frontend_readiness_status"),
+        "research_frontend_readiness_missing": list(
+            template.get("frontend_readiness_missing") or []
+        ),
         "company_resolution": dict(template.get("company_resolution") or {}),
         "company_card_status": str(template.get("company_card_status") or "enrichment_pending"),
         "company_card_reason": str(template.get("company_card_reason") or "fewer_than_ten_evidence_backed_companies"),

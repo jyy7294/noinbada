@@ -43,7 +43,7 @@ def _automatic_row(
         "broad_category": broad_category,
         "context_status": "resolved_reference",
         "trend_fit": {"generic_category_word": False},
-        "keywords": [{"text": f"{name} 관련어 {index}"} for index in range(1, keywords + 1)],
+        "keywords": [{"text": f"키워드{index}"} for index in range(1, keywords + 1)],
         "companies": [_company(index) for index in range(1, companies + 1)],
     }
 
@@ -268,7 +268,7 @@ def test_live_frontend_caches_keep_six_role_categorized_candidates_pending():
     allowed_roles = {
         "manufacturing_development", "raw_materials_components", "content_production",
         "distribution", "retail_sales", "brand_marketing", "platform_service",
-        "ownership_investment", "event_sponsorship", "industry_adjacent",
+        "ownership_investment", "event_sponsorship", "unclassified",
     }
     for row in rows:
         assert len(row["related_keywords"]) == 5

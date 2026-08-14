@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T11:28:59.9249871+00:00",
+    "updated_at":  "2026-08-14T13:01:04.8654106+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,40 +8,78 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "52ed0eca57d58e90aa946ea5318bd12e72da1b12",
+                       "base_remote_main_sha":  "2c382b35c84174db49505bde512e0e5fafb758bd",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
-                                             "docs/CODEX_CONTINUITY.md",
-                                             "docs/PRODUCT_POLICY.md",
-                                             "README.md",
+                                             "data/reconstructed/trzip-final-50-20260814/events.ndjson",
+                                             "data/reconstructed/trzip-final-50-20260814/manifest.json",
+                                             "data/reconstructed/trzip-final-50-20260814/source.xlsx",
+                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
+                                             "docs/RECONSTRUCTED_DATA_POLICY.md",
+                                             "frontend/index.html",
+                                             "frontend/trendzip-data.js",
+                                             "schemas/intelligence-v3.schema.json",
+                                             "scripts/import-reconstructed-workbook.py",
+                                             "src/trzip/category_ontology.py",
+                                             "src/trzip/company_roles.py",
+                                             "src/trzip/demo_replay.py",
+                                             "src/trzip/editorial_review.py",
+                                             "src/trzip/enrichment_queue.py",
                                              "src/trzip/intelligence.py",
-                                             "src/trzip/readiness.py",
+                                             "src/trzip/keyword_policy.py",
+                                             "src/trzip/presentation_feed.py",
+                                             "src/trzip/publication_pipeline.py",
+                                             "src/trzip/reconstructed_workbook.py",
                                              "src/trzip/result_quality.py",
-                                             "src/trzip/runtime_audit.py",
+                                             "tests/test_editorial_review.py",
+                                             "tests/test_enrichment_queue.py",
+                                             "tests/test_home_feed.py",
                                              "tests/test_intelligence.py",
-                                             "tests/test_result_quality.py",
-                                             "tests/test_runtime_audit.py"
+                                             "tests/test_keyword_policy.py",
+                                             "tests/test_presentation_feed.py",
+                                             "tests/test_public_contract_schema.py",
+                                             "tests/test_reconstructed_workbook.py",
+                                             "tests/test_result_quality.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "docs/CODEX_CONTINUITY.md":  "84c8e638de37280463548ed0348c77b206ab4c97a5c004f4e549432256e0bbe5",
-                                                    "docs/PRODUCT_POLICY.md":  "1d7fc866413418650b0d06348386130a61f829082c25bd24b3a92655e32a2b20",
-                                                    "README.md":  "94dfe8656676c69f55d213c20db85b838581eda87e7787ebcfcb5b90a75c7955",
-                                                    "src/trzip/intelligence.py":  "e6b478c185599d435e4846aef626bd5792cdfba55c4d3f6da30e7463086c2be0",
-                                                    "src/trzip/readiness.py":  "21bec98c0061e8fcf3065d9dc97ad6edbad33762c39afbe3be40a80024912dcb",
-                                                    "src/trzip/result_quality.py":  "a86bbc5bbc9c93d5366804f58783acdd994e4f53b8091512ce38528bee6d2a7e",
-                                                    "src/trzip/runtime_audit.py":  "c033f6284e01388eb0754355dff8b9438609c642198f651aeaf179f233a9f164",
-                                                    "tests/test_intelligence.py":  "0e7b78933c5d928623bb0d8be046ec42b1d77a891eda0196107083607d184d8b",
-                                                    "tests/test_result_quality.py":  "7f9f415ad75cf44caea2ca74885464d60c1bec102eb9638280769ecd9911a0c2",
-                                                    "tests/test_runtime_audit.py":  "863bbfe536511643c48fa840d8261f6b4594abacc556b7fb6492ec6280db51b3"
+                                                    "data/reconstructed/trzip-final-50-20260814/events.ndjson":  "b0a2255fa09340c948af39ac7e5e3f09ef4b38eef66f4526e604f15946f6efd8",
+                                                    "data/reconstructed/trzip-final-50-20260814/manifest.json":  "d1d64c44d89d0707f05c20dff21497f52f1c7201c5c024ce635adb123d1a3d92",
+                                                    "data/reconstructed/trzip-final-50-20260814/source.xlsx":  "97e4ef806445453926466e4ac4321241417a7f76d9a365fc72e005cf1df62382",
+                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "e1a3622b9195adee5cf765c9b4d32cda6166f891d46cc1f0737474ee7f2a0b71",
+                                                    "docs/RECONSTRUCTED_DATA_POLICY.md":  "6ada5a9cb85dd93de8d530b112d346cd5e59441aaa554a85cb8ea37572a08dbd",
+                                                    "frontend/index.html":  "b5e3ee77637d1cfb5195a4cb3145f667968a4122f2d68062b2e80b151287f0e3",
+                                                    "frontend/trendzip-data.js":  "2a7829f16187d9bc7614e0e99af48549628f4448bb92df659ff28d0c498d7087",
+                                                    "schemas/intelligence-v3.schema.json":  "3fdea1ec93d81d16b1f590405bb924d037e85c5f9e258707f684a77574ff5353",
+                                                    "scripts/import-reconstructed-workbook.py":  "30bfd6ecdfe3a04f1ec86751e85404a4e1f705c2d7bf1c4b1c7a97eaa7486bdc",
+                                                    "src/trzip/category_ontology.py":  "7247d1cc3da3f302417b1f3c038b8ce48edf75f623d3a87abdb2133d44f895c4",
+                                                    "src/trzip/company_roles.py":  "5ed5cd65284da04968446e8c6bfa5951d8e63c5959518941260129a3dae261f2",
+                                                    "src/trzip/demo_replay.py":  "379bb06becde3831ebb782f369edad0dc3122ceb6977a201326fb72b796e3249",
+                                                    "src/trzip/editorial_review.py":  "b4756b159f15b934738acdada28260a768a7db618fc7d118244dcc23d7d77bff",
+                                                    "src/trzip/enrichment_queue.py":  "b95a58e644e89aef47bfde67a33890c0a53606dd4fd3817d04b38bd01ffb5356",
+                                                    "src/trzip/intelligence.py":  "6e6a6c09d4e26d03d9aad2463df4d5c86ba4c2f123073445a479e56e256342b6",
+                                                    "src/trzip/keyword_policy.py":  "bfa5ed696c509797113d5d9c1c6ea5f8f80353b6c719bfe3b3c3837d521b43ad",
+                                                    "src/trzip/presentation_feed.py":  "243070bb8a3dba6ac4f8f6002aeca1f883f765a0480e2b00b22394bdf35c1bd6",
+                                                    "src/trzip/publication_pipeline.py":  "8d822fec2da17e4f74df442252bf25e6a435b0bf801e4c08d8d8b0cd70eec28e",
+                                                    "src/trzip/reconstructed_workbook.py":  "ea8ac1abec92b7158b81ce5363f6bf5b860fe32a7aa7c5d1490071ce034599b3",
+                                                    "src/trzip/result_quality.py":  "7c86a8e5bea3ec6d7621d4e10a23f3dee2982c2eee4a4f8409e0697e770dd993",
+                                                    "tests/test_editorial_review.py":  "518eff5a83429ac56abc10b6fe590cd2c889b57fe46f8584e1a2294b8cf3f7e4",
+                                                    "tests/test_enrichment_queue.py":  "bba9aa8086148b96ea2867b300e11065ff6f3a7c8a55ab97a40c8ad203e04782",
+                                                    "tests/test_home_feed.py":  "e2599496b8451491d9f904af4ac7986a6056259fe47b140195225743b496163f",
+                                                    "tests/test_intelligence.py":  "35a738dac66cad87bafe540aebd7203921ed8f9eb9960babec8d8fbe6ab23b48",
+                                                    "tests/test_keyword_policy.py":  "6eb09f1f1ec4b157e4c841910b9127517ac9f3b6cc0f4e0173ec668553398e78",
+                                                    "tests/test_presentation_feed.py":  "e375331e6afc656f5fcf6653dec0878fa84ee4e4139c5ecff8b24f43a9736f1a",
+                                                    "tests/test_public_contract_schema.py":  "627c8b3a0d36120d04bd8987df544e956a3fdd61262c427554758eb9d05bb342",
+                                                    "tests/test_reconstructed_workbook.py":  "6f3c1869de60996b16318ef8e53e69d53e28a4d265c5341047d31a9c5f862e0a",
+                                                    "tests/test_result_quality.py":  "01ecf5a2b73107096360a0e5b9e482105c4ddb998d35e0793cd7bdc0c0b3384d"
                                                 },
-                       "commit_message":  "fix: align MVP readiness with daily publication",
+                       "commit_message":  "feat: publish reviewed TRZIP presentation feed",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  328
+                                      "count":  337
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -63,23 +101,24 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Replace the impossible 96-hour MVP blocker with a 24-hour ledger plus eight consecutive local exact-hour proofs and one daily remote publication receipt.",
+                    "objective":  "Publish the reviewed MVP Top10 data contract, deterministic enrichment rules, reconstructed fixtures, and manifest-first frontend integration.",
                     "completed":  [
-                                      "Set 24h MVP, 48h operational, and 96h long-horizon readiness stages.",
-                                      "Separated hourly local source and contract validation from daily remote publication proof.",
-                                      "Added presentation readiness distinct from empty but structurally valid home feeds.",
-                                      "Updated automation policy documentation and regression coverage."
+                                      "Added the exact reviewed ten-item presentation feed without changing canonical X and Google ranking.",
+                                      "Added five sourced short keywords and evidence-backed company role explanations.",
+                                      "Added immutable manifest rankings delivery and browser SHA-256 verification.",
+                                      "Imported the reviewed 50-event reconstructed dataset in an isolated non-live mode.",
+                                      "Validated the full repository test suite and publication contract."
                                   ],
                     "next_actions":  [
-                                         "Collect X and Google successfully for eight consecutive exact hours.",
-                                         "Generate a non-empty evidence-complete daily home feed before presentation."
+                                         "Run a fresh same-hour X and Google collection, then publish the verified daily live-data bundle.",
+                                         "Import the exported Claude design handoff when design_handoff_trzip_app is actually present."
                                      ],
                     "blockers":  [
-                                     "Current live publication was generated under the previous policy and still fails verification_may_affect_score.",
-                                     "Current consecutive exact-hour success count is zero."
+
                                  ],
                     "known_limitations":  [
-                                              "The current live home feed has zero evidence-complete cards."
+                                              "The reviewed feed has fewer than ten verified companies for each trend, so company enrichment remains honestly pending.",
+                                              "The currently remote live-data bundle predates the new presentation_feed contract until the next verified data promotion."
                                           ]
                 },
     "runtime_contract":  {

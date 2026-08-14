@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 
 from .company_roles import with_company_role
+from .keyword_policy import keyword_fits_public_label
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 
 
@@ -67,7 +68,7 @@ KEYWORDS = {
     "티빙": ("티빙 신작", "티빙 오리지널", "티빙 드라마", "티빙 예능", "티빙 스포츠 중계", "티빙 구독료", "티빙 이용자", "티빙 광고요금제", "티빙 콘텐츠", "티빙 출연진", "티빙 시청률", "티빙 다시보기", "티빙 OTT 비교", "티빙 SNS", "티빙 후기"),
     "코난 극장판": ("코난 극장판 개봉", "코난 극장판 예고편", "코난 극장판 상영관", "코난 극장판 특전", "코난 극장판 굿즈", "코난 극장판 더빙", "코난 극장판 자막", "코난 극장판 관객수", "코난 극장판 박스오피스", "코난 캐릭터", "코난 팝업스토어", "코난 콜라보", "코난 OTT", "코난 후기", "코난 SNS"),
     "챱챱 물개": ("토스뱅크 물개", "물개 배 만지기", "토스 5천원 이벤트", "토스 맞교환", "토스 링크 공유", "토스뱅크 이벤트", "토스 친구 초대", "토스 보상금", "토스 물개 챌린지", "토스 이벤트 링크", "토스뱅크 게임", "토스 앱 이벤트", "챱챱 물개 X", "챱챱 물개 실시간 트렌드", "토스 바이럴 이벤트"),
-    "휴머노이드 로봇": ("AI 휴머노이드", "산업용 휴머노이드", "가정용 휴머노이드", "휴머노이드 액추에이터", "휴머노이드 감속기", "휴머노이드 센서", "휴머노이드 반도체", "휴머노이드 제조", "휴머노이드 물류", "휴머노이드 자동차", "휴머노이드 시제품", "휴머노이드 상용화", "휴머노이드 공급망", "휴머노이드 기업", "휴머노이드 시장"),
+    "휴머노이드 로봇": ("휴머노이드", "로봇", "액추에이터", "감속기", "센서", "AI 휴머노이드", "산업용 휴머노이드", "가정용 휴머노이드", "휴머노이드 액추에이터", "휴머노이드 감속기", "휴머노이드 센서", "휴머노이드 반도체", "휴머노이드 제조", "휴머노이드 물류", "휴머노이드 자동차", "휴머노이드 시제품", "휴머노이드 상용화", "휴머노이드 공급망", "휴머노이드 기업", "휴머노이드 시장"),
     "삼전닉스": ("삼성전자", "SK하이닉스", "HBM", "메모리 반도체", "AI 반도체", "DRAM", "NAND", "반도체 실적", "반도체 수출", "반도체 공급망", "반도체 투자", "반도체 주가", "HBM 경쟁", "메모리 가격", "AI 데이터센터"),
     "광 통신": ("광섬유", "광케이블", "광통신망", "데이터센터 광케이블", "FTTH", "광접속 자재", "광모듈", "CPO", "장거리 전송망", "초고속 통신", "통신 인프라", "광대역 네트워크", "광통신 장비", "광케이블 수요", "AI 데이터센터"),
     "개기일식": ("일식 관측", "일식 안경", "태양 필터", "천체망원경", "일식 촬영", "태양 관측", "부분일식", "개기일식 시간", "개기일식 경로", "천문대", "카메라 렌즈", "안전 관측", "태양 사진", "천문 이벤트", "관측 장비"),
@@ -75,7 +76,7 @@ KEYWORDS = {
     "페르세우스 유성우": ("유성우 극대기", "별똥별", "유성우 관측 시간", "유성우 방향", "천체망원경", "천체 촬영", "별자리 앱", "유성우 명소", "밤하늘", "천문대", "카메라 장노출", "삼각대", "광공해", "기상 조건", "페르세우스자리"),
     "커피믹스": ("인스턴트 커피", "스틱 커피", "맥심 모카골드", "프렌치카페 카페믹스", "네스카페 믹스", "커피 프리마", "무설탕 커피믹스", "디카페인 커피믹스", "커피믹스 가격", "커피믹스 칼로리", "커피믹스 판매량", "사무실 커피", "홈카페", "커피 원두", "커피 크리머"),
     "용인반도체클러스터": ("용인 반도체 국가산단", "SK하이닉스 용인 팹", "삼성전자 용인 클러스터", "반도체 메가 클러스터", "반도체 전력 인프라", "반도체 용수", "반도체 소재 부품 장비", "용인 원삼면", "반도체 팹", "첨단 시스템반도체", "메모리 반도체", "반도체 공급망", "산업단지 조성", "반도체 투자", "반도체 인프라"),
-    "아시안 게임": ("아이치 나고야 아시안게임", "아시안게임 일정", "아시안게임 종목", "아시안게임 국가대표", "아시안게임 메달", "아시안게임 중계", "아시안게임 개막식", "아시안게임 티켓", "아시안게임 경기장", "아시안게임 스폰서", "아시안게임 선수단", "아시안게임 야구", "아시안게임 축구", "아시안게임 e스포츠", "아시안게임 개최지"),
+    "아시안 게임": ("아시안게임", "경기일정", "국가대표", "메달", "중계", "아이치 나고야 아시안게임", "아시안게임 일정", "아시안게임 종목", "아시안게임 국가대표", "아시안게임 메달", "아시안게임 중계", "아시안게임 개막식", "아시안게임 티켓", "아시안게임 경기장", "아시안게임 스폰서", "아시안게임 선수단", "아시안게임 야구", "아시안게임 축구", "아시안게임 e스포츠", "아시안게임 개최지"),
     "삼계탕": ("삼계탕 간편식", "복날 삼계탕", "삼계탕 HMR", "삼계탕 판매량", "삼계탕 원재료", "영양 삼계탕", "삼계탕 배달", "보양식", "국내산 영계", "삼계탕 신제품", "삼계탕 가격", "초복", "중복", "말복", "복날 외식"),
     "롤 패치 노트": ("리그 오브 레전드 패치", "LoL 업데이트", "롤 챔피언 밸런스", "롤 신규 스킨", "롤 패치 일정", "롤 메타", "롤 랭크", "롤 e스포츠", "LCK", "Riot Games", "롤 클라이언트", "롤 핫픽스", "롤 시즌", "롤 아이템 변경", "롤 패치 버전"),
 }
@@ -751,6 +752,20 @@ INDUSTRY_NODES = {
     "광 통신": "광섬유/광케이블/통신인프라",
 }
 
+# Explicit keyword-to-company bridges are display metadata. They explain
+# which related expression supports a company connection and never affect
+# source rank, lane, category, or selection score.
+KEYWORD_COMPANY_BRIDGES = {
+    "천체관측장비": {
+        "Canon": ("일식 관측", "태양 필터", "일식 촬영"),
+        "Nikon": ("일식 촬영",),
+        "Ricoh": ("일식 촬영",),
+        "FUJIFILM Holdings": ("일식 촬영",),
+        "Sony Group": ("일식 촬영",),
+        "Adobe": ("일식 촬영",),
+    },
+}
+
 def _key(value: object) -> str:
     return " ".join(str(value or "").strip().casefold().split())
 
@@ -792,6 +807,11 @@ def _verified_company_rows(registry_key: str, *, verified_at: str) -> list[dict]
             "review_status": "unreviewed",
             "ranking_effect": "none",
             "investment_recommendation": False,
+            "matched_keywords": list(
+                KEYWORD_COMPANY_BRIDGES.get(registry_key, {}).get(
+                    source["company"], ()
+                )
+            ),
         }))
     return rows
 
@@ -882,13 +902,13 @@ def _keyword_rows(item: dict, *, cache_key: str | None) -> list[dict]:
     for row in item.get("keywords") or []:
         text = str(row.get("text") if isinstance(row, dict) else row).strip()
         normalized = _key(text)
-        if text and normalized not in seen:
+        if text and keyword_fits_public_label(text) and normalized not in seen:
             seen.add(normalized)
             values.append((text, "observed_or_reviewed_source_evidence"))
     if cache_key:
         for text in KEYWORDS.get(cache_key, ()):
             normalized = _key(text)
-            if normalized not in seen:
+            if keyword_fits_public_label(text) and normalized not in seen:
                 seen.add(normalized)
                 values.append((text, "term_specific_enrichment_cache"))
     return [
@@ -967,6 +987,11 @@ def apply_frontend_enrichment_cache(intelligence: dict, *, verified_at: str) -> 
         if keyword_key and (
             item.get("keyword_status") != "ready"
             or len(item.get("related_keywords") or []) != FINAL_KEYWORD_COUNT
+            or any(
+                not keyword_fits_public_label(row.get("text"))
+                for row in item.get("related_keywords") or []
+                if isinstance(row, dict)
+            )
         ):
             # Keep related queries measured by the collection pipeline.  The
             # reviewed cache only fills the remaining presentation slots and
@@ -978,7 +1003,12 @@ def apply_frontend_enrichment_cache(intelligence: dict, *, verified_at: str) -> 
                     continue
                 text = str(row.get("text") or "").strip()
                 key = _key(text)
-                if not text or not key or key in seen_keywords:
+                if (
+                    not text
+                    or not keyword_fits_public_label(text)
+                    or not key
+                    or key in seen_keywords
+                ):
                     continue
                 preserved = dict(row)
                 preserved["affects_score"] = False
@@ -988,7 +1018,11 @@ def apply_frontend_enrichment_cache(intelligence: dict, *, verified_at: str) -> 
                     break
             for text in KEYWORDS[keyword_key]:
                 key = _key(text)
-                if not key or key in seen_keywords:
+                if (
+                    not keyword_fits_public_label(text)
+                    or not key
+                    or key in seen_keywords
+                ):
                     continue
                 related_keywords.append({
                     "text": text,
@@ -1007,6 +1041,10 @@ def apply_frontend_enrichment_cache(intelligence: dict, *, verified_at: str) -> 
             item["keyword_status"] = (
                 "ready"
                 if len(item["related_keywords"]) == FINAL_KEYWORD_COUNT
+                and all(
+                    keyword_fits_public_label(row.get("text"))
+                    for row in item["related_keywords"]
+                )
                 else "enrichment_pending"
             )
         # Issue-lane events may still receive contextual keywords, but must
@@ -1081,6 +1119,7 @@ def apply_frontend_enrichment_cache(intelligence: dict, *, verified_at: str) -> 
                     "company_role": industry,
                     "company_role_category": row["company_role_category"],
                     "company_role_label": row["company_role_label"],
+                    "matched_keywords": list(row.get("matched_keywords") or []),
                     "relation_tier": relation_tier,
                     "ontology_relation_tier": row["ontology_relation_tier"],
                     "relation_tier_label": display_type,

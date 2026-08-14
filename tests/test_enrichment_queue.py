@@ -11,7 +11,7 @@ def _trend(rank, key, keywords=0, companies=0, lane="main"):
         "display_name": key,
         "raw_terms": [key],
         "keywords": [
-            {"text": f"{key}-keyword-{index}"} for index in range(keywords)
+            {"text": f"키워드{index}"} for index in range(keywords)
         ],
         "lane": lane,
         "company_resolution": {"candidate_count": companies},
@@ -22,7 +22,7 @@ def _trend(rank, key, keywords=0, companies=0, lane="main"):
 def test_queue_uses_frontend_related_keywords_before_raw_candidates(tmp_path):
     trend = _trend(1, "reviewed-ready", keywords=2, companies=6)
     trend["related_keywords"] = [
-        {"text": f"reviewed-{index}", "source": ["reviewed_ontology"]}
+        {"text": f"키워드{index}", "source": ["reviewed_ontology"]}
         for index in range(5)
     ]
 

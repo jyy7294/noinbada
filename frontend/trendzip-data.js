@@ -1,8 +1,9 @@
 const LIVE_DATA_BASE = 'https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest';
+const MANIFEST_URL = `${LIVE_DATA_BASE}/manifest.json`;
 const INTELLIGENCE_URL = `${LIVE_DATA_BASE}/intelligence.json`;
 const STATUS_URL = `${LIVE_DATA_BASE}/status.json`;
 const METADATA_URL = `${LIVE_DATA_BASE}/metadata.json`;
-const CACHE_KEY = 'trzip:latest-intelligence:v2';
+const CACHE_KEY = 'trzip:latest-intelligence:v3';
 const PORTFOLIO_KEY = 'trzip:portfolios:v1';
 const FRESH_FOR_MINUTES = 90;
 const STALE_AFTER_MINUTES = 180;
@@ -114,19 +115,44 @@ function rankDelta(item) {
 }
 
 function normalizeTrend(item) {
-  const companyEligible = Boolean(item.company_eligible);
+  const presentationItem = item.data_mode === 'observed_reference';
+  const topic = item.topic || item.event_key || item.display_name;
+  const rank = Number(item.presentation_position || item.rank || 0);
+  const companyEligible = presentationItem
+    ? Array.isArray(item.companies) && item.companies.length > 0
+    : Boolean(item.company_eligible);
+  const keywords = presentationItem
+    ? (item.keywords || []).slice(0, 5)
+    : (item.keywords || [])
+      .filter((row) => row.status === 'observed_source_expression')
+      .slice(0, 5);
+  const companies = companyEligible && Array.isArray(item.companies)
+    ? item.companies.map((company) => ({
+      ...company,
+      stock_code: company.stock_code || company.ticker,
+      market: company.market || company.exchange,
+      relation_category: company.company_role_label || company.relation_category || '역할 미확정',
+      company_role: company.company_role_label || company.company_role || '역할 미확정',
+      reason: company.connection_explanation || company.relationship_reason || company.reason,
+    }))
+    : [];
+  const trendStage = item.trend_stage || item.trend_story?.diffusion?.trend_stage || null;
+  const observedDayLabel = item.observed_day_label
+    || item.trend_story?.diffusion?.observed_day_label
+    || null;
   return {
-    id: item.topic,
-    topic: item.topic,
-    displayName: item.display_name || item.topic,
-    rank: Number(item.rank || 0),
-    rankLabel: String(item.rank || '--').padStart(2, '0'),
+    id: topic,
+    topic,
+    displayName: item.display_name || topic,
+    rank,
+    rankLabel: String(rank || '--').padStart(2, '0'),
     category: item.category,
-    categoryKo: CATEGORY_KO[item.category] || '기타',
-    delta: rankDelta(item),
+    categoryKo: item.category_label || CATEGORY_KO[item.category] || '기타',
+    delta: presentationItem ? '발행 순번' : rankDelta(item),
+    rankKind: presentationItem ? 'publication' : 'observed',
     lifecycle: item.lifecycle,
     lifecycleLabel: item.lifecycle_reason,
-    summary: item.phenomenon_summary,
+    summary: item.trend_definition || item.phenomenon_summary,
     selectionReason: item.selection_reason,
     confidence: item.data_confidence,
     contextStatus: item.context_status,
@@ -134,19 +160,27 @@ function normalizeTrend(item) {
     reviewRequired: item.home_context_status === 'review_required',
     sourceBadge: item.source_badge,
     scoreComponents: item.score_components || {},
-    // 공개 키워드는 X/Google 원천에서 실제 관측된 표현만 허용한다.
-    keywords: (item.keywords || [])
-      .filter((row) => row.status === 'observed_source_expression')
-      .slice(0, 5),
+    keywords,
     keywordCandidates: (item.keywords || [])
       .filter((row) => row.status === 'operator_candidate_not_rank_evidence')
       .slice(0, 5),
-    keywordEvidence: item.keyword_evidence || {},
-    companies: companyEligible && Array.isArray(item.companies) ? item.companies : [],
+    keywordEvidence: presentationItem
+      ? { status: 'reviewed', reason: '검수된 관련어 5개' }
+      : (item.keyword_evidence || {}),
+    companies,
     companyEligible,
-    companyResolution: item.company_resolution,
+    companyResolution: item.company_resolution || {
+      candidate_count: companies.length,
+      reason: item.company_card_status === 'ready'
+        ? '근거가 확인된 상장기업 연결'
+        : `검증 기업 ${companies.length}개 · 추가 보강 중`,
+    },
+    companyCardStatus: item.company_card_status,
     sources: item.latest_source_ranks || {},
-    sourceCount: Number(item.source_count || 0),
+    sourceList: Array.isArray(item.sources) ? item.sources : Object.keys(item.latest_source_ranks || {}),
+    sourceCount: Number(item.source_count || (Array.isArray(item.sources) ? item.sources.length : 0)),
+    trendStage,
+    observedDayLabel,
     firstSeenAt: item.first_seen_at,
     lastSeenAt: item.last_seen_at,
     ageHours: Number(item.age_hours || 0),
@@ -225,13 +259,63 @@ export function validatedBundle(payload, metadata, runtimeStatus = null) {
   return { payload, metadata, runtimeStatus, publication };
 }
 
+async function sha256Hex(text) {
+  if (!globalThis.crypto?.subtle) {
+    throw new Error('브라우저가 발행 파일 SHA-256 검증을 지원하지 않습니다.');
+  }
+  const digest = await globalThis.crypto.subtle.digest(
+    'SHA-256',
+    new TextEncoder().encode(text),
+  );
+  return [...new Uint8Array(digest)]
+    .map((value) => value.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function fetchManifestRankings(nonce) {
+  const manifestResponse = await fetch(`${MANIFEST_URL}?t=${nonce}`, { cache: 'no-store' });
+  if (!manifestResponse.ok) throw new Error(`TRZIP manifest ${manifestResponse.status}`);
+  const manifest = await manifestResponse.json();
+  const entry = manifest?.bundle?.rankings || {};
+  const relativePath = String(entry.path || '').replace(/^latest\//, '');
+  if (!/^delivery\/[A-Za-z0-9._-]+\/rankings\.json$/.test(relativePath)) {
+    throw new Error('TRZIP manifest의 순위 파일 경로가 올바르지 않습니다.');
+  }
+  if (!/^[a-f0-9]{64}$/i.test(String(entry.sha256 || ''))) {
+    throw new Error('TRZIP manifest의 순위 파일 해시가 올바르지 않습니다.');
+  }
+  const rankingsResponse = await fetch(
+    `${LIVE_DATA_BASE}/${relativePath}?t=${nonce}`,
+    { cache: 'no-store' },
+  );
+  if (!rankingsResponse.ok) throw new Error(`TRZIP rankings ${rankingsResponse.status}`);
+  const rankingsText = await rankingsResponse.text();
+  if ((await sha256Hex(rankingsText)) !== String(entry.sha256).toLowerCase()) {
+    throw new Error('TRZIP 순위 파일의 SHA-256이 manifest와 일치하지 않습니다.');
+  }
+  const rankings = JSON.parse(rankingsText);
+  if (
+    rankings.publication_id !== manifest.publication_id
+    || rankings.generated_at !== manifest.generated_at
+    || rankings.observed_at !== manifest.observed_at
+  ) {
+    throw new Error('TRZIP manifest와 순위 파일의 발행 식별자가 일치하지 않습니다.');
+  }
+  return rankings;
+}
+
 function viewModel(bundle, { source, fromCache }) {
   const { payload, metadata, runtimeStatus, publication } = bundle;
   const status = dataStatus(payload, metadata, runtimeStatus, { fromCache });
+  const presentationRows = payload.presentation_feed?.frontend_default
+    ? (payload.presentation_feed.items || [])
+    : [];
   const rankingByTopic = new Map(payload.unified_ranking.map((item) => [item.topic, item]));
-  const publicRows = (payload.public_top10 || [])
-    .map((item) => rankingByTopic.get(item.topic) || item)
-    .filter((item) => item && item.topic);
+  const publicRows = presentationRows.length
+    ? presentationRows
+    : (payload.public_top10 || [])
+      .map((item) => rankingByTopic.get(item.topic) || item)
+      .filter((item) => item && item.topic);
   return {
     source,
     stale: status.stale,
@@ -250,16 +334,15 @@ export async function loadTrends({ mode = 'live' } = {}) {
   if (mode !== 'live') throw new Error('운영 화면은 live-data만 사용합니다.');
   try {
     const nonce = Date.now();
-    const [intelligenceResponse, statusResponse, metadataResponse] = await Promise.all([
-      fetch(`${INTELLIGENCE_URL}?t=${nonce}`, { cache: 'no-store' }),
+    const [rankings, statusResponse, metadataResponse] = await Promise.all([
+      fetchManifestRankings(nonce),
       fetch(`${STATUS_URL}?t=${nonce}`, { cache: 'no-store' }),
       fetch(`${METADATA_URL}?t=${nonce}`, { cache: 'no-store' }),
     ]);
-    if (!intelligenceResponse.ok) throw new Error(`TRZIP intelligence ${intelligenceResponse.status}`);
     if (!statusResponse.ok) throw new Error(`TRZIP status ${statusResponse.status}`);
     if (!metadataResponse.ok) throw new Error(`TRZIP metadata ${metadataResponse.status}`);
     const bundle = validatedBundle(
-      await intelligenceResponse.json(),
+      rankings,
       await metadataResponse.json(),
       await statusResponse.json(),
     );
@@ -375,6 +458,7 @@ export function exportPortfoliosCsv() {
 }
 
 export const dataContract = Object.freeze({
+  manifest: MANIFEST_URL,
   intelligence: INTELLIGENCE_URL,
   status: STATUS_URL,
   metadata: METADATA_URL,

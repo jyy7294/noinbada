@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 
 from .company_roles import COMPANY_ROLE_LABELS
 from .hourly_store import ELIGIBLE_COLLECTOR_SQL
+from .keyword_policy import keyword_fits_public_label
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .readiness import MVP_CONSECUTIVE_SOURCE_HOURS
 
@@ -287,17 +288,21 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
         if not definition:
             item_failures.append("missing_trend_definition")
         elif (
-            len(definition) < 80
+            len(definition) < 30
             or "X와 Google 대한민국 관측값" not in definition
-            or "투자 추천을 의미하지 않습니다" not in definition
+            or any(phrase in definition for phrase in ("투자 추천", "투자 조언", "수익 예측"))
         ):
             item_failures.append("insufficient_trend_definition")
+        if not str(item.get("disclaimer") or "").strip():
+            item_failures.append("missing_separate_disclaimer")
         if len(keywords) != 5:
             item_failures.append(f"keyword_count:{len(keywords)}")
         keyword_texts = [str(keyword.get("text") or "").strip() for keyword in keywords]
         normalized_keyword_texts = {" ".join(text.casefold().split()) for text in keyword_texts}
         if not all(keyword_texts) or len(normalized_keyword_texts) != len(keyword_texts):
             item_failures.append("empty_or_duplicate_keyword")
+        if any(not keyword_fits_public_label(text) for text in keyword_texts):
+            item_failures.append("keyword_exceeds_six_characters")
         if any(not list(keyword.get("source") or []) for keyword in keywords):
             item_failures.append("keyword_without_source")
         if len(unique_codes) < MINIMUM_FRONTEND_COMPANIES or "" in unique_codes:
@@ -329,6 +334,7 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
                 str(company.get("market") or "").strip(),
                 str(company.get("company_description") or "").strip(),
                 str(company.get("relationship_reason") or "").strip(),
+                str(company.get("connection_explanation") or "").strip(),
                 str(company.get("company_role_category") or "").strip(),
                 str(company.get("company_role_label") or "").strip(),
                 any(evidence_urls),
@@ -347,6 +353,17 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
                 item_failures.append(f"invalid_relation_tier:{company_name}")
             if not _ontology_path_reaches_company(company.get("ontology_path"), company_name):
                 item_failures.append(f"ontology_path_not_to_company:{company_name}")
+        keyword_company_links = list(item.get("keyword_company_links") or [])
+        linked_keywords = {
+            " ".join(str(link.get("keyword") or "").casefold().split())
+            for link in keyword_company_links
+            if str(link.get("keyword") or "").strip()
+            and str(link.get("company") or "").strip()
+            and str(link.get("connection_explanation") or "").strip()
+            and list(link.get("evidence_urls") or [])
+        }
+        if len(linked_keywords) < 2:
+            item_failures.append(f"keyword_company_link_count:{len(linked_keywords)}")
         if item.get("frontend_readiness_status") != "ready":
             item_failures.append("frontend_enrichment_pending")
         failures.extend(f"{name}:{reason}" for reason in item_failures)
@@ -363,7 +380,7 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
             "enrichment_warnings": item_warnings,
         })
     return {
-        "policy_version": "frontend-result-quality-v6",
+        "policy_version": "frontend-result-quality-v7",
         "passed": not failures,
         "trend_count": len(top),
         "target_trend_count": None,
@@ -505,6 +522,7 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
     contract = publication.get("contract")
     if contract is not None and contract.get("policy_version") not in {
         "frontend-result-quality-v5", "frontend-result-quality-v6",
+        "frontend-result-quality-v7",
     }:
         contract = {
             **contract,

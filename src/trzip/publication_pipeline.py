@@ -25,7 +25,9 @@ from .editorial_review import apply_frontend_enrichment_cache, build_editorial_r
 from .event_resolution import normalize_event_key
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .keyword_candidates import sync_provider_keyword_candidates
+from .keyword_policy import keyword_fits_public_label
 from .normalization_evaluation import evaluate_regression_set
+from .presentation_feed import build_presentation_feed
 from .semantic_adjudication import run_semantic_adjudication
 from .provider_verification import (
     TrendReference,
@@ -85,6 +87,7 @@ RANKING_SUMMARY_FIELDS = (
     "broad_category",
     "category_label",
     "trend_definition",
+    "disclaimer",
     "current_source_position",
     "momentum",
     "momentum_delta",
@@ -835,6 +838,41 @@ def _validated_child(root: Path, relative_path: str) -> Path:
     return target
 
 
+def _validate_presentation_feed(feed: dict) -> None:
+    """Reject a frontend-default feed that violates the reviewed MVP contract."""
+
+    items = list(feed.get("items") or [])
+    if feed.get("schema_version") != "trzip-presentation-feed-v2":
+        raise ValueError("frontend presentation_feed schema version is invalid")
+    if feed.get("status") != "ready" or feed.get("frontend_default") is not True:
+        raise ValueError("frontend presentation_feed is not ready as the default feed")
+    if len(items) != 10:
+        raise ValueError("frontend presentation_feed requires exactly ten reviewed items")
+    if [item.get("presentation_position") for item in items] != list(range(1, 11)):
+        raise ValueError("frontend presentation_feed positions must be contiguous 1 through 10")
+    display_names = [str(item.get("display_name") or "").strip() for item in items]
+    if not all(display_names) or len(set(display_names)) != 10:
+        raise ValueError("frontend presentation_feed display names must be unique and non-empty")
+    for item in items:
+        if item.get("ranking_effect") != "none":
+            raise ValueError("frontend presentation_feed cannot affect canonical ranking")
+        keywords = list(item.get("keywords") or [])
+        keyword_texts = [str(keyword.get("text") or "").strip() for keyword in keywords]
+        if (
+            len(keywords) != 5
+            or len(set(keyword_texts)) != 5
+            or not all(keyword_fits_public_label(text) for text in keyword_texts)
+        ):
+            raise ValueError(
+                "frontend presentation_feed requires five unique keywords of at most six characters"
+            )
+        for company in item.get("companies") or []:
+            if not company.get("company_role_public") or not company.get("company_role_label"):
+                raise ValueError("frontend presentation companies require an explicit public role")
+            if not str(company.get("evidence_url") or "").startswith(("http://", "https://")):
+                raise ValueError("frontend presentation companies require public HTTP evidence")
+
+
 def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
     identity = (
         manifest.get("publication_id"),
@@ -874,6 +912,7 @@ def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
         rankings.get("observed_at"),
     ) != identity:
         raise ValueError("frontend rankings identity mismatch")
+    _validate_presentation_feed(rankings.get("presentation_feed") or {})
     home_feed = rankings.get("home_feed") or {}
     if home_feed.get("status") not in {"ready", "empty"}:
         raise ValueError("frontend home_feed status is invalid")
@@ -997,6 +1036,13 @@ def _write_frontend_delivery(
             _ranking_summary(item)
             for item in intelligence.get("all_observed_ranking") or []
         ],
+        # The approved MVP feed is repeated in the immutable manifest bundle so
+        # replacement frontends do not have to fall back to the mutable
+        # compatibility intelligence.json document.
+        "presentation_feed": (
+            intelligence.get("presentation_feed")
+            or build_presentation_feed(intelligence)
+        ),
         "home_feed": intelligence.get("home_feed") or {"status": "empty", "groups": []},
         "home_top10": [
             _ranking_summary(item) for item in intelligence.get("home_top10") or []
@@ -1687,6 +1733,11 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         at=at,
     )
     intelligence = _enrich_market_references(intelligence, previous_intelligence, at)
+    # Build the approved presentation projection only after every deterministic
+    # enrichment pass. Some passes rebuild the live contract and intentionally
+    # discard non-canonical keys, so attaching it earlier would make the final
+    # publication and the frontend delivery disagree.
+    intelligence["presentation_feed"] = build_presentation_feed(intelligence)
     # Manual daily lists are enrichment caches only. They must never select,
     # promote, suppress, score or categorise a live trend.
     intelligence["editorial_review_pack"] = build_editorial_review_pack(

@@ -221,7 +221,7 @@
             </div>
             <div style="margin-top:18px; position:relative; height:48px;">
               <div style="position:absolute; left:0; right:0; top:0; height:24px; background:#FDF9EC; border:2.5px solid #6B554A; border-radius:999px; box-sizing:border-box;"></div>
-              <div style="position:absolute; left:7px; top:6px; width:64%; height:12px; overflow:hidden; display:flex; gap:5px; animation:zpFill 1.05s cubic-bezier(0.22,1,0.36,1) 0.25s both;">
+              <div data-z-stage-fill="1" style="position:absolute; left:7px; top:6px; width:0%; height:12px; overflow:hidden; display:flex; gap:5px; animation:zpFill 1.05s cubic-bezier(0.22,1,0.36,1) 0.25s both;">
                 <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
                 <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
                 <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
@@ -245,7 +245,7 @@
                 <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
                 <span style="flex:none; width:8px; height:100%; background:#CBB6F7; border-radius:2.5px;"></span>
               </div>
-              <div style="position:absolute; left:64%; top:-8px; margin-left:-2px; width:31px; height:64px; filter:drop-shadow(1.5px 2px 0 rgba(107,85,74,0.18)); animation:zpPull 1.05s cubic-bezier(0.22,1,0.36,1) 0.25s both;">
+              <div data-z-stage-knob="1" style="position:absolute; left:0%; top:-8px; margin-left:-2px; width:31px; height:64px; filter:drop-shadow(1.5px 2px 0 rgba(107,85,74,0.18)); animation:zpPull 1.05s cubic-bezier(0.22,1,0.36,1) 0.25s both;">
                 <svg width="31" height="64" viewBox="0 0 52 108" style="display:block;">
                   <path d="M26 8 C38 8 47.5 17.8 47.5 29.5 C47.5 37.5 43.5 44 40 47.5 C43.5 56 45.5 64.5 45.5 74 C45.5 89.5 36.8 101.5 26 101.5 C15.2 101.5 6.5 89.5 6.5 74 C6.5 64.5 8.5 56 12 47.5 C8.5 44 4.5 37.5 4.5 29.5 C4.5 17.8 14 8 26 8 Z" fill="#FBF3D2" stroke="#5A4038" stroke-width="4" stroke-linejoin="round"></path>
                   <rect x="22" y="19" width="8" height="24" rx="4" fill="none" stroke="#5A4038" stroke-width="3.4"></rect>
@@ -255,7 +255,7 @@
                 </svg>
               </div>
             </div>
-            <div style="margin-top:8px; display:flex; justify-content:space-between; font-weight:800; font-size:10px; color:#6B554A;"><span>태동</span><span>확산</span><span>전성기</span><span>쇠퇴</span></div>
+            <div style="margin-top:8px; display:flex; justify-content:space-between; font-weight:800; font-size:10px; color:#6B554A;"><span>진입</span><span>포착</span><span>확산</span><span>대중화</span></div>
           </div>
         </div>
 
@@ -764,9 +764,9 @@ class Component extends DCLogic {
         self.data = res;
         self.savedPortfolios = api.listPortfolios();
         self.trends = res.trends || [];
-        // 홈은 전체 순위의 앞 10개가 아니라 맥락 품질 게이트를 통과한
-        // public_top10만 사용한다. 전체 순위는 res.trends에 그대로 보존한다.
-        var list = api.sortTrends(res.featuredTrends || [], 'score').slice(0, 10);
+        // 백엔드가 승인한 presentation_feed 순서를 그대로 사용한다.
+        // 원천 실측 전체 순위는 res.trends에 별도로 보존한다.
+        var list = (res.featuredTrends || []).slice(0, 10);
         if (!list.length) {
           self.renderDialState('empty', '공개 가능한 트렌드가 없어요', '전체 후보는 수집됐지만 공개 품질 기준을 통과한 항목이 없습니다');
           self.installDataControls();
@@ -915,26 +915,38 @@ class Component extends DCLogic {
     set('[data-z-ttitle]', trend.displayName);
     set('[data-z-detail-category]', trend.categoryKo + (trend.reviewRequired ? ' · 검토 필요' : ''));
     set('[data-z-detail-summary]', trend.summary);
-    set('[data-z-detail-state]', trend.lifecycleLabel || trend.lifecycle);
+    var stage = trend.trendStage || {};
+    set('[data-z-detail-state]', [stage.label, trend.observedDayLabel].filter(Boolean).join(' · ') || trend.lifecycleLabel || trend.lifecycle);
+    var stageIndex = Number.isFinite(Number(stage.index)) ? Math.max(0, Math.min(3, Number(stage.index))) : 0;
+    var stagePosition = (stageIndex / 3) * 100;
+    var stageFill = document.querySelector('[data-z-stage-fill]');
+    var stageKnob = document.querySelector('[data-z-stage-knob]');
+    if (stageFill) stageFill.style.width = stagePosition + '%';
+    if (stageKnob) stageKnob.style.left = 'calc(' + stagePosition + '% - ' + (stagePosition === 100 ? 27 : 0) + 'px)';
     var keywordState = trend.keywordEvidence || {};
     set('[data-z-detail-confidence]', trend.reviewRequired
       ? '맥락 검토 필요 · 기업 연결 보류'
       : (trend.sourceBadge || '출처 확인') + ' · ' + ((trend.confidence && trend.confidence.label) || '검증 중'));
-    set('[data-z-detail-delta]', '통합 ' + Number(trend.score || 0).toFixed(1) + '점');
-    set('[data-z-detail-period]', trend.ageHours + '시간 관측');
+    set('[data-z-detail-delta]', trend.rankKind === 'publication'
+      ? '발행 ' + String(trend.rank || '--') + '번'
+      : '통합 ' + Number(trend.score || 0).toFixed(1) + '점');
+    set('[data-z-detail-period]', trend.observedDayLabel || (trend.ageHours + '시간 관측'));
     var sourceParts = [];
     if (Number.isFinite(trend.sources.x)) sourceParts.push('X ' + trend.sources.x + '위');
     if (Number.isFinite(trend.sources.google_trends)) sourceParts.push('Google ' + trend.sources.google_trends + '위');
+    if (!sourceParts.length && trend.sourceBadge) sourceParts.push(trend.sourceBadge);
     if (!sourceParts.length) sourceParts.push('출처 순위 확인 중');
-    set('[data-z-detail-source]', sourceParts.join(' · ') + ' · 키워드 ' + (keywordState.status === 'observed' ? '관측' : '근거 부족'));
+    set('[data-z-detail-source]', sourceParts.join(' · ') + ' · 키워드 ' + (['observed', 'reviewed'].indexOf(keywordState.status) >= 0 ? '검증' : '근거 부족'));
     var scoreTip = document.querySelector('[data-z-srctip]');
     if (scoreTip) {
       var sc = trend.scoreComponents || {};
-      scoreTip.textContent = '점수 근거 · 순위 ' + Number(sc.rrf_points || 0).toFixed(1)
-        + ' + 변화 ' + Number(sc.momentum_points || 0).toFixed(1)
-        + ' + 지속 ' + Number(sc.persistence_points || 0).toFixed(1)
-        + ' + 교차출처 ' + Number(sc.cross_source_points || 0).toFixed(1)
-        + ' · ' + (keywordState.reason || '키워드 상태 확인 중');
+      scoreTip.textContent = trend.rankKind === 'publication'
+        ? '발행 순번 · 검수된 Top10 표시 순서이며 X·Google 원천순위는 별도 보존됩니다.'
+        : '점수 근거 · 순위 ' + Number(sc.rrf_points || 0).toFixed(1)
+          + ' + 변화 ' + Number(sc.momentum_points || 0).toFixed(1)
+          + ' + 지속 ' + Number(sc.persistence_points || 0).toFixed(1)
+          + ' + 교차출처 ' + Number(sc.cross_source_points || 0).toFixed(1)
+          + ' · ' + (keywordState.reason || '키워드 상태 확인 중');
     }
     this.renderTrendSeries(trend.series || []);
     this.renderCollectionStatus();
@@ -2187,7 +2199,7 @@ class Component extends DCLogic {
     }
     var groups = [];
     companies.forEach(function (company) {
-      var name = company.relation_category || company.company_role || '연관기업';
+      var name = company.company_role_label || company.relation_category || company.company_role || '역할 미확정';
       var group = groups.find(function (item) { return item.name === name; });
       if (!group) { group = { name:name, rows:[] }; groups.push(group); }
       group.rows.push(company);

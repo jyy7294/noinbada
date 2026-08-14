@@ -12,6 +12,8 @@ import sqlite3
 from datetime import UTC, datetime
 from pathlib import Path
 
+from .keyword_policy import keyword_fits_public_label
+
 
 TASK_KINDS = {"trend_context", "related_keywords", "company_ontology"}
 REQUIRED_COUNTS = {
@@ -55,7 +57,8 @@ def _llm_research_prompt(row: dict) -> str:
         return (
             f"트렌드 '{representative}'의 관측 표현({observed})을 바탕으로 관련 검색어 후보를 "
             "최대 15개 제안하라. 동시 등장 표현, 사용 장면, 제품·행사·작품·기술 맥락을 우선하고 "
-            "단순 동의어 반복과 투자 종목명 끼워 넣기는 금지한다. 각 후보에 관계 유형과 근거 URL을 붙여라."
+            "단순 동의어 반복과 투자 종목명 끼워 넣기는 금지한다. 공개 후보는 공백 제외 6글자 "
+            "이하만 제안하고 긴 원문을 임의로 자르지 마라. 각 후보에 관계 유형과 근거 URL을 붙여라."
         )
     return (
         f"트렌드 '{representative}'의 관측 표현({observed})에서 시작해 상장기업 후보를 최대 18개 제안하라. "
@@ -205,8 +208,13 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
             # Falling back to raw ``keywords`` keeps pre-enrichment candidates
             # visible, while preventing an already complete trend from being
             # queued again merely because the raw provider list is shorter.
-            "related_keywords": len(
-                item.get("related_keywords") or item.get("keywords") or []
+            "related_keywords": sum(
+                keyword_fits_public_label(
+                    row.get("text") if isinstance(row, dict) else row
+                )
+                for row in (
+                    item.get("related_keywords") or item.get("keywords") or []
+                )
             ),
             "company_ontology": int(
                 item.get("frontend_company_count")
@@ -238,6 +246,8 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
                     "reviewed_provider_expression",
                 ],
                 "invented_terms_forbidden": True,
+                "maximum_non_whitespace_characters": 6,
+                "truncation_forbidden": True,
                 "llm_role": "candidate_generation_only",
                 "llm_candidate_target": LLM_CANDIDATE_TARGETS["related_keywords"],
                 "promotion_gate": "exactly_5_reviewed_evidence_terms",
@@ -395,7 +405,7 @@ def sync_enrichment_queue(
                 "manufacturing_development", "raw_materials_components",
                 "content_production", "distribution", "retail_sales",
                 "brand_marketing", "platform_service", "ownership_investment",
-                "event_sponsorship", "industry_adjacent",
+                "event_sponsorship",
             ],
             "llm_can_change_ranking": False,
             "unverified_candidates_public": False,

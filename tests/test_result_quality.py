@@ -24,6 +24,7 @@ def _company(index: int) -> dict:
         "market": "KRX",
         "company_description": "설명",
         "relationship_reason": "관계 이유",
+        "connection_explanation": "키워드 0과 기업의 확인된 역할을 설명합니다.",
         "company_role_category": role_category,
         "company_role_label": role_label,
         "value_chain_stage": stage,
@@ -46,9 +47,9 @@ def _trend(rank: int) -> dict:
         "broad_category": "technology",
         "trend_definition": (
             "구체적인 기술 대상이 최근 관심을 받은 트렌드입니다. "
-            "X와 Google 대한민국 관측값을 바탕으로 발생 맥락과 연결 산업을 함께 설명하며, "
-            "연결 기업 정보는 이해를 돕기 위한 참고 자료이고 투자 추천을 의미하지 않습니다."
+            "X와 Google 대한민국 관측값에서 발생 맥락과 연결 산업이 함께 확인됐습니다."
         ),
+        "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
         "frontend_readiness_status": "ready",
         "context_research": {
             "status": "ready",
@@ -68,6 +69,15 @@ def _trend(rank: int) -> dict:
             for index in range(5)
         ],
         "companies": [_company(index) for index in range(1, 11)],
+        "keyword_company_links": [
+            {
+                "keyword": f"키워드 {index}",
+                "company": f"기업{index + 1}",
+                "connection_explanation": "키워드와 기업의 확인된 역할 연결입니다.",
+                "evidence_urls": [f"https://example.com/{index + 1}"],
+            }
+            for index in range(2)
+        ],
     }
 
 
@@ -75,7 +85,7 @@ def test_complete_frontend_result_passes_quality_gate():
     result = evaluate_frontend_result({"home_top10": [_trend(rank) for rank in range(1, 11)]})
 
     assert result["passed"] is True
-    assert result["policy_version"] == "frontend-result-quality-v6"
+    assert result["policy_version"] == "frontend-result-quality-v7"
     assert result["trend_count"] == 10
     assert all(row["keyword_count"] == 5 and row["company_count"] == 10 for row in result["trends"])
 
@@ -176,12 +186,25 @@ def test_quality_gate_rejects_duplicate_keyword_and_missing_context():
     assert any("invalid_category" in failure for failure in result["failures"])
 
 
+def test_quality_gate_rejects_keyword_over_six_non_whitespace_characters():
+    trends = [_trend(rank) for rank in range(1, 11)]
+    trends[0]["related_keywords"][0]["text"] = "일곱글자키워드"
+
+    result = evaluate_frontend_result({"home_top10": trends})
+
+    assert result["passed"] is False
+    assert any(
+        "keyword_exceeds_six_characters" in failure
+        for failure in result["failures"]
+    )
+
+
 def test_quality_gate_rejects_shallow_or_unbounded_trend_definition():
     trends = [_trend(rank) for rank in range(1, 11)]
     trends[0]["trend_definition"] = "최근 관측된 기술 트렌드입니다."
     trends[1]["trend_definition"] = (
         "구체적인 기술 대상이 최근 관심을 받은 트렌드입니다. "
-        "X와 Google 대한민국 관측값을 바탕으로 발생 맥락과 연결 산업을 설명합니다."
+        "X와 Google 대한민국 관측값을 바탕으로 발생 맥락을 설명하며 투자 조언이 아닙니다."
     )
 
     result = evaluate_frontend_result({"home_top10": trends})

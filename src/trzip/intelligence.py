@@ -8,7 +8,7 @@ from collections import Counter, defaultdict
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from .company_roles import with_company_role
+from .company_roles import PUBLIC_COMPANY_ROLE_CATEGORIES, with_company_role
 from .category_ontology import category_ontology
 from .curation import is_sensitive_context
 from .hourly_store import (
@@ -35,6 +35,8 @@ from .ontology import (
 )
 from .provider_verification import latest_verification_by_trend
 from .ranking_v2 import build_period_rankings_v2
+from .presentation_feed import build_presentation_feed
+from .keyword_policy import keyword_fits_public_label
 from .trend_fit import assess_trend_fit
 from .readiness import (
     LONG_HORIZON_HISTORY_HOURS,
@@ -317,19 +319,48 @@ def _trend_definition(
         definition += (
             f" 실측 데이터에서는 {', '.join(contextual_terms)} 같은 표현과 함께 나타났습니다."
         )
-    definition += " X와 Google 대한민국 관측값을 바탕으로 설명하며 투자 추천을 의미하지 않습니다."
+    definition += " X와 Google 대한민국 관측값에서 확인된 맥락을 설명합니다."
     return definition
 
 
 _LIFECYCLE_PRESENTATION = {
-    "new": (0, "막 포착", 22, "이제 막 관측되기 시작한 구간입니다."),
-    "rising": (1, "확산 중", 58, "관심이 이전 관측 구간보다 커지는 흐름입니다."),
-    "rebounding": (1, "재확산", 62, "관심이 다시 높아지는 흐름입니다."),
-    "sustained": (2, "대중화·지속", 82, "반복 관측되며 관심이 이어지는 구간입니다."),
-    "cooling": (2, "관심 둔화", 88, "관심은 남아 있지만 최근 확산 속도는 완만해진 구간입니다."),
-    "expired": (2, "관측 종료", 100, "선택 기간의 최신 관측에서는 더 이상 확인되지 않은 상태입니다."),
-    "insufficient_data": (0, "판단 자료 부족", 12, "확산 단계를 판단하기 위한 비교 관측이 아직 부족합니다."),
+    "insufficient_data": ("entry", 0, "진입", 12, "후보군에 진입했지만 비교 관측이 아직 부족합니다."),
+    "new": ("detected", 1, "포착", 32, "새로운 관심 흐름으로 포착된 구간입니다."),
+    "rising": ("spreading", 2, "확산", 62, "이전 관측 구간보다 관심이 커지는 흐름입니다."),
+    "rebounding": ("spreading", 2, "확산", 68, "관심이 다시 높아지며 확산되는 흐름입니다."),
+    "sustained": ("mainstream", 3, "대중화", 88, "반복 관측되며 대중 관심이 유지되는 구간입니다."),
+    "cooling": ("mainstream", 3, "대중화", 92, "대중화 뒤 확산 속도가 완만해진 구간입니다."),
+    "expired": ("mainstream", 3, "대중화", 100, "대중화 이력은 있으나 현재 관측은 종료된 상태입니다."),
 }
+
+
+def _attention_windows(item: dict) -> list[dict]:
+    """Expose only the three periods used by the detail design.
+
+    The source feeds provide ranks, not universal mention counts. The public
+    metric is therefore named an attention-index change and never fabricated
+    as an absolute mention volume.
+    """
+
+    changes = item.get("attention_change") or {}
+    definitions = (
+        ("1w", "1주", "1w"),
+        ("1m", "1개월", "1m"),
+        ("3m", "3개월", "3m"),
+    )
+    windows = []
+    for key, label, change_key in definitions:
+        value = dict(changes.get(change_key) or {})
+        windows.append({
+            "key": key,
+            "label": label,
+            "metric": "normalized_attention_index_change",
+            "status": value.get("status", "unavailable"),
+            "percent": value.get("percent"),
+            "basis": value.get("basis", "previous_equal_period_score"),
+            "is_absolute_mention_count": False,
+        })
+    return windows
 
 
 def _frontend_story(item: dict) -> dict:
@@ -343,7 +374,7 @@ def _frontend_story(item: dict) -> dict:
     """
 
     lifecycle = str(item.get("lifecycle") or "insufficient_data")
-    stage_index, phase_label, progress, phase_caption = _LIFECYCLE_PRESENTATION.get(
+    stage_key, stage_index, phase_label, progress, phase_caption = _LIFECYCLE_PRESENTATION.get(
         lifecycle, _LIFECYCLE_PRESENTATION["insufficient_data"]
     )
     age_hours = max(0.0, float(item.get("age_hours") or 0.0))
@@ -384,7 +415,7 @@ def _frontend_story(item: dict) -> dict:
             "causality": "not_inferred",
         })
 
-    attention_change = (item.get("attention_change") or {}).get("24h") or {}
+    attention_change = (item.get("attention_change") or {}).get("1w") or {}
     if attention_change.get("status") == "measured" and attention_change.get("percent") is not None:
         percent = float(attention_change["percent"])
         lift = {
@@ -392,7 +423,7 @@ def _frontend_story(item: dict) -> dict:
             "metric": "previous_equal_period_score_change",
             "value": round(percent, 2),
             "unit": "percent",
-            "label": f"24시간 관심 점수 {percent:+.1f}%",
+            "label": f"1주 관심지수 {percent:+.1f}%",
         }
     elif item.get("momentum_delta") is not None:
         points = float(item.get("momentum_delta") or 0.0) * 100.0
@@ -462,7 +493,7 @@ def _frontend_story(item: dict) -> dict:
         str(url) for url in context.get("evidence_urls") or []
         if str(url).startswith(("http://", "https://"))
     ]
-    return {
+    payload = {
         "schema_version": "trend-story-v1",
         "status": "ready" if context.get("status") == "ready" else "observed_context_only",
         "origin": {
@@ -481,6 +512,11 @@ def _frontend_story(item: dict) -> dict:
         },
         "diffusion": {
             "lifecycle": lifecycle,
+            "trend_stage": {
+                "key": stage_key,
+                "label": phase_label,
+                "index": stage_index,
+            },
             "phase_label": phase_label,
             "stage_index": stage_index,
             "progress_percent": progress,
@@ -488,10 +524,12 @@ def _frontend_story(item: dict) -> dict:
             "observed_hours": int((item.get("lifecycle_baseline") or {}).get("observed_hours") or 0),
             "caption": phase_caption,
             "attention_lift": lift,
+            "attention_windows": _attention_windows(item),
             "channels": channels,
             "ranking_input_policy": HOME_SOURCE_POLICY_VERSION,
         },
     }
+    return payload
 
 
 def _attach_frontend_story(items: list[dict]) -> None:
@@ -509,6 +547,7 @@ def _attach_frontend_story(items: list[dict]) -> None:
             "stage_index": story["diffusion"]["stage_index"],
             "progress_percent": story["diffusion"]["progress_percent"],
             "attention_lift": story["diffusion"]["attention_lift"],
+            "attention_windows": story["diffusion"]["attention_windows"],
             "current_rank": item.get("home_rank") or item.get("observed_rank"),
             "caption": story["diffusion"]["caption"],
             "related_keyword_count": len(item.get("related_keywords") or []),
@@ -529,13 +568,15 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
     lane.
     """
 
-    if item.get("lane") != "main":
+    context_status = str(item.get("context_status") or "")
+    if item.get("lane") == "issue":
+        return False, "not_main_lane"
+    if item.get("lane") != "main" and context_status != "resolved_by_observed_context":
         return False, "not_main_lane"
     if item.get("category") in {"unclassified", "other"}:
         return False, "unclassified"
     if item.get("broad_category") not in PUBLIC_BROAD_CATEGORIES:
         return False, "unclassified"
-    context_status = str(item.get("context_status") or "")
     if context_status in {"unresolved", "ambiguous_person"}:
         return False, context_status
     if item.get("broad_category") == "market":
@@ -562,6 +603,8 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
         and trigger_urls
     ):
         return False, "trigger_evidence_incomplete"
+    if item.get("lane") != "main":
+        return False, "not_main_lane"
 
     context_reason = "verified_trigger_event"
     if context_status == "needs_context":
@@ -679,7 +722,11 @@ def _related_term_evidence(observations: list[dict], representative: str) -> lis
     evidence: dict[str, dict] = {}
     for item in observations:
         raw_term = " ".join(str(item["topic"]).strip().split())
-        if raw_term and raw_term.casefold() != representative.casefold():
+        if (
+            raw_term
+            and raw_term.casefold() != representative.casefold()
+            and keyword_fits_public_label(raw_term)
+        ):
             bucket = evidence.setdefault(raw_term, {"sources": set(), "hours": set(), "kind": "observed_ranked_term"})
             bucket["sources"].add(item["source"])
             bucket["hours"].add(item["observed_at"])
@@ -691,7 +738,11 @@ def _related_term_evidence(observations: list[dict], representative: str) -> lis
             continue
         for related in related_terms:
             text = " ".join(str(related).strip().split())
-            if not text or text.casefold() == representative.casefold():
+            if (
+                not text
+                or text.casefold() == representative.casefold()
+                or not keyword_fits_public_label(text)
+            ):
                 continue
             bucket = evidence.setdefault(text, {"sources": set(), "hours": set(), "kind": "observed_related_query"})
             bucket["sources"].add(item["source"])
@@ -743,7 +794,10 @@ def _merge_reviewed_ontology_keywords(
 ) -> list[dict]:
     """Fill slots with reviewed aliases and non-alias related concepts."""
 
-    selected = list(observed[:limit])
+    selected = [
+        item for item in observed
+        if keyword_fits_public_label(item.get("text"))
+    ][:limit]
     seen = {
         "".join(str(item.get("text") or "").casefold().split())
         for item in selected
@@ -762,7 +816,7 @@ def _merge_reviewed_ontology_keywords(
     for alias in reviewed_terms:
         text = " ".join(str(alias.get("label") or "").strip().split())
         key = "".join(text.casefold().split())
-        if not text or key in seen:
+        if not text or key in seen or not keyword_fits_public_label(text):
             continue
         evidence_urls = sorted({
             str(record.get("url") or "").strip()
@@ -788,7 +842,7 @@ def _merge_reviewed_ontology_keywords(
         for concept in graph.reviewed_related_terms(representative):
             text = " ".join(str(concept.get("label") or "").strip().split())
             key = "".join(text.casefold().split())
-            if not text or key in seen:
+            if not text or key in seen or not keyword_fits_public_label(text):
                 continue
             evidence_urls = sorted({
                 str(record.get("url") or "").strip()
@@ -1729,10 +1783,10 @@ def apply_equal_platform_home_scores(rows: list[dict]) -> list[dict]:
 
 
 def _period_change_metrics(period_views: dict[str, dict]) -> dict[str, dict]:
-    """Return honest 24h/7d relative score changes from equal-period data."""
+    """Return honest 1-week/1-month changes and an explicit 3-month gap."""
 
     output: dict[str, dict] = {}
-    for key, label in (("daily", "24h"), ("weekly", "7d")):
+    for key, label in (("weekly", "1w"), ("monthly", "1m")):
         for item in (period_views.get(key) or {}).get("unified_ranking") or []:
             previous = item.get("previous_period_score")
             current = item.get("score")
@@ -1752,7 +1806,119 @@ def _period_change_metrics(period_views: dict[str, dict]) -> dict[str, dict]:
                     "basis": "previous_equal_period_score",
                 }
             output.setdefault(str(item["event_key"]), {})[label] = metric
+    for metrics in output.values():
+        metrics["3m"] = {
+            "status": "unavailable",
+            "percent": None,
+            "basis": "insufficient_90_day_observed_history",
+        }
     return output
+
+
+_KEYWORD_LINK_STOPWORDS = {
+    "관련", "기업", "시장", "공식", "트렌드", "시간", "순위", "행사",
+    "제품", "서비스", "대한민국", "한국",
+}
+
+
+def _attach_keyword_company_links(item: dict) -> None:
+    """Explain keyword -> documented role -> listed-company connections."""
+
+    keywords = list(item.get("related_keywords") or item.get("keywords") or [])
+    companies = list(item.get("companies") or item.get("company_candidates") or [])
+    keyword_by_key = {
+        normalize_event_key(str(row.get("text") or "")): str(row.get("text") or "").strip()
+        for row in keywords
+        if isinstance(row, dict) and str(row.get("text") or "").strip()
+    }
+    links = []
+    linked_keyword_keys: set[str] = set()
+    for company in companies:
+        company_name = str(company.get("company") or "").strip()
+        if not company_name:
+            continue
+        explicit = {
+            normalize_event_key(value)
+            for value in company.get("matched_keywords") or []
+            if str(value).strip()
+        }
+        haystack = " ".join(str(company.get(field) or "") for field in (
+            "company_description", "company_summary", "relationship_reason",
+            "reason", "company_role_label", "evidence_kind", "evidence_type",
+        )).casefold()
+        matched = []
+        for normalized, text in keyword_by_key.items():
+            if normalized in explicit:
+                matched.append((text, "reviewed_keyword_company_bridge"))
+                continue
+            tokens = {
+                token.casefold() for token in re.findall(r"[0-9A-Za-z가-힣]{2,}", text)
+                if token.casefold() not in _KEYWORD_LINK_STOPWORDS
+            }
+            if tokens and any(token in haystack for token in tokens):
+                matched.append((text, "document_text_overlap"))
+        evidence_urls = [
+            str(source.get("url") or "").strip()
+            for source in company.get("evidence_sources") or []
+            if isinstance(source, dict) and str(source.get("url") or "").startswith(("http://", "https://"))
+        ]
+        if not evidence_urls and str(company.get("evidence_url") or "").startswith(("http://", "https://")):
+            evidence_urls = [str(company["evidence_url"])]
+        company["matched_keywords"] = [text for text, _ in matched]
+        reason = str(
+            company.get("relationship_reason") or company.get("reason") or ""
+        ).strip()
+        role_label = str(company.get("company_role_label") or "역할 미확정")
+        company["connection_explanation"] = (
+            f"{', '.join(company['matched_keywords'])} 관련 맥락에서 {company_name}은(는) "
+            f"'{role_label}' 역할로 연결됩니다. {reason}"
+            if matched else
+            f"{company_name}은(는) '{role_label}' 역할 후보입니다. {reason}"
+        )
+        for keyword, basis in matched:
+            normalized = normalize_event_key(keyword)
+            linked_keyword_keys.add(normalized)
+            links.append({
+                "keyword": keyword,
+                "company": company_name,
+                "stock_code": str(company.get("stock_code") or company.get("ticker") or ""),
+                "company_role_category": company.get("company_role_category"),
+                "company_role_label": company.get("company_role_label"),
+                "relationship_reason": reason,
+                "connection_explanation": company["connection_explanation"],
+                "evidence_urls": list(dict.fromkeys(evidence_urls)),
+                "match_basis": basis,
+                "affects_rank": False,
+            })
+    # ``companies`` is the publishable subset and ``company_candidates`` is
+    # the audit set. Keep common rows value-identical after adding the public
+    # explanation fields so callers never see two contradictory versions of
+    # the same ticker.
+    enrichment_by_code = {
+        str(company.get("stock_code") or company.get("ticker") or "").strip(): {
+            "matched_keywords": list(company.get("matched_keywords") or []),
+            "connection_explanation": str(
+                company.get("connection_explanation") or ""
+            ),
+        }
+        for company in companies
+        if str(company.get("stock_code") or company.get("ticker") or "").strip()
+    }
+    for candidate in item.get("company_candidates") or []:
+        code = str(
+            candidate.get("stock_code") or candidate.get("ticker") or ""
+        ).strip()
+        if code in enrichment_by_code:
+            candidate.update(enrichment_by_code[code])
+    item["keyword_company_links"] = links
+    item["linked_keyword_count"] = len(linked_keyword_keys)
+    item["keyword_company_link_status"] = (
+        "ready" if len(linked_keyword_keys) >= 2 else "enrichment_pending"
+    )
+    item["unlinked_related_keywords"] = [
+        text for normalized, text in keyword_by_key.items()
+        if normalized not in linked_keyword_keys
+    ]
 
 
 def refresh_frontend_readiness(intelligence: dict) -> dict:
@@ -1761,7 +1927,13 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
     refresh_home_context_eligibility(intelligence)
     candidates = intelligence.get("unified_ranking", [])
     for item in candidates:
-        keyword_count = len(item.get("related_keywords") or item.get("keywords") or [])
+        _attach_keyword_company_links(item)
+        keyword_rows = list(item.get("related_keywords") or item.get("keywords") or [])
+        keyword_count = len(keyword_rows)
+        keyword_lengths_valid = all(
+            keyword_fits_public_label(row.get("text") if isinstance(row, dict) else row)
+            for row in keyword_rows
+        )
         complete_companies = []
         for company in item.get("companies") or []:
             evidence_urls = {
@@ -1790,6 +1962,10 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
         missing = []
         if item.get("keyword_status") != "ready" or keyword_count != 5:
             missing.append("related_keywords_exactly_five")
+        if not keyword_lengths_valid:
+            missing.append("related_keywords_max_six_characters")
+        if int(item.get("linked_keyword_count") or 0) < 2:
+            missing.append("related_keywords_linked_to_companies_at_least_two")
         if complete_company_count < MINIMUM_FRONTEND_COMPANIES:
             missing.append("evidence_backed_listed_companies_at_least_ten")
         elif not 2 <= role_category_count <= 4:
@@ -2347,7 +2523,12 @@ def build_intelligence(
             display_name_policy = "reviewed_stock_code_to_company_name"
         broad_category = _broad_category(detected_category)
         category_label = _category_label(broad_category)
-        keyword_status = "ready" if len(keyword_items) == 5 else "enrichment_pending"
+        keyword_status = (
+            "ready"
+            if len(keyword_items) == 5
+            and all(keyword_fits_public_label(row.get("text")) for row in keyword_items)
+            else "enrichment_pending"
+        )
         candidates.append({
             "event_key": event_key,
             "topic": representative_term,
@@ -2370,6 +2551,7 @@ def build_intelligence(
                 category_label,
                 [item["text"] for item in keyword_items],
             ),
+            "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
             "lane": lane,
             "selection_reason": reason,
             "trend_fit": trend_fit,
@@ -2506,6 +2688,7 @@ def build_intelligence(
     # general product-fit and context rules. Enrichment readiness never changes
     # rank and a manual cache/whitelist is not consulted here.
     for item in candidates:
+        _attach_keyword_company_links(item)
         home_allowed, home_reason = home_gate_results[item["event_key"]]
         item["home_context_status"] = "resolved" if home_allowed else "review_required"
         item["home_context_reason"] = home_reason
@@ -2533,7 +2716,12 @@ def build_intelligence(
             item["company_card_reason"] = "company_linking_not_allowed_for_lane_or_context"
         item["company_status"] = item["company_card_status"]
 
-        keyword_count = len(item.get("related_keywords") or item.get("keywords") or [])
+        keyword_rows = list(item.get("related_keywords") or item.get("keywords") or [])
+        keyword_count = len(keyword_rows)
+        keyword_lengths_valid = all(
+            keyword_fits_public_label(row.get("text") if isinstance(row, dict) else row)
+            for row in keyword_rows
+        )
         complete_companies = []
         for company in item.get("companies") or []:
             evidence_urls = {
@@ -2562,6 +2750,10 @@ def build_intelligence(
         })
         if item["keyword_status"] != "ready" or keyword_count != 5:
             readiness_missing.append("related_keywords_exactly_five")
+        if not keyword_lengths_valid:
+            readiness_missing.append("related_keywords_max_six_characters")
+        if int(item.get("linked_keyword_count") or 0) < 2:
+            readiness_missing.append("related_keywords_linked_to_companies_at_least_two")
         if (
             complete_company_count < MINIMUM_FRONTEND_COMPANIES
         ):
@@ -2949,3 +3141,5 @@ def build_intelligence(
         },
         "lanes": lanes,
     }
+    payload["presentation_feed"] = build_presentation_feed(payload)
+    return payload

@@ -25,9 +25,29 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 
 호환 경로를 쓰는 동안에는 세 문서의 `mode=live`, `publication_id`, `generated_at`, 관측시각이 모두 같아야 합니다.
 
+## 수집과 공개 주기
+
+- 원천 수집·원장 저장·24시간 재계산은 매시 정각에 수행합니다.
+- 프런트용 `live-data` 최신본 승격은 매일 06:00 KST에 한 번 수행합니다.
+- 따라서 `latest`의 관측시각이 마지막 로컬 수집시각보다 오래됐다고 해서 곧바로 수집 중단을 뜻하지 않습니다.
+- 운영 진단에서는 SQLite의 마지막 관측시각, 로컬 publication 시각, 원격 `live-data` 시각을 각각 확인해야 합니다.
+- X와 Google이 같은 기준시각에 정상 관측되지 않으면 원격 최신본을 덮어쓰지 않습니다.
+
+## 승인된 MVP 기본 피드
+
+`rankings.json.presentation_feed`가 현재 MVP 프런트의 기본 목록입니다. 같은 객체는 전환 호환을 위해
+`intelligence.json.presentation_feed`에도 들어갑니다.
+
+- `frontend_default=true`인 경우 프런트는 이 배열의 순서와 표시명을 그대로 사용합니다.
+- 이 피드는 사용자 검수 결과를 고정한 `observed_reference` 표시층이며, 원천 `unified_ranking`과 점수를 변경하지 않습니다.
+- 항목별 `related_keywords`는 서로 다른 5개이며, 공백을 제외하고 최대 6자입니다.
+- 기업 연결은 확인된 상장기업만 담고, 10개 미만이면 `enrichment_pending`을 그대로 표시합니다. 숫자를 맞추기 위한 기업 패딩은 금지합니다.
+- 새 디자인 구현은 mutable 호환 문서보다 manifest가 검증한 불변 `rankings.json`을 우선 사용해야 합니다.
+
 ## 목록
 
 - 전체 순위: `unified_ranking`
+- MVP 기본 표시 목록: `presentation_feed` (사용자 검수 표시층, 원천 순위 영향 없음)
 - 순위 확정도: `ranking_availability` (`단일출처 잠정` / `양출처 잠정` / `성숙 통합`)
 - 오늘의 흐름: `home_feed` (무순위 `spreading`·`sustained`·`emerging` 그룹)
 - 홈 최대 10개: `home_top10` (현재 프런트 전환용 번호형 호환 배열)
@@ -78,7 +98,10 @@ NAVER 뉴스는 현재 `main`·검토 후보의 촉발 맥락을 확인하는 �
 | 신뢰 상태 | `data_confidence`, `home_context_status`, `home_context_reason` |
 | 관련어 | `keywords` (0~5), 원천 관측 또는 검수된 온톨로지 표현만 허용하고 `affects_score=false` |
 | 기업 Gold | `companies` (0 또는 10개 이상, 역할 카테고리 2~4개) |
-| 기업 역할 | `companies[].company_role_category`, `companies[].company_role_label` (제조·개발/원재료·핵심부품/콘텐츠 제작/배급·유통/판매·리테일/브랜드·마케팅/플랫폼·서비스/투자·소유/행사 후원·운영/산업 연관) |
+| 기업 역할 | `companies[].company_role_category`, `companies[].company_role_label` (제조·개발/원재료·핵심부품/콘텐츠 제작/배급·유통/판매·리테일/브랜드·마케팅/플랫폼·서비스/투자·소유/행사 후원·운영) |
+| 기업 연결 설명 | `companies[].connection_explanation`, `keyword_company_links[]` |
+| 관심 구간 | `trend_story.diffusion.attention_windows[]`의 1주·1개월·3개월 |
+| 단계 | `trend_story.diffusion.trend_stage`의 진입·포착·확산·대중화 |
 | 관계 강도 | `companies[].relation_tier` (`direct`/`value_chain`/`industry_watch`) |
 | 기업 카드 준비 상태 | `company_card_status`, `company_card_reason` |
 | 기업 후보 감사 | `company_candidates`, `company_resolution` |
@@ -163,7 +186,7 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 `compatibility_documents.editorial_review` 경로와 SHA로 읽습니다.
 
 - 트렌드 후보: 실측 점수순 `main` 상위 30개 안에서 일반 제품 적합 규칙을 통과한 항목
-- `related_keywords`: 트렌드마다 정확히 5개
+- `related_keywords`: 트렌드마다 정확히 5개이며, 각 표기는 공백을 제외하고 최대 6글자입니다. 원문을 임의로 자르지 않고 출처가 확인된 짧은 표현만 사용합니다.
 - `company_candidates`: 해당 트렌드와의 개별 관계 자료가 확인된 국내외 상장사만 수록
 - `음식`, `운전`, `애니` 같은 포괄어와 업종별 회사 채우기는 금지합니다.
 - 회사마다 `reason`, `evidence_url`, `evidence_owner`, `evidence_type`,

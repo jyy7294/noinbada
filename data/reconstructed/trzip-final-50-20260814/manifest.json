@@ -1,0 +1,22 @@
+{
+  "company_link_count": 150,
+  "data_mode": "reconstructed",
+  "dataset_id": "trzip-final-50-20260814",
+  "event_count": 50,
+  "events_path": "events.ndjson",
+  "events_sha256": "b0a2255fa09340c948af39ac7e5e3f09ef4b38eef66f4526e604f15946f6efd8",
+  "frontend_missing_counts": {
+    "company_role_categories_between_two_and_four": 46,
+    "evidence_backed_listed_companies_at_least_ten": 50,
+    "related_keywords_linked_to_companies_at_least_two": 41
+  },
+  "frontend_ready_count": 0,
+  "import_version": "reviewed-workbook-import-v1",
+  "keyword_count": 250,
+  "live_eligible": false,
+  "ranking_effect": "none",
+  "ranking_eligible": false,
+  "schema_version": "trzip-reconstructed-workbook-manifest-v1",
+  "source_file": "source.xlsx",
+  "source_sha256": "97e4ef806445453926466e4ac4321241417a7f76d9a365fc72e005cf1df62382"
+}

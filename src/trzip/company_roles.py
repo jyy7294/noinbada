@@ -11,8 +11,11 @@ COMPANY_ROLE_LABELS = {
     "platform_service": "플랫폼·서비스",
     "ownership_investment": "투자·소유",
     "event_sponsorship": "행사 후원·운영",
-    "industry_adjacent": "산업 연관",
 }
+
+INTERNAL_UNCLASSIFIED_ROLE = "unclassified"
+INTERNAL_UNCLASSIFIED_LABEL = "역할 미확정"
+PUBLIC_COMPANY_ROLE_CATEGORIES = frozenset(COMPANY_ROLE_LABELS)
 
 
 def company_role_category(source: dict) -> str:
@@ -45,9 +48,14 @@ def company_role_category(source: dict) -> str:
         return "raw_materials_components"
     if any(token in text for token in ("판매", "리테일", "편의점", "외식", "매장")):
         return "retail_sales"
-    if relation_type in {"adjacent", "industry_watch"}:
-        return "industry_adjacent"
-    return "manufacturing_development"
+    if any(token in text for token in (
+        "제조", "개발", "생산", "카메라", "렌즈", "장비", "기기", "로봇",
+        "자동차", "건설", "시공", "식품기업", "전자기업", "광학기업",
+    )):
+        return "manufacturing_development"
+    # A weak relation tier is not a business role. Keep an unresolved role
+    # internal until the documented function can be classified precisely.
+    return INTERNAL_UNCLASSIFIED_ROLE
 
 
 def with_company_role(source: dict) -> dict:
@@ -55,5 +63,8 @@ def with_company_role(source: dict) -> dict:
     return {
         **source,
         "company_role_category": category,
-        "company_role_label": COMPANY_ROLE_LABELS[category],
+        "company_role_label": COMPANY_ROLE_LABELS.get(
+            category, INTERNAL_UNCLASSIFIED_LABEL
+        ),
+        "company_role_public": category in PUBLIC_COMPANY_ROLE_CATEGORIES,
     }

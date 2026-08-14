@@ -2,6 +2,7 @@ from datetime import UTC, datetime, timedelta
 
 from trzip.company_adapters import integration_status, opendart_company, pykrx_stock
 from trzip.hourly_store import HourlyObservation, upsert
+from trzip.keyword_policy import keyword_character_count
 from trzip.intelligence import (
     _broad_category,
     _category,
@@ -94,7 +95,7 @@ def test_trend_definition_explains_meaning_and_observed_context():
     assert "관측·공유·참여" in definition
     assert "일식, 개기일식 시간" in definition
     assert "X와 Google 대한민국 관측값" in definition
-    assert "투자 추천을 의미하지 않습니다" in definition
+    assert "투자 추천" not in definition
 
 
 def test_frontend_story_keeps_related_terms_as_context_not_causal_lineage():
@@ -126,15 +127,15 @@ def test_frontend_story_keeps_related_terms_as_context_not_causal_lineage():
             "evidence_urls": ["https://example.com/trigger"],
         },
         "attention_change": {
-            "24h": {"status": "measured", "percent": 38.2},
+            "1w": {"status": "measured", "percent": 38.2},
         },
         "latest_source_ranks": {"x": 3, "google_trends": 7},
         "rank_change_by_source": {"x": 2, "google_trends": None},
     })
 
-    assert story["diffusion"]["phase_label"] == "확산 중"
+    assert story["diffusion"]["phase_label"] == "확산"
     assert story["diffusion"]["observed_day_label"] == "관측 2일차"
-    assert story["diffusion"]["attention_lift"]["label"] == "24시간 관심 점수 +38.2%"
+    assert story["diffusion"]["attention_lift"]["label"] == "1주 관심지수 +38.2%"
     assert story["relationship_graph"]["interpretation"] == "observed_context_graph_not_causal_lineage"
     assert story["relationship_graph"]["edges"][0]["relation_type"] == "source_related_query"
     assert story["relationship_graph"]["edges"][0]["causality"] == "not_inferred"
@@ -1151,8 +1152,9 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
 
     assert item["display_name"] == "나솔"
     assert {keyword["text"] for keyword in item["keywords"]} == {
-        "나는 SOLO", "나는 솔로", "SBS Plus", "ENA", "TVING",
+        "나는 SOLO", "나는 솔로", "ENA", "TVING",
     }
+    assert all(keyword_character_count(keyword["text"]) <= 6 for keyword in item["keywords"])
     assert all(keyword["affects_score"] is False for keyword in item["keywords"])
     assert any(
         keyword["status"] == "approved_ontology_term"
@@ -1163,7 +1165,7 @@ def test_iam_solo_publishes_three_direct_and_two_value_chain_companies(tmp_path)
     assert sum(
         keyword["status"] == "approved_ontology_related_term"
         for keyword in item["keywords"]
-    ) == 3
+    ) == 2
     assert item["company_resolution"]["publish_status"] == "published"
     assert set(companies) == {"030200", "034120", "035760", "053210", "402340"}
     assert {
@@ -1219,8 +1221,9 @@ def test_registered_gstar_enrichment_does_not_promote_an_unclassified_observatio
     item = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
 
     assert {keyword["text"] for keyword in item["keywords"]} == {
-        "G-STAR", "G-CON", "팰월드 모바일", "산나비 외전", "오디세이 모니터",
+        "G-STAR", "G-CON", "팰월드 모바일", "산나비 외전",
     }
+    assert all(keyword_character_count(keyword["text"]) <= 6 for keyword in item["keywords"])
     assert all(keyword["affects_score"] is False for keyword in item["keywords"])
     assert item["lane"] == "review"
     assert item["company_eligible"] is True
@@ -1262,7 +1265,7 @@ def test_tving_exposes_five_reviewed_related_keywords_and_five_companies(tmp_pat
     }
 
 
-def test_humanoid_robot_exposes_five_keywords_and_three_core_two_industry_observations(
+def test_humanoid_robot_exposes_reviewed_keywords_and_evidence_backed_companies(
     tmp_path,
 ):
     target = tmp_path / "humanoid-enrichment.sqlite3"
@@ -1284,7 +1287,7 @@ def test_humanoid_robot_exposes_five_keywords_and_three_core_two_industry_observ
     item = build_intelligence(at, hours=1, path=target)["unified_ranking"][0]
     companies = {company["stock_code"]: company for company in item["companies"]}
 
-    assert len(item["keywords"]) == 5
+    assert len(item["keywords"]) == 4
     assert {keyword["text"] for keyword in item["keywords"]} <= {
         "휴머노이드",
         "아틀라스",
@@ -1294,6 +1297,7 @@ def test_humanoid_robot_exposes_five_keywords_and_three_core_two_industry_observ
         "AMBIDEX",
     }
     assert all(keyword["affects_score"] is False for keyword in item["keywords"])
+    assert all(keyword_character_count(keyword["text"]) <= 6 for keyword in item["keywords"])
     assert set(companies) == {"005380", "005930", "035420", "066570", "454910"}
     assert {
         ticker for ticker, company in companies.items() if company["relation_tier"] == "direct"
@@ -1333,11 +1337,11 @@ def test_stock_code_reference_data_does_not_promote_or_company_enrich_it(tmp_pat
     assert item["display_name_policy"] == "reviewed_stock_code_to_company_name"
     assert {keyword["text"] for keyword in item["keywords"]} == {
         "삼성전자",
-        "삼성전자주식회사",
         "메모리",
         "시스템LSI",
         "파운드리",
     }
+    assert all(keyword_character_count(keyword["text"]) <= 6 for keyword in item["keywords"])
     assert all(keyword["affects_score"] is False for keyword in item["keywords"])
     assert item["lane"] == "review"
     assert item["company_candidates"] == []

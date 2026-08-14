@@ -86,12 +86,12 @@ CATEGORY_ONTOLOGY = {
     "technology_tool": {
         "entity_slots": ["technology", "product_or_project", "developer", "component", "application"],
         "trigger_types": ["official_announcement", "product_launch", "investment", "deployment", "regulatory_milestone"],
-        "company_roles": ["manufacturing_development", "raw_materials_components", "platform_service", "industry_adjacent"],
+        "company_roles": ["manufacturing_development", "raw_materials_components", "platform_service", "distribution"],
     },
     "investment_market": {
         "entity_slots": ["asset_or_company", "market", "instrument", "event", "consumer_action"],
         "trigger_types": ["price_move", "listing_event", "filing", "policy_release", "transaction_growth"],
-        "company_roles": ["platform_service", "ownership_investment", "distribution", "industry_adjacent"],
+        "company_roles": ["platform_service", "ownership_investment", "distribution", "brand_marketing"],
     },
 }
 
