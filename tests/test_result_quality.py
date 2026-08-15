@@ -157,23 +157,24 @@ def test_complete_frontend_result_passes_quality_gate():
     assert all(row["keyword_count"] == 5 and row["company_count"] == 10 for row in result["trends"])
 
 
-def test_result_quality_accepts_two_company_roles_and_rejects_one_role():
+def test_result_quality_accepts_three_company_roles_and_rejects_two_roles():
+    three_role_item = _trend(1)
+    three_roles = ("manufacturing_development", "distribution", "retail_sales")
+    for index, company in enumerate(three_role_item["companies"]):
+        company["company_role_category"] = three_roles[index % 3]
+    three_role_failures = _presentation_card_display_failures(three_role_item)
+
     two_role_item = _trend(1)
     two_roles = ("manufacturing_development", "distribution")
     for index, company in enumerate(two_role_item["companies"]):
         company["company_role_category"] = two_roles[index % 2]
     two_role_failures = _presentation_card_display_failures(two_role_item)
 
-    one_role_item = _trend(1)
-    for company in one_role_item["companies"]:
-        company["company_role_category"] = "manufacturing_development"
-    one_role_failures = _presentation_card_display_failures(one_role_item)
-
     assert not any(
         failure.startswith("company_role_category_count:")
-        for failure in two_role_failures
+        for failure in three_role_failures
     )
-    assert "company_role_category_count:1" in one_role_failures
+    assert "company_role_category_count:2" in two_role_failures
 
 
 def test_presentation_feed_is_counted_as_the_actual_frontend_surface():

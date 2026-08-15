@@ -46,7 +46,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 - 기본 상세 화면은 실제 관측점이 있는 경우에만 `visualization_series.{1w|1m|3m}.points[]`의 `at`, `x`, `google_trends`, `combined`를 보여줍니다. 점이 부족하면 그래프를 숨기며 이전 값 재사용·보간·임의 상승곡선 생성을 금지합니다.
 - 원천이 공통 절대 언급량을 제공하지 않으므로 화면의 “언급량 추이”는 정규화 관심지수입니다. 절대 게시물 수로 표시하거나 해석하지 않습니다.
 - 항목별 `keywords`는 서로 다른 5개이며, 공백을 제외하고 최대 6자입니다.
-- 공개 카드에는 확인된 상장기업 정확히 10개와 역할 2~4개가 있어야 합니다. 미달 후보는 원장과 보강 대기열에만 남고 라이브 기본 피드에는 들어오지 않습니다. 숫자를 맞추기 위한 기업 패딩은 금지합니다.
+- 공개 카드에는 확인된 상장기업 정확히 10개와 역할 3~4개가 있어야 합니다. 미달 후보는 원장과 보강 대기열에만 남고 라이브 기본 피드에는 들어오지 않습니다. 숫자를 맞추기 위한 기업 패딩은 금지합니다.
 - 시장 숫자는 `market_snapshot.status=observed`, `provider`, `as_of`, 공개 HTTP(S) `source_url`이 모두 있는 경우에만 표시합니다. 이름·티커 해시로 가격·차트·PER·PBR·ROE를 생성하지 않습니다.
 - 새 디자인 구현은 mutable 호환 문서보다 manifest가 검증한 불변 `rankings.json`을 우선 사용해야 합니다.
 
@@ -78,7 +78,7 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 
 `home_context_status`와 `home_context_reason`은 동음이의어·짧은 인물명 등 사건 맥락의
 해결 여부만 나타냅니다. 기업 준비 여부는 `company_card_status`로 분리합니다.
-`ready`는 URL 증거가 이어진 서로 다른 국내외 상장종목이 10개 이상이고 역할 카테고리가 2~4개인 경우,
+`ready`는 URL 증거가 이어진 서로 다른 국내외 상장종목이 10개 이상이고 역할 카테고리가 3~4개인 경우,
 `enrichment_pending`은 근거 보강 중인 경우, `not_applicable`은 이슈·민감 맥락 등
 기업 연결 대상이 아닌 경우입니다. 기업 수를 맞추기 위한 padding은 금지하며,
 준비된 항목만 `company_ready_trends`에도 포함합니다.
@@ -103,7 +103,7 @@ NAVER 뉴스는 현재 `main`·검토 후보의 촉발 맥락을 확인하는 �
 | 변화·지속 | `previous_period_rank`, `rank_change`, `rank_change_status`, `rank_change_by_source`, `lifecycle`, `persistence_rank`, `momentum_rank` |
 | 신뢰 상태 | `data_confidence`, `home_context_status`, `home_context_reason` |
 | 관련어 | `keywords` (0~5), 원천 관측 또는 검수된 온톨로지 표현만 허용하고 `affects_score=false` |
-| 기업 Gold | `companies` (공개 카드 정확히 10개, 후보 단계 10개 이상, 역할 카테고리 2~4개) |
+| 기업 Gold | `companies` (공개 카드 정확히 10개, 후보 단계 10개 이상, 역할 카테고리 3~4개) |
 | 기업 역할 | `companies[].company_role_category`, `companies[].company_role_label` (제조·개발/원재료·핵심부품/콘텐츠 제작/배급·유통/판매·리테일/브랜드·마케팅/플랫폼·서비스/투자·소유/행사 후원·운영) |
 | 기업 연결 설명 | `companies[].connection_explanation`, `keyword_company_links[]` |
 | 관심 구간 | `attention_windows[]`와 `trend_story.diffusion.attention_windows[]`의 1주·1개월·3개월. 단위는 절대 게시물 수가 아닌 정규화 관심지수 변화 |

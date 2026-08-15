@@ -14,7 +14,7 @@ from datetime import UTC, datetime, timedelta
 from urllib.parse import urlparse
 
 from .company_logo_assets import resolve_company_logo
-from .company_roles import with_company_role
+from .company_roles import select_role_diverse_company_projection, with_company_role
 from .editorial_review import KEYWORDS, _verified_company_rows
 from .keyword_policy import keyword_fits_public_label, normalized_keyword_text
 
@@ -1690,9 +1690,7 @@ def _live_company_rows(candidate: dict) -> list[dict]:
             continue
         seen.add(identity)
         rows.append(row)
-        if len(rows) == 10:
-            break
-    return rows
+    return select_role_diverse_company_projection(rows, limit=10)
 
 
 def _live_card(candidate: dict, observed_at: datetime) -> dict:

@@ -155,19 +155,19 @@ def test_checkpoint_schedule_and_actual_status_are_distinct(tmp_path):
     }
 
 
-def test_complete_card_gate_accepts_two_roles_and_rejects_one_role():
+def test_complete_card_gate_accepts_three_roles_and_rejects_two_roles():
     observed_at = datetime(2026, 8, 15, 4, tzinfo=UTC)
 
+    three_roles = complete_card_gate(
+        _complete_candidate_with_role_count(3), observed_at=observed_at
+    )
     two_roles = complete_card_gate(
         _complete_candidate_with_role_count(2), observed_at=observed_at
     )
-    one_role = complete_card_gate(
-        _complete_candidate_with_role_count(1), observed_at=observed_at
-    )
 
-    assert two_roles["ready"] is True
-    assert two_roles["checks"]["two_to_four_company_roles"] is True
-    assert two_roles["role_category_count"] == 2
-    assert one_role["ready"] is False
-    assert one_role["checks"]["two_to_four_company_roles"] is False
-    assert "two_to_four_company_roles" in one_role["missing"]
+    assert three_roles["ready"] is True
+    assert three_roles["checks"]["three_to_four_company_roles"] is True
+    assert three_roles["role_category_count"] == 3
+    assert two_roles["ready"] is False
+    assert two_roles["checks"]["three_to_four_company_roles"] is False
+    assert "three_to_four_company_roles" in two_roles["missing"]

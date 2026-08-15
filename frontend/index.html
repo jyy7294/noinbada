@@ -393,7 +393,7 @@
             <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
               <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">언급량 추이 · 관심지수</span>
               <div style="display:flex; width:150px; background:#F3F0FB; border-radius:999px; padding:3px;">
-                <button onClick="{{ pickRange0 }}" aria-disabled="{{ rangeDisabled0 }}" style="{{ range0 }}">1주</button>
+                <button onClick="{{ pickRange0 }}" aria-disabled="{{ rangeDisabled0 }}" style="{{ range0 }}">24시간</button>
                 <button onClick="{{ pickRange1 }}" aria-disabled="{{ rangeDisabled1 }}" style="{{ range1 }}">1개월</button>
                 <button onClick="{{ pickRange2 }}" aria-disabled="{{ rangeDisabled2 }}" style="{{ range2 }}">3개월</button>
               </div>
@@ -593,6 +593,7 @@
                     <div style="background:#FAF9FE; border-radius:12px; padding:9px 7px; text-align:center;"><div style="font-weight:500;font-size:9.5px;color:#8B8D98;">PBR</div><div style="font-weight:800;font-size:11.5px;color:#1A1A22;margin-top:3px;white-space:nowrap;">{{ sheetPbr }}</div></div>
                     <div style="background:#FAF9FE; border-radius:12px; padding:9px 7px; text-align:center;"><div style="font-weight:500;font-size:9.5px;color:#8B8D98;">ROE</div><div style="font-weight:800;font-size:11.5px;color:#1A1A22;margin-top:3px;white-space:nowrap;">{{ sheetRoe }}</div></div>
                   </div>
+                  <a href="{{ sheetSourceUrl }}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-weight:600;font-size:9.5px;color:#8B8D98;text-decoration:none;">시장 정보 · {{ sheetProviderLabel }} · {{ sheetAsOf }} 기준</a>
                 </sc-if>
                 <sc-if value="{{ sheetMarketUnavailable }}" hint-placeholder-val="{{ false }}">
                   <div data-sheet-market-unavailable="1" role="status" style="background:#FAF9FE; border:1px solid #EEEBF7; border-radius:16px; padding:14px 13px; margin-top:12px;">
@@ -1346,13 +1347,45 @@ class Component extends DCLogic {
     const asOf = String(snapshot.as_of || '').trim();
     const sourceUrl = String(snapshot.source_url || '').trim();
     const currency = String(snapshot.currency || '').trim().toUpperCase();
+    const priceSourceUrl = String(snapshot.price_source_url || '').trim();
+    const prices = Array.isArray(snapshot.price_series) ? snapshot.price_series : [];
+    const providerLooksSynthetic = /(?:mock|demo|fixture|synthetic|deterministic|hash)/i.test(provider);
+    const completeObservedPrices = prices.length === 30
+      && prices.every((value) => Number.isFinite(Number(value)) && Number(value) > 0);
     if (
       snapshot.status !== 'observed'
       || !provider
+      || providerLooksSynthetic
       || !asOf
       || !/^https?:\/\/[^\s/]+/i.test(sourceUrl)
+      || !/^https?:\/\/[^\s/]+/i.test(priceSourceUrl)
       || !/^[A-Z]{3}$/.test(currency)
+      || snapshot.display_only !== true
+      || snapshot.ranking_effect !== 'none'
+      || !completeObservedPrices
     ) return null;
+    const publicUrl = (value) => /^https?:\/\/[^\s/]+/i.test(String(value || '').trim());
+    if (snapshot.per != null && (!Number.isFinite(Number(snapshot.per)) || Number(snapshot.per) <= 0 || !publicUrl(snapshot.per_source_url))) return null;
+    if (snapshot.pbr != null && (!Number.isFinite(Number(snapshot.pbr)) || Number(snapshot.pbr) <= 0 || !publicUrl(snapshot.pbr_source_url))) return null;
+    if (snapshot.roe != null) {
+      const numerator = snapshot.roe_numerator;
+      const denominator = snapshot.roe_denominator;
+      if (!Number.isFinite(Number(snapshot.roe))
+        || snapshot.roe_calculated !== true
+        || !publicUrl(snapshot.roe_source_url)
+        || !['trailing_net_income / average_two_point_stockholders_equity * 100', 'annual_net_income / average_two_point_stockholders_equity * 100'].includes(snapshot.roe_basis)
+        || !numerator || !Number.isFinite(Number(numerator.value)) || !String(numerator.as_of || '').trim()
+        || !denominator || !Number.isFinite(Number(denominator.value)) || Number(denominator.value) <= 0
+        || !Array.isArray(denominator.observations) || denominator.observations.length !== 2) return null;
+    }
+    if (snapshot.market_cap_krw != null) {
+      if (snapshot.market_cap_currency !== 'KRW'
+        || !Number.isFinite(Number(snapshot.market_cap_krw)) || Number(snapshot.market_cap_krw) <= 0
+        || !Number.isFinite(Number(snapshot.native_market_cap)) || Number(snapshot.native_market_cap) <= 0
+        || !Number.isFinite(Number(snapshot.fx_rate_to_krw)) || Number(snapshot.fx_rate_to_krw) <= 0
+        || !String(snapshot.fx_provider || '').trim() || !String(snapshot.fx_as_of || '').trim()
+        || !publicUrl(snapshot.fx_source_url) || !publicUrl(snapshot.market_cap_source_url)) return null;
+    }
     return { ...snapshot, currency };
   }
 
@@ -1619,11 +1652,29 @@ class Component extends DCLogic {
 
   buildInterestCurve(trend, rangeIndex = 0) {
     const MAX_CONTIGUOUS_GAP_MS = 90 * 60 * 1000;
-    const rangeKey = ['1w', '1m', '3m'][rangeIndex] || '1w';
-    const publishedWindow = trend && trend.visualizationSeries
-      ? trend.visualizationSeries[rangeKey] : null;
-    const publishedPoints = publishedWindow && Array.isArray(publishedWindow.points)
-      ? publishedWindow.points : [];
+    const rangeKey = ['24h', '1m', '3m'][rangeIndex] || '24h';
+    const canonicalRows = rangeIndex === 0 && trend && Array.isArray(trend.series)
+      ? trend.series.filter((point) => point
+        && point.provenance === 'observed'
+        && ['x', 'google_trends'].includes(point.source)
+        && Number.isFinite(Number(point.value))
+        && Number(point.value) >= 0 && Number(point.value) <= 100
+        && !Number.isNaN(new Date(point.at).getTime())) : [];
+    const latestObservedMs = canonicalRows.length
+      ? Math.max(...canonicalRows.map((point) => new Date(point.at).getTime())) : null;
+    const groupedObserved = new Map();
+    canonicalRows.forEach((point) => {
+      const atMs = new Date(point.at).getTime();
+      if (latestObservedMs - atMs > 24 * 60 * 60 * 1000) return;
+      const key = new Date(atMs).toISOString();
+      const bucket = groupedObserved.get(key) || [];
+      bucket.push(Number(point.value));
+      groupedObserved.set(key, bucket);
+    });
+    const publishedPoints = [...groupedObserved.entries()]
+      .sort((a, b) => new Date(a[0]) - new Date(b[0]))
+      .map(([at, values]) => ({ at, combined: Math.round((values.reduce((sum, value) => sum + value, 0) / values.length) * 100) / 100 }));
+    const publishedWindow = rangeIndex === 0 ? { points: publishedPoints, ranking_effect: 'none' } : null;
     const combinedSeries = publishedPoints.length
       ? publishedPoints.map((point) => point && point.combined)
       : publishedWindow && Array.isArray(publishedWindow.combined) ? publishedWindow.combined : [];
@@ -1651,9 +1702,9 @@ class Component extends DCLogic {
       ? publishedWindow.labels.map((label) => String(label || ''))
       : timestampLabels;
     const labels = [
-      sourceLabels[0] || (rangeIndex === 0 ? '7일 전' : rangeIndex === 1 ? '한 달 전' : '3개월 전'),
+      sourceLabels[0] || (rangeIndex === 0 ? '24시간 전' : rangeIndex === 1 ? '한 달 전' : '3개월 전'),
       sourceLabels[Math.floor((sourceLabels.length - 1) / 2)]
-        || (rangeIndex === 0 ? '3일 전' : rangeIndex === 1 ? '2주 전' : '6주 전'),
+        || (rangeIndex === 0 ? '12시간 전' : rangeIndex === 1 ? '2주 전' : '6주 전'),
       sourceLabels[sourceLabels.length - 1] || '오늘'
     ];
     const usable = rawValues.filter(Number.isFinite);
@@ -2011,7 +2062,7 @@ class Component extends DCLogic {
         const best = deltas.length ? deltas.sort((a, b) => Math.abs(b) - Math.abs(a))[0] : null;
         const lift = best == null ? (it.lifecycle === 'new' ? '신규' : '유지') : (best > 0 ? '+' + best : String(best));
         const days = Math.max(1, Math.round((Number(it.age_hours) || 0) / 24) || 1);
-        // 역할 카테고리별 동적 폴더 (트렌드당 2~4개, 계약 준수)
+        // 역할 카테고리별 동적 폴더 (트렌드당 3~4개, 계약 준수)
         const groups = new Map();
         const comps = (it.company_eligible !== false && Array.isArray(it.companies)) ? it.companies : [];
         comps.forEach((c) => {
@@ -4282,7 +4333,7 @@ class Component extends DCLogic {
           + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:15px;color:#7B3FF2;">' + (index + 1) + '</span>'
           + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">'
           + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;word-break:keep-all;font-weight:800;font-size:14.5px;line-height:1.28;color:#1A1A22;letter-spacing:-0.03em;">' + escape(trend.name) + '</span>'
-          + '<span style="font-weight:500;font-size:11px;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + '</span></span>'
+          + '<span style="font-weight:500;font-size:11px;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + ' · ' + escape((trend.sourceList || []).map((source) => String(source).toLowerCase().includes('google') ? 'Google' : String(source).toLowerCase() === 'x' ? 'X' : String(source)).join(' + ')) + '</span></span>'
           + '<span aria-label="이전 공개 대비 ' + escape(movementLabel) + '" style="flex:none;font-weight:700;font-size:12px;color:' + movementColor + ';">' + escape(movementLabel) + '</span></button>';
       }).join('');
       list.querySelectorAll('[data-home-topic]').forEach((row) => {
@@ -4891,6 +4942,8 @@ class Component extends DCLogic {
       reason,
       ticker, market,
       asOfLabel,
+      providerLabel: String(snapshot.provider || '').replaceAll('_', ' '),
+      sourceUrl: String(snapshot.source_url || ''),
       hasMarketData,
       marketUnavailable: !hasMarketData,
       hasPriceSeries,
@@ -5098,6 +5151,8 @@ class Component extends DCLogic {
       vals.sheetTicker = sheet.ticker;
       vals.sheetMarket = sheet.market;
       vals.sheetAsOf = sheet.asOfLabel;
+      vals.sheetProviderLabel = sheet.providerLabel;
+      vals.sheetSourceUrl = sheet.sourceUrl;
       vals.sheetHasMarketData = sheet.hasMarketData;
       vals.sheetMarketUnavailable = sheet.marketUnavailable;
       vals.sheetHasPriceSeries = sheet.hasPriceSeries;

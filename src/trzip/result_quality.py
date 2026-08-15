@@ -8,7 +8,7 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
 
-from .company_roles import COMPANY_ROLE_LABELS
+from .company_roles import COMPANY_ROLE_LABELS, public_company_role_count_is_valid
 from .hourly_store import ELIGIBLE_COLLECTOR_SQL
 from .keyword_policy import keyword_fits_public_label
 from .ontology import MINIMUM_FRONTEND_COMPANIES
@@ -781,7 +781,7 @@ def _evaluate_canonical_frontend_result(intelligence: dict) -> dict:
                 for company in companies
                 if str(company.get("company_role_category") or "").strip()
             }
-            if not 2 <= len(company_role_categories) <= 4:
+            if not public_company_role_count_is_valid(len(company_role_categories)):
                 item_failures.append(
                     f"company_role_category_count:{len(company_role_categories)}"
                 )
@@ -959,7 +959,7 @@ def _presentation_card_display_failures(
         for company in companies
         if str(company.get("company_role_category") or "").strip()
     }
-    if not 2 <= len(roles) <= 4:
+    if not public_company_role_count_is_valid(len(roles)):
         failures.append(f"company_role_category_count:{len(roles)}")
     for company in companies:
         company_name = str(company.get("company") or "").strip()

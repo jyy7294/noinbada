@@ -13,13 +13,17 @@ import json
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
+from .company_roles import (
+    public_company_role_count_is_valid,
+    select_role_diverse_company_projection,
+)
 from .hourly_store import connect, floor_hour, source_hour_quality
 from .keyword_policy import keyword_fits_public_label
 
 
 SCHEMA_VERSION = "trzip-processing-cycle-v1"
 CHECKPOINT_POLICY = "four-hour-enrichment-checkpoint-v1"
-COMPLETE_CARD_POLICY = "complete-live-card-v3"
+COMPLETE_CARD_POLICY = "complete-live-card-v4"
 RANK_SOURCES = ("x", "google_trends")
 
 
@@ -176,10 +180,9 @@ def complete_card_gate(
             continue
         complete_identities.add(identity)
         unique_complete_companies.append(company)
-    projected_companies = (
-        unique_complete_companies
-        if public_projection
-        else unique_complete_companies[:10]
+    projected_companies = select_role_diverse_company_projection(
+        unique_complete_companies,
+        limit=10,
     )
     company_names = {
         str(row.get("company") or "").strip() for row in projected_companies
@@ -247,7 +250,9 @@ def complete_card_gate(
             and all(keyword_fits_public_label(text) for text in keyword_texts)
         ),
         company_count_check_name: company_count_check,
-        "two_to_four_company_roles": 2 <= len(role_categories) <= 4,
+        "three_to_four_company_roles": public_company_role_count_is_valid(
+            len(role_categories)
+        ),
         "at_least_two_keywords_linked_to_companies": len(linked_keywords) >= 2,
     }
     missing = [key for key, passed in checks.items() if not passed]

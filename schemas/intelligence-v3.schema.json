@@ -345,7 +345,7 @@
                 "items": {"$ref": "#/$defs/liveKeywordCompanyLink"}
               },
               "keyword_status": {"const": "ready"},
-              "company_role_category_count": {"type": "integer", "minimum": 2, "maximum": 4},
+              "company_role_category_count": {"type": "integer", "minimum": 3, "maximum": 4},
               "company_card_status": {"const": "ready"},
               "ranking_effect": {"const": "none"}
             }
@@ -924,7 +924,7 @@
         "frontend_readiness_missing": {
           "type": "array",
           "uniqueItems": true,
-          "items": {"enum": ["verified_trigger_event_with_evidence_url", "related_keywords_exactly_five", "related_keywords_max_six_characters", "related_keywords_linked_to_companies_at_least_two", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_two_and_four"]}
+          "items": {"enum": ["verified_trigger_event_with_evidence_url", "related_keywords_exactly_five", "related_keywords_max_six_characters", "related_keywords_linked_to_companies_at_least_two", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_three_and_four"]}
         },
         "frontend_keyword_count": {"type": "integer", "minimum": 0, "maximum": 5},
         "frontend_company_count": {"type": "integer", "minimum": 0},
@@ -1187,7 +1187,7 @@
         "frontend_readiness_missing": {
           "type": "array",
           "uniqueItems": true,
-          "items": {"enum": ["verified_trigger_event_with_evidence_url", "related_keywords_exactly_five", "related_keywords_max_six_characters", "related_keywords_linked_to_companies_at_least_two", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_two_and_four"]}
+          "items": {"enum": ["verified_trigger_event_with_evidence_url", "related_keywords_exactly_five", "related_keywords_max_six_characters", "related_keywords_linked_to_companies_at_least_two", "evidence_backed_listed_companies_at_least_ten", "company_role_categories_between_three_and_four"]}
         },
         "frontend_keyword_count": {"type": "integer", "minimum": 0, "maximum": 5},
         "frontend_company_count": {"type": "integer", "minimum": 0},

@@ -111,20 +111,20 @@ def test_frontend_readiness_accepts_two_company_roles_and_rejects_one_role():
             },
         }
 
+    three_roles = candidate(3)
     two_roles = candidate(2)
-    one_role = candidate(1)
     intelligence = {
-        "unified_ranking": [two_roles, one_role],
+        "unified_ranking": [three_roles, two_roles],
         "category_summary": [],
         "ranking_views": {},
     }
 
     refresh_frontend_readiness(intelligence)
 
-    assert two_roles["frontend_readiness_status"] == "ready"
-    assert two_roles["frontend_company_role_category_count"] == 2
-    assert one_role["frontend_readiness_status"] == "enrichment_pending"
-    assert "company_role_categories_between_two_and_four" in one_role[
+    assert three_roles["frontend_readiness_status"] == "ready"
+    assert three_roles["frontend_company_role_category_count"] == 3
+    assert two_roles["frontend_readiness_status"] == "enrichment_pending"
+    assert "company_role_categories_between_three_and_four" in two_roles[
         "frontend_readiness_missing"
     ]
 

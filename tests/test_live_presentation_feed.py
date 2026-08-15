@@ -332,7 +332,18 @@ def test_source_candidate_with_only_nine_complete_companies_is_rejected():
     assert feed["items"] == []
 
 
-def test_live_feed_accepts_two_company_roles_and_rejects_one_role():
+def test_live_feed_accepts_three_company_roles_and_rejects_two_roles():
+    three_role_candidate = _candidate()
+    three_roles = ("manufacturing_development", "distribution", "retail_sales")
+    for index, company in enumerate(three_role_candidate["companies"]):
+        company["company_role_category"] = three_roles[index % 3]
+
+    three_role_feed = build_presentation_feed(_intelligence(three_role_candidate))
+
+    assert three_role_feed["status"] == "ready"
+    assert three_role_feed["items"][0]["company_role_category_count"] == 3
+    _validate_presentation_feed(three_role_feed)
+
     two_role_candidate = _candidate()
     two_roles = ("manufacturing_development", "distribution")
     for index, company in enumerate(two_role_candidate["companies"]):
@@ -340,18 +351,8 @@ def test_live_feed_accepts_two_company_roles_and_rejects_one_role():
 
     two_role_feed = build_presentation_feed(_intelligence(two_role_candidate))
 
-    assert two_role_feed["status"] == "ready"
-    assert two_role_feed["items"][0]["company_role_category_count"] == 2
-    _validate_presentation_feed(two_role_feed)
-
-    one_role_candidate = _candidate()
-    for company in one_role_candidate["companies"]:
-        company["company_role_category"] = "manufacturing_development"
-
-    one_role_feed = build_presentation_feed(_intelligence(one_role_candidate))
-
-    assert one_role_feed["status"] == "empty"
-    assert one_role_feed["items"] == []
+    assert two_role_feed["status"] == "empty"
+    assert two_role_feed["items"] == []
 
 
 def test_live_company_projects_only_verified_official_page_logo(monkeypatch):

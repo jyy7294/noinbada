@@ -27,7 +27,7 @@ from .company_adapters import (
     yahoo_finance_fundamentals,
     yahoo_finance_stock,
 )
-from .company_roles import COMPANY_ROLE_LABELS
+from .company_roles import COMPANY_ROLE_LABELS, public_company_role_count_is_valid
 from .enrichment_queue import sync_enrichment_queue
 from .enrichment_handoff import run_handoff
 from .editorial_review import apply_frontend_enrichment_cache, build_editorial_review_pack
@@ -1373,8 +1373,8 @@ def _validate_presentation_feed(feed: dict) -> None:
         if len(identities) != len(set(identities)):
             raise ValueError("frontend presentation companies must be unique by exchange and stock code")
         company_roles = {company["company_role_category"] for company in companies}
-        if not 2 <= len(company_roles) <= 4:
-            raise ValueError("frontend presentation trends require two to four company role groups")
+        if not public_company_role_count_is_valid(len(company_roles)):
+            raise ValueError("frontend presentation trends require three to four company role groups")
         if item.get("company_role_category_count") != len(company_roles):
             raise ValueError("frontend presentation company role count must match projected companies")
         keyword_set = set(keyword_texts)

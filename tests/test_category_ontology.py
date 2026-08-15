@@ -9,7 +9,7 @@ def test_every_public_detail_category_has_non_scoring_ontology_slots():
         assert result["category"] == category
         assert result["entity_slots"]
         assert result["trigger_types"]
-        assert 2 <= len(result["recommended_company_roles"]) <= 4
+        assert 3 <= len(result["recommended_company_roles"]) <= 4
         assert result["affects_score"] is False
 
 

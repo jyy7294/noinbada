@@ -8,7 +8,11 @@ from collections import Counter, defaultdict
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
-from .company_roles import PUBLIC_COMPANY_ROLE_CATEGORIES, with_company_role
+from .company_roles import (
+    PUBLIC_COMPANY_ROLE_CATEGORIES,
+    public_company_role_count_is_valid,
+    with_company_role,
+)
 from .category_ontology import category_ontology
 from .curation import is_sensitive_context
 from .hourly_store import (
@@ -1982,8 +1986,8 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
             missing.append("related_keywords_linked_to_companies_at_least_two")
         if complete_company_count < MINIMUM_FRONTEND_COMPANIES:
             missing.append("evidence_backed_listed_companies_at_least_ten")
-        elif not 2 <= role_category_count <= 4:
-            missing.append("company_role_categories_between_two_and_four")
+        elif not public_company_role_count_is_valid(role_category_count):
+            missing.append("company_role_categories_between_three_and_four")
         item["frontend_readiness_status"] = "ready" if not missing else "enrichment_pending"
         item["frontend_readiness_missing"] = missing
         item["frontend_keyword_count"] = keyword_count
@@ -2810,8 +2814,8 @@ def build_intelligence(
             complete_company_count < MINIMUM_FRONTEND_COMPANIES
         ):
             readiness_missing.append("evidence_backed_listed_companies_at_least_ten")
-        elif not 2 <= role_category_count <= 4:
-            readiness_missing.append("company_role_categories_between_two_and_four")
+        elif not public_company_role_count_is_valid(role_category_count):
+            readiness_missing.append("company_role_categories_between_three_and_four")
         item["frontend_readiness_status"] = (
             "ready" if not readiness_missing else "enrichment_pending"
         )

@@ -208,19 +208,21 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
     nine = json.loads(json.dumps(feed))
     nine["items"][0]["companies"] = nine["items"][0]["companies"][:9]
     assert list(validator.iter_errors(nine))
+    three_roles = json.loads(json.dumps(feed))
+    for index, company in enumerate(three_roles["items"][0]["companies"]):
+        company["company_role_category"] = (
+            ("manufacturing_development", "distribution", "retail_sales")[index % 3]
+        )
+    three_roles["items"][0]["company_role_category_count"] = 3
+    validator.validate(three_roles)
+    _validate_presentation_feed(three_roles)
     two_roles = json.loads(json.dumps(feed))
     for index, company in enumerate(two_roles["items"][0]["companies"]):
         company["company_role_category"] = (
             "manufacturing_development" if index % 2 == 0 else "distribution"
         )
     two_roles["items"][0]["company_role_category_count"] = 2
-    validator.validate(two_roles)
-    _validate_presentation_feed(two_roles)
-    one_role = json.loads(json.dumps(feed))
-    for company in one_role["items"][0]["companies"]:
-        company["company_role_category"] = "manufacturing_development"
-    one_role["items"][0]["company_role_category_count"] = 1
-    assert list(validator.iter_errors(one_role))
+    assert list(validator.iter_errors(two_roles))
     review_lane = json.loads(json.dumps(feed))
     review_lane["items"][0]["lane"] = "review"
     assert list(validator.iter_errors(review_lane))

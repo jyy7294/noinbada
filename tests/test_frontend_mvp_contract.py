@@ -279,15 +279,18 @@ def test_live_logo_candidate_runtime_honors_initials_and_seed_scope() -> None:
     assert result.returncode == 0, result.stderr
 
 
-def test_interest_chart_uses_only_published_series_and_preserves_gaps() -> None:
+def test_interest_chart_uses_only_observed_24h_series_and_preserves_gaps() -> None:
     assert "관심 흐름" in INDEX
     assert "언급량 추이 · 관심지수" in INDEX
     assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
-    assert "const rangeKey = ['1w', '1m', '3m'][rangeIndex]" in INDEX
-    assert "Array.isArray(publishedWindow.points)" in INDEX
+    assert "const rangeKey = ['24h', '1m', '3m'][rangeIndex]" in INDEX
+    assert "point.provenance === 'observed'" in INDEX
+    assert "['x', 'google_trends'].includes(point.source)" in INDEX
+    assert "latestObservedMs - atMs > 24 * 60 * 60 * 1000" in INDEX
+    assert "const groupedObserved = new Map()" in INDEX
     assert "point.timestamp || point.at" in INDEX
     assert "point && point.combined" in INDEX
-    assert "publishedWindow.combined" in INDEX  # temporary v3 read compatibility
+    assert "publishedWindow.combined" in INDEX
     assert "pattern: 'published_series'" in INDEX
     assert "const usable = rawValues.filter(Number.isFinite)" in INDEX
     assert "if (usable.length < 2)" in INDEX
@@ -369,6 +372,10 @@ def test_company_sheet_renders_financial_numbers_only_with_complete_provenance()
     assert "snapshot.market_cap_krw" in INDEX
     assert "snapshot.fx_rate_to_krw" in INDEX
     assert "snapshot.fx_source_url" in INDEX
+    assert "snapshot.display_only !== true" in INDEX
+    assert "snapshot.ranking_effect !== 'none'" in INDEX
+    assert "prices.length === 30" in INDEX
+    assert "providerLooksSynthetic" in INDEX
     assert "formatKrwMarketCap(marketCapKrw)" in INDEX
     assert "시가총액·원화" in INDEX
     assert "formatMarketCap(snapshot.market_cap)" not in INDEX
@@ -393,9 +400,13 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
       const guard = new Guard();
       const observed = {{market_snapshot: {{
         status: 'observed', provider: 'yahoo_finance', as_of: '2026-08-15',
-        source_url: 'https://example.com/market', currency: 'USD',
-        last_price: 100, change_percent: null, price_series: [90, 100],
-        per: null, pbr: 0, roe: 0
+        source_url: 'https://example.com/market', price_source_url: 'https://example.com/price', currency: 'USD',
+        last_price: 100, change_percent: null, price_series: Array.from({{length: 30}}, (_, i) => 90 + i),
+        display_only: true, ranking_effect: 'none', per: null, pbr: null, roe: 0,
+        roe_source_url: 'https://example.com/roe', roe_calculated: true,
+        roe_basis: 'trailing_net_income / average_two_point_stockholders_equity * 100',
+        roe_numerator: {{value: 0, as_of: '2026-08-15'}},
+        roe_denominator: {{value: 100, observations: [{{value: 100}}, {{value: 100}}]}}
       }}}};
       if (!guard.verifiedMarketSnapshot(observed)) process.exit(11);
       if (guard.companyChange(observed) !== null) process.exit(12);
@@ -407,7 +418,10 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
       for (const mutation of [
         {{status: 'unavailable'}},
         {{source_url: ''}},
+        {{price_source_url: ''}},
         {{currency: ''}},
+        {{display_only: false}},
+        {{price_series: [90, 100]}},
       ]) {{
         const company = {{market_snapshot: {{...observed.market_snapshot, ...mutation}}}};
         if (guard.verifiedMarketSnapshot(company) !== null) process.exit(21);

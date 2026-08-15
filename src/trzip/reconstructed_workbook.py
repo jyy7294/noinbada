@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree as ET
 
+from .company_roles import public_company_role_count_is_valid
 from .keyword_policy import keyword_fits_public_label
 
 
@@ -347,8 +348,8 @@ def build_catalog(
             missing.append("related_keywords_exactly_five")
         if len(public_companies) < 10:
             missing.append("evidence_backed_listed_companies_at_least_ten")
-        if not 2 <= len(role_categories) <= 4:
-            missing.append("company_role_categories_between_two_and_four")
+        if not public_company_role_count_is_valid(len(role_categories)):
+            missing.append("company_role_categories_between_three_and_four")
         if len(linked_keywords) < 2:
             missing.append("related_keywords_linked_to_companies_at_least_two")
         broad_category = PUBLIC_CATEGORY_MAP.get(
