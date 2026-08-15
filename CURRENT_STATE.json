@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-15T02:41:36.6666821+00:00",
+    "updated_at":  "2026-08-15T03:53:32.7198045+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,42 +8,18 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "63efdf90274b3682e1040c5f0631bd68c1e0e03e",
+                       "base_remote_main_sha":  "9b60e262353fff671c2dfad98ff24c82549bc0c6",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
-                                             "config/codex-automation/trzip-prompt.ko.txt",
                                              "CURRENT_STATE.json",
                                              "frontend/index.html",
-                                             "frontend/trendzip-data.js",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "scripts/collect-hourly.ps1",
-                                             "src/trzip/presentation_feed.py",
-                                             "src/trzip/publication_pipeline.py",
-                                             "src/trzip/result_quality.py",
-                                             "tests/test_frontend_mvp_contract.py",
-                                             "tests/test_local_runtime_contract.py",
-                                             "tests/test_presentation_feed.py",
-                                             "tests/test_public_contract_schema.py",
-                                             "tests/test_result_quality.py",
-                                             "tests/test_runtime_audit.py"
+                                             "tests/test_frontend_mvp_contract.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "config/codex-automation/trzip-prompt.ko.txt":  "86428fe6ff015c31e5a4ecc5d57b96b4aa78aa4e5a5a91b0ff4f7c7f3ecdade1",
-                                                    "frontend/index.html":  "1477913205fec9f5119be2330c3a749d30dd8ce2b04062141152f7efec992873",
-                                                    "frontend/trendzip-data.js":  "be83a8929d48ce79f4c833b618e4f8a3df9370ef47c96a5907c49f8400f5c664",
-                                                    "schemas/intelligence-v3.schema.json":  "aaa155c592061f12de73ebb71d6a34fe1374eb5df6f03fe4a8a82289f331edc8",
-                                                    "scripts/collect-hourly.ps1":  "7d1222ec1b1665a6c9a690e91cf138437243f23c0352e69e024f36699f4624ff",
-                                                    "src/trzip/presentation_feed.py":  "f8cbf4217fb309a6e44c2bdb58dee940529a4f086b32eb5b722b62e4b12dd75e",
-                                                    "src/trzip/publication_pipeline.py":  "d2d1014b61765c7707e7078abe1445370c343b19b6b2faf736d28e3ef471c7c4",
-                                                    "src/trzip/result_quality.py":  "2b23a16a5f88eece16fbcc34fd2c09f76a0be192b205c78fdebf7822d32d07ae",
-                                                    "tests/test_frontend_mvp_contract.py":  "033fe0ab4efea928961cdcb3cbe86f96312e3cf4f1b44ab128ff0f088cf8a65a",
-                                                    "tests/test_local_runtime_contract.py":  "8c93f4456c494bb27bc0e30254471601213c41da65358f4f2cef89f0dfbf9665",
-                                                    "tests/test_presentation_feed.py":  "2662e27cc563feb5e7420b59e1e771463e1f2d59c6df4517cdba87954bb6f702",
-                                                    "tests/test_public_contract_schema.py":  "302c385569c4cbe7bd8493eae63a412c7427978f2d0e249c1de54967e30f9dc9",
-                                                    "tests/test_result_quality.py":  "d7f4638c3e73da384bfdf31635d4f9706d93ca592e6bdd1704d2b03d5d9b28c6",
-                                                    "tests/test_runtime_audit.py":  "613f6defa40da89c928086374608c01baf066ebb3e2fad993ef887f9d9c6a8ae"
+                                                    "frontend/index.html":  "6ae3bfdf01042dced9bd8c15456dfe6a81932da39b5404f318b1f01f13de6ac7",
+                                                    "tests/test_frontend_mvp_contract.py":  "e94620069679f717a05c34adb7143f72775e563894efd9d298af92a44627b5d5"
                                                 },
-                       "commit_message":  "발표 UI와 데이터 품질 계약 완성",
+                       "commit_message":  "관심 흐름 그래프와 고해상도 로고 개선",
                        "validation_status":  "passed"
                    },
     "validation":  {
@@ -71,23 +47,22 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "TRZIP 발표용 UI와 백엔드 데이터 계약을 통합하고 검증 가능한 정각 수집 증명을 제공한다.",
+                    "objective":  "TRZIP 발표용 프런트의 관심 흐름 시각화와 기업 로고 품질을 완성한다",
                     "completed":  [
-                                      "통합 관심 흐름 그래프와 순위 이동 표시",
-                                      "고해상도 로고 품질 게이트와 벡터 트렌드 아이콘",
-                                      "승인 밈트폴리오 seed 및 기업 상세 행동",
-                                      "정각별 로컬 검증 영수증"
+                                      "단일 기간별 관심 흐름 그래프",
+                                      "Top10 및 데모 밈트폴리오 기업 로고 전수 매핑",
+                                      "기업 설명과 트렌드 연결 이유 분리",
+                                      "KST 시계와 발행 대비 순위 변화 표기"
                                   ],
                     "next_actions":  [
-                                         "Vercel preview 브라우저 검증 후 production 승격",
-                                         "다음 정각부터 8회 연속 검증 영수증 축적"
+                                         "Vercel 미리보기 검증 및 운영 승격"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "관심 흐름 그래프는 표시용 결정론 보강값이며 순위 계산에 사용하지 않음",
-                                              "8회 연속 실제 정각 검증은 현재 1회"
+                                              "관심 흐름은 표시용 결정론 보강값이며 순위 입력이 아님",
+                                              "첫 기준 발행본은 순위 변화가 모두 NEW"
                                           ]
                 },
     "runtime_contract":  {

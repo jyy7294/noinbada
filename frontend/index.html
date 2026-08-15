@@ -378,7 +378,7 @@
         <div style="padding:0 16px 14px;">
           <div style="background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:14px 14px 13px;">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-              <span style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">언급량 추이 · 관심지수</span>
+              <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">언급량 추이 · 관심지수</span>
               <div style="display:flex; width:150px; background:#F3F0FB; border-radius:999px; padding:3px;">
                 <button onClick="{{ pickRange0 }}" style="{{ range0 }}">1주</button>
                 <button onClick="{{ pickRange1 }}" style="{{ range1 }}">1개월</button>
@@ -390,11 +390,11 @@
                 <span style="{{ ss.style }}">{{ ss.label }}</span>
               </sc-for>
               <span style="flex:1;"></span>
-              <span style="font-weight:700; font-size:11px; color:#8B8D98;">현재</span>
+              <span style="font-weight:700; font-size:11px; color:#8B8D98;">표시 지수</span>
               <span style="font-weight:800; font-size:16px; color:#6B2FEA;">{{ interestIndex }}</span>
             </div>
             <div style="position:relative; height:108px; margin-top:9px; overflow:hidden;">
-              <svg viewBox="0 0 296 96" preserveAspectRatio="none" style="display:block; width:100%; height:96px; overflow:visible;">
+              <svg viewBox="0 0 296 96" preserveAspectRatio="none" role="img" aria-labelledby="interest-chart-title interest-chart-disclosure" style="display:block; width:100%; height:96px; overflow:visible;">
                 <line x1="0" y1="24" x2="296" y2="24" stroke="#F0ECF8" stroke-width="1"></line>
                 <line x1="0" y1="60" x2="296" y2="60" stroke="#F0ECF8" stroke-width="1"></line>
                 <path data-interest-area="1" d="M0,84 L296,84 L296,84 L0,84 Z" fill="rgba(123,63,242,0.10)"></path>
@@ -405,6 +405,9 @@
                 <span>{{ periodStartLabel }}</span><span>{{ periodMiddleLabel }}</span><span>{{ periodEndLabel }}</span>
               </div>
             </div>
+            <p id="interest-chart-disclosure" style="margin:4px 0 0; font-weight:600; font-size:9.5px; line-height:1.45; color:#9A96A6;">
+              표시용 관심 흐름 · 실제 측정 이력이 아니며 순위 산정에 반영되지 않아요.
+            </p>
             <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:5px;">
               <div style="background:#FAF9FE; border-radius:14px; padding:10px 12px;">
                 <div style="font-weight:600; font-size:10.5px; color:#8B8D98;">이전 공개 대비</div>
@@ -583,6 +586,8 @@
 
                 <div style="font-weight:800; font-size:15px; color:#1A1A22; letter-spacing:-0.03em; margin-top:16px;">기업 설명</div>
                 <div style="font-weight:500; font-size:12.5px; line-height:1.7; color:#5C5F6B; margin-top:6px; text-wrap:pretty;">{{ sheetAbout }}</div>
+                <div style="font-weight:800; font-size:15px; color:#1A1A22; letter-spacing:-0.03em; margin-top:16px;">트렌드와 연결된 이유</div>
+                <div style="font-weight:500; font-size:12.5px; line-height:1.7; color:#5C5F6B; margin-top:6px; text-wrap:pretty;">{{ sheetReason }}</div>
               </div>
 
               <div style="flex:none; border-top:1px solid #F1EEF9; padding:12px 16px 16px; background:#FFFFFF;">
@@ -1036,7 +1041,6 @@ class Component extends DCLogic {
     setTimeout(() => this.dialWire(), 80);
     setTimeout(() => { this.arcWire(); this.hexWire(); this.viewToggleWire(); this.viewToggleWire2(); this.vdWire(); }, 100);
     setTimeout(() => this.motionWire(), 120);
-    setTimeout(() => this.chartRevealWire(), 300);
     setTimeout(() => this.mpRotateWire(), 200);
     this.loadPublishedData();
   }
@@ -1054,37 +1058,105 @@ class Component extends DCLogic {
   // 먼저 사용합니다. 이 목록은 백엔드 publication 계약과 동일합니다.
   officialLogoAssets = Object.freeze({
     'nikon.com': 'https://www.nikon.com/etc.clientlibs/nikoncore/clientlibs/clientlib-site/resources/img/logo.svg',
-    'teledyne.com': 'https://cdn.teledyne.com/assets/common/images/favicon.ico',
+    'teledyne.com': 'https://cdn.teledyne.com/assets/prod/images/footerlogo.png',
     'hamamatsu.com': 'https://www.hamamatsu.com/content/dam/hamamatsu-photonics/system/images/logo.svg',
     'harim.com': 'https://harim.com/main/img/ci.png',
     'harim.co.kr': 'https://harim.com/main/img/ci.png',
-    'company.emart.com': 'https://stimg.emart.com/company/ko/images/common/sub_logo_company.png',
-    'emartcompany.com': 'https://stimg.emart.com/company/ko/images/common/sub_logo_company.png',
-    'gsretail.com': 'https://hpimg.gsretail.com/_ui/desktop/common/images/icon/gsretail_114.png',
+    'company.emart.com': 'https://stimg.emart.com/company/ko/images/common/logo_emart_fresh.png',
+    'emartcompany.com': 'https://stimg.emart.com/company/ko/images/common/logo_emart_fresh.png',
     'company.lottetour.com': 'https://company.lottetour.com/images/common/header_logo.png',
     'lottetour.com': 'https://company.lottetour.com/images/common/header_logo.png',
     'manutd.com': 'https://contentfulproxy.stadion.io/unzgbvss5tuy/5GFoxbOTd249o0VhuZNczI/cde0cb3a7b895c6a99f2796433232819/TONAL_CREST_Black%C3%83___3x-png.png?fm=webp&fit=pad&f=center&w=184&h=184',
-    'nongshim.com': 'https://www.nongshim.com/resources2/images/common/pop-logo.jpg',
-    'lottewellfood.com': 'https://www.lottewellfood.com/favicon.ico',
+    'nongshim.com': 'https://eng.nongshim.com/resources/nongshimCss/images/ci_01.png',
+    'lottewellfood.com': 'https://www.lottewellfood.com/images/common/m/h1_logo_new.png',
+    'sony.com': 'https://www.sony.net/assets_revamp2025/images/logo.svg',
+    'nvidia.com': 'https://www.nvidia.com/content/dam/en-zz/Solutions/about-nvidia/nvidia-brochure/images/nvidia-logo-black.svg',
+    'xpeng.com': 'https://a-cdn.xpeng.com/mall/public/favicon.svg',
+    'rainbow-robotics.com': 'https://rainbow-robotics.com/wp-content/uploads/2026/02/logo-dark.svg',
+    'coca-colacompany.com': 'https://static-p58902-e658605.adobeaemcloud.com/be9f760d09fd66dd1beb8d07469e2184ac0c3f890a9fead200c5a0bf2277c166/resources/favicons/apple-touch-icon.png',
+    'dongwon.com': 'https://www.dongwon.com/asset/image/og/ci_dongwon_group.jpg',
+    'maeil.com': 'https://www.maeil.com/resources/images/common/h_logo_m1.png',
+    'sajo.co.kr': 'https://www.sajo.co.kr/images/logo.png',
+    'pulmuone.co.kr': 'https://www.pulmuone.co.kr/pulmuone/images/sub/img_pul15.gif',
+    'adobe.com': 'https://main--cc--adobecom.aem.live/cc-shared/assets/img/product-icons/svg/adobe-corp-logo-2024.svg',
+    'amctheatres.com': 'https://d1io3yog0oux5.cloudfront.net/_01406ab87a298f369b91b9041e97fd2e/amctheatres/files/theme/images/footer-logo.png',
+    'apple.com': 'https://www.apple.com/apple-touch-icon.png',
+    'bravesholdings.com': 'https://d1io3yog0oux5.cloudfront.net/_371534f9fa23d0483e7b7f9efd63fe3f/bravesholdings/files/theme/images/logo.svg',
+    'cinemark.com': 'https://d1io3yog0oux5.cloudfront.net/_0c81afddfce6446d7deaaa53ff791a2d/cinemark/files/theme/site-files/20221025/www.cinemark.com/images/cinemarkLogo.png',
+    'daesang.com': 'https://www.daesang.com/kr/asset/images/common/logo.png',
+    'dxc.com': 'https://dxc.com/content/dam/dxc/projects/dxc-com/global/logos/dxc/dxc-logo-png-4x.png',
+    'fanuc.eu': 'https://www.fanuc.eu/sites/default/files/decoupled_domain/FANUC_Logo_RGB_503x112px.svg',
+    'fujifilm.com': 'https://global.fujifilm.com/themes/custom/fujifilm_com_g2/common/img/fujifilm_corporate_logo.svg',
+    'geniussports.com': 'https://cms.geniussports.com/wp-content/uploads/2024/07/4299-jCuDsESbQCzIJp7rJRm4j2W9yOu6uHA_vzxMe5hxACU.png',
+    'global.canon': 'https://global.canon/01cmn/img/common/logo.svg',
+    'hanwha.com': 'https://www.hanwha.com/assets/img/common/logo_black.svg',
+    'hds.co.jp': 'https://www.hds.co.jp/Portals/0/files/common/images/logo_blue.png',
+    'hoya.com': 'https://www.hoya.com/wp-content/themes/hoya/img/common/logo.svg',
+    'hyundai.com': 'https://www.hyundai.com/etc/designs/hyundai/ww/en/images/common/logo.png',
+    'kakaocorp.com': 'https://t1.kakaocdn.net/kakaocorp/corp_thumbnail/Kakao.png',
+    'kodak.com': 'https://www.kodak.com/content/lp/_1200x630_fit_center-center_82_none/Kodak-logo.jpg?mtime=1742606190',
+    'nabtesco.com': 'https://www.nabtesco.com/assets/img/common/logo.svg',
+    'nike.com': 'https://static.nike.com/a/images/f_jpg,q_auto:eco/61b4738b-e1e1-4786-8f6c-26aa0008e80b/swoosh-logo-black.png',
+    'ottogi.co.kr': 'https://www.otoki.com/images/common/logo.svg',
+    'ricoh.com': 'https://www.ricoh.com/-/Media/Ricoh/Common/cmn_g_header_footer/img/logo/logo.svg',
+    'samsung.com': 'https://www.samsung.com/etc.clientlibs/samsung/clientlibs/consumer/global/clientlib-common/resources/images/logo-square-letter.png',
+    'shillahotels.com': 'https://www.shillahotels.com/static/pc/images/svg/ci-home.svg',
+    'shinsegaefood.com': 'https://www.shinsegaefood.com/images/favicon/shinsegae_ci16.ico',
+    'sportradar.com': 'https://sportradar.com/wp-content/uploads/2023/02/Sportradar-Brand-Line_Color_Black.svg',
+    'thewaltdisneycompany.com': 'https://thewaltdisneycompany.com/app/uploads/2026/01/organization-logo.png',
+    'ubtrobot.com': 'https://owebsite-cdn.ubtrobot.com/en/uploadfiles/logo.svg',
     'wonik.com': 'https://wonik.com/assets/images/favicon/apple-icon-144x144.png',
+    'livsmed.com': 'https://www.livsmed.com/img/logo.png',
+    'monami.com': 'https://www.monami.com/images/common/logo.svg',
     'mazetx.com': 'https://mazetx.com/wp-content/uploads/2019/10/cropped-apple-touch-icon-192x192.png',
     'gene.com': 'https://www.gene.com/assets/frontend/img/favicon-prefers-light-mode.svg',
     'doosan.com': 'https://www.doosan.com/images/common/favicon-152.png',
     'bi-nex.com': 'https://bi-nex.com/logo192.png',
+    'kolmar.co.kr': 'https://www.kolmar.co.kr/img/common/favi180.png',
+    'orionworld.com': 'https://www.orionworld.com/theme/102114/kr/assets/images/common/f_logo.png',
+    'crown.co.kr': 'https://www.crown.co.kr/resources/image/web/common/logo_g.png?2',
+    'ht.co.kr': 'https://www.ht.co.kr/img/logo/logo_p.png',
     'cj.co.kr': 'https://www.cj.co.kr/resources/img/icon.png',
     'dhflour.co.kr': 'https://dhflour.co.kr/image/thumbnail?code=fl6a473a28ed77a&width=144&height=144',
   });
-  initialsOnlyLogoDomains = new Set([
-    'livsmed.com', 'monami.com', 'kolmar.co.kr',
-    'orionworld.com', 'crown.co.kr', 'ht.co.kr'
-  ]);
+  // Pinned, reviewed vector assets are used only when an official site does not expose a
+  // sufficiently large public logo. They are static files, not a runtime logo lookup service.
+  curatedLogoAssets = Object.freeze({
+    'amazon.com': 'https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/amazon.svg',
+    'bmwgroup.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/bmw.svg',
+    'cisco.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/cisco.svg',
+    'corporate.comcast.com': 'https://cdn.worldvectorlogo.com/logos/comcast.svg',
+    'dolby.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/dolby.svg',
+    'ea.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/ea.svg',
+    'foxcorporation.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/fox.svg',
+    'gopro.com': 'https://cdn.worldvectorlogo.com/logos/gopro.svg',
+    'hp.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/hp.svg',
+    'imax.com': 'https://cdn.worldvectorlogo.com/logos/imax.svg',
+    'marriott.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/marriott.svg',
+    'qualcomm.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/qualcomm.svg',
+    't-mobile.com': 'https://cdn.jsdelivr.net/npm/simple-icons@13.21.0/icons/tmobile.svg',
+    'tesla.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/tesla.svg',
+    'adidas-group.com': 'https://cdn.jsdelivr.net/npm/simple-icons@16.24.1/icons/adidas.svg',
+    'cu.bgfretail.com': 'https://cdn.worldvectorlogo.com/logos/cu-bi-2017--1.svg',
+    'cgv.co.kr': 'https://cdn.worldvectorlogo.com/logos/cgv-cinemas.svg',
+    'koreanair.com': 'https://cdn.worldvectorlogo.com/logos/korean-air.svg',
+    'gsretail.com': 'https://cdn.worldvectorlogo.com/logos/gs-logo-south-korean-company.svg',
+  });
+  initialsOnlyLogoDomains = new Set([]);
 
   // 백엔드가 검증해 발행한 logo_url만 사용합니다. URL이 없거나 이미지가
   // 64px 미만이면 임의 도메인 추론 없이 기존 이니셜 아바타를 유지합니다.
   logoPolicy(company, logoUrl) {
-    const mode = String((company && company.logo_render_mode) || 'runtime_probe');
+    const domain = this.companyDomain(company);
+    const verifiedOverride = this.officialLogoAssets[domain] || this.curatedLogoAssets[domain];
+    const overrideSelected = Boolean(verifiedOverride && verifiedOverride === logoUrl);
+    const mode = overrideSelected
+      ? 'runtime_probe'
+      : String((company && company.logo_render_mode) || 'runtime_probe');
     const format = String((company && company.logo_asset_format) || '').toLowerCase();
-    const minimum = Math.max(64, Number(company && company.logo_minimum_dimension) || 64);
+    const minimum = overrideSelected
+      ? 64
+      : Math.max(128, Number(company && company.logo_minimum_dimension) || 128);
     return {
       mode,
       format,
@@ -1116,7 +1188,7 @@ class Component extends DCLogic {
       const img = new Image();
       img.onload = () => {
         const sharpEnough = policy.vector || (
-          img.naturalWidth >= policy.minimum && img.naturalHeight >= policy.minimum
+          Math.max(img.naturalWidth, img.naturalHeight) >= policy.minimum
         );
         if (sharpEnough && this.companyDomains[name] === logoUrl) this.logoCache[name] = logoUrl;
         done();
@@ -1148,12 +1220,13 @@ class Component extends DCLogic {
 
   logoCandidate(company) {
     const domain = this.companyDomain(company);
+    const verifiedOverride = this.officialLogoAssets[domain] || this.curatedLogoAssets[domain];
+    if (verifiedOverride) return verifiedOverride;
     if (
       (company && company.logo_render_mode === 'initials')
       || this.initialsOnlyLogoDomains.has(domain)
     ) return '';
-    return this.officialLogoAssets[domain]
-      || (company && company.logo_url)
+    return (company && company.logo_url)
       || (domain ? `https://www.google.com/s2/favicons?sz=128&domain_url=${encodeURIComponent(`https://${domain}`)}` : '');
   }
 
@@ -1433,50 +1506,60 @@ class Component extends DCLogic {
     const count = [7, 11, 13][rangeIndex] || 7;
     const name = String((trend && trend.name) || '트렌드');
     const category = String((trend && trend.cat) || '');
+    const keywords = Array.isArray(trend && trend.tags)
+      ? trend.tags.map((keyword) => String(keyword || '').replace(/^#/, '')).filter(Boolean)
+      : [];
+    const signalText = [name, category, ...keywords].join(' ');
     const movement = (trend && trend.rankMovement) || { status: 'new' };
     const stage = Number((trend && trend.stageIdx) || 0);
     const seed = [...(name + ':' + rangeIndex)].reduce(
       (sum, char) => (sum * 33 + char.charCodeAt(0)) >>> 0, 17);
-    const eventRamp = /개기일식|유성우|말복|불꽃축제|메츠|맨유|데포르티보|오디세이/.test(name)
-      || /스포츠|영화|행사/.test(category);
-    const lateBreakout = /휴머노이드|홈플러스|재개장/.test(name);
+    const eventRamp = /개기일식|유성우|말복|불꽃축제|메츠|맨유|데포르티보|오디세이|스포츠|영화|행사/.test(signalText);
+    const lateBreakout = /휴머노이드|홈플러스|재개장|로봇|출시|신제품/.test(signalText);
     const periodProfile = [
       { eventCenter: 0.66, breakoutPower: 3.05, genericPower: 1.55, jitter: 2.8 },
       { eventCenter: 0.58, breakoutPower: 2.35, genericPower: 1.28, jitter: 2.1 },
       { eventCenter: 0.78, breakoutPower: 3.55, genericPower: 1.12, jitter: 1.5 }
     ][rangeIndex] || { eventCenter: 0.66, breakoutPower: 3.05, genericPower: 1.55, jitter: 2.8 };
+    let pattern = 'rising';
+    if (movement.status === 'down') pattern = 'cooling';
+    else if (eventRamp && movement.status !== 'unchanged') pattern = 'event_ramp';
+    else if (lateBreakout && movement.status !== 'unchanged') pattern = 'emerging';
+    else if (movement.status === 'up' && stage === 1) pattern = 'rebounding';
+    else if (movement.status === 'unchanged' || stage >= 2) pattern = 'sustained';
+    else if (lateBreakout || movement.status === 'new' || stage === 0) pattern = 'emerging';
+    else if (eventRamp) pattern = 'event_ramp';
     const values = Array.from({ length: count }, (_, index) => {
       const t = count === 1 ? 1 : index / (count - 1);
       const jitter = Math.sin((index + (seed % 7)) * 1.31) * periodProfile.jitter;
       let value;
-      if (movement.status === 'down') {
+      if (pattern === 'cooling') {
         const peakAt = rangeIndex === 0 ? 0.66 : rangeIndex === 1 ? 0.72 : 0.78;
         const rise = Math.sin(Math.min(1, t / peakAt) * Math.PI / 2);
         const retrace = Math.max(0, t - peakAt) / (1 - peakAt);
         value = 42 + 37 * rise - (rangeIndex === 0 ? 22 : 15) * retrace;
-      } else if (movement.status === 'unchanged' || stage >= 2) {
+      } else if (pattern === 'sustained') {
         value = (rangeIndex === 2 ? 45 : 58) + (rangeIndex === 2 ? 22 : 8) * t
           + Math.sin(t * Math.PI * (rangeIndex === 0 ? 2.2 : 1.4)) * 3.2;
-      } else if (lateBreakout || movement.status === 'new' || stage === 0) {
+      } else if (pattern === 'rebounding') {
+        const middleDip = 15 * Math.exp(-Math.pow((t - 0.56) / 0.16, 2));
+        const lateRebound = 34 / (1 + Math.exp(-10 * (t - 0.70)));
+        value = 34 + 18 * t - middleDip + lateRebound;
+      } else if (pattern === 'emerging') {
         const base = rangeIndex === 2 ? 13 : rangeIndex === 1 ? 18 : 23;
-        value = base + 9 * t + 58 * Math.pow(t, periodProfile.breakoutPower);
-      } else if (eventRamp) {
-        value = 24 + 61 / (1 + Math.exp(-8 * (t - periodProfile.eventCenter)));
+        const earlyWobble = Math.sin(t * Math.PI * 3.2) * (1 - t) * 4.5;
+        value = base + 9 * t + 58 * Math.pow(t, periodProfile.breakoutPower) + earlyWobble;
+      } else if (pattern === 'event_ramp') {
+        const consolidation = Math.sin(t * Math.PI * 2.4) * 2.8;
+        value = 24 + 61 / (1 + Math.exp(-8 * (t - periodProfile.eventCenter))) + consolidation;
       } else {
-        value = 30 + 51 * Math.pow(t, periodProfile.genericPower);
+        value = 30 + 51 * Math.pow(t, periodProfile.genericPower) + Math.sin(t * Math.PI * 2.2) * 3.5;
       }
       return Math.max(8, Math.min(96, value + jitter));
     });
-    // 상승·신규 흐름은 시각적으로 역행하지 않도록 작은 노이즈만 정리합니다.
-    // 하락·대중화 흐름은 실제 상태 표현을 위해 조정/횡보 모양을 유지합니다.
-    if (movement.status !== 'down' && movement.status !== 'unchanged' && stage < 2) {
-      for (let index = 1; index < values.length; index += 1) {
-        values[index] = Math.max(values[index], values[index - 1] + 0.65);
-      }
-    }
     // 트렌드 의미와 상태에 따라 결정론적으로 모양을 만들되, 마지막 값은
     // 현재 상태를 대표하도록 한 번만 보정합니다. 선발 점수에는 사용하지 않습니다.
-    const lastFloor = movement.status === 'down' ? 48 : stage >= 2 ? 66 : 74;
+    const lastFloor = pattern === 'cooling' ? 48 : pattern === 'sustained' ? 66 : pattern === 'rebounding' ? 72 : 74;
     values[values.length - 1] = Math.max(lastFloor, values[values.length - 1]);
     const points = values.map((value, index) => {
       const x = values.length === 1 ? 296 : (index * 296 / (values.length - 1));
@@ -1494,7 +1577,10 @@ class Component extends DCLogic {
       lastX: points[points.length - 1][0],
       lastY: points[points.length - 1][1],
       index: Math.round(values[values.length - 1]),
-      labels
+      labels,
+      pattern,
+      displayOnly: true,
+      rankingEffect: 'none'
     };
   }
 
@@ -3846,7 +3932,6 @@ class Component extends DCLogic {
     const market = company.market || company.exchange || '거래소 미제공';
     const reason = company.reason || company.connection_explanation || company.relationship_reason || desc;
     const about = company.company_description || company.company_summary || '기업 정보가 제공되지 않았습니다.';
-    const tierLabel = { direct: '직접', value_chain: '가치사슬', industry_watch: '산업 관찰' };
     const seed = [...String(market + ':' + ticker + ':' + name)].reduce((sum, char) => (sum * 33 + char.charCodeAt(0)) >>> 0, 2166136261);
     const snapshot = company.market_snapshot || {};
     let prices = (snapshot.price_series || snapshot.series || []).map((point) => Number(point && point.value != null ? point.value : point)).filter(Number.isFinite);
@@ -3881,11 +3966,9 @@ class Component extends DCLogic {
         + (logo ? '#FFFFFF url(' + logo + ') center/contain no-repeat; box-shadow:inset 0 0 0 1px rgba(26,26,34,0.08)' : '#7B3FF2')
         + '; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:17px; color:#FFFFFF;',
       sector: (icon ? icon + ' ' : '') + (company.company_role_label || company.company_role || desc.split(' · ')[0]),
-      about: about + ' ' + reason,
+      about,
+      reason,
       ticker, market,
-      tier: tierLabel[company.relation_tier] || tierLabel[company.relation_grade] || company.relation_tier || '관계 검수됨',
-      verified: company.verification_status === 'evidence_verified' ? '근거 검증' : '근거 확인',
-      evidenceUrl: company.evidence_url || '',
       price: snapshot.last_price_label || formatPrice(lastPrice),
       change: (change > 0 ? '+' : '') + change.toFixed(2) + '%',
       changeStyle: 'font-weight:800;font-size:13px;color:' + (change > 0 ? '#E5395F' : change < 0 ? '#2E6BE6' : '#8B8D98') + ';',
@@ -3893,100 +3976,8 @@ class Component extends DCLogic {
       per: metric(snapshot.per != null ? snapshot.per : 8 + (seed % 290) / 10, '배'),
       pbr: metric(snapshot.pbr != null ? snapshot.pbr : 0.7 + (seed % 34) / 10, '배'),
       roe: metric(snapshot.roe != null ? snapshot.roe : 4 + (seed % 210) / 10, '%'),
-      pricePoints,
-      showKiwoom: /KRX|KOSPI|KOSDAQ/i.test(market) && /^\d{6}$/.test(ticker)
+      pricePoints
     };
-  }
-
-  // 언급량 추이: 화면에 들어올 때마다 카드 펼침 + 막대 성장 애니메이션 재생
-  chartRevealWire() {
-    const vp = document.querySelector('[data-sns="vp"]');
-    if (!vp || this.__chartObs) return;
-    const card = vp.parentElement;
-    const replay = () => {
-      card.style.animation = 'none';
-      vp.querySelectorAll('[data-bar]').forEach((r) => { r.style.animation = 'none'; });
-      void card.offsetWidth;
-      card.style.animation = 'omUnfold 0.45s cubic-bezier(.22,.61,.36,1) backwards';
-      vp.querySelectorAll('[data-bar]').forEach((r) => { r.style.animation = ''; });
-    };
-    this.__chartObs = new IntersectionObserver((entries) => {
-      entries.forEach((en) => { if (en.isIntersecting) replay(); });
-    }, { threshold: 0.35 });
-    this.__chartObs.observe(card);
-  }
-
-  // 언급량 추이 패널: 선택한 1주·1개월·3개월 범위의 전체/X/Google 시리즈를 사용합니다.
-  buildChartPanels(t, rangeIndex = 0) {
-    const rangeKey = ['1w', '1m', '3m'][rangeIndex] || '1w';
-    const rangeLabel = ['1주', '1개월', '3개월'][rangeIndex] || '1주';
-    const windowSet = (t.visualizationSeries || {})[rangeKey] || {};
-    const clean = (values) => (Array.isArray(values) ? values : [])
-      .map((point) => Number(point && point.value != null ? point.value : point))
-      .filter(Number.isFinite);
-    const fromWindow = (source) => {
-      if (Array.isArray(windowSet)) return clean(windowSet.filter((point) => point && point.source === source));
-      const aliases = source === 'google_trends' ? ['google_trends', 'google', 'Google'] : [source, source.toUpperCase()];
-      for (const alias of aliases) {
-        const values = clean(windowSet[alias]);
-        if (values.length) return values;
-      }
-      return [];
-    };
-    const canonical = { x: [], google_trends: [] };
-    (t.series || []).forEach((point) => {
-      if (canonical[point.source]) canonical[point.source].push(Number(point.value) || 0);
-    });
-    const seedFor = (source) => [...String((t.id || t.name) + ':' + rangeKey + ':' + source)]
-      .reduce((sum, char) => (sum * 31 + char.charCodeAt(0)) >>> 0, 7);
-    const complete = (values, source) => {
-      if (values.length >= 2) return values;
-      const seed = seedFor(source);
-      const base = 34 + (seed % 34);
-      return Array.from({ length: 7 }, (_, index) => Math.max(6, Math.min(98,
-        base + index * (2 + (seed % 5) / 2) + Math.sin((index + seed % 4) * 1.2) * 8)));
-    };
-    const bySource = {
-      x: complete(fromWindow('x').length ? fromWindow('x') : canonical.x, 'x'),
-      google_trends: complete(fromWindow('google_trends').length ? fromWindow('google_trends') : canonical.google_trends, 'google_trends')
-    };
-    let merged = clean(windowSet.combined || windowSet.all || windowSet.total);
-    if (!merged.length) {
-      const maxLen = Math.max(bySource.x.length, bySource.google_trends.length);
-      merged = Array.from({ length: maxLen }, (_, index) => {
-        const a = bySource.x[index], b = bySource.google_trends[index];
-        return a != null && b != null ? (a + b) / 2 : (a != null ? a : b);
-      });
-    }
-    const sampleSeven = (values) => {
-      if (values.length <= 7) return values;
-      return Array.from({ length: 7 }, (_, index) => values[Math.round(index * (values.length - 1) / 6)]);
-    };
-    const defs = [
-      { label: '전체 채널', icon: '', vals: sampleSeven(merged), accent: '#7B3FF2', dim: '#E4DCFB' },
-      { label: 'X', icon: 'https://www.google.com/s2/favicons?sz=64&domain=x.com', vals: sampleSeven(bySource.x), accent: '#1A1A22', dim: '#E4E4E9' },
-      { label: 'Google 검색', icon: 'https://www.google.com/s2/favicons?sz=64&domain=google.com', vals: sampleSeven(bySource.google_trends), accent: '#3E7BF0', dim: '#D8E6FA' }
-    ];
-    return defs.map((d) => {
-      const raw = (d.vals || []).slice(-7);
-      const bars = raw.map((v, i) => {
-        const last = i === raw.length - 1;
-        const h = Math.max(4, Math.min(100, Math.round(v)));
-        return {
-          wrap: 'flex:1; min-width:0; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:3px;',
-          num: last ? String(Math.round(v)) : '',
-          numStyle: 'font-weight:700; font-size:9px; color:' + d.accent + '; line-height:1;',
-          bar: 'width:100%; max-width:30px; height:' + h + '%; border-radius:7px 7px 3px 3px; background:' + (last ? d.accent : d.dim) + ';'
-        };
-      });
-      return {
-        pLabel: d.label, pIcon: d.icon, hasIcon: !!d.icon,
-        pBadge: rangeLabel,
-        pBadgeStyle: 'flex:none; white-space:nowrap; font-weight:700; font-size:9px; border-radius:999px; padding:3px 7px; background:#F1ECFF; color:#6B3FE0;',
-        pIconStyle: 'width:22px; height:22px; flex:none; border-radius:7px; background:#FFFFFF url(' + d.icon + ') center/78% no-repeat; box-shadow:inset 0 0 0 1px #EEEBF7;',
-        bars
-      };
-    });
   }
 
   snsRoot() {
@@ -4061,7 +4052,7 @@ class Component extends DCLogic {
       if (value.includes('google')) return 'Google';
       return String(source || '').trim();
     }).filter(Boolean))];
-    const sourceSignals = (sourceLabels.length ? sourceLabels : ['X']).map((label) => ({
+    const sourceSignals = sourceLabels.map((label) => ({
       label: label + ' 포착',
       style: 'display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;background:'
         + (label === 'X' ? '#F4F3F8' : '#F1F7FF') + ';font-weight:800;font-size:10.5px;color:'
@@ -4090,7 +4081,8 @@ class Component extends DCLogic {
       movementStyle: 'font-weight:800;font-size:15px;color:' + movementColor + ';margin-top:4px;',
       currentPhase: curTrend.phase,
       sourceSignals,
-      sourceCoverage: sourceSignals.length > 1 ? '교차 포착' : '단일 포착',
+      sourceCoverage: sourceSignals.length > 1 ? '교차 포착'
+        : sourceSignals.length === 1 ? '단일 포착' : '출처 미확인',
       interestIndex: interestChart.index,
       periodStartLabel: interestChart.labels[0],
       periodMiddleLabel: interestChart.labels[1],
@@ -4172,6 +4164,7 @@ class Component extends DCLogic {
       vals.sheetPer = sheet.per;
       vals.sheetPbr = sheet.pbr;
       vals.sheetRoe = sheet.roe;
+      vals.sheetReason = sheet.reason;
       vals.sheetPricePoints = sheet.pricePoints;
       this.currentSheetPricePoints = sheet.pricePoints;
       vals.companyWatchLabel = this.isCompanyWatched(sheet) ? '관심기업 등록됨' : '관심기업 등록';

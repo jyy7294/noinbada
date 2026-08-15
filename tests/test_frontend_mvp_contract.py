@@ -39,17 +39,13 @@ def test_company_logos_are_used_across_company_and_portfolio_surfaces() -> None:
     assert "portfolio.companies.map" in INDEX
     assert "center/contain no-repeat" in INDEX
     assert "center/cover no-repeat" not in INDEX
-    assert "img.naturalWidth >= policy.minimum" in INDEX
-    assert "img.naturalHeight >= policy.minimum" in INDEX
+    assert "Math.max(img.naturalWidth, img.naturalHeight) >= policy.minimum" in INDEX
     assert "company.logo_render_mode === 'initials'" in INDEX
     assert "policy.mode === 'initials'" in INDEX
-    assert "minimum = Math.max(64" in INDEX
+    assert "? 64" in INDEX
+    assert ": Math.max(128" in INDEX
     assert "initialsOnlyLogoDomains = new Set" in INDEX
-    for domain in (
-        "livsmed.com", "monami.com", "kolmar.co.kr",
-        "orionworld.com", "crown.co.kr", "ht.co.kr",
-    ):
-        assert f"'{domain}'" in INDEX
+    assert "initialsOnlyLogoDomains = new Set([])" in INDEX
     assert "return this.logoCache[name] || '';" in INDEX
     assert "const logo = company.logo_url ||" not in INDEX
     assert 'data-my-stash-companies="1"' in INDEX
@@ -60,18 +56,22 @@ def test_company_logos_are_used_across_company_and_portfolio_surfaces() -> None:
 def test_known_company_logos_prefer_verified_official_assets() -> None:
     official_assets = {
         "nikon.com": "https://www.nikon.com/etc.clientlibs/nikoncore/clientlibs/clientlib-site/resources/img/logo.svg",
-        "teledyne.com": "https://cdn.teledyne.com/assets/common/images/favicon.ico",
+        "teledyne.com": "https://cdn.teledyne.com/assets/prod/images/footerlogo.png",
         "hamamatsu.com": "https://www.hamamatsu.com/content/dam/hamamatsu-photonics/system/images/logo.svg",
         "harim.com": "https://harim.com/main/img/ci.png",
         "harim.co.kr": "https://harim.com/main/img/ci.png",
-        "company.emart.com": "https://stimg.emart.com/company/ko/images/common/sub_logo_company.png",
-        "emartcompany.com": "https://stimg.emart.com/company/ko/images/common/sub_logo_company.png",
-        "gsretail.com": "https://hpimg.gsretail.com/_ui/desktop/common/images/icon/gsretail_114.png",
+        "company.emart.com": "https://stimg.emart.com/company/ko/images/common/logo_emart_fresh.png",
+        "emartcompany.com": "https://stimg.emart.com/company/ko/images/common/logo_emart_fresh.png",
         "company.lottetour.com": "https://company.lottetour.com/images/common/header_logo.png",
         "lottetour.com": "https://company.lottetour.com/images/common/header_logo.png",
         "manutd.com": "https://contentfulproxy.stadion.io/unzgbvss5tuy/5GFoxbOTd249o0VhuZNczI/cde0cb3a7b895c6a99f2796433232819/TONAL_CREST_Black%C3%83___3x-png.png?fm=webp&fit=pad&f=center&w=184&h=184",
-        "nongshim.com": "https://www.nongshim.com/resources2/images/common/pop-logo.jpg",
-        "lottewellfood.com": "https://www.lottewellfood.com/favicon.ico",
+        "nongshim.com": "https://eng.nongshim.com/resources/nongshimCss/images/ci_01.png",
+        "lottewellfood.com": "https://www.lottewellfood.com/images/common/m/h1_logo_new.png",
+        "sony.com": "https://www.sony.net/assets_revamp2025/images/logo.svg",
+        "nvidia.com": "https://www.nvidia.com/content/dam/en-zz/Solutions/about-nvidia/nvidia-brochure/images/nvidia-logo-black.svg",
+        "xpeng.com": "https://a-cdn.xpeng.com/mall/public/favicon.svg",
+        "rainbow-robotics.com": "https://rainbow-robotics.com/wp-content/uploads/2026/02/logo-dark.svg",
+        "ht.co.kr": "https://www.ht.co.kr/img/logo/logo_p.png",
         "wonik.com": "https://wonik.com/assets/images/favicon/apple-icon-144x144.png",
         "mazetx.com": "https://mazetx.com/wp-content/uploads/2019/10/cropped-apple-touch-icon-192x192.png",
         "gene.com": "https://www.gene.com/assets/frontend/img/favicon-prefers-light-mode.svg",
@@ -79,11 +79,36 @@ def test_known_company_logos_prefer_verified_official_assets() -> None:
         "bi-nex.com": "https://bi-nex.com/logo192.png",
         "cj.co.kr": "https://www.cj.co.kr/resources/img/icon.png",
         "dhflour.co.kr": "https://dhflour.co.kr/image/thumbnail?code=fl6a473a28ed77a&width=144&height=144",
+        "pulmuone.co.kr": "https://www.pulmuone.co.kr/pulmuone/images/sub/img_pul15.gif",
+        "dxc.com": "https://dxc.com/content/dam/dxc/projects/dxc-com/global/logos/dxc/dxc-logo-png-4x.png",
+        "geniussports.com": "https://cms.geniussports.com/wp-content/uploads/2024/07/4299-jCuDsESbQCzIJp7rJRm4j2W9yOu6uHA_vzxMe5hxACU.png",
+        "global.canon": "https://global.canon/01cmn/img/common/logo.svg",
+        "hds.co.jp": "https://www.hds.co.jp/Portals/0/files/common/images/logo_blue.png",
+        "nabtesco.com": "https://www.nabtesco.com/assets/img/common/logo.svg",
+        "ottogi.co.kr": "https://www.otoki.com/images/common/logo.svg",
+        "shillahotels.com": "https://www.shillahotels.com/static/pc/images/svg/ci-home.svg",
+        "shinsegaefood.com": "https://www.shinsegaefood.com/images/favicon/shinsegae_ci16.ico",
+        "sportradar.com": "https://sportradar.com/wp-content/uploads/2023/02/Sportradar-Brand-Line_Color_Black.svg",
+        "thewaltdisneycompany.com": "https://thewaltdisneycompany.com/app/uploads/2026/01/organization-logo.png",
+        "ubtrobot.com": "https://owebsite-cdn.ubtrobot.com/en/uploadfiles/logo.svg",
     }
     for domain, url in official_assets.items():
         assert f"'{domain}': '{url}'" in INDEX
-    assert "return this.officialLogoAssets[domain]" in INDEX
-    assert "|| (company && company.logo_url)" in INDEX
+    assert "curatedLogoAssets = Object.freeze" in INDEX
+    assert "const verifiedOverride = this.officialLogoAssets[domain] || this.curatedLogoAssets[domain]" in INDEX
+    assert "if (verifiedOverride) return verifiedOverride;" in INDEX
+    assert "simple-icons@latest" not in INDEX
+    assert "simple-icons@13.21.0" in INDEX
+    assert "simple-icons@16.24.1" in INDEX
+    assert "cdn.worldvectorlogo.com/logos/cgv-cinemas.svg" in INDEX
+    assert "'adobe.com': 'https://main--cc--adobecom.aem.live/cc-shared/assets/img/product-icons/svg/adobe-corp-logo-2024.svg'" in INDEX
+    for domain in (
+        "amctheatres.com", "apple.com", "bravesholdings.com", "cinemark.com", "daesang.com",
+        "dolby.com", "fanuc.eu", "foxcorporation.com", "fujifilm.com", "hanwha.com", "hoya.com",
+        "hyundai.com", "kakaocorp.com", "kodak.com", "nike.com", "ricoh.com", "samsung.com", "tesla.com",
+    ):
+        assert f"'{domain}': 'https://" in INDEX
+    assert "return (company && company.logo_url)" in INDEX
     assert "|| (domain ? `https://www.google.com/s2/favicons" in INDEX
     assert "if (this.companyDomains[name] === logoUrl) return;" in INDEX
     assert "this.companyDomains[name] === logoUrl" in INDEX
@@ -94,19 +119,37 @@ def test_interest_chart_is_one_combined_keyword_aware_curve() -> None:
     assert "언급량 추이 · 관심지수" in INDEX
     assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
     assert "const count = [7, 11, 13][rangeIndex]" in INDEX
-    assert "const eventRamp = /개기일식|유성우|말복|불꽃축제|메츠|맨유|데포르티보|오디세이/" in INDEX
-    assert "const lateBreakout = /휴머노이드|홈플러스|재개장/" in INDEX
+    assert "const keywords = Array.isArray(trend && trend.tags)" in INDEX
+    assert "const signalText = [name, category, ...keywords].join(' ')" in INDEX
+    assert "const eventRamp = /개기일식|유성우|말복|불꽃축제|메츠|맨유|데포르티보|오디세이|스포츠|영화|행사/.test(signalText)" in INDEX
+    assert "const lateBreakout = /휴머노이드|홈플러스|재개장|로봇|출시|신제품/.test(signalText)" in INDEX
+    assert "else if (eventRamp && movement.status !== 'unchanged') pattern = 'event_ramp'" in INDEX
+    assert "else if (lateBreakout && movement.status !== 'unchanged') pattern = 'emerging'" in INDEX
     assert "const periodProfile = [" in INDEX
     assert "eventCenter: 0.78" in INDEX
-    assert "values[index - 1] + 0.65" in INDEX
+    assert "pattern = 'cooling'" in INDEX
+    assert "pattern = 'sustained'" in INDEX
+    assert "pattern = 'event_ramp'" in INDEX
+    assert "pattern = 'rebounding'" in INDEX
+    assert "const middleDip =" in INDEX
+    assert "const lateRebound =" in INDEX
+    assert "values[index - 1] + 0.65" not in INDEX
     assert 'data-interest-line="1"' in INDEX
     assert 'data-interest-area="1"' in INDEX
+    assert 'aria-labelledby="interest-chart-title interest-chart-disclosure"' in INDEX
+    assert "표시용 관심 흐름 · 실제 측정 이력이 아니며 순위 산정에 반영되지 않아요." in INDEX
     assert "patchInterestChart()" in INDEX
     assert "sourceSignals" in INDEX
+    assert "sourceLabels.length ? sourceLabels : ['X']" not in INDEX
+    assert "출처 미확인" in INDEX
+    assert "displayOnly: true" in INDEX
+    assert "rankingEffect: 'none'" in INDEX
     chart_surface = INDEX[INDEX.index("언급량 추이 · 관심지수"): INDEX.index("함께 언급된 키워드")]
     assert "chartPanels" not in chart_surface
     assert "전체 채널" not in chart_surface
     assert "채널 추가하기" not in chart_surface
+    assert "buildChartPanels(" not in INDEX
+    assert "chartRevealWire()" not in INDEX
 
 
 def test_company_sheet_contains_price_chart_and_valuation_metrics() -> None:
@@ -127,6 +170,8 @@ def test_company_sheet_contains_price_chart_and_valuation_metrics() -> None:
     assert "관계 등급" not in INDEX
     assert "근거 상태" not in INDEX
     assert "기업 연결 근거 보기" not in INDEX
+    assert "트렌드와 연결된 이유" in INDEX
+    assert "{{ sheetReason }}" in INDEX
     assert "관심기업 등록" in INDEX
     assert "키움 종목홈으로 가기" in INDEX
     assert "trzip_company_watchlist_v1" in INDEX
