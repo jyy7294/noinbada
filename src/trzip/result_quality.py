@@ -15,6 +15,7 @@ from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .presentation_feed import (
     LOGO_ASSET_VERIFICATION,
     LOGO_QUALITY_POLICY,
+    live_logo_contract_is_valid,
     logo_asset_contract_is_valid,
     logo_display_contract_is_valid,
 )
@@ -780,7 +781,7 @@ def _evaluate_canonical_frontend_result(intelligence: dict) -> dict:
                 for company in companies
                 if str(company.get("company_role_category") or "").strip()
             }
-            if not 3 <= len(company_role_categories) <= 4:
+            if not 2 <= len(company_role_categories) <= 4:
                 item_failures.append(
                     f"company_role_category_count:{len(company_role_categories)}"
                 )
@@ -901,18 +902,7 @@ def _evaluate_canonical_frontend_result(intelligence: dict) -> dict:
             linked_companies.add(company_name)
         if invalid_link:
             item_failures.append("invalid_keyword_company_link")
-        if presentation_display_contract:
-            if linked_keywords != normalized_keyword_texts:
-                item_failures.append(
-                    "keyword_company_keyword_coverage:"
-                    f"{len(linked_keywords)}/{len(normalized_keyword_texts)}"
-                )
-            if linked_companies != set(company_by_name):
-                item_failures.append(
-                    "keyword_company_company_coverage:"
-                    f"{len(linked_companies)}/{len(company_by_name)}"
-                )
-        elif len(linked_keywords) < 2:
+        if len(linked_keywords) < 2:
             item_failures.append(f"keyword_company_link_count:{len(linked_keywords)}")
         if item.get("frontend_readiness_status") != "ready":
             item_failures.append("frontend_enrichment_pending")
@@ -969,7 +959,7 @@ def _presentation_card_display_failures(
         for company in companies
         if str(company.get("company_role_category") or "").strip()
     }
-    if not 3 <= len(roles) <= 4:
+    if not 2 <= len(roles) <= 4:
         failures.append(f"company_role_category_count:{len(roles)}")
     for company in companies:
         company_name = str(company.get("company") or "").strip()
@@ -1003,24 +993,37 @@ def _presentation_card_display_failures(
             or not _valid_public_url(logo_url)
         ):
             failures.append(f"missing_official_logo:{company_name}")
-        snapshot = company.get("market_snapshot") or {}
-        if (
-            snapshot.get("display_only") is not True
+        snapshot = company.get("market_snapshot")
+        if snapshot is not None and (
+            not isinstance(snapshot, dict)
+            or snapshot.get("display_only") is not True
             or snapshot.get("ranking_effect") != "none"
-            or len(snapshot.get("price_series") or []) != 30
-            or not all(
-                isinstance(snapshot.get(field), (int, float))
-                and not isinstance(snapshot.get(field), bool)
-                for field in ("last_price", "change_percent", "per", "pbr", "roe_percent")
-            )
+            or not str(snapshot.get("provider") or "").strip()
+            or not str(snapshot.get("as_of") or "").strip()
+            or not _valid_public_url(str(snapshot.get("source_url") or ""))
+            or not 1 <= len(snapshot.get("price_series") or []) <= 30
             or not all(
                 isinstance(value, (int, float))
                 and not isinstance(value, bool)
                 and value > 0
                 for value in snapshot.get("price_series") or []
             )
+            or (
+                snapshot.get("market_cap") is not None
+                and (
+                    snapshot.get("market_cap_currency") != "KRW"
+                    or snapshot.get("market_cap_krw") != snapshot.get("market_cap")
+                    or not isinstance(snapshot.get("fx_rate_to_krw"), (int, float))
+                    or isinstance(snapshot.get("fx_rate_to_krw"), bool)
+                    or snapshot.get("fx_rate_to_krw") <= 0
+                    or not str(snapshot.get("fx_as_of") or "").strip()
+                    or not str(snapshot.get("fx_provider") or "").strip()
+                    or not _valid_public_url(str(snapshot.get("fx_source_url") or ""))
+                    or not _valid_public_url(str(snapshot.get("market_cap_source_url") or ""))
+                )
+            )
         ):
-            failures.append(f"market_snapshot_incomplete:{company_name}")
+            failures.append(f"market_snapshot_invalid_provenance:{company_name}")
     visualization = item.get("visualization_series") or {}
     if (
         visualization.get("display_only") is not True
@@ -1064,6 +1067,46 @@ def evaluate_presentation_feed_quality(feed: dict) -> dict:
         _validate_presentation_feed(feed)
     except (TypeError, ValueError) as exc:
         contract_failures.append(str(exc))
+    if schema_version == "trzip-presentation-feed-v4":
+        trend_checks = []
+        for item in items:
+            logo_failures = [
+                f"invalid_live_logo:{str(company.get('company') or '').strip()}"
+                for company in item.get("companies") or []
+                if not live_logo_contract_is_valid(company)
+            ]
+            trend_checks.append({
+                "display_name": str(item.get("display_name") or ""),
+                "company_count": len(item.get("companies") or []),
+                "role_categories": sorted({
+                    str(company.get("company_role_category") or "")
+                    for company in item.get("companies") or []
+                }),
+                "passed": not logo_failures,
+                "failures": logo_failures,
+            })
+        ready = not contract_failures and all(
+            row["passed"] for row in trend_checks
+        )
+        return {
+            "policy_version": "presentation-result-quality-v2",
+            "schema_version": schema_version,
+            "legacy_contract": False,
+            "warnings": [],
+            "status": str(feed.get("status") or "missing"),
+            "frontend_default": feed.get("frontend_default") is True,
+            "passed": ready,
+            "content_ready": ready and bool(items),
+            "presentation_count": len(items),
+            "company_ready_count": sum(1 for row in trend_checks if row["passed"]),
+            "failures": contract_failures + [
+                f"{row['display_name']}:{failure}"
+                for row in trend_checks
+                for failure in row["failures"]
+            ],
+            "trends": trend_checks,
+            "ranking_effect": "none",
+        }
     trend_checks = []
     for item in items:
         item_failures = _presentation_card_display_failures(
@@ -1125,7 +1168,11 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
 
     presentation = evaluate_presentation_feed_quality(presentation_feed)
     presentation_is_default = presentation["frontend_default"]
-    presentation_ready = presentation_is_default and presentation["passed"]
+    presentation_ready = (
+        presentation_is_default
+        and presentation["passed"]
+        and presentation.get("content_ready", True)
+    )
     failures = list(canonical["failures"])
     if presentation_is_default:
         failures.extend(
@@ -1134,7 +1181,9 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
     return {
         **canonical,
         "policy_version": "frontend-result-quality-v8",
-        "passed": not failures and presentation_ready,
+        # An honestly empty live feed is contract-valid even though it is not
+        # presentation-content-ready.  It must not be backfilled with a demo.
+        "passed": not failures and presentation_is_default and presentation["passed"],
         "frontend_surface": "presentation_feed" if presentation_is_default else "canonical_home_feed",
         # Compatibility metrics intentionally describe the surface consumed by
         # the frontend. Canonical counts remain available under explicit names.
@@ -1272,6 +1321,144 @@ def _source_gate(path: Path, observed_at: str) -> dict:
         "policy_version": "hourly-source-proof-v2",
         "passed": passed,
         "sources": sources,
+    }
+
+
+def _publication_window_source_gate(
+    path: Path,
+    observed_at: str,
+    *,
+    hours: int = 24,
+) -> dict:
+    """Validate usable actual rank inputs anywhere in the publication window.
+
+    The hourly receipt remains intentionally strict about the exact scheduled
+    hour.  Daily publication is different: missing collection hours are an
+    explicit, audited gap and are never filled, while each rank source must
+    still contribute at least one independently valid observation inside the
+    latest 24-hour window.
+    """
+
+    end, stamp = _normalized_exact_hour(observed_at)
+    window_hours = max(1, int(hours))
+    start = end - timedelta(hours=window_hours - 1)
+    start_stamp = start.isoformat()
+    connection = sqlite3.connect(path)
+    try:
+        if not _table_exists(connection, "hourly_observations"):
+            rows = []
+        else:
+            rows = connection.execute(
+                """
+                SELECT observation.observed_at, observation.source,
+                       COUNT(*) AS row_count,
+                       COUNT(DISTINCT observation.topic) AS unique_topics,
+                       COUNT(DISTINCT observation.source_rank) AS unique_ranks,
+                       MIN(observation.source_rank) AS minimum_rank,
+                       MAX(observation.source_rank) AS maximum_rank,
+                       SUM(CASE WHEN observation.provenance='observed' THEN 1 ELSE 0 END)
+                         AS observed_rows,
+                       audit.status AS audit_status,
+                       audit.row_count AS audited_row_count
+                FROM hourly_observations AS observation
+                LEFT JOIN collection_audit AS audit
+                  ON audit.observed_at=observation.observed_at
+                 AND audit.collector=CASE observation.source
+                       WHEN 'x' THEN 'x_korea_realtime'
+                       WHEN 'google_trends' THEN 'google_geo_kr'
+                     END
+                WHERE observation.observed_at BETWEEN ? AND ?
+                  AND observation.source IN ('x','google_trends')
+                  AND observation.provenance='observed'
+                  AND ((observation.source='x' AND observation.collector_version IN
+                        ('x_current_session_kr_v1','trzip_v3'))
+                    OR (observation.source='google_trends' AND observation.collector_version IN
+                        ('google_trending_now_kr_v1','trzip_v3')))
+                GROUP BY observation.observed_at, observation.source,
+                         audit.status, audit.row_count
+                ORDER BY observation.observed_at, observation.source
+                """,
+                (start_stamp, stamp),
+            ).fetchall()
+    finally:
+        connection.close()
+
+    valid_hours = {source: [] for source in ("x", "google_trends")}
+    valid_rows = {source: 0 for source in valid_hours}
+    rejected = []
+    for (
+        row_stamp, source, row_count, unique_topics, unique_ranks,
+        minimum_rank, maximum_rank, observed_rows, audit_status,
+        audited_row_count,
+    ) in rows:
+        common_valid = (
+            audit_status == "observed"
+            and audited_row_count == row_count
+            and observed_rows == row_count
+            and unique_topics == row_count
+            and unique_ranks == row_count
+            and minimum_rank == 1
+            and maximum_rank == row_count
+        )
+        if source == "x":
+            source_valid = common_valid and row_count == 30
+        else:
+            source_valid = common_valid and row_count >= 100
+        if source_valid:
+            valid_hours[source].append(row_stamp)
+            valid_rows[source] += int(row_count)
+        else:
+            rejected.append({
+                "observed_at": row_stamp,
+                "source": source,
+                "reason": "invalid_actual_source_hour",
+            })
+
+    expected = [
+        (start + timedelta(hours=offset)).isoformat()
+        for offset in range(window_hours)
+    ]
+    observed_by_hour = {
+        item: sorted(
+            source for source, stamps in valid_hours.items() if item in stamps
+        )
+        for item in expected
+    }
+    missing_hours = [item for item, sources in observed_by_hour.items() if not sources]
+    partial_hours = [
+        {
+            "observed_at": item,
+            "observed_sources": sources,
+            "missing_sources": sorted(set(valid_hours) - set(sources)),
+        }
+        for item, sources in observed_by_hour.items()
+        if sources and len(sources) < len(valid_hours)
+    ]
+    sources = {
+        source: {
+            "valid_hour_count": len(stamps),
+            "valid_row_count": valid_rows[source],
+            "observed_hours": stamps,
+        }
+        for source, stamps in valid_hours.items()
+    }
+    passed = all(sources[source]["valid_hour_count"] >= 1 for source in sources)
+    return {
+        "policy_version": "publication-window-source-proof-v1",
+        "passed": passed,
+        "window": {
+            "from": start_stamp,
+            "to": stamp,
+            "expected_hours": window_hours,
+        },
+        "sources": sources,
+        "missing_hour_count": len(missing_hours),
+        "missing_hours": missing_hours,
+        "partial_source_hours": partial_hours,
+        "rejected_source_hours": rejected,
+        "missing_hour_policy": "allowed_no_fill_no_reuse",
+        "fabricated_hour_count": 0,
+        "reused_previous_hour_count": 0,
     }
 
 
@@ -1447,10 +1634,12 @@ def main() -> int:
         if not args.intelligence:
             parser.error("--preflight requires --intelligence")
         intelligence = json.loads(args.intelligence.read_text(encoding="utf-8"))
-        source_gate = _source_gate(args.database, normalized_end)
+        source_gate = _publication_window_source_gate(
+            args.database, normalized_end
+        )
         contract = evaluate_frontend_result(intelligence)
         result = {
-            "policy_version": "hourly-publication-preflight-v1",
+            "policy_version": "daily-publication-preflight-v2",
             "observed_at": normalized_end,
             "passed": source_gate["passed"] and contract["passed"],
             "source_gate": source_gate,
@@ -1520,7 +1709,9 @@ def main() -> int:
         ):
             parser.error("--manifest does not match publication id and observed hour")
         contract = evaluate_frontend_result(intelligence)
-        source_gate = _source_gate(args.database, normalized_end)
+        source_gate = _publication_window_source_gate(
+            args.database, normalized_end
+        )
         record_publication_receipt(
             args.database,
             observed_at=args.end.astimezone(UTC).replace(minute=0, second=0, microsecond=0).isoformat(),

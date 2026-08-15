@@ -21,10 +21,9 @@ TRZIP 백엔드는 설정된 Windows 수집 노드에서 매시 정각 한국 X 
           ↓
 관련어 정확히 5개 → 증거 온톨로지 → 국내외 상장기업 10개 준비 게이트
           ↓
-NAVER 뉴스 맥락 검증 (순위 영향 없음)
-YouTube·Instagram 활성 홈 분석 비활성
+4시간마다 NAVER 뉴스·LLM/검수 핸드오프 보강 (순위 영향 없음)
           ↓
-latest / observations / monitoring JSON을 live-data에 게시
+매일 06:00 KST 완성 카드 0~10개를 불변 publication으로 게시
 ```
 
 노트북 종료·로그아웃 중 누락은 결측으로 남습니다. 생성값으로 메우지 않습니다.
@@ -54,15 +53,16 @@ latest / observations / monitoring JSON을 live-data에 게시
 - `ranking_views`: 일간 24시간·주간 168시간·월간 720시간에 실제 관측된 전체 후보
 - `unified_ranking`, `all_observed_ranking`: 최근 24시간 전체 실측 순위
 - `home_feed`: 완성 계약을 통과한 카드를 `spreading`·`sustained`·`emerging`으로 제공하는 무순위 보드
-- `home_top10`: 현재 프런트 전환용 번호형 호환 배열(최대 10개)
+- `presentation_feed`: 최근 24시간 실제 관측 후보 중 전체 완성 계약을 통과한 프런트 기본 배열(0~10개, 패딩 없음)
+- `home_top10`: 이전 프런트 전환용 호환 배열
 - `rising_top10`: 비교 가능한 구간에서 실제 양의 상승이 측정된 상위 10개
 - `trend_top10`, `public_top10`: 호환성을 위한 `home_top10` 동일 별칭
 - `company_ready_trends`: 증거 기반 상장기업 10개 이상 준비된 별도 목록
 - `lanes.issue`: 정치·사건·재난·단순 기상특보·사생활 논란
 - `lanes.review`: 아직 정체나 문화·소비 맥락을 식별하지 못한 표현
 - `needs_context` 항목은 전체 순위에 보존하되 관련어·온톨로지·보조 검증·기사 맥락 중 하나가 생기기 전에는 홈 대표 목록에 올리지 않음
-- 자동 선발 순위는 기업 수와 독립적으로 유지합니다. 다만 프런트 완성 Top10과 기업 카드는 관련 키워드 정확히 5개·검수된 기업 10개 이상·역할 카테고리 2~4개를 충족해야 게시됩니다.
-- 각 기간의 원천별 관측 커버리지가 80% 미만이면 `provisional`입니다. MVP 공개 이력 기준은 깨끗한 24시간이며, 48시간은 운영 안정도 목표, 96시간은 장기 관찰 지표로만 사용합니다.
+- 자동 선발 순위는 기업 수와 독립적으로 유지합니다. 다만 프런트 공개 카드는 `main` 레인, URL 근거가 있는 `why_now`, 관련 키워드 정확히 5개, 검수된 상장기업 정확히 10개, 역할 카테고리 2~4개, 기업과 연결되는 서로 다른 키워드 2개 이상을 모두 충족해야 합니다.
+- 최근 24시간 중 실제 관측된 시각만 계산에 사용합니다. 결측 시각이 있어도 공개를 막지 않지만 시각 수와 목록을 감사에 남기며 이전 값 재사용·보간·생성으로 메우지 않습니다.
 
 관측 순위의 관심 강도는 X와 Google의 원천 순위를 각각 정규화해 같은 비중으로 계산합니다. NAVER 뉴스·키워드·기업·LLM 문구는 점수와 순위를 바꾸지 않습니다. 상승 속도는 직전 동일 기간을 우선 비교하고, 불가능하면 현 기간 전반부와 후반부를 비교합니다. 정상 스냅샷이 부족하면 `unavailable`·0점이며 중립점수를 주지 않습니다. 원시 검색량·게시량을 플랫폼 간 직접 합산하지 않고 각 플랫폼 안에서 정규화합니다. 카테고리·기업 수는 점수에 영향을 주지 않습니다.
 
@@ -89,7 +89,7 @@ latest / observations / monitoring JSON을 live-data에 게시
 
 10개에 못 미친 메인 트렌드는 `ontology_enrichment_queue`에 부족한 경로 수와 실제 관측 표현을 남깁니다. 이후 공식 기업자료·공시·검수된 기사·산업구조 근거를 추가하는 연구 대상이며, 큐 자체는 순위에 영향을 주지 않습니다.
 
-기업 필드에는 관계 이유, 상장시장·종목코드, 경로상 산업 특성, 증거 출처, 온톨로지 경로, 일별 pykrx 참고자료가 포함됩니다. 투자 추천이나 상승 예측은 아닙니다.
+기업 필드에는 관계 이유, 상장시장·종목코드, 경로상 산업 특성, 증거 출처, 온톨로지 경로, 국내 pykrx·해외 Yahoo Finance의 실제 일별 참고자료가 포함됩니다. 투자 추천이나 상승 예측은 아닙니다.
 
 ## 설치
 
@@ -127,7 +127,7 @@ powershell -ExecutionPolicy Bypass -File scripts\collect-hourly.ps1
 .venv\Scripts\python.exe scripts\audit-runtime.py
 ```
 
-운영 감사 결과는 `PASS`, `PROVISIONAL`, `FAIL` 중 하나입니다. X 미연결 또는 24시간 미만 누적은 숨기지 않고 `PROVISIONAL` blocker로 표시합니다. 24~47시간은 MVP 공개가 가능하지만 운영 이력이 48시간 미만이라는 경고를 남깁니다. 발표·인수인계 전에는 X·Google 통합, 최근 24시간 원장, 최근 8회 연속 정각 로컬 수집·프런트 계약 성공, 해당 일일 공개본의 원격 영수증을 함께 확인합니다.
+운영 감사 결과는 `PASS`, `PROVISIONAL`, `FAIL` 중 하나입니다. 발표·인수인계 전에는 X·Google의 마지막 성공시각, 최근 24시간 실제 관측시간 수·결측시간, 프런트 v4 계약 성공, 해당 일일 공개본의 원격 영수증을 함께 확인합니다. 일부 결측과 06:00 정각의 단일 출처 공백은 허용하지만, 최근 24시간 안에 X·Google이 각각 최소 한 번 완전하게 관측됐고 재사용·보간·생성 행이 없을 때만 원격 최신본을 교체합니다.
 
 ## 개발과 검증
 
@@ -147,7 +147,7 @@ powershell -ExecutionPolicy Bypass -File scripts\collect-hourly.ps1
 | 파일 | 내용 |
 |---|---|
 | `latest/manifest.json` | 새 프런트가 가장 먼저 읽는 단일 발행 포인터·파일 해시 |
-| `latest/delivery/{publication_id}/rankings.json` | 카드용 경량 전체 순위·트렌드 Top 10·기업 준비 목록 |
+| `latest/delivery/{publication_id}/rankings.json` | 카드용 경량 전체 순위·완성 트렌드 0~10개·기업 준비 목록 |
 | `latest/delivery/{publication_id}/trends/*.json` | 사건별 시계열·키워드·온톨로지·기업 근거 상세 |
 | `latest/intelligence.json` | 전체 순위·홈 subset·키워드·기업·검증 맥락 |
 | `latest/status.json` | 부분수집·출처별 상태·실행 측정 상태 |
@@ -170,7 +170,7 @@ powershell -ExecutionPolicy Bypass -File scripts\collect-hourly.ps1
 | Google 수집 | Playwright + Chrome | Google Trending Now KR 전체 페이지 수집 |
 | X 수집 | Codex 데스크톱 + 현재 로그인 Chrome | 한국 실시간 트렌드 1~30위 직접 수집 |
 | 원장 | SQLite | 시간별 원문·순위·감사·검증 결과 누적 |
-| 시장 참고값 | pykrx | 일별 종가·거래량 참고값; 순위와 기업 관계 근거에는 미사용 |
+| 시장 참고값 | pykrx·Yahoo Finance | 국내외 상장종목의 실제 일별 가격·거래량·공개 밸류에이션 참고값; 순위와 기업 관계 근거에는 미사용 |
 | 계약 검증 | JSON Schema + pytest | 프런트 묶음·점수·출처·기업 게이트 검증 |
 | 운영 | PowerShell + Codex 자동화 | 매시 정각 파이프라인 실행·안전 게시 |
 | 전달 | Git/GitHub `live-data` | 정적 JSON 버전 관리와 프런트 전달 |
@@ -185,7 +185,9 @@ src/trzip/x_web_collector.py             X 1~30 inbox 완전성 검증
 src/trzip/hourly_store.py                단일 SQLite 원장·시간/일 집계
 src/trzip/intelligence.py                대표어·점수·큐레이션·기업 연결
 src/trzip/ontology.py                    증거 그래프와 10개 준비 게이트
-src/trzip/provider_verification.py       NAVER·YouTube·Instagram·기사 원장
+src/trzip/provider_verification.py       NAVER 뉴스 맥락 원장
+src/trzip/processing_cycle.py            24시간 관측 커버리지·4시간 보강 체크포인트
+src/trzip/enrichment_handoff.py          LLM/사람 보강 후보의 불변 인계·검증
 src/trzip/keyword_candidates.py          보조 문서 키워드 검토 대기열
 src/trzip/publication_pipeline.py        전체 E2E·계약 검증·정적 게시물
 scripts/collect-hourly.ps1               정각 실행·live-data 안전 게시
@@ -194,7 +196,7 @@ scripts/collect-hourly.ps1               정각 실행·live-data 안전 게시
 ## 아직 코드만으로 확정할 수 없는 것
 
 - X 정각 수집에는 Codex 데스크톱 앱과 현재 Chrome의 X 로그인·대한민국 지역 상태가 필요합니다.
-- NAVER 기존 키는 실제 인증 오류 상태이며 재발급 또는 애플리케이션 설정 확인이 필요합니다.
-- Instagram 토큰이 없어 현재 `unavailable`입니다.
-- 72회·168회 실측이 쌓이기 전에는 3일·7일 성공률을 완료로 표현하지 않습니다.
+- NAVER 뉴스 보강은 인증정보뿐 아니라 런타임 보강 플래그가 켜져야 실행됩니다. 비활성·인증실패여도 X·Google 원천 순위는 계속 계산합니다.
+- LLM 보강은 실행 연결값이 없으면 불변 인계 파일로 대기하며 Python 점수·순위를 바꾸지 않습니다.
+- 실제 MAU, 키움 S# 딥링크·관심기업 계정 저장, 실시간 시장자료 공급자 연동은 코드만으로 완료했다고 볼 수 없습니다.
 - 온톨로지 10개 미달 트렌드는 후보로 유지되며 증거를 추가하기 전까지 기업 카드와 프런트 완성 목록이 보강 대기 상태입니다.

@@ -23,6 +23,8 @@ $CurrentKstHour = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId(
     $StartedAt,
     "Korea Standard Time"
 ).Hour
+$RunEnrichmentCheckpoint = (($CurrentKstHour % 4) -eq 0) -or `
+    ($CurrentKstHour -eq $DailyPublishHourKst)
 $Mutex = [Threading.Mutex]::new($false, "Global\TRZIP-NOINBADA-HOURLY-V1")
 $HasMutex = $false
 
@@ -173,7 +175,18 @@ try {
     # Raw ledger and published daily aggregates are retained indefinitely by
     # default. Pruning requires an explicit positive --retention-days value.
     if (-not $ReuseVerifiedLocal) {
-        & $Python -m trzip.local_pipeline --output $PublicationRoot --database $DatabasePath
+        $PipelineArguments = @(
+            "-m", "trzip.local_pipeline",
+            "--output", $PublicationRoot,
+            "--database", $DatabasePath,
+            "--daily-publish-hour-kst", [string]$DailyPublishHourKst
+        )
+        if ($RunEnrichmentCheckpoint) {
+            $PipelineArguments += "--enrichment-checkpoint"
+        } else {
+            $PipelineArguments += "--defer-enrichment-checkpoint"
+        }
+        & $Python @PipelineArguments
         if ($LASTEXITCODE -ne 0) { throw "local pipeline exited with code $LASTEXITCODE" }
     }
     & $Python -c "from pathlib import Path; from trzip.publication_pipeline import validate_frontend_delivery; validate_frontend_delivery(Path(r'$PublicationRoot'))"
@@ -189,22 +202,54 @@ try {
     if ([string]$PublicationStatus.observed_at -ne $CurrentHour) {
         throw "local publication does not match the current exact hour"
     }
+    $Coverage24h = $PublicationStatus.processing_cycle.coverage_24h
+    $EnrichmentBatch = $PublicationStatus.processing_cycle.enrichment_batch
+    $ProcessingDetail = "checkpoint={0} observed_hours={1}/24 dual_source_hours={2}/24 missing_hours={3} complete_cards={4}" -f @(
+        $EnrichmentBatch.executed
+        $Coverage24h.any_source_hour_count
+        $Coverage24h.dual_source_hour_count
+        $Coverage24h.missing_hour_count
+        $EnrichmentBatch.current_summary.complete_card_count
+    )
+    Write-RunLog -Phase "processing_cycle" -Status ([string]$EnrichmentBatch.status) `
+        -Detail $ProcessingDetail
     if ($PublicationStatus.publishable -ne $true) {
         & $Python -m trzip.result_quality --database $DatabasePath `
             --end $PublicationStatus.observed_at --count 8 --output $QualityOutput | Out-Null
         if ($LASTEXITCODE -notin @(0,1)) {
             throw "failed to refresh local result quality after source failure"
         }
-        $SourceDetail = "x={0} google={1}" -f `
-            $PublicationStatus.source_status.x,$PublicationStatus.source_status.google_trends
+        $SourceDetail = "x_hours={0} google_hours={1}" -f `
+            $Coverage24h.source_hour_count.x,$Coverage24h.source_hour_count.google_trends
         Write-RunLog -Phase "publish" -Status "local_only" `
-            -Detail "same-hour X+Google gate not met; $SourceDetail"
+            -Detail "recent-24h X+Google source gate not met; $SourceDetail"
+        if ($CurrentKstHour -ne $DailyPublishHourKst) {
+            Write-RunLog -Phase "hourly_validation" -Status "source_window_gap" `
+                -Detail "local ledger and audit completed; daily publication gate deferred"
+            exit 0
+        }
         exit 1
+    }
+
+    $ExactHourSourceReady = (
+        [string]$PublicationStatus.source_status.x -eq "observed" -and
+        [string]$PublicationStatus.source_status.google_trends -eq "observed"
+    )
+    if (-not $ExactHourSourceReady -and $CurrentKstHour -ne $DailyPublishHourKst) {
+        & $Python -m trzip.result_quality --database $DatabasePath `
+            --end $PublicationStatus.observed_at --count 8 --output $QualityOutput | Out-Null
+        if ($LASTEXITCODE -notin @(0,1)) {
+            throw "failed to refresh local result quality after exact-hour gap"
+        }
+        Write-RunLog -Phase "hourly_validation" -Status "source_gap" `
+            -Detail "exact-hour receipt skipped; missing hours are preserved without reuse"
+        exit 0
     }
 
     # Record the exact source and frontend-contract proof before considering
     # remote publication. Repeating the same proof is a no-op; any conflict is
     # rejected by the immutable SQLite receipt.
+    if ($ExactHourSourceReady) {
     & $Python -m trzip.result_quality --database $DatabasePath `
         --end $PublicationStatus.observed_at --count 8 --output $QualityOutput `
         --record-hourly-validation `
@@ -227,6 +272,10 @@ try {
     }
     Write-RunLog -Phase "hourly_validation" -Status $LocalStatus `
         -Detail "streak=$LocalStreak/8 remaining=$LocalRemaining receipt=immutable"
+    } else {
+        Write-RunLog -Phase "hourly_validation" -Status "gap_allowed_for_daily_publication" `
+            -Detail "no exact-hour receipt; recent-24h source proof will be used"
+    }
 
     # Collection, ledger updates, rolling analysis and enrichment queues run
     # every hour above. The public frontend snapshot is intentionally promoted
@@ -246,9 +295,9 @@ try {
         exit 0
     }
 
-    # Audit the exact publication and SQLite ledger that are about to be
-    # published. History maturity may remain provisional, but both ranking
-    # sources must be observed for this hour before remote publication.
+    # Audit the publication and SQLite ledger that are about to be published.
+    # Exact-hour gaps are preserved; each ranking source must have at least one
+    # independently valid observation in the recent 24-hour window.
     $AuditScript = Join-Path $ProjectRoot "scripts\audit-runtime.py"
     $AuditOutput = @(& $Python $AuditScript --runtime-root $RuntimeRoot --json 2>&1)
     if ($LASTEXITCODE -ne 0) {
@@ -273,13 +322,13 @@ try {
         --output $PreflightOutput | Out-Null
     if ($LASTEXITCODE -ne 0) {
         $Preflight = Get-Content -LiteralPath $PreflightOutput -Raw -Encoding utf8 | ConvertFrom-Json
-        $SourceRows = "x={0} google={1}" -f `
-            $Preflight.source_gate.sources.x.row_count, `
-            $Preflight.source_gate.sources.google_trends.row_count
+        $SourceRows = "x_hours={0} google_hours={1}" -f `
+            $Preflight.source_gate.sources.x.valid_hour_count, `
+            $Preflight.source_gate.sources.google_trends.valid_hour_count
         throw "publication preflight failed before remote push; $SourceRows; failures=$($Preflight.contract.failures -join ',')"
     }
     Write-RunLog -Phase "preflight" -Status "ok" `
-        -Detail "source-v2 and frontend-v8 contracts passed before remote publication"
+        -Detail "24h-source-v1 and frontend-v8 contracts passed before remote publication"
 
     # A verified hour is immutable.  Reject a newly generated publication for
     # that same hour before copying, committing, or pushing any remote bytes.

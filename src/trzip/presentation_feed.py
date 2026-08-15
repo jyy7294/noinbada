@@ -8,8 +8,12 @@ ranking.  Reference enrichment is allowed to improve display detail only.
 from __future__ import annotations
 
 import hashlib
+import math
+from collections import defaultdict
+from datetime import UTC, datetime, timedelta
 from urllib.parse import urlparse
 
+from .company_logo_assets import resolve_company_logo
 from .company_roles import with_company_role
 from .editorial_review import KEYWORDS, _verified_company_rows
 from .keyword_policy import keyword_fits_public_label, normalized_keyword_text
@@ -20,6 +24,89 @@ GOOGLE_TRENDS_KR = "https://trends.google.com/trending?geo=KR"
 LOGO_MINIMUM_DIMENSION = 64
 LOGO_QUALITY_POLICY = "avatar-sharpness-v1"
 LOGO_ASSET_VERIFICATION = "static_allowlist_image_quality_2026_08_15"
+LIVE_LOGO_ASSET_VERIFICATIONS = frozenset({
+    "verified_safe_svg",
+    "verified_raster_min_64px",
+    "initials_fallback",
+})
+
+
+def _finite_market_number(value: object, *, positive: bool = False) -> bool:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    if not math.isfinite(float(value)):
+        return False
+    return value > 0 if positive else True
+
+
+def _public_url(value: object) -> bool:
+    return str(value or "").strip().startswith(("http://", "https://"))
+
+
+def _calculated_roe_provenance_is_valid(value: object) -> bool:
+    """Accept only TTM/annual ROE backed by a two-point average equity."""
+
+    if not isinstance(value, dict) or value.get("roe_calculated") is not True:
+        return False
+    roe_pct = value.get("roe_pct")
+    numerator = value.get("roe_numerator")
+    denominator = value.get("roe_denominator")
+    if (
+        not _finite_market_number(roe_pct)
+        or not isinstance(numerator, dict)
+        or not isinstance(denominator, dict)
+    ):
+        return False
+    numerator_type = numerator.get("type")
+    expected_basis = {
+        "trailingNetIncome": (
+            "trailing_net_income / average_two_point_stockholders_equity * 100"
+        ),
+        "annualNetIncome": (
+            "annual_net_income / average_two_point_stockholders_equity * 100"
+        ),
+    }.get(numerator_type)
+    if not expected_basis or value.get("roe_basis") != expected_basis:
+        return False
+    numerator_value = numerator.get("value")
+    denominator_value = denominator.get("value")
+    observations = denominator.get("observations")
+    if (
+        not _finite_market_number(numerator_value)
+        or not _finite_market_number(denominator_value, positive=True)
+        or not str(numerator.get("as_of") or "").strip()
+        or not str(numerator.get("period_type") or "").strip()
+        or denominator.get("type") != "averageStockholdersEquity"
+        or denominator.get("period_type") != "TWO_POINT_AVERAGE"
+        or not str(denominator.get("period_start") or "").strip()
+        or not str(denominator.get("period_end") or "").strip()
+        or not isinstance(observations, list)
+        or len(observations) != 2
+    ):
+        return False
+    observation_values = []
+    for observation in observations:
+        if (
+            not isinstance(observation, dict)
+            or not _finite_market_number(observation.get("value"), positive=True)
+            or not str(observation.get("as_of") or "").strip()
+        ):
+            return False
+        observation_values.append(float(observation["value"]))
+    if not math.isclose(
+        float(denominator_value),
+        sum(observation_values) / 2,
+        rel_tol=1e-9,
+        abs_tol=1e-9,
+    ):
+        return False
+    calculated = float(numerator_value) / float(denominator_value) * 100
+    return math.isclose(
+        float(roe_pct),
+        calculated,
+        rel_tol=1e-6,
+        abs_tol=5e-4,
+    )
 
 
 COMPANY_DOMAINS = {
@@ -218,6 +305,12 @@ def logo_display_contract_is_valid(company: dict) -> bool:
     and fall back to initials when the floor is not met.
     """
 
+    if (
+        company.get("logo_asset_verification") in LIVE_LOGO_ASSET_VERIFICATIONS
+        and isinstance(company.get("logo_provenance"), dict)
+    ):
+        return live_logo_contract_is_valid(company)
+
     mode = str(company.get("logo_render_mode") or "")
     asset_format = str(company.get("logo_asset_format") or "").casefold()
     width = company.get("logo_asset_width")
@@ -260,6 +353,100 @@ def logo_display_contract_is_valid(company: dict) -> bool:
             == "official_domain_declared_favicon"
         )
     return False
+
+
+def live_logo_contract_is_valid(company: dict) -> bool:
+    """Validate a v4 resolver result without consulting the network again."""
+
+    mode = str(company.get("logo_render_mode") or "").strip()
+    logo_url = str(company.get("logo_url") or "").strip()
+    source_page_url = str(company.get("logo_source_page_url") or "").strip()
+    mime = str(company.get("logo_asset_mime") or "").strip().casefold()
+    asset_format = str(company.get("logo_asset_format") or "").strip().casefold()
+    width = company.get("logo_asset_width")
+    height = company.get("logo_asset_height")
+    sha256 = str(company.get("logo_asset_sha256") or "").strip().casefold()
+    verification = str(company.get("logo_asset_verification") or "").strip()
+    provenance = company.get("logo_provenance")
+    if (
+        company.get("logo_quality_policy") != LOGO_QUALITY_POLICY
+        or company.get("logo_minimum_dimension") != LOGO_MINIMUM_DIMENSION
+        or company.get("logo_runtime_probe_required") is not False
+        or verification not in LIVE_LOGO_ASSET_VERIFICATIONS
+        or not isinstance(provenance, dict)
+        or provenance.get("source_page_url") != (source_page_url or None)
+        or provenance.get("asset_url") != (logo_url or None)
+        or provenance.get("mime") != (mime or None)
+        or provenance.get("width") != width
+        or provenance.get("height") != height
+        or provenance.get("sha256") != (sha256 or None)
+        or provenance.get("verification") != verification
+    ):
+        return False
+
+    if mode == "initials":
+        return (
+            company.get("logo_asset_source") == "initials_fallback"
+            and not logo_url
+            and not mime
+            and asset_format == "none"
+            and width == 0
+            and height == 0
+            and not sha256
+            and not str(company.get("logo_asset_host") or "").strip()
+            and not str(company.get("logo_rejected_asset_url") or "").strip()
+            and (not source_page_url or _http_url_is_valid(source_page_url))
+            and str(company.get("logo_asset_quality") or "")
+            == "fail_closed_initials_no_verified_asset"
+        )
+
+    if mode != "image" or verification not in {
+        "verified_safe_svg",
+        "verified_raster_min_64px",
+    }:
+        return False
+    parsed_logo = urlparse(logo_url)
+    parsed_page = urlparse(source_page_url)
+    official_domain = str(company.get("official_domain") or "").strip().casefold()
+    dimensions_are_valid = (
+        isinstance(width, int)
+        and not isinstance(width, bool)
+        and isinstance(height, int)
+        and not isinstance(height, bool)
+        and width > 0
+        and height > 0
+    )
+    if verification == "verified_raster_min_64px":
+        dimensions_are_valid = bool(
+            dimensions_are_valid
+            and width >= LOGO_MINIMUM_DIMENSION
+            and height >= LOGO_MINIMUM_DIMENSION
+            and asset_format in {"png", "jpeg", "gif", "webp", "bmp", "ico"}
+        )
+    else:
+        dimensions_are_valid = bool(dimensions_are_valid and asset_format == "svg")
+    return bool(
+        company.get("logo_asset_source") == "official_page_asset"
+        and logo_url.startswith("https://")
+        and parsed_logo.hostname
+        and parsed_page.scheme in {"http", "https"}
+        and parsed_page.hostname
+        and official_domain == parsed_page.hostname.casefold()
+        and str(company.get("logo_asset_host") or "").strip().casefold()
+        == parsed_logo.hostname.casefold()
+        and mime.startswith("image/")
+        and len(sha256) == 64
+        and all(character in "0123456789abcdef" for character in sha256)
+        and dimensions_are_valid
+        and not str(company.get("logo_rejected_asset_url") or "").strip()
+        and str(company.get("logo_asset_quality") or "")
+        in {"verified_vector", "verified_raster_min_64px"}
+    )
+
+
+def _http_url_is_valid(value: str) -> bool:
+    parsed = urlparse(value)
+    return parsed.scheme in {"http", "https"} and bool(parsed.hostname)
 
 
 SUPPLEMENT_COMPANY_CATALOG = {
@@ -1083,12 +1270,15 @@ def _presentation_movement(
     }
 
 
-def build_presentation_feed(
-    intelligence: dict,
-    *,
-    previous_feed: dict | None = None,
+def build_reference_demo_feed(
+    intelligence: dict, *, previous_feed: dict | None = None
 ) -> dict:
-    """Return the exact reviewed Top10 in the order approved by the user."""
+    """Build the historical reviewed fixture for tests and demo portfolios only.
+
+    This function is deliberately not used by the production publication path.
+    Its deterministic display supplements are retained solely so the archived
+    design fixture remains reproducible.
+    """
 
     candidates = list(intelligence.get("unified_ranking") or [])
     items = [_reference_card(item, candidates) for item in REFERENCE_TOP10]
@@ -1097,11 +1287,7 @@ def build_presentation_feed(
         item["presentation_position"] = position
         item["presentation_rank"] = position
         item["current_rank"] = position
-        item["rank_movement"] = _presentation_movement(
-            item,
-            position,
-            previous_items,
-        )
+        item["rank_movement"] = _presentation_movement(item, position, previous_items)
     return {
         "schema_version": "trzip-presentation-feed-v3",
         "status": "ready",
@@ -1117,10 +1303,588 @@ def build_presentation_feed(
         "items": items,
         "transition": {
             "enabled": False,
-            "policy": "fixed_reviewed_top10_until_daily_auto_feed_is_explicitly_activated",
+            "policy": "reference_demo_fixture_only",
             "required_clean_hours": 24,
             "synthetic_data_used": True,
             "supplemental_display_data_used": True,
             "canonical_ranking_affected": False,
+        },
+    }
+
+
+def _parse_observed_at(value: object) -> datetime | None:
+    try:
+        return datetime.fromisoformat(str(value or "")).astimezone(UTC)
+    except (TypeError, ValueError):
+        return None
+
+
+def _observed_sparse_series(candidate: dict, observed_at: datetime) -> dict:
+    """Return only actual X/Google observations; never interpolate or pad."""
+
+    rows_by_at: dict[str, dict[str, float]] = defaultdict(dict)
+    for row in candidate.get("series") or []:
+        source = str(row.get("source") or "")
+        stamp = _parse_observed_at(row.get("at"))
+        if source not in {"x", "google_trends"} or stamp is None:
+            continue
+        if row.get("provenance") != "observed" or stamp > observed_at:
+            continue
+        try:
+            value = float(row.get("value"))
+        except (TypeError, ValueError):
+            continue
+        rows_by_at[stamp.isoformat()][source] = round(max(0.0, min(100.0, value)), 2)
+
+    windows = {}
+    attention = []
+    for key, label, days in (("1w", "1주", 7), ("1m", "1개월", 30), ("3m", "3개월", 90)):
+        threshold = observed_at - timedelta(days=days)
+        points = []
+        for stamp, sources in sorted(rows_by_at.items()):
+            parsed = _parse_observed_at(stamp)
+            if parsed is None or parsed < threshold:
+                continue
+            values = list(sources.values())
+            points.append({
+                "at": stamp,
+                "x": sources.get("x"),
+                "google_trends": sources.get("google_trends"),
+                "combined": round(sum(values) / len(values), 2),
+                "observed_sources": sorted(sources),
+            })
+        combined = [point["combined"] for point in points]
+        percent = None
+        if len(combined) >= 2 and combined[0] != 0:
+            percent = round(((combined[-1] - combined[0]) / combined[0]) * 100.0, 1)
+        status = "measured" if len(combined) >= 2 else "insufficient_observed_history"
+        windows[key] = {
+            "status": status,
+            "points": points,
+            "available_point_count": len(points),
+            "available_from": points[0]["at"] if points else None,
+            "available_to": points[-1]["at"] if points else None,
+            "basis": "observed_x_google_hourly_points_only",
+            "interpolation": "none",
+            "missing_point_policy": "preserve_sparse_null_no_reuse",
+            "ranking_effect": "none",
+        }
+        attention.append({
+            "key": key,
+            "label": label,
+            "metric": "normalized_attention_index_change",
+            "status": status,
+            "percent": percent,
+            "basis": "first_and_last_available_observed_point",
+            "is_absolute_mention_count": False,
+            "ranking_effect": "none",
+        })
+    return {
+        "metric": "normalized_attention_index",
+        "canonical_series_unchanged": True,
+        "data_mode": "observed_sparse",
+        "interpolation": "none",
+        "ranking_effect": "none",
+        "attention_windows": attention,
+        **windows,
+    }
+
+
+def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
+    market = company.get("market_reference")
+    if not isinstance(market, dict):
+        code = str(company.get("stock_code") or company.get("ticker") or "")
+        market = next((
+            row.get("market_reference")
+            for row in candidate.get("company_candidates") or []
+            if str(row.get("stock_code") or row.get("ticker") or "") == code
+            and isinstance(row.get("market_reference"), dict)
+        ), None)
+    if not isinstance(market, dict) or market.get("status") != "observed":
+        return None
+    summary = market.get("summary") or {}
+    as_of = str(summary.get("as_of") or "").strip()
+    provider = str(market.get("provider") or "").strip()
+    source_url = str(market.get("source_url") or "").strip()
+    if not provider or not as_of or not _public_url(source_url):
+        return None
+    daily = [
+        row for row in market.get("daily_ohlcv") or []
+        if isinstance(row, dict)
+        and _finite_market_number(row.get("close"), positive=True)
+    ]
+    if not daily:
+        return None
+    valuation = market.get("valuation") or {}
+    currency = str(summary.get("currency") or market.get("currency") or "").strip().upper()
+    if len(currency) != 3 or not currency.isalpha():
+        return None
+    fx_reference = market.get("fx_reference") if isinstance(market.get("fx_reference"), dict) else {}
+    fx_rate = fx_reference.get("rate")
+    fx_as_of = str(fx_reference.get("as_of") or "").strip()
+    fx_source_url = str(fx_reference.get("source_url") or "").strip()
+    source_urls = market.get("source_urls") if isinstance(market.get("source_urls"), dict) else {}
+    field_sources = market.get("field_sources") if isinstance(market.get("field_sources"), dict) else {}
+    price_source_url = str(
+        field_sources.get("price_series") or source_urls.get("price") or source_url
+    ).strip()
+    market_cap_source_url = str(
+        field_sources.get("market_cap_krw")
+        or field_sources.get("market_cap")
+        or source_urls.get("fundamentals")
+        or source_url
+    ).strip()
+    market_cap_krw = summary.get("market_cap_krw")
+    close_krw = summary.get("close_krw")
+    native_market_cap = summary.get("market_cap")
+    has_krw_conversion = bool(
+        _finite_market_number(market_cap_krw, positive=True)
+        and _finite_market_number(native_market_cap, positive=True)
+        and _finite_market_number(fx_rate, positive=True)
+        and fx_as_of
+        and str(fx_reference.get("provider") or "").strip()
+        and _public_url(fx_source_url)
+        and _public_url(market_cap_source_url)
+    )
+    snapshot = {
+        "status": "observed",
+        "provider": provider,
+        "source": provider,
+        "source_url": source_url,
+        "price_source_url": price_source_url,
+        "as_of": as_of,
+        "last_price": (
+            summary.get("close")
+            if _finite_market_number(summary.get("close"), positive=True)
+            else None
+        ),
+        "last_price_krw": (
+            close_krw
+            if has_krw_conversion and _finite_market_number(close_krw, positive=True)
+            else None
+        ),
+        "change_percent": (
+            summary.get("daily_change_pct")
+            if _finite_market_number(summary.get("daily_change_pct"))
+            else None
+        ),
+        "volume": (
+            summary.get("volume")
+            if _finite_market_number(summary.get("volume"))
+            and summary.get("volume") >= 0
+            else None
+        ),
+        # Public market_cap is always KRW.  The source-currency amount is kept
+        # separately for audit and must never be rendered with a won label.
+        "market_cap": market_cap_krw if has_krw_conversion else None,
+        "market_cap_krw": market_cap_krw if has_krw_conversion else None,
+        "market_cap_currency": "KRW" if has_krw_conversion else None,
+        "market_cap_source_url": market_cap_source_url if has_krw_conversion else None,
+        "native_market_cap": native_market_cap if has_krw_conversion else None,
+        "currency": currency,
+        "fx_rate_to_krw": fx_rate if has_krw_conversion else None,
+        "fx_as_of": fx_as_of if has_krw_conversion else None,
+        "fx_provider": str(fx_reference.get("provider") or "") if has_krw_conversion else None,
+        "fx_source_url": fx_source_url if has_krw_conversion else None,
+        "price_series": [row["close"] for row in daily],
+        "price_points": daily,
+        "display_only": True,
+        "ranking_effect": "none",
+    }
+    fundamentals_source_url = str(source_urls.get("fundamentals") or source_url).strip()
+    for source_key in ("per", "pbr"):
+        value = valuation.get(source_key)
+        metric_source_url = str(
+            field_sources.get(source_key) or fundamentals_source_url
+        ).strip()
+        if _finite_market_number(value, positive=True) and _public_url(metric_source_url):
+            snapshot[source_key] = value
+            snapshot[f"{source_key}_source_url"] = metric_source_url
+            for suffix in ("as_of", "type", "period_type"):
+                provenance = valuation.get(f"{source_key}_{suffix}")
+                if provenance not in (None, ""):
+                    snapshot[f"{source_key}_{suffix}"] = provenance
+
+    roe_source_url = str(
+        field_sources.get("roe_pct") or fundamentals_source_url
+    ).strip()
+    if _public_url(roe_source_url) and _calculated_roe_provenance_is_valid(valuation):
+        value = valuation["roe_pct"]
+        snapshot.update({
+            "roe_pct": value,
+            "roe": value,
+            "roe_percent": value,
+            "roe_source_url": roe_source_url,
+            "roe_basis": valuation["roe_basis"],
+            "roe_calculated": True,
+            "roe_numerator": valuation["roe_numerator"],
+            "roe_denominator": valuation["roe_denominator"],
+        })
+    return snapshot
+
+
+def _live_logo_fields(homepage: str) -> dict:
+    """Project one verified resolver result into the v4 company DTO."""
+
+    result = resolve_company_logo(homepage) if homepage else {
+        "status": "fallback",
+        "source_page_url": None,
+        "asset_url": None,
+        "mime": None,
+        "width": None,
+        "height": None,
+        "sha256": None,
+        "verification": "initials_fallback",
+    }
+    source_page_url = str(result.get("source_page_url") or "").strip()
+    asset_url = str(result.get("asset_url") or "").strip()
+    mime = str(result.get("mime") or "").split(";", 1)[0].strip().casefold()
+    verification = str(result.get("verification") or "initials_fallback").strip()
+    width = result.get("width")
+    height = result.get("height")
+    sha256 = str(result.get("sha256") or "").strip().casefold()
+    dimensions_present = bool(
+        isinstance(width, int)
+        and not isinstance(width, bool)
+        and isinstance(height, int)
+        and not isinstance(height, bool)
+        and width > 0
+        and height > 0
+    )
+    verified = bool(
+        result.get("status") == "verified"
+        and verification in {"verified_safe_svg", "verified_raster_min_64px"}
+        and asset_url.startswith("https://")
+        and source_page_url.startswith(("http://", "https://"))
+        and mime.startswith("image/")
+        and dimensions_present
+        and len(sha256) == 64
+        and all(character in "0123456789abcdef" for character in sha256)
+    )
+    if verified:
+        format_by_mime = {
+            "image/svg+xml": "svg",
+            "image/png": "png",
+            "image/jpeg": "jpeg",
+            "image/gif": "gif",
+            "image/webp": "webp",
+            "image/bmp": "bmp",
+            "image/x-icon": "ico",
+            "image/vnd.microsoft.icon": "ico",
+        }
+        asset_format = format_by_mime.get(mime, "")
+        parsed_asset = urlparse(asset_url)
+        parsed_page = urlparse(source_page_url)
+        verified = bool(asset_format and parsed_asset.hostname and parsed_page.hostname)
+    if not verified:
+        source_page_url = source_page_url if _http_url_is_valid(source_page_url) else ""
+        fields = {
+            "official_domain": (
+                urlparse(source_page_url).hostname.casefold()
+                if source_page_url and urlparse(source_page_url).hostname
+                else None
+            ),
+            "logo_url": "",
+            "logo_render_mode": "initials",
+            "logo_asset_source": "initials_fallback",
+            "logo_asset_host": "",
+            "logo_asset_verification": "initials_fallback",
+            "logo_asset_format": "none",
+            "logo_asset_mime": "",
+            "logo_asset_width": 0,
+            "logo_asset_height": 0,
+            "logo_asset_sha256": "",
+            "logo_source_page_url": source_page_url,
+            "logo_minimum_dimension": LOGO_MINIMUM_DIMENSION,
+            "logo_runtime_probe_required": False,
+            "logo_asset_quality": "fail_closed_initials_no_verified_asset",
+            "logo_rejected_asset_url": "",
+            "logo_quality_policy": LOGO_QUALITY_POLICY,
+        }
+    else:
+        fields = {
+            "official_domain": urlparse(source_page_url).hostname.casefold(),
+            "logo_url": asset_url,
+            "logo_render_mode": "image",
+            "logo_asset_source": "official_page_asset",
+            "logo_asset_host": urlparse(asset_url).hostname.casefold(),
+            "logo_asset_verification": verification,
+            "logo_asset_format": asset_format,
+            "logo_asset_mime": mime,
+            "logo_asset_width": int(width),
+            "logo_asset_height": int(height),
+            "logo_asset_sha256": sha256,
+            "logo_source_page_url": source_page_url,
+            "logo_minimum_dimension": LOGO_MINIMUM_DIMENSION,
+            "logo_runtime_probe_required": False,
+            "logo_asset_quality": (
+                "verified_vector"
+                if verification == "verified_safe_svg"
+                else "verified_raster_min_64px"
+            ),
+            "logo_rejected_asset_url": "",
+            "logo_quality_policy": LOGO_QUALITY_POLICY,
+        }
+    fields["logo_provenance"] = {
+        "source_page_url": fields["logo_source_page_url"] or None,
+        "asset_url": fields["logo_url"] or None,
+        "mime": fields["logo_asset_mime"] or None,
+        "width": fields["logo_asset_width"],
+        "height": fields["logo_asset_height"],
+        "sha256": fields["logo_asset_sha256"] or None,
+        "verification": fields["logo_asset_verification"],
+    }
+    return fields
+
+
+def _live_company_rows(candidate: dict) -> list[dict]:
+    rows = []
+    seen = set()
+    for source in candidate.get("companies") or []:
+        identity = (
+            str(source.get("market") or source.get("exchange") or "").strip(),
+            str(source.get("stock_code") or source.get("ticker") or "").strip(),
+        )
+        if not all(identity) or identity in seen:
+            continue
+        company = str(source.get("company") or "").strip()
+        official = source.get("official_identity") or {}
+        homepage = str(official.get("homepage") or "").strip()
+        logo_fields = _live_logo_fields(homepage)
+        evidence_sources = [
+            row for row in source.get("evidence_sources") or []
+            if str(row.get("url") or "").startswith(("http://", "https://"))
+        ]
+        evidence_url = str(source.get("evidence_url") or "").strip()
+        if not evidence_url and evidence_sources:
+            evidence_url = str(evidence_sources[0]["url"])
+        if (
+            source.get("ontology_complete") is not True
+            or not isinstance(source.get("ontology_path"), list)
+            or not source.get("ontology_path")
+            or not evidence_sources
+        ):
+            continue
+        row = with_company_role({
+            **source,
+            "ticker": identity[1],
+            "stock_code": identity[1],
+            "market": identity[0],
+            "exchange": identity[0],
+            "company_description": str(source.get("company_description") or source.get("company_summary") or "").strip(),
+            "connection_explanation": str(source.get("connection_explanation") or source.get("relationship_reason") or source.get("reason") or "").strip(),
+            "evidence_url": evidence_url,
+            "evidence_sources": evidence_sources,
+            **logo_fields,
+            "market_snapshot": _actual_market_snapshot(source, candidate),
+            "ranking_effect": "none",
+            "investment_recommendation": False,
+        })
+        if not all((
+            company,
+            row["company_description"],
+            row["connection_explanation"],
+            evidence_url,
+            row.get("company_role_public") is True,
+        )):
+            continue
+        seen.add(identity)
+        rows.append(row)
+        if len(rows) == 10:
+            break
+    return rows
+
+
+def _live_card(candidate: dict, observed_at: datetime) -> dict:
+    context = candidate.get("context_research") or {}
+    keywords = []
+    for source in candidate.get("related_keywords") or candidate.get("keywords") or []:
+        if isinstance(source, dict):
+            text = normalized_keyword_text(source.get("text"))
+            row = dict(source)
+        else:
+            text = normalized_keyword_text(source)
+            row = {}
+        if text and text not in {item["text"] for item in keywords}:
+            keywords.append({**row, "text": text, "affects_live_rank": False})
+        if len(keywords) == 5:
+            break
+    companies = _live_company_rows(candidate)
+    company_names = {row["company"] for row in companies}
+    keyword_names = {row["text"] for row in keywords}
+    links = [
+        dict(row)
+        for row in candidate.get("keyword_company_links") or []
+        if row.get("company") in company_names and row.get("keyword") in keyword_names
+    ]
+    sparse = _observed_sparse_series(candidate, observed_at)
+    story = candidate.get("trend_story") or {}
+    diffusion = story.get("diffusion") or {}
+    stage = diffusion.get("trend_stage") or {"key": "detected", "label": "포착", "index": 1}
+    evidence_urls = [
+        str(url) for url in context.get("evidence_urls") or []
+        if str(url).startswith(("http://", "https://"))
+    ]
+    return {
+        "event_key": candidate.get("event_key"),
+        "display_name": candidate.get("display_name"),
+        "topic": candidate.get("topic"),
+        "canonical_topic": candidate.get("canonical_topic"),
+        "lane": candidate.get("lane"),
+        "broad_category": candidate.get("broad_category"),
+        "category": candidate.get("category"),
+        "category_label": candidate.get("category_label"),
+        "lifecycle": candidate.get("lifecycle"),
+        "lifecycle_reason": candidate.get("lifecycle_reason"),
+        "source_badge": candidate.get("source_badge"),
+        "sources": sorted(
+            source for source in (candidate.get("latest_source_ranks") or {})
+            if source in {"x", "google_trends"}
+        ),
+        "latest_source_ranks": candidate.get("latest_source_ranks") or {},
+        "first_seen_at": candidate.get("first_seen_at"),
+        "last_seen_at": candidate.get("last_seen_at"),
+        "is_current": candidate.get("is_current") is True,
+        "context_research": context,
+        "disclaimer": candidate.get("disclaimer"),
+        "series": [dict(row) for row in candidate.get("series") or []],
+        "selection_origin": "canonical_validated_home_feed",
+        "data_mode": "observed_live",
+        "currently_observed": candidate.get("is_current") is True,
+        "observed_within_24h": True,
+        "trend_definition": str(candidate.get("trend_definition") or candidate.get("phenomenon_summary") or context.get("why_now") or "").strip(),
+        "why_now": str(context.get("why_now") or "").strip(),
+        "evidence_urls": evidence_urls,
+        "trend_stage": stage,
+        "attention_windows": sparse.pop("attention_windows"),
+        "visualization_series": sparse,
+        "series_metric": {
+            "key": "normalized_attention_index",
+            "label": "언급량 추이 · 관심지수",
+            "is_absolute_mention_count": False,
+        },
+        "keywords": keywords,
+        "related_keywords": keywords,
+        "keyword_status": "ready",
+        "companies": companies,
+        "company_role_category_count": len({
+            str(company.get("company_role_category") or "").strip()
+            for company in companies
+            if str(company.get("company_role_category") or "").strip()
+        }),
+        "company_card_status": "ready",
+        "frontend_readiness_status": "ready",
+        "keyword_company_links": links,
+        "ranking_effect": "none",
+    }
+
+
+def _valid_previous_live_feed(feed: dict | None) -> bool:
+    return bool(
+        isinstance(feed, dict)
+        and feed.get("schema_version") == "trzip-presentation-feed-v4"
+        and feed.get("selection_policy") == "validated_live_home_feed_v1"
+        and (feed.get("transition") or {}).get("synthetic_data_used") is False
+        and all(item.get("data_mode") == "observed_live" for item in feed.get("items") or [])
+    )
+
+
+def build_presentation_feed(
+    intelligence: dict,
+    *,
+    previous_feed: dict | None = None,
+) -> dict:
+    """Project at most ten complete observed cards; never pad with fixtures."""
+
+    from .processing_cycle import complete_card_gate
+
+    observed_at = _parse_observed_at((intelligence.get("window") or {}).get("to")) or datetime.now(UTC)
+    candidates = list(intelligence.get("unified_ranking") or [])
+    by_key = {str(item.get("event_key") or ""): item for item in candidates}
+    home_keys = [
+        str(summary.get("event_key") or "")
+        for summary in intelligence.get("home_top10") or []
+    ]
+    home_key_set = set(home_keys)
+    remaining = sorted(
+        (
+            item for item in candidates
+            if str(item.get("event_key") or "") not in home_key_set
+            and item.get("lane") == "main"
+            and item.get("home_eligible") is True
+        ),
+        key=lambda item: (
+            -float(item.get("_home_selection_score") or item.get("score") or 0.0),
+            int(item.get("observed_rank") or 10**9),
+            str(item.get("event_key") or ""),
+        ),
+    )
+    ordered_candidates = [
+        by_key.get(event_key)
+        for event_key in home_keys
+        if by_key.get(event_key) is not None
+    ] + remaining
+    seen_candidates = set()
+    items = []
+    for candidate in ordered_candidates:
+        event_key = str(candidate.get("event_key") or "")
+        if not event_key or event_key in seen_candidates:
+            continue
+        seen_candidates.add(event_key)
+        if not complete_card_gate(candidate, observed_at=observed_at)["ready"]:
+            continue
+        projected = _live_card(candidate, observed_at)
+        # Projection can remove malformed or duplicate company rows.  Re-run
+        # the public contract after that loss so one bad card does not abort
+        # the whole daily publication or hide later complete candidates.
+        if complete_card_gate(
+            projected,
+            observed_at=observed_at,
+            public_projection=True,
+        )["ready"]:
+            items.append(projected)
+        if len(items) == 10:
+            break
+    # Empty is an honest result.  Previous live cards are not reused here;
+    # source-health protection belongs to the remote publish layer.
+    fallback_used = False
+    previous_items = list((previous_feed or {}).get("items") or [])
+    for position, item in enumerate(items, 1):
+        item["presentation_position"] = position
+        item["presentation_rank"] = position
+        item["current_rank"] = position
+        item["rank_movement"] = _presentation_movement(
+            item,
+            position,
+            previous_items,
+        )
+    return {
+        "schema_version": "trzip-presentation-feed-v4",
+        "observed_at": observed_at.isoformat(),
+        "status": "ready" if items else "empty",
+        "frontend_default": True,
+        "selection_policy": "validated_live_home_feed_v1",
+        "logo_policy": {
+            "version": LOGO_QUALITY_POLICY,
+            "avatar_size_px": 44,
+            "minimum_raster_dimension_px": LOGO_MINIMUM_DIMENSION,
+            "vector_assets_allowed": True,
+            "low_resolution_fallback": "initials",
+            "runtime_probe_for_generic_favicons": False,
+            "official_page_resolver_required": True,
+            "asset_sha256_required": True,
+        },
+        "items": items,
+        "transition": {
+            "enabled": True,
+            "policy": "validated_live_home_feed_no_padding",
+            "window_hours": 24,
+            "missing_hours_allowed": True,
+            "synthetic_data_used": False,
+            "supplemental_display_data_used": False,
+            "canonical_ranking_affected": False,
+            "fallback": "none_empty_is_published_honestly",
+            "fallback_used": fallback_used,
+            "padding_forbidden": True,
         },
     }

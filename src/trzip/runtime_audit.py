@@ -184,9 +184,8 @@ def _audit_bundle(
     collection_audit = collection.get("audit") or {}
     google = collection_audit.get("google_geo_kr") or {}
     google_count = google.get("row_count")
-    if (
-        google.get("status") != "observed"
-        or google.get("completion_verified") is not True
+    if google.get("status") == "observed" and (
+        google.get("completion_verified") is not True
         or not isinstance(google_count, int)
         or google_count < 100
         or google_count != google.get("declared_total")
@@ -222,9 +221,14 @@ def _audit_bundle(
     intelligence_partial = (intelligence.get("collection_status") or {}).get("partial")
     if status_partial != intelligence_partial:
         report.fail("bundle_partial_status_mismatch")
+    processing_cycle = intelligence.get("processing_cycle") or {}
+    coverage_24h = processing_cycle.get("coverage_24h") or {}
+    source_hour_count = coverage_24h.get("source_hour_count") or {}
     expected_publishable = (
-        status_partial is False
-        and all(status_sources.get(source) == "observed" for source in ALLOWED_RANKING_SOURCES)
+        all(int(source_hour_count.get(source) or 0) >= 1
+            for source in ALLOWED_RANKING_SOURCES)
+        and coverage_24h.get("fabricated_hour_count") == 0
+        and coverage_24h.get("reused_previous_hour_count") == 0
     )
     if any(
         document.get("publishable") is not expected_publishable
@@ -412,7 +416,7 @@ def _audit_frontend_delivery(
             "warnings": list(presentation_quality.get("warnings") or []),
             "presentation_count": presentation_quality.get("presentation_count", 0),
             "company_ready_count": presentation_quality.get("company_ready_count", 0),
-            "presentation_ready": presentation_quality.get("passed") is True,
+            "presentation_ready": presentation_quality.get("content_ready") is True,
             "ranking_effect": "none",
         }
         expected_youtube = intelligence.get("youtube_content_discovery")
@@ -711,7 +715,7 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
     report.metrics["presentation_company_ready_count"] = presentation_quality.get(
         "company_ready_count", 0
     )
-    report.metrics["presentation_ready"] = presentation_quality.get("passed") is True
+    report.metrics["presentation_ready"] = presentation_quality.get("content_ready") is True
     report.metrics["home_count"] = (
         presentation_quality.get("presentation_count", 0)
         if presentation_is_default else canonical_home_count
@@ -926,10 +930,23 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
     missing_sources = set(availability.get("missing_sources") or [])
     report.metrics["current_sources"] = sorted(current_sources)
     report.metrics["missing_sources"] = sorted(missing_sources)
+    coverage_24h = (intelligence.get("processing_cycle") or {}).get("coverage_24h") or {}
+    source_hour_count = coverage_24h.get("source_hour_count") or {}
+    window_sources_ready = (
+        all(int(source_hour_count.get(source) or 0) >= 1 for source in ALLOWED_RANKING_SOURCES)
+        and coverage_24h.get("fabricated_hour_count") == 0
+        and coverage_24h.get("reused_previous_hour_count") == 0
+    )
+    report.metrics["publication_window_sources_ready"] = window_sources_ready
     if current_sources != ALLOWED_RANKING_SOURCES:
+        report.warn("current_hour_source_gap")
+    if not window_sources_ready:
         report.block("combined_x_google_not_ready")
     if availability.get("is_combined_rank") is not True:
-        report.block("ranking_is_provisional")
+        if window_sources_ready:
+            report.warn("current_hour_ranking_view_provisional")
+        else:
+            report.block("ranking_is_provisional")
 
 
 def _table_exists(connection: sqlite3.Connection, name: str) -> bool:

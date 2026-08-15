@@ -5,9 +5,13 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from trzip.hourly_store import HourlyObservation, connect, upsert
+from trzip.hourly_store import (
+    HourlyObservation, connect, store_verified_source_snapshot, upsert,
+)
 from trzip.result_quality import (
+    _presentation_card_display_failures,
     _hourly_validation_receipt,
+    _publication_window_source_gate,
     _source_gate,
     evaluate_actual_hour,
     evaluate_consecutive_hours,
@@ -25,6 +29,7 @@ from trzip.presentation_feed import (
     LOGO_MINIMUM_DIMENSION,
     LOGO_QUALITY_POLICY,
     build_presentation_feed,
+    build_reference_demo_feed,
 )
 
 
@@ -152,6 +157,25 @@ def test_complete_frontend_result_passes_quality_gate():
     assert all(row["keyword_count"] == 5 and row["company_count"] == 10 for row in result["trends"])
 
 
+def test_result_quality_accepts_two_company_roles_and_rejects_one_role():
+    two_role_item = _trend(1)
+    two_roles = ("manufacturing_development", "distribution")
+    for index, company in enumerate(two_role_item["companies"]):
+        company["company_role_category"] = two_roles[index % 2]
+    two_role_failures = _presentation_card_display_failures(two_role_item)
+
+    one_role_item = _trend(1)
+    for company in one_role_item["companies"]:
+        company["company_role_category"] = "manufacturing_development"
+    one_role_failures = _presentation_card_display_failures(one_role_item)
+
+    assert not any(
+        failure.startswith("company_role_category_count:")
+        for failure in two_role_failures
+    )
+    assert "company_role_category_count:1" in one_role_failures
+
+
 def test_presentation_feed_is_counted_as_the_actual_frontend_surface():
     intelligence = {
         "home_feed": {"status": "empty", "groups": []},
@@ -166,26 +190,20 @@ def test_presentation_feed_is_counted_as_the_actual_frontend_surface():
     assert result["frontend_surface"] == "presentation_feed"
     assert result["canonical_home_count"] == 0
     assert result["canonical_home_content_ready"] is False
-    assert result["home_count"] == 10
-    assert result["trend_count"] == 10
-    assert result["company_ready_count"] == 10
-    assert result["presentation_count"] == 10
-    assert result["presentation_content_ready"] is True
-    assert result["home_content_ready"] is True
+    assert result["home_count"] == 0
+    assert result["trend_count"] == 0
+    assert result["company_ready_count"] == 0
+    assert result["presentation_count"] == 0
+    assert result["presentation_content_ready"] is False
+    assert result["home_content_ready"] is False
 
 
-@pytest.mark.parametrize("coverage", ["keyword", "company"])
-def test_presentation_quality_rejects_incomplete_keyword_company_coverage(coverage):
-    feed = build_presentation_feed({"unified_ranking": []})
+def test_presentation_quality_rejects_fewer_than_two_linked_keywords():
+    feed = build_reference_demo_feed({"unified_ranking": []})
     item = feed["items"][0]
-    field = "keyword" if coverage == "keyword" else "company"
-    target = (
-        item["keywords"][0]["text"]
-        if coverage == "keyword"
-        else item["companies"][-1]["company"]
-    )
+    target = item["keywords"][0]["text"]
     item["keyword_company_links"] = [
-        link for link in item["keyword_company_links"] if link[field] != target
+        link for link in item["keyword_company_links"] if link["keyword"] == target
     ]
 
     result = evaluate_frontend_result({
@@ -194,16 +212,14 @@ def test_presentation_quality_rejects_incomplete_keyword_company_coverage(covera
     })
 
     assert result["passed"] is False
-    expected = (
-        "cover every public keyword"
-        if coverage == "keyword"
-        else "cover every public company"
+    assert any(
+        "legacy presentation feeds are not valid live defaults" in failure
+        for failure in result["failures"]
     )
-    assert any(expected in failure for failure in result["failures"])
 
 
 def test_presentation_quality_rejects_a_missing_logo_without_hiding_canonical_state():
-    feed = build_presentation_feed({"unified_ranking": []})
+    feed = build_reference_demo_feed({"unified_ranking": []})
     feed["items"][0]["companies"][0].pop("logo_url")
     result = evaluate_frontend_result({
         "home_feed": {"status": "empty", "groups": []},
@@ -213,13 +229,16 @@ def test_presentation_quality_rejects_a_missing_logo_without_hiding_canonical_st
     assert result["passed"] is False
     assert result["canonical_home_count"] == 0
     assert result["presentation_count"] == 10
-    assert result["company_ready_count"] == 9
+    # The archived v3 fixture also carries synthetic market rows, so it is
+    # rejected in full rather than being mistaken for a live-ready feed.
+    assert result["company_ready_count"] == 0
     assert result["presentation_content_ready"] is False
     assert any("missing_official_logo" in failure for failure in result["failures"])
+    assert any("market_snapshot_invalid_provenance" in failure for failure in result["failures"])
 
 
 def test_presentation_quality_accepts_initials_for_reviewed_low_resolution_logo():
-    feed = build_presentation_feed({"unified_ranking": []})
+    feed = build_reference_demo_feed({"unified_ranking": []})
     initials_company = next(
         company
         for item in feed["items"]
@@ -234,11 +253,15 @@ def test_presentation_quality_accepts_initials_for_reviewed_low_resolution_logo(
 
     assert initials_company["logo_url"] == ""
     assert initials_company["logo_rejected_asset_url"].startswith("https://")
-    assert result["passed"] is True
+    assert result["passed"] is False
+    assert any(
+        "legacy presentation feeds are not valid live defaults" in failure
+        for failure in result["failures"]
+    )
 
 
 def test_presentation_quality_rejects_missing_blur_safe_logo_policy():
-    feed = build_presentation_feed({"unified_ranking": []})
+    feed = build_reference_demo_feed({"unified_ranking": []})
     feed["items"][0]["companies"][0].pop("logo_quality_policy")
 
     result = evaluate_frontend_result({
@@ -524,6 +547,66 @@ def _write_complete_source_hour(database: Path, at: datetime) -> None:
         for rank in range(1, 4)
     ]
     upsert(rows, database)
+
+
+def _write_verified_window_source(
+    database: Path, at: datetime, source: str,
+) -> None:
+    stamp = at.astimezone(UTC).replace(
+        minute=0, second=0, microsecond=0
+    ).isoformat()
+    count = 30 if source == "x" else 100
+    version = (
+        "x_current_session_kr_v1"
+        if source == "x"
+        else "google_trending_now_kr_v1"
+    )
+    collector = "x_korea_realtime" if source == "x" else "google_geo_kr"
+    rows = [
+        HourlyObservation(
+            stamp, source, f"{source}-{rank}", rank, 101 - rank, "observed",
+            collector_version=version,
+        )
+        for rank in range(1, count + 1)
+    ]
+    store_verified_source_snapshot(
+        rows, source=source, collector=collector,
+        detail="verified test source window", path=database,
+    )
+
+
+def test_daily_publication_source_gate_allows_gaps_without_reuse(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "window-source.sqlite3"
+    end = datetime(2026, 8, 15, 5, tzinfo=UTC)
+    _write_verified_window_source(database, end - timedelta(hours=2), "x")
+    _write_verified_window_source(
+        database, end - timedelta(hours=1), "google_trends"
+    )
+
+    result = _publication_window_source_gate(database, end.isoformat())
+
+    assert result["policy_version"] == "publication-window-source-proof-v1"
+    assert result["passed"] is True
+    assert result["sources"]["x"]["valid_hour_count"] == 1
+    assert result["sources"]["google_trends"]["valid_hour_count"] == 1
+    assert result["missing_hour_count"] == 22
+    assert result["fabricated_hour_count"] == 0
+    assert result["reused_previous_hour_count"] == 0
+
+
+def test_daily_publication_source_gate_fails_when_one_source_has_no_valid_hour(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "missing-source.sqlite3"
+    end = datetime(2026, 8, 15, 5, tzinfo=UTC)
+    _write_verified_window_source(database, end - timedelta(hours=1), "x")
+
+    result = _publication_window_source_gate(database, end.isoformat())
+
+    assert result["passed"] is False
+    assert result["sources"]["google_trends"]["valid_hour_count"] == 0
 
 
 def test_eight_hour_local_streak_requires_only_daily_end_publication(

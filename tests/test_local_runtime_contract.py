@@ -49,6 +49,12 @@ def test_codex_automation_runs_full_local_publication_pipeline():
     assert "--record-hourly-validation" in runner
     assert "--hourly-receipt-exists" in runner
     assert "--register-trigger" in runner
+    publish_window_gap = runner[runner.index("if ($PublicationStatus.publishable -ne $true)"):runner.index("$ExactHourSourceReady =")]
+    exact_hour_gap = runner[runner.index("if (-not $ExactHourSourceReady"):runner.index("# Record the exact source")]
+    assert 'Status "source_window_gap"' in publish_window_gap
+    assert "exit 0" in publish_window_gap
+    assert 'Status "source_gap"' in exact_hour_gap
+    assert "exit 0" in exact_hour_gap
     assert 'Write-RunLog -Phase "trigger"' in runner
     assert 'Write-RunLog -Phase "lock" -Status "conflict"' in runner
     assert "exit 75" in runner

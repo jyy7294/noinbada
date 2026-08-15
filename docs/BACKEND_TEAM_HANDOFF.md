@@ -9,7 +9,7 @@
 - Core rank: X·Google만
 - Context verification: NAVER 뉴스·공식 발표·검수 기사, 순위 영향 없음. YouTube·Instagram은 현재 비활성
 - Company ready: 증거 경로 완결 + 국내외 상장기업 10개 이상 + 역할 카테고리 2~4개
-- Market reference: pykrx 일별 값, 관계·추천 근거 아님
+- Market reference: 국내 pykrx·해외 Yahoo Finance 실제 일별 값, 관계·추천 근거 아님
 - Frontend: `docs/FRONTEND_BACKEND_CONTRACT_V3.md`와 `schemas/`만 준수
 
 ## 반드시 보존할 계약

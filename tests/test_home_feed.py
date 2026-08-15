@@ -21,10 +21,24 @@ def test_home_feed_is_rank_free_and_groups_positive_cross_platform_candidate():
         "broad_category": "consumer", "category_label": "제품·브랜드",
         "latest_source_ranks": {"x": 2, "google_trends": 3}, "score": 70,
         "observed_rank": 1, "momentum_delta": 0.5,
+        "series": [{
+            "at": "2026-08-15T04:00:00+00:00", "source": "x",
+            "rank": 2, "value": 99, "provenance": "observed",
+        }],
         "ranking_data_readiness": {"momentum_status": "measured"},
         "persistence": 0.5, "freshness": 1.0, "keyword_status": "ready",
         "related_keywords": [{"text": f"키워드{i}", "source": ["x"]} for i in range(5)],
-        "companies": [_company(i, "platform_service" if i < 5 else "brand_marketing") for i in range(10)],
+        "companies": [
+            _company(
+                i,
+                "platform_service"
+                if i < 4
+                else "brand_marketing"
+                if i < 7
+                else "distribution",
+            )
+            for i in range(10)
+        ],
         "company_eligible": True, "trend_definition": "테스트 대상은 X와 Google 대한민국 관측값에서 함께 확인된 제품 관심 흐름입니다.",
         "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
         "context_research": {"status": "ready", "trigger_title": "테스트 트렌드 확산", "why_now": "NAVER 뉴스의 최근 기사 제목으로 맥락을 확인했습니다.", "evidence_urls": ["https://example.com/news"]},
@@ -40,6 +54,8 @@ def test_home_feed_is_rank_free_and_groups_positive_cross_platform_candidate():
     assert feed["groups"][0]["key"] == "spreading"
     card = feed["groups"][0]["trends"][0]
     assert not {"observed_rank", "home_rank", "publication_rank", "score"} & set(card)
+    assert card["disclaimer"] == item["disclaimer"]
+    assert card["keyword_company_links"] == item["keyword_company_links"]
     assert card["platform_observation_summary"]["x"]["observed"] is True
     assert card["platform_observation_summary"]["naver_news"]["selection_input"] is False
     # The new feed stays rank-free, while the one-release compatibility array

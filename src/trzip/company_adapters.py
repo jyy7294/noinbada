@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import io
 import json
+import math
 import os
 import re
 import sqlite3
+import time
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -12,6 +14,7 @@ import zipfile
 from datetime import UTC, datetime, timedelta
 from functools import lru_cache
 from pathlib import Path
+from threading import Lock
 
 from .hourly_store import load_local_env
 
@@ -34,6 +37,44 @@ FUNDAMENTAL_COLUMNS = {
     "DIV": "dividend_yield_pct",
     "DPS": "dps",
 }
+
+KRX_DATA_SOURCE_URL = "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd"
+
+YAHOO_CHART_ENDPOINT = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
+YAHOO_FUNDAMENTALS_ENDPOINT = (
+    "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/"
+    "timeseries/{symbol}"
+)
+YAHOO_PUBLIC_QUOTE_URL = "https://finance.yahoo.com/quote/{symbol}"
+YAHOO_MARKET_CACHE_TTL_SECONDS = 15 * 60
+YAHOO_MARKET_CACHE_MAX_ENTRIES = 256
+YAHOO_MARKET_TIMEOUT_SECONDS = 8
+YAHOO_FUNDAMENTAL_TYPES = (
+    "trailingMarketCap",
+    "quarterlyMarketCap",
+    "trailingPeRatio",
+    "quarterlyStockholdersEquity",
+    "annualStockholdersEquity",
+    "quarterlyTotalStockholderEquity",
+    "annualTotalStockholderEquity",
+    "trailingNetIncome",
+    "annualNetIncome",
+)
+
+_YAHOO_MARKET_CACHE: dict[str, tuple[float, dict]] = {}
+_YAHOO_MARKET_CACHE_LOCK = Lock()
+
+
+def _yahoo_fx_symbol_to_krw(currency: str) -> str:
+    """Return Yahoo's quoted KRW cross for one ISO-like currency code."""
+
+    clean = str(currency or "").strip().upper()
+    if clean == "USD":
+        # Yahoo's long-standing USD/KRW symbol is KRW=X.
+        return "KRW=X"
+    if not re.fullmatch(r"[A-Z]{3}", clean) or clean == "KRW":
+        raise ValueError("unsupported_fx_currency")
+    return f"{clean}KRW=X"
 
 REPORT_LABELS = {
     "11013": "1분기보고서",
@@ -59,6 +100,10 @@ def integration_status() -> dict:
                      "role": "issuer identity, company overview and latest available major financial accounts"},
         "pykrx": {"configured": True,
                   "role": "Korean ticker name, daily OHLCV and PER/PBR/EPS/BPS/DIV/DPS reference; never realtime quote or trend ranking"},
+        "yahoo_finance": {
+            "configured": True,
+            "role": "Overseas listed-company daily market and reported-fundamental reference; never trend ranking or relationship evidence",
+        },
     }
 
 
@@ -500,7 +545,7 @@ def _opendart_corp_root(key: str) -> ET.Element:
         return ET.fromstring(zipped.read("CORPCODE.xml"))
 
 
-def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: int = 14) -> dict:
+def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: int = 45) -> dict:
     """Return a Korean ticker name and recent daily OHLCV through pykrx.
 
     This adapter intentionally does not describe the last daily row as a realtime
@@ -510,7 +555,7 @@ def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: in
     if len(code) != 6 or not code.isdigit():
         return {"status": "invalid", "stock_code": stock_code, "reason": "six-digit stock code required"}
     end = datetime.strptime(base_date, "%Y%m%d") if base_date else datetime.now()
-    start = end - timedelta(days=max(7, min(lookback_days, 90)))
+    start = end - timedelta(days=max(14, min(lookback_days, 120)))
     try:
         from contextlib import redirect_stderr, redirect_stdout
         quiet = io.StringIO()
@@ -518,8 +563,20 @@ def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: in
             from pykrx import stock
             name = stock.get_market_ticker_name(code)
             frame = stock.get_market_ohlcv_by_date(start.strftime("%Y%m%d"), end.strftime("%Y%m%d"), code)
+            try:
+                fundamental_frame = stock.get_market_fundamental_by_date(
+                    start.strftime("%Y%m%d"), end.strftime("%Y%m%d"), code
+                )
+            except Exception:
+                fundamental_frame = None
+            try:
+                market_cap_frame = stock.get_market_cap_by_date(
+                    start.strftime("%Y%m%d"), end.strftime("%Y%m%d"), code
+                )
+            except Exception:
+                market_cap_frame = None
         rows = []
-        for at, values in frame.tail(10).iterrows():
+        for at, values in frame.tail(30).iterrows():
             normalized = {
                 OHLCV_COLUMNS.get(str(key), str(key)): _scalar(value)
                 for key, value in values.items()
@@ -536,19 +593,890 @@ def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: in
             round((close / previous_close - 1) * 100, 2)
             if close and previous_close else None
         )
-        return {"status": "observed", "provider": "pykrx", "stock_code": code,
+        valuation = {}
+        if fundamental_frame is not None and not fundamental_frame.empty:
+            latest_fundamental = fundamental_frame.iloc[-1]
+            valuation = {
+                FUNDAMENTAL_COLUMNS.get(str(key), str(key)): _scalar(value)
+                for key, value in latest_fundamental.items()
+            }
+        market_cap = None
+        if market_cap_frame is not None and not market_cap_frame.empty:
+            latest_market_cap = market_cap_frame.iloc[-1]
+            raw_market_cap = latest_market_cap.get("시가총액")
+            if raw_market_cap is not None:
+                market_cap = int(_scalar(raw_market_cap))
+        return {"status": "observed", "provider": "pykrx", "source_url": KRX_DATA_SOURCE_URL,
+                "stock_code": code,
                 "name": name or None, "daily_ohlcv": rows,
                 "latest_daily": latest,
                 "summary": {
                     "as_of": latest.get("date") if latest else None,
                     "close": int(close) if close else None,
+                    "close_krw": int(close) if close else None,
                     "daily_change_pct": daily_change_pct,
                     "volume": int(latest.get("volume") or 0) if latest else None,
+                    "currency": "KRW",
+                    "market_cap": market_cap,
+                    "market_cap_krw": market_cap,
+                 },
+                "fx_reference": {
+                    "status": "observed",
+                    "provider": "identity",
+                    "from_currency": "KRW",
+                    "to_currency": "KRW",
+                    "rate": 1.0,
+                    "as_of": latest.get("date") if latest else None,
+                    "source_url": KRX_DATA_SOURCE_URL,
+                    "synthetic": False,
+                    "estimated": False,
+                    "ranking_effect": "none",
                 },
+                "valuation": valuation,
                 "market_reaction": reaction,
                 "note": "daily reference data; not realtime, not a forecast, and not relation evidence"}
     except Exception as exc:
         return {"status": "error", "stock_code": code, "reason": f"{type(exc).__name__}: {exc}"}
+
+
+def yahoo_finance_symbol(ticker: str, exchange: str) -> str:
+    """Return the Yahoo symbol for a supported overseas exchange.
+
+    The transformation is intentionally narrow so arbitrary URL fragments can
+    never enter the unauthenticated Yahoo endpoints.
+    """
+
+    clean_exchange = str(exchange or "").strip().upper()
+    clean_ticker = str(ticker or "").strip().upper()
+    if clean_exchange not in {
+        "NASDAQ", "NYSE", "TSE", "HKEX", "KRX", "KOSPI", "KOSDAQ"
+    }:
+        raise ValueError("unsupported_exchange")
+    if clean_exchange in {"KRX", "KOSPI", "KOSDAQ"}:
+        if not re.fullmatch(r"\d{6}", clean_ticker):
+            raise ValueError("invalid_krx_ticker")
+        # KRX is a generic upstream label.  Try the main-board suffix first;
+        # callers that know KOSDAQ pass it explicitly and receive .KQ.
+        return clean_ticker + (".KQ" if clean_exchange == "KOSDAQ" else ".KS")
+    if clean_exchange == "HKEX":
+        if not re.fullmatch(r"\d{1,4}", clean_ticker):
+            raise ValueError("invalid_hkex_ticker")
+        return clean_ticker.zfill(4) + ".HK"
+    if not re.fullmatch(r"[A-Z0-9][A-Z0-9.-]{0,14}", clean_ticker):
+        raise ValueError("invalid_ticker")
+    if clean_ticker.endswith((".T", ".HK")):
+        raise ValueError("ticker_must_not_include_exchange_suffix")
+    return clean_ticker + ".T" if clean_exchange == "TSE" else clean_ticker
+
+
+def clear_yahoo_market_cache() -> None:
+    """Clear the bounded in-process Yahoo cache (primarily for deterministic tests)."""
+
+    with _YAHOO_MARKET_CACHE_LOCK:
+        _YAHOO_MARKET_CACHE.clear()
+
+
+def _yahoo_unavailable(
+    ticker: str,
+    exchange: str,
+    reason: str,
+    *,
+    symbol: str | None = None,
+    error_type: str | None = None,
+) -> dict:
+    result = {
+        "status": "unavailable",
+        "provider": "yahoo_finance",
+        "ticker": str(ticker or "").strip(),
+        "exchange": str(exchange or "").strip().upper(),
+        "yahoo_symbol": symbol,
+        "reason": reason,
+        "source_url": (
+            YAHOO_PUBLIC_QUOTE_URL.format(
+                symbol=urllib.parse.quote(symbol, safe=".-")
+            )
+            if symbol else None
+        ),
+        "daily_ohlcv": [],
+        "summary": {
+            "as_of": None,
+            "currency": None,
+            "close": None,
+            "daily_change": None,
+            "daily_change_pct": None,
+            "market_cap": None,
+            "close_krw": None,
+            "market_cap_krw": None,
+        },
+        "fx_reference": {
+            "status": "unavailable",
+            "provider": "yahoo_finance",
+            "from_currency": None,
+            "to_currency": "KRW",
+            "rate": None,
+            "as_of": None,
+            "source_url": None,
+            "synthetic": False,
+            "estimated": False,
+            "ranking_effect": "none",
+        },
+        "valuation": {
+            "status": "unavailable",
+            "per": None,
+            "pbr": None,
+            "roe_pct": None,
+            "equity": None,
+            "net_income": None,
+        },
+        "data_mode": "unavailable",
+        "synthetic": False,
+        "estimated": False,
+        "ranking_effect": "none",
+        "relationship_evidence": False,
+    }
+    if error_type:
+        result["error_type"] = error_type
+    return result
+
+
+def _safe_yahoo_number(value: object) -> float | None:
+    if isinstance(value, bool) or value is None:
+        return None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    return number if math.isfinite(number) else None
+
+
+def _parse_yahoo_chart(payload: object) -> tuple[list[dict], dict]:
+    if not isinstance(payload, dict):
+        raise ValueError("chart_payload_invalid")
+    chart = payload.get("chart")
+    results = chart.get("result") if isinstance(chart, dict) else None
+    if not isinstance(results, list) or not results or not isinstance(results[0], dict):
+        raise ValueError("chart_result_missing")
+    result = results[0]
+    meta = result.get("meta") if isinstance(result.get("meta"), dict) else {}
+    timestamps = result.get("timestamp")
+    indicators = result.get("indicators")
+    quotes = indicators.get("quote") if isinstance(indicators, dict) else None
+    quote = quotes[0] if isinstance(quotes, list) and quotes and isinstance(quotes[0], dict) else None
+    if not isinstance(timestamps, list) or not isinstance(quote, dict):
+        raise ValueError("chart_series_missing")
+
+    rows: list[dict] = []
+    for index, raw_timestamp in enumerate(timestamps):
+        timestamp = _safe_yahoo_number(raw_timestamp)
+        closes = quote.get("close")
+        close = (
+            _safe_yahoo_number(closes[index])
+            if isinstance(closes, list) and index < len(closes)
+            else None
+        )
+        if timestamp is None or close is None:
+            continue
+        row = {
+            "date": datetime.fromtimestamp(int(timestamp), UTC).date().isoformat(),
+            "open": None,
+            "high": None,
+            "low": None,
+            "close": close,
+            "volume": None,
+        }
+        for name in ("open", "high", "low", "volume"):
+            values = quote.get(name)
+            if isinstance(values, list) and index < len(values):
+                row[name] = _safe_yahoo_number(values[index])
+        rows.append(row)
+    rows = rows[-30:]
+    if len(rows) != 30:
+        raise ValueError("fewer_than_30_daily_rows")
+    currency = str(meta.get("currency") or "").strip().upper()
+    if not currency:
+        raise ValueError("chart_currency_missing")
+    previous_close = rows[-2]["close"]
+    close = rows[-1]["close"]
+    daily_change = close - previous_close
+    daily_change_pct = (daily_change / previous_close * 100) if previous_close else None
+    return rows, {
+        "as_of": rows[-1]["date"],
+        "currency": currency,
+        "close": close,
+        "daily_change": round(daily_change, 6),
+        "daily_change_pct": (
+            round(daily_change_pct, 4) if daily_change_pct is not None else None
+        ),
+    }
+
+
+def _parse_yahoo_fx_chart(payload: object, from_currency: str) -> dict:
+    """Parse an observed FX close without inventing or interpolating a rate."""
+
+    if not isinstance(payload, dict):
+        raise ValueError("fx_payload_invalid")
+    chart = payload.get("chart")
+    results = chart.get("result") if isinstance(chart, dict) else None
+    if not isinstance(results, list) or not results or not isinstance(results[0], dict):
+        raise ValueError("fx_result_missing")
+    result = results[0]
+    meta = result.get("meta") if isinstance(result.get("meta"), dict) else {}
+    timestamps = result.get("timestamp")
+    indicators = result.get("indicators")
+    quotes = indicators.get("quote") if isinstance(indicators, dict) else None
+    quote = quotes[0] if isinstance(quotes, list) and quotes and isinstance(quotes[0], dict) else None
+    closes = quote.get("close") if isinstance(quote, dict) else None
+    if not isinstance(timestamps, list) or not isinstance(closes, list):
+        raise ValueError("fx_series_missing")
+    observed: list[tuple[int, float]] = []
+    for raw_timestamp, raw_close in zip(timestamps, closes):
+        timestamp = _safe_yahoo_number(raw_timestamp)
+        close = _safe_yahoo_number(raw_close)
+        if timestamp is None or close is None or close <= 0:
+            continue
+        observed.append((int(timestamp), close))
+    if not observed:
+        raise ValueError("fx_close_missing")
+    timestamp, rate = observed[-1]
+    quote_currency = str(meta.get("currency") or "").strip().upper()
+    if quote_currency and quote_currency != "KRW":
+        raise ValueError("fx_quote_currency_not_krw")
+    return {
+        "status": "observed",
+        "provider": "yahoo_finance",
+        "from_currency": str(from_currency).strip().upper(),
+        "to_currency": "KRW",
+        "rate": rate,
+        "as_of": datetime.fromtimestamp(timestamp, UTC).date().isoformat(),
+        "synthetic": False,
+        "estimated": False,
+        "ranking_effect": "none",
+    }
+
+
+def _yahoo_fx_to_krw(
+    currency: str,
+    *,
+    observed_at: datetime,
+    timeout: int,
+    cache_ttl_seconds: int,
+    request_headers: dict,
+) -> dict:
+    clean = str(currency or "").strip().upper()
+    if clean == "KRW":
+        return {
+            "status": "observed",
+            "provider": "identity",
+            "from_currency": "KRW",
+            "to_currency": "KRW",
+            "rate": 1.0,
+            "as_of": observed_at.date().isoformat(),
+            "source_url": KRX_DATA_SOURCE_URL,
+            "synthetic": False,
+            "estimated": False,
+            "ranking_effect": "none",
+        }
+    try:
+        symbol = _yahoo_fx_symbol_to_krw(clean)
+    except ValueError:
+        return {
+            "status": "unavailable",
+            "provider": "yahoo_finance",
+            "from_currency": clean or None,
+            "to_currency": "KRW",
+            "rate": None,
+            "as_of": None,
+            "source_url": None,
+            "reason": "unsupported_fx_currency",
+            "synthetic": False,
+            "estimated": False,
+            "ranking_effect": "none",
+        }
+    cache_key = f"FX:{clean}:KRW|{observed_at.date().isoformat()}"
+    if cache_ttl_seconds:
+        with _YAHOO_MARKET_CACHE_LOCK:
+            cached = _YAHOO_MARKET_CACHE.get(cache_key)
+            if cached and time.monotonic() - cached[0] < cache_ttl_seconds:
+                return json.loads(json.dumps(cached[1]))
+    encoded_symbol = urllib.parse.quote(symbol, safe=".-")
+    source_url = YAHOO_PUBLIC_QUOTE_URL.format(symbol=encoded_symbol)
+    chart_url = YAHOO_CHART_ENDPOINT.format(symbol=encoded_symbol) + "?" + urllib.parse.urlencode({
+        "range": "10d",
+        "interval": "1d",
+        "events": "history",
+    })
+    try:
+        result = _parse_yahoo_fx_chart(
+            _json_request(chart_url, headers=request_headers, timeout=timeout), clean
+        )
+        result["source_url"] = source_url
+    except Exception as exc:
+        result = {
+            "status": "unavailable",
+            "provider": "yahoo_finance",
+            "from_currency": clean,
+            "to_currency": "KRW",
+            "rate": None,
+            "as_of": None,
+            "source_url": source_url,
+            "reason": "fx_reference_unavailable",
+            "error_type": type(exc).__name__,
+            "synthetic": False,
+            "estimated": False,
+            "ranking_effect": "none",
+        }
+    if cache_ttl_seconds and result.get("status") == "observed":
+        with _YAHOO_MARKET_CACHE_LOCK:
+            _YAHOO_MARKET_CACHE[cache_key] = (
+                time.monotonic(),
+                json.loads(json.dumps(result)),
+            )
+    return result
+
+
+def _yahoo_timeseries_values(
+    payload: object,
+    aliases: tuple[str, ...],
+    *,
+    positive: bool = False,
+) -> list[dict]:
+    if not isinstance(payload, dict):
+        return []
+    timeseries = payload.get("timeseries")
+    results = timeseries.get("result") if isinstance(timeseries, dict) else None
+    if not isinstance(results, list):
+        return []
+    candidates: list[dict] = []
+    seen: set[tuple] = set()
+    for result in results:
+        if not isinstance(result, dict):
+            continue
+        for priority, alias in enumerate(aliases):
+            points = result.get(alias)
+            if not isinstance(points, list):
+                continue
+            for point in points:
+                if not isinstance(point, dict):
+                    continue
+                reported = point.get("reportedValue")
+                raw = reported.get("raw") if isinstance(reported, dict) else None
+                value = _safe_yahoo_number(raw)
+                if value is None or (positive and value <= 0):
+                    continue
+                as_of = str(point.get("asOfDate") or "").strip()
+                try:
+                    parsed_date = datetime.strptime(as_of, "%Y-%m-%d").date()
+                except ValueError:
+                    continue
+                period_type = str(point.get("periodType") or "").strip() or None
+                dedupe_key = (alias, as_of, period_type, value)
+                if dedupe_key in seen:
+                    continue
+                seen.add(dedupe_key)
+                candidates.append({
+                    "value": value,
+                    "as_of": as_of,
+                    "period_type": period_type,
+                    "type": alias,
+                    "priority": priority,
+                    "_date": parsed_date,
+                })
+    return candidates
+
+
+def _latest_yahoo_timeseries_value(
+    payload: object,
+    aliases: tuple[str, ...],
+    *,
+    positive: bool = False,
+    prefer_alias: bool = False,
+) -> dict | None:
+    candidates = _yahoo_timeseries_values(payload, aliases, positive=positive)
+    if not candidates:
+        return None
+    if prefer_alias:
+        preferred = min(item["priority"] for item in candidates)
+        candidates = [item for item in candidates if item["priority"] == preferred]
+    return max(candidates, key=lambda item: (item["as_of"], -item["priority"]))
+
+
+def _yahoo_observation_provenance(observation: dict | None) -> dict | None:
+    if not observation:
+        return None
+    return {
+        "value": observation["value"],
+        "type": observation["type"],
+        "period_type": observation.get("period_type"),
+        "as_of": observation["as_of"],
+    }
+
+
+def _roe_equity_denominator(payload: object, numerator: dict) -> dict | None:
+    """Return a two-point average equity denominator near the income basis date."""
+
+    if numerator.get("type") == "annualNetIncome":
+        aliases = (
+            "annualStockholdersEquity",
+            "annualTotalStockholderEquity",
+            "quarterlyStockholdersEquity",
+            "quarterlyTotalStockholderEquity",
+        )
+    else:
+        aliases = (
+            "quarterlyStockholdersEquity",
+            "quarterlyTotalStockholderEquity",
+            "annualStockholdersEquity",
+            "annualTotalStockholderEquity",
+        )
+    equities = _yahoo_timeseries_values(payload, aliases, positive=True)
+    numerator_date = numerator.get("_date")
+    if numerator_date is None:
+        return None
+
+    eligible_current = [
+        item
+        for item in equities
+        if item["_date"] <= numerator_date
+        and (numerator_date - item["_date"]).days <= 120
+    ]
+    if not eligible_current:
+        return None
+    current = max(
+        eligible_current,
+        key=lambda item: (item["_date"], -item["priority"]),
+    )
+    target_previous = current["_date"] - timedelta(days=365)
+    eligible_previous = [
+        item
+        for item in equities
+        if item["_date"] < current["_date"]
+        and abs((item["_date"] - target_previous).days) <= 120
+    ]
+    if not eligible_previous:
+        return None
+    previous = min(
+        eligible_previous,
+        key=lambda item: (
+            abs((item["_date"] - target_previous).days),
+            item["priority"],
+            -item["_date"].toordinal(),
+        ),
+    )
+    average_equity = (current["value"] + previous["value"]) / 2
+    if not math.isfinite(average_equity) or average_equity <= 0:
+        return None
+    return {
+        "value": average_equity,
+        "type": "averageStockholdersEquity",
+        "period_type": "TWO_POINT_AVERAGE",
+        "as_of": current["as_of"],
+        "period_start": previous["as_of"],
+        "period_end": current["as_of"],
+        "observations": [
+            _yahoo_observation_provenance(previous),
+            _yahoo_observation_provenance(current),
+        ],
+    }
+
+
+def _parse_yahoo_fundamentals(payload: object) -> dict:
+    market_cap = _latest_yahoo_timeseries_value(
+        payload,
+        ("trailingMarketCap", "quarterlyMarketCap"),
+        positive=True,
+    )
+    per = _latest_yahoo_timeseries_value(
+        payload,
+        ("trailingPeRatio",),
+        positive=True,
+    )
+    equity = _latest_yahoo_timeseries_value(
+        payload,
+        (
+            "quarterlyStockholdersEquity",
+            "quarterlyTotalStockholderEquity",
+            "annualStockholdersEquity",
+            "annualTotalStockholderEquity",
+        ),
+        positive=True,
+    )
+    # Quarterly income is deliberately excluded.  A single quarter cannot be
+    # labelled as annual ROE without an explicit annualisation policy.
+    net_income = _latest_yahoo_timeseries_value(
+        payload,
+        ("trailingNetIncome", "annualNetIncome"),
+        prefer_alias=True,
+    )
+    if not any((market_cap, per, equity, net_income)):
+        raise ValueError("required_fundamentals_missing")
+    equity_value = equity["value"] if equity else None
+    market_cap_value = market_cap["value"] if market_cap else None
+    net_income_value = net_income["value"] if net_income else None
+    pbr = (
+        round(market_cap_value / equity_value, 4)
+        if market_cap_value is not None and equity_value not in (None, 0)
+        else None
+    )
+    roe_denominator = (
+        _roe_equity_denominator(payload, net_income) if net_income else None
+    )
+    roe_pct = None
+    roe_basis = None
+    if net_income_value is not None and roe_denominator is not None:
+        roe_pct = round(net_income_value / roe_denominator["value"] * 100, 4)
+        roe_basis = (
+            "trailing_net_income / average_two_point_stockholders_equity * 100"
+            if net_income["type"] == "trailingNetIncome"
+            else "annual_net_income / average_two_point_stockholders_equity * 100"
+        )
+    complete_values = (market_cap_value, per["value"] if per else None, pbr, roe_pct)
+    return {
+        "status": "observed",
+        "completeness": (
+            "complete"
+            if all(value is not None for value in complete_values)
+            else "partial"
+        ),
+        "market_cap": market_cap_value,
+        "market_cap_as_of": market_cap["as_of"] if market_cap else None,
+        "market_cap_type": market_cap["type"] if market_cap else None,
+        "market_cap_period_type": market_cap.get("period_type") if market_cap else None,
+        "per": round(per["value"], 4) if per else None,
+        "per_as_of": per["as_of"] if per else None,
+        "per_type": per["type"] if per else None,
+        "per_period_type": per.get("period_type") if per else None,
+        "pbr": pbr,
+        "roe_pct": roe_pct,
+        "roe_basis": roe_basis,
+        "roe_calculated": roe_pct is not None,
+        "roe_numerator": _yahoo_observation_provenance(net_income),
+        "roe_denominator": roe_denominator,
+        "equity": equity_value,
+        "equity_as_of": (equity["as_of"] or None) if equity else None,
+        "equity_period_type": (equity["period_type"] or None) if equity else None,
+        "net_income": net_income_value,
+        "net_income_as_of": (net_income["as_of"] or None) if net_income else None,
+        "net_income_period_type": (net_income["period_type"] or None) if net_income else None,
+        "calculation": {
+            "pbr": "market_cap / latest_reported_equity",
+            "roe_pct": roe_basis,
+        },
+    }
+
+
+def _yahoo_fundamentals_url(symbol: str, observed_at: datetime) -> str:
+    encoded_symbol = urllib.parse.quote(symbol, safe=".-")
+    period2 = int((observed_at + timedelta(days=1)).timestamp())
+    period1 = int((observed_at - timedelta(days=365 * 5)).timestamp())
+    return (
+        YAHOO_FUNDAMENTALS_ENDPOINT.format(symbol=encoded_symbol)
+        + "?"
+        + urllib.parse.urlencode(
+            {
+                "symbol": symbol,
+                "type": ",".join(YAHOO_FUNDAMENTAL_TYPES),
+                "period1": period1,
+                "period2": period2,
+                "merge": "false",
+            },
+            safe=",",
+        )
+    )
+
+
+def _fetch_yahoo_fundamentals(
+    symbol: str,
+    *,
+    observed_at: datetime,
+    timeout: int,
+    request_headers: dict,
+) -> tuple[dict, str]:
+    fundamentals_url = _yahoo_fundamentals_url(symbol, observed_at)
+    payload = _json_request(
+        fundamentals_url,
+        headers=request_headers,
+        timeout=timeout,
+    )
+    return _parse_yahoo_fundamentals(payload), fundamentals_url
+
+
+def _cache_yahoo_market_result(cache_key: str, result: dict) -> None:
+    with _YAHOO_MARKET_CACHE_LOCK:
+        _YAHOO_MARKET_CACHE[cache_key] = (
+            time.monotonic(),
+            json.loads(json.dumps(result)),
+        )
+        while len(_YAHOO_MARKET_CACHE) > YAHOO_MARKET_CACHE_MAX_ENTRIES:
+            oldest_key = min(
+                _YAHOO_MARKET_CACHE,
+                key=lambda key: _YAHOO_MARKET_CACHE[key][0],
+            )
+            _YAHOO_MARKET_CACHE.pop(oldest_key, None)
+
+
+def yahoo_finance_fundamentals(
+    ticker: str,
+    exchange: str,
+    *,
+    timeout: int = YAHOO_MARKET_TIMEOUT_SECONDS,
+    cache_ttl_seconds: int = YAHOO_MARKET_CACHE_TTL_SECONDS,
+    as_of: datetime | None = None,
+) -> dict:
+    """Return Yahoo fundamentals for a KRX listing without requiring a chart.
+
+    The function is intended to supplement a pykrx price record.  It therefore
+    returns no price rows, preserves Yahoo's reported dates and types, and uses
+    an identity KRW conversion only for an observed native-KRW market cap.
+    """
+
+    clean_exchange = str(exchange or "").strip().upper()
+    if clean_exchange not in {"KRX", "KOSPI", "KOSDAQ"}:
+        return _yahoo_unavailable(
+            ticker,
+            exchange,
+            "fundamentals_only_requires_krx_exchange",
+        )
+    try:
+        symbol = yahoo_finance_symbol(ticker, clean_exchange)
+    except ValueError as exc:
+        return _yahoo_unavailable(ticker, exchange, str(exc))
+    if isinstance(timeout, bool) or not isinstance(timeout, int) or not 1 <= timeout <= 30:
+        return _yahoo_unavailable(ticker, exchange, "invalid_timeout", symbol=symbol)
+    if (
+        isinstance(cache_ttl_seconds, bool)
+        or not isinstance(cache_ttl_seconds, int)
+        or not 0 <= cache_ttl_seconds <= 86_400
+    ):
+        return _yahoo_unavailable(
+            ticker,
+            exchange,
+            "invalid_cache_ttl",
+            symbol=symbol,
+        )
+    observed_at = as_of or datetime.now(UTC)
+    if observed_at.tzinfo is None:
+        return _yahoo_unavailable(
+            ticker,
+            exchange,
+            "as_of_must_be_timezone_aware",
+            symbol=symbol,
+        )
+    observed_at = observed_at.astimezone(UTC)
+    cache_key = f"FUNDAMENTALS:{symbol}|{observed_at.date().isoformat()}"
+    if cache_ttl_seconds:
+        with _YAHOO_MARKET_CACHE_LOCK:
+            cached = _YAHOO_MARKET_CACHE.get(cache_key)
+            if cached and time.monotonic() - cached[0] < cache_ttl_seconds:
+                return json.loads(json.dumps(cached[1]))
+
+    request_headers = {
+        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (compatible; TRZIP/0.1; market-reference)",
+    }
+    try:
+        valuation, fundamentals_url = _fetch_yahoo_fundamentals(
+            symbol,
+            observed_at=observed_at,
+            timeout=timeout,
+            request_headers=request_headers,
+        )
+    except Exception as exc:
+        return _yahoo_unavailable(
+            ticker,
+            exchange,
+            "fundamentals_unavailable",
+            symbol=symbol,
+            error_type=type(exc).__name__,
+        )
+
+    encoded_symbol = urllib.parse.quote(symbol, safe=".-")
+    source_url = YAHOO_PUBLIC_QUOTE_URL.format(symbol=encoded_symbol)
+    market_cap = _safe_yahoo_number(valuation.get("market_cap"))
+    if market_cap is not None and market_cap <= 0:
+        market_cap = None
+    summary_dates = [
+        valuation.get("market_cap_as_of"),
+        valuation.get("per_as_of"),
+        valuation.get("equity_as_of"),
+        valuation.get("net_income_as_of"),
+    ]
+    summary_as_of = max((value for value in summary_dates if value), default=None)
+    result = {
+        "status": "observed",
+        "provider": "yahoo_finance",
+        "ticker": str(ticker).strip().upper(),
+        "exchange": clean_exchange,
+        "yahoo_symbol": symbol,
+        "source_url": source_url,
+        "source_urls": {
+            "quote": source_url,
+            "fundamentals": fundamentals_url,
+        },
+        "daily_ohlcv": [],
+        "summary": {
+            "as_of": summary_as_of,
+            "currency": "KRW",
+            "close": None,
+            "daily_change": None,
+            "daily_change_pct": None,
+            "market_cap": market_cap,
+            "close_krw": None,
+            "market_cap_krw": market_cap,
+        },
+        "valuation": valuation,
+        "fx_reference": {
+            "status": "observed",
+            "provider": "identity",
+            "from_currency": "KRW",
+            "to_currency": "KRW",
+            "rate": 1.0,
+            "as_of": valuation.get("market_cap_as_of") or summary_as_of,
+            "source_url": source_url,
+            "synthetic": False,
+            "estimated": False,
+            "ranking_effect": "none",
+        },
+        "retrieved_at": observed_at.isoformat(),
+        "data_mode": "observed_external",
+        "synthetic": False,
+        "estimated": False,
+        "ranking_effect": "none",
+        "relationship_evidence": False,
+        "note": "Yahoo reported-fundamental supplement; no price chart and no relation evidence",
+    }
+    if cache_ttl_seconds:
+        _cache_yahoo_market_result(cache_key, result)
+    return result
+
+
+def yahoo_finance_stock(
+    ticker: str,
+    exchange: str,
+    *,
+    timeout: int = YAHOO_MARKET_TIMEOUT_SECONDS,
+    cache_ttl_seconds: int = YAHOO_MARKET_CACHE_TTL_SECONDS,
+    as_of: datetime | None = None,
+) -> dict:
+    """Return fail-closed observed Yahoo market data for an overseas listing.
+
+    Both Yahoo endpoints must return actual rows and reported fundamentals.
+    Missing or malformed values are reported as ``unavailable``; no value is
+    backfilled, inferred from a company name, or allowed to affect ranking.
+    """
+
+    try:
+        symbol = yahoo_finance_symbol(ticker, exchange)
+    except ValueError as exc:
+        return _yahoo_unavailable(ticker, exchange, str(exc))
+    if isinstance(timeout, bool) or not isinstance(timeout, int) or not 1 <= timeout <= 30:
+        return _yahoo_unavailable(ticker, exchange, "invalid_timeout", symbol=symbol)
+    if (
+        isinstance(cache_ttl_seconds, bool)
+        or not isinstance(cache_ttl_seconds, int)
+        or not 0 <= cache_ttl_seconds <= 86_400
+    ):
+        return _yahoo_unavailable(
+            ticker, exchange, "invalid_cache_ttl", symbol=symbol
+        )
+    observed_at = as_of or datetime.now(UTC)
+    if observed_at.tzinfo is None:
+        return _yahoo_unavailable(ticker, exchange, "as_of_must_be_timezone_aware", symbol=symbol)
+    observed_at = observed_at.astimezone(UTC)
+    cache_key = f"{symbol}|{observed_at.date().isoformat()}"
+    if cache_ttl_seconds:
+        with _YAHOO_MARKET_CACHE_LOCK:
+            cached = _YAHOO_MARKET_CACHE.get(cache_key)
+            if cached and time.monotonic() - cached[0] < cache_ttl_seconds:
+                return json.loads(json.dumps(cached[1]))
+
+    encoded_symbol = urllib.parse.quote(symbol, safe=".-")
+    chart_url = YAHOO_CHART_ENDPOINT.format(symbol=encoded_symbol) + "?" + urllib.parse.urlencode({
+        "range": "6mo",
+        "interval": "1d",
+        "events": "history",
+        "includeAdjustedClose": "true",
+    })
+    request_headers = {
+        "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (compatible; TRZIP/0.1; market-reference)",
+    }
+    try:
+        chart_payload = _json_request(
+            chart_url, headers=request_headers, timeout=timeout
+        )
+        rows, summary = _parse_yahoo_chart(chart_payload)
+    except Exception as exc:
+        return _yahoo_unavailable(
+            ticker,
+            exchange,
+            "chart_unavailable",
+            symbol=symbol,
+            error_type=type(exc).__name__,
+        )
+    try:
+        valuation, fundamentals_url = _fetch_yahoo_fundamentals(
+            symbol,
+            observed_at=observed_at,
+            timeout=timeout,
+            request_headers=request_headers,
+        )
+    except Exception as exc:
+        return _yahoo_unavailable(
+            ticker,
+            exchange,
+            "fundamentals_unavailable",
+            symbol=symbol,
+            error_type=type(exc).__name__,
+        )
+
+    summary["market_cap"] = valuation.get("market_cap")
+    fx_reference = _yahoo_fx_to_krw(
+        summary["currency"],
+        observed_at=observed_at,
+        timeout=timeout,
+        cache_ttl_seconds=cache_ttl_seconds,
+        request_headers=request_headers,
+    )
+    fx_rate = _safe_yahoo_number(fx_reference.get("rate"))
+    if fx_reference.get("status") == "observed" and fx_rate is not None and fx_rate > 0:
+        summary["close_krw"] = round(summary["close"] * fx_rate, 4)
+        native_market_cap = _safe_yahoo_number(valuation.get("market_cap"))
+        summary["market_cap_krw"] = (
+            round(native_market_cap * fx_rate) if native_market_cap is not None else None
+        )
+    else:
+        # The local-currency market record remains valid.  KRW display values
+        # fail closed until an observed FX reference is available.
+        summary["close_krw"] = None
+        summary["market_cap_krw"] = None
+    source_url = YAHOO_PUBLIC_QUOTE_URL.format(symbol=encoded_symbol)
+    result = {
+        "status": "observed",
+        "provider": "yahoo_finance",
+        "ticker": str(ticker).strip().upper(),
+        "exchange": str(exchange).strip().upper(),
+        "yahoo_symbol": symbol,
+        "source_url": source_url,
+        "source_urls": {
+            "quote": source_url,
+            "chart": chart_url,
+            "fundamentals": fundamentals_url,
+        },
+        "daily_ohlcv": rows,
+        "summary": summary,
+        "valuation": valuation,
+        "fx_reference": fx_reference,
+        "retrieved_at": observed_at.isoformat(),
+        "data_mode": "observed_external",
+        "synthetic": False,
+        "estimated": False,
+        "ranking_effect": "none",
+        "relationship_evidence": False,
+        "note": "Yahoo daily and reported-fundamental reference; not realtime and not relation evidence",
+    }
+    if cache_ttl_seconds:
+        _cache_yahoo_market_result(cache_key, result)
+    return result
 
 
 def _scalar(value):
@@ -578,8 +1506,12 @@ def _market_reaction(rows: list[dict]) -> dict:
 
 
 __all__ = (
+    "clear_yahoo_market_cache",
     "enrich_company_identities",
     "integration_status",
     "opendart_company",
     "pykrx_stock",
+    "yahoo_finance_fundamentals",
+    "yahoo_finance_stock",
+    "yahoo_finance_symbol",
 )

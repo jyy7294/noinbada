@@ -64,6 +64,71 @@ def test_frontend_refresh_reconciles_company_reason_and_excludes_expired_rising(
     assert intelligence["rising_top10"] == []
 
 
+def test_frontend_readiness_accepts_two_company_roles_and_rejects_one_role():
+    def candidate(role_count: int) -> dict:
+        roles = [
+            "manufacturing_development",
+            "distribution",
+            "platform_service",
+            "retail_sales",
+        ][:role_count]
+        keywords = [f"키워드{index}" for index in range(5)]
+        return {
+            "event_key": f"roles-{role_count}",
+            "display_name": f"Roles {role_count}",
+            "lane": "main",
+            "home_eligible": False,
+            "broad_category": "technology",
+            "keyword_status": "ready",
+            "related_keywords": [{"text": text} for text in keywords],
+            "companies": [
+                {
+                    "company": f"Company {index}",
+                    "stock_code": f"T{index:03d}",
+                    "market": "KRX",
+                    "company_description": "Evidence-backed listed company",
+                    "relationship_reason": "Documented relationship",
+                    "connection_explanation": "Documented keyword relationship",
+                    "matched_keywords": keywords[:2],
+                    "evidence_sources": [
+                        {"url": f"https://example.com/company/{index}"}
+                    ],
+                    "ontology_complete": True,
+                    "ontology_path": [
+                        {"from": "trend", "to": f"Company {index}"}
+                    ],
+                    "company_role_category": roles[index % len(roles)],
+                    "company_role_label": "Verified role",
+                }
+                for index in range(10)
+            ],
+            "company_eligible": True,
+            "context_research": {
+                "status": "ready",
+                "trigger_title": "Documented trigger",
+                "why_now": "Public evidence documents the current context.",
+                "evidence_urls": ["https://example.com/context"],
+            },
+        }
+
+    two_roles = candidate(2)
+    one_role = candidate(1)
+    intelligence = {
+        "unified_ranking": [two_roles, one_role],
+        "category_summary": [],
+        "ranking_views": {},
+    }
+
+    refresh_frontend_readiness(intelligence)
+
+    assert two_roles["frontend_readiness_status"] == "ready"
+    assert two_roles["frontend_company_role_category_count"] == 2
+    assert one_role["frontend_readiness_status"] == "enrichment_pending"
+    assert "company_role_categories_between_two_and_four" in one_role[
+        "frontend_readiness_missing"
+    ]
+
+
 def test_aliases_are_normalized_to_events():
     assert canonical_topic("두쫀쿠") == "두쫀쿠"
     assert canonical_topic("말복") == "말복"
@@ -966,6 +1031,11 @@ def test_home_selection_can_fill_short_gap_with_recent_resolved_context():
             "is_current": False, "candidate_status": "period_observed",
             "lifecycle": "cooling", "hours_since_last_seen": float(index),
             "source_count": 2,
+            "series": [{
+                "at": "2026-08-15T03:00:00+00:00", "source": "google_trends",
+                "rank": 20 + index, "value": 80 - index,
+                "provenance": "observed",
+            }],
         }
         for index in range(1, 3)
     ]

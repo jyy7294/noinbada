@@ -32,11 +32,13 @@ keywords, companies, manual aliases and LLM prose cannot change this score.
 
 ## Card gate
 
-Each card must be main lane, currently observed, have NAVER News trigger
+Each card must be main lane, have at least one actual X/Google observation in
+the latest 24-hour window, have a public NAVER News or official-page trigger
 context, exactly five sourced keywords, at least ten evidence-backed listed
-companies across two to four role groups, and a non-recommendation stock impact
-hypothesis. YouTube, Instagram, NAVER Blog and NAVER Search Trend are disabled
-by this policy.
+companies in the source candidate projected to exactly ten public companies,
+two to four role groups, at least two distinct keyword-company links, and a
+non-recommendation relationship explanation for every company. YouTube,
+Instagram, NAVER Blog, Cafe and NAVER Search Trend are disabled by this policy.
 
 ## Compatibility
 

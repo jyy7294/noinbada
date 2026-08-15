@@ -45,27 +45,32 @@ def _llm_research_prompt(row: dict) -> str:
 
     representative = row["representative_term"]
     observed = ", ".join(row["observed_terms"][:20])
+    common = (
+        "X·Google 관측 순위와 점수는 변경하지 마라. "
+        "NAVER 뉴스 또는 공식 발표 URL만 공개 근거로 사용하고, "
+        "YouTube·Instagram·NAVER 블로그·카페·검색트렌드·네이트는 사용하지 마라. "
+    )
     if row["task_kind"] == "trend_context":
         return (
-            f"X 또는 Google 대한민국에서 관측된 트렌드 '{representative}'의 관측 표현({observed})이 "
-            "왜 지금 검색·언급됐는지 조사하라. Google 관련검색어, 공식 발표, 신뢰 가능한 뉴스, "
-            "네이버·네이트 뉴스, YouTube 최신 콘텐츠를 교차 확인하고 촉발 사건·날짜·대상을 "
-            "한 문장으로 요약하라. 각 주장에 URL·제목·발행시각·출처를 붙이고 동음이의어·기업명·"
-            "일반 산업어 가능성을 반드시 검토하라. 확인되지 않으면 원인 미확인으로 남기며 추측하지 마라."
+            f"트렌드 '{representative}'의 관측 표현({observed})이 왜 지금 화제인지 조사하라. "
+            + common
+            + "촉발 제목, 2문장 이내의 why_now, 발행시각, 언론사, 공개 URL을 제시하고 "
+              "동음이의어와 사건 맥락을 검증하라. 확인되지 않은 인과는 만들지 마라."
         )
     if row["task_kind"] == "related_keywords":
         return (
-            f"트렌드 '{representative}'의 관측 표현({observed})을 바탕으로 관련 검색어 후보를 "
-            "최대 15개 제안하라. 동시 등장 표현, 사용 장면, 제품·행사·작품·기술 맥락을 우선하고 "
-            "단순 동의어 반복과 투자 종목명 끼워 넣기는 금지한다. 공개 후보는 공백 제외 6글자 "
-            "이하만 제안하고 긴 원문을 임의로 자르지 마라. 각 후보에 관계 유형과 근거 URL을 붙여라."
+            f"트렌드 '{representative}'의 관측 표현({observed})을 바탕으로 관련 키워드 후보를 제시하라. "
+            + common
+            + "각 후보는 공백을 제외하고 6글자 이하이며 관계 설명과 근거 URL을 포함해야 한다. "
+              "최종 승인 계약은 서로 다른 키워드 정확히 5개다."
         )
     return (
-        f"트렌드 '{representative}'의 관측 표현({observed})에서 시작해 상장기업 후보를 최대 18개 제안하라. "
-        "트렌드→사용 장면→장비·서비스→산업→기업처럼 3~5단계 관계 경로를 창의적으로 탐색하되, "
-        "직접 관계·가치사슬·산업 관찰을 구분하라. 기업명, 종목코드, 거래소, 기업 설명, 연결 이유, "
-        "경로의 각 핵심 간선을 입증하는 공식·공시·신뢰 가능한 근거 URL을 제공하라. "
-        "관련성이 약한 기업으로 숫자를 채우거나 순위·점수 변경을 제안하지 마라."
+        f"트렌드 '{representative}'의 관측 표현({observed})과 사업적으로 연결된 상장기업 후보를 조사하라. "
+        + common
+        + "트렌드→사용 장면→장비·서비스→산업→기업처럼 검증 가능한 관계 경로를 우선 탐색하라. "
+        + "기업명, 종목코드, 거래소, 기업 설명, 연결 이유, 온톨로지 경로, 역할 카테고리, "
+          "각 관계를 입증하는 공개 URL을 제시하라. 최종 공개 계약은 기업 10개와 역할 2~4개다. "
+          "단어 연상만으로 기업 수를 채우지 마라."
     )
 
 
@@ -226,7 +231,7 @@ def _task_rows(intelligence: dict, at: datetime) -> list[dict]:
             "trend_context": {
                 "accepted_evidence": [
                     "google_related_query", "official_announcement", "reputable_news",
-                    "naver_news", "nate_news", "youtube_recent_content",
+                    "naver_news",
                 ],
                 "minimum_evidence_count": 1,
                 "cause_must_be_explicit": True,

@@ -18,8 +18,10 @@ contain a trend when all of the following are true:
    explanation, and at least one public HTTP(S) evidence URL. NAVER News,
    official pages, and reviewed industry sources may support this context but
    never alter rank.
-4. It is current and does not match the manipulation-risk rule for an
-   uncorroborated one-hour, single-source hashtag burst.
+4. It was observed at least once in the latest 24-hour publication window and
+   does not match the manipulation-risk rule for an uncorroborated one-hour,
+   single-source hashtag burst. It does not need to remain in the final hourly
+   snapshot; recency decays naturally in the canonical score.
 
 The deterministic home mix is velocity-first: up to seven positions go to
 genuinely measured positive-slope `new`, `rising`, or `rebounding` trends, and
@@ -35,13 +37,15 @@ Every selected trend separately reports whether the richer detail payload is
 complete:
 
 - exactly five distinct sourced related keywords;
-- at least ten unique evidence-backed listed companies worldwide;
+- at least ten unique evidence-backed listed companies in the source
+  candidate, projected to exactly ten in the public card;
 - two to four company role categories across those companies;
+- at least two distinct public keywords linked to companies with evidence;
 - company name, symbol, exchange, description, connection reason, ontology
   path, relationship tier, and public evidence URL for every exposed company.
 
 `frontend_readiness_status=enrichment_pending` is a valid observed/detail
-state, but not a complete home-feed card. `frontend_readiness_missing`,
+state, but not a complete `presentation_feed` card. `frontend_readiness_missing`,
 `frontend_keyword_count`,
 `frontend_company_count`, and `frontend_company_role_category_count` tell the
 frontend and operators exactly what remains. Missing items are warnings for
@@ -62,4 +66,9 @@ valid when paired with their exchange. Only six-digit KRX symbols are eligible
 for the current Kiwoom S# handoff.
 
 Transport publication is another independent gate: a live-data publication is
-remote-publishable only when same-hour X and Google collection is complete.
+remote-publishable only when the latest 24-hour ledger contains at least one
+complete X hour and one complete Google hour. Missing hours remain explicit;
+no prior observation is reused, interpolated, or generated.
+The published v4 feed may contain zero to ten complete cards. Empty and partial
+counts are honest outputs; previous cards and fixed demo fixtures are not used
+as padding.

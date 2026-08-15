@@ -6,8 +6,11 @@ const METADATA_URL = `${LIVE_DATA_BASE}/metadata.json`;
 const CACHE_KEY = 'trzip:latest-intelligence:v3';
 const PORTFOLIO_KEY = 'trzip:portfolios:v1';
 const ARCHIVE_URL = './trend-archive.json';
-const FRESH_FOR_MINUTES = 90;
-const STALE_AFTER_MINUTES = 180;
+// The public home feed is an immutable daily publication created at 06:00 KST,
+// not an hourly endpoint. Keep a successful publication current until the next
+// daily slot, then allow a short delivery grace period before failing closed.
+const FRESH_FOR_MINUTES = 24 * 60;
+const STALE_AFTER_MINUTES = 26 * 60;
 
 const CATEGORY_KO = {
   food_culinary: '음식·식품',
@@ -96,7 +99,7 @@ function dataStatus(payload, metadata, runtimeStatus, { fromCache = false, now =
     unavailableSources,
     errors: runtimeStatus?.errors || payload.collection_status?.errors || metadata.collection?.errors || {},
     reason: fromCache
-      ? '네트워크 응답 대신 마지막 정상 저장본을 표시합니다.'
+      ? '네트워크가 원활하지 않아 최근 공개 데이터를 표시합니다.'
       : snapshotMismatch
         ? '순위와 수집 상태의 기준시각이 일치하지 않습니다.'
         : !observedAt
@@ -149,7 +152,7 @@ function rankMovement(item, presentationItem) {
 }
 
 function normalizeTrend(item) {
-  const presentationItem = item.data_mode === 'observed_reference';
+  const presentationItem = ['observed_reference', 'observed_live'].includes(item.data_mode);
   const topic = item.topic || item.event_key || item.display_name;
   const rank = Number(item.presentation_position || item.rank || 0);
   const companyEligible = presentationItem
@@ -407,18 +410,301 @@ async function fetchManifestRankings(nonce) {
   return rankings;
 }
 
+const LIVE_COMPANY_ROLES = new Set([
+  'manufacturing_development', 'raw_materials_components', 'content_production',
+  'distribution', 'retail_sales', 'brand_marketing', 'platform_service',
+  'ownership_investment', 'event_sponsorship',
+]);
+const LIVE_LOGO_VERIFICATIONS = new Set([
+  'verified_safe_svg', 'verified_raster_min_64px', 'initials_fallback',
+]);
+
+function publicHttpUrl(value, { httpsOnly = false } = {}) {
+  try {
+    const parsed = new URL(String(value || '').trim());
+    return Boolean(parsed.hostname)
+      && (httpsOnly ? parsed.protocol === 'https:' : ['http:', 'https:'].includes(parsed.protocol));
+  } catch (_) {
+    return false;
+  }
+}
+
+function normalizedPublicKeyword(value) {
+  return String(value || '').trim().replace(/\s+/gu, ' ');
+}
+
+function keywordFitsPublicLabel(value) {
+  const text = normalizedPublicKeyword(value);
+  return text.length > 0 && [...text.replace(/\s+/gu, '')].length <= 6;
+}
+
+function ontologyPathReachesCompany(path, companyName) {
+  if (!Array.isArray(path) || path.length < 2) return false;
+  const target = normalizedPublicKeyword(companyName).toLocaleLowerCase();
+  return path.some((step) => {
+    const values = typeof step === 'string'
+      ? [step]
+      : (step && typeof step === 'object'
+        ? ['to', 'target', 'label', 'name'].map((key) => step[key]) : []);
+    return values.some((value) => value
+      && normalizedPublicKeyword(value).toLocaleLowerCase() === target);
+  });
+}
+
+function validLiveLogo(company) {
+  if (!company || typeof company !== 'object') return false;
+  const mode = String(company.logo_render_mode || '').trim();
+  const logoUrl = String(company.logo_url || '').trim();
+  const sourcePageUrl = String(company.logo_source_page_url || '').trim();
+  const mime = String(company.logo_asset_mime || '').trim().toLowerCase();
+  const format = String(company.logo_asset_format || '').trim().toLowerCase();
+  const sha256 = String(company.logo_asset_sha256 || '').trim().toLowerCase();
+  const verification = String(company.logo_asset_verification || '').trim();
+  const width = company.logo_asset_width;
+  const height = company.logo_asset_height;
+  const provenance = company.logo_provenance;
+  if (
+    company.logo_quality_policy !== 'avatar-sharpness-v1'
+    || company.logo_minimum_dimension !== 64
+    || company.logo_runtime_probe_required !== false
+    || !LIVE_LOGO_VERIFICATIONS.has(verification)
+    || !provenance || typeof provenance !== 'object'
+    || (provenance.source_page_url || '') !== sourcePageUrl
+    || (provenance.asset_url || '') !== logoUrl
+    || (provenance.mime || '') !== mime
+    || provenance.width !== width
+    || provenance.height !== height
+    || (provenance.sha256 || '') !== sha256
+    || provenance.verification !== verification
+  ) return false;
+  if (mode === 'initials') {
+    return company.logo_asset_source === 'initials_fallback'
+      && verification === 'initials_fallback'
+      && !logoUrl && !mime && format === 'none'
+      && width === 0 && height === 0 && !sha256
+      && !String(company.logo_asset_host || '').trim()
+      && !String(company.logo_rejected_asset_url || '').trim()
+      && (!sourcePageUrl || publicHttpUrl(sourcePageUrl))
+      && company.logo_asset_quality === 'fail_closed_initials_no_verified_asset';
+  }
+  if (mode !== 'image' || !['verified_safe_svg', 'verified_raster_min_64px'].includes(verification)) {
+    return false;
+  }
+  let logo;
+  let page;
+  try {
+    logo = new URL(logoUrl);
+    page = new URL(sourcePageUrl);
+  } catch (_) {
+    return false;
+  }
+  const dimensionsValid = Number.isInteger(width) && Number.isInteger(height)
+    && width > 0 && height > 0
+    && (verification === 'verified_safe_svg'
+      ? format === 'svg'
+      : width >= 64 && height >= 64 && ['png', 'jpeg', 'gif', 'webp', 'bmp', 'ico'].includes(format));
+  return company.logo_asset_source === 'official_page_asset'
+    && logo.protocol === 'https:' && Boolean(logo.hostname)
+    && ['http:', 'https:'].includes(page.protocol) && Boolean(page.hostname)
+    && String(company.official_domain || '').trim().toLowerCase() === page.hostname.toLowerCase()
+    && String(company.logo_asset_host || '').trim().toLowerCase() === logo.hostname.toLowerCase()
+    && mime.startsWith('image/') && /^[0-9a-f]{64}$/.test(sha256)
+    && dimensionsValid
+    && !String(company.logo_rejected_asset_url || '').trim()
+    && ['verified_vector', 'verified_raster_min_64px'].includes(company.logo_asset_quality);
+}
+
+function validObservedSeries(item, observedAt) {
+  const end = asDate(observedAt);
+  if (!end) return false;
+  const startMs = end.getTime() - (23 * 60 * 60 * 1000);
+  return Array.isArray(item?.series) && item.series.some((point) => {
+    const at = asDate(point?.at);
+    return at
+      && at.getTime() >= startMs
+      && at.getTime() <= end.getTime()
+      && point?.provenance === 'observed'
+      && ['x', 'google_trends'].includes(point?.source)
+      && Number.isFinite(Number(point?.value))
+      && Number(point.value) >= 0
+      && Number(point.value) <= 100;
+  });
+}
+
+function validSparseVisualization(item) {
+  const visualization = item?.visualization_series || {};
+  if (
+    visualization.data_mode !== 'observed_sparse'
+    || visualization.interpolation !== 'none'
+    || visualization.canonical_series_unchanged !== true
+    || visualization.ranking_effect !== 'none'
+  ) return false;
+  return ['1w', '1m', '3m'].every((key) => {
+    const window = visualization[key] || {};
+    if (
+      window.interpolation !== 'none'
+      || window.missing_point_policy !== 'preserve_sparse_null_no_reuse'
+      || window.ranking_effect !== 'none'
+      || !Array.isArray(window.points)
+      || window.points.length === 0
+      || window.available_point_count !== window.points.length
+    ) return false;
+    let previousAt = -Infinity;
+    const seen = new Set();
+    return window.points.every((point) => {
+      const at = asDate(point?.at);
+      const atMs = at?.getTime();
+      const sources = Array.isArray(point?.observed_sources) ? point.observed_sources : [];
+      const valueSources = ['x', 'google_trends']
+        .filter((source) => point?.[source] != null);
+      const values = valueSources.map((source) => Number(point[source]));
+      const combined = values.length
+        ? Math.round((values.reduce((sum, value) => sum + value, 0) / values.length) * 100) / 100
+        : null;
+      const valid = Number.isFinite(atMs)
+        && atMs >= previousAt
+        && !seen.has(atMs)
+        && sources.length > 0
+        && new Set(sources).size === sources.length
+        && sources.every((source) => ['x', 'google_trends'].includes(source))
+        && sources.length === valueSources.length
+        && valueSources.every((source) => sources.includes(source))
+        && values.length > 0
+        && values.every((value) => Number.isFinite(value) && value >= 0 && value <= 100)
+        && combined === Number(point?.combined);
+      if (valid) {
+        previousAt = atMs;
+        seen.add(atMs);
+      }
+      return valid;
+    });
+  });
+}
+
+function validLiveCard(item, observedAt) {
+  const keywords = Array.isArray(item?.related_keywords)
+    ? item.related_keywords : (Array.isArray(item?.keywords) ? item.keywords : []);
+  const companies = Array.isArray(item?.companies) ? item.companies : [];
+  const links = Array.isArray(item?.keyword_company_links) ? item.keyword_company_links : [];
+  const context = item?.context_research || {};
+  const itemEvidence = Array.isArray(item?.evidence_urls) ? item.evidence_urls : [];
+  const keywordTexts = keywords
+    .map((keyword) => normalizedPublicKeyword(keyword?.text || keyword?.term || keyword))
+    .filter(Boolean);
+  const companyNames = new Set(
+    companies.map((company) => String(company?.company || company?.name || '').trim()).filter(Boolean),
+  );
+  const companyIdentities = new Set(companies.map((company) => (
+    `${String(company?.exchange || company?.market || '').trim()}\u0000${String(company?.stock_code || company?.ticker || '').trim()}`
+  )));
+  const keywordNames = new Set(keywordTexts);
+  const linkedKeywords = new Set();
+  links.forEach((link) => {
+    const keyword = normalizedPublicKeyword(link?.keyword);
+    const company = String(link?.company || '').trim();
+    const evidence = Array.isArray(link?.evidence_urls) ? link.evidence_urls : [];
+    if (
+      keywordNames.has(keyword)
+      && companyNames.has(company)
+      && String(link?.connection_explanation || link?.relationship_reason || '').trim()
+      && evidence.length > 0
+      && evidence.every((url) => publicHttpUrl(url))
+    ) linkedKeywords.add(keyword);
+  });
+  const roles = new Set(companies.map((company) => company?.company_role_category).filter((role) => LIVE_COMPANY_ROLES.has(role)));
+  return item?.selection_origin === 'canonical_validated_home_feed'
+    && item?.lane === 'main'
+    && item?.data_mode === 'observed_live'
+    && item?.ranking_effect === 'none'
+    && item?.observed_within_24h === true
+    && Array.isArray(item?.sources)
+    && item.sources.length > 0
+    && new Set(item.sources).size === item.sources.length
+    && item.sources.every((source) => ['x', 'google_trends'].includes(source))
+    && validObservedSeries(item, observedAt)
+    && validSparseVisualization(item)
+    && String(item?.trend_definition || '').trim()
+    && String(item?.why_now || '').trim()
+    && itemEvidence.length > 0
+    && itemEvidence.every((url) => publicHttpUrl(url))
+    && keywords.length === 5
+    && keywordTexts.length === 5
+    && keywordNames.size === 5
+    && keywordTexts.every(keywordFitsPublicLabel)
+    && companies.length === 10
+    && companyIdentities.size === 10
+    && roles.size >= 2
+    && roles.size <= 4
+    && context.status === 'ready'
+    && String(context.trigger_title || '').trim()
+    && String(context.why_now || '').trim()
+    && Array.isArray(context.evidence_urls)
+    && context.evidence_urls.length > 0
+    && context.evidence_urls.every((url) => publicHttpUrl(url))
+    && linkedKeywords.size >= 2
+    && companies.every((company) => company
+      && LIVE_COMPANY_ROLES.has(company.company_role_category)
+      && String(company.company || company.name || '').trim()
+      && String(company.stock_code || '').trim()
+      && String(company.exchange || '').trim()
+      && String(company.company_description || '').trim()
+      && String(company.connection_explanation || company.reason || '').trim()
+      && String(company.company_role_label || '').trim()
+      && company.ontology_complete === true
+      && ontologyPathReachesCompany(company.ontology_path, company.company || company.name)
+      && Array.isArray(company.evidence_sources)
+      && company.evidence_sources.length > 0
+      && company.evidence_sources.every((source) => publicHttpUrl(source?.url))
+      && validLiveLogo(company));
+}
+
+function selectLiveHomeRows(payload, { fromCache = false, stale = false } = {}) {
+  const feed = payload?.presentation_feed || {};
+  const items = Array.isArray(feed.items) ? feed.items : [];
+  const logoPolicy = feed.logo_policy || {};
+  const validLogoPolicy = logoPolicy.version === 'avatar-sharpness-v1'
+    && logoPolicy.avatar_size_px === 44
+    && logoPolicy.minimum_raster_dimension_px === 64
+    && logoPolicy.vector_assets_allowed === true
+    && logoPolicy.low_resolution_fallback === 'initials'
+    && logoPolicy.runtime_probe_for_generic_favicons === false
+    && logoPolicy.official_page_resolver_required === true
+    && logoPolicy.asset_sha256_required === true;
+  const validStatus = (feed.status === 'empty' && items.length === 0)
+    || (feed.status === 'ready' && items.length > 0 && items.length <= 10);
+  const eventKeys = items.map((item) => String(item?.event_key || '').trim());
+  const validItemIdentities = eventKeys.every(Boolean)
+    && new Set(eventKeys).size === eventKeys.length
+    && items.every((item, index) => item?.presentation_position === index + 1);
+  const eligible = !fromCache
+    && !stale
+    && feed.schema_version === 'trzip-presentation-feed-v4'
+    && feed.frontend_default === true
+    && feed.selection_policy === 'validated_live_home_feed_v1'
+    && asDate(feed.observed_at) != null
+    && validLogoPolicy
+    && feed.transition?.synthetic_data_used === false
+    && feed.transition?.supplemental_display_data_used === false
+    && feed.transition?.fallback_used === false
+    && feed.transition?.padding_forbidden === true
+    && feed.transition?.canonical_ranking_affected === false
+    && validStatus
+    && validItemIdentities
+    && items.every((item) => validLiveCard(item, feed.observed_at));
+  return { eligible, items: eligible ? items : [] };
+}
+
 function viewModel(bundle, { source, fromCache }) {
   const { payload, metadata, runtimeStatus, publication } = bundle;
   const status = dataStatus(payload, metadata, runtimeStatus, { fromCache });
-  const presentationRows = payload.presentation_feed?.frontend_default
-    ? (payload.presentation_feed.items || [])
-    : [];
-  const rankingByTopic = new Map(payload.unified_ranking.map((item) => [item.topic, item]));
-  const publicRows = presentationRows.length
-    ? presentationRows
-    : (payload.public_top10 || [])
-      .map((item) => rankingByTopic.get(item.topic) || item)
-      .filter((item) => item && item.topic);
+  const liveHomeSelection = selectLiveHomeRows(payload, {
+    fromCache,
+    stale: status.stale,
+  });
+  const liveHomeEligible = liveHomeSelection.eligible;
+  // An explicitly published empty feed is meaningful. Never refill it from an
+  // older public_top10 array because that would leak stale topics into home.
+  const publicRows = liveHomeSelection.items;
   return {
     source,
     stale: status.stale,
@@ -430,6 +716,7 @@ function viewModel(bundle, { source, fromCache }) {
     publication,
     metadata,
     raw: payload,
+    liveHomeEligible,
   };
 }
 
@@ -479,9 +766,11 @@ function normalizePortfolio(record) {
     schemaVersion: 'trzip-portfolio-v1',
     id,
     name: String(record.name || '이름 없는 밈트폴리오'),
+    emoji: String(record.emoji || '💜').trim().slice(0, 8) || '💜',
     trendTopic: record.trendTopic || null,
     observedAt: record.observedAt || null,
-    keywords: Array.isArray(record.keywords) ? record.keywords.map(String).slice(0, 10) : [],
+    keywords: Array.isArray(record.keywords)
+      ? record.keywords.map((keyword) => String(keyword).slice(0, 6)).slice(0, 6) : [],
     companies: Array.isArray(record.companies) ? record.companies.slice(0, 10) : [],
     createdAt: record.createdAt || null,
     updatedAt: record.updatedAt || null,
@@ -518,14 +807,15 @@ function savePortfolio(input) {
   validatePortfolioContent(input);
   const portfolios = listPortfolios();
   const keywords = [...new Set((input.keywords || [])
-    .map((keyword) => String(keyword).trim())
+    .map((keyword) => String(keyword).trim().slice(0, 6))
     .filter(Boolean))]
-    .slice(0, 10);
+    .slice(0, 6);
   const id = input.id || globalThis.crypto?.randomUUID?.() || `portfolio-${Date.now()}`;
   const record = normalizePortfolio({
     schemaVersion: 'trzip-portfolio-v1',
     id,
     name: String(input.name || '새 밈트폴리오').trim().slice(0, 80) || '새 밈트폴리오',
+    emoji: String(input.emoji || '💜').trim().slice(0, 8) || '💜',
     trendTopic: input.trendTopic || null,
     observedAt: input.observedAt || null,
     keywords,
@@ -575,5 +865,7 @@ globalThis.TRZIP_DATA_API = Object.freeze({
   savePortfolio,
   deletePortfolio,
   validatePortfolioContent,
+  selectLiveHomeRows,
+  dataStatus,
   dataContract,
 });

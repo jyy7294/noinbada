@@ -1,4 +1,4 @@
-# TRZIP 프런트 연동 계약 V3
+# TRZIP 프런트 연동 계약 V4
 
 프런트는 화면을 자유롭게 교체할 수 있지만, `manifest.json`이 가리키는 불변 발행 묶음만 읽어야 합니다.
 
@@ -33,19 +33,21 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 - 운영 진단에서는 SQLite의 마지막 관측시각, 로컬 publication 시각, 원격 `live-data` 시각을 각각 확인해야 합니다.
 - X와 Google이 같은 기준시각에 정상 관측되지 않으면 원격 최신본을 덮어쓰지 않습니다.
 
-## 승인된 MVP 기본 피드
+## 라이브 MVP 기본 피드
 
 `rankings.json.presentation_feed`가 현재 MVP 프런트의 기본 목록입니다. 같은 객체는 전환 호환을 위해
 `intelligence.json.presentation_feed`에도 들어갑니다.
 
-- `frontend_default=true`인 경우 프런트는 이 배열의 순서와 표시명을 그대로 사용합니다.
-- 화면의 현재 순위는 `presentation_position`·`presentation_rank`·`current_rank`가 같은 1~10 값이며, 프런트는 이를 다시 계산하지 않습니다.
-- 이 피드는 사용자 검수 결과를 고정한 `observed_reference` 표시층이며, 원천 `unified_ranking`과 점수를 변경하지 않습니다.
+- 프런트는 `schema_version=trzip-presentation-feed-v4`, `selection_policy=validated_live_home_feed_v1`, `frontend_default=true`, `transition.synthetic_data_used=false`를 모두 확인한 뒤에만 이 배열을 사용합니다. 구형 v2·v3 고정 피드는 라이브 홈으로 사용하지 않습니다.
+- 항목은 최근 24시간 실제 X·Google 원장 후보 중 완성 계약을 통과한 0~10개입니다. 화면의 현재 순서는 `presentation_position`이 1부터 연속이며, 프런트는 이를 다시 계산하지 않습니다.
+- `status=empty`이면 항목은 0개이고 빈 상태를 표시합니다. 1~9개일 때도 해당 수만 표시하며 이전 공개본·고정 목록·밈트폴리오·패딩으로 채우지 않습니다.
+- 이 피드는 원천 `unified_ranking`과 점수를 변경하지 않는 공개 투영층입니다.
 - `data_mode`와 출처 상태는 감사·오류 진단용 내부 정보입니다. 사용자 기본 화면은 이를 전면에 내세우지 않습니다.
-- 기본 상세 화면은 `trend_stage`와 `attention_windows`의 1주·1개월·3개월 변화를 보여줍니다.
+- 기본 상세 화면은 실제 관측점이 있는 경우에만 `visualization_series.{1w|1m|3m}.points[]`의 `at`, `x`, `google_trends`, `combined`를 보여줍니다. 점이 부족하면 그래프를 숨기며 이전 값 재사용·보간·임의 상승곡선 생성을 금지합니다.
 - 원천이 공통 절대 언급량을 제공하지 않으므로 화면의 “언급량 추이”는 정규화 관심지수입니다. 절대 게시물 수로 표시하거나 해석하지 않습니다.
 - 항목별 `keywords`는 서로 다른 5개이며, 공백을 제외하고 최대 6자입니다.
-- 기업 연결은 확인된 상장기업만 담고, 10개 미만이면 `enrichment_pending`을 그대로 표시합니다. 숫자를 맞추기 위한 기업 패딩은 금지합니다.
+- 공개 카드에는 확인된 상장기업 정확히 10개와 역할 2~4개가 있어야 합니다. 미달 후보는 원장과 보강 대기열에만 남고 라이브 기본 피드에는 들어오지 않습니다. 숫자를 맞추기 위한 기업 패딩은 금지합니다.
+- 시장 숫자는 `market_snapshot.status=observed`, `provider`, `as_of`, 공개 HTTP(S) `source_url`이 모두 있는 경우에만 표시합니다. 이름·티커 해시로 가격·차트·PER·PBR·ROE를 생성하지 않습니다.
 - 새 디자인 구현은 mutable 호환 문서보다 manifest가 검증한 불변 `rankings.json`을 우선 사용해야 합니다.
 
 ## 목록
@@ -81,8 +83,8 @@ https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest/metadata.jso
 기업 연결 대상이 아닌 경우입니다. 기업 수를 맞추기 위한 padding은 금지하며,
 준비된 항목만 `company_ready_trends`에도 포함합니다.
 NAVER 뉴스는 현재 `main`·검토 후보의 촉발 맥락을 확인하는 보조 근거입니다.
-기사·블로그·YouTube·Instagram 신호는 X·Google 관측 순위와 내부 선별점수를
-바꾸지 않습니다.
+공식 페이지와 NAVER 뉴스 맥락은 X·Google 관측 순위와 내부 선별점수를
+바꾸지 않습니다. NAVER 블로그·카페와 YouTube·Instagram은 활성 경로에서 제외합니다.
 
 ## 트렌드 카드 필드
 
@@ -101,7 +103,7 @@ NAVER 뉴스는 현재 `main`·검토 후보의 촉발 맥락을 확인하는 �
 | 변화·지속 | `previous_period_rank`, `rank_change`, `rank_change_status`, `rank_change_by_source`, `lifecycle`, `persistence_rank`, `momentum_rank` |
 | 신뢰 상태 | `data_confidence`, `home_context_status`, `home_context_reason` |
 | 관련어 | `keywords` (0~5), 원천 관측 또는 검수된 온톨로지 표현만 허용하고 `affects_score=false` |
-| 기업 Gold | `companies` (0 또는 10개 이상, 역할 카테고리 2~4개) |
+| 기업 Gold | `companies` (공개 카드 정확히 10개, 후보 단계 10개 이상, 역할 카테고리 2~4개) |
 | 기업 역할 | `companies[].company_role_category`, `companies[].company_role_label` (제조·개발/원재료·핵심부품/콘텐츠 제작/배급·유통/판매·리테일/브랜드·마케팅/플랫폼·서비스/투자·소유/행사 후원·운영) |
 | 기업 연결 설명 | `companies[].connection_explanation`, `keyword_company_links[]` |
 | 관심 구간 | `attention_windows[]`와 `trend_story.diffusion.attention_windows[]`의 1주·1개월·3개월. 단위는 절대 게시물 수가 아닌 정규화 관심지수 변화 |
@@ -158,9 +160,9 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 
 7일·30일 재방문은 동일 익명 사용자 키의 `trend_detail_view`가 최초 열람 후 해당 기간에 다시 발생했는지로 계산합니다. 현재 저장소에는 이벤트 수집·분석 서버가 없으므로 이는 측정 계약이며 실측 완료가 아닙니다.
 
-## 밈트폴리오 목업 경계
+## 밈트폴리오 제품 데모 경계
 
-밈트폴리오의 사용자 수·좋아요·수익률은 현재 프런트 목업이며 `live-data` 계약 밖입니다. 화면에 목업 라벨을 고정하고 실측 순위·기업 Gold·시장 참고값과 합치거나 실제 성과처럼 표현하지 않습니다. 데이터 묶음 실패 시 밈트폴리오나 다른 목업으로 트렌드 목록을 대체할 수 없습니다.
+승인된 인기 밈트폴리오 4건은 프런트 내부 `seed_portfolio`, 사용자가 만든 항목은 `user_portfolio`이며 `live-data` 계약 밖입니다. 사용자 이모지를 아바타로 사용하고, 라이브 순위·기업 Gold·시장 참고값을 만드는 입력으로 재사용하지 않습니다. 데이터 묶음 실패 시 밈트폴리오로 트렌드 목록을 대체할 수 없습니다.
 
 ## 빈 상태 규칙
 
@@ -224,10 +226,6 @@ MAU는 보조 지표로만 사용하고 다음 이벤트를 핵심 퍼널로 고
 프런트는 사용자가 기간 탭을 바꾸면 해당 `ranking_views`를 그대로 표시하고 자체 재계산하지 않습니다. `data_readiness.status`가 잠정이면 기간명 옆에 잠정 배지를 표시합니다.
 
 정확한 기계 계약은 `schemas/intelligence-v3.schema.json`, `schemas/metadata-v3.schema.json`, `schemas/status-v1.schema.json`을 따릅니다.
-## YouTube 콘텐츠 순위
+## 비활성 원천
 
-- `youtube_content_ranking`: 대한민국 `mostPopular` 영상을 작품·곡·게임 단위로 병합한 전체 콘텐츠 순위
-- `youtube_content_top10`: 콘텐츠 순위의 상위 10개
-- `youtube_content_discovery.video_chart`: API 원본 영상 차트와 영상별 등락
-
-YouTube 콘텐츠 순위는 `affects_x_google_rank=false`입니다. 프런트는 이 순위를 기존 `home_top10`의 점수나 등락과 혼용하면 안 됩니다.
+YouTube·Instagram·NAVER 블로그·카페·검색트렌드는 현재 라이브 순위와 맥락 보강에 사용하지 않습니다. NAVER 뉴스만 이미 X·Google에서 관측한 후보의 `why_now` 공개 근거로 사용할 수 있으며, 순위·점수·제품 적합도에는 영향이 없습니다.

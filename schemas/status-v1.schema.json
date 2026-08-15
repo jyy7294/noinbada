@@ -5,7 +5,7 @@
   "type": "object",
   "required": [
     "schema_version", "publication_id", "generated_at", "observed_at", "mode",
-    "publishable", "partial", "source_status", "errors", "recorded_runs", "measurement_status"
+    "publishable", "partial", "source_status", "errors", "recorded_runs", "measurement_status", "processing_cycle"
   ],
   "properties": {
     "schema_version": {"const": "trzip-runtime-status-v1"},
@@ -14,6 +14,7 @@
     "observed_at": {"type": "string", "format": "date-time"},
     "mode": {"const": "live"},
     "publishable": {"type": "boolean"},
+    "processing_cycle": {"type": "object"},
     "partial": {"type": "boolean"},
     "source_status": {
       "type": "object",

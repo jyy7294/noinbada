@@ -68,8 +68,8 @@ def test_existing_windows_aliases_are_recognized_without_exposure():
     readiness = provider_readiness(environment)
 
     assert credentials.naver_client_id == "naver-id-secret"
-    assert readiness["naver"]["status"] == "configured_unverified"
-    assert readiness["youtube"]["status"] == "configured_unverified"
+    assert readiness["naver"]["status"] == "active"
+    assert readiness["youtube"]["status"] == "disabled_by_product_policy"
     assert readiness["instagram"]["status"] == "unavailable"
     assert all(row["ranking_effect"] == "none" for row in readiness.values())
     assert "secret" not in repr(credentials)
@@ -91,13 +91,13 @@ def test_youtube_api_key_aliases_and_instagram_mvp_state_are_explicit():
     )
 
     assert credentials.youtube_api_key == "youtube-alias-secret"
-    assert readiness["youtube"]["status"] == "configured_unverified"
+    assert readiness["youtube"]["status"] == "disabled_by_product_policy"
     assert readiness["instagram"]["status"] == "unavailable"
     assert "not enabled" in readiness["instagram"]["reason"]
     assert "secret" not in json.dumps(readiness)
 
 
-def test_naver_news_and_blog_are_context_evidence_with_retry_and_audit(tmp_path):
+def test_naver_news_is_the_only_context_endpoint_with_retry_and_audit(tmp_path):
     transport = RoutingTransport(
         {
             "/news.json": [
@@ -117,21 +117,6 @@ def test_naver_news_and_blog_are_context_evidence_with_retry_and_audit(tmp_path)
                     }
                 ),
             ],
-            "/blog.json": [
-                response(
-                    {
-                        "total": 3,
-                        "items": [
-                            {
-                                "title": "말복 메뉴 기록",
-                                "link": "https://blog.example.com/1",
-                                "postdate": "20260812",
-                                "bloggername": "테스트 블로그",
-                            }
-                        ],
-                    }
-                )
-            ],
         }
     )
     credentials = ProviderCredentials("id-value", "secret-value", "", "")
@@ -148,13 +133,15 @@ def test_naver_news_and_blog_are_context_evidence_with_retry_and_audit(tmp_path)
 
     assert run_id == 1
     assert result.status == "observed"
-    assert len(result.evidence) == 2
-    assert len(result.attempts) == 6
+    assert len(result.evidence) == 1
+    assert {row.item_type for row in result.evidence} == {"naver_news"}
+    assert len(result.attempts) == 2
     assert result.attempts[0].retryable is True
     ledger = read_verification_ledger(tmp_path / "ledger.sqlite3")
     encoded = json.dumps(ledger, ensure_ascii=False)
     assert ledger[0]["ranking_effect"] == "none"
-    assert ledger[0]["attempt_count"] == 6
+    assert ledger[0]["attempt_count"] == 2
+    assert all("blog" not in url and "cafe" not in url for url in transport.urls)
     assert "id-value" not in encoded
     assert "secret-value" not in encoded
 
@@ -194,6 +181,8 @@ def test_naver_api_hub_collects_news_context_without_ranking_signal():
 
     assert result.status == "observed"
     assert "search_trend" not in result.metrics
+    assert {row.item_type for row in result.evidence} == {"naver_news"}
+    assert len(transport.urls) == 1
     assert any("X-NCP-APIGW-API-KEY-ID" in headers for headers in transport.headers)
     assert transport.bodies == []
 
@@ -303,10 +292,10 @@ def test_verify_terms_persists_unavailable_instead_of_fabricated_zero(tmp_path):
         sleeper=lambda _: None,
     )
 
-    assert [row.status for row in results] == ["unavailable", "unavailable"]
+    assert [row.status for row in results] == ["unavailable"]
     assert all(row.matched is None for row in results)
     assert all(row.metrics == {} for row in results)
-    assert len(read_verification_ledger(target)) == 2
+    assert len(read_verification_ledger(target)) == 1
 
 
 def test_verify_terms_does_not_activate_instagram_when_token_exists(tmp_path):
@@ -321,7 +310,7 @@ def test_verify_terms_does_not_activate_instagram_when_token_exists(tmp_path):
         sleeper=lambda _: None,
     )
 
-    assert [row.provider for row in results] == ["naver", "youtube"]
+    assert [row.provider for row in results] == ["naver"]
 
 
 def test_naver_auth_failure_opens_hourly_circuit_and_defers_remaining_terms(tmp_path):

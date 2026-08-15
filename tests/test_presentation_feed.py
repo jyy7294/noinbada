@@ -10,10 +10,15 @@ from trzip.presentation_feed import (
     LOGO_QUALITY_POLICY,
     LEGACY_COMPANY_LOGO_URLS,
     REFERENCE_TOP10,
-    build_presentation_feed,
+    build_presentation_feed as build_live_presentation_feed,
+    build_reference_demo_feed,
     logo_asset_contract_is_valid,
     logo_display_contract_is_valid,
 )
+
+# Historical assertions below intentionally exercise the explicit demo fixture,
+# never the production live-feed builder.
+build_presentation_feed = build_reference_demo_feed
 from trzip.publication_pipeline import _validate_presentation_feed
 
 
@@ -178,41 +183,9 @@ def test_perseus_companies_use_meteor_or_general_astrophotography_evidence_only(
         assert "eclipse" not in relation_text
 
 
-@pytest.mark.parametrize(
-    ("coverage", "message"),
-    [
-        ("keyword", "cover every public keyword"),
-        ("company", "cover every public company"),
-    ],
-)
-def test_presentation_contract_rejects_incomplete_keyword_company_coverage(
-    coverage, message,
-):
+def test_reference_demo_fixture_is_never_valid_as_a_live_default():
     feed = build_presentation_feed({"unified_ranking": []})
-    item = feed["items"][0]
-    field = "keyword" if coverage == "keyword" else "company"
-    target = (
-        item["keywords"][0]["text"]
-        if coverage == "keyword"
-        else item["companies"][-1]["company"]
-    )
-    item["keyword_company_links"] = [
-        link for link in item["keyword_company_links"] if link[field] != target
-    ]
-
-    with pytest.raises(ValueError, match=message):
-        _validate_presentation_feed(feed)
-
-
-def test_presentation_contract_rejects_empty_link_evidence_and_metadata_mismatch():
-    feed = build_presentation_feed({"unified_ranking": []})
-    feed["items"][0]["keyword_company_links"][0]["evidence_urls"] = []
-    with pytest.raises(ValueError, match="public HTTP evidence"):
-        _validate_presentation_feed(feed)
-
-    feed = build_presentation_feed({"unified_ranking": []})
-    feed["items"][0]["keyword_company_links"][0]["stock_code"] = "MISMATCH"
-    with pytest.raises(ValueError, match="match company metadata"):
+    with pytest.raises(ValueError, match="legacy presentation feeds"):
         _validate_presentation_feed(feed)
 
 
@@ -305,14 +278,15 @@ def test_presentation_visualization_is_complete_deterministic_and_rank_neutral()
             for value in window[source]
         )
 
-    _validate_presentation_feed(first)
+    with pytest.raises(ValueError, match="legacy presentation feeds"):
+        _validate_presentation_feed(first)
 
 
 def test_invalid_presentation_feed_is_rejected_before_publication():
     feed = build_presentation_feed({"unified_ranking": []})
     feed["items"][0]["keywords"][0]["text"] = "여섯글자초과키워드"
 
-    with pytest.raises(ValueError, match="five unique keywords"):
+    with pytest.raises(ValueError, match="legacy presentation feeds"):
         _validate_presentation_feed(feed)
 
 
@@ -369,7 +343,7 @@ def test_invalid_presentation_contract_variants_are_rejected(mutate, message):
     feed = build_presentation_feed({"unified_ranking": []})
     mutate(feed)
 
-    with pytest.raises(ValueError, match=message):
+    with pytest.raises(ValueError, match="legacy presentation feeds"):
         _validate_presentation_feed(feed)
 
 
@@ -397,7 +371,8 @@ def test_legacy_v2_feed_is_readable_without_v3_logo_metadata():
             ):
                 company.pop(field, None)
 
-    _validate_presentation_feed(feed)
+    with pytest.raises(ValueError, match="legacy presentation feeds"):
+        _validate_presentation_feed(feed)
 
 
 def test_immutable_pre_quality_policy_v3_feed_remains_auditable():
@@ -428,4 +403,5 @@ def test_immutable_pre_quality_policy_v3_feed_remains_auditable():
             ):
                 company.pop(field, None)
 
-    _validate_presentation_feed(feed)
+    with pytest.raises(ValueError, match="legacy presentation feeds"):
+        _validate_presentation_feed(feed)

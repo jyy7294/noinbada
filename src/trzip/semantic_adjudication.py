@@ -220,6 +220,7 @@ def run_semantic_adjudication(
     path: Path,
     at: datetime,
     transport: Callable[[str, dict, dict[str, str]], dict] | None = None,
+    allow_model_calls: bool = True,
 ) -> dict:
     """Use cached decisions first, then review only a bounded ambiguous set."""
 
@@ -252,7 +253,7 @@ def run_semantic_adjudication(
         else:
             item["semantic_adjudication_status"] = "not_eligible"
     pending.sort(key=lambda item: (-float(item.get("score") or 0), str(item.get("event_key") or "")))
-    if configured:
+    if configured and allow_model_calls:
         call = transport or _default_transport
         for item in pending[:limit]:
             try:
@@ -268,10 +269,22 @@ def run_semantic_adjudication(
             reviewed += 1
     else:
         for item in pending:
-            item["semantic_adjudication_status"] = "disabled_not_configured"
+            item["semantic_adjudication_status"] = (
+                "deferred_to_enrichment_checkpoint"
+                if configured and not allow_model_calls
+                else "disabled_not_configured"
+            )
     intelligence["semantic_adjudication_run"] = {
         "policy": "llm_semantic_adjudication_v1",
         "configured": configured,
+        "model_calls_allowed_this_run": allow_model_calls,
+        "status": (
+            "disabled_missing_config" if not configured
+            else "deferred_to_enrichment_checkpoint" if not allow_model_calls
+            else "completed" if reviewed or cached
+            else "attempted_no_accepted_decision" if pending
+            else "skipped_no_eligible_candidates"
+        ),
         "reviewed": reviewed,
         "cached": cached,
         "rejected": rejected,

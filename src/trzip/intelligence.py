@@ -1445,13 +1445,16 @@ def select_balanced_home_top10(rows: list[dict], *, limit: int = 10) -> list[dic
 
     current = [
         item for item in rows
-        if item.get("is_current") is True and item.get("lifecycle") != "expired"
+        if item.get("is_current") is True
     ]
     recent = [
         item for item in rows
         if item.get("is_current") is not True
-        and item.get("candidate_status") == "period_observed"
-        and item.get("lifecycle") in {"cooling", "sustained", "rebounding"}
+        and any(
+            row.get("provenance") == "observed"
+            and row.get("source") in {"x", "google_trends"}
+            for row in item.get("series") or []
+        )
         and float(item.get("hours_since_last_seen") or 10**9) <= 24.0
     ]
 
@@ -1522,14 +1525,18 @@ def select_balanced_home_top10(rows: list[dict], *, limit: int = 10) -> list[dic
 
 
 def _flow_group(item: dict) -> str | None:
-    """Map an evidence-complete, current candidate to one honest flow state."""
+    """Map an evidence-complete 24-hour candidate to one honest flow state."""
 
-    if item.get("is_current") is not True or item.get("lifecycle") == "expired":
+    if not any(
+        row.get("provenance") == "observed"
+        and row.get("source") in {"x", "google_trends"}
+        for row in item.get("series") or []
+    ):
         return None
     sources = set((item.get("latest_source_ranks") or {}).keys())
     measured = (item.get("ranking_data_readiness") or {}).get("momentum_status") == "measured"
     positive = float(item.get("momentum_delta") or 0.0) > 0.0
-    if measured and positive and {"x", "google_trends"}.issubset(sources):
+    if item.get("is_current") is True and measured and positive and {"x", "google_trends"}.issubset(sources):
         return "spreading"
     if not measured or item.get("lifecycle") == "new":
         return "emerging"
@@ -1546,7 +1553,8 @@ def _home_card(item: dict, group: str) -> dict:
         "related_keywords", "keywords", "companies", "company_status",
         "company_card_status", "stock_impact_hypothesis", "data_confidence",
         "observed_at", "why_now", "verification_layer", "platform_observation_summary",
-        "frontend_readiness_status", "company_card_reason",
+        "frontend_readiness_status", "company_card_reason", "disclaimer",
+        "keyword_company_links",
     )
     card = {field: item[field] for field in allowed if field in item}
     card["flow_group"] = group
@@ -2928,7 +2936,7 @@ def build_intelligence(
         "main_lane_total": len(lanes["main"]),
         "trend_top10_count": len(trend_top10),
         "company_count_affects_home": False,
-        "minimum_published_companies": MINIMUM_PUBLISHED_COMPANIES,
+        "minimum_published_companies": MINIMUM_FRONTEND_COMPANIES,
         "home_eligible_total": len(home_candidates),
         "home_excluded_total": len(lanes["main"]) - len(home_candidates),
         "exclusion_reasons": dict(sorted(Counter(

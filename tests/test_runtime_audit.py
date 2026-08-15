@@ -5,6 +5,8 @@ import sqlite3
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import pytest
+
 from trzip.runtime_audit import audit_runtime
 from trzip.publication_pipeline import _write_frontend_delivery
 from trzip.presentation_feed import build_presentation_feed
@@ -42,10 +44,18 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
             "ticker": f"0000{index:02d}",
             "stock_code": f"0000{index:02d}",
             "company_role_category": (
-                "manufacturing_development" if index <= 5 else "distribution"
+                "manufacturing_development" if index <= 4
+                else "distribution" if index <= 7
+                else "platform_service"
             ),
-            "company_role_label": "제조·개발" if index <= 5 else "유통",
-            "value_chain_stage": "core" if index <= 5 else "downstream",
+            "company_role_label": (
+                "제조·개발" if index <= 4
+                else "유통" if index <= 7
+                else "플랫폼·서비스"
+            ),
+            "value_chain_stage": (
+                "core" if index <= 4 else "downstream" if index <= 7 else "service"
+            ),
         }
         for index in range(1, 11)
     ]
@@ -98,7 +108,7 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
         "frontend_readiness_missing": [],
         "frontend_keyword_count": 5,
         "frontend_company_count": 10,
-        "frontend_company_role_category_count": 2,
+        "frontend_company_role_category_count": 3,
         "company_card_reason": "evidence_backed_ten_or_more",
         "keywords": [
             {"text": f"관련어{index}", "affects_score": False} for index in range(1, 6)
@@ -255,6 +265,26 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
             "is_combined_rank": True,
         },
     }
+    covered_hours = min(history_hours, 24)
+    processing_cycle = {
+        "schema_version": "trzip-processing-cycle-v1",
+        "observed_at": observed_at,
+        "coverage_24h": {
+            "window": {"expected_hours": 24},
+            "status": "complete" if covered_hours == 24 else "partial",
+            "source_hour_count": {
+                "x": covered_hours,
+                "google_trends": covered_hours,
+            },
+            "missing_hour_policy": "allowed_no_fill_no_reuse",
+            "ranking_uses_available_observed_hours_only": True,
+            "fabricated_hour_count": 0,
+            "reused_previous_hour_count": 0,
+        },
+        "enrichment_batch": {"attempted": True, "status": "completed"},
+        "daily_publication": {"due": True},
+    }
+    intelligence["processing_cycle"] = processing_cycle
     intelligence["presentation_feed"] = build_presentation_feed(intelligence)
     metadata = {
         "schema_version": "trzip-live-data-v3",
@@ -307,6 +337,7 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
             },
             "recovered_from_scheduled_failure": False,
         },
+        "processing_cycle": processing_cycle,
     }
     status = {
         "schema_version": "trzip-runtime-status-v1",
@@ -317,6 +348,7 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
         "observed_at": observed_at,
         "source_status": {"x": "observed", "google_trends": "observed"},
         "partial": False,
+        "processing_cycle": processing_cycle,
     }
     for name, value in (
         ("intelligence", intelligence),
@@ -389,22 +421,22 @@ def test_runtime_audit_passes_complete_combined_runtime(tmp_path: Path) -> None:
     assert result["metrics"]["history_stage"] == "long_horizon"
     assert result["metrics"]["frontend_surface"] == "presentation_feed"
     assert result["metrics"]["canonical_home_count"] == 1
-    assert result["metrics"]["presentation_count"] == 10
-    assert result["metrics"]["home_count"] == 10
-    assert result["metrics"]["company_ready_count"] == 10
-    assert result["metrics"]["presentation_ready"] is True
+    assert result["metrics"]["presentation_count"] == 0
+    assert result["metrics"]["home_count"] == 0
+    assert result["metrics"]["company_ready_count"] == 0
+    assert result["metrics"]["presentation_ready"] is False
     assert result["metrics"]["frontend_presentation"] == {
-        "schema_version": "trzip-presentation-feed-v3",
+        "schema_version": "trzip-presentation-feed-v4",
         "legacy_contract": False,
         "warnings": [],
-        "presentation_count": 10,
-        "company_ready_count": 10,
-        "presentation_ready": True,
+        "presentation_count": 0,
+        "company_ready_count": 0,
+        "presentation_ready": False,
         "ranking_effect": "none",
     }
 
 
-def test_runtime_audit_accepts_immutable_v2_feed_with_legacy_marker(
+def test_runtime_audit_rejects_legacy_v2_feed_as_live_default(
     tmp_path: Path,
 ) -> None:
     _write_runtime(tmp_path)
@@ -435,15 +467,8 @@ def test_runtime_audit_accepts_immutable_v2_feed_with_legacy_marker(
     intelligence_path.write_text(
         json.dumps(intelligence, ensure_ascii=False), encoding="utf-8"
     )
-    _refresh_frontend_delivery(tmp_path)
-
-    result = audit_runtime(tmp_path)
-
-    assert result["status"] == "pass"
-    assert result["metrics"]["frontend_presentation"]["legacy_contract"] is True
-    assert result["metrics"]["frontend_presentation"]["warnings"] == [
-        "legacy_logo_contract_v2"
-    ]
+    with pytest.raises(ValueError, match="legacy presentation feeds"):
+        _refresh_frontend_delivery(tmp_path)
 
 
 def test_runtime_audit_accepts_24_hour_mvp_and_warns_before_48_hours(
@@ -463,6 +488,8 @@ def test_runtime_audit_blocks_history_shorter_than_one_day(tmp_path: Path) -> No
 
     result = audit_runtime(tmp_path)
 
+    # A complete 24-hour source absence blocks publication.  Runtime audit
+    # expresses a cleanly diagnosed operational blocker as provisional.
     assert result["status"] == "provisional"
     assert "clean_history_under_24_hours" in result["blockers"]
     assert result["metrics"]["history_stage"] == "initial"
@@ -510,11 +537,13 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
         "partial": True,
     }
     intelligence["publishable"] = False
+    intelligence["processing_cycle"]["coverage_24h"]["source_hour_count"]["x"] = 0
     intelligence_path.write_text(json.dumps(intelligence), encoding="utf-8")
     metadata_path = tmp_path / "publication" / "latest" / "metadata.json"
     metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
     metadata["collection"]["observed"] = 100
     metadata["publishable"] = False
+    metadata["processing_cycle"]["coverage_24h"]["source_hour_count"]["x"] = 0
     metadata["collection"]["audit"]["x_korea_realtime"] = {
         "status": "current_session_not_ready",
         "row_count": 0,
@@ -544,6 +573,7 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
     }
     status["partial"] = True
     status["publishable"] = False
+    status["processing_cycle"]["coverage_24h"]["source_hour_count"]["x"] = 0
     status_path.write_text(json.dumps(status), encoding="utf-8")
     connection = sqlite3.connect(tmp_path / "data" / "trzip-hourly.sqlite3")
     connection.execute("DELETE FROM hourly_observations WHERE source='x'")
@@ -553,9 +583,60 @@ def test_runtime_audit_reports_provisional_without_x(tmp_path: Path) -> None:
 
     result = audit_runtime(tmp_path)
 
+    # A complete 24-hour source absence blocks publication.  Runtime audit
+    # expresses a cleanly diagnosed operational blocker as provisional.
     assert result["status"] == "provisional"
     assert "combined_x_google_not_ready" in result["blockers"]
     assert "x_v3_history_missing" in result["blockers"]
+
+
+def test_runtime_audit_allows_current_hour_gap_when_both_sources_exist_in_24h(tmp_path: Path) -> None:
+    _write_runtime(tmp_path)
+    intelligence_path = tmp_path / "publication" / "latest" / "intelligence.json"
+    intelligence = json.loads(intelligence_path.read_text(encoding="utf-8"))
+    intelligence["ranking_availability"] = {
+        "current_sources": ["google_trends"],
+        "missing_sources": ["x"],
+        "is_combined_rank": False,
+    }
+    intelligence["collection_status"] = {
+        "source_status": {"x": "current_session_not_ready", "google_trends": "observed"},
+        "partial": True,
+    }
+    intelligence_path.write_text(json.dumps(intelligence), encoding="utf-8")
+
+    metadata_path = tmp_path / "publication" / "latest" / "metadata.json"
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    metadata["collection"]["observed"] = 100
+    metadata["collection"]["audit"]["x_korea_realtime"] = {
+        "status": "current_session_not_ready", "row_count": 0,
+    }
+    metadata["collection_health"].update({
+        "current_publication_status": "scheduled_partial",
+        "current_publication_success": False,
+        "current_publication_source_success": {"x": False, "google_trends": True},
+        "current_schedule_initial_attempt_success": False,
+        "latest_scheduled_attempt_success": False,
+        "latest_scheduled_attempt_source_success": {"x": False, "google_trends": True},
+    })
+    metadata_path.write_text(json.dumps(metadata), encoding="utf-8")
+
+    status_path = tmp_path / "publication" / "latest" / "status.json"
+    status = json.loads(status_path.read_text(encoding="utf-8"))
+    status["source_status"] = {
+        "x": "current_session_not_ready", "google_trends": "observed",
+    }
+    status["partial"] = True
+    status_path.write_text(json.dumps(status), encoding="utf-8")
+    _refresh_frontend_delivery(tmp_path)
+
+    result = audit_runtime(tmp_path)
+
+    assert result["status"] == "pass"
+    assert "current_hour_source_gap" in result["warnings"]
+    assert "current_hour_ranking_view_provisional" in result["warnings"]
+    assert "combined_x_google_not_ready" not in result["blockers"]
+    assert "ranking_is_provisional" not in result["blockers"]
 
 
 def test_runtime_audit_rejects_ambiguous_recovery_health_state(tmp_path: Path) -> None:

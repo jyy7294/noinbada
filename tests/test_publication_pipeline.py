@@ -10,8 +10,11 @@ from trzip.publication_pipeline import (
     _attach_youtube_chart_signals,
     _annotate_x_collection_provenance,
     _collection_health,
+    _domestic_reference_needs_fundamentals,
+    _enrich_market_references,
     _failure_class,
     _public_market_reference,
+    _merge_domestic_market_references,
     _verification_references,
     _hourly_verification_term_limit,
     _period_detail_items,
@@ -24,12 +27,12 @@ from trzip.publication_pipeline import (
     run,
 )
 from trzip.hourly_store import HourlyObservation
-from trzip.presentation_feed import build_presentation_feed
+from trzip.presentation_feed import build_presentation_feed, build_reference_demo_feed
 
 
 @pytest.fixture(autouse=True)
 def enable_auxiliary_path_for_legacy_provider_tests(monkeypatch):
-    """Exercise the optional path explicitly; production defaults it off."""
+    """Exercise the NAVER News path explicitly in provider unit fixtures."""
 
     monkeypatch.setenv("TRZIP_AUXILIARY_RESEARCH_ENABLED", "1")
 
@@ -108,7 +111,7 @@ def test_provider_context_research_uses_only_naver_title_with_observed_alias():
                     "status": "observed",
                     "matched": True,
                     "evidence": [{
-                        "item_type": "news",
+                            "item_type": "naver_news",
                         "title": "오디세이 공식 예고편 공개",
                         "url": "https://news.example/odyssey",
                         "published_at": "2026-08-14T00:00:00+00:00",
@@ -175,7 +178,7 @@ def _verified_live_data_fixture(tmp_path):
     publication_id = "pub-" + "a" * 32
     observed_at = "2026-08-14T18:00:00+00:00"
     generated_at = "2026-08-14T18:05:00+00:00"
-    feed = build_presentation_feed({"unified_ranking": []})
+    feed = build_reference_demo_feed({"unified_ranking": []})
     presentation_path = latest / "delivery" / publication_id / "presentation.json"
     presentation_path.parent.mkdir(parents=True)
     presentation_path.write_text(json.dumps({
@@ -234,7 +237,7 @@ def _verified_live_data_fixture(tmp_path):
     return publication, database, feed
 
 
-def test_missing_rank_baseline_bootstraps_verified_live_data_feed(tmp_path, monkeypatch):
+def test_first_v4_publication_ignores_verified_legacy_v3_feed(tmp_path, monkeypatch):
     publication, database, previous_feed = _verified_live_data_fixture(tmp_path)
     monkeypatch.setattr(
         "trzip.publication_pipeline._validate_frontend_delivery",
@@ -248,8 +251,11 @@ def test_missing_rank_baseline_bootstraps_verified_live_data_feed(tmp_path, monk
     )
     current = build_presentation_feed({"unified_ranking": []}, previous_feed=loaded)
 
-    assert loaded == previous_feed
-    assert [item["rank_movement"]["label"] for item in current["items"]] == ["유지"] * 10
+    assert previous_feed["schema_version"] == "trzip-presentation-feed-v3"
+    assert loaded is None
+    assert current["schema_version"] == "trzip-presentation-feed-v4"
+    assert current["status"] == "empty"
+    assert current["items"] == []
 
 
 def test_invalid_live_data_receipt_keeps_new_rank_fallback(tmp_path, monkeypatch):
@@ -272,7 +278,8 @@ def test_invalid_live_data_receipt_keeps_new_rank_fallback(tmp_path, monkeypatch
     current = build_presentation_feed({"unified_ranking": []}, previous_feed=loaded)
 
     assert loaded is None
-    assert [item["rank_movement"]["label"] for item in current["items"]] == ["NEW"] * 10
+    assert current["status"] == "empty"
+    assert current["items"] == []
 
 
 def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
@@ -282,32 +289,72 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     monkeypatch.setattr("trzip.publication_pipeline.floor_hour", lambda value: at)
     monkeypatch.setattr(
         "trzip.hourly_store.collect_google",
-        lambda value: [HourlyObservation(stamp, "google_trends", "말복", 1, 100, "observed")],
+        lambda value: [
+            HourlyObservation(
+                stamp, "google_trends",
+                "말복" if rank == 1 else f"구글-{rank}",
+                rank, 101 - rank, "observed",
+                source_payload_json=json.dumps({
+                    "collection_declared_total": 100,
+                    "collection_page_count": 4,
+                    "collection_completion_verified": True,
+                }),
+                collector_version="google_trending_now_kr_v1",
+            )
+            for rank in range(1, 101)
+        ],
     )
     monkeypatch.setattr(
         "trzip.hourly_store.collect_x",
-        lambda value: [HourlyObservation(stamp, "x", "말복", 1, 100, "observed")],
+        lambda value: [
+            HourlyObservation(
+                stamp, "x", "말복" if rank == 1 else f"엑스-{rank}",
+                rank, 101 - rank, "observed",
+                collector_version="x_current_session_kr_v1",
+            )
+            for rank in range(1, 31)
+        ],
     )
     monkeypatch.setattr(
         "trzip.publication_pipeline.pykrx_stock",
         lambda code, base_date, lookback_days=21: {
-            "status": "observed",
-            "provider": "pykrx",
-            "stock_code": code,
-            "summary": {
-                "as_of": at.date().isoformat(),
-                "close": 10000,
-                "daily_change_pct": 1.25,
-                "volume": 123456,
-            },
-            "daily_ohlcv": [],
+             "status": "observed",
+             "provider": "pykrx",
+             "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+             "stock_code": code,
+             "summary": {
+                 "as_of": at.date().isoformat(),
+                 "close": 10000,
+                 "close_krw": 10000,
+                 "daily_change_pct": 1.25,
+                 "volume": 123456,
+                 "currency": "KRW",
+                 "market_cap": 1_000_000_000,
+                 "market_cap_krw": 1_000_000_000,
+             },
+             "valuation": {"per": 10.0, "pbr": 1.0, "roe_pct": 10.0},
+             "fx_reference": {
+                 "status": "observed", "provider": "identity", "rate": 1.0,
+                 "as_of": at.date().isoformat(),
+                 "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+             },
+             "daily_ohlcv": [],
         },
+    )
+    def unexpected_yahoo(*_args, **_kwargs):
+        raise AssertionError("complete pykrx fixture must not call Yahoo")
+
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.yahoo_finance_fundamentals", unexpected_yahoo
+    )
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.yahoo_finance_stock", unexpected_yahoo
     )
     monkeypatch.setattr("trzip.publication_pipeline.verify_terms", lambda *args, **kwargs: [])
 
     result = run(tmp_path)
 
-    assert result["collection"]["observed"] == 2
+    assert result["collection"]["observed"] == 130
     assert result["daily_file"].startswith("observations/")
     assert result["pruned_observation_files"] == 0
     assert result["retention_policy"] == "indefinite"
@@ -377,7 +424,7 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     _validate_frontend_delivery(tmp_path / "latest", manifest)
     presentation_path = tmp_path / "latest" / manifest["bundle"]["presentation"]["path"]
     presentation_payload = json.loads(presentation_path.read_text(encoding="utf-8"))
-    presentation_payload["presentation_feed"]["items"][0]["why_now"] += " 불일치"
+    presentation_payload["presentation_feed"]["observed_at"] = "2000-01-01T00:00:00+00:00"
     presentation_path.write_text(
         json.dumps(presentation_payload, ensure_ascii=False, separators=(",", ":")),
         encoding="utf-8",
@@ -392,8 +439,8 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
 
     second = run(tmp_path)
     daily = json.loads((tmp_path / second["daily_file"]).read_text(encoding="utf-8"))
-    assert len(daily) == 2
-    assert second["coverage"]["rows"] == 2
+    assert len(daily) == 130
+    assert second["coverage"]["rows"] == 130
     assert second["publication_id"] != result["publication_id"]
 
 
@@ -471,8 +518,10 @@ def test_hourly_verification_uses_twenty_term_capacity_and_reuses_ledger(
         "selection_policy": "never_verified_then_oldest_verified_then_current_rank",
         "candidate_count": 5,
         "selection_scope": "current_non_issue_candidates_including_review_lane",
-        "providers": ["naver"],
-        "ranking_effect": "none",
+            "providers": ["naver"],
+            "configured": True,
+            "ranking_effect": "none",
+            "new_provider_calls_allowed_this_run": True,
         "home_ranking_effect": "none_context_only",
         "affects_collection_partial": False,
         "blocks_publication": False,
@@ -504,7 +553,15 @@ def test_verification_layer_exposes_only_active_naver_provider(monkeypatch, tmp_
         lambda path: {
             "event:1": {
                 "providers": {
-                    "naver": {"status": "observed", "matched": True},
+                    "naver": {
+                        "status": "observed",
+                        "matched": True,
+                        "evidence": [{
+                            "item_type": "naver_news",
+                            "title": "후보 1 공식 공개",
+                            "url": "https://example.com/news/1",
+                        }],
+                    },
                     "youtube": {"status": "observed", "matched": True},
                 }
             }
@@ -521,6 +578,42 @@ def test_verification_layer_exposes_only_active_naver_provider(monkeypatch, tmp_
     assert list(layer["providers"]) == ["naver"]
     assert layer["observed_platforms"] == ["naver"]
     assert result["verification_run"]["providers"] == ["naver"]
+
+
+def test_naver_news_defaults_active_with_credentials_but_explicit_zero_disables(
+    monkeypatch, tmp_path
+):
+    from trzip.provider_verification import ProviderCredentials
+
+    at = datetime(2026, 8, 12, 13, tzinfo=UTC)
+    database = tmp_path / "runtime.sqlite3"
+    calls = []
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.resolve_provider_credentials",
+        lambda: ProviderCredentials("id", "secret", "", ""),
+    )
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.verification_trend_keys_at", lambda *args: set()
+    )
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.latest_verification_by_trend", lambda *args: {}
+    )
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.verify_terms",
+        lambda references, **kwargs: calls.append(list(references)) or [],
+    )
+
+    monkeypatch.delenv("TRZIP_AUXILIARY_RESEARCH_ENABLED", raising=False)
+    active = _refresh_verification_layer(_public_rows(1), database, at)
+    assert active["verification_run"]["status"] == "completed"
+    assert active["verification_run"]["providers"] == ["naver"]
+    assert len(calls) == 1
+
+    monkeypatch.setenv("TRZIP_AUXILIARY_RESEARCH_ENABLED", "0")
+    disabled = _refresh_verification_layer(_public_rows(1), database, at)
+    assert disabled["verification_run"]["status"] == "disabled_by_runtime_policy"
+    assert disabled["verification_run"]["providers"] == []
+    assert len(calls) == 1
 
 
 def test_hourly_verification_refreshes_public_ten_each_hour(
@@ -611,6 +704,260 @@ def test_market_reference_public_contract_removes_provider_exception_text():
         "stock_code": "005930",
         "reason": "market_reference_error",
     }
+
+
+def test_market_reference_public_contract_nulls_invalid_ratios_but_keeps_negative_roe():
+    sanitized = _public_market_reference(
+        {
+            "status": "observed",
+            "provider": "pykrx",
+            "source_url": "https://data.krx.co.kr/",
+            "stock_code": "005930",
+            "summary": {
+                "market_cap": float("inf"),
+                "market_cap_krw": 0,
+                "currency": "KRW",
+            },
+            "valuation": {
+                "per": 0,
+                "pbr": float("nan"),
+                "roe_pct": -4.5,
+            },
+        },
+        "005930",
+    )
+
+    assert sanitized["summary"]["market_cap"] is None
+    assert sanitized["summary"]["market_cap_krw"] is None
+    assert sanitized["market_cap"] is None
+    assert sanitized["valuation"]["per"] is None
+    assert sanitized["valuation"]["pbr"] is None
+    assert sanitized["valuation"]["roe_pct"] == -4.5
+
+
+def test_market_enrichment_routes_domestic_and_overseas_actual_providers(monkeypatch):
+    at = datetime(2026, 8, 15, 0, tzinfo=UTC)
+    daily = [
+        {"date": f"2026-07-{index:02d}", "close": 100 + index}
+        for index in range(1, 31)
+    ]
+    calls = []
+
+    def fake_pykrx(code, base_date, lookback_days=45):
+        calls.append(("pykrx", code, base_date, lookback_days))
+        return {
+            "status": "observed", "provider": "pykrx", "stock_code": code,
+            "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "daily_ohlcv": daily,
+            "summary": {"as_of": "2026-07-30", "currency": "KRW", "close": 130, "market_cap": 1_000},
+            "valuation": {"per": 10.0, "pbr": 1.2, "roe_pct": 8.0},
+        }
+
+    def fake_yahoo(code, exchange, as_of=None):
+        calls.append(("yahoo_finance", code, exchange, as_of))
+        return {
+            "status": "observed", "provider": "yahoo_finance", "ticker": code,
+            "exchange": exchange, "source_url": f"https://finance.yahoo.com/quote/{code}",
+            "daily_ohlcv": daily,
+            "summary": {"as_of": "2026-07-30", "currency": "USD", "close": 130, "market_cap": 2_000},
+            "valuation": {"per": 20.0, "pbr": 2.2, "roe_pct": 18.0},
+        }
+
+    monkeypatch.setattr("trzip.publication_pipeline.pykrx_stock", fake_pykrx)
+    monkeypatch.setattr("trzip.publication_pipeline.yahoo_finance_stock", fake_yahoo)
+    intelligence = {"unified_ranking": [{"company_candidates": [
+        {"stock_code": "005930", "market": "KRX"},
+        {"stock_code": "AAPL", "market": "NASDAQ"},
+    ]}]}
+
+    result = _enrich_market_references(intelligence, {}, at)
+    domestic, overseas = result["unified_ranking"][0]["company_candidates"]
+
+    assert [call[0] for call in calls] == ["pykrx", "yahoo_finance"]
+    assert domestic["market_reference"]["currency"] == "KRW"
+    assert overseas["market_reference"]["currency"] == "USD"
+    assert overseas["market_reference"]["market_cap"] == 2_000
+    assert overseas["market_reference"]["valuation"]["roe_pct"] == 18.0
+    assert result["market_data_status"]["provider"] == "multi_market_actual"
+    assert result["market_data_status"]["provider_request_count"] == {
+        "pykrx": 1, "yahoo_finance": 1,
+    }
+
+
+def test_domestic_market_enrichment_supplements_only_missing_actual_facts(monkeypatch):
+    at = datetime(2026, 8, 15, 0, tzinfo=UTC)
+    daily = [
+        {"date": f"2026-07-{index:02d}", "close": 70_000 + index}
+        for index in range(1, 31)
+    ]
+    calls = []
+
+    def fake_pykrx(code, base_date, lookback_days=45):
+        calls.append(("pykrx", code))
+        return {
+            "status": "observed",
+            "provider": "pykrx",
+            "stock_code": code,
+            "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "daily_ohlcv": daily,
+            "summary": {
+                "as_of": "2026-07-30",
+                "currency": "KRW",
+                "close": 70_030,
+                "close_krw": 70_030,
+                "market_cap": None,
+                "market_cap_krw": None,
+            },
+            "fx_reference": {
+                "status": "observed",
+                "provider": "identity",
+                "rate": 1.0,
+                "as_of": "2026-07-30",
+                "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            },
+            "valuation": {"per": 11.0, "pbr": 1.4},
+        }
+
+    def fake_yahoo(code, exchange, as_of=None):
+        calls.append(("yahoo_finance", code, exchange))
+        return {
+            "status": "observed",
+            "provider": "yahoo_finance",
+            "ticker": code,
+            "exchange": exchange,
+            "source_url": f"https://finance.yahoo.com/quote/{code}.KS",
+            "daily_ohlcv": [{"date": "2026-07-30", "close": 70_030}],
+            "summary": {
+                "as_of": "2026-07-30",
+                "currency": "KRW",
+                "close": 70_030,
+                "close_krw": 70_030,
+                "market_cap": 420_000_000_000_000,
+                "market_cap_krw": 420_000_000_000_000,
+            },
+            "valuation": {"per": 12.0, "pbr": 1.5, "roe_pct": 13.0},
+            "fx_reference": {
+                "status": "observed",
+                "provider": "identity",
+                "rate": 1.0,
+                "as_of": "2026-07-30",
+                "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            },
+        }
+
+    monkeypatch.setattr("trzip.publication_pipeline.pykrx_stock", fake_pykrx)
+    monkeypatch.setattr("trzip.publication_pipeline.yahoo_finance_fundamentals", fake_yahoo)
+    intelligence = {
+        "unified_ranking": [{"company_candidates": [{"stock_code": "005930", "market": "KOSPI"}]}]
+    }
+
+    result = _enrich_market_references(intelligence, {}, at)
+    market = result["unified_ranking"][0]["company_candidates"][0]["market_reference"]
+
+    assert calls == [("pykrx", "005930"), ("yahoo_finance", "005930", "KOSPI")]
+    assert market["provider"] == "pykrx+yahoo_finance"
+    assert len(market["daily_ohlcv"]) == 30  # primary KRX price series is preserved
+    assert market["summary"]["market_cap_krw"] == 420_000_000_000_000
+    assert market["valuation"] == {"per": 11.0, "pbr": 1.4, "roe_pct": 13.0}
+    assert result["market_data_status"]["provider_request_count"] == {
+        "pykrx": 1,
+        "yahoo_finance": 1,
+    }
+
+
+def test_domestic_market_metric_validity_replaces_sentinels_but_keeps_real_roe():
+    primary = {
+        "status": "observed",
+        "provider": "pykrx",
+        "source_url": "https://data.krx.co.kr/",
+        "summary": {"market_cap": float("nan"), "market_cap_krw": 0},
+        "valuation": {"per": 0.0, "pbr": float("inf"), "roe_pct": -4.5},
+    }
+    supplement = {
+        "status": "observed",
+        "provider": "yahoo_finance",
+        "source_url": "https://finance.yahoo.com/quote/005930.KS",
+        "summary": {"market_cap": 1000.0, "market_cap_krw": 1000.0},
+        "valuation": {"per": 9.0, "pbr": 1.2, "roe_pct": 8.0},
+    }
+
+    assert _domestic_reference_needs_fundamentals(primary) is True
+    merged = _merge_domestic_market_references(primary, supplement)
+
+    assert merged["summary"]["market_cap_krw"] == 1000.0
+    assert merged["valuation"] == {"per": 9.0, "pbr": 1.2, "roe_pct": -4.5}
+    assert merged["provider"] == "pykrx+yahoo_finance"
+
+    zero_roe = {
+        **primary,
+        "summary": {"market_cap": 1000.0, "market_cap_krw": 1000.0},
+        "valuation": {"per": 9.0, "pbr": 1.2, "roe_pct": 0.0},
+    }
+    assert _domestic_reference_needs_fundamentals(zero_roe) is False
+
+
+def test_market_status_separates_attempts_from_observed_contributors(monkeypatch):
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.pykrx_stock",
+        lambda *_args, **_kwargs: {
+            "status": "observed",
+            "provider": "pykrx",
+            "source_url": "https://data.krx.co.kr/",
+            "daily_ohlcv": [{"date": "2026-08-14", "close": 100}],
+            "summary": {"as_of": "2026-08-14", "currency": "KRW", "close": 100},
+            "valuation": {},
+        },
+    )
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.yahoo_finance_fundamentals",
+        lambda *_args, **_kwargs: {"status": "unavailable", "provider": "yahoo_finance"},
+    )
+    intelligence = {
+        "unified_ranking": [{"company_candidates": [{"stock_code": "005930", "market": "KOSPI"}]}]
+    }
+
+    result = _enrich_market_references(
+        intelligence, {}, datetime(2026, 8, 15, 0, tzinfo=UTC)
+    )
+    status = result["market_data_status"]
+
+    assert status["provider"] == "pykrx"
+    assert status["providers"] == ["pykrx"]
+    assert status["attempted_providers"] == ["pykrx", "yahoo_finance"]
+    assert status["observed_provider_row_count"] == {"pykrx": 1, "yahoo_finance": 0}
+    assert status["provider_request_count"] == {"pykrx": 1, "yahoo_finance": 1}
+
+
+def test_domestic_market_enrichment_never_fills_missing_values_when_both_providers_fail(monkeypatch):
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.pykrx_stock",
+        lambda *_args, **_kwargs: {"status": "unavailable", "reason": "krx_down"},
+    )
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.yahoo_finance_stock",
+        lambda *_args, **_kwargs: {"status": "unavailable", "reason": "yahoo_down"},
+    )
+    intelligence = {
+        "unified_ranking": [{"company_candidates": [{"stock_code": "005930", "market": "KRX"}]}]
+    }
+
+    result = _enrich_market_references(
+        intelligence, {}, datetime(2026, 8, 15, 0, tzinfo=UTC)
+    )
+    market = result["unified_ranking"][0]["company_candidates"][0]["market_reference"]
+
+    assert market["status"] == "unavailable"
+    assert "summary" not in market
+    assert result["market_data_status"]["provider_request_count"] == {
+        "pykrx": 1,
+        "yahoo_finance": 2,
+    }
+    assert result["market_data_status"]["provider"] == "unavailable"
+    assert result["market_data_status"]["providers"] == []
+    assert result["market_data_status"]["attempted_providers"] == [
+        "pykrx",
+        "yahoo_finance",
+    ]
 
 
 def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(

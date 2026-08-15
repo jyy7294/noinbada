@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import math
 import os
 import re
 import shutil
@@ -20,9 +21,15 @@ from .intelligence import (
     refresh_frontend_readiness,
     select_balanced_home_top10,
 )
-from .company_adapters import enrich_company_identities, pykrx_stock
+from .company_adapters import (
+    enrich_company_identities,
+    pykrx_stock,
+    yahoo_finance_fundamentals,
+    yahoo_finance_stock,
+)
 from .company_roles import COMPANY_ROLE_LABELS
 from .enrichment_queue import sync_enrichment_queue
+from .enrichment_handoff import run_handoff
 from .editorial_review import apply_frontend_enrichment_cache, build_editorial_review_pack
 from .event_resolution import normalize_event_key
 from .ontology import MINIMUM_FRONTEND_COMPANIES
@@ -30,15 +37,17 @@ from .keyword_candidates import sync_provider_keyword_candidates
 from .keyword_policy import keyword_fits_public_label
 from .normalization_evaluation import evaluate_regression_set
 from .presentation_feed import (
+    _calculated_roe_provenance_is_valid,
     LOGO_ASSET_VERIFICATION,
     LOGO_MINIMUM_DIMENSION,
     LOGO_QUALITY_POLICY,
     PRESENTATION_STAGES,
-    REFERENCE_TOP10,
     build_presentation_feed,
+    live_logo_contract_is_valid,
     logo_asset_contract_is_valid,
     logo_display_contract_is_valid,
 )
+from .processing_cycle import build_processing_cycle, checkpoint_due
 from .semantic_adjudication import run_semantic_adjudication
 from .provider_verification import (
     TrendReference,
@@ -306,17 +315,29 @@ def _verification_references(
     return references
 
 
-def _refresh_verification_layer(intelligence: dict, database_path: Path, at: datetime) -> dict:
+def _refresh_verification_layer(
+    intelligence: dict,
+    database_path: Path,
+    at: datetime,
+    *,
+    collect_new: bool = True,
+) -> dict:
     """Collect platform evidence without changing canonical X/Google rank.
 
     Provider failures are recorded as data states and never block publication.
-    Up to twenty current non-issue candidates receive NAVER candidate-level
-    measurements each hour. YouTube is not activated by this optional path.
+    A bounded set of non-issue candidates receives NAVER News context at the
+    four-hour enrichment checkpoint. YouTube is never activated by this path.
     Candidates held in the review lane remain eligible, and a retry of the
     same observation hour reuses the append-only ledger.
     """
 
-    auxiliary_enabled = os.getenv("TRZIP_AUXILIARY_RESEARCH_ENABLED", "0").strip() == "1"
+    auxiliary_setting = os.getenv("TRZIP_AUXILIARY_RESEARCH_ENABLED")
+    auxiliary_explicitly_disabled = str(auxiliary_setting or "").strip().casefold() in {
+        "0", "false", "off", "no", "disabled",
+    }
+    # News context is active by default when credentials are available.  An
+    # operator can still force it off explicitly without changing code.
+    auxiliary_enabled = not auxiliary_explicitly_disabled
     ranking_before = [
         (item.get("event_key"), item.get("rank"), item.get("score"))
         for item in intelligence.get("unified_ranking", [])
@@ -332,7 +353,14 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         latest_before_run = latest_verification_by_trend(database_path)
     except Exception:
         latest_before_run = {}
-    if not auxiliary_enabled:
+    credentials = resolve_provider_credentials()
+    naver_configured = bool(
+        credentials.naver_client_id and credentials.naver_client_secret
+    )
+    if not naver_configured or not auxiliary_enabled:
+        references = []
+        pending_references = []
+    elif not collect_new:
         references = []
         pending_references = []
     elif completed_this_hour:
@@ -352,17 +380,27 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
             verification_by_trend=latest_before_run,
         )
         pending_references = list(references)
-    run_status = "disabled_by_runtime_policy" if not auxiliary_enabled else "skipped_no_candidates"
+    run_status = (
+        "disabled_missing_config"
+        if not naver_configured
+        else "disabled_by_runtime_policy"
+        if not auxiliary_enabled
+        else "deferred_to_enrichment_checkpoint"
+        if not collect_new
+        else "skipped_no_candidates"
+    )
     attempted_term_count = 0
     error = None
     try:
-        if not auxiliary_enabled:
+        if not naver_configured or not auxiliary_enabled:
+            pass
+        elif not collect_new:
             pass
         elif ledger_read_error:
             raise RuntimeError("provider verification ledger unavailable")
-        if completed_this_hour:
+        if naver_configured and auxiliary_enabled and completed_this_hour:
             run_status = "skipped_already_recorded_for_hour"
-        elif pending_references:
+        elif naver_configured and auxiliary_enabled and pending_references:
             attempted_term_count = len(pending_references)
             verify_terms(
                 pending_references,
@@ -388,14 +426,26 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         # The append-only ledger may contain historical YouTube rows.  The
         # active auxiliary policy is NAVER News only, so do not expose a stale
         # provider as if this run had selected or observed it.
-        providers = {
-            "naver": stored_providers["naver"]
-        } if isinstance(stored_providers.get("naver"), dict) else {}
+        providers = {}
+        if isinstance(stored_providers.get("naver"), dict):
+            naver_record = dict(stored_providers["naver"])
+            news_evidence = [
+                evidence for evidence in naver_record.get("evidence") or []
+                if isinstance(evidence, dict)
+                and evidence.get("item_type") == "naver_news"
+            ]
+            naver_record["evidence"] = news_evidence
+            naver_record["matched"] = bool(news_evidence)
+            naver_record["status"] = "observed" if news_evidence else "no_match"
+            naver_record["endpoint"] = "naver_news_search"
+            providers["naver"] = naver_record
         item["verification_layer"] = {
             **record,
             "providers": providers,
             "status": (
-                "disabled_by_runtime_policy"
+                "disabled_missing_config"
+                if not naver_configured
+                else "disabled_by_runtime_policy"
                 if not auxiliary_enabled
                 else
                 "observed"
@@ -428,7 +478,9 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         ),
         "selection_scope": "current_non_issue_candidates_including_review_lane",
         "providers": [] if not auxiliary_enabled else ["naver"],
+        "configured": naver_configured,
         "ranking_effect": "none",
+        "new_provider_calls_allowed_this_run": collect_new,
         "home_ranking_effect": "none_auxiliary_research_disabled" if not auxiliary_enabled else "none_context_only",
         "affects_collection_partial": False,
         "blocks_publication": False,
@@ -518,6 +570,10 @@ def _provider_context_record(item: dict) -> dict | None:
             continue
         for evidence in record.get("evidence") or []:
             if not isinstance(evidence, dict):
+                continue
+            # Historical ledgers may contain NAVER Blog/Cafe records from an
+            # earlier experiment.  The active context policy accepts news only.
+            if evidence.get("item_type") != "naver_news":
                 continue
             title = str(evidence.get("title") or "").strip()
             url = str(evidence.get("url") or "").strip()
@@ -717,19 +773,43 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
     publishable_values = {document.get("publishable") for document in documents}
     if None in publishable_values or len(publishable_values) != 1:
         raise ValueError("All publication documents must share one publishable state")
+    processing_cycle = intelligence.get("processing_cycle")
+    if not isinstance(processing_cycle, dict) or any(
+        document.get("processing_cycle") != processing_cycle
+        for document in documents[1:]
+    ):
+        raise ValueError("All publication documents must share one processing cycle audit")
+    if processing_cycle.get("observed_at") not in observed_at:
+        raise ValueError("Processing cycle must describe the publication observation hour")
+    coverage_24h = processing_cycle.get("coverage_24h") or {}
+    if (
+        coverage_24h.get("missing_hour_policy") != "allowed_no_fill_no_reuse"
+        or coverage_24h.get("ranking_uses_available_observed_hours_only") is not True
+        or coverage_24h.get("fabricated_hour_count") != 0
+        or coverage_24h.get("reused_previous_hour_count") != 0
+        or (coverage_24h.get("window") or {}).get("expected_hours") != 24
+    ):
+        raise ValueError("The 24-hour coverage audit must preserve gaps without reuse")
+    enrichment_batch = processing_cycle.get("enrichment_batch") or {}
+    daily_publication = processing_cycle.get("daily_publication") or {}
+    if daily_publication.get("due") is True and enrichment_batch.get("attempted") is not True:
+        raise ValueError("Daily publication hour requires an attempted enrichment checkpoint")
     collection = metadata["collection"]
     if collection.get("rank_sources") != ["x", "google_trends"]:
         raise ValueError("Canonical observed rank sources must be X and Google Trends")
     if "trends_mcp_used" in collection or "generated" in collection:
         raise ValueError("Legacy collection flags are not allowed in the v3 contract")
-    audit = collection.get("audit") or {}
-    source_observed = all(
-        (audit.get(key) or {}).get("status") == "observed"
-        for key in ("x_korea_realtime", "google_geo_kr")
+    source_hour_count = coverage_24h.get("source_hour_count") or {}
+    expected_publishable = (
+        all(int(source_hour_count.get(source) or 0) >= 1
+            for source in ("x", "google_trends"))
+        and coverage_24h.get("fabricated_hour_count") == 0
+        and coverage_24h.get("reused_previous_hour_count") == 0
     )
-    expected_publishable = source_observed and not collection.get("errors")
     if bool(metadata.get("publishable")) is not expected_publishable:
-        raise ValueError("publishable requires same-hour observed X and Google with no errors")
+        raise ValueError(
+            "publishable requires usable observed X and Google within the latest 24h"
+        )
     _validate_period_views(intelligence)
     ranking = intelligence.get("unified_ranking", [])
     if [item.get("rank") for item in ranking] != list(range(1, len(ranking) + 1)):
@@ -861,11 +941,193 @@ def _validated_child(root: Path, relative_path: str) -> Path:
     return target
 
 
+def _validate_live_presentation_feed(feed: dict) -> None:
+    """Validate the actual-only v4 frontend projection."""
+
+    from .processing_cycle import complete_card_gate
+
+    items = list(feed.get("items") or [])
+    status = feed.get("status")
+    if status not in {"ready", "empty"} or status == "empty" and items:
+        raise ValueError("live presentation status does not match its item count")
+    if status == "ready" and not items:
+        raise ValueError("live presentation ready status requires at least one item")
+    if feed.get("frontend_default") is not True:
+        raise ValueError("live presentation must be the frontend default")
+    if feed.get("selection_policy") != "validated_live_home_feed_v1":
+        raise ValueError("live presentation selection policy is invalid")
+    logo_policy = feed.get("logo_policy") or {}
+    if (
+        logo_policy.get("version") != LOGO_QUALITY_POLICY
+        or logo_policy.get("avatar_size_px") != 44
+        or logo_policy.get("minimum_raster_dimension_px") != LOGO_MINIMUM_DIMENSION
+        or logo_policy.get("vector_assets_allowed") is not True
+        or logo_policy.get("low_resolution_fallback") != "initials"
+        or logo_policy.get("runtime_probe_for_generic_favicons") is not False
+        or logo_policy.get("official_page_resolver_required") is not True
+        or logo_policy.get("asset_sha256_required") is not True
+    ):
+        raise ValueError("live presentation logo quality policy is invalid")
+    transition = feed.get("transition") or {}
+    if (
+        transition.get("synthetic_data_used") is not False
+        or transition.get("supplemental_display_data_used") is not False
+        or transition.get("padding_forbidden") is not True
+        or transition.get("canonical_ranking_affected") is not False
+    ):
+        raise ValueError("live presentation cannot contain synthetic or padded data")
+    if len(items) > 10:
+        raise ValueError("live presentation may contain at most ten complete cards")
+    if [item.get("presentation_position") for item in items] != list(range(1, len(items) + 1)):
+        raise ValueError("live presentation positions must be contiguous")
+    observed_at = floor_hour(
+        datetime.fromisoformat(str(feed.get("observed_at") or "")).astimezone(UTC)
+    )
+    identities: set[str] = set()
+    for item in items:
+        event_key = str(item.get("event_key") or "").strip()
+        if not event_key or event_key in identities:
+            raise ValueError("live presentation event identities must be unique")
+        identities.add(event_key)
+        if (
+            item.get("selection_origin") != "canonical_validated_home_feed"
+            or item.get("data_mode") != "observed_live"
+            or item.get("ranking_effect") != "none"
+        ):
+            raise ValueError("live presentation card provenance is invalid")
+        if not str(item.get("trend_definition") or "").strip():
+            raise ValueError("live presentation card requires a concise trend definition")
+        gate = complete_card_gate(
+            item, observed_at=observed_at, public_projection=True
+        )
+        if not gate["ready"]:
+            raise ValueError(
+                f"live presentation card is incomplete: {event_key}: {','.join(gate['missing'])}"
+            )
+        if item.get("company_role_category_count") != gate["role_category_count"]:
+            raise ValueError(
+                "live presentation company role count must match projected companies"
+            )
+        visualization = item.get("visualization_series") or {}
+        if (
+            visualization.get("data_mode") != "observed_sparse"
+            or visualization.get("interpolation") != "none"
+            or visualization.get("canonical_series_unchanged") is not True
+            or visualization.get("ranking_effect") != "none"
+        ):
+            raise ValueError("live visualization must preserve sparse observed points")
+        for window_key in ("1w", "1m", "3m"):
+            window = visualization.get(window_key) or {}
+            if (
+                window.get("interpolation") != "none"
+                or window.get("missing_point_policy") != "preserve_sparse_null_no_reuse"
+                or window.get("ranking_effect") != "none"
+            ):
+                raise ValueError("live visualization window cannot interpolate or reuse observations")
+            stamps = []
+            for point in window.get("points") or []:
+                stamp = datetime.fromisoformat(str(point.get("at") or "")).astimezone(UTC)
+                stamps.append(stamp)
+                observed_sources = set(point.get("observed_sources") or [])
+                values = [point.get(source) for source in ("x", "google_trends") if point.get(source) is not None]
+                if not observed_sources or not observed_sources <= {"x", "google_trends"}:
+                    raise ValueError("live visualization point has invalid source provenance")
+                if not values or not all(isinstance(value, (int, float)) and 0 <= value <= 100 for value in values):
+                    raise ValueError("live visualization point values are invalid")
+                if round(sum(values) / len(values), 2) != point.get("combined"):
+                    raise ValueError("live visualization combined value is not source-derived")
+            if stamps != sorted(set(stamps)):
+                raise ValueError("live visualization points must be unique and chronological")
+        for company in item.get("companies") or []:
+            if not live_logo_contract_is_valid(company):
+                raise ValueError("live company logo lacks verified resolver provenance")
+            snapshot = company.get("market_snapshot")
+            if snapshot is None:
+                continue
+            price_series = list(snapshot.get("price_series") or [])
+            currency = str(snapshot.get("currency") or "").strip().upper()
+            if (
+                snapshot.get("status") != "observed"
+                or not str(snapshot.get("provider") or "").strip()
+                or not str(snapshot.get("source") or "").strip()
+                or not str(snapshot.get("as_of") or "").strip()
+                or not str(snapshot.get("source_url") or "").startswith(("http://", "https://"))
+                or not str(snapshot.get("price_source_url") or "").startswith(("http://", "https://"))
+                or snapshot.get("ranking_effect") != "none"
+                or len(currency) != 3
+                or not currency.isalpha()
+                or not price_series
+                or not all(_valid_market_number(value, positive=True) for value in price_series)
+                or (
+                    snapshot.get("last_price") is not None
+                    and not _valid_market_number(snapshot.get("last_price"), positive=True)
+                )
+                or (
+                    snapshot.get("change_percent") is not None
+                    and not _valid_market_number(snapshot.get("change_percent"))
+                )
+                or (
+                    snapshot.get("volume") is not None
+                    and (
+                        not _valid_market_number(snapshot.get("volume"))
+                        or snapshot.get("volume") < 0
+                    )
+                )
+                or (
+                    snapshot.get("market_cap") is not None
+                    and (
+                        not _valid_market_number(snapshot.get("market_cap"), positive=True)
+                        or snapshot.get("market_cap_currency") != "KRW"
+                        or snapshot.get("market_cap_krw") != snapshot.get("market_cap")
+                        or not _valid_market_number(snapshot.get("native_market_cap"), positive=True)
+                        or not _valid_market_number(snapshot.get("fx_rate_to_krw"), positive=True)
+                        or not str(snapshot.get("fx_as_of") or "").strip()
+                        or not str(snapshot.get("fx_provider") or "").strip()
+                        or not str(snapshot.get("fx_source_url") or "").startswith(("http://", "https://"))
+                        or not str(snapshot.get("market_cap_source_url") or "").startswith(("http://", "https://"))
+                    )
+                )
+            ):
+                raise ValueError(
+                    "live market snapshot lacks actual public or KRW conversion provenance"
+                )
+            for metric in ("per", "pbr"):
+                value = snapshot.get(metric)
+                if value is not None and (
+                    not _valid_market_number(value, positive=True)
+                    or not str(snapshot.get(f"{metric}_source_url") or "").startswith(
+                        ("http://", "https://")
+                    )
+                ):
+                    raise ValueError(
+                        f"live market snapshot {metric} lacks valid value or provenance"
+                    )
+            roe_pct = snapshot.get("roe_pct")
+            if roe_pct is not None and (
+                not _valid_market_number(roe_pct)
+                or snapshot.get("roe") != roe_pct
+                or snapshot.get("roe_percent") != roe_pct
+                or not str(snapshot.get("roe_source_url") or "").startswith(
+                    ("http://", "https://")
+                )
+                or not _calculated_roe_provenance_is_valid(snapshot)
+            ):
+                raise ValueError(
+                    "live market snapshot ROE lacks TTM/annual calculated provenance"
+                )
+
+
 def _validate_presentation_feed(feed: dict) -> None:
     """Reject a frontend-default feed that violates the reviewed MVP contract."""
 
     items = list(feed.get("items") or [])
     schema_version = feed.get("schema_version")
+    if schema_version == "trzip-presentation-feed-v4":
+        _validate_live_presentation_feed(feed)
+        return
+    # v2/v3 were reviewed demo fixtures.  They are deliberately not accepted
+    # as a live default or as a movement/fallback baseline during v4 rollout.
+    raise ValueError("legacy presentation feeds are not valid live defaults")
     if schema_version not in {
         "trzip-presentation-feed-v2",
         "trzip-presentation-feed-v3",
@@ -893,7 +1155,7 @@ def _validate_presentation_feed(feed: dict) -> None:
     display_names = [str(item.get("display_name") or "").strip() for item in items]
     if not all(display_names) or len(set(display_names)) != 10:
         raise ValueError("frontend presentation_feed display names must be unique and non-empty")
-    approved_names = [item["display_name"] for item in REFERENCE_TOP10]
+    approved_names: list[str] = []
     if display_names != approved_names:
         raise ValueError("frontend presentation_feed must preserve the approved Top10 order")
     for item in items:
@@ -1071,21 +1333,37 @@ def _validate_presentation_feed(feed: dict) -> None:
                 raise ValueError(
                     "frontend presentation companies require a blur-safe logo display contract"
                 )
-            snapshot = company.get("market_snapshot") or {}
-            if (
-                snapshot.get("display_only") is not True
+            snapshot = company.get("market_snapshot")
+            if snapshot is not None and (
+                not isinstance(snapshot, dict)
+                or snapshot.get("display_only") is not True
                 or snapshot.get("ranking_effect") != "none"
-                or len(snapshot.get("price_series") or []) != 30
-                or not all(
-                    isinstance(snapshot.get(field), (int, float))
-                    for field in ("last_price", "change_percent", "per", "pbr", "roe_percent")
-                )
+                or not str(snapshot.get("provider") or "").strip()
+                or not str(snapshot.get("as_of") or "").strip()
+                or not str(snapshot.get("source_url") or "").startswith(("http://", "https://"))
+                or not 1 <= len(snapshot.get("price_series") or []) <= 30
                 or not all(
                     isinstance(value, (int, float)) and value > 0
                     for value in snapshot.get("price_series") or []
                 )
+                or (
+                    snapshot.get("market_cap") is not None
+                    and (
+                        snapshot.get("market_cap_currency") != "KRW"
+                        or snapshot.get("market_cap_krw") != snapshot.get("market_cap")
+                        or not isinstance(snapshot.get("fx_rate_to_krw"), (int, float))
+                        or isinstance(snapshot.get("fx_rate_to_krw"), bool)
+                        or snapshot.get("fx_rate_to_krw") <= 0
+                        or not str(snapshot.get("fx_as_of") or "").strip()
+                        or not str(snapshot.get("fx_provider") or "").strip()
+                        or not str(snapshot.get("fx_source_url") or "").startswith(("http://", "https://"))
+                        or not str(snapshot.get("market_cap_source_url") or "").startswith(("http://", "https://"))
+                    )
+                )
             ):
-                raise ValueError("frontend presentation companies require a complete market snapshot")
+                raise ValueError(
+                    "frontend market snapshot requires actual public provenance"
+                )
             if company.get("relation_tier") not in {"direct", "value_chain", "industry_watch"}:
                 raise ValueError("frontend presentation companies require a supported relation tier")
             ontology_path = list(company.get("ontology_path") or [])
@@ -1095,8 +1373,10 @@ def _validate_presentation_feed(feed: dict) -> None:
         if len(identities) != len(set(identities)):
             raise ValueError("frontend presentation companies must be unique by exchange and stock code")
         company_roles = {company["company_role_category"] for company in companies}
-        if not 3 <= len(company_roles) <= 4:
-            raise ValueError("frontend presentation trends require three or four company role groups")
+        if not 2 <= len(company_roles) <= 4:
+            raise ValueError("frontend presentation trends require two to four company role groups")
+        if item.get("company_role_category_count") != len(company_roles):
+            raise ValueError("frontend presentation company role count must match projected companies")
         keyword_set = set(keyword_texts)
         company_set = {company["company"] for company in companies}
         company_by_name = {company["company"]: company for company in companies}
@@ -1290,6 +1570,7 @@ def _write_frontend_delivery(
         "generated_at": generated_at,
         "observed_at": observed_at,
         "mode": "live",
+        "processing_cycle": intelligence.get("processing_cycle"),
         "ranking_default_period": intelligence.get("ranking_default_period"),
         "ranking_periods": intelligence.get("ranking_periods") or [],
         "ranking_views": {
@@ -1576,19 +1857,32 @@ def _previous_published_presentation(
         if not isinstance(feed, dict):
             return None
         _validate_presentation_feed(feed)
+        if (
+            feed.get("schema_version") != "trzip-presentation-feed-v4"
+            or feed.get("selection_policy") != "validated_live_home_feed_v1"
+            or (feed.get("transition") or {}).get("synthetic_data_used") is not False
+        ):
+            # Legacy reviewed/demo feeds are never a production fallback.
+            return None
         return feed
     except (OSError, ValueError, json.JSONDecodeError, sqlite3.Error, TypeError):
         return None
 
 
-def _previous_market_by_code(payload: dict) -> dict[str, dict]:
-    cache: dict[str, dict] = {}
+def _market_identity(company: dict) -> tuple[str, str]:
+    exchange = str(company.get("market") or company.get("exchange") or "").strip().upper()
+    code = str(company.get("stock_code") or company.get("ticker") or "").strip().upper()
+    return exchange, code
+
+
+def _previous_market_by_code(payload: dict) -> dict[tuple[str, str], dict]:
+    cache: dict[tuple[str, str], dict] = {}
     for trend in payload.get("unified_ranking", []):
         for company in trend.get("company_candidates", trend.get("companies", [])):
-            code = company.get("stock_code")
+            identity = _market_identity(company)
             market = company.get("market_reference")
-            if code and isinstance(market, dict) and market.get("status") == "observed":
-                cache[code] = market
+            if all(identity) and isinstance(market, dict) and market.get("status") == "observed":
+                cache[identity] = market
     return cache
 
 
@@ -1603,8 +1897,35 @@ def _fresh_market_reference(market: dict, at: datetime) -> bool:
     return 0 <= age.days <= 4
 
 
+def _valid_market_number(
+    value: object,
+    *,
+    positive: bool = False,
+) -> bool:
+    """Return whether a provider value is finite and valid for its domain."""
+
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return False
+    if not math.isfinite(float(value)):
+        return False
+    return value > 0 if positive else True
+
+
+def _market_provider_contributors(market: object) -> set[str]:
+    """Extract providers that actually contributed to an observed market row."""
+
+    if not isinstance(market, dict) or market.get("status") != "observed":
+        return set()
+    declared = str(market.get("provider") or "")
+    return {
+        provider
+        for provider in ("pykrx", "yahoo_finance")
+        if provider in declared.split("+")
+    }
+
+
 def _public_market_reference(market: object, stock_code: str) -> dict:
-    """Allowlist pykrx output and replace exception text with stable codes."""
+    """Allowlist observed market output and replace exception text with stable codes."""
 
     value = market if isinstance(market, dict) else {}
     status = str(value.get("status") or "unavailable")
@@ -1617,17 +1938,185 @@ def _public_market_reference(market: object, stock_code: str) -> dict:
             "stock_code": str(value.get("stock_code") or stock_code),
             "reason": f"market_reference_{safe_status}",
         }
+    summary = dict(value.get("summary") or {})
+    valuation = dict(value.get("valuation") or {})
+    for key in ("market_cap", "market_cap_krw"):
+        if not _valid_market_number(summary.get(key), positive=True):
+            summary[key] = None
+    for key in ("per", "pbr"):
+        if not _valid_market_number(valuation.get(key), positive=True):
+            valuation[key] = None
+    if not _valid_market_number(valuation.get("roe_pct")):
+        valuation["roe_pct"] = None
+    market_cap = summary.get("market_cap")
+    if market_cap is None and _valid_market_number(
+        valuation.get("market_cap"), positive=True
+    ):
+        market_cap = valuation["market_cap"]
     return {
         "status": "observed",
-        "provider": "pykrx",
+        "provider": str(value.get("provider") or ""),
+        "source_url": value.get("source_url"),
+        "source_urls": dict(value.get("source_urls") or {}),
+        "field_sources": dict(value.get("field_sources") or {}),
         "stock_code": str(value.get("stock_code") or stock_code),
+        "ticker": str(value.get("ticker") or stock_code),
+        "exchange": value.get("exchange"),
         "name": value.get("name"),
         "daily_ohlcv": list(value.get("daily_ohlcv") or []),
         "latest_daily": value.get("latest_daily"),
-        "summary": dict(value.get("summary") or {}),
+        "currency": summary.get("currency"),
+        "market_cap": market_cap,
+        "summary": summary,
+        "valuation": valuation,
+        "fx_reference": dict(value.get("fx_reference") or {}),
         "market_reaction": dict(value.get("market_reaction") or {}),
         "note": "daily reference data; not realtime, not a forecast, and not relation evidence",
     }
+
+
+def _domestic_reference_needs_fundamentals(value: dict) -> bool:
+    """Return whether an observed KRX row still lacks facts used by the UI."""
+
+    if value.get("status") != "observed":
+        return True
+    summary = value.get("summary") if isinstance(value.get("summary"), dict) else {}
+    valuation = value.get("valuation") if isinstance(value.get("valuation"), dict) else {}
+    market_cap = summary.get("market_cap_krw", summary.get("market_cap"))
+    return not (
+        _valid_market_number(market_cap, positive=True)
+        and _valid_market_number(valuation.get("per"), positive=True)
+        and _valid_market_number(valuation.get("pbr"), positive=True)
+        # A real zero or negative ROE is meaningful and must not be treated as
+        # missing.  Only non-numeric and non-finite values are rejected.
+        and _valid_market_number(valuation.get("roe_pct"))
+    )
+
+
+def _merge_domestic_market_references(primary: dict, supplement: dict) -> dict:
+    """Merge two observed providers without replacing or manufacturing facts."""
+
+    if primary.get("status") != "observed":
+        return supplement if supplement.get("status") == "observed" else primary
+    if supplement.get("status") != "observed":
+        return primary
+
+    merged = json.loads(json.dumps(primary))
+    primary_summary = merged.setdefault("summary", {})
+    supplement_summary = (
+        supplement.get("summary") if isinstance(supplement.get("summary"), dict) else {}
+    )
+    field_sources = dict(merged.get("field_sources") or {})
+    primary_source_url = str(primary.get("source_url") or "")
+    supplement_source_url = str(supplement.get("source_url") or "")
+    supplement_source_urls = (
+        supplement.get("source_urls")
+        if isinstance(supplement.get("source_urls"), dict)
+        else {}
+    )
+    supplement_fundamentals_url = str(
+        supplement_source_urls.get("fundamentals") or supplement_source_url
+    )
+    supplement_used = False
+    for key in ("market_cap", "market_cap_krw"):
+        if (
+            not _valid_market_number(primary_summary.get(key), positive=True)
+            and _valid_market_number(supplement_summary.get(key), positive=True)
+        ):
+            primary_summary[key] = supplement_summary[key]
+            field_sources[key] = supplement_fundamentals_url
+            supplement_used = True
+        elif _valid_market_number(primary_summary.get(key), positive=True):
+            field_sources.setdefault(key, primary_source_url)
+
+    primary_valuation = merged.setdefault("valuation", {})
+    supplement_valuation = (
+        supplement.get("valuation")
+        if isinstance(supplement.get("valuation"), dict)
+        else {}
+    )
+    for key, positive in (
+        ("per", True),
+        ("pbr", True),
+        ("roe_pct", False),
+    ):
+        if (
+            not _valid_market_number(primary_valuation.get(key), positive=positive)
+            and _valid_market_number(supplement_valuation.get(key), positive=positive)
+        ):
+            primary_valuation[key] = supplement_valuation[key]
+            field_sources[key] = supplement_fundamentals_url
+            supplement_used = True
+        elif _valid_market_number(primary_valuation.get(key), positive=positive):
+            field_sources.setdefault(key, primary_source_url)
+
+    for key in (
+        "market_cap_as_of",
+        "market_cap_period_type",
+        "market_cap_type",
+        "per_as_of",
+        "per_period_type",
+        "per_type",
+        "equity",
+        "equity_as_of",
+        "equity_period_type",
+        "net_income",
+        "net_income_as_of",
+        "net_income_period_type",
+        "roe_basis",
+        "roe_calculated",
+        "roe_numerator",
+        "roe_denominator",
+        "calculation",
+    ):
+        if primary_valuation.get(key) in (None, "", {}) and supplement_valuation.get(key) not in (None, "", {}):
+            primary_valuation[key] = supplement_valuation[key]
+            field_sources[key] = supplement_fundamentals_url
+        elif primary_valuation.get(key) not in (None, "", {}):
+            field_sources.setdefault(key, primary_source_url)
+
+    if not merged.get("fx_reference") and supplement.get("fx_reference"):
+        merged["fx_reference"] = supplement["fx_reference"]
+    merged["source_urls"] = {
+        "price": primary_source_url or supplement_source_url,
+        "fundamentals": (
+            supplement_fundamentals_url if supplement_used else primary_source_url
+        ) or supplement_fundamentals_url,
+    }
+    field_sources.setdefault("price_series", primary_source_url or supplement_source_url)
+    merged["field_sources"] = field_sources
+    merged["provider"] = (
+        "pykrx+yahoo_finance" if supplement_used else str(primary.get("provider") or "pykrx")
+    )
+    merged["synthetic"] = False
+    merged["estimated"] = False
+    merged["ranking_effect"] = "none"
+    merged["relationship_evidence"] = False
+    merged["note"] = (
+        "observed daily KRX price with observed Yahoo reported-fundamental supplement"
+    )
+    return merged
+
+
+def _domestic_yahoo_reference(
+    code: str,
+    exchange: str,
+    at: datetime,
+    *,
+    fundamentals_only: bool,
+) -> tuple[dict, int]:
+    """Resolve a KRX security on Yahoo, trying both boards only when unknown."""
+
+    boards = [exchange] if exchange in {"KOSPI", "KOSDAQ"} else ["KOSPI", "KOSDAQ"]
+    last: dict = {"status": "unavailable", "reason": "domestic_yahoo_unavailable"}
+    requests = 0
+    adapter = yahoo_finance_fundamentals if fundamentals_only else yahoo_finance_stock
+    for board in boards:
+        last = adapter(code, board, as_of=at)
+        requests += 1
+        if last.get("status") == "observed":
+            return last, requests
+    return last, requests
 
 
 def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) -> dict:
@@ -1638,31 +2127,77 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
     Provider failures are explicit data states and never abort trend publishing.
     """
     cache = _previous_market_by_code(previous)
-    requested: set[str] = set()
+    requested: set[tuple[str, str]] = set()
+    provider_requests = {"pykrx": 0, "yahoo_finance": 0}
+    observed_provider_rows = {"pykrx": 0, "yahoo_finance": 0}
     reused = observed = unavailable = 0
     for trend in intelligence.get("unified_ranking", []):
         for company in trend.get("company_candidates", trend.get("companies", [])):
-            code = company.get("stock_code")
-            if not code or company.get("strength") == "excluded":
+            exchange, code = _market_identity(company)
+            if not code or not exchange or company.get("strength") == "excluded":
                 company["market_reference"] = {
                     "status": "not_applicable",
                     "reason": "listed stock code unavailable or relation excluded",
                 }
                 continue
-            market = cache.get(code)
-            if market and _fresh_market_reference(market, at):
+            market = cache.get((exchange, code))
+            if (
+                market
+                and _fresh_market_reference(market, at)
+                and not (
+                    exchange in {"KRX", "KOSPI", "KOSDAQ"}
+                    and _domestic_reference_needs_fundamentals(market)
+                )
+            ):
                 reused += 1
             else:
-                market = pykrx_stock(code, at.strftime("%Y%m%d"), lookback_days=21)
-                requested.add(code)
+                if exchange in {"KRX", "KOSPI", "KOSDAQ"}:
+                    market = pykrx_stock(code, at.strftime("%Y%m%d"), lookback_days=45)
+                    provider_requests["pykrx"] += 1
+                    if _domestic_reference_needs_fundamentals(market):
+                        yahoo_market, yahoo_request_count = _domestic_yahoo_reference(
+                            code,
+                            exchange,
+                            at,
+                            fundamentals_only=(
+                                market.get("status") == "observed"
+                                and bool(market.get("daily_ohlcv"))
+                            ),
+                        )
+                        provider_requests["yahoo_finance"] += yahoo_request_count
+                        market = _merge_domestic_market_references(market, yahoo_market)
+                elif exchange in {"NASDAQ", "NYSE", "TSE", "HKEX"}:
+                    market = yahoo_finance_stock(code, exchange, as_of=at)
+                    provider_requests["yahoo_finance"] += 1
+                else:
+                    market = {
+                        "status": "not_applicable",
+                        "stock_code": code,
+                        "reason": "market_reference_unsupported_exchange",
+                    }
+                requested.add((exchange, code))
                 if market.get("status") == "observed":
-                    cache[code] = market
+                    cache[(exchange, code)] = market
                     observed += 1
                 else:
                     unavailable += 1
             company["market_reference"] = _public_market_reference(market, code)
+            for provider in _market_provider_contributors(market):
+                observed_provider_rows[provider] += 1
+    attempted_providers = [name for name, count in provider_requests.items() if count]
+    observed_providers = [name for name, count in observed_provider_rows.items() if count]
     intelligence["market_data_status"] = {
-        "provider": "pykrx",
+        "provider": (
+            observed_providers[0]
+            if len(observed_providers) == 1
+            else "multi_market_actual"
+            if len(observed_providers) > 1
+            else "unavailable"
+        ),
+        "providers": observed_providers,
+        "observed_provider_row_count": observed_provider_rows,
+        "attempted_providers": attempted_providers,
+        "provider_request_count": provider_requests,
         "kind": "daily_reference_not_realtime",
         "requested_stock_codes": len(requested),
         "newly_observed": observed,
@@ -2073,8 +2608,15 @@ def _merge_daily(root: Path, rows: list[HourlyObservation], at: datetime) -> Pat
     return daily_path
 
 
-def run(root: Path, *, retention_days: int = 0, database_path: Path | None = None,
-        now: datetime | None = None) -> dict:
+def run(
+    root: Path,
+    *,
+    retention_days: int = 0,
+    database_path: Path | None = None,
+    now: datetime | None = None,
+    enrichment_checkpoint: bool = True,
+    daily_publish_hour_kst: int = 6,
+) -> dict:
     """Run the laptop-owned pipeline and write the static publication contract."""
     root.mkdir(parents=True, exist_ok=True)
     database_path = database_path or root / ".runtime" / "trzip-hourly.sqlite3"
@@ -2128,7 +2670,12 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         path=database_path,
         news_context_by_term=news_context_by_term,
     )
-    intelligence = _refresh_verification_layer(intelligence, database_path, at)
+    intelligence = _refresh_verification_layer(
+        intelligence,
+        database_path,
+        at,
+        collect_new=enrichment_checkpoint,
+    )
     intelligence = _attach_provider_context_research(intelligence)
     # Deterministic collection and score calculation finish before this point.
     # The bounded semantic pass may resolve an ambiguous non-issue expression
@@ -2138,10 +2685,17 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         intelligence,
         path=database_path,
         at=at,
+        allow_model_calls=enrichment_checkpoint,
     )
     intelligence = apply_frontend_enrichment_cache(
         intelligence,
         verified_at=at.astimezone(UTC).isoformat(),
+    )
+    intelligence["enrichment_handoff"] = run_handoff(
+        intelligence,
+        handoff_root=database_path.parent.parent / "handoff",
+        at=at,
+        enabled=enrichment_checkpoint,
     )
     intelligence = refresh_frontend_readiness(intelligence)
     intelligence["provider_keyword_candidate_queue"] = sync_provider_keyword_candidates(
@@ -2164,6 +2718,16 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         at=at,
     )
     intelligence = _enrich_market_references(intelligence, previous_intelligence, at)
+    intelligence["processing_cycle"] = build_processing_cycle(
+        intelligence,
+        path=database_path,
+        at=at,
+        enrichment_checkpoint_executed=enrichment_checkpoint,
+        verification_status=(intelligence.get("verification_run") or {}).get("status"),
+        semantic_status=(intelligence.get("semantic_adjudication_run") or {}).get("status"),
+        handoff_status=intelligence.get("enrichment_handoff"),
+        daily_publish_hour_kst=daily_publish_hour_kst,
+    )
     # Build the approved presentation projection only after every deterministic
     # enrichment pass. Some passes rebuild the live contract and intentionally
     # discard non-canonical keys, so attaching it earlier would make the final
@@ -2203,9 +2767,13 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
             for key in ("x_korea_realtime", "google_geo_kr")
         ),
     }
-    publishable = not intelligence["collection_status"]["partial"] and all(
-        intelligence["collection_status"]["source_status"].get(source) == "observed"
-        for source in ("x", "google_trends")
+    coverage_24h = intelligence["processing_cycle"]["coverage_24h"]
+    source_hour_count = coverage_24h.get("source_hour_count") or {}
+    publishable = (
+        all(int(source_hour_count.get(source) or 0) >= 1
+            for source in ("x", "google_trends"))
+        and coverage_24h.get("fabricated_hour_count") == 0
+        and coverage_24h.get("reused_previous_hour_count") == 0
     )
     intelligence["publishable"] = publishable
 
@@ -2231,6 +2799,7 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         "market_data": intelligence["market_data_status"],
         "company_identity_data": intelligence["company_identity_status"],
         "collection_health": collection_health,
+        "processing_cycle": intelligence["processing_cycle"],
         "frontend_delivery": _delivery_descriptor(
             publication_id,
             len(_period_detail_items(intelligence)),
@@ -2248,6 +2817,7 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
         "errors": intelligence["collection_status"]["errors"],
         "recorded_runs": collection_health["recorded_runs"],
         "measurement_status": collection_health["status"],
+        "processing_cycle": intelligence["processing_cycle"],
         "frontend_delivery_manifest": "manifest.json",
     }
     _validate_contract(intelligence, metadata, status)
@@ -2281,11 +2851,38 @@ def main() -> None:
         "--retention-days", type=int, default=0,
         help="positive days enables pruning; 0 preserves raw history indefinitely",
     )
+    checkpoint_group = parser.add_mutually_exclusive_group()
+    checkpoint_group.add_argument(
+        "--enrichment-checkpoint",
+        action="store_true",
+        help="run the slow NAVER/LLM enrichment checkpoint in this invocation",
+    )
+    checkpoint_group.add_argument(
+        "--defer-enrichment-checkpoint",
+        action="store_true",
+        help="reuse only verified enrichment caches; make no new NAVER/LLM calls",
+    )
+    parser.add_argument(
+        "--daily-publish-hour-kst",
+        type=int,
+        default=6,
+        choices=range(24),
+    )
     args = parser.parse_args()
+    scheduled_checkpoint = checkpoint_due(
+        floor_hour(datetime.now(UTC)),
+        daily_publish_hour_kst=args.daily_publish_hour_kst,
+    )
+    if args.enrichment_checkpoint:
+        scheduled_checkpoint = True
+    elif args.defer_enrichment_checkpoint:
+        scheduled_checkpoint = False
     result = run(
         args.output,
         retention_days=max(0, args.retention_days),
         database_path=args.database,
+        enrichment_checkpoint=scheduled_checkpoint,
+        daily_publish_hour_kst=args.daily_publish_hour_kst,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
 

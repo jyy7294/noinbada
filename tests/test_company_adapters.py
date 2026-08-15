@@ -1,18 +1,62 @@
 from datetime import UTC, datetime, timedelta
+import sys
+import types
 import xml.etree.ElementTree as ET
+
+import pandas as pd
 
 from trzip.company_adapters import (
     OHLCV_COLUMNS,
+    KRX_DATA_SOURCE_URL,
     _market_reaction,
     _public_opendart_identity,
     enrich_company_identities,
     opendart_company,
+    pykrx_stock,
 )
 
 
 def test_pykrx_columns_have_stable_frontend_names():
     assert OHLCV_COLUMNS["종가"] == "close"
     assert OHLCV_COLUMNS["거래량"] == "volume"
+
+
+def test_pykrx_reference_includes_30_day_chart_valuation_and_public_source(monkeypatch):
+    dates = pd.date_range("2026-06-30", periods=35, freq="B")
+    ohlcv = pd.DataFrame(
+        {
+            "시가": range(100, 135), "고가": range(101, 136),
+            "저가": range(99, 134), "종가": range(100, 135),
+            "거래량": [1000] * 35, "거래대금": [100000] * 35,
+            "등락률": [0.5] * 35,
+        },
+        index=dates,
+    )
+    fundamentals = pd.DataFrame(
+        {"BPS": [50000], "PER": [12.3], "PBR": [1.4], "EPS": [4000], "DIV": [2.1], "DPS": [800]},
+        index=[dates[-1]],
+    )
+    market_cap = pd.DataFrame({"시가총액": [123_000_000_000]}, index=[dates[-1]])
+    fake_stock = types.SimpleNamespace(
+        get_market_ticker_name=lambda _code: "검증기업",
+        get_market_ohlcv_by_date=lambda *_args: ohlcv,
+        get_market_fundamental_by_date=lambda *_args: fundamentals,
+        get_market_cap_by_date=lambda *_args: market_cap,
+    )
+    monkeypatch.setitem(sys.modules, "pykrx", types.SimpleNamespace(stock=fake_stock))
+
+    result = pykrx_stock("005930", "20260815")
+
+    assert result["status"] == "observed"
+    assert result["source_url"] == KRX_DATA_SOURCE_URL
+    assert len(result["daily_ohlcv"]) == 30
+    assert result["valuation"]["per"] == 12.3
+    assert result["valuation"]["pbr"] == 1.4
+    assert result["summary"]["market_cap"] == 123_000_000_000
+    assert result["summary"]["market_cap_krw"] == 123_000_000_000
+    assert result["summary"]["close_krw"] == 134
+    assert result["fx_reference"]["rate"] == 1.0
+    assert result["fx_reference"]["to_currency"] == "KRW"
 
 
 def test_market_reaction_detects_price_or_volume_change():

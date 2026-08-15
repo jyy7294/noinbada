@@ -11,7 +11,7 @@
     "unified_ranking", "all_observed_ranking", "presentation_feed", "home_feed", "home_top10", "home_status", "rising_top10",
     "category_summary", "trend_top10", "public_top10", "company_ready_trends",
     "ontology_enrichment_queue", "enrichment_work_queue", "provider_keyword_candidate_queue",
-    "lanes", "verification_run", "collection_status"
+    "lanes", "verification_run", "collection_status", "processing_cycle"
   ],
   "properties": {
     "schema_version": {"const": "trzip-intelligence-v3"},
@@ -37,6 +37,26 @@
     "ranking_data_readiness": {"type": "object"},
     "score_formula": {"type": "string", "minLength": 1},
     "score_policy": {"type": "object"},
+    "processing_cycle": {
+      "type": "object",
+      "required": ["schema_version", "observed_at", "coverage_24h", "enrichment_batch", "daily_publication"],
+      "properties": {
+        "schema_version": {"const": "trzip-processing-cycle-v1"},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "coverage_24h": {
+          "type": "object",
+          "required": ["status", "missing_hour_policy", "fabricated_hour_count", "reused_previous_hour_count"],
+          "properties": {
+            "status": {"enum": ["complete", "partial", "empty"]},
+            "missing_hour_policy": {"const": "allowed_no_fill_no_reuse"},
+            "fabricated_hour_count": {"const": 0},
+            "reused_previous_hour_count": {"const": 0}
+          }
+        },
+        "enrichment_batch": {"type": "object"},
+        "daily_publication": {"type": "object"}
+      }
+    },
     "ranking_default_period": {"const": "daily"},
     "ranking_periods": {
       "type": "array",
@@ -80,7 +100,7 @@
         "main_lane_total": {"type": "integer", "minimum": 0},
         "trend_top10_count": {"type": "integer", "minimum": 0, "maximum": 10},
         "company_count_affects_home": {"const": false},
-        "minimum_published_companies": {"const": 3},
+        "minimum_published_companies": {"const": 10},
         "home_eligible_total": {"type": "integer", "minimum": 0},
         "home_excluded_total": {"type": "integer", "minimum": 0},
         "exclusion_reasons": {
@@ -136,37 +156,43 @@
     "presentation_feed": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schema_version", "status", "frontend_default", "items", "transition"],
+      "required": ["schema_version", "status", "frontend_default", "observed_at", "selection_policy", "logo_policy", "items", "transition"],
       "properties": {
-        "schema_version": {
-          "enum": ["trzip-presentation-feed-v2", "trzip-presentation-feed-v3"]
-        },
-        "status": {"const": "ready"},
+        "schema_version": {"const": "trzip-presentation-feed-v4"},
+        "status": {"enum": ["ready", "empty"]},
         "frontend_default": {"const": true},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "selection_policy": {"const": "validated_live_home_feed_v1"},
         "logo_policy": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["version", "avatar_size_px", "minimum_raster_dimension_px", "vector_assets_allowed", "low_resolution_fallback", "runtime_probe_for_generic_favicons"],
+          "required": ["version", "avatar_size_px", "minimum_raster_dimension_px", "vector_assets_allowed", "low_resolution_fallback", "runtime_probe_for_generic_favicons", "official_page_resolver_required", "asset_sha256_required"],
           "properties": {
             "version": {"const": "avatar-sharpness-v1"},
             "avatar_size_px": {"const": 44},
             "minimum_raster_dimension_px": {"const": 64},
             "vector_assets_allowed": {"const": true},
             "low_resolution_fallback": {"const": "initials"},
-            "runtime_probe_for_generic_favicons": {"const": true}
+            "runtime_probe_for_generic_favicons": {"const": false},
+            "official_page_resolver_required": {"const": true},
+            "asset_sha256_required": {"const": true}
           }
         },
         "items": {
-          "type": "array", "minItems": 10, "maxItems": 10,
+          "type": "array", "minItems": 0, "maxItems": 10,
           "items": {
             "type": "object",
             "required": [
-              "presentation_position", "display_name", "event_key", "category", "category_label",
-              "sources", "data_mode", "trend_definition", "why_now", "keywords", "companies",
-              "keyword_status", "company_card_status", "ranking_effect"
+              "presentation_position", "selection_origin", "lane", "display_name", "event_key", "category", "category_label",
+              "sources", "data_mode", "observed_within_24h", "trend_definition", "why_now",
+              "context_research", "evidence_urls", "series", "visualization_series",
+              "keywords", "companies", "keyword_company_links",
+              "keyword_status", "company_role_category_count", "company_card_status", "ranking_effect"
             ],
             "properties": {
               "presentation_position": {"type": "integer", "minimum": 1, "maximum": 10},
+              "selection_origin": {"const": "canonical_validated_home_feed"},
+              "lane": {"const": "main"},
               "rank_movement": {
                 "type": "object",
                 "additionalProperties": false,
@@ -184,20 +210,169 @@
               "event_key": {"type": "string", "minLength": 1},
               "category": {"enum": ["food", "content", "sports", "lifestyle", "culture", "consumer", "technology", "market"]},
               "category_label": {"type": "string", "minLength": 1},
-              "sources": {"type": "array", "minItems": 1, "items": {"enum": ["x", "google_trends"]}},
-              "data_mode": {"const": "observed_reference"},
+              "sources": {"type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["x", "google_trends"]}},
+              "data_mode": {"const": "observed_live"},
+              "observed_within_24h": {"const": true},
               "trend_definition": {"type": "string", "minLength": 1},
               "why_now": {"type": "string", "minLength": 1},
-              "keywords": {"type": "array", "minItems": 5, "maxItems": 5, "items": {"type": "object"}},
-              "companies": {"type": "array", "items": {"type": "object"}},
+              "context_research": {"$ref": "#/$defs/liveContextResearch"},
+              "evidence_urls": {
+                "type": "array", "minItems": 1, "uniqueItems": true,
+                "items": {"type": "string", "pattern": "^https?://"}
+              },
+              "series": {
+                "type": "array", "minItems": 1,
+                "items": {"$ref": "#/$defs/liveObservedSeriesPoint"}
+              },
+              "visualization_series": {"$ref": "#/$defs/liveSparseVisualization"},
+              "keywords": {
+                "type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true,
+                "items": {
+                  "type": "object", "required": ["text"],
+                  "properties": {"text": {"type": "string", "pattern": "^(?:\\s*\\S){1,6}\\s*$"}}
+                }
+              },
+              "companies": {
+                "type": "array", "minItems": 10, "maxItems": 10,
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "company", "stock_code", "exchange", "company_description",
+                    "connection_explanation", "company_role_category", "company_role_label",
+                    "ontology_path", "ontology_complete", "evidence_sources", "relation_tier",
+                    "official_domain", "logo_url", "logo_render_mode", "logo_asset_source",
+                    "logo_asset_host", "logo_asset_verification", "logo_asset_format",
+                    "logo_asset_mime", "logo_asset_width", "logo_asset_height",
+                    "logo_asset_sha256", "logo_source_page_url", "logo_minimum_dimension",
+                    "logo_runtime_probe_required", "logo_asset_quality", "logo_quality_policy",
+                    "logo_provenance"
+                  ],
+                  "properties": {
+                    "company": {"type": "string", "minLength": 1},
+                    "stock_code": {"type": "string", "minLength": 1},
+                    "exchange": {"type": "string", "minLength": 1},
+                    "company_description": {"type": "string", "minLength": 1},
+                    "connection_explanation": {"type": "string", "minLength": 1},
+                    "company_role_category": {
+                      "enum": ["manufacturing_development", "raw_materials_components", "content_production", "distribution", "retail_sales", "brand_marketing", "platform_service", "ownership_investment", "event_sponsorship"]
+                    },
+                    "company_role_label": {"type": "string", "minLength": 1},
+                    "ontology_path": {
+                      "type": "array", "minItems": 3,
+                      "items": {"oneOf": [{"type": "string", "minLength": 1}, {"type": "object"}]}
+                    },
+                    "ontology_complete": {"const": true},
+                    "evidence_sources": {
+                      "type": "array", "minItems": 1,
+                      "items": {
+                        "type": "object", "required": ["url"],
+                        "properties": {"url": {"type": "string", "pattern": "^https?://"}}
+                      }
+                    },
+                    "relation_tier": {"enum": ["direct", "value_chain", "industry_watch"]},
+                    "official_domain": {"type": ["string", "null"]},
+                    "logo_url": {"type": "string"},
+                    "logo_render_mode": {"enum": ["image", "initials"]},
+                    "logo_asset_source": {"enum": ["official_page_asset", "initials_fallback"]},
+                    "logo_asset_host": {"type": "string"},
+                    "logo_asset_verification": {"enum": ["verified_safe_svg", "verified_raster_min_64px", "initials_fallback"]},
+                    "logo_asset_format": {"enum": ["svg", "png", "jpeg", "gif", "webp", "bmp", "ico", "none"]},
+                    "logo_asset_mime": {"type": "string"},
+                    "logo_asset_width": {"type": "integer", "minimum": 0},
+                    "logo_asset_height": {"type": "integer", "minimum": 0},
+                    "logo_asset_sha256": {"type": "string", "pattern": "^$|^[0-9a-f]{64}$"},
+                    "logo_source_page_url": {"type": "string"},
+                    "logo_minimum_dimension": {"const": 64},
+                    "logo_runtime_probe_required": {"const": false},
+                    "logo_asset_quality": {"enum": ["verified_vector", "verified_raster_min_64px", "fail_closed_initials_no_verified_asset"]},
+                    "logo_quality_policy": {"const": "avatar-sharpness-v1"},
+                    "logo_provenance": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": ["source_page_url", "asset_url", "mime", "width", "height", "sha256", "verification"],
+                      "properties": {
+                        "source_page_url": {"type": ["string", "null"]},
+                        "asset_url": {"type": ["string", "null"]},
+                        "mime": {"type": ["string", "null"]},
+                        "width": {"type": "integer", "minimum": 0},
+                        "height": {"type": "integer", "minimum": 0},
+                        "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+                        "verification": {"enum": ["verified_safe_svg", "verified_raster_min_64px", "initials_fallback"]}
+                      }
+                    },
+                    "market_snapshot": {"$ref": "#/$defs/liveMarketSnapshot"}
+                  },
+                  "allOf": [
+                    {
+                      "if": {"properties": {"logo_render_mode": {"const": "image"}}},
+                      "then": {
+                        "properties": {
+                          "official_domain": {"type": "string", "minLength": 1},
+                          "logo_url": {"type": "string", "pattern": "^https://"},
+                          "logo_asset_source": {"const": "official_page_asset"},
+                          "logo_asset_host": {"type": "string", "minLength": 1},
+                          "logo_asset_verification": {"enum": ["verified_safe_svg", "verified_raster_min_64px"]},
+                          "logo_asset_mime": {"type": "string", "pattern": "^image/"},
+                          "logo_asset_width": {"type": "integer", "minimum": 1},
+                          "logo_asset_height": {"type": "integer", "minimum": 1},
+                          "logo_asset_sha256": {"pattern": "^[0-9a-f]{64}$"},
+                          "logo_source_page_url": {"type": "string", "pattern": "^https?://"}
+                        }
+                      }
+                    },
+                    {
+                      "if": {"properties": {"logo_render_mode": {"const": "initials"}}},
+                      "then": {
+                        "properties": {
+                          "logo_url": {"const": ""},
+                          "logo_asset_source": {"const": "initials_fallback"},
+                          "logo_asset_host": {"const": ""},
+                          "logo_asset_verification": {"const": "initials_fallback"},
+                          "logo_asset_format": {"const": "none"},
+                          "logo_asset_mime": {"const": ""},
+                          "logo_asset_width": {"const": 0},
+                          "logo_asset_height": {"const": 0},
+                          "logo_asset_sha256": {"const": ""},
+                          "logo_asset_quality": {"const": "fail_closed_initials_no_verified_asset"}
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "keyword_company_links": {
+                "type": "array", "minItems": 2,
+                "items": {"$ref": "#/$defs/liveKeywordCompanyLink"}
+              },
               "keyword_status": {"const": "ready"},
-              "company_card_status": {"enum": ["ready", "enrichment_pending"]},
+              "company_role_category_count": {"type": "integer", "minimum": 2, "maximum": 4},
+              "company_card_status": {"const": "ready"},
               "ranking_effect": {"const": "none"}
             }
           }
         },
-        "transition": {"type": "object"}
-      }
+        "transition": {
+          "type": "object",
+          "required": ["synthetic_data_used", "supplemental_display_data_used", "fallback_used", "padding_forbidden", "canonical_ranking_affected"],
+          "properties": {
+            "synthetic_data_used": {"const": false},
+            "supplemental_display_data_used": {"const": false},
+            "fallback_used": {"const": false},
+            "padding_forbidden": {"const": true},
+            "canonical_ranking_affected": {"const": false}
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "empty"}}},
+          "then": {"properties": {"items": {"maxItems": 0}}}
+        },
+        {
+          "if": {"properties": {"status": {"const": "ready"}}},
+          "then": {"properties": {"items": {"minItems": 1, "maxItems": 10}}}
+        }
+      ]
     },
     "home_feed": {"$ref": "#/$defs/homeFeed"},
     "home_top10": {"type": "array", "items": {"type": "object"}},
@@ -356,7 +531,8 @@
           "enum": [
             "completed", "skipped_no_candidates",
             "skipped_already_recorded_for_hour", "failed_non_blocking",
-            "disabled_by_runtime_policy"
+            "disabled_by_runtime_policy", "disabled_missing_config",
+            "deferred_to_enrichment_checkpoint"
           ]
         },
         "requested_terms": {"type": "integer", "minimum": 0, "maximum": 20},
@@ -367,13 +543,11 @@
         "selection_scope": {"const": "current_non_issue_candidates_including_review_lane"},
         "providers": {
           "type": "array",
-          "prefixItems": [
-            {"const": "naver"}, {"const": "youtube"}, {"const": "instagram"}
-          ],
-          "items": false
+          "maxItems": 1,
+          "items": {"const": "naver"}
         },
         "ranking_effect": {"const": "none"},
-        "home_ranking_effect": {"enum": ["none_auxiliary_research_disabled", "none_news_context_only"]},
+        "home_ranking_effect": {"enum": ["none_auxiliary_research_disabled", "none_context_only"]},
         "affects_collection_partial": {"const": false},
         "blocks_publication": {"const": false},
         "error": {"type": ["string", "null"]}
@@ -381,6 +555,224 @@
     }
   },
   "$defs": {
+    "liveContextResearch": {
+      "type": "object",
+      "required": ["status", "trigger_title", "why_now", "evidence_urls"],
+      "properties": {
+        "status": {"const": "ready"},
+        "trigger_title": {"type": "string", "minLength": 1},
+        "why_now": {"type": "string", "minLength": 1},
+        "evidence_urls": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^https?://"}
+        }
+      }
+    },
+    "liveObservedSeriesPoint": {
+      "type": "object",
+      "required": ["at", "source", "value", "provenance"],
+      "properties": {
+        "at": {"type": "string", "format": "date-time"},
+        "source": {"enum": ["x", "google_trends"]},
+        "value": {"type": "number", "minimum": 0, "maximum": 100},
+        "provenance": {"const": "observed"}
+      }
+    },
+    "liveSparsePoint": {
+      "type": "object",
+      "required": ["at", "x", "google_trends", "combined", "observed_sources"],
+      "properties": {
+        "at": {"type": "string", "format": "date-time"},
+        "x": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+        "google_trends": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+        "combined": {"type": "number", "minimum": 0, "maximum": 100},
+        "observed_sources": {
+          "type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true,
+          "items": {"enum": ["x", "google_trends"]}
+        }
+      },
+      "anyOf": [
+        {"properties": {"x": {"type": "number"}}},
+        {"properties": {"google_trends": {"type": "number"}}}
+      ]
+    },
+    "liveSparseWindow": {
+      "type": "object",
+      "required": [
+        "status", "points", "available_point_count", "available_from", "available_to",
+        "basis", "interpolation", "missing_point_policy", "ranking_effect"
+      ],
+      "properties": {
+        "status": {"enum": ["measured", "insufficient_observed_history"]},
+        "points": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/liveSparsePoint"}},
+        "available_point_count": {"type": "integer", "minimum": 1},
+        "available_from": {"type": "string", "format": "date-time"},
+        "available_to": {"type": "string", "format": "date-time"},
+        "basis": {"const": "observed_x_google_hourly_points_only"},
+        "interpolation": {"const": "none"},
+        "missing_point_policy": {"const": "preserve_sparse_null_no_reuse"},
+        "ranking_effect": {"const": "none"}
+      }
+    },
+    "liveSparseVisualization": {
+      "type": "object",
+      "required": ["metric", "canonical_series_unchanged", "data_mode", "interpolation", "ranking_effect", "1w", "1m", "3m"],
+      "properties": {
+        "metric": {"const": "normalized_attention_index"},
+        "canonical_series_unchanged": {"const": true},
+        "data_mode": {"const": "observed_sparse"},
+        "interpolation": {"const": "none"},
+        "ranking_effect": {"const": "none"},
+        "1w": {"$ref": "#/$defs/liveSparseWindow"},
+        "1m": {"$ref": "#/$defs/liveSparseWindow"},
+        "3m": {"$ref": "#/$defs/liveSparseWindow"}
+      }
+    },
+    "liveKeywordCompanyLink": {
+      "type": "object",
+      "required": ["keyword", "company", "connection_explanation", "evidence_urls"],
+      "properties": {
+        "keyword": {"type": "string", "pattern": "^(?:\\s*\\S){1,6}\\s*$"},
+        "company": {"type": "string", "minLength": 1},
+        "connection_explanation": {"type": "string", "minLength": 1},
+        "evidence_urls": {
+          "type": "array", "minItems": 1, "uniqueItems": true,
+          "items": {"type": "string", "pattern": "^https?://"}
+        }
+      }
+    },
+    "liveMarketSnapshot": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "required": [
+            "status", "provider", "source", "source_url", "price_source_url",
+            "as_of", "currency", "price_series", "display_only", "ranking_effect"
+          ],
+          "properties": {
+            "status": {"const": "observed"},
+            "provider": {"type": "string", "minLength": 1},
+            "source": {"type": "string", "minLength": 1},
+            "source_url": {"type": "string", "pattern": "^https?://"},
+            "price_source_url": {"type": "string", "pattern": "^https?://"},
+            "as_of": {"type": "string", "minLength": 1},
+            "last_price": {"type": ["number", "null"]},
+            "last_price_krw": {"type": ["number", "null"]},
+            "change_percent": {"type": ["number", "null"]},
+            "volume": {"type": ["number", "null"], "minimum": 0},
+            "market_cap": {"type": ["number", "null"], "exclusiveMinimum": 0},
+            "market_cap_krw": {"type": ["number", "null"], "exclusiveMinimum": 0},
+            "market_cap_currency": {"enum": ["KRW", null]},
+            "market_cap_source_url": {"type": ["string", "null"]},
+            "native_market_cap": {"type": ["number", "null"], "exclusiveMinimum": 0},
+            "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+            "fx_rate_to_krw": {"type": ["number", "null"], "exclusiveMinimum": 0},
+            "fx_as_of": {"type": ["string", "null"]},
+            "fx_provider": {"type": ["string", "null"]},
+            "fx_source_url": {"type": ["string", "null"]},
+            "price_series": {"type": "array", "minItems": 1, "items": {"type": "number", "exclusiveMinimum": 0}},
+            "price_points": {"type": "array", "items": {"type": "object"}},
+            "per": {"type": "number", "exclusiveMinimum": 0},
+            "per_source_url": {"type": "string", "pattern": "^https?://"},
+            "per_as_of": {"type": "string", "minLength": 1},
+            "per_type": {"type": "string", "minLength": 1},
+            "per_period_type": {"type": "string", "minLength": 1},
+            "pbr": {"type": "number", "exclusiveMinimum": 0},
+            "pbr_source_url": {"type": "string", "pattern": "^https?://"},
+            "roe_pct": {"type": "number"},
+            "roe": {"type": "number"},
+            "roe_percent": {"type": "number"},
+            "roe_source_url": {"type": "string", "pattern": "^https?://"},
+            "roe_basis": {
+              "enum": [
+                "trailing_net_income / average_two_point_stockholders_equity * 100",
+                "annual_net_income / average_two_point_stockholders_equity * 100"
+              ]
+            },
+            "roe_calculated": {"const": true},
+            "roe_numerator": {
+              "type": "object",
+              "required": ["value", "type", "period_type", "as_of"],
+              "properties": {
+                "value": {"type": "number"},
+                "type": {"enum": ["trailingNetIncome", "annualNetIncome"]},
+                "period_type": {"type": "string", "minLength": 1},
+                "as_of": {"type": "string", "minLength": 1}
+              }
+            },
+            "roe_denominator": {
+              "type": "object",
+              "required": [
+                "value", "type", "period_type", "as_of", "period_start",
+                "period_end", "observations"
+              ],
+              "properties": {
+                "value": {"type": "number", "exclusiveMinimum": 0},
+                "type": {"const": "averageStockholdersEquity"},
+                "period_type": {"const": "TWO_POINT_AVERAGE"},
+                "as_of": {"type": "string", "minLength": 1},
+                "period_start": {"type": "string", "minLength": 1},
+                "period_end": {"type": "string", "minLength": 1},
+                "observations": {
+                  "type": "array", "minItems": 2, "maxItems": 2,
+                  "items": {
+                    "type": "object",
+                    "required": ["value", "type", "period_type", "as_of"],
+                    "properties": {
+                      "value": {"type": "number", "exclusiveMinimum": 0},
+                      "type": {"type": "string", "minLength": 1},
+                      "period_type": {"type": "string", "minLength": 1},
+                      "as_of": {"type": "string", "minLength": 1}
+                    }
+                  }
+                }
+              }
+            },
+            "display_only": {"const": true},
+            "ranking_effect": {"const": "none"}
+          },
+          "allOf": [
+            {
+              "if": {"required": ["market_cap"], "properties": {"market_cap": {"type": "number"}}},
+              "then": {
+                "required": [
+                  "market_cap_krw", "market_cap_currency", "native_market_cap",
+                  "market_cap_source_url", "fx_rate_to_krw", "fx_as_of", "fx_provider", "fx_source_url"
+                ],
+                "properties": {
+                  "market_cap_krw": {"type": "number", "exclusiveMinimum": 0},
+                  "market_cap_currency": {"const": "KRW"},
+                  "market_cap_source_url": {"type": "string", "pattern": "^https?://"},
+                  "native_market_cap": {"type": "number", "exclusiveMinimum": 0},
+                  "fx_rate_to_krw": {"type": "number", "exclusiveMinimum": 0},
+                  "fx_as_of": {"type": "string", "minLength": 1},
+                  "fx_provider": {"type": "string", "minLength": 1},
+                  "fx_source_url": {"type": "string", "pattern": "^https?://"}
+                }
+              }
+            },
+            {
+              "if": {"required": ["per"]},
+              "then": {"required": ["per_source_url"]}
+            },
+            {
+              "if": {"required": ["pbr"]},
+              "then": {"required": ["pbr_source_url"]}
+            },
+            {
+              "if": {"required": ["roe_pct"]},
+              "then": {
+                "required": [
+                  "roe", "roe_percent", "roe_source_url", "roe_basis",
+                  "roe_calculated", "roe_numerator", "roe_denominator"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
     "homeFeed": {
       "type": "object",
       "additionalProperties": false,
