@@ -1632,7 +1632,7 @@ def _home_card(item: dict, group: str) -> dict:
     allowed = (
         "event_key", "display_name", "canonical_topic", "broad_category",
         "category", "category_label", "trend_definition", "lifecycle",
-        "lifecycle_label", "source_badge", "context_research",
+        "lifecycle_label", "source_badge", "sources", "period_sources", "context_research",
         "related_keywords", "keywords", "companies", "company_status",
         "company_card_status", "stock_impact_hypothesis", "data_confidence",
         "observed_at", "why_now", "verification_layer", "platform_observation_summary",

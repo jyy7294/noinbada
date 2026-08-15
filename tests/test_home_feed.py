@@ -1,4 +1,5 @@
 from trzip.intelligence import apply_equal_platform_home_scores, refresh_frontend_readiness
+from trzip.result_quality import evaluate_frontend_result
 
 
 def _company(index: int, role: str) -> dict:
@@ -20,6 +21,7 @@ def test_home_feed_is_rank_free_and_groups_positive_cross_platform_candidate():
         "home_eligible": True, "is_current": True, "lifecycle": "rising",
         "broad_category": "consumer", "category_label": "제품·브랜드",
         "latest_source_ranks": {"x": 2, "google_trends": 3}, "score": 70,
+        "period_sources": ["x", "google_trends"],
         "observed_rank": 1, "momentum_delta": 0.5,
         "series": [{
             "at": "2026-08-15T04:00:00+00:00", "source": "x",
@@ -56,8 +58,11 @@ def test_home_feed_is_rank_free_and_groups_positive_cross_platform_candidate():
     assert not {"observed_rank", "home_rank", "publication_rank", "score"} & set(card)
     assert card["disclaimer"] == item["disclaimer"]
     assert card["keyword_company_links"] == item["keyword_company_links"]
+    assert card["period_sources"] == item["period_sources"]
     assert card["platform_observation_summary"]["x"]["observed"] is True
     assert card["platform_observation_summary"]["naver_news"]["selection_input"] is False
+    quality = evaluate_frontend_result(intelligence)
+    assert not any("insufficient_trend_definition" in failure for failure in quality["failures"])
     # The new feed stays rank-free, while the one-release compatibility array
     # keeps a numbered Top10 for the current frontend.
     assert [row["event_key"] for row in intelligence["home_top10"]] == [card["event_key"]]

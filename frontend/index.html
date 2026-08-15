@@ -52,7 +52,7 @@
         시작 화면
       </div>
 
-      <div data-zip="frame" style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden; cursor:grab; touch-action:none; user-select:none;">
+      <div data-zip="frame" role="button" tabindex="0" aria-label="아래로 내려 실시간 트렌드 열기" style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden; cursor:grab; touch-action:none; user-select:none;">
         <div style="position:absolute; inset:0; background:linear-gradient(180deg,#FFFFFF 0%,#FAF7FF 46%,#F1EAFF 100%);"></div>
         <div data-zip="glow" style="position:absolute; left:50%; top:56%; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; background:radial-gradient(circle, rgba(123,63,242,0.30) 0%, rgba(123,63,242,0.10) 45%, rgba(123,63,242,0) 70%); opacity:0;"></div>
 
@@ -503,7 +503,7 @@
             <div data-company-role-folder="1" style="{{ f.wrapStyle }}">
               <div title="{{ f.title }}" style="{{ f.tabStyle }}"><span aria-hidden="true" style="font-size:15px; flex:none;">{{ f.icon }}</span><span style="min-width:0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere; line-height:1.2;">{{ f.title }}</span></div>
               <div data-folder-card="1" style="{{ f.cardStyle }}">
-                <button data-folder-toggle="1" type="button" aria-expanded="{{ f.open }}" onClick="{{ f.toggle }}" style="width:100%; border:0; padding:0; background:transparent; font-family:inherit; text-align:left; cursor:pointer;">
+                <button data-folder-toggle="1" type="button" aria-label="{{ f.title }} {{ f.count }} 기업 목록 열기 또는 접기" aria-expanded="{{ f.open }}" onClick="{{ f.toggle }}" style="width:100%; border:0; padding:0; background:transparent; font-family:inherit; text-align:left; cursor:pointer;">
                  <div style="display:flex; align-items:center; gap:10px;">
                   <div style="flex:1; min-width:0; display:flex; align-items:center;">
                     <sc-for list="{{ f.chips }}" as="ch" hint-placeholder-count="3">
@@ -3662,6 +3662,18 @@ class Component extends DCLogic {
     frame.addEventListener('pointerup', end);
     frame.addEventListener('pointercancel', end);
     frame.addEventListener('click', () => { if (!opened) open(); });
+    frame.addEventListener('wheel', (e) => {
+      if (opened || e.deltaY <= 0) return;
+      e.preventDefault();
+      y = Math.min(MAX, y + Math.max(36, e.deltaY * 0.9));
+      paint();
+      if (y > MIN + (MAX - MIN) * 0.28) open();
+    }, { passive:false });
+    frame.addEventListener('keydown', (e) => {
+      if (opened || !['Enter', ' ', 'ArrowDown', 'PageDown'].includes(e.key)) return;
+      e.preventDefault();
+      open();
+    });
   }
 
   listViewWire() {

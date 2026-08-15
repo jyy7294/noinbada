@@ -1000,6 +1000,10 @@ def test_stock_add_flow_has_search_groups_accessibility_and_broad_universe() -> 
 
 
 def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_drift() -> None:
+    assert 'data-zip="frame" role="button" tabindex="0"' in INDEX
+    assert "frame.addEventListener('wheel'" in INDEX
+    assert "frame.addEventListener('keydown'" in INDEX
+    assert "['Enter', ' ', 'ArrowDown', 'PageDown']" in INDEX
     assert 'data-trend-summary-card="1"' in INDEX
     assert 'background:#F3EFFC; border-radius:22px' in INDEX
     assert 'data-freshness-card="1"' in INDEX
@@ -1009,6 +1013,7 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert '언급량 추이 · 관심지수' in INDEX
     assert 'data-company-role-folder="1"' in INDEX
     assert 'data-folder-toggle="1"' in INDEX
+    assert 'aria-label="{{ f.title }} {{ f.count }} 기업 목록 열기 또는 접기"' in INDEX
     assert 'data-folder-body="1"' in INDEX
     assert 'data-folder-company="1"' in INDEX
     assert "@keyframes omSheetRise" in INDEX
