@@ -1295,7 +1295,7 @@ def _trend_definition(item: dict, topic: str) -> str:
 
     category = str(item.get("category") or "unclassified")
     kind = CATEGORY_DEFINITIONS.get(category, "구체적인 대상이나 행동을 중심으로 형성된 관심 흐름")
-    return f"‘{topic}’은(는) {kind}입니다."
+    return f"'{topic}' 키워드는 {kind}입니다."
 
 
 def _observation_summary(item: dict, topic: str) -> str:

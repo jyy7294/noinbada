@@ -27,6 +27,13 @@ def test_frontend_refresh_reconciles_company_reason_and_excludes_expired_rising(
             "relationship_reason": "documented relationship",
             "evidence_sources": [{"url": f"https://example.com/{index}"}],
             "ontology_complete": True,
+            "relation_tier": "direct",
+            "company_role_category": (
+                "manufacturing_development" if index < 4 else
+                "distribution" if index < 7 else
+                "platform_service"
+            ),
+            "company_role_label": "Verified role",
         }
         for index in range(10)
     ]
@@ -36,6 +43,8 @@ def test_frontend_refresh_reconciles_company_reason_and_excludes_expired_rising(
         "lane": "main",
         "home_eligible": True,
         "broad_category": "content",
+        "category": "entertainment",
+        "context_status": "resolved_by_observed_context",
         "keyword_status": "ready",
         "related_keywords": [{"text": str(index)} for index in range(5)],
         "companies": companies,
@@ -49,6 +58,12 @@ def test_frontend_refresh_reconciles_company_reason_and_excludes_expired_rising(
         "observed_rank": 1,
         "is_current": False,
         "lifecycle": "expired",
+        "context_research": {
+            "status": "ready",
+            "trigger_title": "Documented trigger",
+            "why_now": "Public evidence documents the current context.",
+            "evidence_urls": ["https://example.com/context"],
+        },
     }
     intelligence = {
         "unified_ranking": [expired],
@@ -64,7 +79,7 @@ def test_frontend_refresh_reconciles_company_reason_and_excludes_expired_rising(
     assert intelligence["rising_top10"] == []
 
 
-def test_frontend_readiness_accepts_two_company_roles_and_rejects_one_role():
+def test_frontend_readiness_accepts_three_company_roles_and_rejects_two_roles():
     def candidate(role_count: int) -> dict:
         roles = [
             "manufacturing_development",
@@ -77,7 +92,7 @@ def test_frontend_readiness_accepts_two_company_roles_and_rejects_one_role():
             "event_key": f"roles-{role_count}",
             "display_name": f"Roles {role_count}",
             "lane": "main",
-            "home_eligible": False,
+            "home_eligible": True,
             "broad_category": "technology",
             "keyword_status": "ready",
             "related_keywords": [{"text": text} for text in keywords],
@@ -99,6 +114,7 @@ def test_frontend_readiness_accepts_two_company_roles_and_rejects_one_role():
                     ],
                     "company_role_category": roles[index % len(roles)],
                     "company_role_label": "Verified role",
+                    "relation_tier": "direct",
                 }
                 for index in range(10)
             ],
@@ -155,12 +171,46 @@ def test_trend_definition_explains_meaning_and_observed_context():
         "개기일식",
         "문화·밈·참여",
         ["일식", "개기일식 시간"],
+        ["x", "google_trends"],
     )
 
+    assert definition.startswith("'개기일식' 키워드는 ")
     assert "관측·공유·참여" in definition
     assert "일식, 개기일식 시간" in definition
-    assert "X와 Google 대한민국 관측값" in definition
+    assert "X와 Google 대한민국 관측" in definition
     assert "투자 추천" not in definition
+
+
+def test_trend_definition_names_the_actual_single_source():
+    from trzip.intelligence import _trend_definition
+
+    google_definition = _trend_definition(
+        "삼계탕",
+        "음식·식품",
+        ["복날", "보양식"],
+        ["google_trends"],
+    )
+    x_definition = _trend_definition(
+        "불꽃축제",
+        "문화·밈·참여",
+        ["야간축제", "불꽃놀이"],
+        ["x"],
+    )
+    generic_definition = _trend_definition(
+        "출처 검토 대상",
+        "제품·브랜드",
+        [],
+        [],
+    )
+
+    assert google_definition.startswith("'삼계탕' 키워드는 ")
+    assert x_definition.startswith("'불꽃축제' 키워드는 ")
+    assert generic_definition.startswith("'출처 검토 대상' 키워드는 ")
+    assert "Google Trending Now 대한민국 관측" in google_definition
+    assert "X와 Google" not in google_definition
+    assert "X 대한민국 실시간 트렌드 관측" in x_definition
+    assert "Google" not in x_definition
+    assert "공개 원천 관측" in generic_definition
 
 
 def test_frontend_story_keeps_related_terms_as_context_not_causal_lineage():

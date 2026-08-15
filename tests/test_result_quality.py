@@ -95,9 +95,10 @@ def _trend(rank: int) -> dict:
         "selection_origin": "reviewed_observed_reference_test",
         "observed_rank": rank * 2,
         "broad_category": "technology",
+        "sources": ["x", "google_trends"],
         "trend_definition": (
             "구체적인 기술 대상이 최근 관심을 받은 트렌드입니다. "
-            "X와 Google 대한민국 관측값에서 발생 맥락과 연결 산업이 함께 확인됐습니다."
+            "X와 Google 대한민국 관측에서 발생 맥락과 연결 산업이 함께 확인됐습니다."
         ),
         "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
         "frontend_readiness_status": "ready",
@@ -402,13 +403,37 @@ def test_quality_gate_rejects_shallow_or_unbounded_trend_definition():
     trends[0]["trend_definition"] = "최근 관측된 기술 트렌드입니다."
     trends[1]["trend_definition"] = (
         "구체적인 기술 대상이 최근 관심을 받은 트렌드입니다. "
-        "X와 Google 대한민국 관측값을 바탕으로 발생 맥락을 설명하며 투자 조언이 아닙니다."
+        "X와 Google 대한민국 관측을 바탕으로 발생 맥락을 설명하며 투자 조언이 아닙니다."
     )
 
     result = evaluate_frontend_result({"home_top10": trends})
 
     assert result["passed"] is False
     assert sum("insufficient_trend_definition" in failure for failure in result["failures"]) == 2
+
+
+def test_quality_gate_accepts_definition_matching_google_only_source():
+    trend = _trend(1)
+    trend.pop("sources")
+    trend["period_sources"] = ["google_trends"]
+    trend["trend_definition"] = (
+        "구체적인 음식 대상과 소비 맥락에 관심이 모이는 흐름입니다. "
+        "Google Trending Now 대한민국 관측에서 확인된 맥락입니다."
+    )
+
+    result = evaluate_frontend_result({"home_top10": [trend]})
+
+    assert result["passed"] is True
+
+
+def test_quality_gate_rejects_definition_claiming_both_for_google_only_source():
+    trend = _trend(1)
+    trend["sources"] = ["google_trends"]
+
+    result = evaluate_frontend_result({"home_top10": [trend]})
+
+    assert result["passed"] is False
+    assert any("insufficient_trend_definition" in failure for failure in result["failures"])
 
 
 def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):

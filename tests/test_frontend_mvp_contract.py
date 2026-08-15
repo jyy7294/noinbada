@@ -508,6 +508,9 @@ def test_maker_and_saved_portfolios_use_current_trends_and_companies() -> None:
 
 
 def test_live_data_loader_has_timeout_and_retry_guards() -> None:
+    assert "DEFAULT_LIVE_DATA_BASE = 'https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest'" in DATA
+    assert "['127.0.0.1', 'localhost'].includes(globalThis.location?.hostname)" in DATA
+    assert "new URLSearchParams(globalThis.location.search).get('dataBase')" in DATA
     assert "FETCH_TIMEOUT_MS = 6500" in DATA
     assert "FETCH_ATTEMPTS = 3" in DATA
     assert "async function fetchWithRetry" in DATA

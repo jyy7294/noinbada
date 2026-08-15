@@ -57,6 +57,103 @@ _LOGO_MARKER = re.compile(r"(?:^|[\s_./-])(logo|logotype|wordmark|brand)(?:$|[\s
 _EXTERNAL_CSS_URL = re.compile(r"url\s*\(\s*(['\"]?)(?!#)(.*?)\1\s*\)", re.I)
 
 
+# Logo files below were taken only from each listed company's official CI page
+# (or an asset host declared by that page), then checked for HTTP 200, image
+# MIME, dimensions/content safety and SHA-256 on 2026-08-15.  The catalog is a
+# fail-closed supplement to the page parser: it handles official sites whose
+# TLS/markup prevents reliable discovery, without falling back to a search
+# engine favicon or an unrelated third-party logo service.
+_REVIEWED_COMPANY_LOGOS = {
+    ("동원F&B", "049770"): {
+        "accepted_homepage_hosts": {"dongwonfnb.com", "www.dongwonfnb.com"},
+        "source_page_url": "https://www.dongwonfnb.com/services/Company/CI",
+        "asset_url": "https://www.dongwonfnb.com/Images/Company/img_ci_signature.gif",
+        "mime": "image/gif",
+        "width": 221,
+        "height": 110,
+        "sha256": "5ae875327cd918f2c634c97eff690070d308e4ae0d01e9af28bb94809ce1915b",
+        "verification": "verified_raster_min_64px",
+        "asset_scope": "same_official_domain",
+    },
+    ("대상", "001680"): {
+        "accepted_homepage_hosts": {
+            "daesang.co.kr", "www.daesang.co.kr", "daesang.com", "www.daesang.com",
+        },
+        "source_page_url": "https://www.daesang.com/kr/company/ci.jsp",
+        "asset_url": "https://www.daesang.com/kr/asset/images/sub/company/daesang_ci.png",
+        "mime": "image/png",
+        "width": 485,
+        "height": 126,
+        "sha256": "30c5153f1b630715aad3fe32819303cbd0d09bcd6f5234dbc0484f88c01134e9",
+        "verification": "verified_raster_min_64px",
+        "asset_scope": "same_official_domain",
+    },
+    ("한성기업", "003680"): {
+        "accepted_homepage_hosts": {"hsep.com", "www.hsep.com"},
+        "source_page_url": "https://www.hsep.com/CI",
+        "asset_url": "https://cdn.imweb.me/thumbnail/20240320/30e5724b26962.jpg",
+        "mime": "image/jpeg",
+        "width": 1600,
+        "height": 671,
+        "sha256": "8ad4e280b7efc6b0f2b59f3f617db5ae987337cd36ce42cbc8d2ee00b43ed147",
+        "verification": "verified_raster_min_64px",
+        "asset_scope": "official_page_declared_cdn",
+    },
+    ("사조대림", "003960"): {
+        "accepted_homepage_hosts": {"dr.sajo.co.kr"},
+        "source_page_url": "https://dr.sajo.co.kr/eng/intro/company_ci.asp",
+        "asset_url": "https://dr.sajo.co.kr/eng/images/content/intro/txt_ci02.gif",
+        "mime": "image/gif",
+        "width": 700,
+        "height": 209,
+        "sha256": "106d07dd82f52085ba6fda1b3e1b81636836b7ba51a0d16fa9afb38f58ef992b",
+        "verification": "verified_raster_min_64px",
+        "asset_scope": "same_official_domain",
+    },
+    ("하림", "136480"): {
+        "accepted_homepage_hosts": {"harim.com", "www.harim.com"},
+        "source_page_url": "https://www.harim.com/main/",
+        "asset_url": "https://www.harim.com/main/img/ci.png",
+        "mime": "image/png",
+        "width": 198,
+        "height": 149,
+        "sha256": "ff67be9cdeeeff6a1d6b4f17111ed758dcf3b5e9c6950e1a974442237f8267de",
+        "verification": "verified_raster_min_64px",
+        "asset_scope": "same_official_domain",
+    },
+    ("신세계푸드", "031440"): {
+        "accepted_homepage_hosts": {"shinsegaefood.com", "www.shinsegaefood.com"},
+        "source_page_url": "https://shinsegaefood.com/main.sf",
+        "asset_url": "https://shinsegaefood.com/images/favicon/shinsegae_ci16.ico",
+        "mime": "image/x-icon",
+        "width": 256,
+        "height": 256,
+        "sha256": "8179821c6d2d72de363dcc34149eafe93cc32c6428951b77118b8d105313490a",
+        "verification": "verified_raster_min_64px",
+        "asset_scope": "same_official_domain",
+    },
+    ("이마트", "139480"): {
+        "accepted_homepage_hosts": {
+            "company.emart.com", "emartcompany.com", "www.emartcompany.com",
+        },
+        "source_page_url": "https://company.emart.com/ko/company/ci.do",
+        "asset_url": "https://stimg.emart.com/company/ko/images/ab/img_ci_logo.png",
+        "mime": "image/png",
+        "width": 750,
+        "height": 291,
+        "sha256": "b7907a820b1547c2cd3eeac581497dff6a12ba15af2797c451388cb72c58c3d4",
+        "verification": "verified_raster_min_64px",
+        "asset_scope": "same_official_domain",
+    },
+}
+
+_REVIEWED_LOGO_BY_HOME_HOST = {
+    host.casefold(): (identity, asset)
+    for identity, asset in _REVIEWED_COMPANY_LOGOS.items()
+    for host in asset["accepted_homepage_hosts"]
+}
+
+
 @dataclass(frozen=True)
 class _FetchResult:
     url: str
@@ -82,6 +179,15 @@ def clear_company_logo_cache() -> None:
 
     with _CACHE_LOCK:
         _CACHE.clear()
+
+
+def reviewed_company_homepage(company_name: str, stock_code: str) -> str:
+    """Return a catalog source page only for an exact listed-company identity."""
+
+    asset = _REVIEWED_COMPANY_LOGOS.get(
+        (str(company_name or "").strip(), str(stock_code or "").strip())
+    )
+    return str(asset.get("source_page_url") or "") if asset else ""
 
 
 def resolve_company_logo(
@@ -113,6 +219,11 @@ def resolve_company_logo(
         _assert_public_url(requested_url)
     except (TypeError, ValueError, OSError):
         return _fallback(None, "unsafe_or_invalid_homepage_url")
+
+    reviewed = _reviewed_catalog_result(requested_url)
+    if reviewed is not None:
+        reviewed["cache"] = "reviewed_catalog"
+        return reviewed
 
     cache_key = (requested_url, int(max_page_bytes), int(max_asset_bytes))
     cached = _cache_get(cache_key)
@@ -155,6 +266,59 @@ def resolve_company_logo(
         max_entries=min(DEFAULT_CACHE_MAX_ENTRIES, max(1, int(cache_max_entries))),
     )
     return copy.deepcopy(result)
+
+
+def _reviewed_catalog_result(requested_url: str) -> dict | None:
+    """Resolve a pre-verified official CI asset for an accepted homepage host."""
+
+    requested_host = (urllib.parse.urlsplit(requested_url).hostname or "").casefold()
+    catalog_row = _REVIEWED_LOGO_BY_HOME_HOST.get(requested_host)
+    if catalog_row is None:
+        return None
+    identity, asset = catalog_row
+    source_page_url = str(asset.get("source_page_url") or "").strip()
+    asset_url = str(asset.get("asset_url") or "").strip()
+    mime = _normalize_mime(str(asset.get("mime") or ""))
+    width = asset.get("width")
+    height = asset.get("height")
+    sha256 = str(asset.get("sha256") or "").strip().casefold()
+    verification = str(asset.get("verification") or "").strip()
+    asset_scope = str(asset.get("asset_scope") or "").strip()
+    try:
+        source_page_url = _canonical_http_url(source_page_url)
+        asset_url = _canonical_http_url(asset_url)
+    except ValueError:
+        return None
+    if (
+        urllib.parse.urlsplit(source_page_url).scheme != "https"
+        or urllib.parse.urlsplit(asset_url).scheme != "https"
+        or mime not in _ALLOWED_IMAGE_MIME_TYPES
+        or not isinstance(width, int)
+        or isinstance(width, bool)
+        or not isinstance(height, int)
+        or isinstance(height, bool)
+        or width < 64
+        or height < 64
+        or len(sha256) != 64
+        or any(character not in "0123456789abcdef" for character in sha256)
+        or verification not in {"verified_safe_svg", "verified_raster_min_64px"}
+        or asset_scope not in {"same_official_domain", "official_page_declared_cdn"}
+    ):
+        return None
+    return {
+        "status": "verified",
+        "source_page_url": source_page_url,
+        "asset_url": asset_url,
+        "mime": mime,
+        "width": width,
+        "height": height,
+        "sha256": sha256,
+        "verification": verification,
+        "candidate_kind": "reviewed_official_ci_asset",
+        "asset_scope": asset_scope,
+        "catalog_identity": {"company": identity[0], "stock_code": identity[1]},
+        "verified_at": "2026-08-15T15:00:00+00:00",
+    }
 
 
 def _resolve_from_page(

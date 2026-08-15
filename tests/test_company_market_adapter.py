@@ -1,9 +1,12 @@
 from datetime import UTC, datetime, timedelta
+import urllib.error
 
+import pandas as pd
 import pytest
 
 from trzip.company_adapters import (
     clear_yahoo_market_cache,
+    pykrx_stock,
     yahoo_finance_fundamentals,
     yahoo_finance_stock,
     yahoo_finance_symbol,
@@ -88,6 +91,37 @@ def _fx_payload(rate: float = 1_350.5) -> dict:
             "error": None,
         }
     }
+
+
+def test_pykrx_name_without_observed_rows_is_not_an_observed_security(monkeypatch):
+    """A historical ticker name must not turn a delisted code into live data."""
+
+    monkeypatch.setattr(
+        "pykrx.stock.get_market_ticker_name", lambda _code: "동원F&B"
+    )
+    monkeypatch.setattr(
+        "pykrx.stock.get_market_ohlcv_by_date",
+        lambda *_args, **_kwargs: pd.DataFrame(),
+    )
+    monkeypatch.setattr(
+        "pykrx.stock.get_market_fundamental_by_date",
+        lambda *_args, **_kwargs: pd.DataFrame(),
+    )
+    monkeypatch.setattr(
+        "pykrx.stock.get_market_cap_by_date",
+        lambda *_args, **_kwargs: pd.DataFrame(),
+    )
+
+    result = pykrx_stock("049770", "20260815")
+
+    assert result["status"] == "not_found"
+    assert result["name"] == "동원F&B"
+    assert result["daily_ohlcv"] == []
+    assert result["summary"]["as_of"] is None
+    assert result["summary"]["market_cap_krw"] is None
+    assert result["synthetic"] is False
+    assert result["estimated"] is False
+    assert result["ranking_effect"] == "none"
 
 
 @pytest.mark.parametrize(
@@ -444,7 +478,9 @@ def test_yahoo_adapter_uses_bounded_success_cache(monkeypatch):
             return _fundamentals_payload()
         if "HKDKRW%3DX" in url:
             return _fx_payload(175.0)
-        return _chart_payload()
+        payload = _chart_payload()
+        payload["chart"]["result"][0]["meta"]["currency"] = "HKD"
+        return payload
 
     monkeypatch.setattr("trzip.company_adapters._json_request", fake_json_request)
     observed_at = datetime(2026, 8, 15, 0, tzinfo=UTC)
@@ -458,6 +494,77 @@ def test_yahoo_adapter_uses_bounded_success_cache(monkeypatch):
     assert first["yahoo_symbol"] == "0700.HK"
     assert third["summary"]["close"] == 134.0
     assert len(calls) == 3
+
+
+def test_yahoo_fundamentals_retries_transient_timeout_then_succeeds(monkeypatch):
+    calls = []
+
+    def flaky_json_request(url, **_kwargs):
+        calls.append(url)
+        if len(calls) < 3:
+            raise TimeoutError("temporary transport failure")
+        return _fundamentals_payload()
+
+    monkeypatch.setattr("trzip.company_adapters._json_request", flaky_json_request)
+    monkeypatch.setattr("trzip.company_adapters.time.sleep", lambda _seconds: None)
+
+    result = yahoo_finance_fundamentals(
+        "005930",
+        "KOSPI",
+        cache_ttl_seconds=0,
+        as_of=datetime(2026, 8, 15, tzinfo=UTC),
+    )
+
+    assert result["status"] == "observed"
+    assert result["valuation"]["completeness"] == "complete"
+    assert len(calls) == 3
+
+
+def test_yahoo_definitive_404_is_not_retried_or_cached(monkeypatch):
+    calls = []
+
+    def missing_symbol(url, **_kwargs):
+        calls.append(url)
+        raise urllib.error.HTTPError(url, 404, "Not Found", None, None)
+
+    monkeypatch.setattr("trzip.company_adapters._json_request", missing_symbol)
+
+    first = yahoo_finance_fundamentals(
+        "049770",
+        "KOSPI",
+        as_of=datetime(2026, 8, 15, tzinfo=UTC),
+    )
+    second = yahoo_finance_fundamentals(
+        "049770",
+        "KOSPI",
+        as_of=datetime(2026, 8, 15, tzinfo=UTC),
+    )
+
+    assert first["status"] == second["status"] == "unavailable"
+    assert first["reason"] == "fundamentals_unavailable"
+    assert first["error_type"] == "HTTPError"
+    assert first["http_status"] == 404
+    assert first["synthetic"] is False
+    assert len(calls) == 2  # one definitive request per invocation; no retry/cache
+
+
+def test_yahoo_partial_fundamentals_are_returned_but_not_success_cached(monkeypatch):
+    calls = []
+
+    def partial_json_request(url, **_kwargs):
+        calls.append(url)
+        return _fundamentals_payload(include_per=False)
+
+    monkeypatch.setattr("trzip.company_adapters._json_request", partial_json_request)
+    observed_at = datetime(2026, 8, 15, tzinfo=UTC)
+
+    first = yahoo_finance_fundamentals("005930", "KOSPI", as_of=observed_at)
+    second = yahoo_finance_fundamentals("005930", "KOSPI", as_of=observed_at)
+
+    assert first["valuation"]["completeness"] == "partial"
+    assert first["valuation"]["per"] is None
+    assert second["valuation"]["completeness"] == "partial"
+    assert len(calls) == 2
 
 
 def test_yahoo_adapter_fails_closed_on_transport_or_missing_fundamentals(monkeypatch):

@@ -7,6 +7,7 @@ import os
 import re
 import sqlite3
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -49,6 +50,8 @@ YAHOO_PUBLIC_QUOTE_URL = "https://finance.yahoo.com/quote/{symbol}"
 YAHOO_MARKET_CACHE_TTL_SECONDS = 15 * 60
 YAHOO_MARKET_CACHE_MAX_ENTRIES = 256
 YAHOO_MARKET_TIMEOUT_SECONDS = 8
+YAHOO_MARKET_MAX_ATTEMPTS = 3
+YAHOO_MARKET_RETRY_BACKOFF_SECONDS = 0.1
 YAHOO_FUNDAMENTAL_TYPES = (
     "trailingMarketCap",
     "quarterlyMarketCap",
@@ -116,6 +119,52 @@ def _json_request(url: str, *, method: str = "GET", headers: dict | None = None,
     request = urllib.request.Request(url, data=data, method=method, headers=request_headers)
     with urllib.request.urlopen(request, timeout=timeout) as response:
         return json.load(response)
+
+
+def _json_request_with_retry(
+    url: str,
+    *,
+    method: str = "GET",
+    headers: dict | None = None,
+    body: dict | None = None,
+    timeout: int = 20,
+    max_attempts: int = YAHOO_MARKET_MAX_ATTEMPTS,
+) -> dict:
+    """Retry only transient transport failures for unauthenticated market APIs.
+
+    A definitive client response such as Yahoo's 404 for a delisted symbol is
+    returned immediately.  This keeps the adapter quick and prevents a missing
+    security from being mistaken for a temporary outage.
+    """
+
+    last_error: Exception | None = None
+    for attempt in range(max_attempts):
+        try:
+            return _json_request(
+                url,
+                method=method,
+                headers=headers,
+                body=body,
+                timeout=timeout,
+            )
+        except Exception as exc:
+            last_error = exc
+            http_status = getattr(exc, "code", None)
+            if http_status is not None:
+                retryable = http_status == 429 or 500 <= int(http_status) <= 599
+            else:
+                retryable = isinstance(
+                    exc,
+                    (TimeoutError, ConnectionError, urllib.error.URLError),
+                )
+            if not retryable or attempt + 1 >= max_attempts:
+                raise
+            time.sleep(YAHOO_MARKET_RETRY_BACKOFF_SECONDS * (2 ** attempt))
+    # The loop either returns or raises, but retain an explicit fail-closed
+    # guard in case max_attempts is changed incorrectly in the future.
+    if last_error is not None:
+        raise last_error
+    raise ValueError("max_attempts_must_be_positive")
 
 
 def opendart_company(company_name: str, stock_code: str | None = None) -> dict:
@@ -582,8 +631,32 @@ def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: in
                 for key, value in values.items()
             }
             rows.append({"date": at.strftime("%Y-%m-%d"), **normalized})
-        if not name and not rows:
-            return {"status": "not_found", "stock_code": code, "reason": "pykrx returned no ticker or OHLCV"}
+        if not rows:
+            return {
+                "status": "not_found",
+                "provider": "pykrx",
+                "source_url": KRX_DATA_SOURCE_URL,
+                "stock_code": code,
+                "name": name or None,
+                "reason": "pykrx returned no daily OHLCV for requested range",
+                "daily_ohlcv": [],
+                "summary": {
+                    "as_of": None,
+                    "close": None,
+                    "close_krw": None,
+                    "daily_change_pct": None,
+                    "volume": None,
+                    "currency": "KRW",
+                    "market_cap": None,
+                    "market_cap_krw": None,
+                },
+                "valuation": {},
+                "data_mode": "unavailable",
+                "synthetic": False,
+                "estimated": False,
+                "ranking_effect": "none",
+                "relationship_evidence": False,
+            }
         reaction = _market_reaction(rows)
         latest = rows[-1] if rows else None
         previous = rows[-2] if len(rows) > 1 else None
@@ -683,6 +756,7 @@ def _yahoo_unavailable(
     *,
     symbol: str | None = None,
     error_type: str | None = None,
+    http_status: int | None = None,
 ) -> dict:
     result = {
         "status": "unavailable",
@@ -736,6 +810,8 @@ def _yahoo_unavailable(
     }
     if error_type:
         result["error_type"] = error_type
+    if http_status is not None:
+        result["http_status"] = int(http_status)
     return result
 
 
@@ -907,7 +983,10 @@ def _yahoo_fx_to_krw(
     })
     try:
         result = _parse_yahoo_fx_chart(
-            _json_request(chart_url, headers=request_headers, timeout=timeout), clean
+            _json_request_with_retry(
+                chart_url, headers=request_headers, timeout=timeout
+            ),
+            clean,
         )
         result["source_url"] = source_url
     except Exception as exc:
@@ -921,6 +1000,7 @@ def _yahoo_fx_to_krw(
             "source_url": source_url,
             "reason": "fx_reference_unavailable",
             "error_type": type(exc).__name__,
+            "http_status": getattr(exc, "code", None),
             "synthetic": False,
             "estimated": False,
             "ranking_effect": "none",
@@ -1192,7 +1272,7 @@ def _fetch_yahoo_fundamentals(
     request_headers: dict,
 ) -> tuple[dict, str]:
     fundamentals_url = _yahoo_fundamentals_url(symbol, observed_at)
-    payload = _json_request(
+    payload = _json_request_with_retry(
         fundamentals_url,
         headers=request_headers,
         timeout=timeout,
@@ -1287,6 +1367,7 @@ def yahoo_finance_fundamentals(
             "fundamentals_unavailable",
             symbol=symbol,
             error_type=type(exc).__name__,
+            http_status=getattr(exc, "code", None),
         )
 
     encoded_symbol = urllib.parse.quote(symbol, safe=".-")
@@ -1344,7 +1425,11 @@ def yahoo_finance_fundamentals(
         "relationship_evidence": False,
         "note": "Yahoo reported-fundamental supplement; no price chart and no relation evidence",
     }
-    if cache_ttl_seconds:
+    if (
+        cache_ttl_seconds
+        and valuation.get("completeness") == "complete"
+        and result["summary"].get("market_cap_krw") is not None
+    ):
         _cache_yahoo_market_result(cache_key, result)
     return result
 
@@ -1401,7 +1486,7 @@ def yahoo_finance_stock(
         "User-Agent": "Mozilla/5.0 (compatible; TRZIP/0.1; market-reference)",
     }
     try:
-        chart_payload = _json_request(
+        chart_payload = _json_request_with_retry(
             chart_url, headers=request_headers, timeout=timeout
         )
         rows, summary = _parse_yahoo_chart(chart_payload)
@@ -1412,6 +1497,7 @@ def yahoo_finance_stock(
             "chart_unavailable",
             symbol=symbol,
             error_type=type(exc).__name__,
+            http_status=getattr(exc, "code", None),
         )
     try:
         valuation, fundamentals_url = _fetch_yahoo_fundamentals(
@@ -1427,6 +1513,7 @@ def yahoo_finance_stock(
             "fundamentals_unavailable",
             symbol=symbol,
             error_type=type(exc).__name__,
+            http_status=getattr(exc, "code", None),
         )
 
     summary["market_cap"] = valuation.get("market_cap")
@@ -1474,7 +1561,12 @@ def yahoo_finance_stock(
         "relationship_evidence": False,
         "note": "Yahoo daily and reported-fundamental reference; not realtime and not relation evidence",
     }
-    if cache_ttl_seconds:
+    if (
+        cache_ttl_seconds
+        and valuation.get("completeness") == "complete"
+        and summary.get("close_krw") is not None
+        and summary.get("market_cap_krw") is not None
+    ):
         _cache_yahoo_market_result(cache_key, result)
     return result
 

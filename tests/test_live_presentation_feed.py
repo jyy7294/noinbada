@@ -394,6 +394,9 @@ def test_live_company_projects_only_verified_official_page_logo(monkeypatch):
         "height": 80,
         "sha256": "a" * 64,
         "verification": "verified_safe_svg",
+        "candidate_kind": None,
+        "asset_scope": None,
+        "verified_at": None,
     }
     _validate_presentation_feed(feed)
 
@@ -436,6 +439,41 @@ def test_unverified_homepage_logo_fails_closed_to_initials(monkeypatch):
     assert company["logo_provenance"]["source_page_url"] == "https://company.example/"
     assert company["logo_provenance"]["asset_url"] is None
     _validate_presentation_feed(feed)
+
+
+def test_invalid_official_homepage_recovers_only_from_exact_reviewed_identity(monkeypatch):
+    candidate = _candidate()
+    company = candidate["companies"][1]
+    company.update({
+        "company": "하림",
+        "stock_code": "136480",
+        "official_identity": {
+            "status": "verified",
+            "homepage": "https://-",
+            "ranking_effect": "none",
+        },
+    })
+    candidate["keyword_company_links"][0].update({
+        "company": "하림",
+        "stock_code": "136480",
+    })
+
+    feed = build_presentation_feed(_intelligence(candidate))
+    projected = next(
+        row for row in feed["items"][0]["companies"] if row["company"] == "하림"
+    )
+
+    assert projected["logo_render_mode"] == "image"
+    assert projected["logo_url"] == "https://www.harim.com/main/img/ci.png"
+    assert projected["logo_source_page_url"] == "https://www.harim.com/main/"
+    assert projected["logo_asset_width"] == 198
+    assert projected["logo_asset_height"] == 149
+    assert projected["logo_asset_sha256"] == (
+        "ff67be9cdeeeff6a1d6b4f17111ed758dcf3b5e9c6950e1a974442237f8267de"
+    )
+    assert projected["logo_provenance"]["asset_scope"] == "same_official_domain"
+    _validate_presentation_feed(feed)
+    assert evaluate_presentation_feed_quality(feed)["passed"] is True
 
 
 def test_projection_failure_before_ten_is_replenished_from_later_candidate():

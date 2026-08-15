@@ -9,8 +9,10 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from .company_roles import (
+    COMPANY_ROLE_LABELS,
     PUBLIC_COMPANY_ROLE_CATEGORIES,
     public_company_role_count_is_valid,
+    select_role_diverse_company_projection,
     with_company_role,
 )
 from .category_ontology import category_ontology
@@ -298,6 +300,7 @@ def _trend_definition(
     display_name: str,
     category_label: str,
     related_terms: list[str] | None = None,
+    sources: list[str] | set[str] | tuple[str, ...] | None = None,
 ) -> str:
     category_meanings = {
         "음식·식품": "제품·메뉴·식문화에 대한 소비자 관심이 모이는 흐름",
@@ -313,7 +316,7 @@ def _trend_definition(
         category_label,
         "구체적인 대상과 그 이용 맥락에 관심이 모이는 흐름",
     )
-    definition = f"'{display_name}'은(는) {meaning}입니다."
+    definition = f"'{display_name}' 키워드는 {meaning}입니다."
     display_key = normalize_event_key(display_name)
     contextual_terms = [
         term for term in dict.fromkeys(related_terms or [])
@@ -323,7 +326,20 @@ def _trend_definition(
         definition += (
             f" 실측 데이터에서는 {', '.join(contextual_terms)} 같은 표현과 함께 나타났습니다."
         )
-    definition += " X와 Google 대한민국 관측값에서 확인된 맥락을 설명합니다."
+    observed_sources = {
+        str(source).strip().casefold()
+        for source in sources or []
+        if str(source).strip().casefold() in {"x", "google_trends"}
+    }
+    if observed_sources == {"x", "google_trends"}:
+        source_phrase = "X와 Google 대한민국 관측"
+    elif observed_sources == {"google_trends"}:
+        source_phrase = "Google Trending Now 대한민국 관측"
+    elif observed_sources == {"x"}:
+        source_phrase = "X 대한민국 실시간 트렌드 관측"
+    else:
+        source_phrase = "공개 원천 관측"
+    definition += f" {source_phrase}에서 확인된 맥락입니다."
     return definition
 
 
@@ -1421,6 +1437,55 @@ def _build_period_views(
     return periods, period_views
 
 
+def _resolved_home_selection_score(item: dict) -> tuple[float, dict[str, float]]:
+    """Return the v4 selection score from the row's current public signals.
+
+    Period views deliberately omit private top-level fields such as
+    ``_home_selection_score``.  Recomputing from the synchronized signal fields
+    keeps the hydrated daily view and the top-level compatibility alias on one
+    deterministic selection contract instead of letting a missing/stale private
+    cache change their order.
+    """
+
+    home_score = item.get("home_platform_score")
+    if not isinstance(home_score, (int, float)):
+        cached = item.get("_home_selection_score")
+        if isinstance(cached, (int, float)):
+            return float(cached), dict(item.get("_home_selection_components") or {})
+        home_score = 0.0
+    home_score = max(0.0, min(100.0, float(home_score)))
+    momentum = max(0.0, min(1.0, float(item.get("momentum_delta") or 0.0)))
+    latest_sources = {
+        source
+        for source, rank in (item.get("latest_source_ranks") or {}).items()
+        if rank is not None
+    }
+    cross_spread = 1.0 if {"x", "google_trends"}.issubset(latest_sources) else 0.0
+    persistence = max(0.0, min(1.0, float(item.get("persistence") or 0.0)))
+    freshness_record = item.get("freshness")
+    freshness_value = (
+        freshness_record.get("signal")
+        if isinstance(freshness_record, dict)
+        else freshness_record
+    )
+    freshness = max(0.0, min(1.0, float(freshness_value or 0.0)))
+    score = round(
+        35.0 * momentum
+        + 25.0 * cross_spread
+        + 20.0 * (home_score / 100.0)
+        + 10.0 * persistence
+        + 10.0 * freshness,
+        6,
+    )
+    return score, {
+        "velocity": round(momentum * 100.0, 6),
+        "cross_platform_spread": round(cross_spread * 100.0, 6),
+        "current_attention": round(home_score, 6),
+        "persistence": round(persistence * 100.0, 6),
+        "recency": round(freshness * 100.0, 6),
+    }
+
+
 def select_balanced_home_top10(rows: list[dict], *, limit: int = 10) -> list[dict]:
     """Build the ranked compatibility Top10 without changing source rank.
 
@@ -1441,7 +1506,7 @@ def select_balanced_home_top10(rows: list[dict], *, limit: int = 10) -> list[dic
         )
         return (
             -int(measured_rise),
-            -float(item.get("_home_selection_score") or 0.0),
+            -_resolved_home_selection_score(item)[0],
             -float(item.get("score") or 0.0),
             int(item.get("observed_rank") or item.get("rank") or 10**9),
             str(item.get("event_key") or ""),
@@ -1451,14 +1516,28 @@ def select_balanced_home_top10(rows: list[dict], *, limit: int = 10) -> list[dic
         item for item in rows
         if item.get("is_current") is True
     ]
-    recent = [
-        item for item in rows
-        if item.get("is_current") is not True
-        and any(
+    def has_observed_period_evidence(item: dict) -> bool:
+        # Period summaries intentionally omit the heavy ``series`` payload.
+        # ``period_observed`` plus an explicit X/Google ``period_sources`` list
+        # is the compact, source-derived proof produced by Ranking V2; accepting
+        # it keeps the daily hydrated alias equivalent without fabricating or
+        # reusing an observation.
+        period_sources = set(item.get("period_sources") or [])
+        if (
+            item.get("candidate_status") == "period_observed"
+            and bool(period_sources & {"x", "google_trends"})
+        ):
+            return True
+        return any(
             row.get("provenance") == "observed"
             and row.get("source") in {"x", "google_trends"}
             for row in item.get("series") or []
         )
+
+    recent = [
+        item for item in rows
+        if item.get("is_current") is not True
+        and has_observed_period_evidence(item)
         and float(item.get("hours_since_last_seen") or 10**9) <= 24.0
     ]
 
@@ -1771,32 +1850,10 @@ def apply_equal_platform_home_scores(rows: list[dict]) -> list[dict]:
         }
         item["canonical_observed_rank_preserved"] = True
 
-        momentum = max(0.0, min(1.0, float(item.get("momentum_delta") or 0.0)))
-        latest_sources = set((item.get("latest_source_ranks") or {}).keys())
-        cross_spread = 1.0 if {"x", "google_trends"}.issubset(latest_sources) else 0.0
-        persistence = max(0.0, min(1.0, float(item.get("persistence") or 0.0)))
-        freshness_record = item.get("freshness")
-        freshness_value = (
-            freshness_record.get("signal")
-            if isinstance(freshness_record, dict)
-            else freshness_record
-        )
-        freshness = max(0.0, min(1.0, float(freshness_value or 0.0)))
-        item["_home_selection_score"] = round(
-            35.0 * momentum
-            + 25.0 * cross_spread
-            + 20.0 * (home_score / 100.0)
-            + 10.0 * persistence
-            + 10.0 * freshness,
-            6,
-        )
-        item["_home_selection_components"] = {
-            "velocity": round(momentum * 100.0, 6),
-            "cross_platform_spread": round(cross_spread * 100.0, 6),
-            "current_attention": round(home_score, 6),
-            "persistence": round(persistence * 100.0, 6),
-            "recency": round(freshness * 100.0, 6),
-        }
+        (
+            item["_home_selection_score"],
+            item["_home_selection_components"],
+        ) = _resolved_home_selection_score(item)
     return rows
 
 
@@ -1939,12 +1996,222 @@ def _attach_keyword_company_links(item: dict) -> None:
     ]
 
 
+_PUBLIC_RELATION_TIER_LABELS = {
+    "direct": "직접 관계",
+    "value_chain": "가치사슬",
+    "industry_watch": "산업 관찰",
+}
+
+
+def _normalize_final_company_record(company: dict) -> dict:
+    """Fill public-contract labels from already reviewed company evidence."""
+
+    normalized = dict(company)
+    role = str(normalized.get("company_role_category") or "").strip()
+    normalized["company_role_label"] = str(
+        normalized.get("company_role_label")
+        or COMPANY_ROLE_LABELS.get(role)
+        or ""
+    ).strip()
+    relation_tier = str(
+        normalized.get("relation_tier")
+        or normalized.get("relationship_grade")
+        or normalized.get("strength")
+        or ""
+    ).strip()
+    normalized["relation_tier"] = relation_tier
+    normalized["strength"] = relation_tier
+    normalized.setdefault("ontology_relation_tier", relation_tier)
+    relation_label = _PUBLIC_RELATION_TIER_LABELS.get(relation_tier, "")
+    normalized["relation_tier_label"] = str(
+        normalized.get("relation_tier_label") or relation_label
+    ).strip()
+    normalized["relation_display_type"] = str(
+        normalized.get("relation_display_type") or relation_label
+    ).strip()
+    normalized["team_review_status"] = str(
+        normalized.get("team_review_status") or "reviewed_enrichment_approved"
+    ).strip()
+    normalized["team_review_label"] = str(
+        normalized.get("team_review_label") or "검수 완료"
+    ).strip()
+    normalized.setdefault("verification_status", "evidence_verified")
+    normalized.setdefault("opportunity_status", "evidence_backed_candidate")
+
+    evidence_sources = []
+    evidence_urls = []
+    for source in normalized.get("evidence_sources") or []:
+        if not isinstance(source, dict):
+            continue
+        evidence = dict(source)
+        url = str(evidence.get("url") or "").strip()
+        if url:
+            evidence_urls.append(url)
+        evidence.setdefault("review_status", "approved")
+        evidence.setdefault(
+            "evidence_type", evidence.get("source_type") or "reviewed_public_source"
+        )
+        evidence_sources.append(evidence)
+    normalized["evidence_sources"] = evidence_sources
+
+    raw_path = list(normalized.get("ontology_path") or [])
+    if raw_path and all(isinstance(node, str) for node in raw_path):
+        normalized["ontology_path"] = [
+            {
+                "from": left,
+                "to": right,
+                "edge_type": "reviewed_relationship_path",
+                "evidence_urls": list(dict.fromkeys(evidence_urls)),
+                "review_status": "approved",
+            }
+            for left, right in zip(raw_path, raw_path[1:])
+        ]
+    return normalized
+
+
+def _company_is_evidence_complete(company: dict) -> bool:
+    evidence_urls = {
+        str(source.get("url") or "").strip()
+        for source in company.get("evidence_sources") or []
+        if isinstance(source, dict) and str(source.get("url") or "").strip()
+    }
+    return bool(
+        str(company.get("company") or "").strip()
+        and str(company.get("stock_code") or "").strip()
+        and str(company.get("market") or "").strip()
+        and str(company.get("company_description") or "").strip()
+        and str(company.get("relationship_reason") or "").strip()
+        and evidence_urls
+        and company.get("ontology_complete") is True
+        and str(company.get("company_role_category") or "").strip()
+        in PUBLIC_COMPANY_ROLE_CATEGORIES
+        and str(company.get("company_role_label") or "").strip()
+        and str(company.get("relation_tier") or "").strip()
+        in _PUBLIC_RELATION_TIER_LABELS
+        and str(company.get("relation_display_type") or "").strip()
+        and str(company.get("team_review_status") or "").strip()
+    )
+
+
+def _synchronize_final_company_publication(item: dict) -> list[dict]:
+    """Derive the Gold/public company state after every enrichment overlay.
+
+    Reviewed caches may be attached after the deterministic candidate pass.
+    They can complete presentation evidence, but never affect observed ranks.
+    The final state is therefore derived solely from the final main/home gate
+    and evidence-complete company records.  Anything else exposes no Gold rows.
+    """
+
+    source_rows = [
+        _normalize_final_company_record(company)
+        for company in [
+            *(item.get("companies") or []),
+            *(item.get("company_candidates") or []),
+        ]
+        if isinstance(company, dict)
+    ]
+    complete_by_stock: dict[str, dict] = {}
+    for company in source_rows:
+        if not _company_is_evidence_complete(company):
+            continue
+        stock_code = str(company.get("stock_code") or "").strip()
+        complete_by_stock.setdefault(stock_code, company)
+    complete_rows = list(complete_by_stock.values())
+    projection = select_role_diverse_company_projection(
+        complete_rows, limit=MINIMUM_FRONTEND_COMPANIES
+    )
+    role_categories = {
+        str(company.get("company_role_category") or "").strip()
+        for company in projection
+    }
+    linking_allowed = (
+        item.get("lane") == "main"
+        and item.get("home_eligible") is True
+    )
+    publishable = (
+        linking_allowed
+        and len(projection) == MINIMUM_FRONTEND_COMPANIES
+        and public_company_role_count_is_valid(len(role_categories))
+    )
+
+    # Preserve every sourced record as internal research input, but expose the
+    # exact public projection only after the full contract is satisfied.
+    item["company_candidates"] = complete_rows
+    item["companies"] = projection if publishable else []
+    item["company_eligible"] = bool(linking_allowed)
+
+    resolution = dict(item.get("company_resolution") or {})
+    published_rows = item["companies"]
+    tier_counts = {
+        tier: sum(company.get("relation_tier") == tier for company in complete_rows)
+        for tier in ("direct", "value_chain", "industry_watch")
+    }
+    candidate_roles = {
+        str(company.get("company_role_category") or "").strip()
+        for company in complete_rows
+        if str(company.get("company_role_category") or "").strip()
+        in PUBLIC_COMPANY_ROLE_CATEGORIES
+    }
+    resolution.update({
+        "status": "published" if publishable else (
+            "enrichment_pending" if linking_allowed else "excluded_by_context"
+        ),
+        "publish_status": "published" if publishable else "not_published",
+        "candidate_count": len(complete_rows),
+        "ontology_complete_count": len(complete_rows),
+        "published_count": len(published_rows),
+        "minimum_gold_companies": MINIMUM_FRONTEND_COMPANIES,
+        "score_independent_of_company_count": True,
+        "direct_count": sum(
+            company.get("relation_tier") == "direct" for company in complete_rows
+        ),
+        "role_coverage": sorted(candidate_roles),
+        "tier_counts": tier_counts,
+        "category_count": len(role_categories) if publishable else 0,
+        "candidate_category_count": len(candidate_roles),
+        "role_category_counts": {
+            role: sum(
+                company.get("company_role_category") == role
+                for company in (published_rows if publishable else complete_rows)
+            )
+            for role in sorted(role_categories if publishable else candidate_roles)
+        },
+        "reason": (
+            "evidence_backed_ten_companies_across_three_to_four_roles"
+            if publishable
+            else "fewer_than_ten_evidence_backed_companies"
+            if len(complete_rows) < MINIMUM_FRONTEND_COMPANIES
+            else "company_linking_not_allowed_for_lane_or_context"
+            if not linking_allowed
+            else "company_publication_contract_incomplete"
+        ),
+    })
+    resolution.setdefault("ontology_diagnostics", {
+        "padding_forbidden": True,
+        "ranking_effect": "none",
+    })
+    item["company_resolution"] = resolution
+    item["company_card_status"] = (
+        "ready" if publishable else
+        "enrichment_pending" if linking_allowed else
+        "not_applicable"
+    )
+    item["company_status"] = item["company_card_status"]
+    item["company_card_reason"] = (
+        "evidence_backed_ten_or_more" if publishable else
+        "company_publication_contract_incomplete" if linking_allowed else
+        "company_linking_not_allowed_for_lane_or_context"
+    )
+    return published_rows
+
+
 def refresh_frontend_readiness(intelligence: dict) -> dict:
     """Rebuild frontend arrays after score-independent enrichment is attached."""
 
     refresh_home_context_eligibility(intelligence)
     candidates = intelligence.get("unified_ranking", [])
     for item in candidates:
+        _synchronize_final_company_publication(item)
         _attach_keyword_company_links(item)
         keyword_rows = list(item.get("related_keywords") or item.get("keywords") or [])
         keyword_count = len(keyword_rows)
@@ -1952,23 +2219,15 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
             keyword_fits_public_label(row.get("text") if isinstance(row, dict) else row)
             for row in keyword_rows
         )
-        complete_companies = []
-        for company in item.get("companies") or []:
-            evidence_urls = {
-                str(source.get("url") or "").strip()
-                for source in company.get("evidence_sources") or []
-                if str(source.get("url") or "").strip()
-            }
-            if (
-                str(company.get("company") or "").strip()
-                and str(company.get("stock_code") or "").strip()
-                and str(company.get("market") or "").strip()
-                and str(company.get("company_description") or "").strip()
-                and str(company.get("relationship_reason") or "").strip()
-                and evidence_urls
-                and company.get("ontology_complete") is True
-            ):
-                complete_companies.append(company)
+        readiness_company_rows = (
+            item.get("companies") or item.get("company_candidates") or []
+            if item.get("company_eligible")
+            else item.get("companies") or []
+        )
+        complete_companies = [
+            company for company in readiness_company_rows
+            if _company_is_evidence_complete(company)
+        ]
         complete_company_count = len({
             str(company["stock_code"]).strip() for company in complete_companies
         })
@@ -1993,19 +2252,6 @@ def refresh_frontend_readiness(intelligence: dict) -> dict:
         item["frontend_keyword_count"] = keyword_count
         item["frontend_company_count"] = complete_company_count
         item["frontend_company_role_category_count"] = role_category_count
-        # Enrichment can be attached after the initial candidate pass.  Keep
-        # the public card state and its explanation derived from the final
-        # evidence-complete company set so they can never contradict each
-        # other in the frontend contract.
-        if item.get("company_eligible"):
-            if complete_company_count >= MINIMUM_FRONTEND_COMPANIES:
-                item["company_card_status"] = "ready"
-                item["company_status"] = "ready"
-                item["company_card_reason"] = "evidence_backed_ten_or_more"
-            else:
-                item["company_card_status"] = "enrichment_pending"
-                item["company_status"] = "enrichment_pending"
-                item["company_card_reason"] = "fewer_than_ten_evidence_backed_companies"
         item["publication_rank"] = None
 
     home = [
@@ -2606,6 +2852,7 @@ def build_intelligence(
                 display_name,
                 category_label,
                 [item["text"] for item in keyword_items],
+                ranking_contract["period_sources"],
             ),
             "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
             "lane": lane,

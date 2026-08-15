@@ -44,6 +44,26 @@ def _valid_public_url(value: str) -> bool:
     return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
 
 
+def _expected_trend_definition_source_phrase(item: dict) -> str:
+    """Return the disclosure phrase required by the card's observed sources."""
+
+    raw_sources = item.get("sources")
+    if not raw_sources:
+        raw_sources = item.get("period_sources")
+    observed_sources = {
+        str(source).strip().casefold()
+        for source in raw_sources or []
+        if str(source).strip().casefold() in {"x", "google_trends"}
+    }
+    if observed_sources == {"x", "google_trends"}:
+        return "X와 Google 대한민국 관측"
+    if observed_sources == {"google_trends"}:
+        return "Google Trending Now 대한민국 관측"
+    if observed_sources == {"x"}:
+        return "X 대한민국 실시간 트렌드 관측"
+    return "공개 원천 관측"
+
+
 def _presentation_logo_contract_is_valid(company: dict) -> bool:
     """Validate a v3 logo row without requiring a deliberately blank image URL.
 
@@ -749,11 +769,12 @@ def _evaluate_canonical_frontend_result(intelligence: dict) -> dict:
         if item.get("broad_category") not in PUBLIC_BROAD_CATEGORIES:
             item_failures.append(f"invalid_category:{item.get('broad_category')}")
         definition = str(item.get("trend_definition") or "").strip()
+        expected_source_phrase = _expected_trend_definition_source_phrase(item)
         if not definition:
             item_failures.append("missing_trend_definition")
         elif (
             len(definition) < 30
-            or "X와 Google 대한민국 관측값" not in definition
+            or expected_source_phrase not in definition
             or any(phrase in definition for phrase in ("투자 추천", "투자 조언", "수익 예측"))
         ):
             item_failures.append("insufficient_trend_definition")

@@ -13,7 +13,7 @@ from collections import defaultdict
 from datetime import UTC, datetime, timedelta
 from urllib.parse import urlparse
 
-from .company_logo_assets import resolve_company_logo
+from .company_logo_assets import resolve_company_logo, reviewed_company_homepage
 from .company_roles import select_role_diverse_company_projection, with_company_role
 from .editorial_review import KEYWORDS, _verified_company_rows
 from .keyword_policy import keyword_fits_public_label, normalized_keyword_text
@@ -1633,6 +1633,9 @@ def _live_logo_fields(homepage: str) -> dict:
         "height": fields["logo_asset_height"],
         "sha256": fields["logo_asset_sha256"] or None,
         "verification": fields["logo_asset_verification"],
+        "candidate_kind": result.get("candidate_kind"),
+        "asset_scope": result.get("asset_scope"),
+        "verified_at": result.get("verified_at"),
     }
     return fields
 
@@ -1650,6 +1653,13 @@ def _live_company_rows(candidate: dict) -> list[dict]:
         company = str(source.get("company") or "").strip()
         official = source.get("official_identity") or {}
         homepage = str(official.get("homepage") or "").strip()
+        parsed_homepage = urlparse(homepage)
+        if (
+            parsed_homepage.scheme not in {"http", "https"}
+            or not parsed_homepage.hostname
+            or "." not in parsed_homepage.hostname
+        ):
+            homepage = reviewed_company_homepage(company, identity[1])
         logo_fields = _live_logo_fields(homepage)
         evidence_sources = [
             row for row in source.get("evidence_sources") or []

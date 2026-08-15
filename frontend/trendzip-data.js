@@ -1,4 +1,13 @@
-const LIVE_DATA_BASE = 'https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest';
+const DEFAULT_LIVE_DATA_BASE = 'https://raw.githubusercontent.com/jyy7294/noinbada/live-data/latest';
+// Local browser QA may point at the freshly generated immutable publication.
+// The override is deliberately disabled on every non-local hostname so a URL
+// parameter can never redirect production users to an untrusted data source.
+const LOCAL_QA_DATA_BASE = ['127.0.0.1', 'localhost'].includes(globalThis.location?.hostname)
+  ? new URLSearchParams(globalThis.location.search).get('dataBase')
+  : null;
+const LIVE_DATA_BASE = LOCAL_QA_DATA_BASE
+  ? new URL(LOCAL_QA_DATA_BASE, globalThis.location.href).href.replace(/\/$/, '')
+  : DEFAULT_LIVE_DATA_BASE;
 const MANIFEST_URL = `${LIVE_DATA_BASE}/manifest.json`;
 const INTELLIGENCE_URL = `${LIVE_DATA_BASE}/intelligence.json`;
 const STATUS_URL = `${LIVE_DATA_BASE}/status.json`;

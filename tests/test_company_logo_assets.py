@@ -239,3 +239,85 @@ def test_mime_mismatch_and_oversized_fetch_failure_do_not_publish(monkeypatch):
 
     assert result["status"] == "fallback"
     assert result["verification"] == "initials_fallback"
+
+
+@pytest.mark.parametrize(
+    ("company", "stock_code", "homepage", "asset_url", "dimensions"),
+    [
+        (
+            "동원F&B", "049770", "https://www.dongwonfnb.com",
+            "https://www.dongwonfnb.com/Images/Company/img_ci_signature.gif", (221, 110),
+        ),
+        (
+            "대상", "001680", "https://www.daesang.co.kr",
+            "https://www.daesang.com/kr/asset/images/sub/company/daesang_ci.png", (485, 126),
+        ),
+        (
+            "한성기업", "003680", "https://www.hsep.com",
+            "https://cdn.imweb.me/thumbnail/20240320/30e5724b26962.jpg", (1600, 671),
+        ),
+        (
+            "사조대림", "003960", "https://dr.sajo.co.kr",
+            "https://dr.sajo.co.kr/eng/images/content/intro/txt_ci02.gif", (700, 209),
+        ),
+        (
+            "하림", "136480", "https://www.harim.com/main/",
+            "https://www.harim.com/main/img/ci.png", (198, 149),
+        ),
+        (
+            "신세계푸드", "031440", "https://www.shinsegaefood.com",
+            "https://shinsegaefood.com/images/favicon/shinsegae_ci16.ico", (256, 256),
+        ),
+        (
+            "이마트", "139480", "https://emartcompany.com/ko/main.do",
+            "https://stimg.emart.com/company/ko/images/ab/img_ci_logo.png", (750, 291),
+        ),
+    ],
+)
+def test_reviewed_official_company_catalog_is_network_free_and_blur_safe(
+    monkeypatch, company, stock_code, homepage, asset_url, dimensions,
+):
+    monkeypatch.setattr(
+        logos,
+        "_http_fetch",
+        lambda *_args, **_kwargs: pytest.fail("reviewed catalog must not hit the network"),
+    )
+
+    result = logos.resolve_company_logo(homepage)
+
+    assert result["status"] == "verified"
+    assert result["cache"] == "reviewed_catalog"
+    assert result["asset_url"] == asset_url
+    assert (result["width"], result["height"]) == dimensions
+    assert min(dimensions) >= 64
+    assert result["verification"] == "verified_raster_min_64px"
+    assert result["candidate_kind"] == "reviewed_official_ci_asset"
+    assert result["catalog_identity"] == {
+        "company": company,
+        "stock_code": stock_code,
+    }
+    assert len(result["sha256"]) == 64
+    assert logos.reviewed_company_homepage(company, stock_code).startswith("https://")
+
+
+def test_reviewed_homepage_requires_exact_company_and_stock_code():
+    assert logos.reviewed_company_homepage("하림", "136480") == (
+        "https://www.harim.com/main/"
+    )
+    assert logos.reviewed_company_homepage("하림", "000000") == ""
+    assert logos.reviewed_company_homepage("다른회사", "136480") == ""
+
+
+def test_lookalike_hostname_cannot_select_reviewed_catalog(monkeypatch):
+    calls = []
+
+    def fake_fetch(url, **_kwargs):
+        calls.append(url)
+        return logos._FetchResult(url, 404, "text/html", b"")
+
+    monkeypatch.setattr(logos, "_http_fetch", fake_fetch)
+    result = logos.resolve_company_logo("https://harim.com.attacker.example/")
+
+    assert result["status"] == "fallback"
+    assert result["verification"] == "initials_fallback"
+    assert calls == ["https://harim.com.attacker.example/"]

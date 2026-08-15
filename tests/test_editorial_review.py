@@ -296,7 +296,7 @@ def test_every_emitted_trend_satisfies_complete_display_contract():
     assert len(item["company_candidates"]) >= 6
     assert item["company_verification_status"] == "ready_for_team_selection"
     assert item["display_contract_status"] == "complete"
-    assert item["trend_definition"] == "‘완성 제품’은(는) 특정 제품이나 브랜드를 중심으로 형성된 관심 흐름입니다."
+    assert item["trend_definition"] == "'완성 제품' 키워드는 특정 제품이나 브랜드를 중심으로 형성된 관심 흐름입니다."
     assert item["observation_summary"] == "선택 기간에 Google Trends 한국에서 ‘완성 제품’이(가) 실제 관측됐습니다."
     assert item["definition_status"] == "category_based_observed_topic_definition"
 

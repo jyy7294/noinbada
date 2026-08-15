@@ -195,7 +195,7 @@ try {
 
     $PublicationStatusPath = Join-Path $PublicationRoot "latest\status.json"
     try {
-        $PublicationStatus = Get-Content -LiteralPath $PublicationStatusPath -Raw | ConvertFrom-Json
+        $PublicationStatus = Get-Content -LiteralPath $PublicationStatusPath -Raw -Encoding utf8 | ConvertFrom-Json
     } catch {
         throw "publication status is missing or invalid"
     }
