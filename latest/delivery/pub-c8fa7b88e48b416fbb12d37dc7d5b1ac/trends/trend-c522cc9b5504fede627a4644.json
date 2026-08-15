@@ -1,0 +1,820 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-c8fa7b88e48b416fbb12d37dc7d5b1ac",
+  "generated_at": "2026-08-15T21:02:26.627621+00:00",
+  "observed_at": "2026-08-15T21:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "한화 대 삼성",
+    "topic": "한화 대 삼성",
+    "display_name": "한화 대 삼성",
+    "observed_representative_term": "한화 대 삼성",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "한화 대 삼성",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 13,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.12779,
+      "best_source_rank": 24
+    },
+    "raw_terms": [
+      "한화 대 삼성"
+    ],
+    "phenomenon_summary": "\"한화 대 삼성\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "unclassified",
+    "category_basis": "unclassified",
+    "broad_category": "other",
+    "category_label": "기타·검토",
+    "category_ontology": {
+      "version": "category-ontology-v1",
+      "category": "unclassified",
+      "entity_slots": [],
+      "trigger_types": [],
+      "recommended_company_roles": [],
+      "affects_score": false
+    },
+    "trend_definition": "'한화 대 삼성' 키워드는 구체적인 대상과 그 이용 맥락에 관심이 모이는 흐름입니다. 실측 데이터에서는 한화이글스, 구자욱 같은 표현과 함께 나타났습니다. Google Trending Now 대한민국 관측에서 확인된 맥락입니다.",
+    "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
+    "lane": "main",
+    "selection_reason": "구체적 대상",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "main",
+      "main_eligible": true,
+      "hard_issue": false,
+      "ambiguous": false,
+      "generic_category_word": false,
+      "labels": [
+        "named_object"
+      ],
+      "reason": "구체적 대상",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "main",
+      "label": "메인 트렌드 적합",
+      "affects_score": false
+    },
+    "selection_layer": "context_review_queue",
+    "company_eligible": false,
+    "score": 26.64,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": 20,
+    "rank_change": -142,
+    "rank_change_status": "measured",
+    "period_strength": 0.405705,
+    "current_source_position": 0.405705,
+    "momentum": 0.0145,
+    "persistence": 0.2083,
+    "momentum_delta": 0.014519,
+    "score_components": {
+      "period_strength_points": 14.2,
+      "momentum_points": 0.36,
+      "persistence_points": 2.08,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 26.64
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.811411
+      },
+      "momentum_deltas": {
+        "google_trends": 0.014519
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 10,
+          "comparison": 3
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 10,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 10,
+          "presence_rate": 0.416667,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.416667,
+        "google_trends": 0.416667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-14T14:00:00+00:00",
+      "last_seen_at": "2026-08-15T21:00:00+00:00",
+      "observed_hours": 13,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 49
+    },
+    "rank_change_by_source": {
+      "google_trends": -13
+    },
+    "source_rank_change": {
+      "google_trends": -13
+    },
+    "first_seen_at": "2026-08-14T14:00:00+00:00",
+    "last_seen_at": "2026-08-15T21:00:00+00:00",
+    "age_hours": 31,
+    "lifecycle": "sustained",
+    "lifecycle_reason": "repeated_observation",
+    "data_confidence": {
+      "level": "medium",
+      "label": "보통",
+      "reason": "24시간 MVP 원장과 반복 관측을 충족한 운영 초기 결과",
+      "window_observed_hours": 38,
+      "history_maturity": 0.4167,
+      "ranking_status": "mature"
+    },
+    "verification_layer": {
+      "providers": {},
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "affects_home_rank": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "context_research": {
+      "status": "incomplete",
+      "trigger_title": "",
+      "why_now": "",
+      "trigger_type": "",
+      "published_at": null,
+      "evidence_urls": [],
+      "evidence_records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-14T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 42,
+        "value": 59.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 176, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 17, \"started_text\": \"4시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"강민호\"]"
+      },
+      {
+        "at": "2026-08-14T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 34,
+        "value": 67.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 177, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 9, \"started_text\": \"6시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"삼성라이온즈\", \"강민호\"]"
+      },
+      {
+        "at": "2026-08-14T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 38,
+        "value": 63.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 177, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 13, \"started_text\": \"8시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"삼성라이온즈\", \"강민호\"]"
+      },
+      {
+        "at": "2026-08-15T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 86,
+        "value": 15.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 171, \"collection_page_count\": 7, \"growth_text\": \"1,000%\", \"page\": 4, \"row_on_page\": 11, \"started_text\": \"15시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[\"삼성라이온즈\"]"
+      },
+      {
+        "at": "2026-08-15T02:00:00+00:00",
+        "source": "google_trends",
+        "rank": 85,
+        "value": 16.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 176, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 4, \"row_on_page\": 10, \"started_text\": \"16시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[\"삼성라이온즈\"]"
+      },
+      {
+        "at": "2026-08-15T05:00:00+00:00",
+        "source": "google_trends",
+        "rank": 84,
+        "value": 17.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 175, \"collection_page_count\": 7, \"growth_text\": \"1,000%\", \"page\": 4, \"row_on_page\": 9, \"started_text\": \"19시간 전\", \"status_text\": \"2시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[\"한화이글스\", \"삼성라이온즈\"]"
+      },
+      {
+        "at": "2026-08-15T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 27,
+        "value": 74.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 180, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 2, \"started_text\": \"3시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"구자욱\", \"뉴스\", \"한화이글스\"]"
+      },
+      {
+        "at": "2026-08-15T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 31,
+        "value": 70.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 195, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 6, \"started_text\": \"5시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 30,
+        "value": 71.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 191, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 5, \"started_text\": \"6시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"구자욱\", \"한화이글스\"]"
+      },
+      {
+        "at": "2026-08-15T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 24,
+        "value": 77.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 190, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 24, \"started_text\": \"7시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"구자욱\", \"한화이글스\"]"
+      },
+      {
+        "at": "2026-08-15T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 28,
+        "value": 73.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 189, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 3, \"started_text\": \"9시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"구자욱\", \"한화이글스\"]"
+      },
+      {
+        "at": "2026-08-15T20:00:00+00:00",
+        "source": "google_trends",
+        "rank": 36,
+        "value": 65.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 191, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 11, \"started_text\": \"9시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"구자욱\", \"한화이글스\"]"
+      },
+      {
+        "at": "2026-08-15T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 49,
+        "value": 52.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 185, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 24, \"started_text\": \"10시간 전\", \"status_text\": \"3시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[\"구자욱\", \"한화이글스\"]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "한화이글스",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 7,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "구자욱",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 6,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "삼성라이온즈",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 5,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "강민호",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 3,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "뉴스",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "한화이글스",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 7,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "구자욱",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 6,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "삼성라이온즈",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 5,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "강민호",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 3,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      },
+      {
+        "text": "뉴스",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 1,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 5,
+      "observed_source_count": 5,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "excluded_by_context",
+      "publish_status": "not_published",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 10,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "한화 대 삼성",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "한화이글스",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "구자욱",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "삼성라이온즈",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "강민호",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "뉴스",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "fewer_than_ten_evidence_backed_companies",
+      "role_category_counts": {}
+    },
+    "rank": 162,
+    "observed_rank": 162,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "일반 트렌드",
+    "persistence_rank": 100,
+    "momentum_rank": 244,
+    "main_rank": 8,
+    "keyword_company_links": [],
+    "keyword_company_link_coverage": {
+      "policy_version": "public-keyword-company-link-coverage-v1",
+      "status": "incomplete",
+      "ready": false,
+      "keyword_count": 5,
+      "company_count": 0,
+      "valid_link_count": 0,
+      "linked_keyword_count": 0,
+      "linked_company_count": 0,
+      "unlinked_keywords": [
+        "한화이글스",
+        "구자욱",
+        "삼성라이온즈",
+        "강민호",
+        "뉴스"
+      ],
+      "unlinked_companies": [],
+      "matched_keyword_mismatches": [],
+      "invalid_link_indexes": [],
+      "duplicate_pairs": [],
+      "ranking_effect": "none"
+    },
+    "linked_keyword_count": 0,
+    "linked_company_count": 0,
+    "keyword_company_link_status": "enrichment_pending",
+    "unlinked_related_keywords": [
+      "한화이글스",
+      "구자욱",
+      "삼성라이온즈",
+      "강민호",
+      "뉴스"
+    ],
+    "unlinked_companies": [],
+    "home_context_status": "review_required",
+    "home_context_reason": "unclassified",
+    "home_eligible": false,
+    "company_card_status": "not_applicable",
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_status": "not_applicable",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_linked_to_companies_at_least_two",
+      "evidence_backed_listed_companies_at_least_ten"
+    ],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 0,
+    "frontend_company_role_category_count": 0,
+    "publication_rank": null,
+    "attention_change": {
+      "1w": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "1m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "3m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "insufficient_90_day_observed_history"
+      }
+    },
+    "trend_story": {
+      "schema_version": "trend-story-v1",
+      "status": "observed_context_only",
+      "origin": {
+        "observed_term": "한화 대 삼성",
+        "first_observed_at": "2026-08-14T14:00:00+00:00",
+        "trigger_title": "",
+        "trigger_type": "",
+        "why_now": "",
+        "evidence_urls": [],
+        "assertion": "observed_trigger_or_context_not_causal_origin"
+      },
+      "relationship_graph": {
+        "interpretation": "observed_context_graph_not_causal_lineage",
+        "nodes": [
+          {
+            "id": "trend:root",
+            "label": "한화 대 삼성",
+            "node_type": "observed_trend_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:1",
+            "label": "한화이글스",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:2",
+            "label": "구자욱",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:3",
+            "label": "삼성라이온즈",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:4",
+            "label": "강민호",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:5",
+            "label": "뉴스",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          }
+        ],
+        "edges": [
+          {
+            "from": "trend:root",
+            "to": "keyword:1",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:2",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:3",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:4",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:5",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          }
+        ]
+      },
+      "diffusion": {
+        "lifecycle": "sustained",
+        "trend_stage": {
+          "key": "mainstream",
+          "label": "대중화",
+          "index": 3
+        },
+        "phase_label": "대중화",
+        "stage_index": 3,
+        "progress_percent": 88,
+        "observed_day_label": "관측 2일차",
+        "observed_hours": 13,
+        "caption": "반복 관측되며 대중 관심이 유지되는 구간입니다.",
+        "attention_lift": {
+          "status": "normalized_signal",
+          "metric": "source_rank_velocity_index",
+          "value": 1.45,
+          "unit": "points",
+          "label": "관심 속도 지표 +1.5p"
+        },
+        "attention_windows": [
+          {
+            "key": "1w",
+            "label": "1주",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "1m",
+            "label": "1개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "3m",
+            "label": "3개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "insufficient_90_day_observed_history",
+            "is_absolute_mention_count": false
+          }
+        ],
+        "channels": [
+          {
+            "source": "google_trends",
+            "label": "Google Trends",
+            "latest_rank": 49,
+            "rank_change": -13,
+            "movement_label": "직전 관측 대비 순위 -13",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": true,
+            "affects_multisource_home_rank": false
+          }
+        ],
+        "ranking_input_policy": "home-feed-selection-v2-x-google-only"
+      }
+    },
+    "frontend_projection": {
+      "trend_name": "한화 대 삼성",
+      "trend_category": "기타·검토",
+      "trend_core": "한화 대 삼성",
+      "observed_day_label": "관측 2일차",
+      "phase_label": "대중화",
+      "stage_index": 3,
+      "progress_percent": 88,
+      "attention_lift": {
+        "status": "normalized_signal",
+        "metric": "source_rank_velocity_index",
+        "value": 1.45,
+        "unit": "points",
+        "label": "관심 속도 지표 +1.5p"
+      },
+      "attention_windows": [
+        {
+          "key": "1w",
+          "label": "1주",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "1m",
+          "label": "1개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "3m",
+          "label": "3개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "insufficient_90_day_observed_history",
+          "is_absolute_mention_count": false
+        }
+      ],
+      "current_rank": 162,
+      "caption": "반복 관측되며 대중 관심이 유지되는 구간입니다.",
+      "related_keyword_count": 5,
+      "company_grouping": "company_role_category",
+      "is_mock": false
+    },
+    "ranking_availability_status": "mature_combined",
+    "semantic_adjudication_status": "not_eligible"
+  }
+}

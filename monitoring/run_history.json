@@ -445,5 +445,165 @@
     "observed_rows": 207,
     "errors": {},
     "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T01:00:00+00:00",
+    "started_at": "2026-08-15T01:05:25.092417+00:00",
+    "finished_at": "2026-08-15T01:05:43.847150+00:00",
+    "delay_seconds": 325,
+    "duration_seconds": 18.75,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 201,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T02:00:00+00:00",
+    "started_at": "2026-08-15T02:01:15.695079+00:00",
+    "finished_at": "2026-08-15T02:01:36.742751+00:00",
+    "delay_seconds": 76,
+    "duration_seconds": 21.05,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 206,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T05:00:00+00:00",
+    "started_at": "2026-08-15T05:01:13.708429+00:00",
+    "finished_at": "2026-08-15T05:01:35.421699+00:00",
+    "delay_seconds": 74,
+    "duration_seconds": 21.71,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 205,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T14:00:00+00:00",
+    "started_at": "2026-08-15T14:05:22.385139+00:00",
+    "finished_at": "2026-08-15T14:06:28.009677+00:00",
+    "delay_seconds": 322,
+    "duration_seconds": 65.62,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 210,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T16:00:00+00:00",
+    "started_at": "2026-08-15T16:03:01.359897+00:00",
+    "finished_at": "2026-08-15T16:03:31.726658+00:00",
+    "delay_seconds": 181,
+    "duration_seconds": 30.37,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 225,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T17:00:00+00:00",
+    "started_at": "2026-08-15T17:04:25.467449+00:00",
+    "finished_at": "2026-08-15T17:04:51.060524+00:00",
+    "delay_seconds": 265,
+    "duration_seconds": 25.59,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 221,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T18:00:00+00:00",
+    "started_at": "2026-08-15T18:06:46.481662+00:00",
+    "finished_at": "2026-08-15T18:07:15.173934+00:00",
+    "delay_seconds": 406,
+    "duration_seconds": 28.69,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 220,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T19:00:00+00:00",
+    "started_at": "2026-08-15T19:18:17.355301+00:00",
+    "finished_at": "2026-08-15T19:19:03.127232+00:00",
+    "delay_seconds": 1097,
+    "duration_seconds": 45.77,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 219,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T20:00:00+00:00",
+    "started_at": "2026-08-15T20:02:06.884947+00:00",
+    "finished_at": "2026-08-15T20:02:19.793633+00:00",
+    "delay_seconds": 127,
+    "duration_seconds": 12.91,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 221,
+    "errors": {},
+    "source_failures": {}
+  },
+  {
+    "contract_version": "trzip-v3-hourly",
+    "scheduled_at": "2026-08-15T21:00:00+00:00",
+    "started_at": "2026-08-15T21:02:12.566190+00:00",
+    "finished_at": "2026-08-15T21:02:26.607656+00:00",
+    "delay_seconds": 133,
+    "duration_seconds": 14.04,
+    "success": true,
+    "source_success": {
+      "x": true,
+      "google_trends": true
+    },
+    "observed_rows": 215,
+    "errors": {},
+    "source_failures": {}
   }
 ]

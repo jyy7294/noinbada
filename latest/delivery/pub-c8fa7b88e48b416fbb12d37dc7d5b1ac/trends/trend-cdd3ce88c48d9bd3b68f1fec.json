@@ -1,0 +1,3305 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-c8fa7b88e48b416fbb12d37dc7d5b1ac",
+  "generated_at": "2026-08-15T21:02:26.627621+00:00",
+  "observed_at": "2026-08-15T21:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "tving",
+    "topic": "tving",
+    "display_name": "tving",
+    "observed_representative_term": "tving",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "tving",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 7,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.030625,
+      "best_source_rank": 150
+    },
+    "raw_terms": [
+      "tving"
+    ],
+    "phenomenon_summary": "\"tving\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "unclassified",
+    "category_basis": "unclassified",
+    "broad_category": "other",
+    "category_label": "기타·검토",
+    "category_ontology": {
+      "version": "category-ontology-v1",
+      "category": "unclassified",
+      "entity_slots": [],
+      "trigger_types": [],
+      "recommended_company_roles": [],
+      "affects_score": false
+    },
+    "trend_definition": "'tving' 키워드는 구체적인 대상과 그 이용 맥락에 관심이 모이는 흐름입니다. 실측 데이터에서는 티빙, KT 시즌 같은 표현과 함께 나타났습니다. Google Trending Now 대한민국 관측에서 확인된 맥락입니다.",
+    "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
+    "lane": "review",
+    "selection_reason": "원문은 보존하되 대표 사건·현상의 문맥을 아직 확인하지 못함",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "review",
+      "main_eligible": false,
+      "hard_issue": false,
+      "ambiguous": true,
+      "generic_category_word": false,
+      "labels": [],
+      "reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "review",
+      "label": "맥락 검토",
+      "affects_score": false
+    },
+    "selection_layer": "review_queue",
+    "company_eligible": false,
+    "score": 16.66,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.061214,
+    "current_source_position": 0.061214,
+    "momentum": 0.1224,
+    "persistence": 0.1458,
+    "momentum_delta": 0.122428,
+    "score_components": {
+      "period_strength_points": 2.14,
+      "momentum_points": 3.06,
+      "persistence_points": 1.46,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 16.66
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.122428
+      },
+      "momentum_deltas": {
+        "google_trends": 0.122428
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 7,
+          "comparison": 0
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 10,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 7,
+          "presence_rate": 0.291667,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.416667,
+        "google_trends": 0.416667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-15T14:00:00+00:00",
+      "last_seen_at": "2026-08-15T21:00:00+00:00",
+      "observed_hours": 7,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 170
+    },
+    "rank_change_by_source": {
+      "google_trends": 4
+    },
+    "source_rank_change": {
+      "google_trends": 4
+    },
+    "first_seen_at": "2026-08-15T14:00:00+00:00",
+    "last_seen_at": "2026-08-15T21:00:00+00:00",
+    "age_hours": 7,
+    "lifecycle": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "data_confidence": {
+      "level": "medium",
+      "label": "보통",
+      "reason": "24시간 MVP 원장과 반복 관측을 충족한 운영 초기 결과",
+      "window_observed_hours": 38,
+      "history_maturity": 0.4167,
+      "ranking_status": "mature"
+    },
+    "verification_layer": {
+      "providers": {},
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "affects_home_rank": false
+    },
+    "verification_signals": {
+      "status": "not_run",
+      "observed_platforms": [],
+      "affects_score": false,
+      "ranking_effect": "none",
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "context_research": {
+      "status": "incomplete",
+      "trigger_title": "",
+      "why_now": "",
+      "trigger_type": "",
+      "published_at": null,
+      "evidence_urls": [],
+      "evidence_records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-15T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 150,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 180, \"collection_page_count\": 8, \"growth_text\": \"75%\", \"page\": 6, \"row_on_page\": 25, \"started_text\": \"3시간 전\", \"status_text\": \"30분 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 172,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 195, \"collection_page_count\": 8, \"growth_text\": \"75%\", \"page\": 7, \"row_on_page\": 22, \"started_text\": \"5시간 전\", \"status_text\": \"30분 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 172,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 191, \"collection_page_count\": 8, \"growth_text\": \"75%\", \"page\": 7, \"row_on_page\": 22, \"started_text\": \"6시간 전\", \"status_text\": \"30분 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 172,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 190, \"collection_page_count\": 8, \"growth_text\": \"75%\", \"page\": 7, \"row_on_page\": 22, \"started_text\": \"7시간 전\", \"status_text\": \"30분 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 172,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 189, \"collection_page_count\": 8, \"growth_text\": \"75%\", \"page\": 7, \"row_on_page\": 22, \"started_text\": \"8시간 전\", \"status_text\": \"30분 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T20:00:00+00:00",
+        "source": "google_trends",
+        "rank": 174,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 191, \"collection_page_count\": 8, \"growth_text\": \"75%\", \"page\": 7, \"row_on_page\": 24, \"started_text\": \"9시간 전\", \"status_text\": \"30분 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 170,
+        "value": 1.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 185, \"collection_page_count\": 8, \"growth_text\": \"75%\", \"page\": 7, \"row_on_page\": 20, \"started_text\": \"10시간 전\", \"status_text\": \"30분 동안 지속됨\", \"volume_text\": \"200+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "티빙",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "KT 시즌",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "merged_platform",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "NAVER",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "investor_and_ip_partner",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "삼성 AI TV",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "device_subscription_bundle",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-2025%EB%85%84%ED%98%95-ai-tv-%EC%8B%A0%EC%A0%9C%ED%92%88-%EC%82%AC%EC%A0%84-%ED%8C%A4%EB%A7%A4"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "웨이브",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "ott_combination_counterparty",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.sksquare.com/assets/download/2025_AGM_Announcement_kr.pdf"
+        ],
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "티빙",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_term",
+        "role": "alias_or_variant",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "KT 시즌",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "merged_platform",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "NAVER",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "investor_and_ip_partner",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "삼성 AI TV",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "device_subscription_bundle",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-2025%EB%85%84%ED%98%95-ai-tv-%EC%8B%A0%EC%A0%9C%ED%92%88-%EC%82%AC%EC%A0%84-%ED%8C%A4%EB%A7%A4"
+        ],
+        "affects_score": false
+      },
+      {
+        "text": "웨이브",
+        "source": [
+          "reviewed_ontology"
+        ],
+        "observed_hours": 0,
+        "status": "approved_ontology_related_term",
+        "role": "ott_combination_counterparty",
+        "role_status": "reviewed_evidence",
+        "evidence_urls": [
+          "https://www.sksquare.com/assets/download/2025_AGM_Announcement_kr.pdf"
+        ],
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "ready",
+    "keyword_evidence": {
+      "total": 5,
+      "observed_source_count": 0,
+      "reviewed_ontology_count": 5,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [],
+    "company_candidates": [
+      {
+        "company": "KT",
+        "stock_code": "030200",
+        "ticker": "030200",
+        "market": "KOSPI",
+        "relation_type": "merged_telecom_ott_into_platform",
+        "strength": "value_chain",
+        "reason": "관측어 'tving'에서 티빙 → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 'tving'에서 티빙 → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 030200",
+        "company_description": "KOSPI 상장기업, 종목코드 030200",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+        "evidence_sources": [
+          {
+            "url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+            "title": "CJ ENM 티빙·KT 시즌 합병 및 네이버 투자 관계",
+            "evidence_type": "official_company_partnership_release",
+            "published_at": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm",
+            "title": "KT 유가증권상장법인 회사코드 030200",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-13",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "tving",
+        "matched_ontology_node": "티빙",
+        "ontology_lookup_match_type": "reviewed_official_english_name",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "tving",
+            "to": "tving",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-15T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "tving",
+            "to": "티빙",
+            "edge_type": "reviewed_official_english_name",
+            "evidence_urls": [
+              "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+            ],
+            "evidence_type": [
+              "official_company_partnership_release"
+            ],
+            "as_of": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "티빙",
+            "to": "KT",
+            "edge_type": "merged_telecom_ott_into_platform",
+            "evidence_urls": [
+              "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+            ],
+            "evidence_type": [
+              "official_company_partnership_release"
+            ],
+            "as_of": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "KT",
+            "to": "030200 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-13",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "티빙",
+          "KT 시즌",
+          "삼성 AI TV"
+        ],
+        "connection_explanation": "티빙, KT 시즌, 삼성 AI TV 관련 맥락에서 KT: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "KT",
+          "english_name": "KT CORPORATION",
+          "established_date": "19811210",
+          "homepage": "https://www.kt.com",
+          "legal_name": "(주)케이티",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "030200",
+          "stock_name": "케이티"
+        },
+        "listing_verification": {
+          "status": "verified_current",
+          "current_listed": true,
+          "exchange": "KOSPI",
+          "stock_code": "030200",
+          "as_of": "2026-08-15",
+          "evidence_owner": "KRX KIND",
+          "evidence_type": "official_current_security_register",
+          "evidence_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13",
+          "synthetic": false,
+          "estimated": false,
+          "ranking_effect": "none"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx+yahoo_finance",
+          "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+          "source_urls": {
+            "price": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "fundamentals": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false"
+          },
+          "field_sources": {
+            "market_cap": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_krw": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_pct": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_status": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_reported_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_basis": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_calculated": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_numerator": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_denominator": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "calculation": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/030200.KS?symbol=030200.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "price_series": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd"
+          },
+          "stock_code": "030200",
+          "ticker": "030200",
+          "exchange": null,
+          "name": "KT",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-03",
+              "open": 54600.0,
+              "high": 54800.0,
+              "low": 53100.0,
+              "close": 53700.0,
+              "volume": 380315.0,
+              "change_pct": -1.1049723756906076
+            },
+            {
+              "date": "2026-07-06",
+              "open": 53500.0,
+              "high": 54500.0,
+              "low": 53500.0,
+              "close": 54500.0,
+              "volume": 246927.0,
+              "change_pct": 1.48975791433892
+            },
+            {
+              "date": "2026-07-07",
+              "open": 54700.0,
+              "high": 55600.0,
+              "low": 53800.0,
+              "close": 55500.0,
+              "volume": 295908.0,
+              "change_pct": 1.834862385321101
+            },
+            {
+              "date": "2026-07-08",
+              "open": 55700.0,
+              "high": 55700.0,
+              "low": 53500.0,
+              "close": 55400.0,
+              "volume": 289204.0,
+              "change_pct": -0.18018018018018017
+            },
+            {
+              "date": "2026-07-09",
+              "open": 55700.0,
+              "high": 58000.0,
+              "low": 53300.0,
+              "close": 58000.0,
+              "volume": 849385.0,
+              "change_pct": 4.693140794223827
+            },
+            {
+              "date": "2026-07-10",
+              "open": 57400.0,
+              "high": 57500.0,
+              "low": 54200.0,
+              "close": 54200.0,
+              "volume": 553409.0,
+              "change_pct": -6.551724137931035
+            },
+            {
+              "date": "2026-07-13",
+              "open": 54100.0,
+              "high": 54600.0,
+              "low": 51900.0,
+              "close": 52700.0,
+              "volume": 927223.0,
+              "change_pct": -2.7675276752767526
+            },
+            {
+              "date": "2026-07-14",
+              "open": 52900.0,
+              "high": 53200.0,
+              "low": 51600.0,
+              "close": 51600.0,
+              "volume": 435569.0,
+              "change_pct": -2.0872865275142316
+            },
+            {
+              "date": "2026-07-15",
+              "open": 52600.0,
+              "high": 53500.0,
+              "low": 52000.0,
+              "close": 52000.0,
+              "volume": 310163.0,
+              "change_pct": 0.7751937984496124
+            },
+            {
+              "date": "2026-07-16",
+              "open": 52500.0,
+              "high": 53300.0,
+              "low": 51900.0,
+              "close": 52400.0,
+              "volume": 250887.0,
+              "change_pct": 0.7692307692307693
+            },
+            {
+              "date": "2026-07-20",
+              "open": 52000.0,
+              "high": 53800.0,
+              "low": 51500.0,
+              "close": 53500.0,
+              "volume": 391776.0,
+              "change_pct": 2.099236641221374
+            },
+            {
+              "date": "2026-07-21",
+              "open": 52900.0,
+              "high": 53800.0,
+              "low": 52400.0,
+              "close": 52700.0,
+              "volume": 277271.0,
+              "change_pct": -1.4953271028037385
+            },
+            {
+              "date": "2026-07-22",
+              "open": 53000.0,
+              "high": 53700.0,
+              "low": 52300.0,
+              "close": 52300.0,
+              "volume": 600574.0,
+              "change_pct": -0.7590132827324478
+            },
+            {
+              "date": "2026-07-23",
+              "open": 52200.0,
+              "high": 53400.0,
+              "low": 52200.0,
+              "close": 52700.0,
+              "volume": 592913.0,
+              "change_pct": 0.7648183556405354
+            },
+            {
+              "date": "2026-07-24",
+              "open": 52900.0,
+              "high": 54500.0,
+              "low": 52900.0,
+              "close": 54100.0,
+              "volume": 569804.0,
+              "change_pct": 2.6565464895635675
+            },
+            {
+              "date": "2026-07-27",
+              "open": 54400.0,
+              "high": 54800.0,
+              "low": 53900.0,
+              "close": 54400.0,
+              "volume": 255121.0,
+              "change_pct": 0.5545286506469501
+            },
+            {
+              "date": "2026-07-28",
+              "open": 53500.0,
+              "high": 54000.0,
+              "low": 52900.0,
+              "close": 53900.0,
+              "volume": 677129.0,
+              "change_pct": -0.9191176470588236
+            },
+            {
+              "date": "2026-07-29",
+              "open": 54100.0,
+              "high": 54900.0,
+              "low": 52600.0,
+              "close": 53800.0,
+              "volume": 794124.0,
+              "change_pct": -0.1855287569573284
+            },
+            {
+              "date": "2026-07-30",
+              "open": 54500.0,
+              "high": 54800.0,
+              "low": 52600.0,
+              "close": 52800.0,
+              "volume": 336632.0,
+              "change_pct": -1.858736059479554
+            },
+            {
+              "date": "2026-07-31",
+              "open": 52800.0,
+              "high": 53300.0,
+              "low": 51400.0,
+              "close": 51900.0,
+              "volume": 577545.0,
+              "change_pct": -1.7045454545454544
+            },
+            {
+              "date": "2026-08-03",
+              "open": 51400.0,
+              "high": 52500.0,
+              "low": 51300.0,
+              "close": 52200.0,
+              "volume": 312474.0,
+              "change_pct": 0.5780346820809248
+            },
+            {
+              "date": "2026-08-04",
+              "open": 51700.0,
+              "high": 52600.0,
+              "low": 51600.0,
+              "close": 52300.0,
+              "volume": 233152.0,
+              "change_pct": 0.19157088122605362
+            },
+            {
+              "date": "2026-08-05",
+              "open": 52200.0,
+              "high": 53200.0,
+              "low": 52100.0,
+              "close": 52500.0,
+              "volume": 556321.0,
+              "change_pct": 0.3824091778202677
+            },
+            {
+              "date": "2026-08-06",
+              "open": 52900.0,
+              "high": 53500.0,
+              "low": 52500.0,
+              "close": 53500.0,
+              "volume": 307060.0,
+              "change_pct": 1.9047619047619049
+            },
+            {
+              "date": "2026-08-07",
+              "open": 53000.0,
+              "high": 53600.0,
+              "low": 52700.0,
+              "close": 53300.0,
+              "volume": 230928.0,
+              "change_pct": -0.3738317757009346
+            },
+            {
+              "date": "2026-08-10",
+              "open": 53000.0,
+              "high": 53200.0,
+              "low": 52400.0,
+              "close": 52400.0,
+              "volume": 237652.0,
+              "change_pct": -1.6885553470919326
+            },
+            {
+              "date": "2026-08-11",
+              "open": 52700.0,
+              "high": 53500.0,
+              "low": 52300.0,
+              "close": 52800.0,
+              "volume": 252302.0,
+              "change_pct": 0.7633587786259541
+            },
+            {
+              "date": "2026-08-12",
+              "open": 52800.0,
+              "high": 53600.0,
+              "low": 52600.0,
+              "close": 52700.0,
+              "volume": 300084.0,
+              "change_pct": -0.1893939393939394
+            },
+            {
+              "date": "2026-08-13",
+              "open": 52900.0,
+              "high": 53800.0,
+              "low": 52500.0,
+              "close": 52500.0,
+              "volume": 774609.0,
+              "change_pct": -0.3795066413662239
+            },
+            {
+              "date": "2026-08-14",
+              "open": 52500.0,
+              "high": 54300.0,
+              "low": 52400.0,
+              "close": 53400.0,
+              "volume": 677491.0,
+              "change_pct": 1.7142857142857144
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-14",
+            "open": 52500.0,
+            "high": 54300.0,
+            "low": 52400.0,
+            "close": 53400.0,
+            "volume": 677491.0,
+            "change_pct": 1.7142857142857144
+          },
+          "currency": "KRW",
+          "market_cap": 12716238547200.0,
+          "summary": {
+            "as_of": "2026-08-14",
+            "close": 53400,
+            "close_krw": 53400,
+            "daily_change_pct": 1.71,
+            "volume": 677491,
+            "currency": "KRW",
+            "market_cap": 12716238547200.0,
+            "market_cap_krw": 12716238547200.0
+          },
+          "valuation": {
+            "per": 8.4334,
+            "pbr": 0.6992,
+            "roe_pct": 8.8021,
+            "market_cap_as_of": "2026-08-14",
+            "market_cap_period_type": "TTM",
+            "market_cap_type": "trailingMarketCap",
+            "per_as_of": "2026-08-14",
+            "per_period_type": "TTM",
+            "per_type": "trailingPeRatio",
+            "per_status": "observed",
+            "per_reported_as_of": "2026-08-14",
+            "pbr_as_of": "2026-08-14",
+            "pbr_period_type": "POINT_IN_TIME_OVER_REPORTED_EQUITY",
+            "pbr_type": "calculatedMarketCapToEquity",
+            "equity": 18187708000000.0,
+            "equity_as_of": "2026-03-31",
+            "equity_period_type": "3M",
+            "net_income": 1531222000000.0,
+            "net_income_as_of": "2026-03-31",
+            "net_income_period_type": "TTM",
+            "roe_basis": "trailing_net_income / average_two_point_stockholders_equity * 100",
+            "roe_calculated": true,
+            "roe_numerator": {
+              "value": 1531222000000.0,
+              "type": "trailingNetIncome",
+              "period_type": "TTM",
+              "as_of": "2026-03-31"
+            },
+            "roe_denominator": {
+              "value": 17396130000000.0,
+              "type": "averageStockholdersEquity",
+              "period_type": "TWO_POINT_AVERAGE",
+              "as_of": "2026-03-31",
+              "period_start": "2025-03-31",
+              "period_end": "2026-03-31",
+              "observations": [
+                {
+                  "value": 16604552000000.0,
+                  "type": "quarterlyStockholdersEquity",
+                  "period_type": "3M",
+                  "as_of": "2025-03-31"
+                },
+                {
+                  "value": 18187708000000.0,
+                  "type": "quarterlyStockholdersEquity",
+                  "period_type": "3M",
+                  "as_of": "2026-03-31"
+                }
+              ]
+            },
+            "calculation": {
+              "pbr": "market_cap / latest_reported_equity",
+              "roe_pct": "trailing_net_income / average_two_point_stockholders_equity * 100"
+            }
+          },
+          "fx_reference": {
+            "status": "observed",
+            "provider": "identity",
+            "from_currency": "KRW",
+            "to_currency": "KRW",
+            "rate": 1.0,
+            "as_of": "2026-08-14",
+            "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "synthetic": false,
+            "estimated": false,
+            "ranking_effect": "none"
+          },
+          "market_reaction": {
+            "status": "limited_reaction",
+            "label": "최근 시장 반응 제한적",
+            "five_session_return_pct": 1.91,
+            "five_vs_previous_volume_ratio": 1.37,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "listing_verification": {
+            "status": "verified_current",
+            "current_listed": true,
+            "exchange": "KOSPI",
+            "stock_code": "030200",
+            "as_of": "2026-08-15",
+            "evidence_owner": "KRX KIND",
+            "evidence_type": "official_current_security_register",
+            "evidence_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13",
+            "synthetic": false,
+            "estimated": false,
+            "ranking_effect": "none"
+          },
+          "synthetic": false,
+          "estimated": false,
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "NAVER",
+        "stock_code": "035420",
+        "ticker": "035420",
+        "market": "KOSPI",
+        "relation_type": "invested_in_ott_platform",
+        "strength": "value_chain",
+        "reason": "관측어 'tving'에서 티빙 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 'tving'에서 티빙 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 035420",
+        "company_description": "KOSPI 상장기업, 종목코드 035420",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+        "evidence_sources": [
+          {
+            "url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+            "title": "CJ ENM 티빙·KT 시즌 합병 및 네이버 투자 관계",
+            "evidence_type": "official_company_partnership_release",
+            "published_at": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.navercorp.com/investment/stock",
+            "title": "NAVER 코스피 종목코드 035420",
+            "evidence_type": "official_company_stock_information",
+            "published_at": null,
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "tving",
+        "matched_ontology_node": "티빙",
+        "ontology_lookup_match_type": "reviewed_official_english_name",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "tving",
+            "to": "tving",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-15T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "tving",
+            "to": "티빙",
+            "edge_type": "reviewed_official_english_name",
+            "evidence_urls": [
+              "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+            ],
+            "evidence_type": [
+              "official_company_partnership_release"
+            ],
+            "as_of": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "티빙",
+            "to": "NAVER",
+            "edge_type": "invested_in_ott_platform",
+            "evidence_urls": [
+              "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+            ],
+            "evidence_type": [
+              "official_company_partnership_release"
+            ],
+            "as_of": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "NAVER",
+            "to": "035420 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://www.navercorp.com/investment/stock"
+            ],
+            "evidence_type": [
+              "official_company_stock_information"
+            ],
+            "as_of": "2026-08-15T21:00:00+00:00",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "티빙",
+          "NAVER",
+          "삼성 AI TV"
+        ],
+        "connection_explanation": "티빙, NAVER, 삼성 AI TV 관련 맥락에서 NAVER: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "NAVER",
+          "english_name": "NAVER Corporation",
+          "established_date": "19990602",
+          "homepage": "https://www.navercorp.com",
+          "legal_name": "네이버(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "035420",
+          "stock_name": "NAVER"
+        },
+        "listing_verification": {
+          "status": "verified_current",
+          "current_listed": true,
+          "exchange": "KOSPI",
+          "stock_code": "035420",
+          "as_of": "2026-08-15",
+          "evidence_owner": "KRX KIND",
+          "evidence_type": "official_current_security_register",
+          "evidence_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13",
+          "synthetic": false,
+          "estimated": false,
+          "ranking_effect": "none"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx+yahoo_finance",
+          "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+          "source_urls": {
+            "price": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "fundamentals": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false"
+          },
+          "field_sources": {
+            "market_cap": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_krw": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_pct": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_status": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_reported_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_basis": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_calculated": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_numerator": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_denominator": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "calculation": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/035420.KS?symbol=035420.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "price_series": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd"
+          },
+          "stock_code": "035420",
+          "ticker": "035420",
+          "exchange": null,
+          "name": "NAVER",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-03",
+              "open": 199900.0,
+              "high": 199900.0,
+              "low": 191700.0,
+              "close": 195800.0,
+              "volume": 1111357.0,
+              "change_pct": -2.051025512756378
+            },
+            {
+              "date": "2026-07-06",
+              "open": 196600.0,
+              "high": 201000.0,
+              "low": 194000.0,
+              "close": 196600.0,
+              "volume": 686793.0,
+              "change_pct": 0.40858018386108275
+            },
+            {
+              "date": "2026-07-07",
+              "open": 194600.0,
+              "high": 199400.0,
+              "low": 193100.0,
+              "close": 197200.0,
+              "volume": 1077802.0,
+              "change_pct": 0.3051881993896236
+            },
+            {
+              "date": "2026-07-08",
+              "open": 196300.0,
+              "high": 197800.0,
+              "low": 189800.0,
+              "close": 192700.0,
+              "volume": 1090495.0,
+              "change_pct": -2.281947261663286
+            },
+            {
+              "date": "2026-07-09",
+              "open": 191500.0,
+              "high": 193200.0,
+              "low": 184000.0,
+              "close": 184400.0,
+              "volume": 1207585.0,
+              "change_pct": -4.307213284898807
+            },
+            {
+              "date": "2026-07-10",
+              "open": 186300.0,
+              "high": 194600.0,
+              "low": 186300.0,
+              "close": 191300.0,
+              "volume": 725383.0,
+              "change_pct": 3.7418655097613884
+            },
+            {
+              "date": "2026-07-13",
+              "open": 191100.0,
+              "high": 195400.0,
+              "low": 186400.0,
+              "close": 188000.0,
+              "volume": 757031.0,
+              "change_pct": -1.7250392054364874
+            },
+            {
+              "date": "2026-07-14",
+              "open": 187300.0,
+              "high": 189400.0,
+              "low": 181100.0,
+              "close": 183200.0,
+              "volume": 946614.0,
+              "change_pct": -2.553191489361702
+            },
+            {
+              "date": "2026-07-15",
+              "open": 188000.0,
+              "high": 191900.0,
+              "low": 187500.0,
+              "close": 189600.0,
+              "volume": 674208.0,
+              "change_pct": 3.4934497816593884
+            },
+            {
+              "date": "2026-07-16",
+              "open": 188200.0,
+              "high": 191300.0,
+              "low": 185400.0,
+              "close": 190000.0,
+              "volume": 737459.0,
+              "change_pct": 0.21097046413502107
+            },
+            {
+              "date": "2026-07-20",
+              "open": 186700.0,
+              "high": 188400.0,
+              "low": 183300.0,
+              "close": 185900.0,
+              "volume": 630080.0,
+              "change_pct": -2.1578947368421053
+            },
+            {
+              "date": "2026-07-21",
+              "open": 189000.0,
+              "high": 196500.0,
+              "low": 185700.0,
+              "close": 193000.0,
+              "volume": 876385.0,
+              "change_pct": 3.8192576654115116
+            },
+            {
+              "date": "2026-07-22",
+              "open": 197800.0,
+              "high": 207000.0,
+              "low": 196200.0,
+              "close": 196900.0,
+              "volume": 896565.0,
+              "change_pct": 2.0207253886010363
+            },
+            {
+              "date": "2026-07-23",
+              "open": 204500.0,
+              "high": 220000.0,
+              "low": 203000.0,
+              "close": 220000.0,
+              "volume": 1907827.0,
+              "change_pct": 11.731843575418994
+            },
+            {
+              "date": "2026-07-24",
+              "open": 215000.0,
+              "high": 216500.0,
+              "low": 202000.0,
+              "close": 207500.0,
+              "volume": 1048497.0,
+              "change_pct": -5.681818181818182
+            },
+            {
+              "date": "2026-07-27",
+              "open": 228500.0,
+              "high": 234500.0,
+              "low": 219000.0,
+              "close": 225000.0,
+              "volume": 2705093.0,
+              "change_pct": 8.433734939759036
+            },
+            {
+              "date": "2026-07-28",
+              "open": 218500.0,
+              "high": 232000.0,
+              "low": 208500.0,
+              "close": 210000.0,
+              "volume": 2281917.0,
+              "change_pct": -6.666666666666667
+            },
+            {
+              "date": "2026-07-29",
+              "open": 213500.0,
+              "high": 213500.0,
+              "low": 194600.0,
+              "close": 201500.0,
+              "volume": 1978355.0,
+              "change_pct": -4.0476190476190474
+            },
+            {
+              "date": "2026-07-30",
+              "open": 198500.0,
+              "high": 205500.0,
+              "low": 194100.0,
+              "close": 194700.0,
+              "volume": 1680475.0,
+              "change_pct": -3.37468982630273
+            },
+            {
+              "date": "2026-07-31",
+              "open": 205000.0,
+              "high": 212500.0,
+              "low": 199600.0,
+              "close": 208000.0,
+              "volume": 1766586.0,
+              "change_pct": 6.831022085259374
+            },
+            {
+              "date": "2026-08-03",
+              "open": 206500.0,
+              "high": 208500.0,
+              "low": 201500.0,
+              "close": 207500.0,
+              "volume": 662318.0,
+              "change_pct": -0.2403846153846154
+            },
+            {
+              "date": "2026-08-04",
+              "open": 219000.0,
+              "high": 231500.0,
+              "low": 215000.0,
+              "close": 226500.0,
+              "volume": 2278507.0,
+              "change_pct": 9.156626506024097
+            },
+            {
+              "date": "2026-08-05",
+              "open": 227000.0,
+              "high": 234000.0,
+              "low": 223500.0,
+              "close": 229000.0,
+              "volume": 1090483.0,
+              "change_pct": 1.1037527593818985
+            },
+            {
+              "date": "2026-08-06",
+              "open": 225000.0,
+              "high": 230500.0,
+              "low": 221500.0,
+              "close": 226000.0,
+              "volume": 961609.0,
+              "change_pct": -1.3100436681222707
+            },
+            {
+              "date": "2026-08-07",
+              "open": 219500.0,
+              "high": 222000.0,
+              "low": 208000.0,
+              "close": 210000.0,
+              "volume": 1755934.0,
+              "change_pct": -7.079646017699115
+            },
+            {
+              "date": "2026-08-10",
+              "open": 210500.0,
+              "high": 211500.0,
+              "low": 206500.0,
+              "close": 211500.0,
+              "volume": 733171.0,
+              "change_pct": 0.7142857142857143
+            },
+            {
+              "date": "2026-08-11",
+              "open": 214000.0,
+              "high": 215500.0,
+              "low": 209500.0,
+              "close": 214000.0,
+              "volume": 649296.0,
+              "change_pct": 1.1820330969267139
+            },
+            {
+              "date": "2026-08-12",
+              "open": 215000.0,
+              "high": 220500.0,
+              "low": 214500.0,
+              "close": 215500.0,
+              "volume": 833014.0,
+              "change_pct": 0.7009345794392523
+            },
+            {
+              "date": "2026-08-13",
+              "open": 218500.0,
+              "high": 230000.0,
+              "low": 215500.0,
+              "close": 226500.0,
+              "volume": 1834477.0,
+              "change_pct": 5.104408352668213
+            },
+            {
+              "date": "2026-08-14",
+              "open": 227000.0,
+              "high": 232500.0,
+              "low": 225000.0,
+              "close": 228000.0,
+              "volume": 750112.0,
+              "change_pct": 0.6622516556291391
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-14",
+            "open": 227000.0,
+            "high": 232500.0,
+            "low": 225000.0,
+            "close": 228000.0,
+            "volume": 750112.0,
+            "change_pct": 0.6622516556291391
+          },
+          "currency": "KRW",
+          "market_cap": 32010072278000.0,
+          "summary": {
+            "as_of": "2026-08-14",
+            "close": 228000,
+            "close_krw": 228000,
+            "daily_change_pct": 0.66,
+            "volume": 750112,
+            "currency": "KRW",
+            "market_cap": 32010072278000.0,
+            "market_cap_krw": 32010072278000.0
+          },
+          "valuation": {
+            "per": 18.9637,
+            "pbr": 1.0864,
+            "roe_pct": 6.4859,
+            "market_cap_as_of": "2026-08-11",
+            "market_cap_period_type": "TTM",
+            "market_cap_type": "trailingMarketCap",
+            "per_as_of": "2026-08-14",
+            "per_period_type": "TTM",
+            "per_type": "trailingPeRatio",
+            "per_status": "observed",
+            "per_reported_as_of": "2026-08-14",
+            "pbr_as_of": "2026-08-11",
+            "pbr_period_type": "POINT_IN_TIME_OVER_REPORTED_EQUITY",
+            "pbr_type": "calculatedMarketCapToEquity",
+            "equity": 29464905995070.0,
+            "equity_as_of": "2026-03-31",
+            "equity_period_type": "3M",
+            "net_income": 1813699626100.0,
+            "net_income_as_of": "2026-03-31",
+            "net_income_period_type": "TTM",
+            "roe_basis": "trailing_net_income / average_two_point_stockholders_equity * 100",
+            "roe_calculated": true,
+            "roe_numerator": {
+              "value": 1813699626100.0,
+              "type": "trailingNetIncome",
+              "period_type": "TTM",
+              "as_of": "2026-03-31"
+            },
+            "roe_denominator": {
+              "value": 27963846128095.0,
+              "type": "averageStockholdersEquity",
+              "period_type": "TWO_POINT_AVERAGE",
+              "as_of": "2026-03-31",
+              "period_start": "2025-03-31",
+              "period_end": "2026-03-31",
+              "observations": [
+                {
+                  "value": 26462786261120.0,
+                  "type": "quarterlyStockholdersEquity",
+                  "period_type": "3M",
+                  "as_of": "2025-03-31"
+                },
+                {
+                  "value": 29464905995070.0,
+                  "type": "quarterlyStockholdersEquity",
+                  "period_type": "3M",
+                  "as_of": "2026-03-31"
+                }
+              ]
+            },
+            "calculation": {
+              "pbr": "market_cap / latest_reported_equity",
+              "roe_pct": "trailing_net_income / average_two_point_stockholders_equity * 100"
+            }
+          },
+          "fx_reference": {
+            "status": "observed",
+            "provider": "identity",
+            "from_currency": "KRW",
+            "to_currency": "KRW",
+            "rate": 1.0,
+            "as_of": "2026-08-14",
+            "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "synthetic": false,
+            "estimated": false,
+            "ranking_effect": "none"
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 7.8,
+            "five_vs_previous_volume_ratio": 0.71,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "listing_verification": {
+            "status": "verified_current",
+            "current_listed": true,
+            "exchange": "KOSPI",
+            "stock_code": "035420",
+            "as_of": "2026-08-15",
+            "evidence_owner": "KRX KIND",
+            "evidence_type": "official_current_security_register",
+            "evidence_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13",
+            "synthetic": false,
+            "estimated": false,
+            "ranking_effect": "none"
+          },
+          "synthetic": false,
+          "estimated": false,
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "SK스퀘어",
+        "stock_code": "402340",
+        "ticker": "402340",
+        "market": "KOSPI",
+        "relation_type": "portfolio_company_ott_combination_negotiation",
+        "strength": "value_chain",
+        "reason": "관측어 'tving'에서 티빙 → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 'tving'에서 티빙 → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 402340",
+        "company_description": "KOSPI 상장기업, 종목코드 402340",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+        "evidence_sources": [
+          {
+            "url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+            "title": "CJ ENM 티빙·KT 시즌 합병 및 네이버 투자 관계",
+            "evidence_type": "official_company_partnership_release",
+            "published_at": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.sksquare.com/assets/download/2025_AGM_Announcement_kr.pdf",
+            "title": "SK스퀘어 콘텐츠웨이브의 티빙 협의",
+            "evidence_type": "official_company_filing_ott_negotiation",
+            "published_at": "2025-02-25",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://www.sksquare.com/kor/company/team.do",
+            "title": "SK스퀘어 콘텐츠웨이브 포트폴리오",
+            "evidence_type": "company_official_portfolio_page",
+            "published_at": null,
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/06/08/000895/20260608001821/00637.htm",
+            "title": "SK스퀘어 유가증권상장법인 회사코드 402340",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-06-08",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "tving",
+        "matched_ontology_node": "티빙",
+        "ontology_lookup_match_type": "reviewed_official_english_name",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "tving",
+            "to": "tving",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-15T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "tving",
+            "to": "티빙",
+            "edge_type": "reviewed_official_english_name",
+            "evidence_urls": [
+              "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+            ],
+            "evidence_type": [
+              "official_company_partnership_release"
+            ],
+            "as_of": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "티빙",
+            "to": "SK스퀘어",
+            "edge_type": "portfolio_company_ott_combination_negotiation",
+            "evidence_urls": [
+              "https://www.sksquare.com/assets/download/2025_AGM_Announcement_kr.pdf",
+              "https://www.sksquare.com/kor/company/team.do"
+            ],
+            "evidence_type": [
+              "company_official_portfolio_page",
+              "official_company_filing_ott_negotiation"
+            ],
+            "as_of": "2025-02-25",
+            "review_status": "approved"
+          },
+          {
+            "from": "SK스퀘어",
+            "to": "402340 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/06/08/000895/20260608001821/00637.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-06-08",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "티빙",
+          "삼성 AI TV"
+        ],
+        "connection_explanation": "티빙, 삼성 AI TV 관련 맥락에서 SK스퀘어: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "SK스퀘어",
+          "english_name": "SK Square Co., Ltd.",
+          "established_date": "20211102",
+          "homepage": "https://www.sksquare.com",
+          "legal_name": "에스케이스퀘어 주식회사",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "402340",
+          "stock_name": "SK스퀘어"
+        },
+        "listing_verification": {
+          "status": "verified_current",
+          "current_listed": true,
+          "exchange": "KOSPI",
+          "stock_code": "402340",
+          "as_of": "2026-08-15",
+          "evidence_owner": "KRX KIND",
+          "evidence_type": "official_current_security_register",
+          "evidence_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13",
+          "synthetic": false,
+          "estimated": false,
+          "ranking_effect": "none"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx+yahoo_finance",
+          "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+          "source_urls": {
+            "price": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "fundamentals": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false"
+          },
+          "field_sources": {
+            "market_cap": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_krw": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_pct": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_status": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_reported_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_basis": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_calculated": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_numerator": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_denominator": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "calculation": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/402340.KS?symbol=402340.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "price_series": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd"
+          },
+          "stock_code": "402340",
+          "ticker": "402340",
+          "exchange": null,
+          "name": "SK스퀘어",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-03",
+              "open": 1530000.0,
+              "high": 1603000.0,
+              "low": 1407000.0,
+              "close": 1589000.0,
+              "volume": 1323744.0,
+              "change_pct": 4.19672131147541
+            },
+            {
+              "date": "2026-07-06",
+              "open": 1599000.0,
+              "high": 1692000.0,
+              "low": 1465000.0,
+              "close": 1495000.0,
+              "volume": 864911.0,
+              "change_pct": -5.915670232850849
+            },
+            {
+              "date": "2026-07-07",
+              "open": 1446000.0,
+              "high": 1502000.0,
+              "low": 1287000.0,
+              "close": 1356000.0,
+              "volume": 1196192.0,
+              "change_pct": -9.297658862876254
+            },
+            {
+              "date": "2026-07-08",
+              "open": 1266000.0,
+              "high": 1380000.0,
+              "low": 1227000.0,
+              "close": 1270000.0,
+              "volume": 1398783.0,
+              "change_pct": -6.342182890855458
+            },
+            {
+              "date": "2026-07-09",
+              "open": 1323000.0,
+              "high": 1385000.0,
+              "low": 1258000.0,
+              "close": 1327000.0,
+              "volume": 935212.0,
+              "change_pct": 4.488188976377953
+            },
+            {
+              "date": "2026-07-10",
+              "open": 1437000.0,
+              "high": 1439000.0,
+              "low": 1351000.0,
+              "close": 1409000.0,
+              "volume": 874915.0,
+              "change_pct": 6.179351921627732
+            },
+            {
+              "date": "2026-07-13",
+              "open": 1400000.0,
+              "high": 1400000.0,
+              "low": 1154000.0,
+              "close": 1161000.0,
+              "volume": 1103883.0,
+              "change_pct": -17.601135557132718
+            },
+            {
+              "date": "2026-07-14",
+              "open": 1161000.0,
+              "high": 1204000.0,
+              "low": 1086000.0,
+              "close": 1190000.0,
+              "volume": 1092247.0,
+              "change_pct": 2.4978466838931954
+            },
+            {
+              "date": "2026-07-15",
+              "open": 1340000.0,
+              "high": 1439000.0,
+              "low": 1310000.0,
+              "close": 1382000.0,
+              "volume": 1014671.0,
+              "change_pct": 16.134453781512605
+            },
+            {
+              "date": "2026-07-16",
+              "open": 1271000.0,
+              "high": 1279000.0,
+              "low": 1194000.0,
+              "close": 1212000.0,
+              "volume": 757396.0,
+              "change_pct": -12.301013024602025
+            },
+            {
+              "date": "2026-07-20",
+              "open": 1127000.0,
+              "high": 1239000.0,
+              "low": 1116000.0,
+              "close": 1177000.0,
+              "volume": 738526.0,
+              "change_pct": -2.8877887788778875
+            },
+            {
+              "date": "2026-07-21",
+              "open": 1187000.0,
+              "high": 1263000.0,
+              "low": 1156000.0,
+              "close": 1253000.0,
+              "volume": 686825.0,
+              "change_pct": 6.457094307561598
+            },
+            {
+              "date": "2026-07-22",
+              "open": 1396000.0,
+              "high": 1400000.0,
+              "low": 1223000.0,
+              "close": 1230000.0,
+              "volume": 854385.0,
+              "change_pct": -1.8355945730247407
+            },
+            {
+              "date": "2026-07-23",
+              "open": 1291000.0,
+              "high": 1291000.0,
+              "low": 1200000.0,
+              "close": 1221000.0,
+              "volume": 691321.0,
+              "change_pct": -0.7317073170731708
+            },
+            {
+              "date": "2026-07-24",
+              "open": 1202000.0,
+              "high": 1203000.0,
+              "low": 1104000.0,
+              "close": 1109000.0,
+              "volume": 783742.0,
+              "change_pct": -9.172809172809172
+            },
+            {
+              "date": "2026-07-27",
+              "open": 1140000.0,
+              "high": 1140000.0,
+              "low": 1035000.0,
+              "close": 1096000.0,
+              "volume": 892851.0,
+              "change_pct": -1.1722272317403066
+            },
+            {
+              "date": "2026-07-28",
+              "open": 1007000.0,
+              "high": 1018000.0,
+              "low": 916000.0,
+              "close": 925000.0,
+              "volume": 1326609.0,
+              "change_pct": -15.602189781021897
+            },
+            {
+              "date": "2026-07-29",
+              "open": 933000.0,
+              "high": 967000.0,
+              "low": 768000.0,
+              "close": 850000.0,
+              "volume": 1293266.0,
+              "change_pct": -8.108108108108109
+            },
+            {
+              "date": "2026-07-30",
+              "open": 826000.0,
+              "high": 872000.0,
+              "low": 770000.0,
+              "close": 799000.0,
+              "volume": 1364135.0,
+              "change_pct": -6.0
+            },
+            {
+              "date": "2026-07-31",
+              "open": 995000.0,
+              "high": 1038000.0,
+              "low": 944000.0,
+              "close": 1038000.0,
+              "volume": 1039044.0,
+              "change_pct": 29.912390488110134
+            },
+            {
+              "date": "2026-08-03",
+              "open": 1070000.0,
+              "high": 1070000.0,
+              "low": 992000.0,
+              "close": 1025000.0,
+              "volume": 831890.0,
+              "change_pct": -1.2524084778420037
+            },
+            {
+              "date": "2026-08-04",
+              "open": 1096000.0,
+              "high": 1096000.0,
+              "low": 999000.0,
+              "close": 1060000.0,
+              "volume": 984406.0,
+              "change_pct": 3.414634146341464
+            },
+            {
+              "date": "2026-08-05",
+              "open": 1143000.0,
+              "high": 1157000.0,
+              "low": 1105000.0,
+              "close": 1119000.0,
+              "volume": 675010.0,
+              "change_pct": 5.566037735849057
+            },
+            {
+              "date": "2026-08-06",
+              "open": 1088000.0,
+              "high": 1088000.0,
+              "low": 968000.0,
+              "close": 970000.0,
+              "volume": 808124.0,
+              "change_pct": -13.315460232350313
+            },
+            {
+              "date": "2026-08-07",
+              "open": 996000.0,
+              "high": 1006000.0,
+              "low": 925000.0,
+              "close": 939000.0,
+              "volume": 646939.0,
+              "change_pct": -3.1958762886597936
+            },
+            {
+              "date": "2026-08-10",
+              "open": 951000.0,
+              "high": 977000.0,
+              "low": 931000.0,
+              "close": 949000.0,
+              "volume": 410049.0,
+              "change_pct": 1.0649627263045793
+            },
+            {
+              "date": "2026-08-11",
+              "open": 929000.0,
+              "high": 960000.0,
+              "low": 901000.0,
+              "close": 945000.0,
+              "volume": 494514.0,
+              "change_pct": -0.42149631190727077
+            },
+            {
+              "date": "2026-08-12",
+              "open": 982000.0,
+              "high": 1053000.0,
+              "low": 970000.0,
+              "close": 1024000.0,
+              "volume": 708475.0,
+              "change_pct": 8.35978835978836
+            },
+            {
+              "date": "2026-08-13",
+              "open": 1101000.0,
+              "high": 1150000.0,
+              "low": 1082000.0,
+              "close": 1117000.0,
+              "volume": 778168.0,
+              "change_pct": 9.08203125
+            },
+            {
+              "date": "2026-08-14",
+              "open": 1182000.0,
+              "high": 1183000.0,
+              "low": 1130000.0,
+              "close": 1154000.0,
+              "volume": 658916.0,
+              "change_pct": 3.312444046553268
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-14",
+            "open": 1182000.0,
+            "high": 1183000.0,
+            "low": 1130000.0,
+            "close": 1154000.0,
+            "volume": 658916.0,
+            "change_pct": 3.312444046553268
+          },
+          "currency": "KRW",
+          "market_cap": 152106993998000.0,
+          "summary": {
+            "as_of": "2026-08-14",
+            "close": 1154000,
+            "close_krw": 1154000,
+            "daily_change_pct": 3.31,
+            "volume": 658916,
+            "currency": "KRW",
+            "market_cap": 152106993998000.0,
+            "market_cap_krw": 152106993998000.0
+          },
+          "valuation": {
+            "per": 8.0232,
+            "pbr": 4.2213,
+            "roe_pct": 55.0907,
+            "market_cap_as_of": "2026-08-14",
+            "market_cap_period_type": "TTM",
+            "market_cap_type": "trailingMarketCap",
+            "per_as_of": "2026-08-11",
+            "per_period_type": "TTM",
+            "per_type": "trailingPeRatio",
+            "per_status": "observed",
+            "per_reported_as_of": "2026-08-11",
+            "pbr_as_of": "2026-08-14",
+            "pbr_period_type": "POINT_IN_TIME_OVER_REPORTED_EQUITY",
+            "pbr_type": "calculatedMarketCapToEquity",
+            "equity": 36032857000000.0,
+            "equity_as_of": "2026-03-31",
+            "equity_period_type": "3M",
+            "net_income": 15589078000000.0,
+            "net_income_as_of": "2026-03-31",
+            "net_income_period_type": "TTM",
+            "roe_basis": "trailing_net_income / average_two_point_stockholders_equity * 100",
+            "roe_calculated": true,
+            "roe_numerator": {
+              "value": 15589078000000.0,
+              "type": "trailingNetIncome",
+              "period_type": "TTM",
+              "as_of": "2026-03-31"
+            },
+            "roe_denominator": {
+              "value": 28297106500000.0,
+              "type": "averageStockholdersEquity",
+              "period_type": "TWO_POINT_AVERAGE",
+              "as_of": "2026-03-31",
+              "period_start": "2025-03-31",
+              "period_end": "2026-03-31",
+              "observations": [
+                {
+                  "value": 20561356000000.0,
+                  "type": "quarterlyStockholdersEquity",
+                  "period_type": "3M",
+                  "as_of": "2025-03-31"
+                },
+                {
+                  "value": 36032857000000.0,
+                  "type": "quarterlyStockholdersEquity",
+                  "period_type": "3M",
+                  "as_of": "2026-03-31"
+                }
+              ]
+            },
+            "calculation": {
+              "pbr": "market_cap / latest_reported_equity",
+              "roe_pct": "trailing_net_income / average_two_point_stockholders_equity * 100"
+            }
+          },
+          "fx_reference": {
+            "status": "observed",
+            "provider": "identity",
+            "from_currency": "KRW",
+            "to_currency": "KRW",
+            "rate": 1.0,
+            "as_of": "2026-08-14",
+            "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "synthetic": false,
+            "estimated": false,
+            "ranking_effect": "none"
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 21.6,
+            "five_vs_previous_volume_ratio": 0.77,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "listing_verification": {
+            "status": "verified_current",
+            "current_listed": true,
+            "exchange": "KOSPI",
+            "stock_code": "402340",
+            "as_of": "2026-08-15",
+            "evidence_owner": "KRX KIND",
+            "evidence_type": "official_current_security_register",
+            "evidence_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13",
+            "synthetic": false,
+            "estimated": false,
+            "ranking_effect": "none"
+          },
+          "synthetic": false,
+          "estimated": false,
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      },
+      {
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "ticker": "005930",
+        "market": "KOSPI",
+        "relation_type": "bundles_subscription_with_consumer_device",
+        "strength": "value_chain",
+        "reason": "관측어 'tving'에서 티빙 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "relationship_reason": "관측어 'tving'에서 티빙 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "company_summary": "KOSPI 상장기업, 종목코드 005930",
+        "company_description": "KOSPI 상장기업, 종목코드 005930",
+        "business_features": [],
+        "evidence_kind": "reviewed_ontology_path",
+        "evidence_url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+        "evidence_sources": [
+          {
+            "url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+            "title": "CJ ENM 티빙·KT 시즌 합병 및 네이버 투자 관계",
+            "evidence_type": "official_company_partnership_release",
+            "published_at": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-2025%EB%85%84%ED%98%95-ai-tv-%EC%8B%A0%EC%A0%9C%ED%92%88-%EC%82%AC%EC%A0%84-%ED%8C%A4%EB%A7%A4",
+            "title": "삼성전자 2025 AI TV와 티빙 스탠다드 이용권 결합",
+            "evidence_type": "official_company_product_bundle_release",
+            "published_at": "2025-03-11",
+            "review_status": "approved"
+          },
+          {
+            "url": "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm",
+            "title": "삼성전자 유가증권상장법인 회사코드 005930",
+            "evidence_type": "official_listing_record",
+            "published_at": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "company_role": "플랫폼·채널",
+        "company_role_category": "platform_service",
+        "relation_tier": "value_chain",
+        "ontology_relation_tier": "value_chain",
+        "relation_tier_label": "가치사슬 기업",
+        "relation_horizon": "근거 확인 가치사슬 관계",
+        "exposure_status": "evidence_backed_value_chain_relevance",
+        "verification_status": "ontology_evidence",
+        "opportunity_status": "evidence_backed_candidate",
+        "relation_display_type": "가치사슬",
+        "team_review_status": "ontology_reviewed",
+        "team_review_label": "온톨로지 근거 검수됨",
+        "investment_warning": "관계 분류는 주가 상승 예측이나 매수 추천이 아님",
+        "matched_ontology_term": "tving",
+        "matched_ontology_node": "티빙",
+        "ontology_lookup_match_type": "reviewed_official_english_name",
+        "ontology_source": "reviewed_seed_plus_enrichment",
+        "ontology_path": [
+          {
+            "from": "tving",
+            "to": "tving",
+            "edge_type": "observed_term_exact_match",
+            "evidence_urls": [
+              "https://trends.google.com/trending?geo=KR"
+            ],
+            "evidence_type": "source_page_observation",
+            "as_of": "2026-08-15T21:00:00+00:00",
+            "review_status": "observed"
+          },
+          {
+            "from": "tving",
+            "to": "티빙",
+            "edge_type": "reviewed_official_english_name",
+            "evidence_urls": [
+              "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+            ],
+            "evidence_type": [
+              "official_company_partnership_release"
+            ],
+            "as_of": "2022-07-14",
+            "review_status": "approved"
+          },
+          {
+            "from": "티빙",
+            "to": "삼성전자",
+            "edge_type": "bundles_subscription_with_consumer_device",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-2025%EB%85%84%ED%98%95-ai-tv-%EC%8B%A0%EC%A0%9C%ED%92%88-%EC%82%AC%EC%A0%84-%ED%8C%A4%EB%A7%A4"
+            ],
+            "evidence_type": [
+              "official_company_product_bundle_release"
+            ],
+            "as_of": "2025-03-11",
+            "review_status": "approved"
+          },
+          {
+            "from": "삼성전자",
+            "to": "005930 (KOSPI)",
+            "edge_type": "listed_as",
+            "evidence_urls": [
+              "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+            ],
+            "evidence_type": [
+              "official_listing_record"
+            ],
+            "as_of": "2026-05-26",
+            "review_status": "approved"
+          }
+        ],
+        "ontology_complete": true,
+        "ontology_status": "complete",
+        "company_role_label": "플랫폼·서비스",
+        "company_role_public": true,
+        "relation_category": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "matched_keywords": [
+          "티빙",
+          "삼성 AI TV"
+        ],
+        "connection_explanation": "티빙, 삼성 AI TV 관련 맥락에서 삼성전자: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "official_identity": {
+          "company": "삼성전자",
+          "english_name": "SAMSUNG ELECTRONICS CO,.LTD",
+          "established_date": "19690113",
+          "homepage": "https://www.samsung.com/sec",
+          "legal_name": "삼성전자(주)",
+          "market_class": "Y",
+          "provider": "opendart",
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "retrieved_at": "2026-08-12T18:00:00+00:00",
+          "status": "verified",
+          "stock_code": "005930",
+          "stock_name": "삼성전자"
+        },
+        "listing_verification": {
+          "status": "verified_current",
+          "current_listed": true,
+          "exchange": "KOSPI",
+          "stock_code": "005930",
+          "as_of": "2026-08-15",
+          "evidence_owner": "KRX KIND",
+          "evidence_type": "official_current_security_register",
+          "evidence_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13",
+          "synthetic": false,
+          "estimated": false,
+          "ranking_effect": "none"
+        },
+        "market_reference": {
+          "status": "observed",
+          "provider": "pykrx+yahoo_finance",
+          "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+          "source_urls": {
+            "price": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "fundamentals": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false"
+          },
+          "field_sources": {
+            "market_cap": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_krw": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_pct": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "market_cap_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_status": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "per_reported_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "pbr_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "equity_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income_as_of": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "net_income_period_type": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_basis": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_calculated": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_numerator": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "roe_denominator": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "calculation": "https://query2.finance.yahoo.com/ws/fundamentals-timeseries/v1/finance/timeseries/005930.KS?symbol=005930.KS&type=trailingMarketCap,quarterlyMarketCap,trailingPeRatio,quarterlyStockholdersEquity,annualStockholdersEquity,quarterlyTotalStockholderEquity,annualTotalStockholderEquity,trailingNetIncome,annualNetIncome&period1=1629140400&period2=1786906800&merge=false",
+            "price_series": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd"
+          },
+          "stock_code": "005930",
+          "ticker": "005930",
+          "exchange": null,
+          "name": "삼성전자",
+          "daily_ohlcv": [
+            {
+              "date": "2026-07-03",
+              "open": 288500.0,
+              "high": 313000.0,
+              "low": 283500.0,
+              "close": 309500.0,
+              "volume": 31520538.0,
+              "change_pct": 8.216783216783217
+            },
+            {
+              "date": "2026-07-06",
+              "open": 320000.0,
+              "high": 325000.0,
+              "low": 303000.0,
+              "close": 318000.0,
+              "volume": 23872879.0,
+              "change_pct": 2.7463651050080773
+            },
+            {
+              "date": "2026-07-07",
+              "open": 307000.0,
+              "high": 310000.0,
+              "low": 286000.0,
+              "close": 296000.0,
+              "volume": 32421032.0,
+              "change_pct": -6.918238993710692
+            },
+            {
+              "date": "2026-07-08",
+              "open": 285500.0,
+              "high": 300000.0,
+              "low": 273500.0,
+              "close": 277500.0,
+              "volume": 33525758.0,
+              "change_pct": -6.25
+            },
+            {
+              "date": "2026-07-09",
+              "open": 288500.0,
+              "high": 291500.0,
+              "low": 267500.0,
+              "close": 278000.0,
+              "volume": 29703616.0,
+              "change_pct": 0.18018018018018017
+            },
+            {
+              "date": "2026-07-10",
+              "open": 291000.0,
+              "high": 298000.0,
+              "low": 282000.0,
+              "close": 285000.0,
+              "volume": 20088811.0,
+              "change_pct": 2.5179856115107913
+            },
+            {
+              "date": "2026-07-13",
+              "open": 285000.0,
+              "high": 292500.0,
+              "low": 253000.0,
+              "close": 254500.0,
+              "volume": 31882652.0,
+              "change_pct": -10.701754385964913
+            },
+            {
+              "date": "2026-07-14",
+              "open": 255000.0,
+              "high": 270000.0,
+              "low": 247000.0,
+              "close": 263000.0,
+              "volume": 40086496.0,
+              "change_pct": 3.3398821218074657
+            },
+            {
+              "date": "2026-07-15",
+              "open": 283500.0,
+              "high": 284500.0,
+              "low": 273000.0,
+              "close": 279500.0,
+              "volume": 24873414.0,
+              "change_pct": 6.273764258555133
+            },
+            {
+              "date": "2026-07-16",
+              "open": 264500.0,
+              "high": 265500.0,
+              "low": 252500.0,
+              "close": 255000.0,
+              "volume": 27001478.0,
+              "change_pct": -8.765652951699463
+            },
+            {
+              "date": "2026-07-20",
+              "open": 241000.0,
+              "high": 257500.0,
+              "low": 240000.0,
+              "close": 244000.0,
+              "volume": 26804038.0,
+              "change_pct": -4.313725490196078
+            },
+            {
+              "date": "2026-07-21",
+              "open": 247000.0,
+              "high": 263500.0,
+              "low": 243000.0,
+              "close": 259000.0,
+              "volume": 20386896.0,
+              "change_pct": 6.147540983606557
+            },
+            {
+              "date": "2026-07-22",
+              "open": 276000.0,
+              "high": 276000.0,
+              "low": 260000.0,
+              "close": 260500.0,
+              "volume": 22292003.0,
+              "change_pct": 0.5791505791505791
+            },
+            {
+              "date": "2026-07-23",
+              "open": 269000.0,
+              "high": 273000.0,
+              "low": 263000.0,
+              "close": 270000.0,
+              "volume": 16011816.0,
+              "change_pct": 3.6468330134357005
+            },
+            {
+              "date": "2026-07-24",
+              "open": 266000.0,
+              "high": 266500.0,
+              "low": 247000.0,
+              "close": 249500.0,
+              "volume": 26175580.0,
+              "change_pct": -7.592592592592593
+            },
+            {
+              "date": "2026-07-27",
+              "open": 257000.0,
+              "high": 258500.0,
+              "low": 246000.0,
+              "close": 254000.0,
+              "volume": 23296044.0,
+              "change_pct": 1.8036072144288577
+            },
+            {
+              "date": "2026-07-28",
+              "open": 238500.0,
+              "high": 240000.0,
+              "low": 218500.0,
+              "close": 220000.0,
+              "volume": 41639623.0,
+              "change_pct": -13.385826771653544
+            },
+            {
+              "date": "2026-07-29",
+              "open": 226500.0,
+              "high": 234000.0,
+              "low": 189200.0,
+              "close": 208500.0,
+              "volume": 65555523.0,
+              "change_pct": -5.227272727272727
+            },
+            {
+              "date": "2026-07-30",
+              "open": 214000.0,
+              "high": 226000.0,
+              "low": 202000.0,
+              "close": 207000.0,
+              "volume": 46694193.0,
+              "change_pct": -0.7194244604316548
+            },
+            {
+              "date": "2026-07-31",
+              "open": 257000.0,
+              "high": 267000.0,
+              "low": 243000.0,
+              "close": 262500.0,
+              "volume": 58478873.0,
+              "change_pct": 26.811594202898554
+            },
+            {
+              "date": "2026-08-03",
+              "open": 248000.0,
+              "high": 249500.0,
+              "low": 238000.0,
+              "close": 239500.0,
+              "volume": 27825493.0,
+              "change_pct": -8.761904761904763
+            },
+            {
+              "date": "2026-08-04",
+              "open": 244500.0,
+              "high": 244500.0,
+              "low": 228000.0,
+              "close": 240000.0,
+              "volume": 29433821.0,
+              "change_pct": 0.20876826722338201
+            },
+            {
+              "date": "2026-08-05",
+              "open": 254000.0,
+              "high": 254500.0,
+              "low": 244000.0,
+              "close": 246000.0,
+              "volume": 22577128.0,
+              "change_pct": 2.5
+            },
+            {
+              "date": "2026-08-06",
+              "open": 241500.0,
+              "high": 246000.0,
+              "low": 228000.0,
+              "close": 230500.0,
+              "volume": 26101823.0,
+              "change_pct": -6.300813008130081
+            },
+            {
+              "date": "2026-08-07",
+              "open": 235000.0,
+              "high": 239500.0,
+              "low": 229000.0,
+              "close": 231000.0,
+              "volume": 20546010.0,
+              "change_pct": 0.21691973969631237
+            },
+            {
+              "date": "2026-08-10",
+              "open": 236000.0,
+              "high": 238500.0,
+              "low": 228500.0,
+              "close": 230000.0,
+              "volume": 16327805.0,
+              "change_pct": -0.4329004329004329
+            },
+            {
+              "date": "2026-08-11",
+              "open": 229500.0,
+              "high": 243000.0,
+              "low": 227500.0,
+              "close": 239500.0,
+              "volume": 23310969.0,
+              "change_pct": 4.130434782608695
+            },
+            {
+              "date": "2026-08-12",
+              "open": 243500.0,
+              "high": 260500.0,
+              "low": 241000.0,
+              "close": 255500.0,
+              "volume": 27102479.0,
+              "change_pct": 6.6805845511482245
+            },
+            {
+              "date": "2026-08-13",
+              "open": 267500.0,
+              "high": 271000.0,
+              "low": 262500.0,
+              "close": 268000.0,
+              "volume": 35530867.0,
+              "change_pct": 4.892367906066536
+            },
+            {
+              "date": "2026-08-14",
+              "open": 275000.0,
+              "high": 275500.0,
+              "low": 266000.0,
+              "close": 274500.0,
+              "volume": 21668266.0,
+              "change_pct": 2.425373134328358
+            }
+          ],
+          "latest_daily": {
+            "date": "2026-08-14",
+            "open": 275000.0,
+            "high": 275500.0,
+            "low": 266000.0,
+            "close": 274500.0,
+            "volume": 21668266.0,
+            "change_pct": 2.425373134328358
+          },
+          "currency": "KRW",
+          "market_cap": 1525111251549100.0,
+          "summary": {
+            "as_of": "2026-08-14",
+            "close": 274500,
+            "close_krw": 274500,
+            "daily_change_pct": 2.43,
+            "volume": 21668266,
+            "currency": "KRW",
+            "market_cap": 1525111251549100.0,
+            "market_cap_krw": 1525111251549100.0
+          },
+          "valuation": {
+            "per": 19.2107,
+            "pbr": 3.2178,
+            "roe_pct": 19.161,
+            "market_cap_as_of": "2026-08-11",
+            "market_cap_period_type": "TTM",
+            "market_cap_type": "trailingMarketCap",
+            "per_as_of": "2026-08-11",
+            "per_period_type": "TTM",
+            "per_type": "trailingPeRatio",
+            "per_status": "observed",
+            "per_reported_as_of": "2026-08-11",
+            "pbr_as_of": "2026-08-11",
+            "pbr_period_type": "POINT_IN_TIME_OVER_REPORTED_EQUITY",
+            "pbr_type": "calculatedMarketCapToEquity",
+            "equity": 473964801000000.0,
+            "equity_as_of": "2026-03-31",
+            "equity_period_type": "3M",
+            "net_income": 83333739000000.0,
+            "net_income_as_of": "2026-03-31",
+            "net_income_period_type": "TTM",
+            "roe_basis": "trailing_net_income / average_two_point_stockholders_equity * 100",
+            "roe_calculated": true,
+            "roe_numerator": {
+              "value": 83333739000000.0,
+              "type": "trailingNetIncome",
+              "period_type": "TTM",
+              "as_of": "2026-03-31"
+            },
+            "roe_denominator": {
+              "value": 434912947500000.0,
+              "type": "averageStockholdersEquity",
+              "period_type": "TWO_POINT_AVERAGE",
+              "as_of": "2026-03-31",
+              "period_start": "2025-03-31",
+              "period_end": "2026-03-31",
+              "observations": [
+                {
+                  "value": 395861094000000.0,
+                  "type": "quarterlyStockholdersEquity",
+                  "period_type": "3M",
+                  "as_of": "2025-03-31"
+                },
+                {
+                  "value": 473964801000000.0,
+                  "type": "quarterlyStockholdersEquity",
+                  "period_type": "3M",
+                  "as_of": "2026-03-31"
+                }
+              ]
+            },
+            "calculation": {
+              "pbr": "market_cap / latest_reported_equity",
+              "roe_pct": "trailing_net_income / average_two_point_stockholders_equity * 100"
+            }
+          },
+          "fx_reference": {
+            "status": "observed",
+            "provider": "identity",
+            "from_currency": "KRW",
+            "to_currency": "KRW",
+            "rate": 1.0,
+            "as_of": "2026-08-14",
+            "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+            "synthetic": false,
+            "estimated": false,
+            "ranking_effect": "none"
+          },
+          "market_reaction": {
+            "status": "reaction_observed",
+            "label": "최근 시장 반응 관찰",
+            "five_session_return_pct": 19.35,
+            "five_vs_previous_volume_ratio": 0.98,
+            "warning": "일별 가격·거래량의 사후 참고값이며 트렌드 영향이나 향후 수익을 증명하지 않음"
+          },
+          "listing_verification": {
+            "status": "verified_current",
+            "current_listed": true,
+            "exchange": "KOSPI",
+            "stock_code": "005930",
+            "as_of": "2026-08-15",
+            "evidence_owner": "KRX KIND",
+            "evidence_type": "official_current_security_register",
+            "evidence_url": "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13",
+            "synthetic": false,
+            "estimated": false,
+            "ranking_effect": "none"
+          },
+          "synthetic": false,
+          "estimated": false,
+          "ranking_effect": "none",
+          "relationship_evidence": false,
+          "note": "daily reference data; not realtime, not a forecast, and not relation evidence"
+        }
+      }
+    ],
+    "company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "CJ ENM"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "companies": [
+          "KT",
+          "NAVER",
+          "SK스퀘어",
+          "삼성전자"
+        ],
+        "candidate_count": 4,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "candidate_company_categories": [
+      {
+        "name": "직접 제조·브랜드·IP",
+        "value_chain_stage": "core",
+        "companies": [
+          "CJ ENM"
+        ],
+        "candidate_count": 1,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      },
+      {
+        "name": "유통·플랫폼·채널",
+        "value_chain_stage": "downstream",
+        "companies": [
+          "KT",
+          "NAVER",
+          "SK스퀘어",
+          "삼성전자"
+        ],
+        "candidate_count": 4,
+        "policy": "해당 트렌드에 대한 개별 관계 근거가 있는 기업만 표시"
+      }
+    ],
+    "company_resolution": {
+      "status": "excluded_by_context",
+      "publish_status": "not_published",
+      "candidate_count": 4,
+      "ontology_complete_count": 4,
+      "published_count": 0,
+      "minimum_gold_companies": 10,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [
+        "platform_service"
+      ],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 4,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 1,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "tving",
+            "observation_status": "observed_representative",
+            "ontology_status": "published",
+            "ontology_company_count": 5,
+            "lookup_match": {
+              "match_type": "reviewed_official_english_name",
+              "alias_id": "alias:reviewed:tving-english",
+              "matched_label": "TVING",
+              "target_node_id": "term:reviewed:tving",
+              "target_node_label": "티빙",
+              "review_status": "approved",
+              "evidence": [
+                {
+                  "id": "evidence:reviewed:cj-tving-ecosystem",
+                  "title": "CJ ENM 티빙·KT 시즌 합병 및 네이버 투자 관계",
+                  "publisher": "CJ 뉴스룸",
+                  "url": "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+                  "evidence_type": "official_company_partnership_release",
+                  "summary": "CJ 공식 보도자료가 티빙의 CJ ENM 분리, KT 시즌과의 합병 계획, 네이버 투자 유치를 각각 명시한다.",
+                  "published_at": "2022-07-14",
+                  "review_status": "approved",
+                  "provenance": {
+                    "method": "manual_url_review",
+                    "reviewed_at": "2026-08-13",
+                    "scope": "tving_to_cjenm_kt_naver"
+                  }
+                }
+              ],
+              "provenance": {
+                "method": "manual_url_review",
+                "reviewed_at": "2026-08-13"
+              }
+            }
+          },
+          {
+            "term": "티빙",
+            "observation_status": "approved_ontology_term",
+            "ontology_status": "published",
+            "ontology_company_count": 5,
+            "lookup_match": {
+              "match_type": "exact_term",
+              "matched_label": "티빙",
+              "target_node_id": "term:reviewed:tving",
+              "target_node_label": "티빙",
+              "review_status": "node_label",
+              "evidence": []
+            }
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "fewer_than_ten_evidence_backed_companies",
+      "role_category_counts": {
+        "platform_service": 4
+      }
+    },
+    "rank": 280,
+    "observed_rank": 280,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "맥락 확인",
+    "persistence_rank": 364,
+    "momentum_rank": 212,
+    "main_rank": null,
+    "keyword_company_links": [
+      {
+        "keyword": "티빙",
+        "company": "KT",
+        "stock_code": "030200",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, KT 시즌, 삼성 AI TV 관련 맥락에서 KT: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "KT 시즌",
+        "company": "KT",
+        "stock_code": "030200",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, KT 시즌, 삼성 AI TV 관련 맥락에서 KT: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "삼성 AI TV",
+        "company": "KT",
+        "stock_code": "030200",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, KT 시즌, 삼성 AI TV 관련 맥락에서 KT: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → KT → 030200 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://kind.krx.co.kr/external/2026/05/13/001163/20260513002413/00634.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "티빙",
+        "company": "NAVER",
+        "stock_code": "035420",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, NAVER, 삼성 AI TV 관련 맥락에서 NAVER: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://www.navercorp.com/investment/stock"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "NAVER",
+        "company": "NAVER",
+        "stock_code": "035420",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, NAVER, 삼성 AI TV 관련 맥락에서 NAVER: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://www.navercorp.com/investment/stock"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "삼성 AI TV",
+        "company": "NAVER",
+        "stock_code": "035420",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, NAVER, 삼성 AI TV 관련 맥락에서 NAVER: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → NAVER → 035420 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://www.navercorp.com/investment/stock"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "티빙",
+        "company": "SK스퀘어",
+        "stock_code": "402340",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, 삼성 AI TV 관련 맥락에서 SK스퀘어: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://www.sksquare.com/assets/download/2025_AGM_Announcement_kr.pdf",
+          "https://www.sksquare.com/kor/company/team.do",
+          "https://kind.krx.co.kr/external/2026/06/08/000895/20260608001821/00637.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "삼성 AI TV",
+        "company": "SK스퀘어",
+        "stock_code": "402340",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, 삼성 AI TV 관련 맥락에서 SK스퀘어: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → SK스퀘어 → 402340 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://www.sksquare.com/assets/download/2025_AGM_Announcement_kr.pdf",
+          "https://www.sksquare.com/kor/company/team.do",
+          "https://kind.krx.co.kr/external/2026/06/08/000895/20260608001821/00637.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "티빙",
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, 삼성 AI TV 관련 맥락에서 삼성전자: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-2025%EB%85%84%ED%98%95-ai-tv-%EC%8B%A0%EC%A0%9C%ED%92%88-%EC%82%AC%EC%A0%84-%ED%8C%A4%EB%A7%A4",
+          "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      },
+      {
+        "keyword": "삼성 AI TV",
+        "company": "삼성전자",
+        "stock_code": "005930",
+        "company_role_category": "platform_service",
+        "company_role_label": "플랫폼·서비스",
+        "relationship_reason": "관측어 'tving'에서 티빙 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "connection_explanation": "티빙, 삼성 AI TV 관련 맥락에서 삼성전자: '플랫폼·서비스' 역할로 연결됩니다. 관측어 'tving'에서 티빙 → 삼성전자 → 005930 (KOSPI)로 이어지는 검수된 2단계 온톨로지 경로",
+        "evidence_urls": [
+          "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/",
+          "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-2025%EB%85%84%ED%98%95-ai-tv-%EC%8B%A0%EC%A0%9C%ED%92%88-%EC%82%AC%EC%A0%84-%ED%8C%A4%EB%A7%A4",
+          "https://kind.krx.co.kr/external/2026/05/26/000339/20260526000885/00634.htm"
+        ],
+        "match_basis": "reviewed_keyword_company_bridge",
+        "affects_rank": false
+      }
+    ],
+    "keyword_company_link_coverage": {
+      "policy_version": "public-keyword-company-link-coverage-v1",
+      "status": "incomplete",
+      "ready": false,
+      "keyword_count": 5,
+      "company_count": 4,
+      "valid_link_count": 10,
+      "linked_keyword_count": 4,
+      "linked_company_count": 4,
+      "unlinked_keywords": [
+        "웨이브"
+      ],
+      "unlinked_companies": [],
+      "matched_keyword_mismatches": [],
+      "invalid_link_indexes": [],
+      "duplicate_pairs": [],
+      "ranking_effect": "none"
+    },
+    "linked_keyword_count": 4,
+    "linked_company_count": 4,
+    "keyword_company_link_status": "enrichment_pending",
+    "unlinked_related_keywords": [
+      "웨이브"
+    ],
+    "unlinked_companies": [],
+    "home_context_status": "review_required",
+    "home_context_reason": "not_main_lane",
+    "home_eligible": false,
+    "company_card_status": "not_applicable",
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_status": "not_applicable",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "evidence_backed_listed_companies_at_least_ten"
+    ],
+    "frontend_keyword_count": 5,
+    "frontend_company_count": 0,
+    "frontend_company_role_category_count": 0,
+    "publication_rank": null,
+    "attention_change": {
+      "1w": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "1m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "3m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "insufficient_90_day_observed_history"
+      }
+    },
+    "trend_story": {
+      "schema_version": "trend-story-v1",
+      "status": "observed_context_only",
+      "origin": {
+        "observed_term": "tving",
+        "first_observed_at": "2026-08-15T14:00:00+00:00",
+        "trigger_title": "",
+        "trigger_type": "",
+        "why_now": "",
+        "evidence_urls": [],
+        "assertion": "observed_trigger_or_context_not_causal_origin"
+      },
+      "relationship_graph": {
+        "interpretation": "observed_context_graph_not_causal_lineage",
+        "nodes": [
+          {
+            "id": "trend:root",
+            "label": "tving",
+            "node_type": "observed_trend_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:1",
+            "label": "티빙",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:2",
+            "label": "KT 시즌",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:3",
+            "label": "NAVER",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:4",
+            "label": "삼성 AI TV",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          },
+          {
+            "id": "keyword:5",
+            "label": "웨이브",
+            "node_type": "reviewed_related_concept",
+            "source": "reviewed_ontology"
+          }
+        ],
+        "edges": [
+          {
+            "from": "trend:root",
+            "to": "keyword:1",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:2",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:3",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://newsroom.cj.net/cj-enms-tving-and-kts-seezn-announce-merger-to-become-south-koreas-largest-ott-platform/"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:4",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-2025%EB%85%84%ED%98%95-ai-tv-%EC%8B%A0%EC%A0%9C%ED%92%88-%EC%82%AC%EC%A0%84-%ED%8C%A4%EB%A7%A4"
+            ],
+            "causality": "not_inferred"
+          },
+          {
+            "from": "trend:root",
+            "to": "keyword:5",
+            "relation_type": "reviewed_related_concept",
+            "relation_label": "검수된 연관 맥락",
+            "evidence_urls": [
+              "https://www.sksquare.com/assets/download/2025_AGM_Announcement_kr.pdf"
+            ],
+            "causality": "not_inferred"
+          }
+        ]
+      },
+      "diffusion": {
+        "lifecycle": "rising",
+        "trend_stage": {
+          "key": "spreading",
+          "label": "확산",
+          "index": 2
+        },
+        "phase_label": "확산",
+        "stage_index": 2,
+        "progress_percent": 62,
+        "observed_day_label": "관측 1일차",
+        "observed_hours": 7,
+        "caption": "이전 관측 구간보다 관심이 커지는 흐름입니다.",
+        "attention_lift": {
+          "status": "normalized_signal",
+          "metric": "source_rank_velocity_index",
+          "value": 12.24,
+          "unit": "points",
+          "label": "관심 속도 지표 +12.2p"
+        },
+        "attention_windows": [
+          {
+            "key": "1w",
+            "label": "1주",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "1m",
+            "label": "1개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "3m",
+            "label": "3개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "insufficient_90_day_observed_history",
+            "is_absolute_mention_count": false
+          }
+        ],
+        "channels": [
+          {
+            "source": "google_trends",
+            "label": "Google Trends",
+            "latest_rank": 170,
+            "rank_change": 4,
+            "movement_label": "직전 관측 대비 순위 +4",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": true,
+            "affects_multisource_home_rank": false
+          }
+        ],
+        "ranking_input_policy": "home-feed-selection-v2-x-google-only"
+      }
+    },
+    "frontend_projection": {
+      "trend_name": "tving",
+      "trend_category": "기타·검토",
+      "trend_core": "tving",
+      "observed_day_label": "관측 1일차",
+      "phase_label": "확산",
+      "stage_index": 2,
+      "progress_percent": 62,
+      "attention_lift": {
+        "status": "normalized_signal",
+        "metric": "source_rank_velocity_index",
+        "value": 12.24,
+        "unit": "points",
+        "label": "관심 속도 지표 +12.2p"
+      },
+      "attention_windows": [
+        {
+          "key": "1w",
+          "label": "1주",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "1m",
+          "label": "1개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "3m",
+          "label": "3개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "insufficient_90_day_observed_history",
+          "is_absolute_mention_count": false
+        }
+      ],
+      "current_rank": 280,
+      "caption": "이전 관측 구간보다 관심이 커지는 흐름입니다.",
+      "related_keyword_count": 5,
+      "company_grouping": "company_role_category",
+      "is_mock": false
+    },
+    "ranking_availability_status": "mature_combined",
+    "semantic_adjudication_status": "not_eligible"
+  }
+}

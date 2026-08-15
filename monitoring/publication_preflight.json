@@ -1,18 +1,148 @@
 {
-  "policy_version": "hourly-publication-preflight-v1",
-  "observed_at": "2026-08-14T18:00:00+00:00",
+  "policy_version": "daily-publication-preflight-v4",
+  "observed_at": "2026-08-15T21:00:00+00:00",
   "passed": true,
   "source_gate": {
-    "policy_version": "hourly-source-proof-v2",
+    "policy_version": "publication-window-source-proof-v2",
+    "passed": true,
+    "window_passed": true,
+    "exact_hour_required": true,
+    "exact_hour_source_gate": {
+      "policy_version": "hourly-source-proof-v3",
+      "passed": true,
+      "sources": {
+        "google_trends": {
+          "row_count": 185,
+          "unique_topics": 185,
+          "unique_ranks": 185,
+          "minimum_rank": 1,
+          "maximum_rank": 185,
+          "observed_rows": 185,
+          "collection_audit": {
+            "status": "observed",
+            "row_count": 185
+          },
+          "collection_evidence": {
+            "declared_total": 185,
+            "page_count": 8,
+            "completion_verified": true,
+            "evidence_row_count": 185,
+            "evidence_consistent": true
+          }
+        },
+        "x": {
+          "row_count": 30,
+          "unique_topics": 30,
+          "unique_ranks": 30,
+          "minimum_rank": 1,
+          "maximum_rank": 30,
+          "observed_rows": 30,
+          "collection_audit": {
+            "status": "observed",
+            "row_count": 30
+          },
+          "collection_evidence": {
+            "collector": "codex_chrome_current_session",
+            "transport": "codex_browser_snapshot",
+            "profile": "current_logged_in_chrome",
+            "region": "KR",
+            "region_verified": true,
+            "observed_at": "2026-08-15T21:01:43.134000+00:00",
+            "scheduled_for": "2026-08-15T21:00:00+00:00",
+            "schedule_delay_seconds": 103.134,
+            "evidence_row_count": 30,
+            "evidence_consistent": true,
+            "timing_verified": true
+          }
+        }
+      }
+    },
+    "forbidden_collector_rows": 0,
+    "collector_policy": "actual_production_collectors_only_no_fixture_mix",
+    "window": {
+      "from": "2026-08-14T22:00:00+00:00",
+      "to": "2026-08-15T21:00:00+00:00",
+      "expected_hours": 24
+    },
+    "sources": {
+      "x": {
+        "valid_hour_count": 10,
+        "valid_row_count": 300,
+        "observed_hours": [
+          "2026-08-15T01:00:00+00:00",
+          "2026-08-15T02:00:00+00:00",
+          "2026-08-15T05:00:00+00:00",
+          "2026-08-15T14:00:00+00:00",
+          "2026-08-15T16:00:00+00:00",
+          "2026-08-15T17:00:00+00:00",
+          "2026-08-15T18:00:00+00:00",
+          "2026-08-15T19:00:00+00:00",
+          "2026-08-15T20:00:00+00:00",
+          "2026-08-15T21:00:00+00:00"
+        ]
+      },
+      "google_trends": {
+        "valid_hour_count": 10,
+        "valid_row_count": 1843,
+        "observed_hours": [
+          "2026-08-15T01:00:00+00:00",
+          "2026-08-15T02:00:00+00:00",
+          "2026-08-15T05:00:00+00:00",
+          "2026-08-15T14:00:00+00:00",
+          "2026-08-15T16:00:00+00:00",
+          "2026-08-15T17:00:00+00:00",
+          "2026-08-15T18:00:00+00:00",
+          "2026-08-15T19:00:00+00:00",
+          "2026-08-15T20:00:00+00:00",
+          "2026-08-15T21:00:00+00:00"
+        ]
+      }
+    },
+    "missing_hour_count": 14,
+    "missing_hours": [
+      "2026-08-14T22:00:00+00:00",
+      "2026-08-14T23:00:00+00:00",
+      "2026-08-15T00:00:00+00:00",
+      "2026-08-15T03:00:00+00:00",
+      "2026-08-15T04:00:00+00:00",
+      "2026-08-15T06:00:00+00:00",
+      "2026-08-15T07:00:00+00:00",
+      "2026-08-15T08:00:00+00:00",
+      "2026-08-15T09:00:00+00:00",
+      "2026-08-15T10:00:00+00:00",
+      "2026-08-15T11:00:00+00:00",
+      "2026-08-15T12:00:00+00:00",
+      "2026-08-15T13:00:00+00:00",
+      "2026-08-15T15:00:00+00:00"
+    ],
+    "partial_source_hours": [],
+    "rejected_source_hours": [],
+    "missing_hour_policy": "allowed_no_fill_no_reuse",
+    "fabricated_hour_count": 0,
+    "reused_previous_hour_count": 0
+  },
+  "exact_hour_source_gate": {
+    "policy_version": "hourly-source-proof-v3",
     "passed": true,
     "sources": {
       "google_trends": {
-        "row_count": 177,
-        "unique_topics": 177,
-        "unique_ranks": 177,
+        "row_count": 185,
+        "unique_topics": 185,
+        "unique_ranks": 185,
         "minimum_rank": 1,
-        "maximum_rank": 177,
-        "observed_rows": 177
+        "maximum_rank": 185,
+        "observed_rows": 185,
+        "collection_audit": {
+          "status": "observed",
+          "row_count": 185
+        },
+        "collection_evidence": {
+          "declared_total": 185,
+          "page_count": 8,
+          "completion_verified": true,
+          "evidence_row_count": 185,
+          "evidence_consistent": true
+        }
       },
       "x": {
         "row_count": 30,
@@ -21,15 +151,19 @@
         "minimum_rank": 1,
         "maximum_rank": 30,
         "observed_rows": 30,
+        "collection_audit": {
+          "status": "observed",
+          "row_count": 30
+        },
         "collection_evidence": {
           "collector": "codex_chrome_current_session",
           "transport": "codex_browser_snapshot",
           "profile": "current_logged_in_chrome",
           "region": "KR",
           "region_verified": true,
-          "observed_at": "2026-08-14T18:08:36.769000+00:00",
-          "scheduled_for": "2026-08-14T18:00:00+00:00",
-          "schedule_delay_seconds": 516.769,
+          "observed_at": "2026-08-15T21:01:43.134000+00:00",
+          "scheduled_for": "2026-08-15T21:00:00+00:00",
+          "schedule_delay_seconds": 103.134,
           "evidence_row_count": 30,
           "evidence_consistent": true,
           "timing_verified": true
@@ -37,19 +171,138 @@
       }
     }
   },
-  "contract": {
-    "policy_version": "frontend-result-quality-v7",
+  "enrichment_checkpoint_gate": {
+    "policy_version": "daily-enrichment-checkpoint-proof-v1",
     "passed": true,
-    "trend_count": 0,
+    "window": {
+      "from": "2026-08-15T17:00:00+00:00",
+      "to": "2026-08-15T21:00:00+00:00",
+      "max_age_hours": 4
+    },
+    "checkpoint_observed_at": "2026-08-15T21:00:00+00:00",
+    "checkpoint_completed_at": "2026-08-15T21:02:22.747678+00:00",
+    "execution_status": "completed_with_deferred_work_and_optional_components_disabled",
+    "component_execution": {
+      "approved_cache": {
+        "detail": "reapplied",
+        "ranking_effect": "none",
+        "reapplied_count": 1,
+        "rejected_count": 0,
+        "required_for_release": false,
+        "status": "completed"
+      },
+      "complete_card_gate": {
+        "detail": "completed",
+        "ranking_effect": "none",
+        "required_for_release": true,
+        "status": "completed"
+      },
+      "naver_context": {
+        "detail": "completed",
+        "ranking_effect": "none",
+        "required_for_release": false,
+        "status": "completed"
+      },
+      "review_handoff": {
+        "detail": "exported_waiting_review",
+        "ranking_effect": "none",
+        "required_for_release": false,
+        "status": "deferred"
+      },
+      "semantic_llm": {
+        "detail": "disabled_missing_config",
+        "ranking_effect": "none",
+        "required_for_release": false,
+        "status": "disabled_missing_config"
+      }
+    },
+    "optional_disabled_components": [
+      "semantic_llm"
+    ],
+    "deferred_components": [
+      "review_handoff"
+    ],
+    "unresolved_candidate_count": 451,
+    "unresolved_candidates_excluded": true,
+    "failures": []
+  },
+  "contract": {
+    "policy_version": "frontend-result-quality-v9",
+    "passed": true,
+    "trend_count": 1,
     "target_trend_count": null,
-    "home_status": "empty",
-    "home_content_ready": false,
+    "home_status": "ready",
+    "home_content_ready": true,
     "required_keyword_count": 5,
     "minimum_company_count": 10,
     "failures": [],
     "enrichment_warnings": [],
-    "enrichment_ready_count": 0,
-    "trends": [],
-    "ranking_effect": "none"
+    "enrichment_ready_count": 1,
+    "trends": [
+      {
+        "display_name": "삼계탕",
+        "company_count": 10,
+        "linked_keyword_count": 5,
+        "linked_company_count": 10,
+        "attention_window_statuses": {
+          "1w": "insufficient_observed_history",
+          "1m": "insufficient_observed_history",
+          "3m": "insufficient_observed_history"
+        },
+        "measured_attention_window_count": 0,
+        "per_na_company_count": 3,
+        "role_categories": [
+          "manufacturing_development",
+          "raw_materials_components",
+          "retail_sales"
+        ],
+        "passed": true,
+        "failures": []
+      }
+    ],
+    "ranking_effect": "none",
+    "frontend_surface": "presentation_feed",
+    "home_count": 1,
+    "company_ready_count": 1,
+    "canonical_home_count": 1,
+    "canonical_home_content_ready": true,
+    "presentation_count": 1,
+    "presentation_content_ready": true,
+    "presentation_feed_quality": {
+      "policy_version": "presentation-result-quality-v3",
+      "schema_version": "trzip-presentation-feed-v4",
+      "legacy_contract": false,
+      "warnings": [],
+      "status": "ready",
+      "frontend_default": true,
+      "passed": true,
+      "content_ready": true,
+      "presentation_count": 1,
+      "company_ready_count": 1,
+      "failures": [],
+      "trends": [
+        {
+          "display_name": "삼계탕",
+          "company_count": 10,
+          "linked_keyword_count": 5,
+          "linked_company_count": 10,
+          "attention_window_statuses": {
+            "1w": "insufficient_observed_history",
+            "1m": "insufficient_observed_history",
+            "3m": "insufficient_observed_history"
+          },
+          "measured_attention_window_count": 0,
+          "per_na_company_count": 3,
+          "role_categories": [
+            "manufacturing_development",
+            "raw_materials_components",
+            "retail_sales"
+          ],
+          "passed": true,
+          "failures": []
+        }
+      ],
+      "ranking_effect": "none"
+    }
   }
 }

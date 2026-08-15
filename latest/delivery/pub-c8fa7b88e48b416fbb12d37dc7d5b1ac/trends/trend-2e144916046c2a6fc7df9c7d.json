@@ -1,0 +1,902 @@
+{
+  "schema_version": "trzip-trend-detail-v1",
+  "publication_id": "pub-c8fa7b88e48b416fbb12d37dc7d5b1ac",
+  "generated_at": "2026-08-15T21:02:26.627621+00:00",
+  "observed_at": "2026-08-15T21:00:00+00:00",
+  "mode": "live",
+  "trend": {
+    "event_key": "음식",
+    "topic": "음식",
+    "display_name": "음식",
+    "observed_representative_term": "음식",
+    "display_name_policy": "observed_representative_term",
+    "resolved_entity_name": "음식",
+    "representative_evidence": {
+      "method": "current_observed_term_then_hours_sources_reciprocal_rank",
+      "currently_observed": true,
+      "current_source_count": 1,
+      "observed_hours": 21,
+      "source_count": 1,
+      "reciprocal_rank_support": 0.257936,
+      "best_source_rank": 5
+    },
+    "raw_terms": [
+      "음식"
+    ],
+    "phenomenon_summary": "\"음식\" · Google Trends KR에서 관측",
+    "context_status": "needs_context",
+    "ground_truth_match": false,
+    "category": "food_culinary",
+    "category_basis": "raw_expression_general_rule",
+    "broad_category": "food",
+    "category_label": "음식·식품",
+    "category_ontology": {
+      "version": "category-ontology-v1",
+      "category": "food_culinary",
+      "entity_slots": [
+        "product",
+        "brand",
+        "ingredient",
+        "recipe_or_format",
+        "sales_channel"
+      ],
+      "trigger_types": [
+        "product_launch",
+        "sellout",
+        "sales_growth",
+        "creator_spread",
+        "seasonal_demand"
+      ],
+      "recommended_company_roles": [
+        "raw_materials_components",
+        "manufacturing_development",
+        "distribution",
+        "retail_sales"
+      ],
+      "affects_score": false
+    },
+    "trend_definition": "'음식' 키워드는 제품·메뉴·식문화에 대한 소비자 관심이 모이는 흐름입니다. 실측 데이터에서는 습관 같은 표현과 함께 나타났습니다. Google Trending Now 대한민국 관측에서 확인된 맥락입니다.",
+    "disclaimer": "투자 추천이나 수익 예측이 아닙니다.",
+    "lane": "review",
+    "selection_reason": "원문은 보존하되 대표 사건·현상의 문맥을 아직 확인하지 못함",
+    "trend_fit": {
+      "policy_version": "trend-fit-v1",
+      "selection": "review",
+      "main_eligible": false,
+      "hard_issue": false,
+      "ambiguous": true,
+      "generic_category_word": true,
+      "labels": [],
+      "reason": "원문은 보존하되 문화·소비·행동 맥락을 아직 확인하지 못함",
+      "news_context_used": false,
+      "issue_context_used": false,
+      "provider_soft_issue_match_count": 0,
+      "rank_effect": "none",
+      "lane": "review",
+      "label": "맥락 검토",
+      "affects_score": false
+    },
+    "selection_layer": "review_queue",
+    "company_eligible": false,
+    "score": 49.74,
+    "candidate_status": "is_current",
+    "is_current": true,
+    "period_sources": [
+      "google_trends"
+    ],
+    "freshness": {
+      "signal": 1.0,
+      "half_life_hours": 12.0,
+      "hours_since_last_seen": 0.0
+    },
+    "hours_since_last_seen": 0.0,
+    "previous_period_rank": null,
+    "rank_change": null,
+    "rank_change_status": "new_in_period",
+    "period_strength": 0.452819,
+    "current_source_position": 0.452819,
+    "momentum": 0.9056,
+    "persistence": 0.125,
+    "momentum_delta": 0.905638,
+    "score_components": {
+      "period_strength_points": 15.85,
+      "momentum_points": 22.64,
+      "persistence_points": 1.25,
+      "recency_points": 10.0,
+      "cross_source_points": 0.0,
+      "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+      "rounding_policy": "each_component_2dp_then_sum_2dp",
+      "total_points": 49.74
+    },
+    "score_explanation": {
+      "formula": "35 attention strength + 25 measured velocity + 20 X-Google breadth + 10 persistence + 10 recency",
+      "momentum_status": "measured",
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "lifecycle_baseline_ranking_effect": "none"
+    },
+    "source_metrics": {
+      "period_strength": {
+        "google_trends": 0.905638
+      },
+      "momentum_deltas": {
+        "google_trends": 0.905638
+      },
+      "momentum_basis": {
+        "google_trends": "previous_equal_period"
+      },
+      "momentum_event_observations": {
+        "google_trends": {
+          "current": 6,
+          "comparison": 0
+        }
+      },
+      "persistence": {
+        "x": {
+          "eligible_hours": 10,
+          "observed_hours": 0,
+          "presence_rate": 0.0,
+          "window_hours": 24
+        },
+        "google_trends": {
+          "eligible_hours": 10,
+          "observed_hours": 6,
+          "presence_rate": 0.25,
+          "window_hours": 24
+        }
+      }
+    },
+    "ranking_data_readiness": {
+      "status": "provisional",
+      "coverage_by_source": {
+        "x": 0.416667,
+        "google_trends": 0.416667
+      },
+      "momentum_status": "measured",
+      "minimum_event_observations_for_momentum": 3
+    },
+    "lifecycle_baseline": {
+      "window_days": 60,
+      "first_seen_at": "2026-08-12T13:00:00+00:00",
+      "last_seen_at": "2026-08-15T21:00:00+00:00",
+      "observed_hours": 21,
+      "ranking_effect": "none",
+      "purpose": "lifecycle_classification_only"
+    },
+    "source_count": 1,
+    "current_source_count": 1,
+    "source_badge": "단일출처",
+    "latest_source_ranks": {
+      "google_trends": 12
+    },
+    "rank_change_by_source": {
+      "google_trends": 19
+    },
+    "source_rank_change": {
+      "google_trends": 19
+    },
+    "first_seen_at": "2026-08-12T13:00:00+00:00",
+    "last_seen_at": "2026-08-15T21:00:00+00:00",
+    "age_hours": 80,
+    "lifecycle": "rising",
+    "lifecycle_reason": "normalised_position_rising",
+    "data_confidence": {
+      "level": "medium",
+      "label": "보통",
+      "reason": "24시간 MVP 원장과 반복 관측을 충족한 운영 초기 결과",
+      "window_observed_hours": 38,
+      "history_maturity": 0.4167,
+      "ranking_status": "mature"
+    },
+    "verification_layer": {
+      "representative_term": "음식",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "naver": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "no_match",
+          "matched": false,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": [],
+          "endpoint": "naver_news_search"
+        }
+      },
+      "status": "unavailable",
+      "observed_platforms": [],
+      "affects_score": false,
+      "affects_home_rank": false
+    },
+    "verification_signals": {
+      "representative_term": "음식",
+      "role": "context_and_verification_only",
+      "ranking_effect": "none",
+      "providers": {
+        "instagram": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "unavailable",
+          "matched": null,
+          "error_code": "not_configured",
+          "metrics": {},
+          "evidence": []
+        },
+        "naver": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "deferred",
+          "matched": null,
+          "error_code": "verification_budget_policy",
+          "metrics": {},
+          "evidence": []
+        },
+        "youtube": {
+          "observed_at": "2026-08-12T14:00:00+00:00",
+          "status": "observed",
+          "matched": true,
+          "error_code": null,
+          "metrics": {
+            "approximate_total_results": 1000000,
+            "search_total_is_approximate": true,
+            "statistics_request_error_count": 0,
+            "stored_evidence_count": 5
+          },
+          "evidence": [
+            {
+              "item_order": 1,
+              "item_type": "youtube_video",
+              "provider_item_id": "8joxi5R1LD8",
+              "title": "\"이게 1만 6,000원 음식이냐\" 워터파크 떡볶이 논란 '확산' / KNN",
+              "url": "https://www.youtube.com/watch?v=8joxi5R1LD8",
+              "published_at": "2026-08-08T08:09:13Z",
+              "publisher": "KNN NEWS",
+              "metrics": {
+                "commentCount": 4508,
+                "likeCount": 4468,
+                "viewCount": 858762
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T14:00:00Z",
+                "query_term": "음식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 2,
+              "item_type": "youtube_video",
+              "provider_item_id": "lb9-OvobxtU",
+              "title": "현실판 '기생충'? \"음식 자꾸 사라져\"..경찰 수색하니 드러난 정체 #shorts",
+              "url": "https://www.youtube.com/watch?v=lb9-OvobxtU",
+              "published_at": "2026-08-12T08:58:15Z",
+              "publisher": "SBS 뉴스",
+              "metrics": {
+                "commentCount": 0,
+                "likeCount": 13,
+                "viewCount": 6448
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T14:00:00Z",
+                "query_term": "음식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 3,
+              "item_type": "youtube_video",
+              "provider_item_id": "QhGYchvrPXY",
+              "title": "사찰음식 ASMR l #어서와한국은처음이지 l #MBCevery1 l #shorts",
+              "url": "https://www.youtube.com/watch?v=QhGYchvrPXY",
+              "published_at": "2026-08-07T08:30:03Z",
+              "publisher": "MBC every1",
+              "metrics": {
+                "commentCount": 9,
+                "likeCount": 597,
+                "viewCount": 56587
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T14:00:00Z",
+                "query_term": "음식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 4,
+              "item_type": "youtube_video",
+              "provider_item_id": "NYjs8yovPcs",
+              "title": "[하이라이트] 🧳여행 마지막 날 짐 싸기 대소동;; 사찰음식과 K-미슐랭을 위해🏃 이태리 천재 셰프 트리오 EP.4 조회수 TOP3♥ | #어서와한국은처음이지 | EP.440",
+              "url": "https://www.youtube.com/watch?v=NYjs8yovPcs",
+              "published_at": "2026-08-10T02:00:22Z",
+              "publisher": "어서와 한국은 처음이지",
+              "metrics": {
+                "commentCount": 113,
+                "likeCount": 2604,
+                "viewCount": 262296
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T14:00:00Z",
+                "query_term": "음식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            },
+            {
+              "item_order": 5,
+              "item_type": "youtube_video",
+              "provider_item_id": "v2Tl4vnX8tQ",
+              "title": "한국 음식 어디까지 먹어봤니? 1부",
+              "url": "https://www.youtube.com/watch?v=v2Tl4vnX8tQ",
+              "published_at": "2026-08-02T00:00:11Z",
+              "publisher": "YTV on 연합뉴스TV",
+              "metrics": {
+                "commentCount": 233,
+                "likeCount": 1972,
+                "viewCount": 150185
+              },
+              "provenance": {
+                "documentation": "https://developers.google.com/youtube/v3/docs/search/list",
+                "provider": "YouTube Data API v3",
+                "published_after": "2026-07-29T14:00:00Z",
+                "query_term": "음식",
+                "ranking_effect": "none",
+                "region_code": "KR",
+                "relevance_language": "ko"
+              }
+            }
+          ]
+        }
+      },
+      "status": "observed",
+      "observed_platforms": [
+        "youtube"
+      ],
+      "affects_score": false,
+      "purpose": "public_spread_and_context_verification_only"
+    },
+    "news_context": {
+      "status": "not_linked",
+      "claim_types": [],
+      "records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "context_research": {
+      "status": "incomplete",
+      "trigger_title": "",
+      "why_now": "",
+      "trigger_type": "",
+      "published_at": null,
+      "evidence_urls": [],
+      "evidence_records": [],
+      "affects_score": false,
+      "ranking_source": false
+    },
+    "provenance": [
+      "observed"
+    ],
+    "series": [
+      {
+        "at": "2026-08-12T13:00:00+00:00",
+        "source": "google_trends",
+        "rank": 18,
+        "value": 83.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 18, \"started_text\": \"1시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"습관\"]"
+      },
+      {
+        "at": "2026-08-12T14:00:00+00:00",
+        "source": "google_trends",
+        "rank": 17,
+        "value": 84.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 17, \"started_text\": \"2시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"습관\"]"
+      },
+      {
+        "at": "2026-08-12T15:00:00+00:00",
+        "source": "google_trends",
+        "rank": 13,
+        "value": 88.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 196, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 13, \"started_text\": \"3시간 전\", \"status_text\": \"활성\", \"volume_text\": \"5천+\"}",
+        "related_terms_json": "[\"습관\"]"
+      },
+      {
+        "at": "2026-08-12T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 12,
+        "value": 89.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 197, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 12, \"started_text\": \"4시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[\"습관\"]"
+      },
+      {
+        "at": "2026-08-12T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 29,
+        "value": 72.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 198, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 4, \"started_text\": \"5시간 전\", \"status_text\": \"5시간 동안 지속됨\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[\"습관\"]"
+      },
+      {
+        "at": "2026-08-12T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 14,
+        "value": 87.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 14, \"started_text\": \"6시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[\"습관\"]"
+      },
+      {
+        "at": "2026-08-12T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 13,
+        "value": 88.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 201, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 13, \"started_text\": \"6시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[\"습관\"]"
+      },
+      {
+        "at": "2026-08-12T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 15,
+        "value": 86.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 202, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 15, \"started_text\": \"9시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-12T23:00:00+00:00",
+        "source": "google_trends",
+        "rank": 12,
+        "value": 89.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 223, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 12, \"started_text\": \"10시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T00:00:00+00:00",
+        "source": "google_trends",
+        "rank": 5,
+        "value": 96.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 222, \"collection_page_count\": 9, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 5, \"started_text\": \"12시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T01:00:00+00:00",
+        "source": "google_trends",
+        "rank": 7,
+        "value": 94.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 228, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 7, \"started_text\": \"12시간 전\", \"status_text\": \"활성\", \"volume_text\": \"1만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T03:00:00+00:00",
+        "source": "google_trends",
+        "rank": 31,
+        "value": 70.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 226, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 6, \"started_text\": \"15시간 전\", \"status_text\": \"14시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T09:00:00+00:00",
+        "source": "google_trends",
+        "rank": 64,
+        "value": 37.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 245, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 14, \"started_text\": \"20시간 전\", \"status_text\": \"14시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T10:00:00+00:00",
+        "source": "google_trends",
+        "rank": 64,
+        "value": 37.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 237, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 14, \"started_text\": \"21시간 전\", \"status_text\": \"14시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-13T12:00:00+00:00",
+        "source": "google_trends",
+        "rank": 69,
+        "value": 32.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 242, \"collection_page_count\": 10, \"growth_text\": \"1,000%\", \"page\": 3, \"row_on_page\": 19, \"started_text\": \"23시간 전\", \"status_text\": \"14시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T16:00:00+00:00",
+        "source": "google_trends",
+        "rank": 22,
+        "value": 79.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 195, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 22, \"started_text\": \"8시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T17:00:00+00:00",
+        "source": "google_trends",
+        "rank": 25,
+        "value": 76.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 191, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 25, \"started_text\": \"9시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T18:00:00+00:00",
+        "source": "google_trends",
+        "rank": 19,
+        "value": 82.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 190, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 19, \"started_text\": \"10시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T19:00:00+00:00",
+        "source": "google_trends",
+        "rank": 22,
+        "value": 79.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 189, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 22, \"started_text\": \"11시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T20:00:00+00:00",
+        "source": "google_trends",
+        "rank": 31,
+        "value": 70.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 191, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 2, \"row_on_page\": 6, \"started_text\": \"12시간 전\", \"status_text\": \"7시간 동안 지속됨\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      },
+      {
+        "at": "2026-08-15T21:00:00+00:00",
+        "source": "google_trends",
+        "rank": 12,
+        "value": 89.0,
+        "provenance": "observed",
+        "source_payload_json": "{\"collection_completion_verified\": true, \"collection_declared_total\": 185, \"collection_page_count\": 8, \"growth_text\": \"1,000%\", \"page\": 1, \"row_on_page\": 12, \"started_text\": \"13시간 전\", \"status_text\": \"활성\", \"volume_text\": \"2만+\"}",
+        "related_terms_json": "[]"
+      }
+    ],
+    "keywords": [
+      {
+        "text": "습관",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 7,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "related_keywords": [
+      {
+        "text": "습관",
+        "source": [
+          "google_trends"
+        ],
+        "observed_hours": 7,
+        "status": "observed_related_query",
+        "role": "review_required",
+        "role_status": "deterministic_draft",
+        "affects_score": false
+      }
+    ],
+    "keyword_status": "enrichment_pending",
+    "keyword_evidence": {
+      "total": 1,
+      "observed_source_count": 1,
+      "reviewed_ontology_count": 0,
+      "candidate_count": 0,
+      "status": "evidence_backed",
+      "reason": "동일 사건으로 묶인 관측 원문·Google 관련 검색어와 URL 근거를 검수한 온톨로지 용어만 표시"
+    },
+    "companies": [],
+    "company_candidates": [],
+    "company_categories": [],
+    "candidate_company_categories": [],
+    "company_resolution": {
+      "status": "excluded_by_context",
+      "publish_status": "not_published",
+      "candidate_count": 0,
+      "ontology_complete_count": 0,
+      "published_count": 0,
+      "minimum_gold_companies": 10,
+      "score_independent_of_company_count": true,
+      "direct_count": 0,
+      "role_coverage": [],
+      "tier_counts": {
+        "direct": 0,
+        "value_chain": 0,
+        "industry_watch": 0
+      },
+      "category_count": 0,
+      "candidate_category_count": 0,
+      "ontology_diagnostics": {
+        "seed_path": "ontology_seed.json",
+        "enrichment_paths": [
+          "ontology_enrichment.json",
+          "ontology_humanoid_enrichment.json",
+          "ontology_brand_enrichment.json",
+          "ontology_culture_enrichment.json"
+        ],
+        "minimum_gold_companies": 3,
+        "matched_terms": [
+          {
+            "term": "음식",
+            "observation_status": "observed_representative",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          },
+          {
+            "term": "습관",
+            "observation_status": "observed_related_query",
+            "ontology_status": "ontology_incomplete",
+            "ontology_company_count": 0,
+            "lookup_match": null
+          }
+        ],
+        "padding_forbidden": true,
+        "ranking_effect": "none"
+      },
+      "reason": "fewer_than_ten_evidence_backed_companies",
+      "role_category_counts": {}
+    },
+    "rank": 21,
+    "observed_rank": 21,
+    "home_rank": null,
+    "rising_rank": null,
+    "classification": "맥락 확인",
+    "persistence_rank": 8,
+    "momentum_rank": 21,
+    "main_rank": null,
+    "keyword_company_links": [],
+    "keyword_company_link_coverage": {
+      "policy_version": "public-keyword-company-link-coverage-v1",
+      "status": "incomplete",
+      "ready": false,
+      "keyword_count": 1,
+      "company_count": 0,
+      "valid_link_count": 0,
+      "linked_keyword_count": 0,
+      "linked_company_count": 0,
+      "unlinked_keywords": [
+        "습관"
+      ],
+      "unlinked_companies": [],
+      "matched_keyword_mismatches": [],
+      "invalid_link_indexes": [],
+      "duplicate_pairs": [],
+      "ranking_effect": "none"
+    },
+    "linked_keyword_count": 0,
+    "linked_company_count": 0,
+    "keyword_company_link_status": "enrichment_pending",
+    "unlinked_related_keywords": [
+      "습관"
+    ],
+    "unlinked_companies": [],
+    "home_context_status": "review_required",
+    "home_context_reason": "not_main_lane",
+    "home_eligible": false,
+    "company_card_status": "not_applicable",
+    "company_card_reason": "company_linking_not_allowed_for_lane_or_context",
+    "company_status": "not_applicable",
+    "frontend_readiness_status": "enrichment_pending",
+    "frontend_readiness_missing": [
+      "related_keywords_exactly_five",
+      "related_keywords_linked_to_companies_at_least_two",
+      "evidence_backed_listed_companies_at_least_ten"
+    ],
+    "frontend_keyword_count": 1,
+    "frontend_company_count": 0,
+    "frontend_company_role_category_count": 0,
+    "publication_rank": null,
+    "attention_change": {
+      "1w": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "1m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "previous_equal_period_score"
+      },
+      "3m": {
+        "status": "unavailable",
+        "percent": null,
+        "basis": "insufficient_90_day_observed_history"
+      }
+    },
+    "trend_story": {
+      "schema_version": "trend-story-v1",
+      "status": "observed_context_only",
+      "origin": {
+        "observed_term": "음식",
+        "first_observed_at": "2026-08-12T13:00:00+00:00",
+        "trigger_title": "",
+        "trigger_type": "",
+        "why_now": "",
+        "evidence_urls": [],
+        "assertion": "observed_trigger_or_context_not_causal_origin"
+      },
+      "relationship_graph": {
+        "interpretation": "observed_context_graph_not_causal_lineage",
+        "nodes": [
+          {
+            "id": "trend:root",
+            "label": "음식",
+            "node_type": "observed_trend_expression",
+            "source": "x_google_observation"
+          },
+          {
+            "id": "keyword:1",
+            "label": "습관",
+            "node_type": "observed_related_expression",
+            "source": "x_google_observation"
+          }
+        ],
+        "edges": [
+          {
+            "from": "trend:root",
+            "to": "keyword:1",
+            "relation_type": "source_related_query",
+            "relation_label": "동일 관측 맥락",
+            "evidence_urls": [],
+            "causality": "not_inferred"
+          }
+        ]
+      },
+      "diffusion": {
+        "lifecycle": "rising",
+        "trend_stage": {
+          "key": "spreading",
+          "label": "확산",
+          "index": 2
+        },
+        "phase_label": "확산",
+        "stage_index": 2,
+        "progress_percent": 62,
+        "observed_day_label": "관측 4일차",
+        "observed_hours": 21,
+        "caption": "이전 관측 구간보다 관심이 커지는 흐름입니다.",
+        "attention_lift": {
+          "status": "normalized_signal",
+          "metric": "source_rank_velocity_index",
+          "value": 90.56,
+          "unit": "points",
+          "label": "관심 속도 지표 +90.6p"
+        },
+        "attention_windows": [
+          {
+            "key": "1w",
+            "label": "1주",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "1m",
+            "label": "1개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "previous_equal_period_score",
+            "is_absolute_mention_count": false
+          },
+          {
+            "key": "3m",
+            "label": "3개월",
+            "metric": "normalized_attention_index_change",
+            "status": "unavailable",
+            "percent": null,
+            "basis": "insufficient_90_day_observed_history",
+            "is_absolute_mention_count": false
+          }
+        ],
+        "channels": [
+          {
+            "source": "google_trends",
+            "label": "Google Trends",
+            "latest_rank": 12,
+            "rank_change": 19,
+            "movement_label": "직전 관측 대비 순위 +19",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": true,
+            "affects_multisource_home_rank": false
+          },
+          {
+            "source": "naver",
+            "label": "NAVER 검색·뉴스·블로그",
+            "latest_rank": null,
+            "rank_change": null,
+            "movement_label": "직전 비교 자료 없음",
+            "metric": "source_rank_change",
+            "affects_canonical_observed_rank": false,
+            "affects_multisource_home_rank": false
+          }
+        ],
+        "ranking_input_policy": "home-feed-selection-v2-x-google-only"
+      }
+    },
+    "frontend_projection": {
+      "trend_name": "음식",
+      "trend_category": "음식·식품",
+      "trend_core": "음식",
+      "observed_day_label": "관측 4일차",
+      "phase_label": "확산",
+      "stage_index": 2,
+      "progress_percent": 62,
+      "attention_lift": {
+        "status": "normalized_signal",
+        "metric": "source_rank_velocity_index",
+        "value": 90.56,
+        "unit": "points",
+        "label": "관심 속도 지표 +90.6p"
+      },
+      "attention_windows": [
+        {
+          "key": "1w",
+          "label": "1주",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "1m",
+          "label": "1개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "previous_equal_period_score",
+          "is_absolute_mention_count": false
+        },
+        {
+          "key": "3m",
+          "label": "3개월",
+          "metric": "normalized_attention_index_change",
+          "status": "unavailable",
+          "percent": null,
+          "basis": "insufficient_90_day_observed_history",
+          "is_absolute_mention_count": false
+        }
+      ],
+      "current_rank": 21,
+      "caption": "이전 관측 구간보다 관심이 커지는 흐름입니다.",
+      "related_keyword_count": 1,
+      "company_grouping": "company_role_category",
+      "is_mock": false
+    },
+    "ranking_availability_status": "mature_combined",
+    "semantic_adjudication_status": "not_eligible"
+  }
+}
