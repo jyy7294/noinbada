@@ -342,7 +342,7 @@ REFERENCE_DETAILS = {
     },
     "페르세우스 유성우": {
         "keyword_key": "페르세우스 유성우",
-        "company_key": "천체관측장비",
+        "company_key": "유성우천체촬영",
         "definition": "페르세우스자리 방향에서 다수의 유성이 관측되는 계절 천문 이벤트입니다.",
         "why_now": "X와 Google 대한민국 관측에서 극대기·관측 시각·촬영 장비 관심이 함께 포착됐습니다.",
         "evidence_url": "https://nij.nikon.com/cms/sp/p1000_astrophotography/",
@@ -500,7 +500,7 @@ PRESENTATION_COMPANY_SUPPLEMENTS = {
     "개기일식": (
         ("teledyne", "raw_materials_components", "value_chain", "천체 촬영 카메라에 쓰이는 과학용 이미지 센서·검출기 공급망과 연결됩니다.", ("일식 촬영",)),
         ("hamamatsu", "raw_materials_components", "value_chain", "태양·천체 관측 장비의 광검출 센서 공급망과 연결됩니다.", ("태양 필터",)),
-        ("hoya", "raw_materials_components", "industry_watch", "관측용 광학유리와 필터 소재 산업의 비교 기업입니다.", ("일식 안경", "태양 필터")),
+        ("hoya", "raw_materials_components", "industry_watch", "관측용 광학유리와 필터 소재 산업의 비교 기업입니다.", ("일식 안경", "태양 필터", "천체망원경")),
         ("gopro", "brand_marketing", "industry_watch", "야외 일식 촬영과 타임랩스 수요에 노출되는 액션카메라 기업입니다.", ("일식 촬영",)),
     ),
     "페르세우스 유성우": (
@@ -529,7 +529,7 @@ PRESENTATION_COMPANY_SUPPLEMENTS = {
         ("amazon", "platform_service", "industry_watch", "스트리밍 스포츠 콘텐츠 시장의 비교 플랫폼입니다.", ("경기일정",)),
         ("tmobile", "brand_marketing", "value_chain", "MLB 팬 대상 통신·브랜드 마케팅 생태계와 연결됩니다.", ("MLB",)),
         ("nike", "brand_marketing", "industry_watch", "프로야구 선수·팬의 스포츠 의류와 용품 소비에 노출됩니다.", ("브레이브스",)),
-        ("sportradar", "platform_service", "value_chain", "프로야구 경기 데이터와 미디어 기술을 제공합니다.", ("선발투수", "경기일정")),
+        ("sportradar", "platform_service", "value_chain", "프로야구 경기 데이터와 미디어 기술을 제공합니다.", ("메츠", "선발투수", "경기일정")),
         ("genius", "platform_service", "value_chain", "스포츠 데이터와 팬 참여 기술 수요에 연결됩니다.", ("선발투수",)),
         ("ea", "content_production", "industry_watch", "프로야구 스포츠 게임·디지털 콘텐츠 시장과 연결됩니다.", ("MLB",)),
     ),
@@ -539,7 +539,7 @@ PRESENTATION_COMPANY_SUPPLEMENTS = {
         ("cocacola", "brand_marketing", "industry_watch", "글로벌 축구 경기의 음료·스포츠 마케팅 수요에 노출됩니다.", ("맨유",)),
         ("ea", "content_production", "value_chain", "축구 구단과 선수를 활용한 스포츠 게임 콘텐츠를 제작합니다.", ("맨유", "리즈")),
         ("fox", "content_production", "industry_watch", "글로벌 축구 중계·스포츠 방송 시장과 연결됩니다.", ("경기일정",)),
-        ("genius", "platform_service", "value_chain", "축구 경기 데이터와 팬 참여 솔루션을 제공합니다.", ("친선경기",)),
+        ("genius", "platform_service", "value_chain", "축구 경기 데이터와 팬 참여 솔루션을 제공합니다.", ("프리시즌", "친선경기")),
         ("sportradar", "platform_service", "value_chain", "축구 경기 일정·데이터·미디어 기술을 제공합니다.", ("경기일정",)),
     ),
     "오디세이 영화": (
@@ -556,7 +556,7 @@ PRESENTATION_COMPANY_SUPPLEMENTS = {
         ("cisco", "platform_service", "value_chain", "경기장 네트워크와 스포츠 팬 연결 기술을 제공합니다.", ("레알",)),
         ("adobe", "platform_service", "industry_watch", "구단·스폰서의 디지털 콘텐츠 제작과 팬 마케팅에 연결됩니다.", ("레알",)),
         ("ea", "content_production", "value_chain", "축구 구단과 선수를 활용한 스포츠 게임 콘텐츠를 제작합니다.", ("레알",)),
-        ("sportradar", "platform_service", "value_chain", "축구 경기 데이터와 미디어 기술을 제공합니다.", ("경기일정",)),
+        ("sportradar", "platform_service", "value_chain", "축구 경기 데이터와 미디어 기술을 제공합니다.", ("데포르티보", "경기일정")),
         ("genius", "platform_service", "value_chain", "축구 데이터와 팬 참여 솔루션을 제공합니다.", ("축구중계",)),
         ("cocacola", "brand_marketing", "industry_watch", "글로벌 축구 경기의 음료·스포츠 마케팅 수요에 연결됩니다.", ("친선경기",)),
         ("fox", "content_production", "industry_watch", "국제 축구 경기의 방송·중계 콘텐츠 시장과 연결됩니다.", ("축구중계",)),

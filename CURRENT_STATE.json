@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-15T03:53:32.7198045+00:00",
+    "updated_at":  "2026-08-15T04:48:56.0399981+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,50 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "9b60e262353fff671c2dfad98ff24c82549bc0c6",
+                       "base_remote_main_sha":  "e26888184599882efd36814121cb928aa6eb22b9",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
+                                             "docs/MENTOR_FEEDBACK_ACTION_MAP.md",
                                              "frontend/index.html",
-                                             "tests/test_frontend_mvp_contract.py"
+                                             "frontend/trend-archive.json",
+                                             "frontend/trendzip-data.js",
+                                             "scripts/build-trend-archive.py",
+                                             "src/trzip/archive_feed.py",
+                                             "src/trzip/editorial_review.py",
+                                             "src/trzip/presentation_feed.py",
+                                             "src/trzip/publication_pipeline.py",
+                                             "src/trzip/result_quality.py",
+                                             "tests/test_archive_feed.py",
+                                             "tests/test_frontend_mvp_contract.py",
+                                             "tests/test_presentation_feed.py",
+                                             "tests/test_publication_pipeline.py",
+                                             "tests/test_result_quality.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "6ae3bfdf01042dced9bd8c15456dfe6a81932da39b5404f318b1f01f13de6ac7",
-                                                    "tests/test_frontend_mvp_contract.py":  "e94620069679f717a05c34adb7143f72775e563894efd9d298af92a44627b5d5"
+                                                    "docs/MENTOR_FEEDBACK_ACTION_MAP.md":  "cdc35d8f6a58966d1e671c8e800f04193e94386ff90f96ffc92e8651593f85e8",
+                                                    "frontend/index.html":  "426cad41ba285add864eb605fe271b2cc8b0d47b27d0eb8eda375c47bbf982c7",
+                                                    "frontend/trend-archive.json":  "35831264331f254f83487fc7001a305679adb6d289a526e85dfabad6c5cda4f5",
+                                                    "frontend/trendzip-data.js":  "a66934351a0ae4d8bf6f5c35e9dd28765d8dfb0cf4cdd327c67c75b209f71cf7",
+                                                    "scripts/build-trend-archive.py":  "6ec7d027b837724d5a2a617b155f4e6f88639cafed1584424cf1427e4e68bb6f",
+                                                    "src/trzip/archive_feed.py":  "788da9408fd0b311d503a07828e2a2643004a477f85e80956ded701ad70c0d04",
+                                                    "src/trzip/editorial_review.py":  "0271e4e7e60bdc931467f296b7b6528cf4ccd4069885dd1ca4830dde578320f9",
+                                                    "src/trzip/presentation_feed.py":  "7583e0d7d49d1ab32d4b136aa35f33cf8d7e6e44209cb5181cf2257e84f72986",
+                                                    "src/trzip/publication_pipeline.py":  "8e5907841e4fef20f655fc9f200428f33ed8911f7f550a9d4c7f187aee957d2b",
+                                                    "src/trzip/result_quality.py":  "77a84f68bc11b519cd520be366ae6f2fa44f5aaafb8b79eab59d9a1d2447cb60",
+                                                    "tests/test_archive_feed.py":  "890fdedbe32ad94e0d141d24f2343b165109b083ccf95db29ebf56f5920a4483",
+                                                    "tests/test_frontend_mvp_contract.py":  "a216e5f3529c440967cdedbf3bd3f12fd266ce3d6e84331f131ca402b8c5a876",
+                                                    "tests/test_presentation_feed.py":  "1a4c61429b1342b50bf1a59ab3c8e22e5ab707505926282fcad10f0735f1ee40",
+                                                    "tests/test_publication_pipeline.py":  "9d1334222b0b7cfba3b89f1c669c171552efc6ef87bc23f55e6273144fe518eb",
+                                                    "tests/test_result_quality.py":  "9c8bde30e965750d6fcfb0616f254a1e370c48b55528415974dd89159e0aa747"
                                                 },
-                       "commit_message":  "관심 흐름 그래프와 고해상도 로고 개선",
+                       "commit_message":  "feat: harden trend intelligence and reviewed archive",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  376
+                                      "count":  391
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,22 +73,25 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "TRZIP 발표용 프런트의 관심 흐름 시각화와 기업 로고 품질을 완성한다",
+                    "objective":  "멘토 피드백을 반영한 안전한 트렌드 탐색, 사용자 이모지 밈트폴리오, 검수형 과거 트렌드 아카이브를 배포 가능한 상태로 완성한다.",
                     "completed":  [
-                                      "단일 기간별 관심 흐름 그래프",
-                                      "Top10 및 데모 밈트폴리오 기업 로고 전수 매핑",
-                                      "기업 설명과 트렌드 연결 이유 분리",
-                                      "KST 시계와 발행 대비 순위 변화 표기"
+                                      "검수형 50건 아카이브와 비순위 계약 추가",
+                                      "트렌드-기업 연결 전수 검증과 유성우 전용 관계 수정",
+                                      "사용자 이모지 밈트폴리오 및 금융 안전 UX 반영",
+                                      "선정 기준 고지와 단일 관심 흐름 화면 구현"
                                   ],
                     "next_actions":  [
-                                         "Vercel 미리보기 검증 및 운영 승격"
+                                         "다음 정상 정각 수집의 X 30개와 Google 전체 원장 적재 확인",
+                                         "다음 06:00 KST 일일 publication에서 v3 계약 원격 승격 확인",
+                                         "S# 실연동 전 고객 수요 및 MAU 실험 설계"
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-                                              "관심 흐름은 표시용 결정론 보강값이며 순위 입력이 아님",
-                                              "첫 기준 발행본은 순위 변화가 모두 NEW"
+                                              "관심 흐름과 시장 지표 일부는 표시용 결정론 보강값이며 실측 금융 시계열이 아니다",
+                                              "자동 수집은 11:00 KST 이후 공백이 있어 다음 정각 실행을 별도 확인해야 한다",
+                                              "과거 아카이브는 재구성 검수 데이터로 라이브 순위와 분리된다"
                                           ]
                 },
     "runtime_contract":  {

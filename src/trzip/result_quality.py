@@ -861,15 +861,58 @@ def _evaluate_canonical_frontend_result(intelligence: dict) -> dict:
                 ):
                     item_failures.append(f"market_snapshot_incomplete:{company_name}")
         keyword_company_links = list(item.get("keyword_company_links") or [])
-        linked_keywords = {
-            " ".join(str(link.get("keyword") or "").casefold().split())
-            for link in keyword_company_links
-            if str(link.get("keyword") or "").strip()
-            and str(link.get("company") or "").strip()
-            and str(link.get("connection_explanation") or "").strip()
-            and list(link.get("evidence_urls") or [])
+        company_by_name = {
+            str(company.get("company") or "").strip(): company
+            for company in companies
+            if str(company.get("company") or "").strip()
         }
-        if len(linked_keywords) < 2:
+        linked_keywords: set[str] = set()
+        linked_companies: set[str] = set()
+        link_pairs: set[tuple[str, str]] = set()
+        invalid_link = False
+        for link in keyword_company_links:
+            keyword = " ".join(str(link.get("keyword") or "").casefold().split())
+            company_name = str(link.get("company") or "").strip()
+            evidence_urls = list(link.get("evidence_urls") or [])
+            pair = (keyword, company_name)
+            company = company_by_name.get(company_name)
+            valid_link = bool(
+                keyword in normalized_keyword_texts
+                and company
+                and str(link.get("connection_explanation") or "").strip()
+                and evidence_urls
+                and all(_valid_public_url(str(url)) for url in evidence_urls)
+                and pair not in link_pairs
+            )
+            if presentation_display_contract and company:
+                valid_link = bool(
+                    valid_link
+                    and link.get("stock_code") == company.get("stock_code")
+                    and link.get("company_role_category")
+                    == company.get("company_role_category")
+                    and link.get("company_role_label")
+                    == company.get("company_role_label")
+                )
+            if not valid_link:
+                invalid_link = True
+                continue
+            link_pairs.add(pair)
+            linked_keywords.add(keyword)
+            linked_companies.add(company_name)
+        if invalid_link:
+            item_failures.append("invalid_keyword_company_link")
+        if presentation_display_contract:
+            if linked_keywords != normalized_keyword_texts:
+                item_failures.append(
+                    "keyword_company_keyword_coverage:"
+                    f"{len(linked_keywords)}/{len(normalized_keyword_texts)}"
+                )
+            if linked_companies != set(company_by_name):
+                item_failures.append(
+                    "keyword_company_company_coverage:"
+                    f"{len(linked_companies)}/{len(company_by_name)}"
+                )
+        elif len(linked_keywords) < 2:
             item_failures.append(f"keyword_company_link_count:{len(linked_keywords)}")
         if item.get("frontend_readiness_status") != "ready":
             item_failures.append("frontend_enrichment_pending")

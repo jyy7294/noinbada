@@ -23,6 +23,7 @@ def test_frontend_has_no_demo_or_export_ui_copy() -> None:
         "연결 중",
         "데이터 확인 중",
         "로딩 중",
+        "실제 측정 이력이 아니며",
     )
     for text in forbidden:
         assert text not in INDEX
@@ -116,9 +117,13 @@ def test_known_company_logos_prefer_verified_official_assets() -> None:
 
 
 def test_interest_chart_is_one_combined_keyword_aware_curve() -> None:
-    assert "언급량 추이 · 관심지수" in INDEX
+    assert "관심 흐름" in INDEX
+    assert "언급량 추이 · 관심지수" not in INDEX
     assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
     assert "const count = [7, 11, 13][rangeIndex]" in INDEX
+    assert "const rangeKey = ['1w', '1m', '3m'][rangeIndex]" in INDEX
+    assert "publishedWindow.combined" in INDEX
+    assert "pattern: 'published_series'" in INDEX
     assert "const keywords = Array.isArray(trend && trend.tags)" in INDEX
     assert "const signalText = [name, category, ...keywords].join(' ')" in INDEX
     assert "const eventRamp = /개기일식|유성우|말복|불꽃축제|메츠|맨유|데포르티보|오디세이|스포츠|영화|행사/.test(signalText)" in INDEX
@@ -137,14 +142,14 @@ def test_interest_chart_is_one_combined_keyword_aware_curve() -> None:
     assert 'data-interest-line="1"' in INDEX
     assert 'data-interest-area="1"' in INDEX
     assert 'aria-labelledby="interest-chart-title interest-chart-disclosure"' in INDEX
-    assert "표시용 관심 흐름 · 실제 측정 이력이 아니며 순위 산정에 반영되지 않아요." in INDEX
+    assert "관심 흐름은 기간별 비교를 위한 정규화 지수입니다." in INDEX
     assert "patchInterestChart()" in INDEX
     assert "sourceSignals" in INDEX
     assert "sourceLabels.length ? sourceLabels : ['X']" not in INDEX
     assert "출처 미확인" in INDEX
     assert "displayOnly: true" in INDEX
     assert "rankingEffect: 'none'" in INDEX
-    chart_surface = INDEX[INDEX.index("언급량 추이 · 관심지수"): INDEX.index("함께 언급된 키워드")]
+    chart_surface = INDEX[INDEX.index("관심 흐름"): INDEX.index("함께 언급된 키워드")]
     assert "chartPanels" not in chart_surface
     assert "전체 채널" not in chart_surface
     assert "채널 추가하기" not in chart_surface
@@ -216,6 +221,10 @@ def test_popular_portfolios_keep_the_approved_community_seed_examples() -> None:
     for company in ("원익", "리브스메드", "두산", "바이넥스", "한국콜마", "오리온", "CJ제일제당", "대한제분"):
         assert company in INDEX
     assert "dataMode: 'seed_portfolio'" in INDEX
+    assert "수익률순" not in INDEX
+    assert "내 포트 수익률" not in INDEX
+    assert "등락순" in INDEX
+    assert "구성 평균 등락" in INDEX
 
 
 def test_maker_and_saved_portfolios_use_current_trends_and_companies() -> None:
@@ -267,10 +276,45 @@ def test_list_view_uses_previous_publication_rank_movement_not_weekly_percent() 
     assert "최근 1주" not in list_renderer
 
 
-def test_prototype_debug_navigation_is_hidden_without_explicit_debug_query() -> None:
-    assert "debugNavEnabled = new URLSearchParams(window.location.search).get('debug') === '1'" in INDEX
-    assert "if (!debugNavEnabled)" in INDEX
-    assert "if (nav) nav.remove();" in INDEX
+def test_production_has_one_phone_screen_without_public_debug_navigation() -> None:
+    assert '<html lang="ko">' in INDEX
+    assert "#proto-nav" not in INDEX
+    assert "debugNavEnabled" not in INDEX
+    assert "new URLSearchParams(window.location.search).get('debug')" not in INDEX
+    assert "setInterval(build, 400)" not in INDEX
+    assert "window.__singleScreen" in INDEX
+
+
+def test_reviewed_archive_is_loaded_separately_from_live_ranking() -> None:
+    for token in (
+        "ARCHIVE_URL = './trend-archive.json'",
+        "validatedArchive(payload)",
+        "async function loadArchive()",
+        "data_mode !== 'reconstructed_reference'",
+        "ranking_eligible !== false",
+        "ranking_effect !== 'none'",
+    ):
+        assert token in DATA
+    assert 'data-archive-open="1"' in INDEX
+    assert "openArchive = async () =>" in INDEX
+    assert "검수된 과거 트렌드" in INDEX
+    assert "실시간 순위에는 반영하지 않습니다." in INDEX
+    assert "기업 연결 맥락 보기" in INDEX
+    assert "data-archive-case" in INDEX
+    assert "순위" not in INDEX[INDEX.index("openArchive = async () =>"):INDEX.index("  setOwnerMode(on)")].replace("실시간 순위에는 반영하지 않습니다.", "")
+
+
+def test_selection_disclosure_and_portfolio_safety_rules_are_visible_and_enforced() -> None:
+    assert "openSelectionGuide" in INDEX
+    assert "트렌드 선정 기준" in INDEX
+    assert "정치·범죄·재난·사생활·혐오" in INDEX
+    assert "관측 강도·교차 확산·지속성" in INDEX
+    assert "validatePortfolioContent(input = {})" in DATA
+    assert "UNSAFE_PORTFOLIO_TEXT" in DATA
+    assert "정치·범죄·혐오·수익 보장 표현은 공개할 수 없습니다." in DATA
+    assert "validatePortfolioContent(input);" in DATA
+    assert "portfolio_create_blocked" in INDEX
+    assert "deletePortfolio(id)" in DATA
 
 
 def test_trend_selector_uses_consistent_vector_images_instead_of_unicode_emoji() -> None:

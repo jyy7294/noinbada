@@ -130,12 +130,15 @@ def _trend(rank: int) -> dict:
         },
         "keyword_company_links": [
             {
-                "keyword": f"키워드 {index}",
+                "keyword": f"키워드 {index % 5}",
                 "company": f"기업{index + 1}",
+                "stock_code": f"00000{index + 1}",
+                "company_role_category": _company(index + 1)["company_role_category"],
+                "company_role_label": _company(index + 1)["company_role_label"],
                 "connection_explanation": "키워드와 기업의 확인된 역할 연결입니다.",
                 "evidence_urls": [f"https://example.com/{index + 1}"],
             }
-            for index in range(2)
+            for index in range(10)
         ],
     }
 
@@ -169,6 +172,34 @@ def test_presentation_feed_is_counted_as_the_actual_frontend_surface():
     assert result["presentation_count"] == 10
     assert result["presentation_content_ready"] is True
     assert result["home_content_ready"] is True
+
+
+@pytest.mark.parametrize("coverage", ["keyword", "company"])
+def test_presentation_quality_rejects_incomplete_keyword_company_coverage(coverage):
+    feed = build_presentation_feed({"unified_ranking": []})
+    item = feed["items"][0]
+    field = "keyword" if coverage == "keyword" else "company"
+    target = (
+        item["keywords"][0]["text"]
+        if coverage == "keyword"
+        else item["companies"][-1]["company"]
+    )
+    item["keyword_company_links"] = [
+        link for link in item["keyword_company_links"] if link[field] != target
+    ]
+
+    result = evaluate_frontend_result({
+        "home_feed": {"status": "empty", "groups": []},
+        "presentation_feed": feed,
+    })
+
+    assert result["passed"] is False
+    expected = (
+        "cover every public keyword"
+        if coverage == "keyword"
+        else "cover every public company"
+    )
+    assert any(expected in failure for failure in result["failures"])
 
 
 def test_presentation_quality_rejects_a_missing_logo_without_hiding_canonical_state():

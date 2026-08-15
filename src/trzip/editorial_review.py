@@ -62,7 +62,7 @@ KEYWORDS = {
     "아이폰": ("아이폰 신제품", "아이폰 출시일", "아이폰 가격", "아이폰 사전예약", "아이폰 카메라", "아이폰 디스플레이", "아이폰 반도체", "아이폰 부품", "아이폰 판매량", "아이폰 통신사", "아이폰 케이스", "iOS", "Apple 공급망", "Foxconn 아이폰", "TSMC 아이폰"),
     "검은사막": ("검은사막 업데이트", "검은사막 신규 클래스", "검은사막 이벤트", "검은사막 콘솔", "검은사막 모바일", "검은사막 PC", "검은사막 PS5", "검은사막 Xbox", "펄어비스", "검은사막 스팀", "검은사막 이용자", "검은사막 게임패스", "검은사막 아이템", "검은사막 패치", "검은사막 굿즈"),
     "smr": ("소형모듈원전", "뉴스케일파워", "두산에너빌리티 SMR", "SMR 주기기", "SMR 원자로 모듈", "SMR 소재", "SMR 설계", "SMR 공급망", "SMR 건설", "SMR 인허가", "SMR 수출", "SMR 기자재", "차세대 원전", "원전 파운드리", "SMR 투자"),
-    "불꽃축제": ("불꽃축제 일정", "불꽃축제 장소", "불꽃축제 명당", "불꽃축제 교통", "불꽃축제 티켓", "불꽃축제 숙박", "불꽃축제 관광", "불꽃축제 외식", "불꽃축제 편의점", "불꽃축제 사진", "불꽃축제 영상", "불꽃축제 SNS", "불꽃축제 굿즈", "불꽃축제 협찬", "불꽃축제 주최사"),
+    "불꽃축제": ("불꽃축제 일정", "불꽃축제 장소", "불꽃축제 사진", "불꽃축제 교통", "불꽃축제 티켓", "불꽃축제 명당", "불꽃축제 숙박", "불꽃축제 관광", "불꽃축제 외식", "불꽃축제 편의점", "불꽃축제 영상", "불꽃축제 SNS", "불꽃축제 굿즈", "불꽃축제 협찬", "불꽃축제 주최사"),
     "데이즈드": ("데이즈드 코리아", "데이즈드 화보", "데이즈드 커버", "데이즈드 패션", "데이즈드 뷰티", "데이즈드 모델", "데이즈드 인터뷰", "패션 매거진", "셀럽 화보", "패션 브랜드", "뷰티 브랜드", "메이크업", "향수", "광고 캠페인", "브랜드 협업"),
     "지스타": ("지스타 일정", "지스타 참가사", "지스타 신작", "지스타 부스", "지스타 티켓", "지스타 부산", "지스타 게임 시연", "지스타 e스포츠", "지스타 스트리머", "지스타 굿즈", "지스타 코스프레", "지스타 사전예약", "지스타 게임사", "지스타 유튜브", "지스타 SNS"),
     "티빙": ("티빙 신작", "티빙 오리지널", "티빙 드라마", "티빙 예능", "티빙 스포츠 중계", "티빙 구독료", "티빙 이용자", "티빙 광고요금제", "티빙 콘텐츠", "티빙 출연진", "티빙 시청률", "티빙 다시보기", "티빙 OTT 비교", "티빙 SNS", "티빙 후기"),
@@ -98,6 +98,50 @@ VERIFIED_COMPANIES = {
             "relation_tier": "adjacent", "reason": "Nikon 공식 천체촬영 가이드가 태양·달·행성 관측 촬영 장비와 방법을 설명",
             "evidence_url": "https://nij.nikon.com/cms/sp/p1000_astrophotography/",
             "evidence_owner": "Nikon", "evidence_type": "official_astrophotography_guide",
+        },
+        {
+            "company": "Ricoh", "ticker": "7752", "market": "TSE",
+            "company_description": "PENTAX 카메라와 별 추적 촬영 장치 Astrotracer를 제공하는 일본 상장 광학기업",
+            "relation_tier": "adjacent", "reason": "Ricoh Imaging 공식 페이지가 Astrotracer 기반 천체 추적 촬영 기능을 명시",
+            "evidence_url": "https://www.ricoh-imaging.co.jp/english/products/o-gps2/feature/",
+            "evidence_owner": "Ricoh Imaging", "evidence_type": "official_astrophotography_product_page",
+        },
+        {
+            "company": "FUJIFILM Holdings", "ticker": "4901", "market": "TSE",
+            "company_description": "천체 촬영용 카메라·렌즈와 별 궤적 촬영 가이드를 제공하는 일본 상장 광학기업",
+            "relation_tier": "adjacent", "reason": "FUJIFILM 공식 가이드가 X Series 카메라와 렌즈를 이용한 별 궤적 촬영 장비·방법을 설명",
+            "evidence_url": "https://www.fujifilm-x.com/en-gb/learning-centre/how-to-start-photographing-star-trails/",
+            "evidence_owner": "FUJIFILM", "evidence_type": "official_astrophotography_guide",
+        },
+        {
+            "company": "Sony Group", "ticker": "6758", "market": "TSE",
+            "company_description": "저조도 천체 촬영이 가능한 카메라와 밤하늘 촬영 가이드를 제공하는 일본 상장 전자기업",
+            "relation_tier": "adjacent", "reason": "Sony 공식 지원 문서가 별이 가득한 밤하늘 장노출 촬영법과 장비 사용을 설명",
+            "evidence_url": "https://www.sony.com/electronics/support/compact-cameras-dsc-t-series/dsc-t110/articles/00223374",
+            "evidence_owner": "Sony", "evidence_type": "official_astrophotography_guide",
+        },
+        {
+            "company": "Adobe", "ticker": "ADBE", "market": "NASDAQ",
+            "company_description": "천체 사진 보정·합성 워크플로를 제공하는 미국 상장 소프트웨어기업",
+            "relation_tier": "adjacent", "reason": "Adobe 공식 가이드가 천체 사진 촬영과 후처리 워크플로를 별도 분야로 안내",
+            "evidence_url": "https://www.adobe.com/creativecloud/photography/type/astrophotography.html",
+            "evidence_owner": "Adobe", "evidence_type": "official_astrophotography_workflow",
+        },
+    ),
+    "유성우천체촬영": (
+        {
+            "company": "Canon", "ticker": "7751", "market": "TSE",
+            "company_description": "밤하늘·천체 촬영용 카메라와 렌즈, 촬영 가이드를 제공하는 일본 상장 광학기업",
+            "relation_tier": "adjacent", "reason": "Canon 공식 천체사진 가이드가 밤하늘 촬영용 카메라·렌즈·삼각대와 설정을 안내",
+            "evidence_url": "https://www.canon.com.au/get-inspired/best-astrophotography-camera-gear-and-settings",
+            "evidence_owner": "Canon Australia", "evidence_type": "official_astrophotography_guide",
+        },
+        {
+            "company": "Nikon", "ticker": "7731", "market": "TSE",
+            "company_description": "유성·유성우 촬영용 카메라·렌즈와 촬영 교육 콘텐츠를 제공하는 일본 상장 광학기업",
+            "relation_tier": "direct", "reason": "Nikon 공식 가이드가 유성우 촬영 시기 확인, 광각렌즈와 장노출 설정을 직접 안내",
+            "evidence_url": "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/photographing-meteors-fireballs-and-meteor-showers",
+            "evidence_owner": "Nikon USA", "evidence_type": "official_meteor_shower_photography_guide",
         },
         {
             "company": "Ricoh", "ticker": "7752", "market": "TSE",
@@ -733,6 +777,7 @@ VERIFIED_COMPANIES = {
 
 INDUSTRY_NODES = {
     "천체관측장비": "천문관측/광학기기/천체촬영",
+    "유성우천체촬영": "천문관측/광학기기/유성우촬영",
     "커피믹스": "인스턴트커피/식품제조·유통",
     "용인반도체클러스터": "반도체팹/산업단지/전력인프라",
     "아시안 게임": "국제스포츠행사/공식후원/현장인프라",
@@ -763,6 +808,37 @@ KEYWORD_COMPANY_BRIDGES = {
         "FUJIFILM Holdings": ("일식 촬영",),
         "Sony Group": ("일식 촬영",),
         "Adobe": ("일식 촬영",),
+    },
+    "유성우천체촬영": {
+        "Canon": ("천체 촬영",),
+        "Nikon": ("유성우 극대기", "별똥별", "유성우 방향", "천체 촬영"),
+        "Ricoh": ("천체 촬영",),
+        "FUJIFILM Holdings": ("천체 촬영",),
+        "Sony Group": ("천체 촬영",),
+        "Adobe": ("천체 촬영",),
+    },
+    "말복": {
+        "CJ제일제당": ("삼계탕", "보양식", "간편식 삼계탕"),
+        "하림": ("삼계탕", "하림 삼계탕"),
+        "동원F&B": ("삼계탕", "보양식", "간편식 삼계탕"),
+        "대상": ("삼계탕", "간편식 삼계탕"),
+        "풀무원": ("삼계탕", "보양식", "간편식 삼계탕"),
+        "신세계푸드": ("삼계탕", "간편식 삼계탕"),
+    },
+    "불꽃축제": {
+        "GS리테일": ("불꽃축제 장소",),
+        "BGF리테일": ("불꽃축제 장소",),
+        "Canon": ("불꽃축제 사진",),
+        "Nikon": ("불꽃축제 사진",),
+        "Sony Group": ("불꽃축제 사진",),
+    },
+    "휴머노이드 로봇": {
+        "Tesla": ("휴머노이드", "로봇"),
+        "NVIDIA": ("휴머노이드", "로봇"),
+        "현대자동차": ("휴머노이드", "로봇"),
+        "UBTECH Robotics": ("휴머노이드", "로봇"),
+        "XPeng": ("휴머노이드", "로봇"),
+        "레인보우로보틱스": ("휴머노이드", "로봇"),
     },
 }
 
@@ -879,8 +955,8 @@ def _cache_key(topic: str, cache: dict) -> str | None:
 
 COMPANY_CACHE_ALIASES = {
     "개기일식": "천체관측장비",
-    "유성우 시간": "천체관측장비",
-    "페르세우스 유성우": "천체관측장비",
+    "유성우 시간": "유성우천체촬영",
+    "페르세우스 유성우": "유성우천체촬영",
     "삼계탕": "말복",
 }
 

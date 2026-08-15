@@ -5,6 +5,7 @@ const STATUS_URL = `${LIVE_DATA_BASE}/status.json`;
 const METADATA_URL = `${LIVE_DATA_BASE}/metadata.json`;
 const CACHE_KEY = 'trzip:latest-intelligence:v3';
 const PORTFOLIO_KEY = 'trzip:portfolios:v1';
+const ARCHIVE_URL = './trend-archive.json';
 const FRESH_FOR_MINUTES = 90;
 const STALE_AFTER_MINUTES = 180;
 
@@ -338,6 +339,42 @@ async function fetchWithRetry(url, options = {}) {
   throw lastError || new Error('TRZIP request failed');
 }
 
+function validatedArchive(payload) {
+  if (
+    payload?.schema_version !== 'trzip-archive-feed-v1'
+    || payload?.data_mode !== 'reconstructed_reference'
+    || payload?.display_mode !== 'historical_research_archive'
+    || payload?.live_eligible !== false
+    || payload?.ranking_eligible !== false
+    || payload?.ranking_effect !== 'none'
+    || !Array.isArray(payload?.items)
+    || payload.items.length !== Number(payload.item_count)
+  ) {
+    throw new Error('지난 트렌드 자료의 데이터 계약이 올바르지 않습니다.');
+  }
+  for (const item of payload.items) {
+    if (
+      !item?.id
+      || !item?.display_name
+      || !item?.why_now
+      || !Array.isArray(item?.evidence_urls)
+      || !item.evidence_urls.some((url) => /^https?:\/\//.test(String(url)))
+      || !Array.isArray(item?.companies)
+      || item.companies.length < 1
+      || Object.hasOwn(item, 'rank')
+    ) {
+      throw new Error('지난 트렌드 항목의 필수 근거가 누락되었습니다.');
+    }
+  }
+  return payload;
+}
+
+async function loadArchive() {
+  const response = await fetchWithRetry(`${ARCHIVE_URL}?t=${Date.now()}`, { cache: 'no-store' });
+  if (!response.ok) throw new Error(`TRZIP archive ${response.status}`);
+  return validatedArchive(await response.json());
+}
+
 async function fetchManifestRankings(nonce) {
   const manifestResponse = await fetchWithRetry(`${MANIFEST_URL}?t=${nonce}`, { cache: 'no-store' });
   if (!manifestResponse.ok) throw new Error(`TRZIP manifest ${manifestResponse.status}`);
@@ -460,7 +497,25 @@ function getPortfolio(id) {
   return listPortfolios().find((portfolio) => portfolio.id === String(id)) || null;
 }
 
+const UNSAFE_PORTFOLIO_TEXT = [
+  /대통령|선거|정당|국회의원|정치인|정치\s*테마/i,
+  /살인|성범죄|사망|참사|재난|사생활|폭로|신상\s*털/i,
+  /혐오|비하|멸칭|장애인\s*비하|여성\s*혐오|남성\s*혐오/i,
+  /무조건\s*오른|급등\s*보장|수익\s*보장|매수\s*추천|리딩방|작전주|상한가\s*보장/i,
+];
+
+function validatePortfolioContent(input = {}) {
+  const text = [input.name, ...(input.keywords || [])]
+    .map((value) => String(value || '').normalize('NFKC'))
+    .join(' ');
+  if (UNSAFE_PORTFOLIO_TEXT.some((pattern) => pattern.test(text))) {
+    throw new Error('정치·범죄·혐오·수익 보장 표현은 공개할 수 없습니다.');
+  }
+  return true;
+}
+
 function savePortfolio(input) {
+  validatePortfolioContent(input);
   const portfolios = listPortfolios();
   const keywords = [...new Set((input.keywords || [])
     .map((keyword) => String(keyword).trim())
@@ -485,11 +540,24 @@ function savePortfolio(input) {
   return record;
 }
 
+function deletePortfolio(id) {
+  const target = String(id || '').trim();
+  if (!target) throw new Error('삭제할 밈트폴리오를 찾지 못했습니다.');
+  const current = listPortfolios();
+  const next = current.filter((portfolio) => portfolio.id !== target);
+  if (next.length === current.length) return false;
+  if (!writeJson(PORTFOLIO_KEY, next)) {
+    throw new Error('밈트폴리오를 삭제하지 못했습니다.');
+  }
+  return true;
+}
+
 const dataContract = Object.freeze({
   manifest: MANIFEST_URL,
   intelligence: INTELLIGENCE_URL,
   status: STATUS_URL,
   metadata: METADATA_URL,
+  archive: ARCHIVE_URL,
   cache: CACHE_KEY,
   portfolios: PORTFOLIO_KEY,
   freshForMinutes: FRESH_FOR_MINUTES,
@@ -499,9 +567,13 @@ const dataContract = Object.freeze({
 globalThis.TRZIP_DATA_API = Object.freeze({
   validatedBundle,
   loadTrends,
+  loadArchive,
+  validatedArchive,
   sortTrends,
   listPortfolios,
   getPortfolio,
   savePortfolio,
+  deletePortfolio,
+  validatePortfolioContent,
   dataContract,
 });

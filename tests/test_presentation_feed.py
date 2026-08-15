@@ -139,6 +139,83 @@ def test_presentation_company_groups_are_explicit_and_explainable():
             )
 
 
+def test_presentation_keyword_company_links_cover_every_public_keyword_and_company():
+    feed = build_presentation_feed({"unified_ranking": []})
+
+    for item in feed["items"]:
+        keyword_texts = {keyword["text"] for keyword in item["keywords"]}
+        companies = {company["company"]: company for company in item["companies"]}
+        links = item["keyword_company_links"]
+
+        assert {link["keyword"] for link in links} == keyword_texts
+        assert {link["company"] for link in links} == set(companies)
+        assert len({(link["keyword"], link["company"]) for link in links}) == len(links)
+        for link in links:
+            company = companies[link["company"]]
+            assert link["stock_code"] == company["stock_code"]
+            assert link["company_role_category"] == company["company_role_category"]
+            assert link["company_role_label"] == company["company_role_label"]
+            assert link["connection_explanation"]
+            assert link["evidence_urls"]
+            assert all(url.startswith(("http://", "https://")) for url in link["evidence_urls"])
+
+
+def test_perseus_companies_use_meteor_or_general_astrophotography_evidence_only():
+    feed = build_presentation_feed({"unified_ranking": []})
+    item = next(row for row in feed["items"] if row["display_name"] == "페르세우스 유성우")
+
+    assert {link["keyword"] for link in item["keyword_company_links"]} == {
+        "유성우 극대기", "별똥별", "유성우 방향", "천체망원경", "천체 촬영",
+    }
+    for company in item["companies"]:
+        relation_text = " ".join((
+            company["relationship_reason"],
+            " ".join(company["matched_keywords"]),
+            company["evidence_url"],
+        )).casefold()
+        assert "일식" not in relation_text
+        assert "태양 필터" not in relation_text
+        assert "eclipse" not in relation_text
+
+
+@pytest.mark.parametrize(
+    ("coverage", "message"),
+    [
+        ("keyword", "cover every public keyword"),
+        ("company", "cover every public company"),
+    ],
+)
+def test_presentation_contract_rejects_incomplete_keyword_company_coverage(
+    coverage, message,
+):
+    feed = build_presentation_feed({"unified_ranking": []})
+    item = feed["items"][0]
+    field = "keyword" if coverage == "keyword" else "company"
+    target = (
+        item["keywords"][0]["text"]
+        if coverage == "keyword"
+        else item["companies"][-1]["company"]
+    )
+    item["keyword_company_links"] = [
+        link for link in item["keyword_company_links"] if link[field] != target
+    ]
+
+    with pytest.raises(ValueError, match=message):
+        _validate_presentation_feed(feed)
+
+
+def test_presentation_contract_rejects_empty_link_evidence_and_metadata_mismatch():
+    feed = build_presentation_feed({"unified_ranking": []})
+    feed["items"][0]["keyword_company_links"][0]["evidence_urls"] = []
+    with pytest.raises(ValueError, match="public HTTP evidence"):
+        _validate_presentation_feed(feed)
+
+    feed = build_presentation_feed({"unified_ranking": []})
+    feed["items"][0]["keyword_company_links"][0]["stock_code"] = "MISMATCH"
+    with pytest.raises(ValueError, match="match company metadata"):
+        _validate_presentation_feed(feed)
+
+
 def test_known_logo_assets_use_high_resolution_images_or_initials():
     feed = build_presentation_feed({"unified_ranking": []})
     companies = {

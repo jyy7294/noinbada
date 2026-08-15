@@ -8,6 +8,7 @@ import json
 import os
 import re
 import shutil
+import sqlite3
 from dataclasses import asdict
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -310,9 +311,9 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
 
     Provider failures are recorded as data states and never block publication.
     Up to twenty current non-issue candidates receive NAVER candidate-level
-    measurements each hour. YouTube remains capped independently inside
-    ``verify_terms``. Candidates held in the review lane remain eligible, and
-    a retry of the same observation hour reuses the append-only ledger.
+    measurements each hour. YouTube is not activated by this optional path.
+    Candidates held in the review lane remain eligible, and a retry of the
+    same observation hour reuses the append-only ledger.
     """
 
     auxiliary_enabled = os.getenv("TRZIP_AUXILIARY_RESEARCH_ENABLED", "0").strip() == "1"
@@ -368,6 +369,7 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
                 path=database_path,
                 at=at,
                 naver_term_limit=len(pending_references),
+                youtube_term_limit=0,
             )
             run_status = "completed"
     except Exception as exc:  # verification must not take down the core collector
@@ -382,9 +384,16 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
         error = "provider_verification_ledger_unavailable"
     for item in intelligence.get("unified_ranking", []):
         record = latest.get(str(item.get("event_key")), {})
-        providers = record.get("providers", {})
+        stored_providers = record.get("providers", {})
+        # The append-only ledger may contain historical YouTube rows.  The
+        # active auxiliary policy is NAVER News only, so do not expose a stale
+        # provider as if this run had selected or observed it.
+        providers = {
+            "naver": stored_providers["naver"]
+        } if isinstance(stored_providers.get("naver"), dict) else {}
         item["verification_layer"] = {
             **record,
+            "providers": providers,
             "status": (
                 "disabled_by_runtime_policy"
                 if not auxiliary_enabled
@@ -418,7 +427,7 @@ def _refresh_verification_layer(intelligence: dict, database_path: Path, at: dat
             for item in intelligence.get("unified_ranking", [])
         ),
         "selection_scope": "current_non_issue_candidates_including_review_lane",
-        "providers": [] if not auxiliary_enabled else ["naver", "youtube"],
+        "providers": [] if not auxiliary_enabled else ["naver"],
         "ranking_effect": "none",
         "home_ranking_effect": "none_auxiliary_research_disabled" if not auxiliary_enabled else "none_context_only",
         "affects_collection_partial": False,
@@ -503,7 +512,7 @@ def _provider_context_record(item: dict) -> dict | None:
     providers = ((item.get("verification_layer") or {}).get("providers") or {})
     # Source-only E2E keeps the collector disabled. If an operator explicitly
     # enables it, a retained provider may supply exact-title context only.
-    for provider in ("naver", "youtube"):
+    for provider in ("naver",):
         record = providers.get(provider) or {}
         if record.get("matched") is not True or record.get("status") != "observed":
             continue
@@ -1090,16 +1099,40 @@ def _validate_presentation_feed(feed: dict) -> None:
             raise ValueError("frontend presentation trends require three or four company role groups")
         keyword_set = set(keyword_texts)
         company_set = {company["company"] for company in companies}
-        for link in item.get("keyword_company_links") or []:
+        company_by_name = {company["company"]: company for company in companies}
+        links = list(item.get("keyword_company_links") or [])
+        linked_keywords: set[str] = set()
+        linked_companies: set[str] = set()
+        link_pairs: set[tuple[str, str]] = set()
+        for link in links:
             if link.get("keyword") not in keyword_set or link.get("company") not in company_set:
                 raise ValueError("frontend keyword-company links must reference the card payload")
+            pair = (str(link["keyword"]), str(link["company"]))
+            if pair in link_pairs:
+                raise ValueError("frontend keyword-company links must be unique")
+            link_pairs.add(pair)
             if not str(link.get("connection_explanation") or "").strip():
                 raise ValueError("frontend keyword-company links require a connection explanation")
-            if not all(
+            evidence_urls = list(link.get("evidence_urls") or [])
+            if not evidence_urls or not all(
                 str(url).startswith(("http://", "https://"))
-                for url in link.get("evidence_urls") or []
+                for url in evidence_urls
             ):
                 raise ValueError("frontend keyword-company links require public HTTP evidence")
+            company = company_by_name[pair[1]]
+            if (
+                link.get("stock_code") != company.get("stock_code")
+                or link.get("company_role_category")
+                != company.get("company_role_category")
+                or link.get("company_role_label") != company.get("company_role_label")
+            ):
+                raise ValueError("frontend keyword-company links must match company metadata")
+            linked_keywords.add(pair[0])
+            linked_companies.add(pair[1])
+        if linked_keywords != keyword_set:
+            raise ValueError("frontend keyword-company links must cover every public keyword")
+        if linked_companies != company_set:
+            raise ValueError("frontend keyword-company links must cover every public company")
 
 
 def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
@@ -1417,6 +1450,135 @@ def validate_frontend_delivery(root: Path) -> dict:
             raise ValueError("Frontend company-ready trends require ten unique listed stocks")
         if (item.get("company_resolution") or {}).get("publish_status") != "published":
             raise ValueError("Company-ready trends require a published company resolution")
+
+
+def _previous_published_presentation(
+    root: Path,
+    database_path: Path,
+    *,
+    before: datetime,
+) -> dict | None:
+    """Load the prior remotely verified presentation feed without blocking a run.
+
+    The normal baseline is written only after the PowerShell publisher verifies
+    the remote commit.  A restored runtime may have an older verified live-data
+    worktree and SQLite receipt but no baseline file, so validate those exact
+    bytes and use them as a one-time bootstrap.  Any missing or inconsistent
+    proof deliberately falls back to ``None`` and therefore preserves the
+    existing all-NEW behaviour.
+    """
+
+    def earlier_than_current(value: object) -> bool:
+        try:
+            timestamp = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        except (TypeError, ValueError):
+            return False
+        return timestamp.tzinfo is not None and timestamp.astimezone(UTC) < before.astimezone(UTC)
+
+    baseline_path = root / "monitoring" / "last-remote-presentation.json"
+    try:
+        baseline = _read_json(baseline_path, {})
+        baseline_feed = baseline.get("presentation_feed") if isinstance(baseline, dict) else None
+        if (
+            isinstance(baseline_feed, dict)
+            and baseline.get("publication_id")
+            and earlier_than_current(baseline.get("observed_at"))
+        ):
+            _validate_presentation_feed(baseline_feed)
+            return baseline_feed
+    except (OSError, ValueError, json.JSONDecodeError, TypeError):
+        pass
+
+    live_latest = root.parent / "live-data" / "latest"
+    manifest_path = live_latest / "manifest.json"
+    try:
+        if not database_path.is_file() or not manifest_path.is_file():
+            return None
+        manifest_bytes = manifest_path.read_bytes()
+        manifest = json.loads(manifest_bytes.decode("utf-8"))
+        if (
+            not isinstance(manifest, dict)
+            or manifest.get("schema_version") != FRONTEND_DELIVERY_SCHEMA_VERSION
+            or manifest.get("mode") != "live"
+            or not re.fullmatch(r"pub-[a-f0-9]{32}", str(manifest.get("publication_id") or ""))
+            or not earlier_than_current(manifest.get("observed_at"))
+        ):
+            return None
+
+        required_columns = {
+            "publication_id",
+            "remote_sha",
+            "contract_json",
+            "source_gate_json",
+            "manifest_sha256",
+            "remote_manifest_blob",
+        }
+        database_uri = f"{database_path.resolve().as_uri()}?mode=ro"
+        with sqlite3.connect(database_uri, uri=True) as connection:
+            table = connection.execute(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name='publication_receipts'"
+            ).fetchone()
+            columns = {
+                row[1] for row in connection.execute("PRAGMA table_info(publication_receipts)")
+            } if table else set()
+            if not required_columns.issubset(columns):
+                return None
+            receipt = connection.execute(
+                """SELECT publication_id, remote_sha, contract_json, source_gate_json,
+                          manifest_sha256, remote_manifest_blob
+                     FROM publication_receipts WHERE observed_at=?""",
+                (manifest["observed_at"],),
+            ).fetchone()
+        if not receipt or receipt[0] != manifest["publication_id"]:
+            return None
+        remote_sha = str(receipt[1] or "").casefold()
+        remote_manifest_blob = str(receipt[5] or "").casefold()
+        if not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", remote_sha):
+            return None
+        if not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", remote_manifest_blob):
+            return None
+        if hashlib.sha256(manifest_bytes).hexdigest() != str(receipt[4] or "").casefold():
+            return None
+        algorithm = "sha1" if len(remote_manifest_blob) == 40 else "sha256"
+        blob_digest = hashlib.new(algorithm, usedforsecurity=False)
+        blob_digest.update(f"blob {len(manifest_bytes)}\0".encode("ascii"))
+        blob_digest.update(manifest_bytes)
+        if blob_digest.hexdigest() != remote_manifest_blob:
+            return None
+        contract = json.loads(receipt[2]) if receipt[2] else {}
+        source_gate = json.loads(receipt[3]) if receipt[3] else {}
+        if contract.get("passed") is not True or source_gate.get("passed") is not True:
+            return None
+
+        _validate_frontend_delivery(live_latest, manifest)
+        presentation_descriptor = (manifest.get("bundle") or {}).get("presentation") or {}
+        presentation_path = _validated_child(
+            live_latest,
+            str(presentation_descriptor.get("path") or ""),
+        )
+        presentation = _read_json(presentation_path, {})
+        identity = (
+            manifest.get("publication_id"),
+            manifest.get("generated_at"),
+            manifest.get("observed_at"),
+        )
+        if (
+            not isinstance(presentation, dict)
+            or presentation.get("mode") != "live"
+            or (
+                presentation.get("publication_id"),
+                presentation.get("generated_at"),
+                presentation.get("observed_at"),
+            ) != identity
+        ):
+            return None
+        feed = presentation.get("presentation_feed")
+        if not isinstance(feed, dict):
+            return None
+        _validate_presentation_feed(feed)
+        return feed
+    except (OSError, ValueError, json.JSONDecodeError, sqlite3.Error, TypeError):
+        return None
 
 
 def _previous_market_by_code(payload: dict) -> dict[str, dict]:
@@ -2006,13 +2168,14 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
     # enrichment pass. Some passes rebuild the live contract and intentionally
     # discard non-canonical keys, so attaching it earlier would make the final
     # publication and the frontend delivery disagree.
-    previous_remote_presentation = _read_json(
-        root / "monitoring" / "last-remote-presentation.json",
-        {},
+    previous_remote_feed = _previous_published_presentation(
+        root,
+        database_path,
+        before=at,
     )
     intelligence["presentation_feed"] = build_presentation_feed(
         intelligence,
-        previous_feed=previous_remote_presentation.get("presentation_feed"),
+        previous_feed=previous_remote_feed,
     )
     # Manual daily lists are enrichment caches only. They must never select,
     # promote, suppress, score or categorise a live trend.

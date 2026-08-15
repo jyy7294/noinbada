@@ -1,5 +1,6 @@
 import hashlib
 import json
+import sqlite3
 from datetime import UTC, datetime, timedelta
 
 import pytest
@@ -14,6 +15,7 @@ from trzip.publication_pipeline import (
     _verification_references,
     _hourly_verification_term_limit,
     _period_detail_items,
+    _previous_published_presentation,
     _prune_observations,
     _refresh_verification_layer,
     _sanitize_collection_for_public,
@@ -22,6 +24,7 @@ from trzip.publication_pipeline import (
     run,
 )
 from trzip.hourly_store import HourlyObservation
+from trzip.presentation_feed import build_presentation_feed
 
 
 @pytest.fixture(autouse=True)
@@ -92,7 +95,7 @@ def test_youtube_chart_signal_requires_exact_observed_event_alias():
     assert result["unified_ranking"][1]["youtube_chart_signal"] is None
 
 
-def test_provider_context_research_requires_title_to_contain_observed_alias():
+def test_provider_context_research_uses_only_naver_title_with_observed_alias():
     ready_candidate = {
         "event_key": "오디세이",
         "display_name": "오디세이",
@@ -101,15 +104,15 @@ def test_provider_context_research_requires_title_to_contain_observed_alias():
         "context_research": {"status": "incomplete"},
         "verification_layer": {
             "providers": {
-                "youtube": {
+                "naver": {
                     "status": "observed",
                     "matched": True,
                     "evidence": [{
-                        "item_type": "youtube_video",
-                        "title": "오디세이 공식 예고편",
-                        "url": "https://www.youtube.com/watch?v=odyssey",
+                        "item_type": "news",
+                        "title": "오디세이 공식 예고편 공개",
+                        "url": "https://news.example/odyssey",
                         "published_at": "2026-08-14T00:00:00+00:00",
-                        "publisher": "Official channel",
+                        "publisher": "Example News",
                     }],
                 }
             }
@@ -130,9 +133,146 @@ def test_provider_context_research_requires_title_to_contain_observed_alias():
 
     context = result["unified_ranking"][0]["context_research"]
     assert context["status"] == "ready"
-    assert context["trigger_title"] == "오디세이 공식 예고편"
+    assert context["trigger_title"] == "오디세이 공식 예고편 공개"
     assert context["ranking_source"] is False
     assert result["unified_ranking"][1]["context_research"]["status"] == "incomplete"
+
+
+def test_provider_context_research_ignores_historical_youtube_record():
+    candidate = {
+        "event_key": "오디세이",
+        "display_name": "오디세이",
+        "observed_representative_term": "오디세이",
+        "raw_terms": ["오디세이 영화"],
+        "context_research": {"status": "incomplete"},
+        "verification_layer": {
+            "providers": {
+                "youtube": {
+                    "status": "observed",
+                    "matched": True,
+                    "evidence": [{
+                        "item_type": "youtube_video",
+                        "title": "오디세이 공식 예고편",
+                        "url": "https://www.youtube.com/watch?v=odyssey",
+                    }],
+                }
+            }
+        },
+    }
+
+    result = _attach_provider_context_research({"unified_ranking": [candidate]})
+
+    assert result["unified_ranking"][0]["context_research"] == {"status": "incomplete"}
+
+
+def _verified_live_data_fixture(tmp_path):
+    runtime = tmp_path / "runtime"
+    publication = runtime / "publication"
+    latest = runtime / "live-data" / "latest"
+    database = runtime / "data" / "trzip-hourly.sqlite3"
+    publication.mkdir(parents=True)
+    database.parent.mkdir(parents=True)
+    publication_id = "pub-" + "a" * 32
+    observed_at = "2026-08-14T18:00:00+00:00"
+    generated_at = "2026-08-14T18:05:00+00:00"
+    feed = build_presentation_feed({"unified_ranking": []})
+    presentation_path = latest / "delivery" / publication_id / "presentation.json"
+    presentation_path.parent.mkdir(parents=True)
+    presentation_path.write_text(json.dumps({
+        "schema_version": "trzip-presentation-payload-v1",
+        "publication_id": publication_id,
+        "generated_at": generated_at,
+        "observed_at": observed_at,
+        "mode": "live",
+        "unified_ranking": [],
+        "presentation_feed": feed,
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
+    manifest = {
+        "schema_version": "trzip-frontend-delivery-v1",
+        "publication_id": publication_id,
+        "generated_at": generated_at,
+        "observed_at": observed_at,
+        "mode": "live",
+        "bundle": {
+            "presentation": {
+                "path": f"delivery/{publication_id}/presentation.json",
+            },
+        },
+    }
+    manifest_path = latest / "manifest.json"
+    manifest_bytes = json.dumps(manifest, ensure_ascii=False, indent=2).encode("utf-8")
+    manifest_path.write_bytes(manifest_bytes)
+    blob = hashlib.new("sha1", usedforsecurity=False)
+    blob.update(f"blob {len(manifest_bytes)}\0".encode("ascii"))
+    blob.update(manifest_bytes)
+    with sqlite3.connect(database) as connection:
+        connection.execute(
+            """CREATE TABLE publication_receipts (
+                   observed_at TEXT PRIMARY KEY,
+                   publication_id TEXT NOT NULL,
+                   remote_sha TEXT NOT NULL,
+                   verified_at TEXT NOT NULL,
+                   contract_json TEXT,
+                   source_gate_json TEXT,
+                   manifest_sha256 TEXT,
+                   remote_manifest_blob TEXT
+               )"""
+        )
+        connection.execute(
+            "INSERT INTO publication_receipts VALUES (?,?,?,?,?,?,?,?)",
+            (
+                observed_at,
+                publication_id,
+                "b" * 40,
+                "2026-08-14T18:06:00+00:00",
+                json.dumps({"passed": True}),
+                json.dumps({"passed": True}),
+                hashlib.sha256(manifest_bytes).hexdigest(),
+                blob.hexdigest(),
+            ),
+        )
+    return publication, database, feed
+
+
+def test_missing_rank_baseline_bootstraps_verified_live_data_feed(tmp_path, monkeypatch):
+    publication, database, previous_feed = _verified_live_data_fixture(tmp_path)
+    monkeypatch.setattr(
+        "trzip.publication_pipeline._validate_frontend_delivery",
+        lambda latest, manifest: None,
+    )
+
+    loaded = _previous_published_presentation(
+        publication,
+        database,
+        before=datetime(2026, 8, 15, 2, tzinfo=UTC),
+    )
+    current = build_presentation_feed({"unified_ranking": []}, previous_feed=loaded)
+
+    assert loaded == previous_feed
+    assert [item["rank_movement"]["label"] for item in current["items"]] == ["유지"] * 10
+
+
+def test_invalid_live_data_receipt_keeps_new_rank_fallback(tmp_path, monkeypatch):
+    publication, database, _ = _verified_live_data_fixture(tmp_path)
+    with sqlite3.connect(database) as connection:
+        connection.execute(
+            "UPDATE publication_receipts SET manifest_sha256=?",
+            ("0" * 64,),
+        )
+    monkeypatch.setattr(
+        "trzip.publication_pipeline._validate_frontend_delivery",
+        lambda latest, manifest: None,
+    )
+
+    loaded = _previous_published_presentation(
+        publication,
+        database,
+        before=datetime(2026, 8, 15, 2, tzinfo=UTC),
+    )
+    current = build_presentation_feed({"unified_ranking": []}, previous_feed=loaded)
+
+    assert loaded is None
+    assert [item["rank_movement"]["label"] for item in current["items"]] == ["NEW"] * 10
 
 
 def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
@@ -311,6 +451,7 @@ def test_hourly_verification_uses_twenty_term_capacity_and_reuses_ledger(
             path=kwargs["path"],
             at=kwargs["at"],
             credentials=ProviderCredentials(),
+            youtube_term_limit=kwargs["youtube_term_limit"],
         )
 
     monkeypatch.setattr("trzip.publication_pipeline.verify_terms", offline_verify)
@@ -321,7 +462,7 @@ def test_hourly_verification_uses_twenty_term_capacity_and_reuses_ledger(
     first = _refresh_verification_layer(intelligence, database, at)
 
     assert calls == [["event:1", "event:2", "event:3", "event:4", "event:5"]]
-    assert len(read_verification_ledger(database)) == 10
+    assert len(read_verification_ledger(database)) == 5
     assert first["verification_run"] == {
         "status": "completed",
         "requested_terms": 5,
@@ -330,7 +471,7 @@ def test_hourly_verification_uses_twenty_term_capacity_and_reuses_ledger(
         "selection_policy": "never_verified_then_oldest_verified_then_current_rank",
         "candidate_count": 5,
         "selection_scope": "current_non_issue_candidates_including_review_lane",
-        "providers": ["naver", "youtube"],
+        "providers": ["naver"],
         "ranking_effect": "none",
         "home_ranking_effect": "none_context_only",
         "affects_collection_partial": False,
@@ -346,9 +487,40 @@ def test_hourly_verification_uses_twenty_term_capacity_and_reuses_ledger(
     second = _refresh_verification_layer(first, database, at)
 
     assert calls == [["event:1", "event:2", "event:3", "event:4", "event:5"]]
-    assert len(read_verification_ledger(database)) == 10
+    assert len(read_verification_ledger(database)) == 5
     assert second["verification_run"]["status"] == "skipped_already_recorded_for_hour"
     assert second["verification_run"]["attempted_terms"] == 0
+
+
+def test_verification_layer_exposes_only_active_naver_provider(monkeypatch, tmp_path):
+    intelligence = _public_rows(1)
+    at = datetime(2026, 8, 12, 13, tzinfo=UTC)
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.verification_trend_keys_at",
+        lambda path, observed_at: {"event:1"},
+    )
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.latest_verification_by_trend",
+        lambda path: {
+            "event:1": {
+                "providers": {
+                    "naver": {"status": "observed", "matched": True},
+                    "youtube": {"status": "observed", "matched": True},
+                }
+            }
+        },
+    )
+
+    result = _refresh_verification_layer(
+        intelligence,
+        tmp_path / "runtime.sqlite3",
+        at,
+    )
+
+    layer = result["unified_ranking"][0]["verification_layer"]
+    assert list(layer["providers"]) == ["naver"]
+    assert layer["observed_platforms"] == ["naver"]
+    assert result["verification_run"]["providers"] == ["naver"]
 
 
 def test_hourly_verification_refreshes_public_ten_each_hour(
@@ -369,6 +541,7 @@ def test_hourly_verification_refreshes_public_ten_each_hour(
             path=kwargs["path"],
             at=kwargs["at"],
             credentials=ProviderCredentials(),
+            youtube_term_limit=kwargs["youtube_term_limit"],
         )
 
     monkeypatch.setattr("trzip.publication_pipeline.verify_terms", offline_verify)
@@ -479,6 +652,7 @@ def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(
             path=kwargs["path"],
             at=kwargs["at"],
             credentials=ProviderCredentials(),
+            youtube_term_limit=kwargs["youtube_term_limit"],
         )
 
     monkeypatch.setattr("trzip.publication_pipeline.verify_terms", offline_verify)
@@ -490,8 +664,8 @@ def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(
     )
 
     # The candidate pass includes review-lane candidates. Each optional
-    # provider writes its own auditable result for every candidate.
-    assert len(read_verification_ledger(database)) == 8
+    # NAVER News writes one auditable result for every candidate.
+    assert len(read_verification_ledger(database)) == 4
     assert first_payload["verification_run"]["status"] == "completed"
     assert first_payload["verification_run"]["requested_terms"] == 4
     assert first_payload["verification_run"]["ranking_effect"] == "none"
@@ -503,7 +677,7 @@ def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(
         )
     )
 
-    assert len(read_verification_ledger(database)) == 8
+    assert len(read_verification_ledger(database)) == 4
     assert second_payload["verification_run"]["status"] == "skipped_already_recorded_for_hour"
 
 
