@@ -7,6 +7,7 @@ from pathlib import Path
 
 from trzip.runtime_audit import audit_runtime
 from trzip.publication_pipeline import _write_frontend_delivery
+from trzip.presentation_feed import build_presentation_feed
 
 
 def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
@@ -254,6 +255,7 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
             "is_combined_rank": True,
         },
     }
+    intelligence["presentation_feed"] = build_presentation_feed(intelligence)
     metadata = {
         "schema_version": "trzip-live-data-v3",
         "mode": "live",
@@ -385,6 +387,48 @@ def test_runtime_audit_passes_complete_combined_runtime(tmp_path: Path) -> None:
     assert result["blockers"] == []
     assert result["metrics"]["clean_history_hours"] == 96
     assert result["metrics"]["history_stage"] == "long_horizon"
+    assert result["metrics"]["frontend_surface"] == "presentation_feed"
+    assert result["metrics"]["canonical_home_count"] == 1
+    assert result["metrics"]["presentation_count"] == 10
+    assert result["metrics"]["home_count"] == 10
+    assert result["metrics"]["company_ready_count"] == 10
+    assert result["metrics"]["presentation_ready"] is True
+    assert result["metrics"]["frontend_presentation"] == {
+        "schema_version": "trzip-presentation-feed-v3",
+        "legacy_contract": False,
+        "warnings": [],
+        "presentation_count": 10,
+        "company_ready_count": 10,
+        "presentation_ready": True,
+        "ranking_effect": "none",
+    }
+
+
+def test_runtime_audit_accepts_immutable_v2_feed_with_legacy_marker(
+    tmp_path: Path,
+) -> None:
+    _write_runtime(tmp_path)
+    intelligence_path = tmp_path / "publication" / "latest" / "intelligence.json"
+    intelligence = json.loads(intelligence_path.read_text(encoding="utf-8"))
+    feed = intelligence["presentation_feed"]
+    feed["schema_version"] = "trzip-presentation-feed-v2"
+    for item in feed["items"]:
+        for company in item["companies"]:
+            company.pop("logo_asset_source", None)
+            company.pop("logo_asset_host", None)
+            company.pop("logo_asset_verification", None)
+    intelligence_path.write_text(
+        json.dumps(intelligence, ensure_ascii=False), encoding="utf-8"
+    )
+    _refresh_frontend_delivery(tmp_path)
+
+    result = audit_runtime(tmp_path)
+
+    assert result["status"] == "pass"
+    assert result["metrics"]["frontend_presentation"]["legacy_contract"] is True
+    assert result["metrics"]["frontend_presentation"]["warnings"] == [
+        "legacy_logo_contract_v2"
+    ]
 
 
 def test_runtime_audit_accepts_24_hour_mvp_and_warns_before_48_hours(

@@ -390,6 +390,31 @@ def _audit_frontend_delivery(
         ]
         if published_keys != expected_keys:
             report.fail("frontend_rankings_order_mismatch")
+        from .result_quality import evaluate_presentation_feed_quality
+
+        presentation_feed = rankings.get("presentation_feed") or {}
+        presentation_quality = evaluate_presentation_feed_quality(presentation_feed)
+        expected_presentation_feed = intelligence.get("presentation_feed")
+        if (
+            presentation_quality.get("passed") is not True
+            or presentation_quality.get("frontend_default") is not True
+        ):
+            report.fail("frontend_presentation_contract_mismatch")
+        if (
+            isinstance(expected_presentation_feed, dict)
+            and expected_presentation_feed
+            and presentation_feed != expected_presentation_feed
+        ):
+            report.fail("frontend_presentation_projection_mismatch")
+        report.metrics["frontend_presentation"] = {
+            "schema_version": presentation_quality.get("schema_version"),
+            "legacy_contract": presentation_quality.get("legacy_contract") is True,
+            "warnings": list(presentation_quality.get("warnings") or []),
+            "presentation_count": presentation_quality.get("presentation_count", 0),
+            "company_ready_count": presentation_quality.get("company_ready_count", 0),
+            "presentation_ready": presentation_quality.get("passed") is True,
+            "ranking_effect": "none",
+        }
         expected_youtube = intelligence.get("youtube_content_discovery")
         # YouTube is no longer part of the active home-feed contract.  Audit
         # the legacy lane only when a delivery explicitly publishes it.
@@ -647,6 +672,7 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
     all_observed = intelligence.get("all_observed_ranking")
     public_top10 = intelligence.get("public_top10")
     company_ready = intelligence.get("company_ready_trends")
+    presentation_feed = intelligence.get("presentation_feed") or {}
     if not all(
         isinstance(value, list)
         for value in (
@@ -657,9 +683,43 @@ def _audit_ranking(intelligence: dict[str, Any], report: AuditReport) -> None:
         report.fail("ranking_not_array")
         return
 
+    canonical_home_feed = intelligence.get("home_feed") or {}
+    canonical_home_items = [
+        item
+        for group in canonical_home_feed.get("groups") or []
+        for item in group.get("trends") or []
+    ]
+    canonical_home_count = (
+        len(canonical_home_items) if canonical_home_feed else len(trend_top10)
+    )
+    from .result_quality import evaluate_presentation_feed_quality
+
+    presentation_quality = evaluate_presentation_feed_quality(presentation_feed)
+    presentation_is_default = presentation_quality.get("frontend_default") is True
+    if (
+        not presentation_is_default
+        or presentation_quality.get("passed") is not True
+    ):
+        report.fail("presentation_feed_quality_error")
     report.metrics["unified_count"] = len(unified)
-    report.metrics["home_count"] = len(trend_top10)
-    report.metrics["company_ready_count"] = len(company_ready)
+    report.metrics["frontend_surface"] = (
+        "presentation_feed" if presentation_is_default else "canonical_home_feed"
+    )
+    report.metrics["canonical_home_count"] = canonical_home_count
+    report.metrics["canonical_company_ready_count"] = len(company_ready)
+    report.metrics["presentation_count"] = presentation_quality.get("presentation_count", 0)
+    report.metrics["presentation_company_ready_count"] = presentation_quality.get(
+        "company_ready_count", 0
+    )
+    report.metrics["presentation_ready"] = presentation_quality.get("passed") is True
+    report.metrics["home_count"] = (
+        presentation_quality.get("presentation_count", 0)
+        if presentation_is_default else canonical_home_count
+    )
+    report.metrics["company_ready_count"] = (
+        presentation_quality.get("company_ready_count", 0)
+        if presentation_is_default else len(company_ready)
+    )
     expected_ranks = list(range(1, len(unified) + 1))
     actual_ranks = [item.get("rank") for item in unified if isinstance(item, dict)]
     if actual_ranks != expected_ranks:

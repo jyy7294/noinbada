@@ -8,6 +8,7 @@ ranking.  Reference enrichment is allowed to improve display detail only.
 from __future__ import annotations
 
 import hashlib
+from urllib.parse import urlparse
 
 from .company_roles import with_company_role
 from .editorial_review import KEYWORDS, _verified_company_rows
@@ -26,12 +27,12 @@ COMPANY_DOMAINS = {
     "Sony Group": "sony.com",
     "Adobe": "adobe.com",
     "CJ제일제당": "cj.co.kr",
-    "하림": "harim.co.kr",
+    "하림": "harim.com",
     "동원F&B": "www.dongwon.com",
     "대상": "daesang.com",
     "풀무원": "pulmuone.co.kr",
     "신세계푸드": "shinsegaefood.com",
-    "GS리테일": "www.gsretail.com",
+    "GS리테일": "gsretail.com",
     "BGF리테일": "cu.bgfretail.com",
     "Atlanta Braves Holdings": "bravesholdings.com",
     "Manchester United plc": "manutd.com",
@@ -49,22 +50,104 @@ COMPANY_DOMAINS = {
     "레인보우로보틱스": "rainbow-robotics.com",
 }
 
-COMPANY_LOGO_OVERRIDES = {
-    "Nikon": "https://www.nikon.com/favicon.ico",
-    "Teledyne Technologies": "https://cdn.teledyne.com/assets/common/images/favicon.ico",
-    "Hamamatsu Photonics": "https://www.hamamatsu.com/etc.clientlibs/hpk-global-web/clientlibs/clientlib-site-resources/resources/favicon.ico",
-    "롯데관광개발": "https://www.lottetour.com/statics/images/logo.gif",
+COMPANY_LOGO_ASSETS = {
+    # Static allowlist of official-site assets (or the asset host referenced by
+    # the official page).  HTTP status and image content type were checked once
+    # during development; publication validation is intentionally offline.
+    "Nikon": {
+        "official_domain": "nikon.com",
+        "asset_host": "www.nikon.com",
+        "url": "https://www.nikon.com/favicon.ico",
+    },
+    "Teledyne Technologies": {
+        "official_domain": "teledyne.com",
+        "asset_host": "cdn.teledyne.com",
+        "url": "https://cdn.teledyne.com/assets/common/images/favicon.ico",
+    },
+    "Hamamatsu Photonics": {
+        "official_domain": "hamamatsu.com",
+        "asset_host": "www.hamamatsu.com",
+        "url": "https://www.hamamatsu.com/etc.clientlibs/hpk-global-web/clientlibs/clientlib-site-resources/resources/favicon.ico",
+    },
+    "하림": {
+        "official_domain": "harim.com",
+        "asset_host": "harim.com",
+        "url": "https://harim.com/main/img/ci.png",
+    },
+    "이마트": {
+        "official_domain": "company.emart.com",
+        "asset_host": "stimg.emart.com",
+        "url": "https://stimg.emart.com/company/ko/images/common/sub_logo_company.png",
+    },
+    "GS리테일": {
+        "official_domain": "gsretail.com",
+        "asset_host": "hpimg.gsretail.com",
+        "url": "https://hpimg.gsretail.com/_ui/desktop/common/images/gsretail/corporation/logo_gs_en.png",
+    },
+    "롯데관광개발": {
+        "official_domain": "company.lottetour.com",
+        "asset_host": "company.lottetour.com",
+        "url": "https://company.lottetour.com/images/common/header_logo.png",
+    },
+    "Manchester United plc": {
+        "official_domain": "manutd.com",
+        "asset_host": "contentfulproxy.stadion.io",
+        "url": (
+            "https://contentfulproxy.stadion.io/unzgbvss5tuy/"
+            "5GFoxbOTd249o0VhuZNczI/cde0cb3a7b895c6a99f2796433232819/"
+            "TONAL_CREST_Black%C3%83___3x-png.png?fm=webp&fit=pad&f=center&w=184&h=184"
+        ),
+    },
+    "농심": {
+        "official_domain": "nongshim.com",
+        "asset_host": "www.nongshim.com",
+        "url": "https://www.nongshim.com/resources2/images/common/pop-logo.jpg",
+    },
+    "롯데웰푸드": {
+        "official_domain": "lottewellfood.com",
+        "asset_host": "www.lottewellfood.com",
+        "url": "https://www.lottewellfood.com/favicon.ico",
+    },
 }
+
+COMPANY_LOGO_OVERRIDES = {
+    company: str(asset["url"])
+    for company, asset in COMPANY_LOGO_ASSETS.items()
+}
+
+
+def logo_asset_contract_is_valid(
+    company: str, official_domain: str, logo_url: str,
+) -> bool:
+    """Validate official logo provenance without making a runtime request."""
+
+    normalized_domain = official_domain.strip().casefold()
+    normalized_url = logo_url.strip()
+    parsed = urlparse(normalized_url)
+    if parsed.scheme != "https" or not parsed.netloc:
+        return False
+    asset = COMPANY_LOGO_ASSETS.get(company)
+    if asset is not None:
+        return (
+            normalized_domain == str(asset["official_domain"]).casefold()
+            and normalized_url == asset["url"]
+            and parsed.hostname == str(asset["asset_host"]).casefold()
+        )
+    expected = (
+        "https://www.google.com/s2/favicons?sz=128&domain_url="
+        f"https%3A%2F%2F{normalized_domain}"
+    )
+    return normalized_url == expected
 
 
 SUPPLEMENT_COMPANY_CATALOG = {
     "sony": ("Sony Group", "6758", "TSE", "sony.com", "영상기기·영화·음악 콘텐츠 사업을 운영하는 일본 상장기업"),
     "adobe": ("Adobe", "ADBE", "NASDAQ", "adobe.com", "영상·이미지 제작 소프트웨어를 제공하는 미국 상장기업"),
-    "harim": ("하림", "136480", "KRX", "harim.co.kr", "닭고기 생산·가공과 간편식 사업을 운영하는 국내 상장기업"),
+    "harim": ("하림", "136480", "KRX", "harim.com", "닭고기 생산·가공과 간편식 사업을 운영하는 국내 상장기업"),
     "dongwon": ("동원F&B", "049770", "KRX", "www.dongwon.com", "가공식품과 가정간편식을 생산·유통하는 국내 상장기업"),
     "daesang": ("대상", "001680", "KRX", "daesang.com", "조미식품·간편식·김치 사업을 운영하는 국내 상장 식품기업"),
     "pulmuone": ("풀무원", "017810", "KRX", "pulmuone.co.kr", "신선식품과 가정간편식을 생산·유통하는 국내 상장기업"),
-    "gsretail": ("GS리테일", "007070", "KRX", "www.gsretail.com", "편의점·슈퍼마켓 등 오프라인 유통망을 운영하는 국내 상장기업"),
+    "gsretail": ("GS리테일", "007070", "KRX", "gsretail.com", "편의점·슈퍼마켓 등 오프라인 유통망을 운영하는 국내 상장기업"),
     "teledyne": ("Teledyne Technologies", "TDY", "NYSE", "teledyne.com", "과학·산업용 이미징 센서와 카메라를 공급하는 미국 상장 기술기업"),
     "hamamatsu": ("Hamamatsu Photonics", "6965", "TSE", "hamamatsu.com", "광센서와 과학용 검출기를 개발하는 일본 상장 광전자기업"),
     "hoya": ("HOYA", "7741", "TSE", "hoya.com", "광학유리와 필터 소재를 생산하는 일본 상장 광학기업"),
@@ -72,10 +155,10 @@ SUPPLEMENT_COMPANY_CATALOG = {
     "ottogi": ("오뚜기", "007310", "KRX", "ottogi.co.kr", "가정간편식과 국·탕류를 생산하는 국내 상장 식품기업"),
     "sajo": ("사조대림", "003960", "KRX", "sajo.co.kr", "육가공·수산·간편식 제품을 생산·유통하는 국내 상장 식품기업"),
     "maeil": ("매일유업", "267980", "KOSDAQ", "maeil.com", "유제품과 영양식품을 생산하는 국내 상장 식품기업"),
-    "emart": ("이마트", "139480", "KRX", "emartcompany.com", "대형마트와 식품 리테일 채널을 운영하는 국내 상장 유통기업"),
+    "emart": ("이마트", "139480", "KRX", "company.emart.com", "대형마트와 식품 리테일 채널을 운영하는 국내 상장 유통기업"),
     "hanwha": ("한화", "000880", "KRX", "hanwha.com", "대형 불꽃행사를 주최하고 연화 기술을 보유한 국내 상장기업"),
     "hotelshilla": ("호텔신라", "008770", "KRX", "shillahotels.com", "호텔·면세·관광 소비 채널을 운영하는 국내 상장기업"),
-    "lottetour": ("롯데관광개발", "032350", "KRX", "lottetour.com", "여행·관광·복합리조트 사업을 운영하는 국내 상장기업"),
+    "lottetour": ("롯데관광개발", "032350", "KRX", "company.lottetour.com", "여행·관광·복합리조트 사업을 운영하는 국내 상장기업"),
     "koreanair": ("대한항공", "003490", "KRX", "koreanair.com", "국제·국내 항공 여객 서비스를 운영하는 국내 상장 항공사"),
     "kakao": ("카카오", "035720", "KRX", "kakaocorp.com", "지도·모빌리티·콘텐츠 플랫폼을 운영하는 국내 상장 플랫폼기업"),
     "disney": ("The Walt Disney Company", "DIS", "NYSE", "thewaltdisneycompany.com", "ESPN을 포함한 스포츠·미디어 콘텐츠 사업을 운영하는 미국 상장기업"),
@@ -606,6 +689,16 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
         raise ValueError(f"{display_name}: public company evidence URL is required for {company}")
     if not official_domain or "." not in official_domain or "/" in official_domain:
         raise ValueError(f"{display_name}: official company domain is required for {company}")
+    logo_url = COMPANY_LOGO_OVERRIDES.get(
+        company,
+        # domain_url asks Google's favicon endpoint to resolve the official
+        # site's declared icon. Explicit official assets are preferred where
+        # the proxy is known to return a missing image.
+        f"https://www.google.com/s2/favicons?sz=128&domain_url=https%3A%2F%2F{official_domain}",
+    )
+    if not logo_asset_contract_is_valid(company, official_domain, logo_url):
+        raise ValueError(f"{display_name}: logo asset contract is invalid for {company}")
+    logo_asset = COMPANY_LOGO_ASSETS.get(company)
 
     row = with_company_role({
         **source,
@@ -625,15 +718,15 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
         "evidence_owner": source.get("evidence_owner") or company,
         "evidence_type": source.get("evidence_type") or "reviewed_public_relationship",
         "official_domain": official_domain,
-        "logo_url": COMPANY_LOGO_OVERRIDES.get(
-            company,
-            # domain_url asks Google's favicon endpoint to resolve the official
-            # site's declared icon. The older domain form returned letter
-            # placeholders for otherwise valid companies (for example Nikon,
-            # Teledyne and Hamamatsu), which made the company screens look
-            # incomplete even though the logo field was populated.
-            f"https://www.google.com/s2/favicons?sz=128&domain_url=https%3A%2F%2F{official_domain}",
+        "logo_url": logo_url,
+        "logo_asset_source": (
+            "official_page_asset" if logo_asset else "official_domain_declared_favicon"
         ),
+        "logo_asset_host": (
+            str(logo_asset["asset_host"])
+            if logo_asset else "www.google.com"
+        ),
+        "logo_asset_verification": "static_allowlist_http_200_image_2026_08_15",
         "market_snapshot": _market_snapshot(company, ticker, market),
         "candidate_rank": position,
         "verification_status": "evidence_verified",
@@ -782,7 +875,7 @@ def build_presentation_feed(intelligence: dict) -> dict:
         item["presentation_rank"] = position
         item["current_rank"] = position
     return {
-        "schema_version": "trzip-presentation-feed-v2",
+        "schema_version": "trzip-presentation-feed-v3",
         "status": "ready",
         "frontend_default": True,
         "items": items,

@@ -1,6 +1,6 @@
 {
     "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-14T17:47:41.9683935+00:00",
+    "updated_at":  "2026-08-15T01:26:28.7811250+00:00",
     "project":  {
                     "repository":  "jyy7294/noinbada",
                     "code_branch":  "main",
@@ -8,24 +8,46 @@
                 },
     "checkpoint":  {
                        "describes_commit":  "self",
-                       "base_remote_main_sha":  "b4d10f5e44ebddf9a29ef8c1b4c7f59c906996ae",
+                       "base_remote_main_sha":  "a9687e2e3fdf0b654f67e4ecf548f8617a2a3ff8",
                        "validation_target":  "staged_tree",
                        "changed_paths":  [
                                              "CURRENT_STATE.json",
                                              "frontend/index.html",
-                                             "tests/test_frontend_mvp_contract.py"
+                                             "frontend/trendzip-data.js",
+                                             "schemas/intelligence-v3.schema.json",
+                                             "src/trzip/presentation_feed.py",
+                                             "src/trzip/publication_pipeline.py",
+                                             "src/trzip/result_quality.py",
+                                             "src/trzip/runtime_audit.py",
+                                             "tests/test_frontend_mvp_contract.py",
+                                             "tests/test_presentation_feed.py",
+                                             "tests/test_public_contract_schema.py",
+                                             "tests/test_publication_pipeline.py",
+                                             "tests/test_result_quality.py",
+                                             "tests/test_runtime_audit.py"
                                          ],
                        "changed_file_digests":  {
-                                                    "frontend/index.html":  "cfc3b2763b55f7e74d6557f3c66bd49cdff7ee49c3c4cc5537dbeb6829ac9d20",
-                                                    "tests/test_frontend_mvp_contract.py":  "a9f5e0b99d47c34f78651846c916aad40d271a2ee41faf872f0bf7d58f93343a"
+                                                    "frontend/index.html":  "3399607b26d5d973a5b49eb4c23c95baa7031f442462be610f5a333c4d2d0ce6",
+                                                    "frontend/trendzip-data.js":  "12564fab658d4c23e813ceff7076e10c43c6022344c0a984831a1f976d839ca7",
+                                                    "schemas/intelligence-v3.schema.json":  "fcfb9176678df31ffe6921b1ebc2e52ea2e1ecaf2dbff39dae3cd73b910bdebe",
+                                                    "src/trzip/presentation_feed.py":  "eb37e0699be3321e41f2a87d8c796a5d6b66bcb79b5b23235105469b5af2b825",
+                                                    "src/trzip/publication_pipeline.py":  "1a0afea7775f0335bb7be9a0e42a7a6115ea56392617f7216ee8f937ab3930f8",
+                                                    "src/trzip/result_quality.py":  "2b93d2692d20fd3cc4e842a86c712e6ab46f91d83c16f2d97fe66075df295290",
+                                                    "src/trzip/runtime_audit.py":  "9e2bf52db854368725483101f4f051aab716e4f6c8204a2af8c2c238c4b141eb",
+                                                    "tests/test_frontend_mvp_contract.py":  "6610f7c82330631fcab2ee70171c71df84a47a1ed4819eed4b18e452cb2cb393",
+                                                    "tests/test_presentation_feed.py":  "86c3cf366eef30fb6ad2885a8890aa6e626230a9fb3e01942286f0c7a9abae7a",
+                                                    "tests/test_public_contract_schema.py":  "df1b42b9a3de895742eceb16924a1bc88dc406eabe9b35a7f8a4c6dafcd44c23",
+                                                    "tests/test_publication_pipeline.py":  "2d10799a45fe16634686cb2ad638aff273b0121376b924e3a0a709cf0e015e0e",
+                                                    "tests/test_result_quality.py":  "7cdb0a6518f2684c2b009c5fc1c599fa43498b19b173a2515d3d9623dbd68424",
+                                                    "tests/test_runtime_audit.py":  "d0325f0185fb1789e203ced1b9f95eb677fada8421d50c3c518f9e22bf669e3b"
                                                 },
-                       "commit_message":  "fix: repaint the active prototype screen after live hydration",
+                       "commit_message":  "Complete TRZIP MVP frontend and presentation contract",
                        "validation_status":  "passed"
                    },
     "validation":  {
                        "pytest":  {
                                       "status":  "passed",
-                                      "count":  353
+                                      "count":  362
                                   },
                        "compileall":  {
                                           "status":  "passed"
@@ -47,20 +69,22 @@
                                         }
                    },
     "handoff":  {
-                    "objective":  "Render the approved presentation feed on the first visit without requiring a navigation click.",
+                    "objective":  "Complete the TRZIP MVP frontend, presentation data contract, company enrichment, validation, and deployment readiness.",
                     "completed":  [
-                                      "Repainted the active prototype screen after publication hydration",
-                                      "Added a regression assertion for automatic active-screen repaint"
+                                      "Connected approved Top10 presentation data across home, detail, related companies, portfolios, and my page.",
+                                      "Enforced schema v3 with five keywords, ten companies, three to four roles, logos, market snapshots, and 1w/1m/3m display series.",
+                                      "Removed legacy mock surfaces and export controls; added long-title handling and verified core browser flows."
                                   ],
                     "next_actions":  [
-                                         "Redeploy and run no-click first-visit QA",
-                                         "Publish the next exact-hour lightweight live-data bundle"
+                                         "Promote the verified Vercel preview to production and run final production E2E verification.",
+                                         "Continue exact-hour X and Google collection through August 18."
                                      ],
                     "blockers":  [
 
                                  ],
                     "known_limitations":  [
-
+                                              "Eight consecutive exact-hour runs are not yet proven after earlier heartbeat execution gaps.",
+                                              "The 1w/1m/3m presentation series are supplemental display data and do not affect canonical rankings."
                                           ]
                 },
     "runtime_contract":  {

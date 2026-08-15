@@ -12,6 +12,7 @@ from .company_roles import COMPANY_ROLE_LABELS
 from .hourly_store import ELIGIBLE_COLLECTOR_SQL
 from .keyword_policy import keyword_fits_public_label
 from .ontology import MINIMUM_FRONTEND_COMPANIES
+from .presentation_feed import logo_asset_contract_is_valid
 from .readiness import MVP_CONSECUTIVE_SOURCE_HOURS
 
 
@@ -215,8 +216,8 @@ def _publication_receipt(path: Path, observed_at: str) -> dict:
     }
 
 
-def evaluate_frontend_result(intelligence: dict) -> dict:
-    """Evaluate the completed frontend contract without recomputing rank."""
+def _evaluate_canonical_frontend_result(intelligence: dict) -> dict:
+    """Evaluate the canonical rank-free home feed without recomputing rank."""
 
     home_feed = intelligence.get("home_feed") or {}
     using_rank_free_feed = bool(home_feed)
@@ -381,12 +382,16 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
                 item_failures.append(f"ontology_path_not_to_company:{company_name}")
             if presentation_display_contract:
                 official_domain = str(company.get("official_domain") or "").strip().casefold()
-                logo_url = str(company.get("logo_url") or "").strip().casefold()
+                logo_url = str(company.get("logo_url") or "").strip()
                 snapshot = company.get("market_snapshot") or {}
                 if (
                     not official_domain
-                    or official_domain not in logo_url
                     or not _valid_public_url(logo_url)
+                    or not logo_asset_contract_is_valid(
+                        company_name, official_domain, logo_url
+                    )
+                    or company.get("logo_asset_verification")
+                    != "static_allowlist_http_200_image_2026_08_15"
                 ):
                     item_failures.append(f"missing_official_logo:{company_name}")
                 if (
@@ -445,6 +450,208 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
         ),
         "trends": trend_checks,
         "ranking_effect": "none",
+    }
+
+
+def _presentation_card_display_failures(
+    item: dict, *, strict_logo_contract: bool = True
+) -> list[str]:
+    """Return display-contract failures for one reviewed presentation card."""
+
+    failures: list[str] = []
+    companies = list(item.get("companies") or [])
+    identities = {
+        (
+            str(company.get("exchange") or company.get("market") or "").strip(),
+            str(company.get("stock_code") or company.get("ticker") or "").strip(),
+        )
+        for company in companies
+    }
+    if len(companies) != 10 or len(identities) != 10 or any(not all(key) for key in identities):
+        failures.append(f"company_count:{len(companies)}")
+    roles = {
+        str(company.get("company_role_category") or "").strip()
+        for company in companies
+        if str(company.get("company_role_category") or "").strip()
+    }
+    if not 3 <= len(roles) <= 4:
+        failures.append(f"company_role_category_count:{len(roles)}")
+    for company in companies:
+        company_name = str(company.get("company") or "").strip()
+        official_domain = str(company.get("official_domain") or "").strip().casefold()
+        logo_url = str(company.get("logo_url") or "").strip()
+        if (
+            not official_domain
+            or "." not in official_domain
+            or not _valid_public_url(logo_url)
+        ):
+            failures.append(f"missing_official_logo:{company_name}")
+        elif strict_logo_contract and (
+            not logo_asset_contract_is_valid(company_name, official_domain, logo_url)
+            or company.get("logo_asset_source") not in {
+                "official_page_asset", "official_domain_declared_favicon",
+            }
+            or not str(company.get("logo_asset_host") or "").strip()
+            or company.get("logo_asset_verification")
+            != "static_allowlist_http_200_image_2026_08_15"
+        ):
+            failures.append(f"invalid_v3_logo_metadata:{company_name}")
+        snapshot = company.get("market_snapshot") or {}
+        if (
+            snapshot.get("display_only") is not True
+            or snapshot.get("ranking_effect") != "none"
+            or len(snapshot.get("price_series") or []) != 30
+            or not all(
+                isinstance(snapshot.get(field), (int, float))
+                and not isinstance(snapshot.get(field), bool)
+                for field in ("last_price", "change_percent", "per", "pbr", "roe_percent")
+            )
+            or not all(
+                isinstance(value, (int, float))
+                and not isinstance(value, bool)
+                and value > 0
+                for value in snapshot.get("price_series") or []
+            )
+        ):
+            failures.append(f"market_snapshot_incomplete:{company_name}")
+    visualization = item.get("visualization_series") or {}
+    if (
+        visualization.get("display_only") is not True
+        or visualization.get("ranking_effect") != "none"
+        or visualization.get("canonical_series_unchanged") is not True
+    ):
+        failures.append("visualization_series_not_rank_neutral")
+    for window_key, expected_count in (("1w", 7), ("1m", 30), ("3m", 13)):
+        window = visualization.get(window_key) or {}
+        if (
+            window.get("display_only") is not True
+            or window.get("ranking_effect") != "none"
+            or len(window.get("labels") or []) != expected_count
+            or any(
+                len(window.get(source_key) or []) != expected_count
+                for source_key in ("x", "google_trends", "combined")
+            )
+            or any(
+                not isinstance(value, (int, float))
+                or isinstance(value, bool)
+                or not 0 <= value <= 100
+                for source_key in ("x", "google_trends", "combined")
+                for value in window.get(source_key) or []
+            )
+        ):
+            failures.append(f"visualization_series_incomplete:{window_key}")
+    return failures
+
+
+def evaluate_presentation_feed_quality(feed: dict) -> dict:
+    """Evaluate the reviewed display projection consumed by the current frontend."""
+
+    from .publication_pipeline import _validate_presentation_feed
+
+    items = list(feed.get("items") or [])
+    schema_version = str(feed.get("schema_version") or "")
+    legacy_contract = schema_version == "trzip-presentation-feed-v2"
+    strict_logo_contract = schema_version == "trzip-presentation-feed-v3"
+    contract_failures: list[str] = []
+    try:
+        _validate_presentation_feed(feed)
+    except (TypeError, ValueError) as exc:
+        contract_failures.append(str(exc))
+    trend_checks = []
+    for item in items:
+        item_failures = _presentation_card_display_failures(
+            item, strict_logo_contract=strict_logo_contract
+        )
+        companies = list(item.get("companies") or [])
+        trend_checks.append({
+            "display_name": str(item.get("display_name") or ""),
+            "company_count": len(companies),
+            "role_categories": sorted({
+                str(company.get("company_role_category") or "").strip()
+                for company in companies
+                if str(company.get("company_role_category") or "").strip()
+            }),
+            "passed": not item_failures,
+            "failures": item_failures,
+        })
+    company_ready_count = sum(1 for row in trend_checks if row["passed"])
+    passed = not contract_failures and len(items) == 10 and company_ready_count == 10
+    return {
+        "policy_version": "presentation-result-quality-v1",
+        "schema_version": schema_version,
+        "legacy_contract": legacy_contract,
+        "warnings": ["legacy_logo_contract_v2"] if legacy_contract else [],
+        "status": str(feed.get("status") or "missing"),
+        "frontend_default": feed.get("frontend_default") is True,
+        "passed": passed,
+        "presentation_count": len(items),
+        "company_ready_count": company_ready_count,
+        "failures": contract_failures + [
+            f"{row['display_name']}:{failure}"
+            for row in trend_checks
+            for failure in row["failures"]
+        ],
+        "trends": trend_checks,
+        "ranking_effect": "none",
+    }
+
+
+def evaluate_frontend_result(intelligence: dict) -> dict:
+    """Evaluate canonical data and the actual frontend-default projection separately."""
+
+    canonical = _evaluate_canonical_frontend_result(intelligence)
+    presentation_feed = intelligence.get("presentation_feed")
+    if not isinstance(presentation_feed, dict) or not presentation_feed:
+        return {
+            **canonical,
+            "frontend_surface": "canonical_home_feed",
+            "home_count": canonical["trend_count"],
+            "company_ready_count": sum(
+                1 for row in canonical["trends"] if row.get("passed") is True
+            ),
+            "canonical_home_count": canonical["trend_count"],
+            "canonical_home_content_ready": canonical["home_content_ready"],
+            "presentation_count": 0,
+            "presentation_content_ready": False,
+            "presentation_feed_quality": None,
+        }
+
+    presentation = evaluate_presentation_feed_quality(presentation_feed)
+    presentation_is_default = presentation["frontend_default"]
+    presentation_ready = presentation_is_default and presentation["passed"]
+    failures = list(canonical["failures"])
+    if presentation_is_default:
+        failures.extend(
+            f"presentation_feed:{failure}" for failure in presentation["failures"]
+        )
+    return {
+        **canonical,
+        "policy_version": "frontend-result-quality-v8",
+        "passed": not failures and presentation_ready,
+        "frontend_surface": "presentation_feed" if presentation_is_default else "canonical_home_feed",
+        # Compatibility metrics intentionally describe the surface consumed by
+        # the frontend. Canonical counts remain available under explicit names.
+        "trend_count": presentation["presentation_count"] if presentation_is_default else canonical["trend_count"],
+        "home_count": presentation["presentation_count"] if presentation_is_default else canonical["trend_count"],
+        "company_ready_count": (
+            presentation["company_ready_count"]
+            if presentation_is_default
+            else sum(1 for row in canonical["trends"] if row.get("passed") is True)
+        ),
+        "home_status": "ready" if presentation_ready else canonical["home_status"],
+        "home_content_ready": presentation_ready if presentation_is_default else canonical["home_content_ready"],
+        "canonical_home_count": canonical["trend_count"],
+        "canonical_home_content_ready": canonical["home_content_ready"],
+        "presentation_count": presentation["presentation_count"],
+        "presentation_content_ready": presentation_ready,
+        "presentation_feed_quality": presentation,
+        "failures": failures,
+        "trends": presentation["trends"] if presentation_is_default else canonical["trends"],
+        "enrichment_ready_count": (
+            presentation["company_ready_count"]
+            if presentation_is_default
+            else canonical["enrichment_ready_count"]
+        ),
     }
 
 
@@ -572,7 +779,7 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
     contract = publication.get("contract")
     if contract is not None and contract.get("policy_version") not in {
         "frontend-result-quality-v5", "frontend-result-quality-v6",
-        "frontend-result-quality-v7",
+        "frontend-result-quality-v7", "frontend-result-quality-v8",
     }:
         contract = {
             **contract,

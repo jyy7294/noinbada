@@ -3,7 +3,12 @@ from __future__ import annotations
 import pytest
 
 from trzip.keyword_policy import keyword_character_count
-from trzip.presentation_feed import REFERENCE_TOP10, build_presentation_feed
+from trzip.presentation_feed import (
+    COMPANY_LOGO_ASSETS,
+    REFERENCE_TOP10,
+    build_presentation_feed,
+    logo_asset_contract_is_valid,
+)
 from trzip.publication_pipeline import _validate_presentation_feed
 
 
@@ -24,7 +29,7 @@ EXPECTED = [
 def test_reviewed_presentation_feed_is_exact_and_enriched():
     feed = build_presentation_feed({"unified_ranking": []})
 
-    assert feed["schema_version"] == "trzip-presentation-feed-v2"
+    assert feed["schema_version"] == "trzip-presentation-feed-v3"
     assert [item["display_name"] for item in feed["items"]] == EXPECTED
     assert [item["presentation_position"] for item in feed["items"]] == list(range(1, 11))
     assert [item["presentation_rank"] for item in feed["items"]] == list(range(1, 11))
@@ -72,7 +77,12 @@ def test_presentation_company_groups_are_explicit_and_explainable():
             assert company.get("company_description")
             assert company.get("connection_explanation")
             assert str(company.get("evidence_url", "")).startswith("http")
-            assert company.get("official_domain") in company.get("logo_url", "")
+            assert logo_asset_contract_is_valid(
+                company["company"], company["official_domain"], company["logo_url"]
+            )
+            assert company["logo_asset_verification"] == (
+                "static_allowlist_http_200_image_2026_08_15"
+            )
             snapshot = company.get("market_snapshot") or {}
             assert snapshot.get("display_only") is True
             assert snapshot.get("ranking_effect") == "none"
@@ -81,6 +91,32 @@ def test_presentation_company_groups_are_explicit_and_explainable():
                 isinstance(snapshot.get(field), (int, float))
                 for field in ("last_price", "change_percent", "per", "pbr", "roe_percent")
             )
+
+
+def test_known_missing_favicons_use_allowlisted_official_image_assets():
+    feed = build_presentation_feed({"unified_ranking": []})
+    companies = {
+        company["company"]: company
+        for item in feed["items"]
+        for company in item["companies"]
+    }
+    expected = {
+        "하림": "https://harim.com/main/img/ci.png",
+        "이마트": "https://stimg.emart.com/company/ko/images/common/sub_logo_company.png",
+        "GS리테일": "https://hpimg.gsretail.com/_ui/desktop/common/images/gsretail/corporation/logo_gs_en.png",
+        "롯데관광개발": "https://company.lottetour.com/images/common/header_logo.png",
+        "Manchester United plc": COMPANY_LOGO_ASSETS["Manchester United plc"]["url"],
+        "농심": "https://www.nongshim.com/resources2/images/common/pop-logo.jpg",
+        "롯데웰푸드": "https://www.lottewellfood.com/favicon.ico",
+    }
+    assert set(expected) <= set(companies)
+    for company_name, expected_url in expected.items():
+        company = companies[company_name]
+        assert company["logo_url"] == expected_url
+        assert company["logo_asset_source"] == "official_page_asset"
+        assert logo_asset_contract_is_valid(
+            company_name, company["official_domain"], company["logo_url"]
+        )
 
 
 def test_presentation_visualization_is_complete_deterministic_and_rank_neutral():
@@ -155,6 +191,12 @@ def test_invalid_presentation_feed_is_rejected_before_publication():
             "official-domain logo",
         ),
         (
+            lambda feed: feed["items"][0]["companies"][0].pop(
+                "logo_asset_verification"
+            ),
+            "verified v3 logo metadata",
+        ),
+        (
             lambda feed: feed["items"][0]["companies"][0].pop("market_snapshot"),
             "complete market snapshot",
         ),
@@ -170,3 +212,15 @@ def test_invalid_presentation_contract_variants_are_rejected(mutate, message):
 
     with pytest.raises(ValueError, match=message):
         _validate_presentation_feed(feed)
+
+
+def test_legacy_v2_feed_is_readable_without_v3_logo_metadata():
+    feed = build_presentation_feed({"unified_ranking": []})
+    feed["schema_version"] = "trzip-presentation-feed-v2"
+    for item in feed["items"]:
+        for company in item["companies"]:
+            company.pop("logo_asset_source", None)
+            company.pop("logo_asset_host", None)
+            company.pop("logo_asset_verification", None)
+
+    _validate_presentation_feed(feed)

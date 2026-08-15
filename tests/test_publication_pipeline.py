@@ -1,3 +1,4 @@
+import hashlib
 import json
 from datetime import UTC, datetime, timedelta
 
@@ -234,6 +235,19 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
     assert b"\r\n" not in rankings_path.read_bytes()
     assert b"\r\n" not in (tmp_path / "latest" / "manifest.json").read_bytes()
     _validate_frontend_delivery(tmp_path / "latest", manifest)
+    presentation_path = tmp_path / "latest" / manifest["bundle"]["presentation"]["path"]
+    presentation_payload = json.loads(presentation_path.read_text(encoding="utf-8"))
+    presentation_payload["presentation_feed"]["items"][0]["why_now"] += " 불일치"
+    presentation_path.write_text(
+        json.dumps(presentation_payload, ensure_ascii=False, separators=(",", ":")),
+        encoding="utf-8",
+    )
+    tampered_manifest = json.loads(json.dumps(manifest))
+    tampered_manifest["bundle"]["presentation"]["sha256"] = hashlib.sha256(
+        presentation_path.read_bytes()
+    ).hexdigest()
+    with pytest.raises(ValueError, match="differs between published documents"):
+        _validate_frontend_delivery(tmp_path / "latest", tampered_manifest)
     assert intelligence["news_discovery_queue"][0]["observed_term"] == "양즈깐루"
 
     second = run(tmp_path)

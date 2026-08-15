@@ -138,7 +138,9 @@
       "additionalProperties": false,
       "required": ["schema_version", "status", "frontend_default", "items", "transition"],
       "properties": {
-        "schema_version": {"const": "trzip-presentation-feed-v2"},
+        "schema_version": {
+          "enum": ["trzip-presentation-feed-v2", "trzip-presentation-feed-v3"]
+        },
         "status": {"const": "ready"},
         "frontend_default": {"const": true},
         "items": {

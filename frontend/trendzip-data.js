@@ -178,7 +178,7 @@ function normalizeTrend(item) {
       candidate_count: companies.length,
       reason: item.company_card_status === 'ready'
         ? '근거가 확인된 상장기업 연결'
-        : `검증 기업 ${companies.length}개 · 추가 보강 중`,
+        : `검증 기업 ${companies.length}개`,
     },
     companyCardStatus: item.company_card_status,
     sources: item.latest_source_ranks || {},

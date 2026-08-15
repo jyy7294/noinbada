@@ -10,6 +10,7 @@ from trzip.result_quality import (
     evaluate_local_consecutive_hours,
     record_publication_receipt,
 )
+from trzip.presentation_feed import build_presentation_feed
 
 
 def _company(index: int) -> dict:
@@ -37,7 +38,13 @@ def _company(index: int) -> dict:
         "relation_tier": "direct",
         "evidence_sources": [{"url": f"https://example.com/{index}"}],
         "official_domain": "example.com",
-        "logo_url": "https://www.google.com/s2/favicons?sz=128&domain=example.com",
+        "logo_url": (
+            "https://www.google.com/s2/favicons?sz=128&domain_url="
+            "https%3A%2F%2Fexample.com"
+        ),
+        "logo_asset_source": "official_domain_declared_favicon",
+        "logo_asset_host": "www.google.com",
+        "logo_asset_verification": "static_allowlist_http_200_image_2026_08_15",
         "market_snapshot": {
             "last_price": 10000 + index,
             "change_percent": 1.2,
@@ -116,6 +123,44 @@ def test_complete_frontend_result_passes_quality_gate():
     assert result["policy_version"] == "frontend-result-quality-v7"
     assert result["trend_count"] == 10
     assert all(row["keyword_count"] == 5 and row["company_count"] == 10 for row in result["trends"])
+
+
+def test_presentation_feed_is_counted_as_the_actual_frontend_surface():
+    intelligence = {
+        "home_feed": {"status": "empty", "groups": []},
+        "home_top10": [],
+        "presentation_feed": build_presentation_feed({"unified_ranking": []}),
+    }
+
+    result = evaluate_frontend_result(intelligence)
+
+    assert result["policy_version"] == "frontend-result-quality-v8"
+    assert result["passed"] is True
+    assert result["frontend_surface"] == "presentation_feed"
+    assert result["canonical_home_count"] == 0
+    assert result["canonical_home_content_ready"] is False
+    assert result["home_count"] == 10
+    assert result["trend_count"] == 10
+    assert result["company_ready_count"] == 10
+    assert result["presentation_count"] == 10
+    assert result["presentation_content_ready"] is True
+    assert result["home_content_ready"] is True
+
+
+def test_presentation_quality_rejects_a_missing_logo_without_hiding_canonical_state():
+    feed = build_presentation_feed({"unified_ranking": []})
+    feed["items"][0]["companies"][0].pop("logo_url")
+    result = evaluate_frontend_result({
+        "home_feed": {"status": "empty", "groups": []},
+        "presentation_feed": feed,
+    })
+
+    assert result["passed"] is False
+    assert result["canonical_home_count"] == 0
+    assert result["presentation_count"] == 10
+    assert result["company_ready_count"] == 9
+    assert result["presentation_content_ready"] is False
+    assert any("missing_official_logo" in failure for failure in result["failures"])
 
 
 def test_home_selection_rejects_pending_keyword_and_company_enrichment():

@@ -28,7 +28,12 @@ from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .keyword_candidates import sync_provider_keyword_candidates
 from .keyword_policy import keyword_fits_public_label
 from .normalization_evaluation import evaluate_regression_set
-from .presentation_feed import PRESENTATION_STAGES, REFERENCE_TOP10, build_presentation_feed
+from .presentation_feed import (
+    PRESENTATION_STAGES,
+    REFERENCE_TOP10,
+    build_presentation_feed,
+    logo_asset_contract_is_valid,
+)
 from .semantic_adjudication import run_semantic_adjudication
 from .provider_verification import (
     TrendReference,
@@ -847,8 +852,13 @@ def _validate_presentation_feed(feed: dict) -> None:
     """Reject a frontend-default feed that violates the reviewed MVP contract."""
 
     items = list(feed.get("items") or [])
-    if feed.get("schema_version") != "trzip-presentation-feed-v2":
+    schema_version = feed.get("schema_version")
+    if schema_version not in {
+        "trzip-presentation-feed-v2",
+        "trzip-presentation-feed-v3",
+    }:
         raise ValueError("frontend presentation_feed schema version is invalid")
+    strict_logo_contract = schema_version == "trzip-presentation-feed-v3"
     if feed.get("status") != "ready" or feed.get("frontend_default") is not True:
         raise ValueError("frontend presentation_feed is not ready as the default feed")
     if len(items) != 10:
@@ -963,14 +973,25 @@ def _validate_presentation_feed(feed: dict) -> None:
             if not str(company.get("evidence_url") or "").startswith(("http://", "https://")):
                 raise ValueError("frontend presentation companies require public HTTP evidence")
             official_domain = str(company.get("official_domain") or "").strip().casefold()
-            logo_url = str(company.get("logo_url") or "").strip().casefold()
+            logo_url = str(company.get("logo_url") or "").strip()
             if (
                 not official_domain
                 or "." not in official_domain
                 or not logo_url.startswith(("http://", "https://"))
-                or official_domain not in logo_url
             ):
                 raise ValueError("frontend presentation companies require an official-domain logo")
+            if strict_logo_contract and (
+                not logo_asset_contract_is_valid(
+                    str(company.get("company") or ""), official_domain, logo_url
+                )
+                or company.get("logo_asset_source") not in {
+                    "official_page_asset", "official_domain_declared_favicon",
+                }
+                or not str(company.get("logo_asset_host") or "").strip()
+                or company.get("logo_asset_verification")
+                != "static_allowlist_http_200_image_2026_08_15"
+            ):
+                raise ValueError("frontend presentation companies require verified v3 logo metadata")
             snapshot = company.get("market_snapshot") or {}
             if (
                 snapshot.get("display_only") is not True
@@ -1050,7 +1071,8 @@ def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
         rankings.get("observed_at"),
     ) != identity:
         raise ValueError("frontend rankings identity mismatch")
-    _validate_presentation_feed(rankings.get("presentation_feed") or {})
+    rankings_presentation_feed = rankings.get("presentation_feed") or {}
+    _validate_presentation_feed(rankings_presentation_feed)
 
     presentation_entry = bundle.get("presentation") or {}
     presentation_path = _validated_child(
@@ -1068,7 +1090,10 @@ def _validate_frontend_delivery(latest: Path, manifest: dict) -> None:
         presentation.get("observed_at"),
     ) != identity:
         raise ValueError("frontend presentation identity mismatch")
-    _validate_presentation_feed(presentation.get("presentation_feed") or {})
+    presentation_feed = presentation.get("presentation_feed") or {}
+    _validate_presentation_feed(presentation_feed)
+    if presentation_feed != rankings_presentation_feed:
+        raise ValueError("frontend presentation feed differs between published documents")
     home_feed = rankings.get("home_feed") or {}
     if home_feed.get("status") not in {"ready", "empty"}:
         raise ValueError("frontend home_feed status is invalid")
