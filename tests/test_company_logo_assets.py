@@ -245,8 +245,8 @@ def test_mime_mismatch_and_oversized_fetch_failure_do_not_publish(monkeypatch):
     ("company", "stock_code", "homepage", "asset_url", "dimensions"),
     [
         (
-            "동원F&B", "049770", "https://www.dongwonfnb.com",
-            "https://www.dongwonfnb.com/Images/Company/img_ci_signature.gif", (221, 110),
+            "동원산업", "006040", "https://www.dongwon.com",
+            "https://www.dongwon.com/asset/image/logo/dongwon_blue.svg", (113, 47),
         ),
         (
             "대상", "001680", "https://www.daesang.co.kr",
@@ -265,8 +265,8 @@ def test_mime_mismatch_and_oversized_fetch_failure_do_not_publish(monkeypatch):
             "https://www.harim.com/main/img/ci.png", (198, 149),
         ),
         (
-            "신세계푸드", "031440", "https://www.shinsegaefood.com",
-            "https://shinsegaefood.com/images/favicon/shinsegae_ci16.ico", (256, 256),
+            "마니커에프앤지", "195500", "https://www.manikerfng.com",
+            "https://www.manikerfng.com/ko/images/logo.png", (201, 67),
         ),
         (
             "이마트", "139480", "https://emartcompany.com/ko/main.do",
@@ -289,8 +289,10 @@ def test_reviewed_official_company_catalog_is_network_free_and_blur_safe(
     assert result["cache"] == "reviewed_catalog"
     assert result["asset_url"] == asset_url
     assert (result["width"], result["height"]) == dimensions
-    assert min(dimensions) >= 64
-    assert result["verification"] == "verified_raster_min_64px"
+    if result["verification"] == "verified_raster_min_64px":
+        assert min(dimensions) >= 64
+    else:
+        assert result["verification"] == "verified_safe_svg"
     assert result["candidate_kind"] == "reviewed_official_ci_asset"
     assert result["catalog_identity"] == {
         "company": company,

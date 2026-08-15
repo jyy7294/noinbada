@@ -1897,6 +1897,46 @@ def _fresh_market_reference(market: dict, at: datetime) -> bool:
     return 0 <= age.days <= 4
 
 
+def _complete_market_price_series(market: dict) -> bool:
+    """Return whether an observed provider supplied 30 real closing rows."""
+
+    daily = market.get("daily_ohlcv")
+    if not isinstance(daily, list) or len(daily) != 30:
+        return False
+    dates = [str(row.get("date") or "").strip() for row in daily if isinstance(row, dict)]
+    return bool(
+        len(dates) == 30
+        and all(dates)
+        and len(set(dates)) == 30
+        and dates == sorted(dates)
+        and all(
+            isinstance(row, dict)
+            and _valid_market_number(row.get("close"), positive=True)
+            for row in daily
+        )
+    )
+
+
+_REVIEWED_INACTIVE_KRX_SECURITIES = {
+    # KRX KIND: comprehensive share exchange and trading suspension through
+    # delisting.  Keep this narrow reviewed guard until the provider exposes a
+    # reliable current-universe endpoint in this runtime.
+    "031440": {
+        "reason": "reviewed_inactive_krx_security",
+        "evidence_url": (
+            "https://kind.krx.co.kr/external/2026/05/21/000653/"
+            "20260521001725/10084.htm"
+        ),
+    },
+}
+
+
+def _reviewed_inactive_krx_security(exchange: str, stock_code: str) -> dict | None:
+    if exchange not in {"KRX", "KOSPI", "KOSDAQ"}:
+        return None
+    return _REVIEWED_INACTIVE_KRX_SECURITIES.get(str(stock_code or "").strip())
+
+
 def _valid_market_number(
     value: object,
     *,
@@ -2140,10 +2180,30 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
                     "reason": "listed stock code unavailable or relation excluded",
                 }
                 continue
+            inactive = _reviewed_inactive_krx_security(exchange, code)
+            if inactive:
+                # A reviewed inactive security must never be revived by a
+                # formerly complete cache entry.  The listing-status guard is
+                # evaluated before cache reuse and before every quote provider.
+                market = {
+                    "status": "not_found",
+                    "stock_code": code,
+                    "reason": inactive["reason"],
+                    "source_url": inactive["evidence_url"],
+                    "synthetic": False,
+                    "estimated": False,
+                    "ranking_effect": "none",
+                    "relationship_evidence": False,
+                }
+                requested.add((exchange, code))
+                unavailable += 1
+                company["market_reference"] = _public_market_reference(market, code)
+                continue
             market = cache.get((exchange, code))
             if (
                 market
                 and _fresh_market_reference(market, at)
+                and _complete_market_price_series(market)
                 and not (
                     exchange in {"KRX", "KOSPI", "KOSDAQ"}
                     and _domestic_reference_needs_fundamentals(market)

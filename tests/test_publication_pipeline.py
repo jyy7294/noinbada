@@ -11,8 +11,10 @@ from trzip.publication_pipeline import (
     _annotate_x_collection_provenance,
     _collection_health,
     _domestic_reference_needs_fundamentals,
+    _complete_market_price_series,
     _enrich_market_references,
     _failure_class,
+    _fresh_market_reference,
     _public_market_reference,
     _merge_domestic_market_references,
     _verification_references,
@@ -781,6 +783,115 @@ def test_market_enrichment_routes_domestic_and_overseas_actual_providers(monkeyp
     assert result["market_data_status"]["provider"] == "multi_market_actual"
     assert result["market_data_status"]["provider_request_count"] == {
         "pykrx": 1, "yahoo_finance": 1,
+    }
+
+
+def test_market_cache_rejects_incomplete_price_series_without_padding():
+    at = datetime(2026, 8, 15, 0, tzinfo=UTC)
+    market = {
+        "summary": {"as_of": "2026-08-14"},
+        "daily_ohlcv": [
+            {"date": f"2026-07-{index + 1:02d}", "close": 100 + index}
+            for index in range(28)
+        ],
+    }
+
+    assert _fresh_market_reference(market, at) is True
+    assert _complete_market_price_series(market) is False
+    market["daily_ohlcv"].extend([
+        {"date": "2026-07-29", "close": 128},
+        {"date": "2026-07-30", "close": 129},
+    ])
+    assert _complete_market_price_series(market) is True
+    market["daily_ohlcv"].append({"date": "2026-07-31", "close": 130})
+    assert _complete_market_price_series(market) is False
+    market["daily_ohlcv"] = market["daily_ohlcv"][:30]
+    market["daily_ohlcv"][-1]["date"] = market["daily_ohlcv"][-2]["date"]
+    assert _complete_market_price_series(market) is False
+
+
+def test_market_enrichment_fails_closed_on_reviewed_inactive_krx_security(monkeypatch):
+    at = datetime(2026, 8, 15, 16, tzinfo=UTC)
+    def unexpected_pykrx(*_args, **_kwargs):
+        raise AssertionError("inactive reviewed security must not reach a quote provider")
+
+    monkeypatch.setattr("trzip.publication_pipeline.pykrx_stock", unexpected_pykrx)
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.yahoo_finance_fundamentals",
+        lambda *_args, **_kwargs: {"status": "unavailable", "provider": "yahoo_finance"},
+    )
+    intelligence = {
+        "unified_ranking": [{
+            "company_candidates": [{"company": "신세계푸드", "stock_code": "031440", "market": "KRX"}]
+        }]
+    }
+
+    result = _enrich_market_references(intelligence, {}, at)
+    market = result["unified_ranking"][0]["company_candidates"][0]["market_reference"]
+
+    assert market == {
+        "status": "not_found",
+        "stock_code": "031440",
+        "reason": "market_reference_not_found",
+    }
+    assert result["market_data_status"]["newly_observed"] == 0
+    assert result["market_data_status"]["provider_request_count"]["pykrx"] == 0
+
+
+def test_market_enrichment_rejects_fresh_cached_inactive_krx_security(monkeypatch):
+    at = datetime(2026, 8, 15, 16, tzinfo=UTC)
+
+    def unexpected_provider(*_args, **_kwargs):
+        raise AssertionError("inactive reviewed security must bypass cache and providers")
+
+    monkeypatch.setattr("trzip.publication_pipeline.pykrx_stock", unexpected_provider)
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.yahoo_finance_fundamentals",
+        unexpected_provider,
+    )
+    cached_market = {
+        "status": "observed",
+        "provider": "pykrx",
+        "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
+        "summary": {"as_of": "2026-08-14", "currency": "KRW", "close": 50_000},
+        "valuation": {"per": 10.0, "pbr": 1.0, "roe_pct": 10.0},
+        "daily_ohlcv": [
+            {"date": f"2026-07-{index:02d}", "close": 50_000 + index}
+            for index in range(1, 31)
+        ],
+    }
+    previous = {
+        "unified_ranking": [{
+            "company_candidates": [{
+                "company": "신세계푸드",
+                "stock_code": "031440",
+                "market": "KRX",
+                "market_reference": cached_market,
+            }]
+        }]
+    }
+    intelligence = {
+        "unified_ranking": [{
+            "company_candidates": [{
+                "company": "신세계푸드",
+                "stock_code": "031440",
+                "market": "KRX",
+            }]
+        }]
+    }
+
+    result = _enrich_market_references(intelligence, previous, at)
+    market = result["unified_ranking"][0]["company_candidates"][0]["market_reference"]
+
+    assert market == {
+        "status": "not_found",
+        "stock_code": "031440",
+        "reason": "market_reference_not_found",
+    }
+    assert result["market_data_status"]["reused_company_rows"] == 0
+    assert result["market_data_status"]["provider_request_count"] == {
+        "pykrx": 0,
+        "yahoo_finance": 0,
     }
 
 

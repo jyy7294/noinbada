@@ -48,8 +48,8 @@ def _company(index: int, *, complete: bool = True, source_url: bool = False) -> 
                 "fundamentals": "https://example.com/fundamentals",
             },
             "daily_ohlcv": [
-                {"date": "2026-08-14", "close": 100},
-                {"date": "2026-08-15", "close": 105},
+                {"date": f"2026-07-{index + 1:02d}", "close": 76 + index}
+                for index in range(30)
             ],
             "summary": {
                 "as_of": "2026-08-15",
@@ -288,6 +288,33 @@ def test_live_market_snapshot_requires_public_source_url():
     ]["type"] = "quarterlyNetIncome"
     with pytest.raises(ValueError, match="TTM/annual calculated provenance"):
         _validate_presentation_feed(tampered_roe)
+
+
+def test_live_market_snapshot_fails_closed_on_partial_observed_series():
+    candidate = _candidate(market_source_url=True)
+    candidate["companies"][1]["market_reference"]["daily_ohlcv"] = candidate[
+        "companies"
+    ][1]["market_reference"]["daily_ohlcv"][-28:]
+
+    feed = build_presentation_feed(_intelligence(candidate))
+
+    assert feed["items"][0]["companies"][0]["market_snapshot"] is None
+
+
+@pytest.mark.parametrize("mutation", ["extra_row", "duplicate_date", "reverse_order"])
+def test_live_market_snapshot_requires_exact_distinct_chronological_sessions(mutation):
+    candidate = _candidate(market_source_url=True)
+    daily = candidate["companies"][1]["market_reference"]["daily_ohlcv"]
+    if mutation == "extra_row":
+        daily.append({"date": "2026-08-15", "close": 101})
+    elif mutation == "duplicate_date":
+        daily[-1]["date"] = daily[-2]["date"]
+    else:
+        daily.reverse()
+
+    feed = build_presentation_feed(_intelligence(candidate))
+
+    assert feed["items"][0]["companies"][0]["market_snapshot"] is None
 
 
 @pytest.mark.parametrize(("metric", "invalid"), [("per", 0.0), ("pbr", float("inf"))])

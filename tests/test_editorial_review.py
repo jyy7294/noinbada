@@ -2,11 +2,24 @@ from pathlib import Path
 from datetime import UTC, datetime
 
 from trzip.editorial_review import (
+    KEYWORD_COMPANY_BRIDGES,
+    VERIFIED_COMPANIES,
     apply_frontend_enrichment_cache,
     build_editorial_review_pack,
     load_daily_editorial_review,
 )
 from trzip.intelligence import _category
+
+
+def test_malbok_reviewed_companies_exclude_inactive_listings_and_keep_replacement_links():
+    companies = VERIFIED_COMPANIES["말복"]
+    codes = {row["ticker"] for row in companies}
+
+    assert len(companies) == 6
+    assert {"031440", "049770"}.isdisjoint(codes)
+    assert {"195500", "006040"}.issubset(codes)
+    assert "마니커에프앤지" in KEYWORD_COMPANY_BRIDGES["말복"]
+    assert "신세계푸드" not in KEYWORD_COMPANY_BRIDGES["말복"]
 
 
 def _company(index: int) -> dict:

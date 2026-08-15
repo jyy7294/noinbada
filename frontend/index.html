@@ -1156,7 +1156,7 @@ class Component extends DCLogic {
     'kolmar.co.kr': 'https://www.kolmar.co.kr/img/common/favi180.png',
     'orionworld.com': 'https://www.orionworld.com/theme/102114/kr/assets/images/common/f_logo.png',
     'crown.co.kr': 'https://www.crown.co.kr/resources/image/web/common/logo_g.png?2',
-    'ht.co.kr': 'https://www.ht.co.kr/img/logo/logo_p.png',
+    'ht.co.kr': 'https://www.ht.co.kr/img/icon/favicon.ico',
     'cj.co.kr': 'https://www.cj.co.kr/resources/img/icon.png',
     'dhflour.co.kr': 'https://dhflour.co.kr/image/thumbnail?code=fl6a473a28ed77a&width=144&height=144',
   });
@@ -1250,9 +1250,26 @@ class Component extends DCLogic {
       mode: seedAssetSelected ? 'seed_meme_portfolio' : (verifiedMaker ? 'maker_stock_search' : (verifiedLive ? 'image' : 'initials')),
       format,
       minimum: 64,
+      // Seed logos are rendered only inside the 34px portfolio company slot.
+      // Wordmarks are therefore judged against their actual contain-fitted
+      // dimensions at 2x density, while maker/live-v4 rasters keep the strict
+      // 64px-by-64px provenance and sharpness contract below.
+      seedRenderBox: seedAssetSelected ? 34 : null,
+      seedMinimumPixelDensity: seedAssetSelected ? 2 : null,
       vector: ((verifiedMaker || verifiedLive) && format === 'svg')
         || (seedAssetSelected && /\.svg(?:$|[?#])/i.test(logoUrl || ''))
     };
+  }
+
+  seedRasterSharpEnough(naturalWidth, naturalHeight, policy) {
+    const renderBox = Number(policy && policy.seedRenderBox);
+    const minimumDensity = Number(policy && policy.seedMinimumPixelDensity);
+    if (!(naturalWidth > 0 && naturalHeight > 0 && renderBox > 0 && minimumDensity >= 1)) return false;
+    const containScale = Math.min(renderBox / naturalWidth, renderBox / naturalHeight);
+    const renderedWidth = naturalWidth * containScale;
+    const renderedHeight = naturalHeight * containScale;
+    return naturalWidth >= renderedWidth * minimumDensity
+      && naturalHeight >= renderedHeight * minimumDensity;
   }
 
   registerLogo(name, logoUrl, company = {}, priority = false) {
@@ -1284,9 +1301,9 @@ class Component extends DCLogic {
       const img = new Image();
       if (policy.mode === 'maker_stock_search') img.fetchPriority = 'high';
       img.onload = () => {
-        const sharpEnough = policy.vector || (
-          img.naturalWidth >= policy.minimum && img.naturalHeight >= policy.minimum
-        );
+        const sharpEnough = policy.vector || (policy.mode === 'seed_meme_portfolio'
+          ? this.seedRasterSharpEnough(img.naturalWidth, img.naturalHeight, policy)
+          : (img.naturalWidth >= policy.minimum && img.naturalHeight >= policy.minimum));
         if (sharpEnough && this.companyDomains[name] === logoUrl) this.logoCache[name] = logoUrl;
         done();
       };

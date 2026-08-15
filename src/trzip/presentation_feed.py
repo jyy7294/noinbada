@@ -110,6 +110,8 @@ def _calculated_roe_provenance_is_valid(value: object) -> bool:
 
 
 COMPANY_DOMAINS = {
+    "동원산업": "dongwon.com",
+    "마니커에프앤지": "manikerfng.com",
     "Canon": "global.canon",
     "Nikon": "nikon.com",
     "Ricoh": "ricoh.com",
@@ -141,6 +143,24 @@ COMPANY_DOMAINS = {
 }
 
 COMPANY_LOGO_ASSETS = {
+    "동원산업": {
+        "official_domain": "dongwon.com",
+        "asset_host": "www.dongwon.com",
+        "url": "https://www.dongwon.com/asset/image/logo/dongwon_blue.svg",
+        "format": "svg",
+        "width": 113,
+        "height": 47,
+        "render_mode": "image",
+    },
+    "마니커에프앤지": {
+        "official_domain": "manikerfng.com",
+        "asset_host": "www.manikerfng.com",
+        "url": "https://www.manikerfng.com/ko/images/logo.png",
+        "format": "png",
+        "width": 201,
+        "height": 67,
+        "render_mode": "image",
+    },
     # Static allowlist of official-site assets (or the asset host referenced by
     # the official page).  HTTP status and image content type were checked once
     # during development; publication validation is intentionally offline.
@@ -699,7 +719,7 @@ PRESENTATION_COMPANY_SUPPLEMENTS = {
     "말복·삼계탕": (
         ("ottogi", "manufacturing_development", "direct", "복날 국·탕류와 가정간편식 제품을 생산하는 식품 제조사입니다.", ("삼계탕", "보양식")),
         ("sajo", "distribution", "value_chain", "육가공·간편식 생산과 식품 유통망을 통해 복날 소비와 연결됩니다.", ("복날 음식",)),
-        ("maeil", "raw_materials_components", "industry_watch", "영양·단백질 식품 공급망에서 보양식 소비의 인접 수요를 받습니다.", ("보양식",)),
+        ("maeil", "manufacturing_development", "industry_watch", "영양·단백질 식품을 제조하며 보양식 소비의 인접 수요와 연결됩니다.", ("보양식",)),
         ("emart", "retail_sales", "value_chain", "대형마트 식품 매대에서 복날 간편식과 보양식 판매를 담당합니다.", ("간편식 삼계탕",)),
     ),
     "불꽃축제": (
@@ -1413,7 +1433,15 @@ def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
         if isinstance(row, dict)
         and _finite_market_number(row.get("close"), positive=True)
     ]
-    if not daily:
+    if len(daily) != 30:
+        # A market chart is public only when the provider supplied every one of
+        # the 30 observed sessions.  Never interpolate, repeat, or expose a
+        # partial series as if it were complete.
+        return None
+    dates = [str(row.get("date") or "").strip() for row in daily]
+    if not all(dates) or len(set(dates)) != 30 or dates != sorted(dates):
+        # Reject duplicated or re-ordered cache rows; the public chart is a
+        # chronological sequence of 30 distinct observed trading sessions.
         return None
     valuation = market.get("valuation") or {}
     currency = str(summary.get("currency") or market.get("currency") or "").strip().upper()

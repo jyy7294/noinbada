@@ -49,6 +49,9 @@ def test_company_logos_are_used_across_company_and_portfolio_surfaces() -> None:
     assert "center/contain no-repeat" in INDEX
     assert "center/cover no-repeat" not in INDEX
     assert "img.naturalWidth >= policy.minimum && img.naturalHeight >= policy.minimum" in INDEX
+    assert "this.seedRasterSharpEnough(img.naturalWidth, img.naturalHeight, policy)" in INDEX
+    assert "seedRenderBox: seedAssetSelected ? 34 : null" in INDEX
+    assert "seedMinimumPixelDensity: seedAssetSelected ? 2 : null" in INDEX
     assert "Math.max(img.naturalWidth, img.naturalHeight) >= policy.minimum" not in INDEX
     assert "company.logo_render_mode !== 'image'" in INDEX
     assert "policy.mode === 'initials'" in INDEX
@@ -81,7 +84,7 @@ def test_known_company_logo_assets_are_confined_to_seed_meme_portfolios() -> Non
         "nvidia.com": "https://www.nvidia.com/content/dam/en-zz/Solutions/about-nvidia/nvidia-brochure/images/nvidia-logo-black.svg",
         "xpeng.com": "https://a-cdn.xpeng.com/mall/public/favicon.svg",
         "rainbow-robotics.com": "https://rainbow-robotics.com/wp-content/uploads/2026/02/logo-dark.svg",
-        "ht.co.kr": "https://www.ht.co.kr/img/logo/logo_p.png",
+        "ht.co.kr": "https://www.ht.co.kr/img/icon/favicon.ico",
         "wonik.com": "https://wonik.com/assets/images/favicon/apple-icon-144x144.png",
         "mazetx.com": "https://mazetx.com/wp-content/uploads/2019/10/cropped-apple-touch-icon-192x192.png",
         "gene.com": "https://www.gene.com/assets/frontend/img/favicon-prefers-light-mode.svg",
@@ -170,6 +173,12 @@ def test_maker_stock_search_uses_only_verified_official_logo_scope() -> None:
       const visible = [...rows.filter((row) => visibleDomesticIds.has(row.id)), ...foreign];
       if (visible.length !== 27) throw new Error('unexpected visible stock set: ' + visible.length);
       visible.forEach((row) => {
+        if (row.id === 'us-MSFT') {
+          if (row.logo_render_mode !== 'initials' || row.logo_url !== '') {
+            throw new Error('Microsoft must remain initials-only');
+          }
+          return;
+        }
         const p = row.logo_provenance || {};
         if (row.logo_asset_scope !== 'maker_stock_search') throw new Error(row.id + ': scope');
         if (row.logo_render_mode !== 'image') throw new Error(row.id + ': image mode');
@@ -190,6 +199,13 @@ def test_maker_stock_search_uses_only_verified_official_logo_scope() -> None:
       const unpinned = rows.find((row) => row.id === 'kr-086790');
       if (!unpinned || unpinned.logo_render_mode !== 'initials' || unpinned.logo_url !== '') {
         throw new Error('unverified fallback is not initials');
+      }
+      const kakao = rows.find((row) => row.id === 'kr-035720');
+      if (!kakao || kakao.logo_url !== 'https://t1.kakaocdn.net/kakaocorp/corp_thumbnail/Kakao.png'
+        || kakao.logo_asset_format !== 'png' || kakao.logo_asset_width !== 800
+        || kakao.logo_asset_height !== 800
+        || kakao.logo_asset_sha256 !== '63ad018488cf671e4e74d26ec24c0ef7990ac23605bdbbd953ac33df4b7e48ce') {
+        throw new Error('Kakao official 800px asset missing');
       }
       const html = fs.readFileSync('./frontend/index.html', 'utf8');
       const match = html.match(/<script[^>]*data-dc-script[^>]*>([\s\S]*?)<\/script>/);
@@ -216,8 +232,10 @@ def test_maker_stock_search_uses_only_verified_official_logo_scope() -> None:
       domesticBatch.forEach((row) => preloader.registerLogo(row.name_en, row.logo_url, row));
       foreign.slice(0, 6).forEach((row) => preloader.registerLogo(row.name_en, row.logo_url, row, true));
       const queuedNames = (preloader.__logoQueue || []).map(([name]) => name);
-      const foreignNames = foreign.slice(0, 6).map((row) => row.name_en);
-      if (JSON.stringify(queuedNames.slice(0, 6)) !== JSON.stringify(foreignNames)) {
+      const foreignNames = foreign.slice(0, 6)
+        .filter((row) => row.logo_render_mode === 'image')
+        .map((row) => row.name_en);
+      if (JSON.stringify(queuedNames.slice(0, foreignNames.length)) !== JSON.stringify(foreignNames)) {
         throw new Error('visible foreign logos were left behind the domestic preload queue');
       }
     """
@@ -272,6 +290,31 @@ def test_live_logo_candidate_runtime_honors_initials_and_seed_scope() -> None:
         logo_asset_scope: 'seed_meme_portfolio'
       };
       if (!component.logoCandidate(seed)) throw new Error('seed asset rejected');
+      const seedWordmarks = [
+        ['livsmed.com', 306, 60],
+        ['orionworld.com', 135, 29],
+        ['crown.co.kr', 240, 54],
+        ['ht.co.kr', 256, 229],
+      ];
+      seedWordmarks.forEach(([domain, width, height]) => {
+        const company = {company: domain, official_domain: domain, logo_asset_scope: 'seed_meme_portfolio'};
+        const logo = component.logoCandidate(company);
+        const policy = component.logoPolicy(company, logo);
+        if (policy.mode !== 'seed_meme_portfolio' || policy.seedRenderBox !== 34
+          || policy.seedMinimumPixelDensity !== 2
+          || !component.seedRasterSharpEnough(width, height, policy)) {
+          throw new Error(domain + ': contain-density gate rejected a sharp official wordmark');
+        }
+      });
+      const seedPolicy = component.logoPolicy(seed, component.logoCandidate(seed));
+      if (component.seedRasterSharpEnough(60, 12, seedPolicy)) {
+        throw new Error('undersized seed wordmark was accepted');
+      }
+      const livePolicy = component.logoPolicy(verified, verified.logo_url);
+      if (livePolicy.mode !== 'image' || livePolicy.minimum !== 64
+        || livePolicy.seedRenderBox !== null || livePolicy.seedMinimumPixelDensity !== null) {
+        throw new Error('seed density policy leaked into live-v4');
+      }
     """
     result = subprocess.run(
         ["node", "-e", script], cwd=ROOT, text=True, capture_output=True, check=False

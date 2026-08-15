@@ -61,8 +61,8 @@
       'image/x-icon', 256, 256, 'cddaaa35e5464c57990c0674cca6e331c2a492ce7a7ed8f7ac1105da76709ecf', 'icon'
     ),
     'kakaocorp.com': verifiedMakerLogo(
-      'https://www.kakaocorp.com/page/', 'https://www.kakaocorp.com/page/favicon.ico',
-      'image/x-icon', 64, 64, 'a0939f151f03ceb81d0c659bce1c685c5d1d8ae4bc561da1f1ab7863677ab0df', 'icon'
+      'https://www.kakaocorp.com/page/', 'https://t1.kakaocdn.net/kakaocorp/corp_thumbnail/Kakao.png',
+      'image/png', 800, 800, '63ad018488cf671e4e74d26ec24c0ef7990ac23605bdbbd953ac33df4b7e48ce', 'og_image', 'official_page_declared_cdn'
     ),
     'hyundai.com': verifiedMakerLogo(
       'https://www.hyundai.com/kr/ko/info/ci',
@@ -120,10 +120,8 @@
       'https://www.apple.com/newsroom/images/default/apple-logo-og.jpg?202608140503',
       'image/jpeg', 1200, 630, '2172fd3dbe2adb1180222673a64c2ab28f984e443cc11133bf774a33044ce391', 'og_image'
     ),
-    'microsoft.com': verifiedMakerLogo(
-      'https://www.microsoft.com/ko-kr', 'https://www.microsoft.com/favicon.ico?v2',
-      'image/vnd.microsoft.icon', 128, 128, '90cdaf487716184e4034000935c605d1633926d348116d198f355a98b8c6cd21', 'icon'
-    ),
+    // Microsoft remains an initials fallback: no redistributable official
+    // asset that also passed the runtime availability check is pinned here.
     'abc.xyz': verifiedMakerLogo(
       'https://abc.xyz/', 'https://s206.q4cdn.com/479360582/files/design/alphabet_logo.png',
       'image/png', 800, 188, 'de61b1204d6ab077ebef10b5392523a8208dc0276278ce5a9bb5e4c891ef93d8', 'explicit_logo_image', 'official_page_declared_cdn'

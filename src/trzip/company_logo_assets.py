@@ -64,15 +64,15 @@ _EXTERNAL_CSS_URL = re.compile(r"url\s*\(\s*(['\"]?)(?!#)(.*?)\1\s*\)", re.I)
 # TLS/markup prevents reliable discovery, without falling back to a search
 # engine favicon or an unrelated third-party logo service.
 _REVIEWED_COMPANY_LOGOS = {
-    ("동원F&B", "049770"): {
-        "accepted_homepage_hosts": {"dongwonfnb.com", "www.dongwonfnb.com"},
-        "source_page_url": "https://www.dongwonfnb.com/services/Company/CI",
-        "asset_url": "https://www.dongwonfnb.com/Images/Company/img_ci_signature.gif",
-        "mime": "image/gif",
-        "width": 221,
-        "height": 110,
-        "sha256": "5ae875327cd918f2c634c97eff690070d308e4ae0d01e9af28bb94809ce1915b",
-        "verification": "verified_raster_min_64px",
+    ("동원산업", "006040"): {
+        "accepted_homepage_hosts": {"dongwon.com", "www.dongwon.com"},
+        "source_page_url": "https://www.dongwon.com/en",
+        "asset_url": "https://www.dongwon.com/asset/image/logo/dongwon_blue.svg",
+        "mime": "image/svg+xml",
+        "width": 113,
+        "height": 47,
+        "sha256": "27543d470b20358cb10f476c3d481ede0cd73a45d513660a6e628b9ac6c9d30a",
+        "verification": "verified_safe_svg",
         "asset_scope": "same_official_domain",
     },
     ("대상", "001680"): {
@@ -121,14 +121,14 @@ _REVIEWED_COMPANY_LOGOS = {
         "verification": "verified_raster_min_64px",
         "asset_scope": "same_official_domain",
     },
-    ("신세계푸드", "031440"): {
-        "accepted_homepage_hosts": {"shinsegaefood.com", "www.shinsegaefood.com"},
-        "source_page_url": "https://shinsegaefood.com/main.sf",
-        "asset_url": "https://shinsegaefood.com/images/favicon/shinsegae_ci16.ico",
-        "mime": "image/x-icon",
-        "width": 256,
-        "height": 256,
-        "sha256": "8179821c6d2d72de363dcc34149eafe93cc32c6428951b77118b8d105313490a",
+    ("마니커에프앤지", "195500"): {
+        "accepted_homepage_hosts": {"manikerfng.com", "www.manikerfng.com"},
+        "source_page_url": "https://www.manikerfng.com/",
+        "asset_url": "https://www.manikerfng.com/ko/images/logo.png",
+        "mime": "image/png",
+        "width": 201,
+        "height": 67,
+        "sha256": "eaf91b586ddfeacac505a1b3ff7386a5e0449d996131edfb8fa9e3cbfb43104c",
         "verification": "verified_raster_min_64px",
         "asset_scope": "same_official_domain",
     },
@@ -297,8 +297,12 @@ def _reviewed_catalog_result(requested_url: str) -> dict | None:
         or isinstance(width, bool)
         or not isinstance(height, int)
         or isinstance(height, bool)
-        or width < 64
-        or height < 64
+        or width < 1
+        or height < 1
+        or (
+            verification == "verified_raster_min_64px"
+            and (width < 64 or height < 64)
+        )
         or len(sha256) != 64
         or any(character not in "0123456789abcdef" for character in sha256)
         or verification not in {"verified_safe_svg", "verified_raster_min_64px"}
