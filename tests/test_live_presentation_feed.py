@@ -12,7 +12,36 @@ from trzip.result_quality import evaluate_presentation_feed_quality
 OBSERVED_AT = "2026-08-15T05:00:00+00:00"
 
 
-def _company(index: int, *, complete: bool = True, source_url: bool = False) -> dict:
+@pytest.fixture(autouse=True)
+def _verified_logo_resolver(monkeypatch):
+    def resolve(homepage):
+        if homepage == "https://www.harim.com/main/":
+            return {
+                "status": "verified",
+                "source_page_url": homepage,
+                "asset_url": "https://www.harim.com/main/img/ci.png",
+                "mime": "image/png",
+                "width": 198,
+                "height": 149,
+                "sha256": "ff67be9cdeeeff6a1d6b4f17111ed758dcf3b5e9c6950e1a974442237f8267de",
+                "verification": "verified_raster_min_64px",
+                "asset_scope": "same_official_domain",
+            }
+        return {
+            "status": "verified",
+            "source_page_url": homepage,
+            "asset_url": "https://assets.example.com/logo.svg",
+            "mime": "image/svg+xml",
+            "width": 160,
+            "height": 80,
+            "sha256": "a" * 64,
+            "verification": "verified_safe_svg",
+        }
+
+    monkeypatch.setattr("trzip.presentation_feed.resolve_company_logo", resolve)
+
+
+def _company(index: int, *, complete: bool = True, source_url: bool = True) -> dict:
     role = (
         "manufacturing_development" if index < 5
         else "distribution" if index < 8
@@ -38,14 +67,42 @@ def _company(index: int, *, complete: bool = True, source_url: bool = False) -> 
         "company_role_label": role_label,
         "company_role_public": True,
         "relation_tier": "direct",
+        "official_identity": {
+            "status": "verified",
+            "homepage": f"https://company{index}.example/",
+            "ranking_effect": "none",
+        },
     }
-    if index == 1:
+    if complete:
+        market_url = "https://example.com/market" if source_url else None
+        listing = {
+            "status": "verified_current",
+            "current_listed": True,
+            "exchange": "KOSPI",
+            "stock_code": f"{index:06d}",
+            "as_of": "2026-08-15",
+            "evidence_owner": "KRX",
+            "evidence_type": "exchange_current_security_universe",
+            "evidence_url": "https://data.krx.co.kr/",
+            "synthetic": False,
+            "estimated": False,
+            "ranking_effect": "none",
+        }
+        row["listing_verification"] = listing
         row["market_reference"] = {
             "status": "observed",
             "provider": "verified-provider",
-            "source_url": "https://example.com/market" if source_url else None,
+            "source_url": market_url,
             "source_urls": {
+                "price": market_url,
                 "fundamentals": "https://example.com/fundamentals",
+            },
+            "field_sources": {
+                "price_series": market_url,
+                "market_cap_krw": "https://example.com/fundamentals",
+                "per": "https://example.com/fundamentals",
+                "pbr": "https://example.com/fundamentals",
+                "roe_pct": "https://example.com/fundamentals",
             },
             "daily_ohlcv": [
                 {"date": f"2026-07-{index + 1:02d}", "close": 76 + index}
@@ -69,6 +126,8 @@ def _company(index: int, *, complete: bool = True, source_url: bool = False) -> 
                 "rate": 1.0,
                 "as_of": "2026-08-15",
                 "source_url": "https://example.com/market",
+                "synthetic": False,
+                "estimated": False,
             },
             "valuation": {
                 "per": 12.5,
@@ -110,6 +169,10 @@ def _company(index: int, *, complete: bool = True, source_url: bool = False) -> 
                     ],
                 },
             },
+            "listing_verification": listing,
+            "synthetic": False,
+            "estimated": False,
+            "ranking_effect": "none",
         }
     if not complete:
         row["ontology_complete"] = False
@@ -117,7 +180,7 @@ def _company(index: int, *, complete: bool = True, source_url: bool = False) -> 
     return row
 
 
-def _candidate(*, market_source_url: bool = False) -> dict:
+def _candidate(*, market_source_url: bool = True) -> dict:
     companies = [_company(0, complete=False)] + [
         _company(index, source_url=market_source_url)
         for index in range(1, 11)
@@ -245,8 +308,11 @@ def test_live_feed_is_sparse_and_never_reuses_previous_feed_when_current_is_empt
 
 
 def test_live_market_snapshot_requires_public_source_url():
-    without_source = build_presentation_feed(_intelligence(_candidate()))
-    assert without_source["items"][0]["companies"][0]["market_snapshot"] is None
+    without_source = build_presentation_feed(
+        _intelligence(_candidate(market_source_url=False))
+    )
+    assert without_source["status"] == "empty"
+    assert without_source["items"] == []
 
     with_source_candidate = _candidate(market_source_url=True)
     with_source = build_presentation_feed(_intelligence(with_source_candidate))
@@ -279,7 +345,7 @@ def test_live_market_snapshot_requires_public_source_url():
     foreign_labeled_cap["items"][0]["companies"][0]["market_snapshot"][
         "market_cap_currency"
     ] = "USD"
-    with pytest.raises(ValueError, match="KRW conversion provenance"):
+    with pytest.raises(ValueError, match="complete actual market snapshot"):
         _validate_presentation_feed(foreign_labeled_cap)
 
     tampered_roe = deepcopy(with_source)
@@ -298,7 +364,8 @@ def test_live_market_snapshot_fails_closed_on_partial_observed_series():
 
     feed = build_presentation_feed(_intelligence(candidate))
 
-    assert feed["items"][0]["companies"][0]["market_snapshot"] is None
+    assert feed["status"] == "empty"
+    assert feed["items"] == []
 
 
 @pytest.mark.parametrize("mutation", ["extra_row", "duplicate_date", "reverse_order"])
@@ -314,20 +381,19 @@ def test_live_market_snapshot_requires_exact_distinct_chronological_sessions(mut
 
     feed = build_presentation_feed(_intelligence(candidate))
 
-    assert feed["items"][0]["companies"][0]["market_snapshot"] is None
+    assert feed["status"] == "empty"
+    assert feed["items"] == []
 
 
 @pytest.mark.parametrize(("metric", "invalid"), [("per", 0.0), ("pbr", float("inf"))])
-def test_live_market_snapshot_omits_invalid_positive_ratios(metric, invalid):
+def test_live_market_snapshot_rejects_invalid_required_ratios(metric, invalid):
     candidate = _candidate(market_source_url=True)
     candidate["companies"][1]["market_reference"]["valuation"][metric] = invalid
 
-    snapshot = build_presentation_feed(_intelligence(candidate))["items"][0][
-        "companies"
-    ][0]["market_snapshot"]
+    feed = build_presentation_feed(_intelligence(candidate))
 
-    assert metric not in snapshot
-    assert f"{metric}_source_url" not in snapshot
+    assert feed["status"] == "empty"
+    assert feed["items"] == []
 
 
 def test_live_card_rejects_fewer_than_two_distinct_linked_keywords():
@@ -352,6 +418,42 @@ def test_source_candidate_with_eleven_complete_companies_projects_exactly_ten():
 def test_source_candidate_with_only_nine_complete_companies_is_rejected():
     candidate = _candidate()
     candidate["companies"] = candidate["companies"][:-1]
+
+    feed = build_presentation_feed(_intelligence(candidate))
+
+    assert feed["status"] == "empty"
+    assert feed["items"] == []
+
+
+def test_current_listing_proof_is_fail_closed_for_delisted_company():
+    candidate = _candidate()
+    company = candidate["companies"][1]
+    company["listing_verification"].update({
+        "status": "verified_inactive",
+        "current_listed": False,
+    })
+    company["market_reference"]["listing_verification"] = company[
+        "listing_verification"
+    ]
+
+    feed = build_presentation_feed(_intelligence(candidate))
+
+    assert feed["status"] == "empty"
+    assert feed["items"] == []
+
+
+def test_foreign_market_history_without_official_current_listing_proof_is_rejected():
+    """Yahoo history alone is not accepted as an exchange current-list proof."""
+
+    candidate = _candidate()
+    company = candidate["companies"][1]
+    company.update({"market": "NASDAQ", "stock_code": "AAPL"})
+    company["market_reference"].update({
+        "provider": "yahoo_finance",
+        "source_url": "https://finance.yahoo.com/quote/AAPL",
+        "listing_verification": None,
+    })
+    company.pop("listing_verification", None)
 
     feed = build_presentation_feed(_intelligence(candidate))
 
@@ -429,14 +531,14 @@ def test_live_company_projects_only_verified_official_page_logo(monkeypatch):
 
     tampered = deepcopy(feed)
     tampered["items"][0]["companies"][0]["logo_asset_sha256"] = "b" * 64
-    with pytest.raises(ValueError, match="verified resolver provenance"):
+    with pytest.raises(ValueError, match="verified image logo"):
         _validate_presentation_feed(tampered)
     quality = evaluate_presentation_feed_quality(tampered)
     assert quality["passed"] is False
     assert any("invalid_live_logo" in failure for failure in quality["failures"])
 
 
-def test_unverified_homepage_logo_fails_closed_to_initials(monkeypatch):
+def test_unverified_homepage_logo_excludes_public_card(monkeypatch):
     candidate = _candidate()
     candidate["companies"][1]["official_identity"] = {
         "status": "verified",
@@ -458,13 +560,9 @@ def test_unverified_homepage_logo_fails_closed_to_initials(monkeypatch):
     )
 
     feed = build_presentation_feed(_intelligence(candidate))
-    company = feed["items"][0]["companies"][0]
 
-    assert company["logo_render_mode"] == "initials"
-    assert company["logo_url"] == ""
-    assert company["logo_runtime_probe_required"] is False
-    assert company["logo_provenance"]["source_page_url"] == "https://company.example/"
-    assert company["logo_provenance"]["asset_url"] is None
+    assert feed["status"] == "empty"
+    assert feed["items"] == []
     _validate_presentation_feed(feed)
 
 
@@ -480,6 +578,13 @@ def test_invalid_official_homepage_recovers_only_from_exact_reviewed_identity(mo
             "ranking_effect": "none",
         },
     })
+    company["listing_verification"].update({
+        "stock_code": "136480",
+    })
+    company["market_reference"]["listing_verification"].update({
+        "stock_code": "136480",
+    })
+    company["market_reference"]["stock_code"] = "136480"
     candidate["keyword_company_links"][0].update({
         "company": "하림",
         "stock_code": "136480",

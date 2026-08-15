@@ -187,7 +187,7 @@ def test_presentation_feed_is_counted_as_the_actual_frontend_surface():
 
     result = evaluate_frontend_result(intelligence)
 
-    assert result["policy_version"] == "frontend-result-quality-v8"
+    assert result["policy_version"] == "frontend-result-quality-v9"
     assert result["passed"] is True
     assert result["frontend_surface"] == "presentation_feed"
     assert result["canonical_home_count"] == 0
@@ -440,9 +440,10 @@ def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):
     database = tmp_path / "runtime.sqlite3"
     stamp = "2026-08-13T17:00:00+00:00"
     rows = [
-        HourlyObservation(
-            stamp, "x", f"x-{rank}", rank, 100 - rank, "observed",
-            source_payload_json=json.dumps({
+            HourlyObservation(
+                stamp, "x", f"x-{rank}", rank, 100 - rank, "observed",
+                collector_version="x_current_session_kr_v1",
+                source_payload_json=json.dumps({
                 "collector": "codex_chrome_current_session",
                 "transport": "codex_browser_snapshot",
                 "profile": "current_logged_in_chrome",
@@ -453,13 +454,16 @@ def test_source_gate_requires_contiguous_google_full_ranking(tmp_path: Path):
         )
         for rank in range(1, 31)
     ] + [
-        HourlyObservation(stamp, "google_trends", f"g-{rank}", rank, 100 - rank, "observed")
+        HourlyObservation(
+            stamp, "google_trends", f"g-{rank}", rank, 100 - rank, "observed",
+            collector_version="google_trending_now_kr_v1",
+        )
         for rank in (1, 2, 4)
     ]
     upsert(rows, database)
 
     result = _source_gate(database, stamp)
-    assert result["policy_version"] == "hourly-source-proof-v2"
+    assert result["policy_version"] == "hourly-source-proof-v3"
     assert result["passed"] is False
     assert result["sources"]["google_trends"]["row_count"] == 3
     assert result["sources"]["google_trends"]["maximum_rank"] == 4
@@ -482,10 +486,14 @@ def test_source_gate_fails_closed_for_invalid_or_inconsistent_x_evidence(tmp_pat
             payload["schedule_delay_seconds"] = "not-a-number"
         x_rows.append(HourlyObservation(
             stamp, "x", f"x-{rank}", rank, 100 - rank, "observed",
+            collector_version="x_current_session_kr_v1",
             source_payload_json=json.dumps(payload),
         ))
     google_rows = [
-        HourlyObservation(stamp, "google_trends", f"g-{rank}", rank, 100-rank, "observed")
+        HourlyObservation(
+            stamp, "google_trends", f"g-{rank}", rank, 100-rank, "observed",
+            collector_version="google_trending_now_kr_v1",
+        )
         for rank in range(1, 4)
     ]
     upsert(x_rows + google_rows, database)
@@ -509,9 +517,9 @@ def test_source_gate_rejects_unapproved_collector_and_duplicate_rank(tmp_path: P
         for rank in range(1, 31)
     ]
     google_rows = [
-        HourlyObservation(stamp, "google_trends", "g-1a", 1, 99, "observed"),
-        HourlyObservation(stamp, "google_trends", "g-1b", 1, 98, "observed"),
-        HourlyObservation(stamp, "google_trends", "g-3", 3, 97, "observed"),
+        HourlyObservation(stamp, "google_trends", "g-1a", 1, 99, "observed", collector_version="google_trending_now_kr_v1"),
+        HourlyObservation(stamp, "google_trends", "g-1b", 1, 98, "observed", collector_version="google_trending_now_kr_v1"),
+        HourlyObservation(stamp, "google_trends", "g-3", 3, 97, "observed", collector_version="google_trending_now_kr_v1"),
     ]
     upsert(google_rows, database)
     with connect(database) as connection:
@@ -548,7 +556,12 @@ def _write_complete_source_hour(database: Path, at: datetime) -> None:
         "scheduled_for": stamp,
         "schedule_delay_seconds": 180,
     })
-    rows = [
+    google_evidence = json.dumps({
+        "collection_declared_total": 100,
+        "collection_page_count": 1,
+        "collection_completion_verified": True,
+    })
+    x_rows = [
         HourlyObservation(
             stamp,
             "x",
@@ -560,7 +573,8 @@ def _write_complete_source_hour(database: Path, at: datetime) -> None:
             collector_version="x_current_session_kr_v1",
         )
         for rank in range(1, 31)
-    ] + [
+    ]
+    google_rows = [
         HourlyObservation(
             stamp,
             "google_trends",
@@ -568,11 +582,19 @@ def _write_complete_source_hour(database: Path, at: datetime) -> None:
             rank,
             100 - rank,
             "observed",
+            source_payload_json=google_evidence,
             collector_version="google_trending_now_kr_v1",
         )
-        for rank in range(1, 4)
+        for rank in range(1, 101)
     ]
-    upsert(rows, database)
+    store_verified_source_snapshot(
+        x_rows, source="x", collector="x_korea_realtime",
+        detail="verified exact-hour X source", path=database,
+    )
+    store_verified_source_snapshot(
+        google_rows, source="google_trends", collector="google_geo_kr",
+        detail="verified exact-hour Google source", path=database,
+    )
 
 
 def _write_verified_window_source(
@@ -588,9 +610,27 @@ def _write_verified_window_source(
         else "google_trending_now_kr_v1"
     )
     collector = "x_korea_realtime" if source == "x" else "google_geo_kr"
+    source_payload = None
+    if source == "x":
+        actual = (datetime.fromisoformat(stamp) + timedelta(minutes=3)).isoformat()
+        source_payload = json.dumps({
+            "collector": "codex_chrome_current_session",
+            "transport": "codex_browser_snapshot",
+            "profile": "current_logged_in_chrome",
+            "region": "KR", "region_verified": True,
+            "observed_at": actual, "scheduled_for": stamp,
+            "schedule_delay_seconds": 180,
+        })
+    else:
+        source_payload = json.dumps({
+            "collection_declared_total": count,
+            "collection_page_count": 1,
+            "collection_completion_verified": True,
+        })
     rows = [
         HourlyObservation(
             stamp, source, f"{source}-{rank}", rank, 101 - rank, "observed",
+            source_payload_json=source_payload,
             collector_version=version,
         )
         for rank in range(1, count + 1)
@@ -610,14 +650,18 @@ def test_daily_publication_source_gate_allows_gaps_without_reuse(
     _write_verified_window_source(
         database, end - timedelta(hours=1), "google_trends"
     )
+    _write_verified_window_source(database, end, "x")
+    _write_verified_window_source(database, end, "google_trends")
 
     result = _publication_window_source_gate(database, end.isoformat())
 
-    assert result["policy_version"] == "publication-window-source-proof-v1"
+    assert result["policy_version"] == "publication-window-source-proof-v2"
     assert result["passed"] is True
-    assert result["sources"]["x"]["valid_hour_count"] == 1
-    assert result["sources"]["google_trends"]["valid_hour_count"] == 1
-    assert result["missing_hour_count"] == 22
+    assert result["window_passed"] is True
+    assert result["exact_hour_source_gate"]["passed"] is True
+    assert result["sources"]["x"]["valid_hour_count"] == 2
+    assert result["sources"]["google_trends"]["valid_hour_count"] == 2
+    assert result["missing_hour_count"] == 21
     assert result["fabricated_hour_count"] == 0
     assert result["reused_previous_hour_count"] == 0
 
@@ -633,6 +677,118 @@ def test_daily_publication_source_gate_fails_when_one_source_has_no_valid_hour(
 
     assert result["passed"] is False
     assert result["sources"]["google_trends"]["valid_hour_count"] == 0
+
+
+def test_daily_publication_source_gate_rejects_missing_exact_hour_with_valid_window(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "exact-hour-required.sqlite3"
+    end = datetime(2026, 8, 15, 5, tzinfo=UTC)
+    _write_verified_window_source(database, end - timedelta(hours=1), "x")
+    _write_verified_window_source(database, end - timedelta(hours=1), "google_trends")
+
+    result = _publication_window_source_gate(database, end.isoformat())
+
+    assert result["window_passed"] is True
+    assert result["exact_hour_source_gate"]["passed"] is False
+    assert result["passed"] is False
+
+
+def test_daily_publication_source_gate_rejects_one_row_google_at_exact_hour(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "one-google-row.sqlite3"
+    end = datetime(2026, 8, 15, 5, tzinfo=UTC)
+    _write_verified_window_source(database, end - timedelta(hours=1), "x")
+    _write_verified_window_source(database, end - timedelta(hours=1), "google_trends")
+    _write_verified_window_source(database, end, "x")
+    stamp = end.isoformat()
+    one_google = HourlyObservation(
+        stamp, "google_trends", "only-row", 1, 100, "observed",
+        source_payload_json=json.dumps({
+            "collection_declared_total": 1,
+            "collection_page_count": 1,
+            "collection_completion_verified": True,
+        }),
+        collector_version="google_trending_now_kr_v1",
+    )
+    store_verified_source_snapshot(
+        [one_google], source="google_trends", collector="google_geo_kr",
+        detail="incomplete exact-hour Google fixture", path=database,
+    )
+
+    result = _publication_window_source_gate(database, stamp)
+
+    assert result["window_passed"] is True
+    assert result["exact_hour_source_gate"]["sources"]["google_trends"]["row_count"] == 1
+    assert result["exact_hour_source_gate"]["passed"] is False
+    assert result["passed"] is False
+
+
+def test_publication_source_gate_rejects_deterministic_replay_collectors(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "fixture-collector.sqlite3"
+    end = datetime(2026, 8, 15, 5, tzinfo=UTC)
+    stamp = end.isoformat()
+    rows = [
+        HourlyObservation(
+            stamp, "x", f"x-{rank}", rank, 101 - rank, "observed",
+            collector_version="trzip_v3",
+        )
+        for rank in range(1, 31)
+    ] + [
+        HourlyObservation(
+            stamp, "google_trends", f"g-{rank}", rank, 101 - rank, "observed",
+            collector_version="trzip_v3",
+        )
+        for rank in range(1, 101)
+    ]
+    upsert(rows, database)
+    with connect(database) as connection:
+        connection.executemany(
+            "INSERT OR REPLACE INTO collection_audit"
+            "(observed_at,collector,status,row_count,detail) VALUES (?,?,?,?,?)",
+            [
+                (stamp, "x_korea_realtime", "observed", 30, "fixture"),
+                (stamp, "google_geo_kr", "observed", 100, "fixture"),
+            ],
+        )
+
+    result = _publication_window_source_gate(database, stamp)
+
+    assert result["window_passed"] is False
+    assert result["exact_hour_source_gate"]["passed"] is False
+    assert result["forbidden_collector_rows"] == 130
+    assert result["passed"] is False
+
+
+def test_publication_source_gate_rejects_fixture_mixed_with_valid_actual_window(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "mixed-collector.sqlite3"
+    end = datetime(2026, 8, 15, 5, tzinfo=UTC)
+    _write_verified_window_source(database, end, "x")
+    _write_verified_window_source(database, end, "google_trends")
+    contaminated_at = (end - timedelta(hours=1)).isoformat()
+    upsert([
+        HourlyObservation(
+            contaminated_at,
+            "google_trends",
+            "fixture-high-score",
+            1,
+            999_999,
+            "observed",
+            collector_version="trzip_v3",
+        )
+    ], database)
+
+    result = _publication_window_source_gate(database, end.isoformat())
+
+    assert result["window_passed"] is True
+    assert result["exact_hour_source_gate"]["passed"] is True
+    assert result["forbidden_collector_rows"] == 1
+    assert result["passed"] is False
 
 
 def test_eight_hour_local_streak_requires_only_daily_end_publication(

@@ -60,9 +60,18 @@ def _complete_candidate_with_role_count(role_count: int) -> dict:
     companies = []
     for index in range(10):
         role = roles[index % len(roles)]
+        code = f"C{index:03d}"
+        listing = {
+            "status": "verified_current", "current_listed": True,
+            "exchange": "KRX", "stock_code": code,
+            "as_of": "2026-08-15", "evidence_owner": "KRX",
+            "evidence_type": "exchange_current_security_universe",
+            "evidence_url": "https://data.krx.co.kr/",
+            "synthetic": False, "estimated": False, "ranking_effect": "none",
+        }
         companies.append({
             "company": f"Company {index}",
-            "stock_code": f"C{index:03d}",
+            "stock_code": code,
             "market": "KRX",
             "company_description": "Listed company description",
             "relationship_reason": "Documented relationship",
@@ -71,6 +80,31 @@ def _complete_candidate_with_role_count(role_count: int) -> dict:
             "ontology_complete": True,
             "ontology_path": [{"from": "trend", "to": f"Company {index}"}],
             "company_role_category": role,
+            "listing_verification": listing,
+            "market_reference": {
+                "status": "observed", "provider": "pykrx",
+                "source_url": "https://data.krx.co.kr/",
+                "source_urls": {"fundamentals": "https://data.krx.co.kr/"},
+                "field_sources": {
+                    field: "https://data.krx.co.kr/"
+                    for field in ("price_series", "market_cap_krw", "per", "pbr", "roe_pct")
+                },
+                "daily_ohlcv": [
+                    {"date": f"2026-07-{day:02d}", "close": 100 + day}
+                    for day in range(1, 31)
+                ],
+                "summary": {
+                    "as_of": "2026-08-15", "currency": "KRW",
+                    "market_cap": 1_000_000, "market_cap_krw": 1_000_000,
+                },
+                "valuation": {"per": 10.0, "pbr": 1.0, "roe_pct": 8.0},
+                "fx_reference": {
+                    "status": "observed", "provider": "identity", "rate": 1.0,
+                    "as_of": "2026-08-15", "source_url": "https://data.krx.co.kr/",
+                },
+                "listing_verification": listing,
+                "synthetic": False, "estimated": False, "ranking_effect": "none",
+            },
         })
     return {
         "event_key": "role-contract",

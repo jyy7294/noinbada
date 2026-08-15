@@ -6,9 +6,9 @@ chrome:control-chrome으로 찬희님이 로그인한 현재 Chrome의 https://x
 
 순위와 선발의 원천 입력은 X와 Google 실측만 사용한다. NAVER 뉴스는 왜 지금 떴는지 맥락 근거에만 사용하며 점수·순위·제품 적합도를 바꾸지 않는다. YouTube, Instagram, NAVER 블로그·검색트렌드는 활성 순위 입력으로 사용하지 않는다.
 
-hourly-source-proof-v2를 적용한다. X는 정확히 30개의 고유 연속 순위, Google은 해당 시각의 전체 연속 순위여야 하며 둘 다 observed여야 한다. X 30개에는 같은 현재 로그인 Chrome, 대한민국 지역, 정각 후 15분 이내 수집 증거가 있어야 한다.
+hourly-source-proof-v3를 적용한다. X는 실제 수집기에서 정확히 30개의 고유 연속 순위, Google은 실제 수집기에서 최소 100개이며 declared_total과 일치하는 해당 시각의 전체 연속 순위여야 하고 둘 다 collection audit observed여야 한다. X 30개에는 같은 현재 로그인 Chrome, 대한민국 지역, 정각 후 15분 이내 수집 증거가 있어야 한다.
 
-frontend-result-quality-v8을 적용한다. 현재 프런트 기본 목록은 presentation_feed이며, 승인된 순서의 검수 카드 정확히 10개를 제공한다. 각 카드는 1주·1개월·3개월 관심 추이, 출처가 있는 서로 다른 6글자 이하 키워드 정확히 5개, 근거 있는 국내외 상장기업 최소 10개, 명확한 기업 역할 3~4개, 기업 로고·종목코드·거래소·연결 이유·근거 URL·온톨로지 경로·관계 등급을 갖춰야 한다. 로고와 시장 표시값은 display-only이며 canonical X·Google 순위에 영향을 주지 않는다. canonical home_feed는 완성 카드가 없으면 empty일 수 있고 숫자를 맞추기 위해 패딩하지 않는다.
+frontend-result-quality-v9를 적용한다. 현재 프런트 기본 목록은 presentation_feed이며, 완성 카드마다 검증된 현재 상장기업 정확히 10개를 제공한다. 각 카드는 1주·1개월·3개월 관심 추이, 출처가 있는 서로 다른 6글자 이하 키워드 정확히 5개, 명확한 기업 역할 3~4개, 공식·거래소 상장 근거, 검증된 실제 이미지 로고, 실제 30거래일 시장 데이터, 원화 시가총액, PER·PBR·ROE와 필드별 출처, 종목코드·거래소·연결 이유·근거 URL·온톨로지 경로·관계 등급을 갖춰야 한다. 이 보강값은 display-only이며 canonical X·Google 순위에 영향을 주지 않는다. canonical home_feed는 완성 카드가 없으면 empty일 수 있고 숫자를 맞추기 위해 패딩하지 않는다.
 
 매시간 X·Google 원천과 프런트 계약이 모두 통과하면 원격 게시와 분리된 immutable hourly_validation_receipt를 로컬 SQLite에 기록한다. 영수증은 해당 시각의 원천 스냅샷, publication_id, 프런트 manifest SHA-256을 함께 고정한다. 중복 실행은 동일 영수증이면 무변경 성공으로 처리하고, 같은 시각의 다른 내용은 충돌로 실패시킨다. 최근 8회 연속 정각 성공은 이 로컬 영수증으로만 계산하며, 누락된 정각과 mutex 충돌은 성공으로 세지 않는다. monitoring/result_quality.json은 최신 로컬 실행과 현재 연속 성공 횟수를 반영한다.
 

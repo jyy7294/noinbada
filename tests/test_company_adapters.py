@@ -1,16 +1,21 @@
 from datetime import UTC, datetime, timedelta
 import sys
 import types
+import urllib.error
 import xml.etree.ElementTree as ET
 
 import pandas as pd
+import pytest
 
 from trzip.company_adapters import (
     OHLCV_COLUMNS,
     KRX_DATA_SOURCE_URL,
+    KRX_KIND_CURRENT_LIST_URL,
+    _krx_kind_current_security_universe,
     _market_reaction,
     _public_opendart_identity,
     enrich_company_identities,
+    krx_current_listing_verification,
     opendart_company,
     pykrx_stock,
 )
@@ -42,8 +47,13 @@ def test_pykrx_reference_includes_30_day_chart_valuation_and_public_source(monke
         get_market_ohlcv_by_date=lambda *_args: ohlcv,
         get_market_fundamental_by_date=lambda *_args: fundamentals,
         get_market_cap_by_date=lambda *_args: market_cap,
+        get_market_ticker_list=lambda *_args, **_kwargs: ["005930", "000660"],
     )
     monkeypatch.setitem(sys.modules, "pykrx", types.SimpleNamespace(stock=fake_stock))
+    monkeypatch.setattr(
+        "trzip.company_adapters._krx_kind_current_security_universe",
+        lambda _retrieved_on: (("005930", "KOSPI"), ("000660", "KOSPI")),
+    )
 
     result = pykrx_stock("005930", "20260815")
 
@@ -57,6 +67,104 @@ def test_pykrx_reference_includes_30_day_chart_valuation_and_public_source(monke
     assert result["summary"]["close_krw"] == 134
     assert result["fx_reference"]["rate"] == 1.0
     assert result["fx_reference"]["to_currency"] == "KRW"
+    assert result["listing_verification"] == {
+        "status": "verified_current",
+        "current_listed": True,
+        "exchange": "KRX",
+        "stock_code": "005930",
+        "as_of": datetime.now(UTC).date().isoformat(),
+        "evidence_owner": "KRX KIND",
+        "evidence_type": "official_current_security_register",
+        "evidence_url": KRX_KIND_CURRENT_LIST_URL,
+        "synthetic": False,
+        "estimated": False,
+        "ranking_effect": "none",
+    }
+
+
+def test_pykrx_current_listing_uses_independent_market_universe_day(monkeypatch):
+    """Historical OHLCV must not revive a code absent from today's universe."""
+
+    dates = pd.date_range("2026-06-01", periods=30, freq="B")
+    ohlcv = pd.DataFrame({"종가": range(100, 130)}, index=dates)
+    fake_stock = types.SimpleNamespace(
+        get_market_ticker_name=lambda _code: "과거상장사",
+        get_market_ohlcv_by_date=lambda *_args: ohlcv,
+        get_market_fundamental_by_date=lambda *_args: pd.DataFrame(),
+        get_market_cap_by_date=lambda *_args: pd.DataFrame(),
+    )
+    monkeypatch.setitem(sys.modules, "pykrx", types.SimpleNamespace(stock=fake_stock))
+    monkeypatch.setattr(
+        "trzip.company_adapters._krx_kind_current_security_universe",
+        lambda _retrieved_on: (("005930", "KOSPI"), ("000660", "KOSPI")),
+    )
+
+    result = pykrx_stock("123456", "20260815")
+
+    assert result["status"] == "not_found"
+    assert result["reason"] == "not_in_current_krx_security_universe"
+    assert result["listing_verification"]["status"] == "verified_inactive"
+    assert result["listing_verification"]["current_listed"] is False
+
+
+def test_kind_register_checks_code_and_market_and_absence(monkeypatch):
+    monkeypatch.setattr(
+        "trzip.company_adapters._krx_kind_current_security_universe",
+        lambda _retrieved_on: (("005930", "KOSPI"), ("136480", "KOSDAQ")),
+    )
+    observed_at = datetime(2026, 8, 15, 17, tzinfo=UTC)
+
+    current = krx_current_listing_verification(
+        "136480", observed_at, exchange="KOSDAQ"
+    )
+    wrong_market = krx_current_listing_verification(
+        "136480", observed_at, exchange="KOSPI"
+    )
+    absent = krx_current_listing_verification(
+        "031440", observed_at, exchange="KRX"
+    )
+
+    assert current["status"] == "verified_current"
+    assert wrong_market["status"] == "verified_inactive"
+    assert absent["status"] == "verified_inactive"
+
+
+def test_kind_register_wrong_mime_and_http_failure_are_fail_closed(monkeypatch):
+    class Headers:
+        @staticmethod
+        def get_content_type():
+            return "text/html"
+
+    class Response:
+        headers = Headers()
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        @staticmethod
+        def read():
+            return b"<html>login</html>"
+
+    _krx_kind_current_security_universe.cache_clear()
+    monkeypatch.setattr("urllib.request.urlopen", lambda *_args, **_kwargs: Response())
+    with pytest.raises(ValueError, match="MIME"):
+        _krx_kind_current_security_universe("2026-08-15")
+
+    _krx_kind_current_security_universe.cache_clear()
+    monkeypatch.setattr(
+        "urllib.request.urlopen",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(
+            urllib.error.URLError("offline")
+        ),
+    )
+    result = krx_current_listing_verification(
+        "005930", datetime(2026, 8, 15, 17, tzinfo=UTC), exchange="KOSPI"
+    )
+    assert result["status"] == "unavailable"
+    assert result["current_listed"] is False
 
 
 def test_market_reaction_detects_price_or_volume_change():

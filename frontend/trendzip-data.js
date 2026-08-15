@@ -425,8 +425,14 @@ const LIVE_COMPANY_ROLES = new Set([
   'ownership_investment', 'event_sponsorship',
 ]);
 const LIVE_LOGO_VERIFICATIONS = new Set([
-  'verified_safe_svg', 'verified_raster_min_64px', 'initials_fallback',
+  'verified_safe_svg', 'verified_raster_min_64px',
 ]);
+const LIVE_LISTING_EVIDENCE_TYPES = new Set([
+  'exchange_current_security_universe', 'official_current_security_register',
+]);
+const LIVE_PUBLIC_MARKET_SESSION_COUNT = 30;
+const LIVE_LISTING_FRESHNESS_DAYS = 4;
+const LIVE_LISTING_POST_OBSERVATION_AUDIT_DAYS = 1;
 
 function publicHttpUrl(value, { httpsOnly = false } = {}) {
   try {
@@ -486,16 +492,6 @@ function validLiveLogo(company) {
     || (provenance.sha256 || '') !== sha256
     || provenance.verification !== verification
   ) return false;
-  if (mode === 'initials') {
-    return company.logo_asset_source === 'initials_fallback'
-      && verification === 'initials_fallback'
-      && !logoUrl && !mime && format === 'none'
-      && width === 0 && height === 0 && !sha256
-      && !String(company.logo_asset_host || '').trim()
-      && !String(company.logo_rejected_asset_url || '').trim()
-      && (!sourcePageUrl || publicHttpUrl(sourcePageUrl))
-      && company.logo_asset_quality === 'fail_closed_initials_no_verified_asset';
-  }
   if (mode !== 'image' || !['verified_safe_svg', 'verified_raster_min_64px'].includes(verification)) {
     return false;
   }
@@ -521,6 +517,115 @@ function validLiveLogo(company) {
     && dimensionsValid
     && !String(company.logo_rejected_asset_url || '').trim()
     && ['verified_vector', 'verified_raster_min_64px'].includes(company.logo_asset_quality);
+}
+
+function finitePublicNumber(value, { positive = false } = {}) {
+  return typeof value === 'number'
+    && Number.isFinite(value)
+    && (!positive || value > 0);
+}
+
+function publicCalendarDayMs(value) {
+  const text = String(value || '').trim();
+  const match = /^(\d{4})-(\d{2})-(\d{2})/u.exec(text);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const timestamp = Date.UTC(year, month - 1, day);
+  const parsed = new Date(timestamp);
+  return parsed.getUTCFullYear() === year
+    && parsed.getUTCMonth() === month - 1
+    && parsed.getUTCDate() === day
+    ? timestamp : null;
+}
+
+function validLiveListingVerification(verification, company, observedAt) {
+  if (!verification || typeof verification !== 'object') return false;
+  const observed = asDate(observedAt);
+  const verifiedDay = publicCalendarDayMs(verification.as_of);
+  if (!observed || verifiedDay == null) return false;
+  const observedDay = Date.UTC(
+    observed.getUTCFullYear(), observed.getUTCMonth(), observed.getUTCDate(),
+  );
+  const ageDays = (observedDay - verifiedDay) / (24 * 60 * 60 * 1000);
+  const expectedExchange = String(company?.exchange || company?.market || '').trim().toUpperCase();
+  const expectedCode = String(company?.stock_code || company?.ticker || '').trim().toUpperCase();
+  return verification.status === 'verified_current'
+    && verification.current_listed === true
+    && LIVE_LISTING_EVIDENCE_TYPES.has(verification.evidence_type)
+    && String(verification.evidence_owner || '').trim()
+    && publicHttpUrl(verification.evidence_url)
+    && verification.synthetic === false
+    && verification.estimated === false
+    && verification.ranking_effect === 'none'
+    && String(verification.exchange || '').trim().toUpperCase() === expectedExchange
+    && String(verification.stock_code || '').trim().toUpperCase() === expectedCode
+    && ageDays >= -LIVE_LISTING_POST_OBSERVATION_AUDIT_DAYS
+    && ageDays <= LIVE_LISTING_FRESHNESS_DAYS;
+}
+
+function validObservedMarketSessions(points) {
+  if (!Array.isArray(points) || points.length !== LIVE_PUBLIC_MARKET_SESSION_COUNT) return false;
+  const dates = points.map((row) => (row && typeof row === 'object'
+    ? String(row.date || '').trim() : ''));
+  return dates.every(Boolean)
+    && dates.every((date, index) => index === 0 || dates[index - 1] < date)
+    && new Set(dates).size === LIVE_PUBLIC_MARKET_SESSION_COUNT
+    && points.every((row) => finitePublicNumber(row?.close, { positive: true }));
+}
+
+function validLiveMarketSnapshot(company, observedAt) {
+  const snapshot = company?.market_snapshot;
+  if (!snapshot || typeof snapshot !== 'object') return false;
+  const points = snapshot.price_points;
+  const series = snapshot.price_series;
+  if (
+    !validObservedMarketSessions(points)
+    || !Array.isArray(series)
+    || series.length !== LIVE_PUBLIC_MARKET_SESSION_COUNT
+    || !series.every((value, index) => value === points[index].close)
+  ) return false;
+  const provenance = snapshot.field_provenance;
+  if (!provenance || typeof provenance !== 'object') return false;
+  const validProvenance = [
+    'price_series', 'market_cap_krw', 'per', 'pbr', 'roe_pct',
+  ].every((field) => {
+    const row = provenance[field];
+    return row && typeof row === 'object'
+      && String(row.provider || '').trim()
+      && String(row.as_of || '').trim()
+      && publicHttpUrl(row.source_url)
+      && row.synthetic === false
+      && row.estimated === false;
+  });
+  return validProvenance
+    && snapshot.status === 'observed'
+    && snapshot.synthetic === false
+    && snapshot.estimated === false
+    && snapshot.display_only === true
+    && snapshot.ranking_effect === 'none'
+    && String(snapshot.provider || '').trim()
+    && String(snapshot.source || '').trim()
+    && String(snapshot.as_of || '').trim()
+    && publicHttpUrl(snapshot.source_url)
+    && publicHttpUrl(snapshot.price_source_url)
+    && finitePublicNumber(snapshot.market_cap_krw, { positive: true })
+    && snapshot.market_cap === snapshot.market_cap_krw
+    && snapshot.market_cap_currency === 'KRW'
+    && finitePublicNumber(snapshot.native_market_cap, { positive: true })
+    && finitePublicNumber(snapshot.fx_rate_to_krw, { positive: true })
+    && String(snapshot.fx_as_of || '').trim()
+    && String(snapshot.fx_provider || '').trim()
+    && publicHttpUrl(snapshot.fx_source_url)
+    && publicHttpUrl(snapshot.market_cap_source_url)
+    && finitePublicNumber(snapshot.per, { positive: true })
+    && finitePublicNumber(snapshot.pbr, { positive: true })
+    && finitePublicNumber(snapshot.roe_pct)
+    && publicHttpUrl(snapshot.per_source_url)
+    && publicHttpUrl(snapshot.pbr_source_url)
+    && publicHttpUrl(snapshot.roe_source_url)
+    && validLiveListingVerification(company.listing_verification, company, observedAt);
 }
 
 function validObservedSeries(item, observedAt) {
@@ -642,7 +747,7 @@ function validLiveCard(item, observedAt) {
     && keywordTexts.every(keywordFitsPublicLabel)
     && companies.length === 10
     && companyIdentities.size === 10
-    && roles.size >= 2
+    && roles.size >= 3
     && roles.size <= 4
     && context.status === 'ready'
     && String(context.trigger_title || '').trim()
@@ -664,6 +769,8 @@ function validLiveCard(item, observedAt) {
       && Array.isArray(company.evidence_sources)
       && company.evidence_sources.length > 0
       && company.evidence_sources.every((source) => publicHttpUrl(source?.url))
+      && validLiveListingVerification(company.listing_verification, company, observedAt)
+      && validLiveMarketSnapshot(company, observedAt)
       && validLiveLogo(company));
 }
 
@@ -675,7 +782,7 @@ function selectLiveHomeRows(payload, { fromCache = false, stale = false } = {}) 
     && logoPolicy.avatar_size_px === 44
     && logoPolicy.minimum_raster_dimension_px === 64
     && logoPolicy.vector_assets_allowed === true
-    && logoPolicy.low_resolution_fallback === 'initials'
+    && logoPolicy.low_resolution_fallback === 'card_excluded'
     && logoPolicy.runtime_probe_for_generic_favicons === false
     && logoPolicy.official_page_resolver_required === true
     && logoPolicy.asset_sha256_required === true;

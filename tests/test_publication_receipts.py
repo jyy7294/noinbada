@@ -74,7 +74,7 @@ def test_previous_frontend_policy_receipt_does_not_count_for_new_streak(tmp_path
         publication_id="pub-v4",
         remote_sha="a" * 40,
         contract={"policy_version": "frontend-result-quality-v4", "passed": True},
-        source_gate={"policy_version": "hourly-source-proof-v2", "passed": True},
+        source_gate={"policy_version": "hourly-source-proof-v3", "passed": True},
         manifest_sha256="c" * 64,
         remote_manifest_blob="d" * 40,
     )

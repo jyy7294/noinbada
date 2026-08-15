@@ -17,6 +17,11 @@ from .company_logo_assets import resolve_company_logo, reviewed_company_homepage
 from .company_roles import select_role_diverse_company_projection, with_company_role
 from .editorial_review import KEYWORDS, _verified_company_rows
 from .keyword_policy import keyword_fits_public_label, normalized_keyword_text
+from .public_company_contract import (
+    market_snapshot_is_public_ready,
+    verified_image_logo_is_public_ready,
+)
+from .public_copy import public_connection_explanation
 
 
 VERIFIED_AT = "2026-08-14T00:00:00+00:00"
@@ -41,6 +46,15 @@ def _finite_market_number(value: object, *, positive: bool = False) -> bool:
 
 def _public_url(value: object) -> bool:
     return str(value or "").strip().startswith(("http://", "https://"))
+
+
+def _market_provider_for_url(url: object, fallback: str) -> str:
+    host = (urlparse(str(url or "")).hostname or "").casefold()
+    if host.endswith("krx.co.kr"):
+        return "pykrx"
+    if host.endswith("yahoo.com") or host.endswith("yahooapis.com"):
+        return "yahoo_finance"
+    return fallback
 
 
 def _calculated_roe_provenance_is_valid(value: object) -> bool:
@@ -461,6 +475,15 @@ def live_logo_contract_is_valid(company: dict) -> bool:
         and not str(company.get("logo_rejected_asset_url") or "").strip()
         and str(company.get("logo_asset_quality") or "")
         in {"verified_vector", "verified_raster_min_64px"}
+    )
+
+
+def live_public_image_logo_contract_is_valid(company: dict) -> bool:
+    """Public v4 cards never render initials in place of a verified logo."""
+
+    return bool(
+        live_logo_contract_is_valid(company)
+        and verified_image_logo_is_public_ready(company)
     )
 
 
@@ -1002,12 +1025,15 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
     description = str(
         source.get("company_description") or source.get("company_summary") or ""
     ).strip()
-    reason = str(
-        source.get("connection_explanation")
-        or source.get("relationship_reason")
-        or source.get("reason")
-        or ""
-    ).strip()
+    role_label = with_company_role(source).get("company_role_label")
+    reason = public_connection_explanation(
+        company=company,
+        role_label=role_label,
+        connection_explanation=source.get("connection_explanation"),
+        relationship_reason=source.get("relationship_reason"),
+        reason=source.get("reason"),
+        matched_keywords=source.get("matched_keywords") or (),
+    )
     evidence_url = str(source.get("evidence_url") or "").strip()
     official_domain = str(
         source.get("official_domain") or COMPANY_DOMAINS.get(company) or ""
@@ -1420,7 +1446,13 @@ def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
             if str(row.get("stock_code") or row.get("ticker") or "") == code
             and isinstance(row.get("market_reference"), dict)
         ), None)
-    if not isinstance(market, dict) or market.get("status") != "observed":
+    if (
+        not isinstance(market, dict)
+        or market.get("status") != "observed"
+        or market.get("synthetic") is not False
+        or market.get("estimated") is not False
+        or market.get("ranking_effect") != "none"
+    ):
         return None
     summary = market.get("summary") or {}
     as_of = str(summary.get("as_of") or "").strip()
@@ -1476,6 +1508,8 @@ def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
     )
     snapshot = {
         "status": "observed",
+        "synthetic": False,
+        "estimated": False,
         "provider": provider,
         "source": provider,
         "source_url": source_url,
@@ -1548,7 +1582,52 @@ def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
             "roe_numerator": valuation["roe_numerator"],
             "roe_denominator": valuation["roe_denominator"],
         })
-    return snapshot
+    snapshot["field_provenance"] = {
+        "price_series": {
+            "provider": _market_provider_for_url(price_source_url, provider),
+            "as_of": dates[-1],
+            "source_url": price_source_url,
+            "synthetic": False,
+            "estimated": False,
+        },
+        "market_cap_krw": {
+            "provider": _market_provider_for_url(market_cap_source_url, provider),
+            "as_of": str(valuation.get("market_cap_as_of") or as_of),
+            "source_url": market_cap_source_url,
+            "synthetic": False,
+            "estimated": False,
+        },
+        "per": {
+            "provider": _market_provider_for_url(snapshot.get("per_source_url"), provider),
+            "as_of": str(valuation.get("per_as_of") or as_of),
+            "source_url": str(snapshot.get("per_source_url") or ""),
+            "synthetic": False,
+            "estimated": False,
+        },
+        "pbr": {
+            "provider": _market_provider_for_url(snapshot.get("pbr_source_url"), provider),
+            "as_of": str(valuation.get("pbr_as_of") or as_of),
+            "source_url": str(snapshot.get("pbr_source_url") or ""),
+            "synthetic": False,
+            "estimated": False,
+        },
+        "roe_pct": {
+            "provider": _market_provider_for_url(snapshot.get("roe_source_url"), provider),
+            "as_of": str((valuation.get("roe_numerator") or {}).get("as_of") or as_of),
+            "source_url": str(snapshot.get("roe_source_url") or ""),
+            "synthetic": False,
+            "estimated": False,
+        },
+    }
+    projected_company = {
+        **company,
+        "listing_verification": (
+            company.get("listing_verification")
+            or market.get("listing_verification")
+        ),
+        "market_snapshot": snapshot,
+    }
+    return snapshot if market_snapshot_is_public_ready(projected_company) else None
 
 
 def _live_logo_fields(homepage: str) -> dict:
@@ -1703,6 +1782,14 @@ def _live_company_rows(candidate: dict) -> list[dict]:
             or not evidence_sources
         ):
             continue
+        public_reason = public_connection_explanation(
+            company=company,
+            role_label=with_company_role(source).get("company_role_label"),
+            connection_explanation=source.get("connection_explanation"),
+            relationship_reason=source.get("relationship_reason"),
+            reason=source.get("reason"),
+            matched_keywords=source.get("matched_keywords") or (),
+        )
         row = with_company_role({
             **source,
             "ticker": identity[1],
@@ -1710,7 +1797,7 @@ def _live_company_rows(candidate: dict) -> list[dict]:
             "market": identity[0],
             "exchange": identity[0],
             "company_description": str(source.get("company_description") or source.get("company_summary") or "").strip(),
-            "connection_explanation": str(source.get("connection_explanation") or source.get("relationship_reason") or source.get("reason") or "").strip(),
+            "connection_explanation": public_reason,
             "evidence_url": evidence_url,
             "evidence_sources": evidence_sources,
             **logo_fields,
@@ -1725,6 +1812,11 @@ def _live_company_rows(candidate: dict) -> list[dict]:
             evidence_url,
             row.get("company_role_public") is True,
         )):
+            continue
+        if (
+            not live_public_image_logo_contract_is_valid(row)
+            or not market_snapshot_is_public_ready(row)
+        ):
             continue
         seen.add(identity)
         rows.append(row)
@@ -1900,12 +1992,22 @@ def build_presentation_feed(
         "status": "ready" if items else "empty",
         "frontend_default": True,
         "selection_policy": "validated_live_home_feed_v1",
+        "source_provenance": {
+            "ranking_sources": ["x", "google_trends"],
+            "collector_versions": {
+                "x": "x_current_session_kr_v1",
+                "google_trends": "google_trending_now_kr_v1",
+            },
+            "actual_only": True,
+            "fixture_replay_allowed": False,
+            "proof_gate": "hourly-source-proof-v3",
+        },
         "logo_policy": {
             "version": LOGO_QUALITY_POLICY,
             "avatar_size_px": 44,
             "minimum_raster_dimension_px": LOGO_MINIMUM_DIMENSION,
             "vector_assets_allowed": True,
-            "low_resolution_fallback": "initials",
+            "low_resolution_fallback": "card_excluded",
             "runtime_probe_for_generic_favicons": False,
             "official_page_resolver_required": True,
             "asset_sha256_required": True,

@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from .keyword_policy import keyword_fits_public_label
+from .public_copy import public_connection_explanation
 
 
 SCHEMA_VERSION = "trzip-archive-feed-v1"
@@ -60,11 +61,14 @@ def _companies(event: dict[str, Any]) -> list[dict[str, Any]]:
         if not isinstance(row, dict) or row.get("company_role_public") is False:
             continue
         name = str(row.get("company") or row.get("name") or "").strip()
-        reason = str(
-            row.get("connection_explanation")
-            or row.get("relationship_reason")
-            or ""
-        ).strip()
+        reason = public_connection_explanation(
+            company=name,
+            role_label=row.get("company_role_label") or "기업 역할",
+            connection_explanation=row.get("connection_explanation"),
+            relationship_reason=row.get("relationship_reason"),
+            reason=row.get("reason"),
+            matched_keywords=row.get("matched_keywords") or (),
+        )
         if not name or not reason:
             continue
         evidence_urls = _public_urls(

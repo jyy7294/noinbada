@@ -245,6 +245,11 @@ try {
             -Detail "exact-hour receipt skipped; missing hours are preserved without reuse"
         exit 0
     }
+    if (-not $ExactHourSourceReady -and $CurrentKstHour -eq $DailyPublishHourKst) {
+        Write-RunLog -Phase "publish" -Status "blocked_exact_hour_source_gap" `
+            -Detail "daily publication requires both X and Google at the exact publish hour; 24h gaps remain allowed elsewhere"
+        exit 1
+    }
 
     # Record the exact source and frontend-contract proof before considering
     # remote publication. Repeating the same proof is a no-op; any conflict is
@@ -272,9 +277,6 @@ try {
     }
     Write-RunLog -Phase "hourly_validation" -Status $LocalStatus `
         -Detail "streak=$LocalStreak/8 remaining=$LocalRemaining receipt=immutable"
-    } else {
-        Write-RunLog -Phase "hourly_validation" -Status "gap_allowed_for_daily_publication" `
-            -Detail "no exact-hour receipt; recent-24h source proof will be used"
     }
 
     # Collection, ledger updates, rolling analysis and enrichment queues run
@@ -296,8 +298,8 @@ try {
     }
 
     # Audit the publication and SQLite ledger that are about to be published.
-    # Exact-hour gaps are preserved; each ranking source must have at least one
-    # independently valid observation in the recent 24-hour window.
+    # Earlier gaps are preserved, but the exact publication hour must contain
+    # a complete independently valid X and Google observation.
     $AuditScript = Join-Path $ProjectRoot "scripts\audit-runtime.py"
     $AuditOutput = @(& $Python $AuditScript --runtime-root $RuntimeRoot --json 2>&1)
     if ($LASTEXITCODE -ne 0) {
@@ -327,8 +329,22 @@ try {
             $Preflight.source_gate.sources.google_trends.valid_hour_count
         throw "publication preflight failed before remote push; $SourceRows; failures=$($Preflight.contract.failures -join ',')"
     }
+    $Preflight = Get-Content -LiteralPath $PreflightOutput -Raw -Encoding utf8 | ConvertFrom-Json
+    if (-not $Preflight.policy_version -or
+        -not $Preflight.source_gate.policy_version -or
+        -not $Preflight.exact_hour_source_gate.policy_version -or
+        -not $Preflight.contract.policy_version -or
+        -not $Preflight.contract.presentation_feed_quality.policy_version) {
+        throw "publication preflight policy proof is incomplete"
+    }
+    $PreflightPolicies = "preflight={0} window_source={1} exact_source={2} frontend={3} presentation={4}" -f `
+        $Preflight.policy_version, `
+        $Preflight.source_gate.policy_version, `
+        $Preflight.exact_hour_source_gate.policy_version, `
+        $Preflight.contract.policy_version, `
+        $Preflight.contract.presentation_feed_quality.policy_version
     Write-RunLog -Phase "preflight" -Status "ok" `
-        -Detail "24h-source-v1 and frontend-v8 contracts passed before remote publication"
+        -Detail "$PreflightPolicies passed before remote publication"
 
     # A verified hour is immutable.  Reject a newly generated publication for
     # that same hour before copying, committing, or pushing any remote bytes.

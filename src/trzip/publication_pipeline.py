@@ -23,6 +23,7 @@ from .intelligence import (
 )
 from .company_adapters import (
     enrich_company_identities,
+    krx_current_listing_verification,
     pykrx_stock,
     yahoo_finance_fundamentals,
     yahoo_finance_stock,
@@ -43,11 +44,15 @@ from .presentation_feed import (
     LOGO_QUALITY_POLICY,
     PRESENTATION_STAGES,
     build_presentation_feed,
-    live_logo_contract_is_valid,
+    live_public_image_logo_contract_is_valid,
     logo_asset_contract_is_valid,
     logo_display_contract_is_valid,
 )
 from .processing_cycle import build_processing_cycle, checkpoint_due
+from .public_company_contract import (
+    listing_verification_is_valid,
+    market_snapshot_is_public_ready,
+)
 from .semantic_adjudication import run_semantic_adjudication
 from .provider_verification import (
     TrendReference,
@@ -956,13 +961,25 @@ def _validate_live_presentation_feed(feed: dict) -> None:
         raise ValueError("live presentation must be the frontend default")
     if feed.get("selection_policy") != "validated_live_home_feed_v1":
         raise ValueError("live presentation selection policy is invalid")
+    source_provenance = feed.get("source_provenance") or {}
+    if source_provenance != {
+        "ranking_sources": ["x", "google_trends"],
+        "collector_versions": {
+            "x": "x_current_session_kr_v1",
+            "google_trends": "google_trending_now_kr_v1",
+        },
+        "actual_only": True,
+        "fixture_replay_allowed": False,
+        "proof_gate": "hourly-source-proof-v3",
+    }:
+        raise ValueError("live presentation source provenance is not actual-only")
     logo_policy = feed.get("logo_policy") or {}
     if (
         logo_policy.get("version") != LOGO_QUALITY_POLICY
         or logo_policy.get("avatar_size_px") != 44
         or logo_policy.get("minimum_raster_dimension_px") != LOGO_MINIMUM_DIMENSION
         or logo_policy.get("vector_assets_allowed") is not True
-        or logo_policy.get("low_resolution_fallback") != "initials"
+        or logo_policy.get("low_resolution_fallback") != "card_excluded"
         or logo_policy.get("runtime_probe_for_generic_favicons") is not False
         or logo_policy.get("official_page_resolver_required") is not True
         or logo_policy.get("asset_sha256_required") is not True
@@ -997,6 +1014,18 @@ def _validate_live_presentation_feed(feed: dict) -> None:
             raise ValueError("live presentation card provenance is invalid")
         if not str(item.get("trend_definition") or "").strip():
             raise ValueError("live presentation card requires a concise trend definition")
+        projected_companies = list(item.get("companies") or [])
+        if len(projected_companies) != 10:
+            raise ValueError("live presentation card requires exactly ten companies")
+        for company in projected_companies:
+            if not live_public_image_logo_contract_is_valid(company):
+                raise ValueError(
+                    "live company requires a verified image logo; initials are forbidden"
+                )
+            if not market_snapshot_is_public_ready(company, observed_at=observed_at):
+                raise ValueError(
+                    "live company requires current listing proof and a complete actual market snapshot"
+                )
         gate = complete_card_gate(
             item, observed_at=observed_at, public_projection=True
         )
@@ -1038,12 +1067,8 @@ def _validate_live_presentation_feed(feed: dict) -> None:
                     raise ValueError("live visualization combined value is not source-derived")
             if stamps != sorted(set(stamps)):
                 raise ValueError("live visualization points must be unique and chronological")
-        for company in item.get("companies") or []:
-            if not live_logo_contract_is_valid(company):
-                raise ValueError("live company logo lacks verified resolver provenance")
+        for company in projected_companies:
             snapshot = company.get("market_snapshot")
-            if snapshot is None:
-                continue
             price_series = list(snapshot.get("price_series") or [])
             currency = str(snapshot.get("currency") or "").strip().upper()
             if (
@@ -2011,7 +2036,66 @@ def _public_market_reference(market: object, stock_code: str) -> dict:
         "valuation": valuation,
         "fx_reference": dict(value.get("fx_reference") or {}),
         "market_reaction": dict(value.get("market_reaction") or {}),
+        "listing_verification": dict(value.get("listing_verification") or {}),
+        # Reaching this branch means an allowlisted provider returned an
+        # observed record.  Public projection makes that non-synthetic status
+        # explicit even when an older cached provider row predates these
+        # metadata fields.
+        "synthetic": False,
+        "estimated": False,
+        "ranking_effect": "none",
+        "relationship_evidence": False,
         "note": "daily reference data; not realtime, not a forecast, and not relation evidence",
+    }
+
+
+def _public_listing_verification(
+    market: object,
+    *,
+    exchange: str,
+    stock_code: str,
+    at: datetime,
+) -> dict:
+    """Project a current-listing proof; historical prices never suffice."""
+
+    value = market if isinstance(market, dict) else {}
+    raw = value.get("listing_verification")
+    domestic = exchange in {"KRX", "KOSPI", "KOSDAQ"}
+    raw_exchange = str(raw.get("exchange") or "").strip().upper() if isinstance(raw, dict) else ""
+    allowed_proof_exchanges = {exchange}
+    if domestic:
+        allowed_proof_exchanges.add("KRX")
+    if listing_verification_is_valid(
+        raw,
+        exchange=raw_exchange,
+        stock_code=stock_code,
+        observed_at=at,
+    ) and raw_exchange in allowed_proof_exchanges:
+        return {
+            "status": "verified_current",
+            "current_listed": True,
+            "exchange": exchange,
+            "stock_code": stock_code,
+            "as_of": raw["as_of"],
+            "evidence_owner": raw["evidence_owner"],
+            "evidence_type": raw["evidence_type"],
+            "evidence_url": raw["evidence_url"],
+            "synthetic": False,
+            "estimated": False,
+            "ranking_effect": "none",
+        }
+    return {
+        "status": "unavailable",
+        "current_listed": False,
+        "exchange": exchange,
+        "stock_code": stock_code,
+        "as_of": raw.get("as_of") if isinstance(raw, dict) else None,
+        "evidence_owner": raw.get("evidence_owner") if isinstance(raw, dict) else None,
+        "evidence_type": raw.get("evidence_type") if isinstance(raw, dict) else None,
+        "evidence_url": raw.get("evidence_url") if isinstance(raw, dict) else None,
+        "synthetic": False,
+        "estimated": False,
+        "ranking_effect": "none",
     }
 
 
@@ -2179,6 +2263,19 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
                     "status": "not_applicable",
                     "reason": "listed stock code unavailable or relation excluded",
                 }
+                company["listing_verification"] = {
+                    "status": "unavailable",
+                    "current_listed": False,
+                    "exchange": exchange or None,
+                    "stock_code": code or None,
+                    "as_of": None,
+                    "evidence_owner": None,
+                    "evidence_type": None,
+                    "evidence_url": None,
+                    "synthetic": False,
+                    "estimated": False,
+                    "ranking_effect": "none",
+                }
                 continue
             inactive = _reviewed_inactive_krx_security(exchange, code)
             if inactive:
@@ -2194,16 +2291,53 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
                     "estimated": False,
                     "ranking_effect": "none",
                     "relationship_evidence": False,
+                    "listing_verification": {
+                        "status": "verified_inactive",
+                        "current_listed": False,
+                        "exchange": "KRX",
+                        "stock_code": code,
+                        "as_of": at.date().isoformat(),
+                        "evidence_owner": "KRX KIND",
+                        "evidence_type": "official_current_security_register",
+                        "evidence_url": inactive["evidence_url"],
+                        "synthetic": False,
+                        "estimated": False,
+                        "ranking_effect": "none",
+                    },
                 }
                 requested.add((exchange, code))
                 unavailable += 1
+                company["listing_verification"] = _public_listing_verification(
+                    market, exchange=exchange, stock_code=code, at=at
+                )
                 company["market_reference"] = _public_market_reference(market, code)
+                company["market_reference"]["listing_verification"] = dict(
+                    company["listing_verification"]
+                )
                 continue
             market = cache.get((exchange, code))
             if (
                 market
+                and exchange in {"KRX", "KOSPI", "KOSDAQ"}
+                and _public_listing_verification(
+                    market, exchange=exchange, stock_code=code, at=at
+                ).get("current_listed") is not True
+            ):
+                # Daily prices and fundamentals can be safely reused, but a
+                # current-listing proof cannot.  Refresh only the independent
+                # official KRX KIND register so hourly enrichment remains
+                # bounded and does not repeat ten full market downloads.
+                market = json.loads(json.dumps(market))
+                market["listing_verification"] = krx_current_listing_verification(
+                    code, at, exchange=exchange
+                )
+            if (
+                market
                 and _fresh_market_reference(market, at)
                 and _complete_market_price_series(market)
+                and _public_listing_verification(
+                    market, exchange=exchange, stock_code=code, at=at
+                ).get("current_listed") is True
                 and not (
                     exchange in {"KRX", "KOSPI", "KOSDAQ"}
                     and _domestic_reference_needs_fundamentals(market)
@@ -2241,9 +2375,39 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
                     observed += 1
                 else:
                     unavailable += 1
+            company["listing_verification"] = _public_listing_verification(
+                market, exchange=exchange, stock_code=code, at=at
+            )
             company["market_reference"] = _public_market_reference(market, code)
+            company["market_reference"]["listing_verification"] = dict(
+                company["listing_verification"]
+            )
             for provider in _market_provider_contributors(market):
                 observed_provider_rows[provider] += 1
+        # ``companies`` and ``company_candidates`` are separate DTO lists in
+        # corrected publications.  The presentation reads ``companies``;
+        # mirror only rank-neutral market/listing facts by normalized identity
+        # so a complete candidate is not lost through an alias mismatch.
+        enriched_by_identity = {}
+        for enriched in trend.get("company_candidates") or []:
+            enriched_exchange, enriched_code = _market_identity(enriched)
+            if enriched_exchange in {"KRX", "KOSPI", "KOSDAQ"}:
+                enriched_exchange = "KRX"
+            if enriched_exchange and enriched_code:
+                enriched_by_identity[(enriched_exchange, enriched_code)] = enriched
+        for public_company in trend.get("companies") or []:
+            public_exchange, public_code = _market_identity(public_company)
+            if public_exchange in {"KRX", "KOSPI", "KOSDAQ"}:
+                public_exchange = "KRX"
+            enriched = enriched_by_identity.get((public_exchange, public_code))
+            if not enriched:
+                continue
+            public_company["market_reference"] = json.loads(json.dumps(
+                enriched.get("market_reference") or {}
+            ))
+            public_company["listing_verification"] = json.loads(json.dumps(
+                enriched.get("listing_verification") or {}
+            ))
     attempted_providers = [name for name, count in provider_requests.items() if count]
     observed_providers = [name for name, count in observed_provider_rows.items() if count]
     intelligence["market_data_status"] = {
@@ -2676,6 +2840,7 @@ def run(
     now: datetime | None = None,
     enrichment_checkpoint: bool = True,
     daily_publish_hour_kst: int = 6,
+    live_only: bool = False,
 ) -> dict:
     """Run the laptop-owned pipeline and write the static publication contract."""
     root.mkdir(parents=True, exist_ok=True)
@@ -2689,7 +2854,10 @@ def run(
     collection = collect_current(database_path, at)
 
     from .hourly_store import snapshot
-    current_rows = [HourlyObservation(**item) for item in snapshot(at, database_path)]
+    current_rows = [
+        HourlyObservation(**item)
+        for item in snapshot(at, database_path, live_only=live_only)
+    ]
     persisted_source_counts = {
         source: sum(row.source == source and row.provenance == "observed" for row in current_rows)
         for source in ("x", "google_trends")
@@ -2729,6 +2897,7 @@ def run(
         hours=24,
         path=database_path,
         news_context_by_term=news_context_by_term,
+        live_only=live_only,
     )
     intelligence = _refresh_verification_layer(
         intelligence,
@@ -2787,6 +2956,7 @@ def run(
         semantic_status=(intelligence.get("semantic_adjudication_run") or {}).get("status"),
         handoff_status=intelligence.get("enrichment_handoff"),
         daily_publish_hour_kst=daily_publish_hour_kst,
+        live_only=live_only,
     )
     # Build the approved presentation projection only after every deterministic
     # enrichment pass. Some passes rebuild the live contract and intentionally
@@ -2943,6 +3113,7 @@ def main() -> None:
         database_path=args.database,
         enrichment_checkpoint=scheduled_checkpoint,
         daily_publish_hour_kst=args.daily_publish_hour_kst,
+        live_only=True,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
 

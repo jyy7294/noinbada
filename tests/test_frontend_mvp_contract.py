@@ -39,6 +39,18 @@ def test_frontend_has_no_demo_or_export_ui_copy() -> None:
     assert "exportPortfoliosJson" not in DATA
     assert "exportPortfoliosCsv" not in DATA
     assert "trzip-export-v1" not in DATA
+    assert "은(는)" not in INDEX
+
+
+def test_critical_mobile_controls_have_accessible_touch_targets() -> None:
+    assert INDEX.count('data-critical-touch-target="1"') >= 5
+    assert "min-width:44px; height:44px" in INDEX
+    assert "width:44px;height:44px;margin:-6px" in INDEX
+    assert '[data-critical-touch-target]:focus-visible' in INDEX
+    assert 'aria-label="트렌드를 목록으로 보기"' in INDEX
+    assert 'aria-pressed="false"' in INDEX
+    assert "btn.setAttribute('aria-pressed', String(isList))" in INDEX
+    assert "width:32px;height:32px" not in INDEX
 
 
 def test_company_logos_are_used_across_company_and_portfolio_surfaces() -> None:
@@ -343,6 +355,13 @@ def test_interest_chart_uses_only_observed_24h_series_and_preserves_gaps() -> No
     assert "segments.filter((segment) => segment.length >= 2).map" in INDEX
     assert "segments.filter((segment) => segment.length === 1)" in INDEX
     assert 'data-interest-single-points="1"' in INDEX
+    assert 'data-interest-observation-points="1"' in INDEX
+    assert 'data-interest-summary="1"' in INDEX
+    assert "const observationPoints = points.filter(Boolean)" in INDEX
+    assert "peak: Math.round(peakValue)" in INDEX
+    assert "observationCount" in INDEX
+    assert "8 + (timestamp - firstTimestamp) * 280" in INDEX
+    assert "Intl.DateTimeFormat('ko-KR'" in INDEX
     assert "else if (activeSegment.length)" in INDEX
     assert "linePath" in INDEX
     assert "data-interest-empty=\"1\"" in INDEX
@@ -353,7 +372,8 @@ def test_interest_chart_uses_only_observed_24h_series_and_preserves_gaps() -> No
     assert 'data-interest-line="1"' in INDEX
     assert 'data-interest-area="1"' in INDEX
     assert 'aria-labelledby="interest-chart-title interest-chart-disclosure"' in INDEX
-    assert "관심 흐름은 기간별 비교를 위한 정규화 지수입니다." in INDEX
+    assert "점은 실제 관측, 선은 90분 이내 이어진 관측만 연결합니다." in INDEX
+    assert "비어 있는 구간은 보간하지 않습니다." in INDEX
     assert "patchInterestChart()" in INDEX
     assert "sourceSignals" in INDEX
     assert "sourceLabels.length ? sourceLabels : ['X']" not in INDEX
@@ -369,6 +389,56 @@ def test_interest_chart_uses_only_observed_24h_series_and_preserves_gaps() -> No
     assert "채널 추가하기" not in chart_surface
     assert "buildChartPanels(" not in INDEX
     assert "chartRevealWire()" not in INDEX
+
+
+def test_public_copy_and_observed_timeline_javascript_regression() -> None:
+    script = r"""
+      const fs = require('fs');
+      const html = fs.readFileSync('./frontend/index.html', 'utf8');
+      const match = html.match(/<script[^>]*data-dc-script[^>]*>([\s\S]*?)<\/script>/);
+      const Component = new Function('DCLogic', match[1] + ';return Component;')(
+        class { forceUpdate() {} }
+      );
+      const component = new Component();
+      const copy = component.publicConnectionCopy({
+        company: '동원산업', company_role_label: '제조·개발',
+        connection_explanation: "동원산업은(는) '제조·개발' 역할 후보입니다. 실제 연결 근거입니다.",
+        matched_keywords: ['삼계탕', '간편식']
+      });
+      if (/후보|보강\s*중|은\(는\)/.test(copy) || !copy.includes('실제 연결 근거입니다.')) {
+        throw new Error('internal company state leaked into public copy: ' + copy);
+      }
+      const factual = component.publicConnectionCopy({
+        company: 'CJ제일제당', company_role_label: '배급·유통',
+        reason: '홈플러스 납품 재개를 검토 중이라고 보도됐습니다.'
+      });
+      if (!factual.includes('납품 재개를 검토 중')) throw new Error('factual review wording was removed');
+
+      const values = [45, 2, 3, 4, 1, 1, 1];
+      const series = values.map((value, index) => ({
+        at: new Date(Date.UTC(2026, 7, 15, index * 4)).toISOString(),
+        value, source: 'google_trends', provenance: 'observed'
+      }));
+      const chart = component.buildInterestCurve({series}, 0);
+      if (!chart.available || chart.peak !== 45 || chart.current !== 1
+        || chart.observationCount !== 7 || chart.observationPoints.length !== 7) {
+        throw new Error('observed timeline summary is incorrect');
+      }
+      if (chart.linePath !== '' || chart.area !== '') {
+        throw new Error('four-hour gaps were interpolated');
+      }
+      const labels = chart.labels.filter(Boolean);
+      if (labels.length !== 3 || new Set(labels).size !== labels.length || labels.some((label) => !label.includes(':'))) {
+        throw new Error('timeline labels are duplicated or omit time: ' + JSON.stringify(labels));
+      }
+      if (chart.observationPoints[0][0] < 8 || chart.observationPoints.at(-1)[0] > 288) {
+        throw new Error('edge observation marker can be clipped');
+      }
+    """
+    result = subprocess.run(
+        ["node", "-e", script], cwd=ROOT, text=True, capture_output=True, check=False
+    )
+    assert result.returncode == 0, result.stderr
 
 
 def test_company_sheet_renders_financial_numbers_only_with_complete_provenance() -> None:
@@ -437,6 +507,7 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
     script = f"""
       class Guard {{
         companyLogo() {{ return ''; }}
+        publicConnectionCopy(company, fallback) {{ return fallback; }}
         {guard_methods}
         {build_sheet}
       }}
@@ -677,10 +748,13 @@ def test_live_home_accepts_only_v4_validated_non_synthetic_feed_and_allows_zero_
     assert "keywordTexts.every(keywordFitsPublicLabel)" in DATA
     assert "companies.length === 10" in DATA
     assert "companyIdentities.size === 10" in DATA
-    assert "roles.size >= 2" in DATA
+    assert "roles.size >= 3" in DATA
     assert "roles.size <= 4" in DATA
     assert "ontologyPathReachesCompany(company.ontology_path" in DATA
+    assert "validLiveListingVerification(company.listing_verification, company, observedAt)" in DATA
+    assert "validLiveMarketSnapshot(company, observedAt)" in DATA
     assert "validLiveLogo(company)" in DATA
+    assert "logoPolicy.low_resolution_fallback === 'card_excluded'" in DATA
     assert "linkedKeywords.size >= 2" in DATA
     assert "feed.status === 'empty' && items.length === 0" in DATA
     assert "feed.status === 'ready' && items.length > 0 && items.length <= 10" in DATA
@@ -722,7 +796,7 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
       const logoPolicy = {
         version: 'avatar-sharpness-v1', avatar_size_px: 44,
         minimum_raster_dimension_px: 64, vector_assets_allowed: true,
-        low_resolution_fallback: 'initials', runtime_probe_for_generic_favicons: false,
+        low_resolution_fallback: 'card_excluded', runtime_probe_for_generic_favicons: false,
         official_page_resolver_required: true, asset_sha256_required: true,
       };
       const transition = {
@@ -740,21 +814,61 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
         basis: 'observed_x_google_hourly_points_only', interpolation: 'none',
         missing_point_policy: 'preserve_sparse_null_no_reuse', ranking_effect: 'none',
       });
-      const initialsLogo = () => ({
-        official_domain: null,
-        logo_url: '', logo_render_mode: 'initials',
-        logo_asset_source: 'initials_fallback', logo_asset_host: '',
-        logo_asset_verification: 'initials_fallback', logo_asset_format: 'none',
-        logo_asset_mime: '', logo_asset_width: 0, logo_asset_height: 0,
-        logo_asset_sha256: '', logo_source_page_url: '', logo_minimum_dimension: 64,
+      const imageLogo = () => ({
+        official_domain: 'company.example.com',
+        logo_url: 'https://company.example.com/logo.svg', logo_render_mode: 'image',
+        logo_asset_source: 'official_page_asset', logo_asset_host: 'company.example.com',
+        logo_asset_verification: 'verified_safe_svg', logo_asset_format: 'svg',
+        logo_asset_mime: 'image/svg+xml', logo_asset_width: 128, logo_asset_height: 128,
+        logo_asset_sha256: 'a'.repeat(64), logo_source_page_url: 'https://company.example.com/about', logo_minimum_dimension: 64,
         logo_runtime_probe_required: false, logo_rejected_asset_url: '',
-        logo_asset_quality: 'fail_closed_initials_no_verified_asset',
+        logo_asset_quality: 'verified_vector',
         logo_quality_policy: 'avatar-sharpness-v1',
         logo_provenance: {
-          source_page_url: null, asset_url: null, mime: null, width: 0, height: 0,
-          sha256: null, verification: 'initials_fallback',
+          source_page_url: 'https://company.example.com/about',
+          asset_url: 'https://company.example.com/logo.svg', mime: 'image/svg+xml',
+          width: 128, height: 128, sha256: 'a'.repeat(64), verification: 'verified_safe_svg',
         },
       });
+      const listingFor = (stockCode) => ({
+        status: 'verified_current', current_listed: true,
+        evidence_type: 'exchange_current_security_universe',
+        evidence_owner: 'KRX', evidence_url: 'https://global.krx.co.kr/contents/GLB/05/0501/0501010100/GLB0501010100.jsp',
+        as_of: '2026-08-14', synthetic: false, estimated: false,
+        ranking_effect: 'none', exchange: 'KRX', stock_code: stockCode,
+      });
+      const marketFor = () => {
+        const pricePoints = Array.from({length: 30}, (_, index) => {
+          const date = new Date(Date.UTC(2026, 6, 16 + index)).toISOString().slice(0, 10);
+          return {date, close: 1000 + index};
+        });
+        const field = (sourceUrl = 'https://finance.yahoo.com/quote/TEST.KS') => ({
+          provider: 'yahoo_finance', as_of: '2026-08-14', source_url: sourceUrl,
+          synthetic: false, estimated: false,
+        });
+        return {
+          status: 'observed', synthetic: false, estimated: false,
+          display_only: true, ranking_effect: 'none', provider: 'pykrx+yahoo_finance',
+          source: 'pykrx+yahoo_finance', as_of: '2026-08-14',
+          source_url: 'https://finance.yahoo.com/quote/TEST.KS',
+          price_source_url: 'https://finance.yahoo.com/quote/TEST.KS/history',
+          price_points: pricePoints, price_series: pricePoints.map((row) => row.close),
+          market_cap_krw: 1000000000000, market_cap: 1000000000000,
+          market_cap_currency: 'KRW', native_market_cap: 1000000000000,
+          fx_rate_to_krw: 1, fx_as_of: '2026-08-14', fx_provider: 'identity_krw',
+          fx_source_url: 'https://global.krx.co.kr/',
+          market_cap_source_url: 'https://global.krx.co.kr/',
+          per: 12.3, pbr: 1.2, roe_pct: 8.4,
+          per_source_url: 'https://finance.yahoo.com/quote/TEST.KS',
+          pbr_source_url: 'https://finance.yahoo.com/quote/TEST.KS',
+          roe_source_url: 'https://finance.yahoo.com/quote/TEST.KS',
+          field_provenance: {
+            price_series: field('https://finance.yahoo.com/quote/TEST.KS/history'),
+            market_cap_krw: field('https://global.krx.co.kr/'),
+            per: field(), pbr: field(), roe_pct: field(),
+          },
+        };
+      };
       const completeCard = (i) => ({
         presentation_position: i + 1,
         event_key: `e${i}`,
@@ -778,9 +892,11 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
           evidence_urls: ['https://news.example.com/context'],
         },
         related_keywords: Array.from({length: 5}, (_, k) => ({text: `k${k}`})),
-        companies: Array.from({length: 10}, (_, c) => ({
+        companies: Array.from({length: 10}, (_, c) => {
+          const stockCode = `S${i}${c}`;
+          return ({
           company: `company-${i}-${c}`,
-          stock_code: `S${i}${c}`,
+          stock_code: stockCode,
           exchange: 'KRX',
           company_role_category: roles[c % roles.length],
           company_role_label: 'verified role',
@@ -790,9 +906,10 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
           ontology_path: ['trend', 'role', `company-${i}-${c}`],
           evidence_sources: [{url: 'https://company.example.com/evidence'}],
           relation_tier: 'direct',
-          market_snapshot: null,
-          ...initialsLogo(),
-        })),
+          listing_verification: listingFor(stockCode),
+          market_snapshot: marketFor(),
+          ...imageLogo(),
+        }); }),
         keyword_company_links: [0, 1].map((k) => ({
           keyword: `k${k}`, company: `company-${i}-${k}`,
           connection_explanation: 'documented keyword relation',
@@ -850,8 +967,7 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
       onlyTwoRoles.companies.forEach((company, i) => {
         company.company_role_category = i % 2 ? 'distribution' : 'manufacturing_development';
       });
-      const selectedTwoRoles = api.selectLiveHomeRows({presentation_feed: feedFor([onlyTwoRoles])});
-      if (!selectedTwoRoles.eligible || selectedTwoRoles.items.length !== 1) process.exit(35);
+      reject(feedFor([onlyTwoRoles]), 35);
       const onlyOneRole = completeCard(0);
       onlyOneRole.companies.forEach((company) => {
         company.company_role_category = 'manufacturing_development';
@@ -876,7 +992,16 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
       duplicateIdentity.companies[1].stock_code = duplicateIdentity.companies[0].stock_code;
       reject(feedFor([duplicateIdentity]), 43);
       const wrongTerminal = completeCard(0); wrongTerminal.companies[0].ontology_path[2] = '다른기업'; reject(feedFor([wrongTerminal]), 44);
-      const brokenLogo = completeCard(0); brokenLogo.companies[0].logo_provenance.verification = 'verified_safe_svg'; reject(feedFor([brokenLogo]), 45);
+      const brokenLogo = completeCard(0); brokenLogo.companies[0].logo_render_mode = 'initials'; reject(feedFor([brokenLogo]), 45);
+      const missingListing = completeCard(0); delete missingListing.companies[0].listing_verification; reject(feedFor([missingListing]), 52);
+      const staleListing = completeCard(0); staleListing.companies[0].listing_verification.as_of = '2026-08-01'; reject(feedFor([staleListing]), 53);
+      const nextDayAudit = completeCard(0); nextDayAudit.companies[0].listing_verification.as_of = '2026-08-16';
+      if (!api.selectLiveHomeRows({presentation_feed: feedFor([nextDayAudit])}).eligible) process.exit(58);
+      const futureListing = completeCard(0); futureListing.companies[0].listing_verification.as_of = '2026-08-17'; reject(feedFor([futureListing]), 59);
+      const shortMarketSeries = completeCard(0); shortMarketSeries.companies[0].market_snapshot.price_points.pop(); reject(feedFor([shortMarketSeries]), 54);
+      const syntheticMarket = completeCard(0); syntheticMarket.companies[0].market_snapshot.synthetic = true; reject(feedFor([syntheticMarket]), 55);
+      const missingMarketProvenance = completeCard(0); delete missingMarketProvenance.companies[0].market_snapshot.field_provenance.roe_pct; reject(feedFor([missingMarketProvenance]), 56);
+      const nonKrwMarketCap = completeCard(0); nonKrwMarketCap.companies[0].market_snapshot.market_cap_currency = 'USD'; reject(feedFor([nonKrwMarketCap]), 57);
       const syntheticSparse = completeCard(0); syntheticSparse.visualization_series['1w'].interpolation = 'linear'; reject(feedFor([syntheticSparse]), 46);
       for (const [field, code] of [['supplemental_display_data_used', 47], ['fallback_used', 48], ['canonical_ranking_affected', 49]]) {
         const invalidTransition = feedFor([]); invalidTransition.transition[field] = true; reject(invalidTransition, code);

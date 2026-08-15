@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+import html
 import json
 import math
 import os
@@ -40,6 +41,9 @@ FUNDAMENTAL_COLUMNS = {
 }
 
 KRX_DATA_SOURCE_URL = "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd"
+KRX_KIND_CURRENT_LIST_URL = (
+    "https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13"
+)
 
 YAHOO_CHART_ENDPOINT = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
 YAHOO_FUNDAMENTALS_ENDPOINT = (
@@ -66,6 +70,113 @@ YAHOO_FUNDAMENTAL_TYPES = (
 
 _YAHOO_MARKET_CACHE: dict[str, tuple[float, dict]] = {}
 _YAHOO_MARKET_CACHE_LOCK = Lock()
+
+
+def _parse_krx_kind_current_register(document: str) -> tuple[tuple[str, str], ...]:
+    rows: list[tuple[str, str]] = []
+    for raw_row in re.findall(
+        r"<tr[^>]*>(.*?)</tr>", document, flags=re.IGNORECASE | re.DOTALL
+    ):
+        cells = [
+            re.sub(r"\s+", " ", html.unescape(re.sub(
+                r"<[^>]+>", " ", raw_cell, flags=re.IGNORECASE | re.DOTALL
+            ))).strip()
+            for raw_cell in re.findall(
+                r"<t[dh][^>]*>(.*?)</t[dh]>",
+                raw_row,
+                flags=re.IGNORECASE | re.DOTALL,
+            )
+        ]
+        if len(cells) < 3 or not re.fullmatch(r"\d{6}", cells[2]):
+            continue
+        market = {
+            "유가": "KOSPI",
+            "유가증권": "KOSPI",
+            "코스피": "KOSPI",
+            "코스닥": "KOSDAQ",
+            "코넥스": "KONEX",
+        }.get(cells[1])
+        if market:
+            rows.append((cells[2], market))
+    unique_rows = tuple(sorted(set(rows)))
+    markets_by_code: dict[str, set[str]] = {}
+    for code, market in unique_rows:
+        markets_by_code.setdefault(code, set()).add(market)
+    if (
+        len(markets_by_code) < 1_000
+        or any(len(markets) != 1 for markets in markets_by_code.values())
+    ):
+        raise ValueError("KRX KIND current listed-company register is incomplete")
+    return unique_rows
+
+
+@lru_cache(maxsize=2)
+def _krx_kind_current_security_universe(
+    retrieved_on: str,
+) -> tuple[tuple[str, str], ...]:
+    """Read KRX KIND's current listed-company register once per UTC day.
+
+    The register is independent of any one ticker's price history.  That is
+    essential for detecting a recently delisted code whose final OHLCV row is
+    still available.  ``retrieved_on`` is a cache/provenance key; KIND serves
+    the current register rather than a historical reconstruction.
+    """
+
+    request = urllib.request.Request(
+        KRX_KIND_CURRENT_LIST_URL,
+        headers={"User-Agent": "TRZIP/0.1"},
+    )
+    with urllib.request.urlopen(request, timeout=20) as response:
+        content_type = response.headers.get_content_type()
+        if content_type != "application/vnd.ms-excel":
+            raise ValueError("KRX KIND current register MIME type is invalid")
+        document = response.read().decode("euc-kr", errors="strict")
+    return _parse_krx_kind_current_register(document)
+
+
+def krx_current_listing_verification(
+    stock_code: str,
+    observed_at: datetime,
+    *,
+    exchange: str = "KRX",
+) -> dict:
+    """Return fail-closed current-list proof from the official KRX register."""
+
+    code = str(stock_code or "").strip()
+    retrieved_on = datetime.now(UTC).date().isoformat()
+    expected_exchange = str(exchange or "KRX").strip().upper()
+    if expected_exchange not in {"KRX", "KOSPI", "KOSDAQ", "KONEX"}:
+        expected_exchange = "KRX"
+    verification = {
+        "status": "unavailable",
+        "current_listed": False,
+        "exchange": expected_exchange,
+        "stock_code": code,
+        "as_of": None,
+        "evidence_owner": "KRX KIND",
+        "evidence_type": "official_current_security_register",
+        "evidence_url": KRX_KIND_CURRENT_LIST_URL,
+        "synthetic": False,
+        "estimated": False,
+        "ranking_effect": "none",
+    }
+    if len(code) != 6 or not code.isdigit() or observed_at.tzinfo is None:
+        return verification
+    try:
+        current_markets = dict(_krx_kind_current_security_universe(retrieved_on))
+    except Exception:
+        return verification
+    actual_market = current_markets.get(code)
+    current = bool(
+        actual_market
+        and (expected_exchange == "KRX" or actual_market == expected_exchange)
+    )
+    verification.update({
+        "status": "verified_current" if current else "verified_inactive",
+        "current_listed": current,
+        "as_of": retrieved_on,
+    })
+    return verification
 
 
 def _yahoo_fx_symbol_to_krw(currency: str) -> str:
@@ -659,6 +770,24 @@ def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: in
             }
         reaction = _market_reaction(rows)
         latest = rows[-1] if rows else None
+        listing_verification = krx_current_listing_verification(
+            code, end.replace(tzinfo=UTC)
+        )
+        if listing_verification["status"] == "verified_inactive":
+            return {
+                "status": "not_found",
+                "provider": "pykrx",
+                "source_url": KRX_DATA_SOURCE_URL,
+                "stock_code": code,
+                "name": name or None,
+                "reason": "not_in_current_krx_security_universe",
+                "listing_verification": listing_verification,
+                "daily_ohlcv": [],
+                "synthetic": False,
+                "estimated": False,
+                "ranking_effect": "none",
+                "relationship_evidence": False,
+            }
         previous = rows[-2] if len(rows) > 1 else None
         close = float(latest.get("close") or 0) if latest else 0
         previous_close = float(previous.get("close") or 0) if previous else 0
@@ -682,6 +811,7 @@ def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: in
         return {"status": "observed", "provider": "pykrx", "source_url": KRX_DATA_SOURCE_URL,
                 "stock_code": code,
                 "name": name or None, "daily_ohlcv": rows,
+                "listing_verification": listing_verification,
                 "latest_daily": latest,
                 "summary": {
                     "as_of": latest.get("date") if latest else None,
@@ -707,6 +837,10 @@ def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: in
                 },
                 "valuation": valuation,
                 "market_reaction": reaction,
+                "synthetic": False,
+                "estimated": False,
+                "ranking_effect": "none",
+                "relationship_evidence": False,
                 "note": "daily reference data; not realtime, not a forecast, and not relation evidence"}
     except Exception as exc:
         return {"status": "error", "stock_code": code, "reason": f"{type(exc).__name__}: {exc}"}
@@ -1601,6 +1735,7 @@ __all__ = (
     "clear_yahoo_market_cache",
     "enrich_company_identities",
     "integration_status",
+    "krx_current_listing_verification",
     "opendart_company",
     "pykrx_stock",
     "yahoo_finance_fundamentals",

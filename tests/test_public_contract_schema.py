@@ -34,10 +34,16 @@ def test_intelligence_schema_requires_observed_rank_and_evidence_contracts():
         "home_rank", "rising_rank", "category_label", "trend_definition",
         "keyword_status", "company_status", "company_card_reason",
     } <= trend_required
+    # The operational trend arrays intentionally retain the reviewed-enrichment
+    # DTO instead of being rewritten into the stricter public v4 card DTO.  The
+    # immutable ``presentation_feed`` below is the only client-facing company
+    # contract; these are the evidence-bearing fields guaranteed internally.
     assert {
-        "relationship_reason", "company_summary", "company_description", "ticker",
-        "ontology_path", "evidence_sources", "investment_warning",
-        "company_role_category", "company_role_label",
+        "company", "stock_code", "market", "relationship_reason",
+        "connection_explanation", "company_description", "relation_tier",
+        "relation_display_type", "verification_status",
+        "company_role_category", "company_role_label", "ontology_path",
+        "ontology_complete", "evidence_sources", "official_identity",
     } <= company_required
     assert payload["$defs"]["trend"]["properties"]["keywords"]["maxItems"] == 5
     assert payload["$defs"]["trend"]["properties"]["companies"]["oneOf"] == [
@@ -79,6 +85,61 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
     presentation_schema = payload["properties"]["presentation_feed"]
     resolver_schema = {**payload, **presentation_schema}
     validator = Draft202012Validator(resolver_schema)
+    observed_at = "2026-08-15T00:00:00+00:00"
+    price_points = [
+        {"date": f"2026-07-{day:02d}", "close": 100 + day}
+        for day in range(1, 31)
+    ]
+
+    def market_snapshot():
+        provenance = {
+            "provider": "verified-provider",
+            "as_of": "2026-08-15",
+            "source_url": "https://example.com/market",
+            "synthetic": False,
+            "estimated": False,
+        }
+        return {
+            "status": "observed", "provider": "verified-provider",
+            "source": "verified-provider", "source_url": "https://example.com/market",
+            "price_source_url": "https://example.com/market",
+            "as_of": "2026-08-15", "last_price": 130, "last_price_krw": 130,
+            "change_percent": 1.2, "volume": 10,
+            "market_cap": 135000000, "market_cap_krw": 135000000,
+            "market_cap_currency": "KRW", "native_market_cap": 135000000,
+            "market_cap_source_url": "https://example.com/market",
+            "currency": "KRW", "fx_rate_to_krw": 1.0,
+            "fx_as_of": "2026-08-15", "fx_provider": "identity",
+            "fx_source_url": "https://example.com/market",
+            "price_series": [row["close"] for row in price_points],
+            "price_points": price_points,
+            "per": 12.0, "per_source_url": "https://example.com/fundamentals",
+            "pbr": 1.2, "pbr_source_url": "https://example.com/fundamentals",
+            "roe_pct": 10.0, "roe": 10.0, "roe_percent": 10.0,
+            "roe_source_url": "https://example.com/fundamentals",
+            "roe_basis": "trailing_net_income / average_two_point_stockholders_equity * 100",
+            "roe_calculated": True,
+            "roe_numerator": {
+                "value": 10, "type": "trailingNetIncome", "period_type": "TTM",
+                "as_of": "2026-08-15",
+            },
+            "roe_denominator": {
+                "value": 100, "type": "averageStockholdersEquity",
+                "period_type": "TWO_POINT_AVERAGE", "as_of": "2026-08-15",
+                "period_start": "2025-08-15", "period_end": "2026-08-15",
+                "observations": [
+                    {"value": 90, "type": "quarterlyStockholdersEquity", "period_type": "3M", "as_of": "2025-08-15"},
+                    {"value": 110, "type": "quarterlyStockholdersEquity", "period_type": "3M", "as_of": "2026-08-15"},
+                ],
+            },
+            "field_provenance": {
+                field: dict(provenance)
+                for field in ("price_series", "market_cap_krw", "per", "pbr", "roe_pct")
+            },
+            "synthetic": False, "estimated": False,
+            "display_only": True, "ranking_effect": "none",
+        }
+
     companies = [
         {
             "company": f"기업{i}", "stock_code": f"{i:06d}", "exchange": "KRX",
@@ -93,36 +154,43 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
             "ontology_complete": True,
             "evidence_sources": [{"url": f"https://example.com/{i}"}],
             "relation_tier": "direct",
-            "official_domain": None,
-            "logo_url": "",
-            "logo_render_mode": "initials",
-            "logo_asset_source": "initials_fallback",
-            "logo_asset_host": "",
-            "logo_asset_verification": "initials_fallback",
-            "logo_asset_format": "none",
-            "logo_asset_mime": "",
-            "logo_asset_width": 0,
-            "logo_asset_height": 0,
-            "logo_asset_sha256": "",
-            "logo_source_page_url": "",
+            "listing_verification": {
+                "status": "verified_current", "current_listed": True,
+                "exchange": "KRX", "stock_code": f"{i:06d}",
+                "as_of": "2026-08-15", "evidence_owner": "KRX",
+                "evidence_type": "exchange_current_security_universe",
+                "evidence_url": "https://data.krx.co.kr/",
+                "synthetic": False, "estimated": False, "ranking_effect": "none",
+            },
+            "official_domain": f"company{i}.example",
+            "logo_url": "https://assets.example.com/logo.svg",
+            "logo_render_mode": "image",
+            "logo_asset_source": "official_page_asset",
+            "logo_asset_host": "assets.example.com",
+            "logo_asset_verification": "verified_safe_svg",
+            "logo_asset_format": "svg",
+            "logo_asset_mime": "image/svg+xml",
+            "logo_asset_width": 160,
+            "logo_asset_height": 80,
+            "logo_asset_sha256": "a" * 64,
+            "logo_source_page_url": f"https://company{i}.example/",
             "logo_minimum_dimension": 64,
             "logo_runtime_probe_required": False,
-            "logo_asset_quality": "fail_closed_initials_no_verified_asset",
+            "logo_asset_quality": "verified_vector",
             "logo_quality_policy": "avatar-sharpness-v1",
             "logo_provenance": {
-                "source_page_url": None,
-                "asset_url": None,
-                "mime": None,
-                "width": 0,
-                "height": 0,
-                "sha256": None,
-                "verification": "initials_fallback",
+                "source_page_url": f"https://company{i}.example/",
+                "asset_url": "https://assets.example.com/logo.svg",
+                "mime": "image/svg+xml",
+                "width": 160,
+                "height": 80,
+                "sha256": "a" * 64,
+                "verification": "verified_safe_svg",
             },
-            "market_snapshot": None,
+            "market_snapshot": market_snapshot(),
         }
         for i in range(10)
     ]
-    observed_at = "2026-08-15T00:00:00+00:00"
     sparse_point = {
         "at": observed_at,
         "x": 80,
@@ -183,10 +251,20 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
         "schema_version": "trzip-presentation-feed-v4", "status": "ready",
         "frontend_default": True, "observed_at": observed_at,
         "selection_policy": "validated_live_home_feed_v1",
+        "source_provenance": {
+            "ranking_sources": ["x", "google_trends"],
+            "collector_versions": {
+                "x": "x_current_session_kr_v1",
+                "google_trends": "google_trending_now_kr_v1",
+            },
+            "actual_only": True,
+            "fixture_replay_allowed": False,
+            "proof_gate": "hourly-source-proof-v3",
+        },
         "logo_policy": {
             "version": "avatar-sharpness-v1", "avatar_size_px": 44,
             "minimum_raster_dimension_px": 64, "vector_assets_allowed": True,
-            "low_resolution_fallback": "initials", "runtime_probe_for_generic_favicons": False,
+            "low_resolution_fallback": "card_excluded", "runtime_probe_for_generic_favicons": False,
             "official_page_resolver_required": True, "asset_sha256_required": True,
         },
         "items": [item],
@@ -243,21 +321,6 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
     assert list(validator.iter_errors(ranking_affected))
 
     valid_market = json.loads(json.dumps(feed))
-    valid_market["items"][0]["companies"][0]["market_snapshot"] = {
-        "status": "observed", "provider": "verified-provider",
-        "source": "verified-provider", "source_url": "https://example.com/market",
-        "price_source_url": "https://example.com/market",
-        "as_of": observed_at, "last_price": 100, "last_price_krw": 135000,
-        "change_percent": 1.2, "volume": 10,
-        "market_cap": 135000000, "market_cap_krw": 135000000,
-        "market_cap_currency": "KRW", "native_market_cap": 100000,
-        "market_cap_source_url": "https://example.com/market",
-        "currency": "USD", "fx_rate_to_krw": 1350,
-        "fx_as_of": observed_at, "fx_provider": "verified-fx",
-        "fx_source_url": "https://example.com/fx",
-        "price_series": [100], "price_points": [{"close": 100}],
-        "display_only": True, "ranking_effect": "none",
-    }
     validator.validate(valid_market)
     _validate_presentation_feed(valid_market)
     missing_fx = json.loads(json.dumps(valid_market))
@@ -275,7 +338,29 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
         "roe": 0,
         "roe_percent": 0,
     })
+    unproven_roe["items"][0]["companies"][0]["market_snapshot"].pop(
+        "roe_numerator"
+    )
     assert list(validator.iter_errors(unproven_roe))
+    initials = json.loads(json.dumps(valid_market))
+    initials_company = initials["items"][0]["companies"][0]
+    initials_company.update({
+        "logo_url": "", "logo_render_mode": "initials",
+        "logo_asset_source": "initials_fallback",
+        "logo_asset_host": "", "logo_asset_verification": "initials_fallback",
+        "logo_asset_format": "none", "logo_asset_mime": "",
+        "logo_asset_width": 0, "logo_asset_height": 0,
+        "logo_asset_sha256": "", "logo_asset_quality": "fail_closed_initials_no_verified_asset",
+    })
+    assert list(validator.iter_errors(initials))
+    delisted = json.loads(json.dumps(valid_market))
+    delisted["items"][0]["companies"][0]["listing_verification"].update({
+        "status": "verified_inactive", "current_listed": False,
+    })
+    assert list(validator.iter_errors(delisted))
+    missing_market = json.loads(json.dumps(valid_market))
+    missing_market["items"][0]["companies"][0].pop("market_snapshot")
+    assert list(validator.iter_errors(missing_market))
     assert payload["properties"]["home_quality_gate"]["properties"]["minimum_published_companies"] == {"const": 10}
 
 

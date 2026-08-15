@@ -829,11 +829,11 @@ def test_market_enrichment_fails_closed_on_reviewed_inactive_krx_security(monkey
     result = _enrich_market_references(intelligence, {}, at)
     market = result["unified_ranking"][0]["company_candidates"][0]["market_reference"]
 
-    assert market == {
-        "status": "not_found",
-        "stock_code": "031440",
+    assert {key: market[key] for key in ("status", "stock_code", "reason")} == {
+        "status": "not_found", "stock_code": "031440",
         "reason": "market_reference_not_found",
     }
+    assert market["listing_verification"]["current_listed"] is False
     assert result["market_data_status"]["newly_observed"] == 0
     assert result["market_data_status"]["provider_request_count"]["pykrx"] == 0
 
@@ -883,11 +883,11 @@ def test_market_enrichment_rejects_fresh_cached_inactive_krx_security(monkeypatc
     result = _enrich_market_references(intelligence, previous, at)
     market = result["unified_ranking"][0]["company_candidates"][0]["market_reference"]
 
-    assert market == {
-        "status": "not_found",
-        "stock_code": "031440",
+    assert {key: market[key] for key in ("status", "stock_code", "reason")} == {
+        "status": "not_found", "stock_code": "031440",
         "reason": "market_reference_not_found",
     }
+    assert market["listing_verification"]["current_listed"] is False
     assert result["market_data_status"]["reused_company_rows"] == 0
     assert result["market_data_status"]["provider_request_count"] == {
         "pykrx": 0,

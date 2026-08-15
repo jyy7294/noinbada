@@ -31,6 +31,7 @@
   [data-screen-label] { display:none !important; }
   [data-screen-label][data-proto-active] { display:flex !important; }
   [data-screen-label] > div:first-child { display:none !important; }
+  [data-critical-touch-target]:focus-visible { outline:3px solid rgba(123,63,242,0.52); outline-offset:2px; border-radius:10px; }
   @keyframes zipBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
 </style>
 </helmet>
@@ -174,12 +175,12 @@
         </div>
 
         <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:0 16px 8px;">
-          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:3px 16px 0;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin:3px 16px 0;">
             <span data-home-observed="1" style="font-weight:500; font-size:12px; color:#8B8D98;">기준 시각 확인 중</span>
             <div style="display:flex; align-items:center; gap:9px; flex:none;">
-              <button onClick="{{ openSelectionGuide }}" type="button" style="border:0; padding:0; background:none; font-family:inherit; font-weight:700; font-size:11px; color:#8B6FD6; cursor:pointer;">선정 기준</button>
-              <button onClick="{{ openArchive }}" data-archive-open="1" type="button" style="border:0; padding:0; background:none; font-family:inherit; font-weight:700; font-size:11px; color:#5B21C0; cursor:pointer;">지난 트렌드</button>
-              <button data-view-btn2="toggle" type="button" style="border:0; padding:0; background:none; font-family:inherit; font-weight:600; font-size:11px; color:#5B21C0; text-decoration:underline; text-underline-offset:3px; cursor:pointer;">List View</button>
+              <button data-critical-touch-target="1" onClick="{{ openSelectionGuide }}" type="button" aria-haspopup="dialog" style="min-width:44px; height:44px; border:0; padding:0 2px; background:none; display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:700; font-size:11px; color:#8B6FD6; cursor:pointer;">선정 기준</button>
+              <button data-critical-touch-target="1" onClick="{{ openArchive }}" data-archive-open="1" type="button" aria-haspopup="dialog" style="min-width:44px; height:44px; border:0; padding:0 2px; background:none; display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:700; font-size:11px; color:#5B21C0; cursor:pointer;">지난 트렌드</button>
+              <button data-critical-touch-target="1" data-view-btn2="toggle" type="button" aria-label="트렌드를 목록으로 보기" aria-pressed="false" style="min-width:44px; height:44px; border:0; padding:0 2px; background:none; display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:600; font-size:11px; color:#5B21C0; text-decoration:underline; text-underline-offset:3px; cursor:pointer;">List View</button>
             </div>
           </div>
 
@@ -280,7 +281,7 @@
 
         <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px 18px;">
           <div style="display:flex; align-items:center; gap:10px;">
-            <button type="button" aria-label="홈으로 돌아가기" onClick="{{ backHome }}" style="width:32px;height:32px;border:0;background:transparent;padding:0;font-family:inherit;font-size:24px;color:#1A1A22;font-weight:600;cursor:pointer;">‹</button>
+            <button data-critical-touch-target="1" type="button" aria-label="홈으로 돌아가기" onClick="{{ backHome }}" style="width:44px;height:44px;margin:-6px;border:0;background:transparent;padding:0;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;font-size:24px;color:#1A1A22;font-weight:600;cursor:pointer;">‹</button>
             <span style="font-weight:800; font-size:19px; color:#1A1A22; letter-spacing:-0.03em;">트렌드 상세</span>
           </div>
           <div style="display:flex; align-items:center; gap:14px;">
@@ -403,25 +404,28 @@
                 <span style="{{ ss.style }}">{{ ss.label }}</span>
               </sc-for>
               <span style="flex:1;"></span>
-              <span style="font-weight:700; font-size:11px; color:#8B8D98;">관심 지수</span>
-              <span style="font-weight:800; font-size:16px; color:#6B2FEA;">{{ interestIndex }}</span>
+              <span style="font-weight:700; font-size:10.5px; color:#8B8D98;">실제 24시간 관측</span>
+            </div>
+            <div data-interest-summary="1" role="group" aria-label="{{ interestSummaryLabel }}" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin-top:9px;">
+              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">최고</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestPeak }}</span></div>
+              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">현재</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestCurrent }}</span></div>
+              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">포착</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestObservationCount }}회</span></div>
             </div>
             <div style="position:relative; height:108px; margin-top:9px; overflow:hidden;">
               <svg data-interest-visual="1" viewBox="0 0 296 96" preserveAspectRatio="none" role="img" aria-labelledby="interest-chart-title interest-chart-disclosure" style="display:block; width:100%; height:96px; overflow:visible;">
-                <line x1="0" y1="24" x2="296" y2="24" stroke="#F0ECF8" stroke-width="1"></line>
-                <line x1="0" y1="60" x2="296" y2="60" stroke="#F0ECF8" stroke-width="1"></line>
+                <line x1="8" y1="24" x2="288" y2="24" stroke="#F0ECF8" stroke-width="1"></line>
+                <line x1="8" y1="60" x2="288" y2="60" stroke="#F0ECF8" stroke-width="1"></line>
                 <path data-interest-area="1" d="M0,84 L296,84 L296,84 L0,84 Z" fill="rgba(123,63,242,0.10)"></path>
                 <path data-interest-line="1" d="" fill="none" stroke="#7B3FF2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                <g data-interest-single-points="1"></g>
-                <circle data-interest-dot="1" cx="296" cy="84" r="4.5" fill="#7B3FF2" stroke="#FFFFFF" stroke-width="2.5"></circle>
+                <g data-interest-single-points="1" data-interest-observation-points="1"></g>
               </svg>
-              <div data-interest-empty="1" style="display:none;position:absolute;inset:0 0 17px;align-items:center;justify-content:center;border-radius:14px;background:#FAF9FD;font-weight:700;font-size:11.5px;color:#8B8D98;">비교할 관측값이 부족합니다</div>
+              <div data-interest-empty="1" style="display:none;position:absolute;inset:0 0 17px;align-items:center;justify-content:center;border-radius:14px;background:#FAF9FD;font-weight:700;font-size:11.5px;color:#8B8D98;">24시간 내 비교할 관측값이 부족합니다</div>
               <div style="display:flex; justify-content:space-between; margin-top:-2px; font-weight:600; font-size:9.5px; color:#AAA6B4;">
                 <span>{{ periodStartLabel }}</span><span>{{ periodMiddleLabel }}</span><span>{{ periodEndLabel }}</span>
               </div>
             </div>
             <p id="interest-chart-disclosure" style="margin:4px 0 0; font-weight:600; font-size:9.5px; line-height:1.45; color:#9A96A6;">
-              관심 흐름은 기간별 비교를 위한 정규화 지수입니다.
+              점은 실제 관측, 선은 90분 이내 이어진 관측만 연결합니다. 비어 있는 구간은 보간하지 않습니다.
             </p>
           </div>
         </div>
@@ -484,7 +488,7 @@
 
         <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px 6px;">
           <div style="display:flex; align-items:center; gap:10px; min-width:0;">
-            <button type="button" aria-label="트렌드 상세로 돌아가기" onClick="{{ backDetail }}" style="width:32px;height:32px;flex:none;border:0;background:transparent;padding:0;font-family:inherit;font-size:24px;color:#1A1A22;font-weight:600;cursor:pointer;">‹</button>
+            <button data-critical-touch-target="1" type="button" aria-label="트렌드 상세로 돌아가기" onClick="{{ backDetail }}" style="width:44px;height:44px;flex:none;margin:-6px;border:0;background:transparent;padding:0;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;font-size:24px;color:#1A1A22;font-weight:600;cursor:pointer;">‹</button>
             <span title="{{ trendName }} 관련 기업" style="font-weight:800; font-size:19px; line-height:1.25; color:#1A1A22; letter-spacing:-0.03em; min-width:0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;">{{ trendName }} 관련 기업</span>
           </div>
         </div>
@@ -1332,6 +1336,41 @@ class Component extends DCLogic {
     return String((company && (company.company || company.name)) || '').trim();
   }
 
+  stripInternalRelationCopy(value) {
+    const marker = /역할\s*후보|후보(?:입니다|로\s*분류)|보강\s*(?:중|대기)|(?:관계|근거|연결)\s*검토\s*(?:중|대기)|승인\s*대기|내부\s*(?:상태|검토)|\b(?:candidate|unresolved|pending[_ -]?review)\b/i;
+    const sentences = String(value == null ? '' : value).replace(/\s+/g, ' ').trim().match(/[^.!?\n]+[.!?]?/g) || [];
+    return sentences.filter((sentence) => !marker.test(sentence)).join(' ').replaceAll('\uC740(\uB294)', ':').trim();
+  }
+
+  publicConnectionCopy(company = {}, fallback = '') {
+    const marker = /역할\s*후보|후보(?:입니다|로\s*분류)|보강\s*(?:중|대기)|(?:관계|근거|연결)\s*검토\s*(?:중|대기)|승인\s*대기|내부\s*(?:상태|검토)|\b(?:candidate|unresolved|pending[_ -]?review)\b/i;
+    const sources = [
+      company.connection_explanation,
+      company.relationship_reason,
+      company.reason,
+      fallback
+    ];
+    let factual = '';
+    let rebuild = false;
+    for (let index = 0; index < sources.length; index += 1) {
+      const raw = String(sources[index] || '').replace(/\s+/g, ' ').trim();
+      if (!raw) continue;
+      const hasInternalMarker = marker.test(raw);
+      rebuild = rebuild || hasInternalMarker || index > 0;
+      const clean = this.stripInternalRelationCopy(raw);
+      if (!clean) continue;
+      if (!rebuild && index === 0) return clean;
+      if (!factual) factual = clean;
+    }
+    if (!factual) return '';
+    const name = this.companyName(company);
+    const role = String(company.company_role_label || company.company_role || '').trim();
+    if (!name || !role) return factual;
+    const matched = [...new Set((company.matched_keywords || []).map((value) => String(value || '').trim()).filter(Boolean))];
+    const context = matched.length ? matched.join(', ') + ' 관련 맥락에서 ' : '';
+    return context + name + ": '" + role + "' 역할로 연결됩니다. " + factual;
+  }
+
   companyDomain(company) {
     return String((company && company.official_domain) || '')
       .trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/.*$/, '');
@@ -1705,9 +1744,14 @@ class Component extends DCLogic {
       if (!raw) return '';
       const date = new Date(raw);
       if (Number.isNaN(date.getTime())) return '';
-      return date.toLocaleDateString('ko-KR', {
-        timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric'
-      }).replace(/\s/g, '');
+      const parts = new Intl.DateTimeFormat('ko-KR', {
+        timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+      }).formatToParts(date).reduce((result, part) => {
+        result[part.type] = part.value;
+        return result;
+      }, {});
+      return parts.month + '.' + parts.day + '. ' + parts.hour + ':' + parts.minute;
     });
     const timestampValues = publishedPoints.map((point) => {
       const raw = point && (point.timestamp || point.at);
@@ -1720,11 +1764,15 @@ class Component extends DCLogic {
       : timestampLabels;
     const labels = [
       sourceLabels[0] || (rangeIndex === 0 ? '24시간 전' : rangeIndex === 1 ? '한 달 전' : '3개월 전'),
-      sourceLabels[Math.floor((sourceLabels.length - 1) / 2)]
-        || (rangeIndex === 0 ? '12시간 전' : rangeIndex === 1 ? '2주 전' : '6주 전'),
+      sourceLabels.length >= 3
+        ? sourceLabels[Math.floor((sourceLabels.length - 1) / 2)]
+        : '',
       sourceLabels[sourceLabels.length - 1] || '오늘'
     ];
     const usable = rawValues.filter(Number.isFinite);
+    const peakValue = usable.length ? Math.max(...usable) : null;
+    const currentValue = [...rawValues].reverse().find(Number.isFinite);
+    const observationCount = usable.length;
     if (usable.length < 2) {
       return {
         available: false,
@@ -1733,7 +1781,10 @@ class Component extends DCLogic {
         area: '',
         lastX: 296,
         lastY: 84,
-        index: '—',
+        index: Number.isFinite(currentValue) ? Math.round(currentValue) : '—',
+        peak: Number.isFinite(peakValue) ? Math.round(peakValue) : '—',
+        current: Number.isFinite(currentValue) ? Math.round(currentValue) : '—',
+        observationCount,
         labels,
         pattern: 'published_series',
         rankingEffect: publishedWindow && publishedWindow.ranking_effect
@@ -1750,8 +1801,8 @@ class Component extends DCLogic {
       if (!Number.isFinite(value)) return null;
       const timestamp = timestampValues[index];
       const x = useTimestampScale && Number.isFinite(timestamp)
-        ? (timestamp - firstTimestamp) * 296 / (lastTimestamp - firstTimestamp)
-        : rawValues.length === 1 ? 296 : index * 296 / (rawValues.length - 1);
+        ? 8 + (timestamp - firstTimestamp) * 280 / (lastTimestamp - firstTimestamp)
+        : rawValues.length === 1 ? 288 : 8 + index * 280 / (rawValues.length - 1);
       const y = 88 - value * 0.72;
       return [Number(x.toFixed(1)), Number(y.toFixed(1))];
     });
@@ -1787,6 +1838,7 @@ class Component extends DCLogic {
     )).join(' ');
     const singletonPoints = segments.filter((segment) => segment.length === 1)
       .map((segment) => segment[0]);
+    const observationPoints = points.filter(Boolean);
     const lastPoint = [...points].reverse().find(Boolean);
     const lastSegment = segments[segments.length - 1] || [];
     const lastValue = [...rawValues].reverse().find(Number.isFinite);
@@ -1796,10 +1848,14 @@ class Component extends DCLogic {
       linePath,
       area,
       singletonPoints,
+      observationPoints,
       dotVisible: lastSegment.length >= 2,
       lastX: lastPoint[0],
       lastY: lastPoint[1],
       index: Math.round(lastValue),
+      peak: Math.round(peakValue),
+      current: Math.round(lastValue),
+      observationCount,
       labels,
       pattern: 'published_series',
       rankingEffect: publishedWindow.ranking_effect || 'none'
@@ -1812,22 +1868,19 @@ class Component extends DCLogic {
     if (!chart) return;
     const line = root.querySelector('[data-interest-line]');
     const area = root.querySelector('[data-interest-area]');
-    const dot = root.querySelector('[data-interest-dot]');
-    const singletonPoints = root.querySelector('[data-interest-single-points]');
+    const observationPoints = root.querySelector('[data-interest-observation-points]');
     const visual = root.querySelector('[data-interest-visual]');
     const empty = root.querySelector('[data-interest-empty]');
     if (line) line.setAttribute('d', chart.linePath || '');
     if (area) area.setAttribute('d', chart.area);
-    if (singletonPoints) {
-      singletonPoints.innerHTML = (chart.singletonPoints || []).map((point) => (
-        '<circle cx="' + point[0] + '" cy="' + point[1]
-        + '" r="4.5" fill="#7B3FF2" stroke="#FFFFFF" stroke-width="2.5"></circle>'
-      )).join('');
-    }
-    if (dot) {
-      dot.setAttribute('cx', String(chart.lastX));
-      dot.setAttribute('cy', String(chart.lastY));
-      dot.style.display = chart.available && chart.dotVisible !== false ? '' : 'none';
+    if (observationPoints) {
+      const points = chart.observationPoints || [];
+      observationPoints.innerHTML = points.map((point, index) => {
+        const latest = index === points.length - 1;
+        return '<circle data-observed-point="1" cx="' + point[0] + '" cy="' + point[1]
+          + '" r="' + (latest ? '4.8' : '3.7') + '" fill="' + (latest ? '#7B3FF2' : '#BCA2F7')
+          + '" stroke="#FFFFFF" stroke-width="2"></circle>';
+      }).join('');
     }
     if (visual) visual.style.visibility = chart.available ? 'visible' : 'hidden';
     if (empty) empty.style.display = chart.available ? 'none' : 'flex';
@@ -1921,7 +1974,7 @@ class Component extends DCLogic {
           if (!ROLE_META[key]) return;
           if (!groups.has(key)) groups.set(key, []);
           const name = company.company || company.name || '';
-          const desc = company.connection_explanation || company.reason || company.company_description || company.company_summary || '';
+          const desc = this.publicConnectionCopy(company);
           if (!name || !desc) return;
           groups.get(key).push([name.slice(0, 1), name, desc, company]);
           const logo = this.logoCandidate(company);
@@ -2218,6 +2271,8 @@ class Component extends DCLogic {
       list.style.display = isList ? 'block' : 'none';
       if (scroller) { scroller.style.overflowY = isList ? 'auto' : 'hidden'; scroller.scrollTop = 0; }
       btn.textContent = isList ? 'Dial View' : 'List View';
+      btn.setAttribute('aria-label', isList ? '트렌드를 다이얼로 보기' : '트렌드를 목록으로 보기');
+      btn.setAttribute('aria-pressed', String(isList));
     });
   }
 
@@ -2239,6 +2294,8 @@ class Component extends DCLogic {
       list.style.display = isList ? 'block' : 'none';
       if (scroller) { scroller.style.overflowY = isList ? 'auto' : 'hidden'; scroller.scrollTop = 0; }
       btn.textContent = isList ? 'Dial View' : 'List View';
+      btn.setAttribute('aria-label', isList ? '트렌드를 다이얼로 보기' : '트렌드를 목록으로 보기');
+      btn.setAttribute('aria-pressed', String(isList));
     });
   }
 
@@ -2334,7 +2391,7 @@ class Component extends DCLogic {
           const date = String(item.peak_hint || item.active_to || '').replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$1.$2.$3');
           const keywords = (item.keywords || []).slice(0, 5).map((keyword) => '<span style="padding:5px 8px;border-radius:999px;background:#F7F4FF;color:#5B21C0;font-weight:700;font-size:10px;">#' + escape(keyword) + '</span>').join('');
           const companyNames = (item.companies || []).map((company) => escape(company.name)).join(' · ');
-          const companyDetails = (item.companies || []).map((company) => '<div style="padding:10px 0;border-top:1px solid #F0EDF7;"><div style="font-weight:800;font-size:12px;color:#1A1A22;">' + escape(company.name) + ' <span style="font-weight:600;color:#8B6FD6;">' + escape(company.role) + '</span></div><div style="margin-top:4px;font-weight:500;font-size:10.5px;line-height:1.5;color:#6B6E7B;">' + escape(company.connection_context) + '</div></div>').join('');
+          const companyDetails = (item.companies || []).map((company) => '<div style="padding:10px 0;border-top:1px solid #F0EDF7;"><div style="font-weight:800;font-size:12px;color:#1A1A22;">' + escape(company.name) + ' <span style="font-weight:600;color:#8B6FD6;">' + escape(company.role) + '</span></div><div style="margin-top:4px;font-weight:500;font-size:10.5px;line-height:1.5;color:#6B6E7B;">' + escape(this.publicConnectionCopy({ ...company, company: company.name, company_role_label: company.role, connection_explanation: company.connection_context })) + '</div></div>').join('');
           return '<article data-archive-case="' + escape(item.id) + '" style="margin-top:10px;padding:15px;border:1px solid #ECE7F8;border-radius:18px;background:#FFFFFF;">'
             + '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;"><span style="font-weight:800;font-size:10.5px;color:#7B3FF2;">' + escape(item.category_label) + '</span><time style="font-weight:600;font-size:10px;color:#A1A3AD;">' + escape(date) + '</time></div>'
             + '<h3 style="margin:7px 0 0;font-size:16px;line-height:1.3;color:#1A1A22;letter-spacing:-0.03em;">' + escape(item.display_name) + '</h3>'
@@ -4880,7 +4937,7 @@ class Component extends DCLogic {
     const logo = this.companyLogo(company);
     const ticker = company.stock_code || company.ticker || '종목코드 미제공';
     const market = company.market || company.exchange || '거래소 미제공';
-    const reason = company.reason || company.connection_explanation || company.relationship_reason || desc;
+    const reason = this.publicConnectionCopy(company, desc);
     const about = company.company_description || company.company_summary || '기업 정보가 제공되지 않았습니다.';
     const verifiedSnapshot = this.verifiedMarketSnapshot(company);
     const snapshot = verifiedSnapshot || {};
@@ -5101,6 +5158,11 @@ class Component extends DCLogic {
       sourceCoverage: sourceSignals.length > 1 ? '교차 포착'
         : sourceSignals.length === 1 ? '단일 포착' : '출처 미확인',
       interestIndex: interestChart.index,
+      interestPeak: interestChart.peak,
+      interestCurrent: interestChart.current,
+      interestObservationCount: interestChart.observationCount,
+      interestSummaryLabel: '실제 24시간 관심 흐름. 최고 ' + interestChart.peak
+        + ', 현재 ' + interestChart.current + ', ' + interestChart.observationCount + '회 포착',
       periodStartLabel: interestChart.labels[0],
       periodMiddleLabel: interestChart.labels[1],
       periodEndLabel: interestChart.labels[2],

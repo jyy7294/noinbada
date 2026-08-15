@@ -19,6 +19,7 @@ from .category_ontology import category_ontology
 from .curation import is_sensitive_context
 from .hourly_store import (
     ELIGIBLE_COLLECTOR_SQL,
+    LIVE_COLLECTOR_SQL,
     KST,
     connect,
     default_db_path,
@@ -40,6 +41,7 @@ from .ontology import (
     OntologyGraph,
 )
 from .provider_verification import latest_verification_by_trend
+from .public_copy import public_connection_explanation
 from .ranking_v2 import build_period_rankings_v2
 from .presentation_feed import build_presentation_feed
 from .keyword_policy import keyword_fits_public_label
@@ -663,7 +665,78 @@ def refresh_home_context_eligibility(intelligence: dict) -> dict:
     return intelligence
 
 
-def _series_rows(start: datetime, end: datetime, path: Path | None = None) -> list[sqlite3.Row]:
+def _series_rows(
+    start: datetime,
+    end: datetime,
+    path: Path | None = None,
+    *,
+    live_only: bool = False,
+) -> list[sqlite3.Row]:
+    if live_only:
+        qualified_live_sql = (
+            LIVE_COLLECTOR_SQL
+            .replace("source", "observation.source")
+            .replace("collector_version", "observation.collector_version")
+        )
+        with connect(path) as connection:
+            return connection.execute(
+                f"""WITH live_counts AS (
+                        SELECT observed_at, source, provenance,
+                               COUNT(*) AS row_count,
+                               COUNT(DISTINCT source_rank) AS distinct_rank_count,
+                               COUNT(DISTINCT topic) AS distinct_topic_count
+                        FROM hourly_observations
+                        WHERE observed_at BETWEEN ? AND ?
+                          AND provenance='observed'
+                          AND {LIVE_COLLECTOR_SQL}
+                        GROUP BY observed_at, source, provenance
+                    ), live_quality AS (
+                        SELECT live_counts.*,
+                               audit.row_count AS audited_row_count,
+                               CASE
+                                 WHEN live_counts.row_count <>
+                                      live_counts.distinct_rank_count
+                                   THEN 'quarantined_duplicate_rank'
+                                 WHEN audit.status = 'observed'
+                                   AND audit.row_count <> live_counts.row_count
+                                   THEN 'quarantined_audit_mismatch'
+                                 ELSE 'eligible'
+                               END AS quality_status
+                        FROM live_counts
+                        LEFT JOIN collection_audit AS audit
+                          ON audit.observed_at = live_counts.observed_at
+                         AND audit.collector = CASE live_counts.source
+                              WHEN 'x' THEN 'x_korea_realtime'
+                              WHEN 'google_trends' THEN 'google_geo_kr'
+                            END
+                    )
+                    SELECT observation.observed_at,observation.source,
+                           observation.topic,observation.source_rank,
+                           observation.value,observation.provenance,
+                           observation.source_payload_json,
+                           observation.related_terms_json
+                    FROM hourly_observations AS observation
+                    JOIN live_quality AS quality
+                      USING (observed_at, source, provenance)
+                    WHERE observation.observed_at BETWEEN ? AND ?
+                      AND observation.provenance='observed'
+                      AND {qualified_live_sql}
+                      AND quality.quality_status='eligible'
+                    ORDER BY observation.observed_at,observation.source,
+                             observation.source_rank,observation.topic""",
+                (
+                    floor_hour(start).isoformat(),
+                    floor_hour(end).isoformat(),
+                    floor_hour(start).isoformat(),
+                    floor_hour(end).isoformat(),
+                ),
+            ).fetchall()
+
+    qualified_collector_sql = (
+        ELIGIBLE_COLLECTOR_SQL
+        .replace("source", "observation.source")
+        .replace("collector_version", "observation.collector_version")
+    )
     with connect(path) as connection:
         return connection.execute(
             f"""SELECT observation.observed_at,observation.source,observation.topic,
@@ -674,7 +747,7 @@ def _series_rows(start: datetime, end: datetime, path: Path | None = None) -> li
                  USING (observed_at, source, provenance)
                WHERE observation.observed_at BETWEEN ? AND ?
                  AND observation.provenance='observed'
-                 AND {ELIGIBLE_COLLECTOR_SQL.replace('source', 'observation.source').replace('collector_version', 'observation.collector_version')}
+                 AND {qualified_collector_sql}
                  AND quality.quality_status='eligible'
                ORDER BY observation.observed_at,observation.source,
                         observation.source_rank,observation.topic""",
@@ -1943,12 +2016,13 @@ def _attach_keyword_company_links(item: dict) -> None:
         reason = str(
             company.get("relationship_reason") or company.get("reason") or ""
         ).strip()
-        role_label = str(company.get("company_role_label") or "역할 미확정")
-        company["connection_explanation"] = (
-            f"{', '.join(company['matched_keywords'])} 관련 맥락에서 {company_name}은(는) "
-            f"'{role_label}' 역할로 연결됩니다. {reason}"
-            if matched else
-            f"{company_name}은(는) '{role_label}' 역할 후보입니다. {reason}"
+        role_label = str(company.get("company_role_label") or "사업 연관")
+        company["connection_explanation"] = public_connection_explanation(
+            company=company_name,
+            role_label=role_label,
+            relationship_reason=reason,
+            reason=reason,
+            matched_keywords=company["matched_keywords"],
         )
         for keyword, basis in matched:
             normalized = normalize_event_key(keyword)
@@ -2380,18 +2454,31 @@ def build_intelligence(
     hours: int = 24,
     path: Path | None = None,
     news_context_by_term: dict[str, dict] | None = None,
+    live_only: bool = False,
 ) -> dict:
     end = floor_hour(at)
     start = end - timedelta(hours=max(1, hours) - 1)
-    requested_rows = [dict(row) for row in _series_rows(start, end, path)]
+    requested_rows = [
+        dict(row) for row in _series_rows(start, end, path, live_only=live_only)
+    ]
     # Period views are true aggregates.  Hydration therefore needs every
     # event that can appear in the longest public view (30 days), while the
     # 60-day ledger remains lifecycle-only and never contributes score.
     period_start = end - timedelta(hours=720 - 1)
-    rows = [dict(row) for row in _series_rows(period_start, end, path)]
+    rows = [
+        dict(row) for row in _series_rows(period_start, end, path, live_only=live_only)
+    ]
     lifecycle_start = end - timedelta(days=60)
     ranking_rows = _assign_canonical_topics(
-        [dict(row) for row in _series_rows(lifecycle_start, end, path)]
+        [
+            dict(row)
+            for row in _series_rows(
+                lifecycle_start,
+                end,
+                path,
+                live_only=live_only,
+            )
+        ]
     )
     period_ranking_contract = build_period_rankings_v2(
         ranking_rows,
@@ -2431,6 +2518,7 @@ def build_intelligence(
         start,
         end,
         path,
+        live_only=live_only,
     )
     quarantined_source_hours = [
         row for row in quality_rows if row["quality_status"] != "eligible"

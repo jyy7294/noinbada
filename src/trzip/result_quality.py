@@ -9,15 +9,19 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from .company_roles import COMPANY_ROLE_LABELS, public_company_role_count_is_valid
-from .hourly_store import ELIGIBLE_COLLECTOR_SQL
+from .hourly_store import LIVE_COLLECTOR_SQL
 from .keyword_policy import keyword_fits_public_label
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .presentation_feed import (
     LOGO_ASSET_VERIFICATION,
     LOGO_QUALITY_POLICY,
-    live_logo_contract_is_valid,
+    live_public_image_logo_contract_is_valid,
     logo_asset_contract_is_valid,
     logo_display_contract_is_valid,
+)
+from .public_company_contract import (
+    listing_verification_is_valid,
+    market_snapshot_is_public_ready,
 )
 from .readiness import MVP_CONSECUTIVE_SOURCE_HOURS
 
@@ -30,7 +34,7 @@ PUBLIC_RELATION_TIERS = {"direct", "value_chain", "industry_watch"}
 HOURLY_VALIDATION_RECEIPT_POLICY = "hourly-local-validation-receipt-v1"
 CURRENT_FRONTEND_RESULT_POLICIES = {
     "frontend-result-quality-v7",  # canonical rank-free home_feed
-    "frontend-result-quality-v8",  # reviewed presentation_feed frontend
+    "frontend-result-quality-v9",  # strict actual-only presentation_feed frontend
 }
 
 
@@ -188,9 +192,9 @@ def _source_snapshot_sha256(path: Path, observed_at: str) -> str:
             FROM hourly_observations
             WHERE observed_at=? AND source IN ('x', 'google_trends')
               AND provenance='observed'
-              AND {ELIGIBLE_COLLECTOR_SQL}
+              AND {LIVE_COLLECTOR_SQL}
             ORDER BY source, source_rank, topic
-            """.format(ELIGIBLE_COLLECTOR_SQL=ELIGIBLE_COLLECTOR_SQL),
+            """.format(LIVE_COLLECTOR_SQL=LIVE_COLLECTOR_SQL),
             (observed_at,),
         ).fetchall()
     finally:
@@ -314,7 +318,7 @@ def record_hourly_validation_receipt(
         if source_gate != actual_source_gate:
             raise ValueError("hourly validation source gate does not match the ledger")
         if (
-            source_gate.get("policy_version") != "hourly-source-proof-v2"
+            source_gate.get("policy_version") != "hourly-source-proof-v3"
             or source_gate.get("passed") is not True
         ):
             raise ValueError("hourly validation source gate did not pass")
@@ -493,7 +497,7 @@ def _hourly_validation_receipt(path: Path, observed_at: str) -> dict:
         failures.append("frontend_contract_not_verified")
     if not (
         isinstance(source_gate, dict)
-        and source_gate.get("policy_version") == "hourly-source-proof-v2"
+        and source_gate.get("policy_version") == "hourly-source-proof-v3"
         and source_gate.get("passed") is True
     ):
         failures.append("source_gate_not_verified")
@@ -1089,13 +1093,36 @@ def evaluate_presentation_feed_quality(feed: dict) -> dict:
     except (TypeError, ValueError) as exc:
         contract_failures.append(str(exc))
     if schema_version == "trzip-presentation-feed-v4":
+        try:
+            observed_at = datetime.fromisoformat(
+                str(feed.get("observed_at") or "")
+            ).astimezone(UTC)
+        except (TypeError, ValueError):
+            observed_at = None
         trend_checks = []
         for item in items:
-            logo_failures = [
+            item_failures = [
                 f"invalid_live_logo:{str(company.get('company') or '').strip()}"
                 for company in item.get("companies") or []
-                if not live_logo_contract_is_valid(company)
+                if not live_public_image_logo_contract_is_valid(company)
             ]
+            for company in item.get("companies") or []:
+                company_name = str(company.get("company") or "").strip()
+                if not listing_verification_is_valid(
+                    company.get("listing_verification"),
+                    exchange=company.get("market") or company.get("exchange"),
+                    stock_code=company.get("stock_code") or company.get("ticker"),
+                    observed_at=observed_at,
+                ):
+                    item_failures.append(
+                        f"current_listing_unverified:{company_name}"
+                    )
+                if not market_snapshot_is_public_ready(
+                    company, observed_at=observed_at
+                ):
+                    item_failures.append(
+                        f"market_snapshot_incomplete:{company_name}"
+                    )
             trend_checks.append({
                 "display_name": str(item.get("display_name") or ""),
                 "company_count": len(item.get("companies") or []),
@@ -1103,14 +1130,14 @@ def evaluate_presentation_feed_quality(feed: dict) -> dict:
                     str(company.get("company_role_category") or "")
                     for company in item.get("companies") or []
                 }),
-                "passed": not logo_failures,
-                "failures": logo_failures,
+                "passed": not item_failures,
+                "failures": item_failures,
             })
         ready = not contract_failures and all(
             row["passed"] for row in trend_checks
         )
         return {
-            "policy_version": "presentation-result-quality-v2",
+            "policy_version": "presentation-result-quality-v3",
             "schema_version": schema_version,
             "legacy_contract": False,
             "warnings": [],
@@ -1201,7 +1228,7 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
         )
     return {
         **canonical,
-        "policy_version": "frontend-result-quality-v8",
+        "policy_version": "frontend-result-quality-v9",
         # An honestly empty live feed is contract-valid even though it is not
         # presentation-content-ready.  It must not be backfilled with a demo.
         "passed": not failures and presentation_is_default and presentation["passed"],
@@ -1237,7 +1264,7 @@ def _source_gate(path: Path, observed_at: str) -> dict:
     try:
         if not _table_exists(connection, "hourly_observations"):
             return {
-                "policy_version": "hourly-source-proof-v2",
+                "policy_version": "hourly-source-proof-v3",
                 "passed": False,
                 "sources": {},
             }
@@ -1252,11 +1279,21 @@ def _source_gate(path: Path, observed_at: str) -> dict:
             FROM hourly_observations
             WHERE observed_at=? AND source IN ('x', 'google_trends')
               AND provenance='observed'
-              AND {ELIGIBLE_COLLECTOR_SQL}
+              AND ((source='x' AND collector_version='x_current_session_kr_v1')
+                OR (source='google_trends' AND collector_version='google_trending_now_kr_v1'))
             GROUP BY source
-            """.format(ELIGIBLE_COLLECTOR_SQL=ELIGIBLE_COLLECTOR_SQL),
+            """,
             (observed_at,),
         ).fetchall()
+        audit_rows = (
+            connection.execute(
+                "SELECT collector,status,row_count FROM collection_audit "
+                "WHERE observed_at=?",
+                (observed_at,),
+            ).fetchall()
+            if _table_exists(connection, "collection_audit")
+            else []
+        )
     finally:
         connection.close()
     sources = {
@@ -1273,11 +1310,25 @@ def _source_gate(path: Path, observed_at: str) -> dict:
     }
     x = sources.get("x") or {}
     google = sources.get("google_trends") or {}
+    audits = {
+        collector: {"status": status, "row_count": row_count}
+        for collector, status, row_count in audit_rows
+    }
+    x_audit = audits.get("x_korea_realtime") or {}
+    google_audit = audits.get("google_geo_kr") or {}
+    x["collection_audit"] = x_audit
+    google["collection_audit"] = google_audit
     with sqlite3.connect(path) as evidence_connection:
         x_payload_rows = evidence_connection.execute(
             "SELECT source_payload_json FROM hourly_observations "
             "WHERE observed_at=? AND source='x' AND provenance='observed' "
-            f"AND {ELIGIBLE_COLLECTOR_SQL} ORDER BY source_rank",
+            "AND collector_version='x_current_session_kr_v1' ORDER BY source_rank",
+            (observed_at,),
+        ).fetchall()
+        google_payload_rows = evidence_connection.execute(
+            "SELECT source_payload_json FROM hourly_observations "
+            "WHERE observed_at=? AND source='google_trends' AND provenance='observed' "
+            "AND collector_version='google_trending_now_kr_v1' ORDER BY source_rank",
             (observed_at,),
         ).fetchall()
     evidence_payloads = []
@@ -1324,6 +1375,47 @@ def _source_gate(path: Path, observed_at: str) -> dict:
     x["collection_evidence"]["evidence_row_count"] = len(evidence_payloads)
     x["collection_evidence"]["evidence_consistent"] = evidence_consistent
     x["collection_evidence"]["timing_verified"] = timing_passed
+    google_payloads = []
+    for payload_row in google_payload_rows:
+        try:
+            google_payloads.append(
+                json.loads(payload_row[0]) if payload_row[0] else {}
+            )
+        except (TypeError, ValueError, json.JSONDecodeError):
+            google_payloads.append({})
+    google_evidence = google_payloads[0] if google_payloads else {}
+    google_completion_fields = (
+        "collection_declared_total",
+        "collection_page_count",
+        "collection_completion_verified",
+    )
+    google_evidence_consistent = bool(
+        google_payloads
+        and all(
+            all(
+                payload.get(field) == google_evidence.get(field)
+                for field in google_completion_fields
+            )
+            for payload in google_payloads
+        )
+    )
+    google_completion_passed = bool(
+        len(google_payloads) >= 100
+        and google_evidence_consistent
+        and google_evidence.get("collection_declared_total") == len(google_payloads)
+        and google_evidence.get("collection_completion_verified") is True
+        and isinstance(google_evidence.get("collection_page_count"), int)
+        and google_evidence.get("collection_page_count") >= 1
+    )
+    google["collection_evidence"] = {
+        "declared_total": google_evidence.get("collection_declared_total"),
+        "page_count": google_evidence.get("collection_page_count"),
+        "completion_verified": google_evidence.get(
+            "collection_completion_verified"
+        ),
+        "evidence_row_count": len(google_payloads),
+        "evidence_consistent": google_evidence_consistent,
+    }
     passed = (
         x.get("row_count") == 30
         and x.get("unique_topics") == 30
@@ -1332,14 +1424,19 @@ def _source_gate(path: Path, observed_at: str) -> dict:
         and x.get("maximum_rank") == 30
         and x.get("observed_rows") == 30
         and x_evidence_passed
-        and int(google.get("row_count") or 0) > 0
+        and x_audit.get("status") == "observed"
+        and x_audit.get("row_count") == 30
+        and int(google.get("row_count") or 0) >= 100
         and google.get("row_count") == google.get("unique_topics") == google.get("observed_rows")
         and google.get("unique_ranks") == google.get("row_count")
         and google.get("minimum_rank") == 1
         and google.get("maximum_rank") == google.get("row_count")
+        and google_completion_passed
+        and google_audit.get("status") == "observed"
+        and google_audit.get("row_count") == google.get("row_count")
     )
     return {
-        "policy_version": "hourly-source-proof-v2",
+        "policy_version": "hourly-source-proof-v3",
         "passed": passed,
         "sources": sources,
     }
@@ -1351,13 +1448,13 @@ def _publication_window_source_gate(
     *,
     hours: int = 24,
 ) -> dict:
-    """Validate usable actual rank inputs anywhere in the publication window.
+    """Validate both the exact publication hour and the rolling source window.
 
     The hourly receipt remains intentionally strict about the exact scheduled
     hour.  Daily publication is different: missing collection hours are an
-    explicit, audited gap and are never filled, while each rank source must
-    still contribute at least one independently valid observation inside the
-    latest 24-hour window.
+    explicit, audited gap and is never filled.  The publication hour itself is
+    stricter: X 1-30 and the complete Google rank list must both be observed at
+    that exact hour before any remote publication can be promoted.
     """
 
     end, stamp = _normalized_exact_hour(observed_at)
@@ -1368,6 +1465,7 @@ def _publication_window_source_gate(
     try:
         if not _table_exists(connection, "hourly_observations"):
             rows = []
+            forbidden_collector_rows = 0
         else:
             rows = connection.execute(
                 """
@@ -1391,16 +1489,31 @@ def _publication_window_source_gate(
                 WHERE observation.observed_at BETWEEN ? AND ?
                   AND observation.source IN ('x','google_trends')
                   AND observation.provenance='observed'
-                  AND ((observation.source='x' AND observation.collector_version IN
-                        ('x_current_session_kr_v1','trzip_v3'))
-                    OR (observation.source='google_trends' AND observation.collector_version IN
-                        ('google_trending_now_kr_v1','trzip_v3')))
+                  AND ((observation.source='x' AND observation.collector_version=
+                        'x_current_session_kr_v1')
+                    OR (observation.source='google_trends' AND observation.collector_version=
+                        'google_trending_now_kr_v1'))
                 GROUP BY observation.observed_at, observation.source,
                          audit.status, audit.row_count
                 ORDER BY observation.observed_at, observation.source
                 """,
                 (start_stamp, stamp),
             ).fetchall()
+            forbidden_collector_rows = int(connection.execute(
+                """
+                SELECT COUNT(*)
+                FROM hourly_observations
+                WHERE observed_at BETWEEN ? AND ?
+                  AND source IN ('x','google_trends')
+                  AND provenance='observed'
+                  AND NOT (
+                    (source='x' AND collector_version='x_current_session_kr_v1')
+                    OR (source='google_trends' AND
+                        collector_version='google_trending_now_kr_v1')
+                  )
+                """,
+                (start_stamp, stamp),
+            ).fetchone()[0] or 0)
     finally:
         connection.close()
 
@@ -1463,10 +1576,23 @@ def _publication_window_source_gate(
         }
         for source, stamps in valid_hours.items()
     }
-    passed = all(sources[source]["valid_hour_count"] >= 1 for source in sources)
+    window_passed = all(
+        sources[source]["valid_hour_count"] >= 1 for source in sources
+    )
+    exact_hour = _source_gate(path, stamp)
+    passed = (
+        window_passed
+        and exact_hour.get("passed") is True
+        and forbidden_collector_rows == 0
+    )
     return {
-        "policy_version": "publication-window-source-proof-v1",
+        "policy_version": "publication-window-source-proof-v2",
         "passed": passed,
+        "window_passed": window_passed,
+        "exact_hour_required": True,
+        "exact_hour_source_gate": exact_hour,
+        "forbidden_collector_rows": forbidden_collector_rows,
+        "collector_policy": "actual_production_collectors_only_no_fixture_mix",
         "window": {
             "from": start_stamp,
             "to": stamp,
@@ -1494,7 +1620,7 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
         or publication.get("source_gate")
         or _source_gate(path, stamp)
     )
-    if source_gate.get("policy_version") != "hourly-source-proof-v2":
+    if source_gate.get("policy_version") != "hourly-source-proof-v3":
         source_gate = {
             **source_gate,
             "passed": False,
@@ -1509,7 +1635,7 @@ def evaluate_actual_hour(path: Path, at: datetime) -> dict:
         }
     if contract is None:
         contract = {
-            "policy_version": "frontend-result-quality-v8",
+            "policy_version": "frontend-result-quality-v9",
             "passed": False,
             "home_content_ready": False,
             "failure": "missing_hourly_validation_receipt",
@@ -1660,10 +1786,11 @@ def main() -> int:
         )
         contract = evaluate_frontend_result(intelligence)
         result = {
-            "policy_version": "daily-publication-preflight-v2",
+            "policy_version": "daily-publication-preflight-v3",
             "observed_at": normalized_end,
             "passed": source_gate["passed"] and contract["passed"],
             "source_gate": source_gate,
+            "exact_hour_source_gate": source_gate["exact_hour_source_gate"],
             "contract": contract,
         }
         encoded = json.dumps(result, ensure_ascii=False, indent=2).encode("utf-8")

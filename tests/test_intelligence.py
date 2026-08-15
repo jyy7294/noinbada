@@ -371,6 +371,51 @@ def test_cpi_release_variant_is_one_event_without_double_counting_source(tmp_pat
     assert event["current_source_position"] == 0.5
 
 
+def test_live_ranking_is_invariant_to_high_score_replay_rows(tmp_path):
+    """A fixture sharing the production ledger cannot enter live rank/series."""
+
+    target = tmp_path / "live-only-ranking.sqlite3"
+    at = datetime(2026, 8, 12, 3, tzinfo=UTC)
+    actual_rows = [
+        HourlyObservation(
+            at.isoformat(), "x", "불꽃축제", 1, 100, "observed",
+            collector_version="x_current_session_kr_v1",
+        ),
+        HourlyObservation(
+            at.isoformat(), "google_trends", "삼계탕", 1, 100, "observed",
+            collector_version="google_trending_now_kr_v1",
+        ),
+    ]
+    upsert(actual_rows, target)
+    before = build_intelligence(at, hours=1, path=target, live_only=True)
+
+    upsert([
+        HourlyObservation(
+            at.isoformat(), "x", "fixture takeover", 2, 999999, "observed",
+            collector_version="trzip_v3",
+        ),
+        HourlyObservation(
+            at.isoformat(), "google_trends", "fixture takeover", 2, 999999,
+            "observed", collector_version="trzip_v3",
+        ),
+    ], target)
+    after = build_intelligence(at, hours=1, path=target, live_only=True)
+
+    projection = lambda result: [
+        (item["event_key"], item["score"], item["series"])
+        for item in result["unified_ranking"]
+    ]
+    assert projection(after) == projection(before)
+    assert all(
+        "fixture takeover" not in item.get("raw_terms", [])
+        for item in after["unified_ranking"]
+    )
+    assert any(
+        item.get("event_key") == "fixture takeover"
+        for item in build_intelligence(at, hours=1, path=target)["unified_ranking"]
+    )
+
+
 def test_sports_fixture_variants_merge_and_publish_compact_display_name(tmp_path):
     target = tmp_path / "fixture-variants.sqlite3"
     at = datetime(2026, 8, 12, 3, tzinfo=UTC)

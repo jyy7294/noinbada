@@ -20,15 +20,33 @@ APPROVED_COLLECTOR_VERSIONS = {
     "google_trends": frozenset({"google_trending_now_kr_v1", "trzip_v3"}),
 }
 
+# Remote/live publications have a narrower trust boundary than local replay.
+# Keep ``trzip_v3`` readable for deterministic fixtures, but never let it enter
+# a production ranking merely because it shares the same SQLite ledger.
+LIVE_COLLECTOR_VERSIONS = {
+    "x": frozenset({"x_current_session_kr_v1"}),
+    "google_trends": frozenset({"google_trending_now_kr_v1"}),
+}
+
 ELIGIBLE_COLLECTOR_SQL = """(
     (source = 'x' AND collector_version IN ('x_current_session_kr_v1','trzip_v3'))
     OR
     (source = 'google_trends' AND collector_version IN ('google_trending_now_kr_v1','trzip_v3'))
 )"""
 
+LIVE_COLLECTOR_SQL = """(
+    (source = 'x' AND collector_version = 'x_current_session_kr_v1')
+    OR
+    (source = 'google_trends' AND collector_version = 'google_trending_now_kr_v1')
+)"""
+
 
 def collector_version_is_approved(source: str, collector_version: str | None) -> bool:
     return str(collector_version or "") in APPROVED_COLLECTOR_VERSIONS.get(source, ())
+
+
+def collector_version_is_live(source: str, collector_version: str | None) -> bool:
+    return str(collector_version or "") in LIVE_COLLECTOR_VERSIONS.get(source, ())
 
 
 @dataclass(frozen=True)
@@ -569,14 +587,19 @@ def collect_current(path: Path | None = None, now: datetime | None = None) -> di
             "observed_at": at.isoformat()}
 
 
-def snapshot(at: datetime, path: Path | None = None) -> list[dict]:
+def snapshot(
+    at: datetime,
+    path: Path | None = None,
+    *,
+    live_only: bool = False,
+) -> list[dict]:
     stamp = floor_hour(at).isoformat()
+    collector_sql = LIVE_COLLECTOR_SQL if live_only else ELIGIBLE_COLLECTOR_SQL
     with connect(path) as connection:
         rows = connection.execute(
-            """SELECT * FROM hourly_observations
+            f"""SELECT * FROM hourly_observations
                WHERE observed_at=? AND provenance='observed'
-                  AND ((source='x' AND collector_version IN ('x_current_session_kr_v1','trzip_v3'))
-                    OR (source='google_trends' AND collector_version IN ('google_trending_now_kr_v1','trzip_v3')))
+                  AND {collector_sql}
                ORDER BY source, source_rank""",
             (stamp,),
         ).fetchall()
@@ -639,14 +662,54 @@ def source_hour_quality(
     start: datetime,
     end: datetime,
     path: Path | None = None,
+    *,
+    live_only: bool = False,
 ) -> list[dict]:
     """Expose source-hour eligibility without mutating or deleting raw rows."""
+    if not live_only:
+        with connect(path) as connection:
+            rows = connection.execute(
+                """SELECT * FROM source_hour_quality
+                   WHERE observed_at BETWEEN ? AND ? AND provenance=?
+                   ORDER BY observed_at, source""",
+                (floor_hour(start).isoformat(), floor_hour(end).isoformat(), "observed"),
+            ).fetchall()
+        return [dict(row) for row in rows]
+
+    # A mixed replay/live hour must be measured from the live cohort alone;
+    # the shared compatibility view intentionally includes both cohorts.
     with connect(path) as connection:
         rows = connection.execute(
-            """SELECT * FROM source_hour_quality
-               WHERE observed_at BETWEEN ? AND ? AND provenance=?
-               ORDER BY observed_at, source""",
-            (floor_hour(start).isoformat(), floor_hour(end).isoformat(), "observed"),
+            f"""WITH counts AS (
+                    SELECT observed_at, source, provenance,
+                           COUNT(*) AS row_count,
+                           COUNT(DISTINCT source_rank) AS distinct_rank_count,
+                           COUNT(DISTINCT topic) AS distinct_topic_count
+                    FROM hourly_observations
+                    WHERE observed_at BETWEEN ? AND ?
+                      AND provenance='observed'
+                      AND {LIVE_COLLECTOR_SQL}
+                    GROUP BY observed_at, source, provenance
+                )
+                SELECT counts.*,
+                       audit.row_count AS audited_row_count,
+                       CASE
+                         WHEN counts.row_count <> counts.distinct_rank_count
+                           THEN 'quarantined_duplicate_rank'
+                         WHEN audit.status = 'observed'
+                           AND audit.row_count <> counts.row_count
+                           THEN 'quarantined_audit_mismatch'
+                         ELSE 'eligible'
+                       END AS quality_status
+                FROM counts
+                LEFT JOIN collection_audit AS audit
+                  ON audit.observed_at = counts.observed_at
+                 AND audit.collector = CASE counts.source
+                      WHEN 'x' THEN 'x_korea_realtime'
+                      WHEN 'google_trends' THEN 'google_geo_kr'
+                    END
+                ORDER BY counts.observed_at, counts.source""",
+            (floor_hour(start).isoformat(), floor_hour(end).isoformat()),
         ).fetchall()
     return [dict(row) for row in rows]
 

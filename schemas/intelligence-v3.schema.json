@@ -156,13 +156,33 @@
     "presentation_feed": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schema_version", "status", "frontend_default", "observed_at", "selection_policy", "logo_policy", "items", "transition"],
+      "required": ["schema_version", "status", "frontend_default", "observed_at", "selection_policy", "source_provenance", "logo_policy", "items", "transition"],
       "properties": {
         "schema_version": {"const": "trzip-presentation-feed-v4"},
         "status": {"enum": ["ready", "empty"]},
         "frontend_default": {"const": true},
         "observed_at": {"type": "string", "format": "date-time"},
         "selection_policy": {"const": "validated_live_home_feed_v1"},
+        "source_provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ranking_sources", "collector_versions", "actual_only", "fixture_replay_allowed", "proof_gate"],
+          "properties": {
+            "ranking_sources": {"const": ["x", "google_trends"]},
+            "collector_versions": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["x", "google_trends"],
+              "properties": {
+                "x": {"const": "x_current_session_kr_v1"},
+                "google_trends": {"const": "google_trending_now_kr_v1"}
+              }
+            },
+            "actual_only": {"const": true},
+            "fixture_replay_allowed": {"const": false},
+            "proof_gate": {"const": "hourly-source-proof-v3"}
+          }
+        },
         "logo_policy": {
           "type": "object",
           "additionalProperties": false,
@@ -172,7 +192,7 @@
             "avatar_size_px": {"const": 44},
             "minimum_raster_dimension_px": {"const": 64},
             "vector_assets_allowed": {"const": true},
-            "low_resolution_fallback": {"const": "initials"},
+            "low_resolution_fallback": {"const": "card_excluded"},
             "runtime_probe_for_generic_favicons": {"const": false},
             "official_page_resolver_required": {"const": true},
             "asset_sha256_required": {"const": true}
@@ -208,7 +228,7 @@
               },
               "display_name": {"type": "string", "minLength": 1},
               "event_key": {"type": "string", "minLength": 1},
-              "category": {"enum": ["food", "content", "sports", "lifestyle", "culture", "consumer", "technology", "market"]},
+              "category": {"enum": ["food", "food_culinary", "content", "sports", "lifestyle", "culture", "consumer", "technology", "market"]},
               "category_label": {"type": "string", "minLength": 1},
               "sources": {"type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["x", "google_trends"]}},
               "data_mode": {"const": "observed_live"},
@@ -240,6 +260,7 @@
                     "company", "stock_code", "exchange", "company_description",
                     "connection_explanation", "company_role_category", "company_role_label",
                     "ontology_path", "ontology_complete", "evidence_sources", "relation_tier",
+                    "listing_verification", "market_snapshot",
                     "official_domain", "logo_url", "logo_render_mode", "logo_asset_source",
                     "logo_asset_host", "logo_asset_verification", "logo_asset_format",
                     "logo_asset_mime", "logo_asset_width", "logo_asset_height",
@@ -258,7 +279,7 @@
                     },
                     "company_role_label": {"type": "string", "minLength": 1},
                     "ontology_path": {
-                      "type": "array", "minItems": 3,
+                      "type": "array", "minItems": 2,
                       "items": {"oneOf": [{"type": "string", "minLength": 1}, {"type": "object"}]}
                     },
                     "ontology_complete": {"const": true},
@@ -272,19 +293,20 @@
                     "relation_tier": {"enum": ["direct", "value_chain", "industry_watch"]},
                     "official_domain": {"type": ["string", "null"]},
                     "logo_url": {"type": "string"},
-                    "logo_render_mode": {"enum": ["image", "initials"]},
-                    "logo_asset_source": {"enum": ["official_page_asset", "initials_fallback"]},
+                    "listing_verification": {"$ref": "#/$defs/liveListingVerification"},
+                    "logo_render_mode": {"const": "image"},
+                    "logo_asset_source": {"const": "official_page_asset"},
                     "logo_asset_host": {"type": "string"},
-                    "logo_asset_verification": {"enum": ["verified_safe_svg", "verified_raster_min_64px", "initials_fallback"]},
-                    "logo_asset_format": {"enum": ["svg", "png", "jpeg", "gif", "webp", "bmp", "ico", "none"]},
-                    "logo_asset_mime": {"type": "string"},
-                    "logo_asset_width": {"type": "integer", "minimum": 0},
-                    "logo_asset_height": {"type": "integer", "minimum": 0},
-                    "logo_asset_sha256": {"type": "string", "pattern": "^$|^[0-9a-f]{64}$"},
-                    "logo_source_page_url": {"type": "string"},
+                    "logo_asset_verification": {"enum": ["verified_safe_svg", "verified_raster_min_64px"]},
+                    "logo_asset_format": {"enum": ["svg", "png", "jpeg", "gif", "webp", "bmp", "ico"]},
+                    "logo_asset_mime": {"type": "string", "pattern": "^image/"},
+                    "logo_asset_width": {"type": "integer", "minimum": 1},
+                    "logo_asset_height": {"type": "integer", "minimum": 1},
+                    "logo_asset_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+                    "logo_source_page_url": {"type": "string", "pattern": "^https?://"},
                     "logo_minimum_dimension": {"const": 64},
                     "logo_runtime_probe_required": {"const": false},
-                    "logo_asset_quality": {"enum": ["verified_vector", "verified_raster_min_64px", "fail_closed_initials_no_verified_asset"]},
+                    "logo_asset_quality": {"enum": ["verified_vector", "verified_raster_min_64px"]},
                     "logo_quality_policy": {"const": "avatar-sharpness-v1"},
                     "logo_provenance": {
                       "type": "object",
@@ -297,7 +319,10 @@
                         "width": {"type": "integer", "minimum": 0},
                         "height": {"type": "integer", "minimum": 0},
                         "sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
-                        "verification": {"enum": ["verified_safe_svg", "verified_raster_min_64px", "initials_fallback"]}
+                        "verification": {"enum": ["verified_safe_svg", "verified_raster_min_64px"]},
+                        "candidate_kind": {"type": ["string", "null"]},
+                        "asset_scope": {"type": ["string", "null"]},
+                        "verified_at": {"type": ["string", "null"]}
                       }
                     },
                     "market_snapshot": {"$ref": "#/$defs/liveMarketSnapshot"}
@@ -317,23 +342,6 @@
                           "logo_asset_height": {"type": "integer", "minimum": 1},
                           "logo_asset_sha256": {"pattern": "^[0-9a-f]{64}$"},
                           "logo_source_page_url": {"type": "string", "pattern": "^https?://"}
-                        }
-                      }
-                    },
-                    {
-                      "if": {"properties": {"logo_render_mode": {"const": "initials"}}},
-                      "then": {
-                        "properties": {
-                          "logo_url": {"const": ""},
-                          "logo_asset_source": {"const": "initials_fallback"},
-                          "logo_asset_host": {"const": ""},
-                          "logo_asset_verification": {"const": "initials_fallback"},
-                          "logo_asset_format": {"const": "none"},
-                          "logo_asset_mime": {"const": ""},
-                          "logo_asset_width": {"const": 0},
-                          "logo_asset_height": {"const": 0},
-                          "logo_asset_sha256": {"const": ""},
-                          "logo_asset_quality": {"const": "fail_closed_initials_no_verified_asset"}
                         }
                       }
                     }
@@ -641,17 +649,44 @@
         }
       }
     },
+    "liveListingVerification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status", "current_listed", "exchange", "stock_code", "as_of",
+        "evidence_owner", "evidence_type", "evidence_url", "synthetic",
+        "estimated", "ranking_effect"
+      ],
+      "properties": {
+        "status": {"const": "verified_current"},
+        "current_listed": {"const": true},
+        "exchange": {"type": "string", "minLength": 1},
+        "stock_code": {"type": "string", "minLength": 1},
+        "as_of": {"type": "string", "format": "date"},
+        "evidence_owner": {"type": "string", "minLength": 1},
+        "evidence_type": {"enum": ["exchange_current_security_universe", "official_current_security_register"]},
+        "evidence_url": {"type": "string", "pattern": "^https?://"},
+        "synthetic": {"const": false},
+        "estimated": {"const": false},
+        "ranking_effect": {"const": "none"}
+      }
+    },
     "liveMarketSnapshot": {
-      "oneOf": [
-        {"type": "null"},
-        {
           "type": "object",
           "required": [
             "status", "provider", "source", "source_url", "price_source_url",
-            "as_of", "currency", "price_series", "display_only", "ranking_effect"
+            "as_of", "currency", "price_series", "price_points", "market_cap",
+            "market_cap_krw", "market_cap_currency", "market_cap_source_url",
+            "native_market_cap", "fx_rate_to_krw", "fx_as_of", "fx_provider",
+            "fx_source_url", "per", "per_source_url", "pbr", "pbr_source_url",
+            "roe_pct", "roe", "roe_percent", "roe_source_url", "roe_basis",
+            "roe_calculated", "roe_numerator", "roe_denominator",
+            "field_provenance", "synthetic", "estimated", "display_only", "ranking_effect"
           ],
           "properties": {
             "status": {"const": "observed"},
+            "synthetic": {"const": false},
+            "estimated": {"const": false},
             "provider": {"type": "string", "minLength": 1},
             "source": {"type": "string", "minLength": 1},
             "source_url": {"type": "string", "pattern": "^https?://"},
@@ -671,8 +706,17 @@
             "fx_as_of": {"type": ["string", "null"]},
             "fx_provider": {"type": ["string", "null"]},
             "fx_source_url": {"type": ["string", "null"]},
-            "price_series": {"type": "array", "minItems": 1, "items": {"type": "number", "exclusiveMinimum": 0}},
-            "price_points": {"type": "array", "items": {"type": "object"}},
+            "price_series": {"type": "array", "minItems": 30, "maxItems": 30, "items": {"type": "number", "exclusiveMinimum": 0}},
+            "price_points": {
+              "type": "array", "minItems": 30, "maxItems": 30,
+              "items": {
+                "type": "object", "required": ["date", "close"],
+                "properties": {
+                  "date": {"type": "string", "format": "date"},
+                  "close": {"type": "number", "exclusiveMinimum": 0}
+                }
+              }
+            },
             "per": {"type": "number", "exclusiveMinimum": 0},
             "per_source_url": {"type": "string", "pattern": "^https?://"},
             "per_as_of": {"type": "string", "minLength": 1},
@@ -729,6 +773,18 @@
                 }
               }
             },
+            "field_provenance": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["price_series", "market_cap_krw", "per", "pbr", "roe_pct"],
+              "properties": {
+                "price_series": {"$ref": "#/$defs/liveMarketFieldProvenance"},
+                "market_cap_krw": {"$ref": "#/$defs/liveMarketFieldProvenance"},
+                "per": {"$ref": "#/$defs/liveMarketFieldProvenance"},
+                "pbr": {"$ref": "#/$defs/liveMarketFieldProvenance"},
+                "roe_pct": {"$ref": "#/$defs/liveMarketFieldProvenance"}
+              }
+            },
             "display_only": {"const": true},
             "ranking_effect": {"const": "none"}
           },
@@ -770,8 +826,18 @@
               }
             }
           ]
-        }
-      ]
+    },
+    "liveMarketFieldProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "as_of", "source_url", "synthetic", "estimated"],
+      "properties": {
+        "provider": {"type": "string", "minLength": 1},
+        "as_of": {"type": "string", "minLength": 1},
+        "source_url": {"type": "string", "pattern": "^https?://"},
+        "synthetic": {"const": false},
+        "estimated": {"const": false}
+      }
     },
     "homeFeed": {
       "type": "object",
@@ -995,10 +1061,10 @@
     },
     "keyword": {
       "type": "object",
-      "required": ["text", "source", "observed_hours", "status", "role", "role_status", "affects_score"],
+      "required": ["text", "source", "affects_score"],
       "properties": {
         "text": {"type": "string", "minLength": 1, "pattern": "^(?:\\s*\\S){1,6}\\s*$"},
-        "source": {"type": "array", "items": {"enum": ["x", "google_trends", "reviewed_ontology"]}},
+        "source": {"type": "array", "items": {"enum": ["x", "google_trends", "reviewed_ontology", "reviewed_public_evidence"]}},
         "observed_hours": {"type": "integer", "minimum": 0},
         "status": {"enum": ["observed_ranked_term", "observed_related_query", "approved_ontology_term", "approved_ontology_related_term"]},
         "role": {"type": "string", "minLength": 1},
@@ -1009,16 +1075,15 @@
     },
     "ontologyEdge": {
       "type": "object",
-      "required": ["from", "to", "edge_type", "evidence_urls", "evidence_type", "as_of", "review_status"]
+      "required": ["from", "to", "edge_type", "evidence_urls", "review_status"]
     },
     "company": {
       "type": "object",
       "required": [
-        "company", "stock_code", "ticker", "market", "relationship_reason", "connection_explanation", "company_summary",
-        "company_description", "business_features", "relation_tier", "relation_display_type", "verification_status",
+        "company", "stock_code", "market", "relationship_reason", "connection_explanation",
+        "company_description", "relation_tier", "relation_display_type", "verification_status",
         "company_role_category", "company_role_label",
-        "ontology_path", "ontology_complete", "evidence_url", "evidence_sources", "official_identity",
-        "investment_warning"
+        "ontology_path", "ontology_complete", "evidence_sources", "official_identity"
       ],
       "properties": {
         "company": {"type": "string", "minLength": 1},
@@ -1035,7 +1100,7 @@
         "matched_keywords": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
         "relation_tier": {"enum": ["direct", "value_chain", "industry_watch"]},
         "relation_display_type": {"enum": ["직접 관계", "가치사슬", "산업 관찰"]},
-        "verification_status": {"const": "ontology_evidence"},
+        "verification_status": {"enum": ["ontology_evidence", "evidence_verified"]},
         "ontology_complete": {"type": "boolean"},
         "ontology_path": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/ontologyEdge"}},
         "evidence_url": {"type": "string", "format": "uri"},
@@ -1257,7 +1322,7 @@
             "trend_core": {"type": "string", "minLength": 1},
             "observed_day_label": {"type": "string", "minLength": 1},
             "phase_label": {"type": "string", "minLength": 1},
-            "stage_index": {"type": "integer", "minimum": 0, "maximum": 2},
+            "stage_index": {"type": "integer", "minimum": 0, "maximum": 3},
             "progress_percent": {"type": "integer", "minimum": 0, "maximum": 100},
             "attention_lift": {"type": "object"},
             "current_rank": {"type": "integer", "minimum": 1},

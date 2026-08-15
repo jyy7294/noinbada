@@ -19,6 +19,11 @@ from .company_roles import (
 )
 from .hourly_store import connect, floor_hour, source_hour_quality
 from .keyword_policy import keyword_fits_public_label
+from .public_company_contract import (
+    market_reference_is_public_ready,
+    market_snapshot_is_public_ready,
+    verified_image_logo_is_public_ready,
+)
 
 
 SCHEMA_VERSION = "trzip-processing-cycle-v1"
@@ -42,7 +47,12 @@ def _expected_hours(at: datetime, hours: int = 24) -> list[str]:
     ]
 
 
-def observed_coverage_24h(path: Path, at: datetime) -> dict:
+def observed_coverage_24h(
+    path: Path,
+    at: datetime,
+    *,
+    live_only: bool = False,
+) -> dict:
     """Summarise usable observed source-hours without manufacturing coverage."""
 
     expected = _expected_hours(at)
@@ -50,6 +60,7 @@ def observed_coverage_24h(path: Path, at: datetime) -> dict:
         floor_hour(at) - timedelta(hours=23),
         floor_hour(at),
         path,
+        live_only=live_only,
     )
     eligible_by_hour: dict[str, set[str]] = {stamp: set() for stamp in expected}
     row_counts = {source: 0 for source in RANK_SOURCES}
@@ -141,6 +152,7 @@ def complete_card_gate(
     """
 
     context = item.get("context_research") or {}
+    observed_at = floor_hour(observed_at or datetime.now(UTC))
     context_urls = [url for url in context.get("evidence_urls") or [] if _public_url(url)]
     keywords = list(item.get("related_keywords") or item.get("keywords") or [])
     keyword_texts = [
@@ -156,6 +168,12 @@ def complete_card_gate(
             for row in company.get("evidence_sources") or []
             if _public_url(row.get("url"))
         ]
+        public_company_data_ready = (
+            market_snapshot_is_public_ready(company, observed_at=observed_at)
+            and verified_image_logo_is_public_ready(company)
+            if public_projection
+            else market_reference_is_public_ready(company, observed_at=observed_at)
+        )
         if (
             str(company.get("company") or "").strip()
             and str(company.get("stock_code") or company.get("ticker") or "").strip()
@@ -167,6 +185,7 @@ def complete_card_gate(
             and isinstance(company.get("ontology_path"), list)
             and bool(company.get("ontology_path"))
             and str(company.get("company_role_category") or "").strip()
+            and public_company_data_ready
         ):
             complete_companies.append(company)
     unique_complete_companies = []
@@ -210,7 +229,6 @@ def complete_card_gate(
             linked_keywords.add(keyword)
             linked_companies.add(company)
 
-    observed_at = floor_hour(observed_at or datetime.now(UTC))
     window_start = observed_at - timedelta(hours=23)
     observed_stamps = []
     for row in item.get("series") or []:
@@ -310,6 +328,7 @@ def build_processing_cycle(
     semantic_status: str | None = None,
     handoff_status: dict | None = None,
     daily_publish_hour_kst: int = 6,
+    live_only: bool = False,
 ) -> dict:
     """Build and persist auditable cadence state for this exact-hour run."""
 
@@ -395,9 +414,25 @@ def build_processing_cycle(
         "observed_at": at.isoformat(),
         "rank_sources": list(RANK_SOURCES),
         "ranking_input_policy": "observed_x_google_only",
+        "collector_policy": (
+            "actual_production_collectors_only"
+            if live_only
+            else "fixture_replay_compatible_local_lane"
+        ),
+        "collector_versions": (
+            {
+                "x": "x_current_session_kr_v1",
+                "google_trends": "google_trending_now_kr_v1",
+            }
+            if live_only
+            else {
+                "x": ["x_current_session_kr_v1", "trzip_v3"],
+                "google_trends": ["google_trending_now_kr_v1", "trzip_v3"],
+            }
+        ),
         "context_provider_policy": "naver_news_context_only_no_rank_effect",
         "disabled_active_providers": ["youtube", "instagram", "naver_blog", "naver_search_trend"],
-        "coverage_24h": observed_coverage_24h(path, at),
+        "coverage_24h": observed_coverage_24h(path, at, live_only=live_only),
         "enrichment_batch": {
             "policy_version": CHECKPOINT_POLICY,
             "scheduled_hours_kst": [0, 4, 6, 8, 12, 16, 20],
