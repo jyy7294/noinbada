@@ -18,6 +18,9 @@ from .company_roles import select_role_diverse_company_projection, with_company_
 from .editorial_review import KEYWORDS, _verified_company_rows
 from .keyword_policy import keyword_fits_public_label, normalized_keyword_text
 from .public_company_contract import (
+    PER_UNAVAILABLE_STATUSES,
+    keyword_company_link_coverage,
+    market_field_date_is_fresh,
     market_snapshot_is_public_ready,
     verified_image_logo_is_public_ready,
 )
@@ -1400,16 +1403,45 @@ def _observed_sparse_series(candidate: dict, observed_at: datetime) -> dict:
                 "observed_sources": sorted(sources),
             })
         combined = [point["combined"] for point in points]
+        expected_hours = days * 24
+        observed_hours = len(points)
+        first_stamp = _parse_observed_at(points[0]["at"]) if points else None
+        last_stamp = _parse_observed_at(points[-1]["at"]) if points else None
+        observed_span_hours = (
+            round((last_stamp - first_stamp).total_seconds() / 3600.0, 2)
+            if first_stamp is not None and last_stamp is not None
+            else 0.0
+        )
+        minimum_span_hours = round(expected_hours * 0.8, 2)
+        minimum_observed_hours = max(2, math.ceil(expected_hours * 0.2))
+        coverage_ratio = round(observed_hours / expected_hours, 4)
+        measurement_ready = bool(
+            observed_span_hours >= minimum_span_hours
+            and observed_hours >= minimum_observed_hours
+        )
         percent = None
-        if len(combined) >= 2 and combined[0] != 0:
+        if measurement_ready and combined[0] != 0:
             percent = round(((combined[-1] - combined[0]) / combined[0]) * 100.0, 1)
-        status = "measured" if len(combined) >= 2 else "insufficient_observed_history"
+        status = "measured" if measurement_ready else "insufficient_observed_history"
+        attention_status = (
+            "insufficient_observed_history"
+            if not measurement_ready
+            else "unavailable_zero_baseline"
+            if combined[0] == 0
+            else "measured"
+        )
         windows[key] = {
             "status": status,
             "points": points,
             "available_point_count": len(points),
             "available_from": points[0]["at"] if points else None,
             "available_to": points[-1]["at"] if points else None,
+            "expected_window_hours": expected_hours,
+            "observed_span_hours": observed_span_hours,
+            "observed_hour_count": observed_hours,
+            "coverage_ratio": coverage_ratio,
+            "minimum_span_hours": minimum_span_hours,
+            "minimum_observed_hours": minimum_observed_hours,
             "basis": "observed_x_google_hourly_points_only",
             "interpolation": "none",
             "missing_point_policy": "preserve_sparse_null_no_reuse",
@@ -1419,9 +1451,15 @@ def _observed_sparse_series(candidate: dict, observed_at: datetime) -> dict:
             "key": key,
             "label": label,
             "metric": "normalized_attention_index_change",
-            "status": status,
+            "status": attention_status,
             "percent": percent,
-            "basis": "first_and_last_available_observed_point",
+            "basis": (
+                "first_and_last_qualified_observed_point"
+                if attention_status == "measured"
+                else "unavailable_zero_baseline"
+                if attention_status == "unavailable_zero_baseline"
+                else "insufficient_window_span_or_coverage"
+            ),
             "is_absolute_mention_count": False,
             "ranking_effect": "none",
         })
@@ -1436,7 +1474,11 @@ def _observed_sparse_series(candidate: dict, observed_at: datetime) -> dict:
     }
 
 
-def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
+def _actual_market_snapshot(
+    company: dict,
+    candidate: dict,
+    observed_at: datetime,
+) -> dict | None:
     market = company.get("market_reference")
     if not isinstance(market, dict):
         code = str(company.get("stock_code") or company.get("ticker") or "")
@@ -1554,12 +1596,35 @@ def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
         "ranking_effect": "none",
     }
     fundamentals_source_url = str(source_urls.get("fundamentals") or source_url).strip()
+    per_status = str(valuation.get("per_status") or "").strip()
+    if not per_status:
+        per_status = (
+            "observed"
+            if _finite_market_number(valuation.get("per"), positive=True)
+            else "unavailable_not_reported"
+        )
+    if per_status == "observed" and not market_field_date_is_fresh(
+        valuation.get("per_as_of"), "per", observed_at=observed_at
+    ):
+        per_status = "unavailable_stale"
+    if per_status not in {"observed", *PER_UNAVAILABLE_STATUSES}:
+        per_status = "unavailable_not_reported"
+    snapshot["per_status"] = per_status
     for source_key in ("per", "pbr"):
         value = valuation.get(source_key)
         metric_source_url = str(
             field_sources.get(source_key) or fundamentals_source_url
         ).strip()
-        if _finite_market_number(value, positive=True) and _public_url(metric_source_url):
+        if (
+            _finite_market_number(value, positive=True)
+            and _public_url(metric_source_url)
+            and market_field_date_is_fresh(
+                valuation.get(f"{source_key}_as_of"),
+                source_key,
+                observed_at=observed_at,
+            )
+            and (source_key != "per" or per_status == "observed")
+        ):
             snapshot[source_key] = value
             snapshot[f"{source_key}_source_url"] = metric_source_url
             for suffix in ("as_of", "type", "period_type"):
@@ -1597,13 +1662,6 @@ def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
             "synthetic": False,
             "estimated": False,
         },
-        "per": {
-            "provider": _market_provider_for_url(snapshot.get("per_source_url"), provider),
-            "as_of": str(valuation.get("per_as_of") or as_of),
-            "source_url": str(snapshot.get("per_source_url") or ""),
-            "synthetic": False,
-            "estimated": False,
-        },
         "pbr": {
             "provider": _market_provider_for_url(snapshot.get("pbr_source_url"), provider),
             "as_of": str(valuation.get("pbr_as_of") or as_of),
@@ -1619,6 +1677,14 @@ def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
             "estimated": False,
         },
     }
+    if "per" in snapshot:
+        snapshot["field_provenance"]["per"] = {
+            "provider": _market_provider_for_url(snapshot.get("per_source_url"), provider),
+            "as_of": str(valuation.get("per_as_of") or ""),
+            "source_url": str(snapshot.get("per_source_url") or ""),
+            "synthetic": False,
+            "estimated": False,
+        }
     projected_company = {
         **company,
         "listing_verification": (
@@ -1627,7 +1693,10 @@ def _actual_market_snapshot(company: dict, candidate: dict) -> dict | None:
         ),
         "market_snapshot": snapshot,
     }
-    return snapshot if market_snapshot_is_public_ready(projected_company) else None
+    return snapshot if market_snapshot_is_public_ready(
+        projected_company,
+        observed_at=observed_at,
+    ) else None
 
 
 def _live_logo_fields(homepage: str) -> dict:
@@ -1747,7 +1816,7 @@ def _live_logo_fields(homepage: str) -> dict:
     return fields
 
 
-def _live_company_rows(candidate: dict) -> list[dict]:
+def _live_company_rows(candidate: dict, observed_at: datetime) -> list[dict]:
     rows = []
     seen = set()
     for source in candidate.get("companies") or []:
@@ -1801,7 +1870,7 @@ def _live_company_rows(candidate: dict) -> list[dict]:
             "evidence_url": evidence_url,
             "evidence_sources": evidence_sources,
             **logo_fields,
-            "market_snapshot": _actual_market_snapshot(source, candidate),
+            "market_snapshot": _actual_market_snapshot(source, candidate, observed_at),
             "ranking_effect": "none",
             "investment_recommendation": False,
         })
@@ -1815,7 +1884,7 @@ def _live_company_rows(candidate: dict) -> list[dict]:
             continue
         if (
             not live_public_image_logo_contract_is_valid(row)
-            or not market_snapshot_is_public_ready(row)
+            or not market_snapshot_is_public_ready(row, observed_at=observed_at)
         ):
             continue
         seen.add(identity)
@@ -1837,14 +1906,47 @@ def _live_card(candidate: dict, observed_at: datetime) -> dict:
             keywords.append({**row, "text": text, "affects_live_rank": False})
         if len(keywords) == 5:
             break
-    companies = _live_company_rows(candidate)
+    source_companies = list(candidate.get("companies") or [])
+    source_links = list(candidate.get("keyword_company_links") or [])
+    source_link_coverage = keyword_company_link_coverage(
+        keywords=keywords,
+        companies=source_companies,
+        links=source_links,
+    )
+    link_ineligible_names = set(source_link_coverage["unlinked_companies"]) | set(
+        source_link_coverage["matched_keyword_mismatches"]
+    )
+    linked_candidate = {
+        **candidate,
+        "companies": [
+            company for company in source_companies
+            if str(company.get("company") or "").strip() not in link_ineligible_names
+        ],
+    }
+    companies = _live_company_rows(linked_candidate, observed_at)
     company_names = {row["company"] for row in companies}
+    company_by_name = {row["company"]: row for row in companies}
     keyword_names = {row["text"] for row in keywords}
     links = [
-        dict(row)
-        for row in candidate.get("keyword_company_links") or []
+        {
+            **dict(row),
+            "stock_code": company_by_name[row["company"]]["stock_code"],
+            "company_role_category": company_by_name[row["company"]][
+                "company_role_category"
+            ],
+            "company_role_label": company_by_name[row["company"]][
+                "company_role_label"
+            ],
+        }
+        for row in source_links
         if row.get("company") in company_names and row.get("keyword") in keyword_names
     ]
+    link_coverage = keyword_company_link_coverage(
+        keywords=keywords,
+        companies=companies,
+        links=links,
+        require_link_metadata=True,
+    )
     sparse = _observed_sparse_series(candidate, observed_at)
     story = candidate.get("trend_story") or {}
     diffusion = story.get("diffusion") or {}
@@ -1903,6 +2005,7 @@ def _live_card(candidate: dict, observed_at: datetime) -> dict:
         "company_card_status": "ready",
         "frontend_readiness_status": "ready",
         "keyword_company_links": links,
+        "keyword_company_link_coverage": link_coverage,
         "ranking_effect": "none",
     }
 

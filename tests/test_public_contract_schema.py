@@ -87,8 +87,15 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
     validator = Draft202012Validator(resolver_schema)
     observed_at = "2026-08-15T00:00:00+00:00"
     price_points = [
-        {"date": f"2026-07-{day:02d}", "close": 100 + day}
-        for day in range(1, 31)
+        {
+            "date": (
+                f"2026-07-{index + 17:02d}"
+                if index < 15
+                else f"2026-08-{index - 14:02d}"
+            ),
+            "close": 100 + index,
+        }
+        for index in range(30)
     ]
 
     def market_snapshot():
@@ -113,7 +120,10 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
             "fx_source_url": "https://example.com/market",
             "price_series": [row["close"] for row in price_points],
             "price_points": price_points,
-            "per": 12.0, "per_source_url": "https://example.com/fundamentals",
+            "per": 12.0, "per_status": "observed",
+            "per_source_url": "https://example.com/fundamentals",
+            "per_as_of": "2026-08-15", "per_type": "trailingPeRatio",
+            "per_period_type": "TTM",
             "pbr": 1.2, "pbr_source_url": "https://example.com/fundamentals",
             "roe_pct": 10.0, "roe": 10.0, "roe_percent": 10.0,
             "roe_source_url": "https://example.com/fundamentals",
@@ -150,6 +160,7 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
                 else "distribution" if i < 7 else "platform_service"
             ),
             "company_role_label": "검증 역할",
+            "matched_keywords": [f"키워드{i % 5}"],
             "ontology_path": ["테스트", "검증 역할", f"기업{i}"],
             "ontology_complete": True,
             "evidence_sources": [{"url": f"https://example.com/{i}"}],
@@ -198,17 +209,24 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
         "combined": 80,
         "observed_sources": ["x"],
     }
-    sparse_window = {
-        "status": "insufficient_observed_history",
-        "points": [sparse_point],
-        "available_point_count": 1,
-        "available_from": observed_at,
-        "available_to": observed_at,
-        "basis": "observed_x_google_hourly_points_only",
-        "interpolation": "none",
-        "missing_point_policy": "preserve_sparse_null_no_reuse",
-        "ranking_effect": "none",
-    }
+    def sparse_window(hours):
+        return {
+            "status": "insufficient_observed_history",
+            "points": [sparse_point],
+            "available_point_count": 1,
+            "available_from": observed_at,
+            "available_to": observed_at,
+            "expected_window_hours": hours,
+            "observed_span_hours": 0.0,
+            "observed_hour_count": 1,
+            "coverage_ratio": round(1 / hours, 4),
+            "minimum_span_hours": round(hours * 0.8, 2),
+            "minimum_observed_hours": max(2, int(hours * 0.2 + 0.999999)),
+            "basis": "observed_x_google_hourly_points_only",
+            "interpolation": "none",
+            "missing_point_policy": "preserve_sparse_null_no_reuse",
+            "ranking_effect": "none",
+        }
     item = {
         "presentation_position": 1,
         "selection_origin": "canonical_validated_home_feed",
@@ -232,17 +250,42 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
             "canonical_series_unchanged": True,
             "data_mode": "observed_sparse", "interpolation": "none",
             "ranking_effect": "none",
-            "1w": sparse_window, "1m": sparse_window, "3m": sparse_window,
+            "1w": sparse_window(168), "1m": sparse_window(720),
+            "3m": sparse_window(2160),
         },
+        "attention_windows": [
+            {
+                "key": key, "label": label,
+                "metric": "normalized_attention_index_change",
+                "status": "insufficient_observed_history", "percent": None,
+                "basis": "insufficient_window_span_or_coverage",
+                "is_absolute_mention_count": False, "ranking_effect": "none",
+            }
+            for key, label in (
+                ("1w", "1주"), ("1m", "1개월"), ("3m", "3개월")
+            )
+        ],
         "keywords": [{"text": f"키워드{i}"} for i in range(5)],
         "keyword_company_links": [
             {
-                "keyword": f"키워드{i}", "company": f"기업{i}",
+                "keyword": f"키워드{i % 5}", "company": f"기업{i}",
+                "stock_code": f"{i:06d}",
+                "company_role_category": companies[i]["company_role_category"],
+                "company_role_label": companies[i]["company_role_label"],
                 "connection_explanation": "공개 근거로 확인된 연결",
                 "evidence_urls": [f"https://example.com/{i}"],
             }
-            for i in range(2)
+            for i in range(10)
         ],
+        "keyword_company_link_coverage": {
+            "policy_version": "public-keyword-company-link-coverage-v1",
+            "status": "ready", "ready": True,
+            "keyword_count": 5, "company_count": 10, "valid_link_count": 10,
+            "linked_keyword_count": 5, "linked_company_count": 10,
+            "unlinked_keywords": [], "unlinked_companies": [],
+            "matched_keyword_mismatches": [], "invalid_link_indexes": [],
+            "duplicate_pairs": [], "ranking_effect": "none",
+        },
         "companies": companies, "keyword_status": "ready",
         "company_role_category_count": 3, "company_card_status": "ready",
         "ranking_effect": "none",
@@ -291,6 +334,9 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
         company["company_role_category"] = (
             ("manufacturing_development", "distribution", "retail_sales")[index % 3]
         )
+        three_roles["items"][0]["keyword_company_links"][index][
+            "company_role_category"
+        ] = company["company_role_category"]
     three_roles["items"][0]["company_role_category_count"] = 3
     validator.validate(three_roles)
     _validate_presentation_feed(three_roles)
@@ -323,6 +369,25 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
     valid_market = json.loads(json.dumps(feed))
     validator.validate(valid_market)
     _validate_presentation_feed(valid_market)
+    per_na = json.loads(json.dumps(valid_market))
+    per_na_snapshot = per_na["items"][0]["companies"][0]["market_snapshot"]
+    per_na_snapshot["per_status"] = "unavailable_loss_making"
+    for field in ("per", "per_source_url", "per_as_of", "per_type", "per_period_type"):
+        per_na_snapshot.pop(field, None)
+    per_na_snapshot["field_provenance"].pop("per", None)
+    validator.validate(per_na)
+    _validate_presentation_feed(per_na)
+    stale_per = json.loads(json.dumps(valid_market))
+    stale_snapshot = stale_per["items"][0]["companies"][0]["market_snapshot"]
+    stale_snapshot["per_as_of"] = "2026-03-19"
+    stale_snapshot["field_provenance"]["per"]["as_of"] = "2026-03-19"
+    validator.validate(stale_per)
+    try:
+        _validate_presentation_feed(stale_per)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("stale positive PER must fail the runtime freshness gate")
     missing_fx = json.loads(json.dumps(valid_market))
     del missing_fx["items"][0]["companies"][0]["market_snapshot"]["fx_provider"]
     assert list(validator.iter_errors(missing_fx))

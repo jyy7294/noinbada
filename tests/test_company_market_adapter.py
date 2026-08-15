@@ -390,6 +390,54 @@ def test_yahoo_roe_fails_closed_without_two_equity_observations(monkeypatch):
     assert result["valuation"]["roe_denominator"] is None
 
 
+@pytest.mark.parametrize(
+    ("income", "expected_status"),
+    [
+        (20_000_000_000, "unavailable_stale"),
+        (-10_000_000_000, "unavailable_loss_making"),
+    ],
+)
+def test_yahoo_never_carries_old_positive_per_into_current_snapshot(
+    monkeypatch, income, expected_status
+):
+    payload = {
+        "timeseries": {
+            "result": [
+                _series("trailingMarketCap", 250_000_000_000, "2026-08-14"),
+                _series("trailingPeRatio", 53.8068, "2026-03-19"),
+                _series_points(
+                    "quarterlyStockholdersEquity",
+                    [
+                        (100_000_000_000, "2025-06-30", "3M"),
+                        (100_000_000_000, "2026-06-30", "3M"),
+                    ],
+                ),
+                _series("trailingNetIncome", income, "2026-06-30", "TTM"),
+            ],
+            "error": None,
+        }
+    }
+    monkeypatch.setattr(
+        "trzip.company_adapters._json_request",
+        lambda _url, **_kwargs: payload,
+    )
+
+    result = yahoo_finance_fundamentals(
+        "097950",
+        "KOSPI",
+        cache_ttl_seconds=0,
+        as_of=datetime(2026, 8, 15, tzinfo=UTC),
+    )
+    valuation = result["valuation"]
+
+    assert valuation["completeness"] == "complete"
+    assert valuation["per"] is None
+    assert valuation["per_status"] == expected_status
+    assert valuation["per_reported_as_of"] == "2026-03-19"
+    assert valuation["pbr"] == 2.5
+    assert valuation["roe_pct"] == round(income / 100_000_000_000 * 100, 4)
+
+
 @pytest.mark.parametrize(("income", "expected_roe"), [(0, 0.0), (-10_000_000_000, -10.0)])
 def test_yahoo_invalid_ratios_are_null_but_zero_or_negative_roe_is_valid(
     monkeypatch, income, expected_roe
@@ -548,7 +596,7 @@ def test_yahoo_definitive_404_is_not_retried_or_cached(monkeypatch):
     assert len(calls) == 2  # one definitive request per invocation; no retry/cache
 
 
-def test_yahoo_partial_fundamentals_are_returned_but_not_success_cached(monkeypatch):
+def test_yahoo_missing_current_per_is_explicit_na_and_success_cached(monkeypatch):
     calls = []
 
     def partial_json_request(url, **_kwargs):
@@ -561,10 +609,11 @@ def test_yahoo_partial_fundamentals_are_returned_but_not_success_cached(monkeypa
     first = yahoo_finance_fundamentals("005930", "KOSPI", as_of=observed_at)
     second = yahoo_finance_fundamentals("005930", "KOSPI", as_of=observed_at)
 
-    assert first["valuation"]["completeness"] == "partial"
+    assert first["valuation"]["completeness"] == "complete"
     assert first["valuation"]["per"] is None
-    assert second["valuation"]["completeness"] == "partial"
-    assert len(calls) == 2
+    assert first["valuation"]["per_status"] == "unavailable_not_reported"
+    assert second["valuation"]["completeness"] == "complete"
+    assert len(calls) == 1
 
 
 def test_yahoo_adapter_fails_closed_on_transport_or_missing_fundamentals(monkeypatch):
@@ -593,8 +642,9 @@ def test_yahoo_adapter_fails_closed_on_transport_or_missing_fundamentals(monkeyp
     missing = yahoo_finance_stock("AAPL", "NASDAQ", cache_ttl_seconds=0)
 
     assert missing["status"] == "observed"
-    assert missing["valuation"]["completeness"] == "partial"
+    assert missing["valuation"]["completeness"] == "complete"
     assert missing["valuation"]["per"] is None
+    assert missing["valuation"]["per_status"] == "unavailable_not_reported"
     assert missing["valuation"]["pbr"] == 2.5
     assert missing["valuation"]["roe_pct"] == 20.0
     assert missing["summary"]["market_cap"] == 250_000_000_000.0

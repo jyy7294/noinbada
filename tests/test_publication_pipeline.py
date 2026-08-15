@@ -334,7 +334,16 @@ def test_pipeline_writes_frontend_contract(tmp_path, monkeypatch):
                  "market_cap": 1_000_000_000,
                  "market_cap_krw": 1_000_000_000,
              },
-             "valuation": {"per": 10.0, "pbr": 1.0, "roe_pct": 10.0},
+             "valuation": {
+                 "market_cap_as_of": at.date().isoformat(),
+                 "per": 10.0,
+                 "per_status": "observed",
+                 "per_as_of": at.date().isoformat(),
+                 "pbr": 1.0,
+                 "pbr_as_of": at.date().isoformat(),
+                 "roe_pct": 10.0,
+                 "roe_numerator": {"as_of": at.date().isoformat()},
+             },
              "fx_reference": {
                  "status": "observed", "provider": "identity", "rate": 1.0,
                  "as_of": at.date().isoformat(),
@@ -751,8 +760,16 @@ def test_market_enrichment_routes_domestic_and_overseas_actual_providers(monkeyp
             "status": "observed", "provider": "pykrx", "stock_code": code,
             "source_url": "https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd",
             "daily_ohlcv": daily,
-            "summary": {"as_of": "2026-07-30", "currency": "KRW", "close": 130, "market_cap": 1_000},
-            "valuation": {"per": 10.0, "pbr": 1.2, "roe_pct": 8.0},
+            "summary": {
+                "as_of": "2026-08-14", "currency": "KRW", "close": 130,
+                "market_cap": 1_000, "market_cap_krw": 1_000,
+            },
+            "valuation": {
+                "market_cap_as_of": "2026-08-14",
+                "per": 10.0, "per_status": "observed", "per_as_of": "2026-08-14",
+                "pbr": 1.2, "pbr_as_of": "2026-08-14", "roe_pct": 8.0,
+                "roe_numerator": {"as_of": "2026-06-30"},
+            },
         }
 
     def fake_yahoo(code, exchange, as_of=None):
@@ -977,6 +994,7 @@ def test_domestic_market_enrichment_supplements_only_missing_actual_facts(monkey
 
 
 def test_domestic_market_metric_validity_replaces_sentinels_but_keeps_real_roe():
+    at = datetime(2026, 8, 15, 0, tzinfo=UTC)
     primary = {
         "status": "observed",
         "provider": "pykrx",
@@ -992,7 +1010,7 @@ def test_domestic_market_metric_validity_replaces_sentinels_but_keeps_real_roe()
         "valuation": {"per": 9.0, "pbr": 1.2, "roe_pct": 8.0},
     }
 
-    assert _domestic_reference_needs_fundamentals(primary) is True
+    assert _domestic_reference_needs_fundamentals(primary, at) is True
     merged = _merge_domestic_market_references(primary, supplement)
 
     assert merged["summary"]["market_cap_krw"] == 1000.0
@@ -1001,10 +1019,18 @@ def test_domestic_market_metric_validity_replaces_sentinels_but_keeps_real_roe()
 
     zero_roe = {
         **primary,
-        "summary": {"market_cap": 1000.0, "market_cap_krw": 1000.0},
-        "valuation": {"per": 9.0, "pbr": 1.2, "roe_pct": 0.0},
+        "summary": {
+            "as_of": "2026-08-15", "market_cap": 1000.0,
+            "market_cap_krw": 1000.0,
+        },
+        "valuation": {
+            "market_cap_as_of": "2026-08-15",
+            "per": 9.0, "per_status": "observed", "per_as_of": "2026-08-15",
+            "pbr": 1.2, "pbr_as_of": "2026-08-15", "roe_pct": 0.0,
+            "roe_numerator": {"as_of": "2026-06-30"},
+        },
     }
-    assert _domestic_reference_needs_fundamentals(zero_roe) is False
+    assert _domestic_reference_needs_fundamentals(zero_roe, at) is False
 
 
 def test_market_status_separates_attempts_from_observed_contributors(monkeypatch):

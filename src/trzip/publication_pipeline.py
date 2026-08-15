@@ -50,7 +50,10 @@ from .presentation_feed import (
 )
 from .processing_cycle import build_processing_cycle, checkpoint_due
 from .public_company_contract import (
+    PER_UNAVAILABLE_STATUSES,
+    keyword_company_link_coverage,
     listing_verification_is_valid,
+    market_field_date_is_fresh,
     market_snapshot_is_public_ready,
 )
 from .semantic_adjudication import run_semantic_adjudication
@@ -76,6 +79,33 @@ FRONTEND_TREND_SCHEMA_VERSION = "trzip-trend-detail-v1"
 X_COLLECTOR_TRANSPORTS = {
     "codex_chrome_current_session": "codex_browser_snapshot",
 }
+
+
+def _daily_review_cutoff(
+    at: datetime,
+    *,
+    daily_publish_hour_kst: int,
+) -> datetime | None:
+    """Freeze same-day reviewed enrichment from the cutoff hour through publish.
+
+    For the normal 06:00 KST release this is the explicit 04:45 KST hard
+    cutoff.  Returning it during the 04:00 checkpoint as well as the 06:00
+    publication prevents a delayed 04-hour run from consuming a late review.
+    """
+
+    at = floor_hour(at)
+    local = at + timedelta(hours=9)
+    publish_as_utc_clock = datetime(
+        local.year,
+        local.month,
+        local.day,
+        daily_publish_hour_kst,
+        tzinfo=UTC,
+    ) - timedelta(hours=9)
+    cutoff = publish_as_utc_clock - timedelta(minutes=75)
+    if floor_hour(cutoff) <= at <= publish_as_utc_clock:
+        return cutoff
+    return None
 RANKING_SUMMARY_FIELDS = (
     "event_key",
     "display_name",
@@ -799,6 +829,17 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
     daily_publication = processing_cycle.get("daily_publication") or {}
     if daily_publication.get("due") is True and enrichment_batch.get("attempted") is not True:
         raise ValueError("Daily publication hour requires an attempted enrichment checkpoint")
+    checkpoint_gate = enrichment_batch.get("release_gate") or {}
+    if (
+        checkpoint_gate.get("unresolved_candidates_excluded") is not True
+        or checkpoint_gate.get("padding_forbidden") is not True
+    ):
+        raise ValueError("Unresolved enrichment candidates must remain unpublished")
+    if daily_publication.get("due") is True and (
+        checkpoint_gate.get("recent_checkpoint_recorded") is not True
+        or checkpoint_gate.get("release_ready") is not True
+    ):
+        raise ValueError("Daily publication requires a recent recorded enrichment checkpoint")
     collection = metadata["collection"]
     if collection.get("rank_sources") != ["x", "google_trends"]:
         raise ValueError("Canonical observed rank sources must be X and Google Trends")
@@ -1033,6 +1074,20 @@ def _validate_live_presentation_feed(feed: dict) -> None:
             raise ValueError(
                 f"live presentation card is incomplete: {event_key}: {','.join(gate['missing'])}"
             )
+        link_coverage = keyword_company_link_coverage(
+            keywords=item.get("keywords") or [],
+            companies=projected_companies,
+            links=item.get("keyword_company_links") or [],
+            require_link_metadata=True,
+        )
+        if not link_coverage["ready"]:
+            raise ValueError(
+                "live presentation links must cover every public keyword and company"
+            )
+        if item.get("keyword_company_link_coverage") != link_coverage:
+            raise ValueError(
+                "live presentation keyword-company coverage receipt is stale"
+            )
         if item.get("company_role_category_count") != gate["role_category_count"]:
             raise ValueError(
                 "live presentation company role count must match projected companies"
@@ -1045,7 +1100,17 @@ def _validate_live_presentation_feed(feed: dict) -> None:
             or visualization.get("ranking_effect") != "none"
         ):
             raise ValueError("live visualization must preserve sparse observed points")
-        for window_key in ("1w", "1m", "3m"):
+        attention_windows = list(item.get("attention_windows") or [])
+        window_specs = {
+            "1w": (168, "1주"),
+            "1m": (720, "1개월"),
+            "3m": (2160, "3개월"),
+        }
+        if [row.get("key") for row in attention_windows] != list(window_specs):
+            raise ValueError("live attention windows must be ordered 1w, 1m, 3m")
+        for window_index, (window_key, (expected_hours, expected_label)) in enumerate(
+            window_specs.items()
+        ):
             window = visualization.get(window_key) or {}
             if (
                 window.get("interpolation") != "none"
@@ -1067,6 +1132,72 @@ def _validate_live_presentation_feed(feed: dict) -> None:
                     raise ValueError("live visualization combined value is not source-derived")
             if stamps != sorted(set(stamps)):
                 raise ValueError("live visualization points must be unique and chronological")
+            if not stamps:
+                raise ValueError("live visualization window requires observed points")
+            observed_hours = len(stamps)
+            observed_span_hours = round(
+                (stamps[-1] - stamps[0]).total_seconds() / 3600.0, 2
+            )
+            minimum_span_hours = round(expected_hours * 0.8, 2)
+            minimum_observed_hours = max(2, math.ceil(expected_hours * 0.2))
+            coverage_ratio = round(observed_hours / expected_hours, 4)
+            measurement_ready = bool(
+                observed_span_hours >= minimum_span_hours
+                and observed_hours >= minimum_observed_hours
+            )
+            expected_status = (
+                "measured" if measurement_ready else "insufficient_observed_history"
+            )
+            if (
+                window.get("status") != expected_status
+                or window.get("available_point_count") != observed_hours
+                or window.get("available_from") != window["points"][0].get("at")
+                or window.get("available_to") != window["points"][-1].get("at")
+                or window.get("expected_window_hours") != expected_hours
+                or window.get("observed_span_hours") != observed_span_hours
+                or window.get("observed_hour_count") != observed_hours
+                or window.get("coverage_ratio") != coverage_ratio
+                or window.get("minimum_span_hours") != minimum_span_hours
+                or window.get("minimum_observed_hours") != minimum_observed_hours
+            ):
+                raise ValueError(
+                    "live visualization window span/coverage receipt is invalid"
+                )
+            attention = attention_windows[window_index]
+            first_combined = window["points"][0]["combined"]
+            last_combined = window["points"][-1]["combined"]
+            attention_status = (
+                "insufficient_observed_history"
+                if not measurement_ready
+                else "unavailable_zero_baseline"
+                if first_combined == 0
+                else "measured"
+            )
+            expected_percent = (
+                round(((last_combined - first_combined) / first_combined) * 100.0, 1)
+                if attention_status == "measured"
+                else None
+            )
+            expected_basis = (
+                "first_and_last_qualified_observed_point"
+                if attention_status == "measured"
+                else "unavailable_zero_baseline"
+                if attention_status == "unavailable_zero_baseline"
+                else "insufficient_window_span_or_coverage"
+            )
+            if (
+                attention.get("key") != window_key
+                or attention.get("label") != expected_label
+                or attention.get("metric") != "normalized_attention_index_change"
+                or attention.get("status") != attention_status
+                or attention.get("percent") != expected_percent
+                or attention.get("basis") != expected_basis
+                or attention.get("is_absolute_mention_count") is not False
+                or attention.get("ranking_effect") != "none"
+            ):
+                raise ValueError(
+                    "live attention window must be derived from qualified actual observations"
+                )
         for company in projected_companies:
             snapshot = company.get("market_snapshot")
             price_series = list(snapshot.get("price_series") or [])
@@ -2099,7 +2230,7 @@ def _public_listing_verification(
     }
 
 
-def _domestic_reference_needs_fundamentals(value: dict) -> bool:
+def _domestic_reference_needs_fundamentals(value: dict, at: datetime) -> bool:
     """Return whether an observed KRX row still lacks facts used by the UI."""
 
     if value.get("status") != "observed":
@@ -2107,13 +2238,46 @@ def _domestic_reference_needs_fundamentals(value: dict) -> bool:
     summary = value.get("summary") if isinstance(value.get("summary"), dict) else {}
     valuation = value.get("valuation") if isinstance(value.get("valuation"), dict) else {}
     market_cap = summary.get("market_cap_krw", summary.get("market_cap"))
+    per_status = str(valuation.get("per_status") or "").strip()
+    if not per_status:
+        per_status = (
+            "observed"
+            if _valid_market_number(valuation.get("per"), positive=True)
+            else "unavailable_not_reported"
+        )
+    per_ready = bool(
+        (
+            per_status == "observed"
+            and _valid_market_number(valuation.get("per"), positive=True)
+            and market_field_date_is_fresh(
+                valuation.get("per_as_of"), "per", observed_at=at
+            )
+        )
+        or (
+            per_status in PER_UNAVAILABLE_STATUSES
+            and valuation.get("per") is None
+        )
+    )
     return not (
         _valid_market_number(market_cap, positive=True)
-        and _valid_market_number(valuation.get("per"), positive=True)
+        and market_field_date_is_fresh(
+            valuation.get("market_cap_as_of") or summary.get("as_of"),
+            "market_cap_krw",
+            observed_at=at,
+        )
+        and per_ready
         and _valid_market_number(valuation.get("pbr"), positive=True)
+        and market_field_date_is_fresh(
+            valuation.get("pbr_as_of"), "pbr", observed_at=at
+        )
         # A real zero or negative ROE is meaningful and must not be treated as
         # missing.  Only non-numeric and non-finite values are rejected.
         and _valid_market_number(valuation.get("roe_pct"))
+        and market_field_date_is_fresh(
+            (valuation.get("roe_numerator") or {}).get("as_of"),
+            "roe_pct",
+            observed_at=at,
+        )
     )
 
 
@@ -2174,6 +2338,18 @@ def _merge_domestic_market_references(primary: dict, supplement: dict) -> dict:
         elif _valid_market_number(primary_valuation.get(key), positive=positive):
             field_sources.setdefault(key, primary_source_url)
 
+    if not _valid_market_number(primary_valuation.get("per"), positive=True):
+        supplement_per_status = str(
+            supplement_valuation.get("per_status") or ""
+        ).strip()
+        if supplement_per_status in PER_UNAVAILABLE_STATUSES:
+            primary_valuation["per"] = None
+            primary_valuation["per_status"] = supplement_per_status
+            primary_valuation["per_reported_as_of"] = supplement_valuation.get(
+                "per_reported_as_of"
+            )
+            supplement_used = True
+
     for key in (
         "market_cap_as_of",
         "market_cap_period_type",
@@ -2181,6 +2357,11 @@ def _merge_domestic_market_references(primary: dict, supplement: dict) -> dict:
         "per_as_of",
         "per_period_type",
         "per_type",
+        "per_status",
+        "per_reported_as_of",
+        "pbr_as_of",
+        "pbr_period_type",
+        "pbr_type",
         "equity",
         "equity_as_of",
         "equity_period_type",
@@ -2340,7 +2521,7 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
                 ).get("current_listed") is True
                 and not (
                     exchange in {"KRX", "KOSPI", "KOSDAQ"}
-                    and _domestic_reference_needs_fundamentals(market)
+                    and _domestic_reference_needs_fundamentals(market, at)
                 )
             ):
                 reused += 1
@@ -2348,7 +2529,7 @@ def _enrich_market_references(intelligence: dict, previous: dict, at: datetime) 
                 if exchange in {"KRX", "KOSPI", "KOSDAQ"}:
                     market = pykrx_stock(code, at.strftime("%Y%m%d"), lookback_days=45)
                     provider_requests["pykrx"] += 1
-                    if _domestic_reference_needs_fundamentals(market):
+                    if _domestic_reference_needs_fundamentals(market, at):
                         yahoo_market, yahoo_request_count = _domestic_yahoo_reference(
                             code,
                             exchange,
@@ -2925,6 +3106,10 @@ def run(
         handoff_root=database_path.parent.parent / "handoff",
         at=at,
         enabled=enrichment_checkpoint,
+        review_cutoff_at=_daily_review_cutoff(
+            at,
+            daily_publish_hour_kst=daily_publish_hour_kst,
+        ),
     )
     intelligence = refresh_frontend_readiness(intelligence)
     intelligence["provider_keyword_candidate_queue"] = sync_provider_keyword_candidates(

@@ -16,6 +16,7 @@ from pathlib import Path
 
 from .hourly_store import floor_hour
 from .keyword_policy import keyword_fits_public_label
+from .public_company_contract import keyword_company_link_coverage
 
 
 SCHEMA_VERSION = "trzip-enrichment-handoff-v1"
@@ -214,6 +215,29 @@ def _validate_review(batch: dict, review: dict) -> list[dict]:
                 and company.get("ontology_complete") is True
             ):
                 raise ValueError("review company lacks listed identity or trend evidence")
+        if any(
+            field in decision
+            for field in ("related_keywords", "companies", "keyword_company_links")
+        ):
+            effective_keywords = decision.get("related_keywords") or original.get(
+                "related_keywords"
+            ) or []
+            effective_companies = decision.get("companies") or original.get(
+                "companies"
+            ) or []
+            effective_links = decision.get("keyword_company_links") or original.get(
+                "keyword_company_links"
+            ) or []
+            coverage = keyword_company_link_coverage(
+                keywords=effective_keywords,
+                companies=effective_companies,
+                links=effective_links,
+            )
+            if not coverage["ready"]:
+                raise ValueError(
+                    "review keyword-company links must cover every supplied "
+                    "keyword and company with exact matched_keywords and public evidence"
+                )
     return decisions
 
 
@@ -287,6 +311,7 @@ def _latest_unconsumed_review(
     handoff_root: Path,
     *,
     current_batch_id: str,
+    review_cutoff_at: datetime | None = None,
 ) -> tuple[dict, Path] | None:
     """Return the newest review at or before this checkpoint without a receipt."""
 
@@ -305,6 +330,8 @@ def _latest_unconsumed_review(
             or not (pending_root / f"{batch_id}.json").is_file()
         ):
             continue
+        if not _review_is_within_cutoff(review_path, review_cutoff_at):
+            continue
         candidates.append((batch_id, review_path))
     if not candidates:
         return None
@@ -317,6 +344,65 @@ def _latest_unconsumed_review(
     ):
         raise ValueError("pending enrichment batch identity is invalid")
     return batch, review_path
+
+
+def _review_is_within_cutoff(
+    review_path: Path,
+    review_cutoff_at: datetime | None,
+) -> bool:
+    """Require both the claimed review time and filesystem arrival by cutoff.
+
+    A late review is not deleted or marked consumed.  It remains in the queue
+    for the next checkpoint, while the current daily publication stays frozen
+    to the declared editorial cutoff.
+    """
+
+    if review_cutoff_at is None:
+        return True
+    cutoff = review_cutoff_at.astimezone(UTC)
+    try:
+        arrived_at = datetime.fromtimestamp(review_path.stat().st_mtime, tz=UTC)
+    except OSError:
+        return False
+    if arrived_at > cutoff:
+        return False
+    try:
+        review = json.loads(review_path.read_text(encoding="utf-8"))
+        reviewed_at = datetime.fromisoformat(str(review.get("reviewed_at") or ""))
+        if reviewed_at.tzinfo is None:
+            return False
+    except (OSError, TypeError, ValueError, json.JSONDecodeError):
+        # Malformed files that arrived before the cutoff are still selected so
+        # the normal validation path can record a reviewed_rejected outcome.
+        return True
+    return reviewed_at.astimezone(UTC) <= cutoff
+
+
+def _deferred_after_cutoff_count(
+    handoff_root: Path,
+    *,
+    current_batch_id: str,
+    review_cutoff_at: datetime | None,
+) -> int:
+    if review_cutoff_at is None:
+        return 0
+    reviewed_root = handoff_root / "reviewed"
+    pending_root = handoff_root / "pending"
+    receipt_root = handoff_root / "receipts"
+    if not reviewed_root.is_dir():
+        return 0
+    count = 0
+    for review_path in reviewed_root.glob("*.json"):
+        batch_id = review_path.stem
+        if (
+            BATCH_ID_PATTERN.fullmatch(batch_id)
+            and batch_id <= current_batch_id
+            and not (receipt_root / f"{batch_id}.json").exists()
+            and (pending_root / f"{batch_id}.json").is_file()
+            and not _review_is_within_cutoff(review_path, review_cutoff_at)
+        ):
+            count += 1
+    return count
 
 
 def _record_consumed_review(
@@ -389,12 +475,18 @@ def _reapply_approved_cache(
     intelligence: dict,
     *,
     handoff_root: Path,
+    review_cutoff_at: datetime | None = None,
 ) -> dict:
     """Reapply validated prior decisions without granting ranking authority."""
 
     approved_root = handoff_root / "approved"
     if not approved_root.is_dir():
-        return {"status": "empty", "reapplied_count": 0, "rejected_count": 0}
+        return {
+            "status": "empty",
+            "reapplied_count": 0,
+            "rejected_count": 0,
+            "deferred_after_cutoff_count": 0,
+        }
     by_key = {
         str(item.get("event_key") or ""): item
         for item in intelligence.get("unified_ranking") or []
@@ -408,6 +500,7 @@ def _reapply_approved_cache(
     }
     reapplied = 0
     rejected = 0
+    deferred_after_cutoff = 0
     for path in sorted(approved_root.glob("event-*.json")):
         try:
             cached = json.loads(path.read_text(encoding="utf-8"))
@@ -430,6 +523,23 @@ def _reapply_approved_cache(
                 or batch.get("immutable_sha256") != cached.get("immutable_sha256")
             ):
                 raise ValueError("approved enrichment source batch is invalid")
+            if review_cutoff_at is not None:
+                cutoff = review_cutoff_at.astimezone(UTC)
+                try:
+                    cached_reviewed_at = datetime.fromisoformat(
+                        str(cached.get("reviewed_at") or "")
+                    )
+                except (TypeError, ValueError):
+                    cached_reviewed_at = None
+                review_path = handoff_root / "reviewed" / f"{batch_id}.json"
+                if (
+                    cached_reviewed_at is None
+                    or cached_reviewed_at.tzinfo is None
+                    or cached_reviewed_at.astimezone(UTC) > cutoff
+                    or not _review_is_within_cutoff(review_path, cutoff)
+                ):
+                    deferred_after_cutoff += 1
+                    continue
             _validate_review(batch, {
                 "schema_version": REVIEW_SCHEMA_VERSION,
                 "batch_id": batch_id,
@@ -471,6 +581,7 @@ def _reapply_approved_cache(
         "status": "reapplied" if reapplied else "empty",
         "reapplied_count": reapplied,
         "rejected_count": rejected,
+        "deferred_after_cutoff_count": deferred_after_cutoff,
         "ranking_effect": "none",
     }
 
@@ -481,14 +592,22 @@ def run_handoff(
     handoff_root: Path,
     at: datetime,
     enabled: bool,
+    review_cutoff_at: datetime | None = None,
 ) -> dict:
     approved_cache = _reapply_approved_cache(
-        intelligence, handoff_root=handoff_root
+        intelligence,
+        handoff_root=handoff_root,
+        review_cutoff_at=review_cutoff_at,
     )
     if not enabled:
         return {
             "status": "deferred_to_enrichment_checkpoint",
             "approved_cache": approved_cache,
+            "review_cutoff_at": (
+                review_cutoff_at.astimezone(UTC).isoformat()
+                if review_cutoff_at else None
+            ),
+            "deferred_after_cutoff_count": 0,
             "ranking_effect": "none",
         }
     batch, pending_path = export_candidate_batch(
@@ -501,12 +620,26 @@ def run_handoff(
     import_review_path = review_path
     try:
         selected = _latest_unconsumed_review(
-            handoff_root, current_batch_id=batch["batch_id"]
+            handoff_root,
+            current_batch_id=batch["batch_id"],
+            review_cutoff_at=review_cutoff_at,
         )
         import_batch, import_review_path = selected or (batch, review_path)
-        result = import_reviewed_batch(
-            intelligence, batch=import_batch, review_path=import_review_path
-        )
+        if (
+            selected is None
+            and import_review_path.is_file()
+            and not _review_is_within_cutoff(import_review_path, review_cutoff_at)
+        ):
+            # The current hour's review uses the same batch id.  Do not let the
+            # direct-path fallback bypass the cutoff that rejected it above.
+            result = {
+                "status": "exported_waiting_review",
+                "review_path": str(import_review_path),
+            }
+        else:
+            result = import_reviewed_batch(
+                intelligence, batch=import_batch, review_path=import_review_path
+            )
         receipt_path = None
         imported_batch_id = None
         if result["status"] in {"reviewed_imported", "reviewed_empty"}:
@@ -542,6 +675,15 @@ def run_handoff(
         "pending_path": str(pending_path),
         "template_path": str(template_path),
         "candidate_count": len(batch["candidates"]),
+        "review_cutoff_at": (
+            review_cutoff_at.astimezone(UTC).isoformat()
+            if review_cutoff_at else None
+        ),
+        "deferred_after_cutoff_count": _deferred_after_cutoff_count(
+            handoff_root,
+            current_batch_id=batch["batch_id"],
+            review_cutoff_at=review_cutoff_at,
+        ),
         "prohibited_authority": sorted(PROHIBITED_FIELDS),
         "approved_cache": approved_cache,
     }

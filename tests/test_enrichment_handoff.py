@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import UTC, datetime, timedelta
 
 import pytest
@@ -11,6 +12,7 @@ from trzip.enrichment_handoff import (
     review_template,
     run_handoff,
 )
+from trzip.publication_pipeline import _daily_review_cutoff
 
 
 AT = datetime(2026, 8, 15, 4, tzinfo=UTC)
@@ -217,3 +219,172 @@ def test_next_checkpoint_imports_latest_unconsumed_review_once(tmp_path):
     )
     assert third["status"] == "exported_waiting_review"
     assert third["imported_batch_id"] is None
+
+
+def test_daily_cutoff_defers_late_review_without_deleting_queue(tmp_path):
+    handoff_root = tmp_path / "handoff"
+    first = {"unified_ranking": [_candidate(2)]}
+    exported = run_handoff(
+        first, handoff_root=handoff_root, at=AT, enabled=True
+    )
+    batch_path = handoff_root / "pending" / f"{exported['batch_id']}.json"
+    batch = json.loads(batch_path.read_text(encoding="utf-8"))
+    cutoff = AT + timedelta(hours=1)
+    review = review_template(batch)
+    review["reviewed_at"] = (cutoff + timedelta(minutes=1)).isoformat()
+    review["decisions"] = [{
+        "event_key": "event-2",
+        "lane": "main",
+        "broad_category": "consumer",
+        "context_research": {
+            "status": "ready",
+            "trigger_title": "Documented event",
+            "why_now": "An official page documents the event.",
+            "evidence_urls": ["https://example.com/event-2"],
+        },
+    }]
+    review_path = handoff_root / "reviewed" / f"{batch['batch_id']}.json"
+    review_path.parent.mkdir(parents=True)
+    review_path.write_text(json.dumps(review), encoding="utf-8")
+    late_timestamp = (cutoff + timedelta(minutes=2)).timestamp()
+    os.utime(review_path, (late_timestamp, late_timestamp))
+
+    current = {"unified_ranking": [_candidate(2), _candidate(3)]}
+    frozen = run_handoff(
+        current,
+        handoff_root=handoff_root,
+        at=AT + timedelta(hours=4),
+        enabled=True,
+        review_cutoff_at=cutoff,
+    )
+
+    assert frozen["status"] == "exported_waiting_review"
+    assert frozen["deferred_after_cutoff_count"] == 1
+    assert not (handoff_root / "receipts" / f"{batch['batch_id']}.json").exists()
+    assert current["unified_ranking"][0]["lane"] == "review"
+
+    next_checkpoint = run_handoff(
+        current,
+        handoff_root=handoff_root,
+        at=AT + timedelta(hours=8),
+        enabled=True,
+    )
+    assert next_checkpoint["status"] == "reviewed_imported_previous"
+    assert current["unified_ranking"][0]["lane"] == "main"
+
+
+def test_0445_cutoff_blocks_late_review_and_late_approved_cache_until_next_checkpoint(
+    tmp_path,
+):
+    handoff_root = tmp_path / "handoff"
+    checkpoint_at = datetime(2026, 8, 15, 19, tzinfo=UTC)  # 04:00 KST
+    cutoff = checkpoint_at + timedelta(minutes=45)
+    late_at = cutoff + timedelta(minutes=5)
+    publish_at = checkpoint_at + timedelta(hours=2)  # 06:00 KST
+
+    assert _daily_review_cutoff(
+        checkpoint_at, daily_publish_hour_kst=6
+    ) == cutoff
+    assert _daily_review_cutoff(late_at, daily_publish_hour_kst=6) == cutoff
+    assert _daily_review_cutoff(
+        publish_at, daily_publish_hour_kst=6
+    ) == cutoff
+
+    first = {"unified_ranking": [_candidate(2)]}
+    exported = run_handoff(
+        first,
+        handoff_root=handoff_root,
+        at=checkpoint_at,
+        enabled=True,
+        review_cutoff_at=cutoff,
+    )
+    batch = json.loads(
+        (handoff_root / "pending" / f"{exported['batch_id']}.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    review = review_template(batch)
+    review["reviewed_at"] = late_at.isoformat()
+    review["decisions"] = [{
+        "event_key": "event-2",
+        "lane": "main",
+        "broad_category": "consumer",
+        "context_research": {
+            "status": "ready",
+            "trigger_title": "Late documented event",
+            "why_now": "A public page documents the event after cutoff.",
+            "evidence_urls": ["https://example.com/event-2"],
+        },
+    }]
+    review_path = handoff_root / "reviewed" / f"{batch['batch_id']}.json"
+    review_path.parent.mkdir(parents=True)
+    review_path.write_text(json.dumps(review), encoding="utf-8")
+    os.utime(review_path, (late_at.timestamp(), late_at.timestamp()))
+
+    frozen_item = _candidate(2)
+    frozen_ranking = (
+        frozen_item["observed_rank"], frozen_item["rank"], frozen_item["score"]
+    )
+    frozen = run_handoff(
+        {"unified_ranking": [frozen_item]},
+        handoff_root=handoff_root,
+        at=late_at,
+        enabled=True,
+        review_cutoff_at=_daily_review_cutoff(
+            late_at, daily_publish_hour_kst=6
+        ),
+    )
+    assert frozen["status"] == "exported_waiting_review"
+    assert frozen["deferred_after_cutoff_count"] == 1
+    assert frozen_item["lane"] == "review"
+    assert (
+        frozen_item["observed_rank"], frozen_item["rank"], frozen_item["score"]
+    ) == frozen_ranking
+    assert not (handoff_root / "receipts" / f"{batch['batch_id']}.json").exists()
+
+    # Model the pre-fix state in which the same late review had already been
+    # consumed into the approved cache.  The 06:00 defense must still reject it.
+    legacy_item = _candidate(2)
+    legacy_import = run_handoff(
+        {"unified_ranking": [legacy_item]},
+        handoff_root=handoff_root,
+        at=late_at,
+        enabled=True,
+        review_cutoff_at=None,
+    )
+    assert legacy_import["status"] == "reviewed_imported"
+    assert legacy_item["lane"] == "main"
+    receipt_path = handoff_root / "receipts" / f"{batch['batch_id']}.json"
+    receipt_before_publish = receipt_path.read_bytes()
+
+    publish_item = _candidate(2)
+    publish_ranking = (
+        publish_item["observed_rank"], publish_item["rank"], publish_item["score"]
+    )
+    publish = run_handoff(
+        {"unified_ranking": [publish_item]},
+        handoff_root=handoff_root,
+        at=publish_at,
+        enabled=True,
+        review_cutoff_at=_daily_review_cutoff(
+            publish_at, daily_publish_hour_kst=6
+        ),
+    )
+    assert publish["approved_cache"]["reapplied_count"] == 0
+    assert publish["approved_cache"]["deferred_after_cutoff_count"] == 1
+    assert publish_item["lane"] == "review"
+    assert (
+        publish_item["observed_rank"], publish_item["rank"], publish_item["score"]
+    ) == publish_ranking
+    assert receipt_path.read_bytes() == receipt_before_publish
+
+    next_item = _candidate(2)
+    next_checkpoint = run_handoff(
+        {"unified_ranking": [next_item]},
+        handoff_root=handoff_root,
+        at=checkpoint_at + timedelta(hours=4),  # 08:00 KST
+        enabled=True,
+        review_cutoff_at=None,
+    )
+    assert next_checkpoint["approved_cache"]["reapplied_count"] == 1
+    assert next_item["lane"] == "main"

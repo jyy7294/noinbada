@@ -266,8 +266,67 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
         },
     }
     covered_hours = min(history_hours, 24)
+    component_execution = {
+        "naver_context": {
+            "status": "disabled_missing_config",
+            "detail": "disabled_missing_config",
+            "required_for_release": False,
+            "ranking_effect": "none",
+        },
+        "semantic_llm": {
+            "status": "disabled_missing_config",
+            "detail": "disabled_missing_config",
+            "required_for_release": False,
+            "ranking_effect": "none",
+        },
+        "approved_cache": {
+            "status": "completed",
+            "detail": "empty",
+            "required_for_release": False,
+            "ranking_effect": "none",
+        },
+        "review_handoff": {
+            "status": "deferred",
+            "detail": "exported_waiting_review",
+            "required_for_release": False,
+            "ranking_effect": "none",
+        },
+        "complete_card_gate": {
+            "status": "completed",
+            "detail": "completed",
+            "required_for_release": True,
+            "ranking_effect": "none",
+        },
+    }
+    checkpoint_release_gate = {
+        "policy_version": "daily-checkpoint-release-gate-v1",
+        "checkpoint_recorded": True,
+        "recent_checkpoint_max_age_hours": 4,
+        "recent_checkpoint_recorded": True,
+        "latest_checkpoint_age_hours": 0.0,
+        "complete_card_gate_completed": True,
+        "optional_disabled_components": ["naver_context", "semantic_llm"],
+        "deferred_components": ["review_handoff"],
+        "nonblocking_component_failures": [],
+        "unresolved_candidate_count": 0,
+        "unresolved_candidates_excluded": True,
+        "padding_forbidden": True,
+        "release_ready": True,
+    }
+    checkpoint_summary = {
+        "candidate_count": 1,
+        "complete_card_count": 0,
+        "complete_event_keys": [],
+        "pending_card_count": 1,
+        "gate_policy_version": "complete-live-card-v5",
+        "component_execution": component_execution,
+        "release_gate": checkpoint_release_gate,
+        "execution_status": (
+            "completed_with_deferred_work_and_optional_components_disabled"
+        ),
+    }
     processing_cycle = {
-        "schema_version": "trzip-processing-cycle-v1",
+        "schema_version": "trzip-processing-cycle-v2",
         "observed_at": observed_at,
         "coverage_24h": {
             "window": {"expected_hours": 24},
@@ -281,7 +340,21 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
             "fabricated_hour_count": 0,
             "reused_previous_hour_count": 0,
         },
-        "enrichment_batch": {"attempted": True, "status": "completed"},
+        "enrichment_batch": {
+            "attempted": True,
+            "executed": True,
+            "due": True,
+            "status": (
+                "completed_with_deferred_work_and_optional_components_disabled"
+            ),
+            "component_execution": component_execution,
+            "release_gate": checkpoint_release_gate,
+            "last_executed": {
+                "observed_at": observed_at,
+                "completed_at": generated_at,
+                "summary": checkpoint_summary,
+            },
+        },
         "daily_publication": {"due": True},
     }
     intelligence["processing_cycle"] = processing_cycle
@@ -379,6 +452,19 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
         )
         """
     )
+    connection.execute(
+        """
+        CREATE TABLE enrichment_checkpoints (
+            observed_at TEXT PRIMARY KEY,
+            completed_at TEXT NOT NULL,
+            summary_json TEXT NOT NULL
+        )
+        """
+    )
+    connection.execute(
+        "INSERT INTO enrichment_checkpoints VALUES (?, ?, ?)",
+        (observed_at, generated_at, json.dumps(checkpoint_summary)),
+    )
     last_hour = datetime.fromisoformat(observed_at)
     for offset in range(history_hours - 1, -1, -1):
         observed = (last_hour - timedelta(hours=offset)).isoformat()
@@ -434,6 +520,21 @@ def test_runtime_audit_passes_complete_combined_runtime(tmp_path: Path) -> None:
         "presentation_ready": False,
         "ranking_effect": "none",
     }
+
+
+def test_runtime_audit_rejects_daily_release_without_recent_checkpoint(
+    tmp_path: Path,
+) -> None:
+    _write_runtime(tmp_path)
+    connection = sqlite3.connect(tmp_path / "data" / "trzip-hourly.sqlite3")
+    connection.execute("DELETE FROM enrichment_checkpoints")
+    connection.commit()
+    connection.close()
+
+    result = audit_runtime(tmp_path)
+
+    assert result["status"] == "fail"
+    assert "recent_enrichment_checkpoint_missing" in result["failures"]
 
 
 def test_runtime_audit_rejects_legacy_v2_feed_as_live_default(

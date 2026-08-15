@@ -56,6 +56,10 @@ YAHOO_MARKET_CACHE_MAX_ENTRIES = 256
 YAHOO_MARKET_TIMEOUT_SECONDS = 8
 YAHOO_MARKET_MAX_ATTEMPTS = 3
 YAHOO_MARKET_RETRY_BACKOFF_SECONDS = 0.1
+# Yahoo's trailing P/E series is market-sensitive rather than a filing-period
+# fact.  A historical positive point must not be carried forward after the
+# issuer becomes loss-making (or simply stops reporting a current ratio).
+YAHOO_PER_FRESHNESS_DAYS = 14
 YAHOO_FUNDAMENTAL_TYPES = (
     "trailingMarketCap",
     "quarterlyMarketCap",
@@ -802,12 +806,38 @@ def pykrx_stock(stock_code: str, base_date: str | None = None, lookback_days: in
                 FUNDAMENTAL_COLUMNS.get(str(key), str(key)): _scalar(value)
                 for key, value in latest_fundamental.items()
             }
+            fundamental_as_of = fundamental_frame.index[-1].strftime("%Y-%m-%d")
+            if _safe_yahoo_number(valuation.get("per")) is not None and valuation["per"] > 0:
+                valuation.update({
+                    "per_status": "observed",
+                    "per_as_of": fundamental_as_of,
+                    "per_type": "krxDailyPer",
+                    "per_period_type": "DAILY",
+                })
+            else:
+                valuation.update({
+                    "per": None,
+                    "per_status": "unavailable_not_reported",
+                })
+            if _safe_yahoo_number(valuation.get("pbr")) is not None and valuation["pbr"] > 0:
+                valuation.update({
+                    "pbr_as_of": fundamental_as_of,
+                    "pbr_type": "krxDailyPbr",
+                    "pbr_period_type": "DAILY",
+                })
+            else:
+                valuation["pbr"] = None
         market_cap = None
         if market_cap_frame is not None and not market_cap_frame.empty:
             latest_market_cap = market_cap_frame.iloc[-1]
             raw_market_cap = latest_market_cap.get("시가총액")
             if raw_market_cap is not None:
                 market_cap = int(_scalar(raw_market_cap))
+                valuation["market_cap_as_of"] = market_cap_frame.index[-1].strftime(
+                    "%Y-%m-%d"
+                )
+                valuation["market_cap_type"] = "krxDailyMarketCap"
+                valuation["market_cap_period_type"] = "DAILY"
         return {"status": "observed", "provider": "pykrx", "source_url": KRX_DATA_SOURCE_URL,
                 "stock_code": code,
                 "name": name or None, "daily_ohlcv": rows,
@@ -1293,13 +1323,35 @@ def _roe_equity_denominator(payload: object, numerator: dict) -> dict | None:
     }
 
 
-def _parse_yahoo_fundamentals(payload: object) -> dict:
+def _yahoo_observation_is_current(
+    observation: dict | None,
+    observed_at: datetime,
+    *,
+    max_age_days: int,
+) -> bool:
+    if not observation:
+        return False
+    as_of = observation.get("_date")
+    if as_of is None:
+        return False
+    age = observed_at.astimezone(UTC).date() - as_of
+    # A one-day lead is tolerated because Asian market dates can roll over
+    # before the UTC collection day.  Larger future dates fail closed.
+    return -1 <= age.days <= max_age_days
+
+
+def _parse_yahoo_fundamentals(
+    payload: object,
+    *,
+    observed_at: datetime | None = None,
+) -> dict:
+    reference_at = (observed_at or datetime.now(UTC)).astimezone(UTC)
     market_cap = _latest_yahoo_timeseries_value(
         payload,
         ("trailingMarketCap", "quarterlyMarketCap"),
         positive=True,
     )
-    per = _latest_yahoo_timeseries_value(
+    reported_per = _latest_yahoo_timeseries_value(
         payload,
         ("trailingPeRatio",),
         positive=True,
@@ -1321,8 +1373,23 @@ def _parse_yahoo_fundamentals(payload: object) -> dict:
         ("trailingNetIncome", "annualNetIncome"),
         prefer_alias=True,
     )
-    if not any((market_cap, per, equity, net_income)):
+    if not any((market_cap, reported_per, equity, net_income)):
         raise ValueError("required_fundamentals_missing")
+    per = reported_per
+    if net_income is not None and net_income["value"] <= 0:
+        per = None
+        per_status = "unavailable_loss_making"
+    elif reported_per is None:
+        per_status = "unavailable_not_reported"
+    elif not _yahoo_observation_is_current(
+        reported_per,
+        reference_at,
+        max_age_days=YAHOO_PER_FRESHNESS_DAYS,
+    ):
+        per = None
+        per_status = "unavailable_stale"
+    else:
+        per_status = "observed"
     equity_value = equity["value"] if equity else None
     market_cap_value = market_cap["value"] if market_cap else None
     net_income_value = net_income["value"] if net_income else None
@@ -1343,12 +1410,23 @@ def _parse_yahoo_fundamentals(payload: object) -> dict:
             if net_income["type"] == "trailingNetIncome"
             else "annual_net_income / average_two_point_stockholders_equity * 100"
         )
-    complete_values = (market_cap_value, per["value"] if per else None, pbr, roe_pct)
+    complete_values = (market_cap_value, pbr, roe_pct)
+    # A missing current P/E is a valid reported state, not a reason to discard
+    # the otherwise current market-cap/PBR/ROE snapshot.  Consumers must render
+    # it as N/A and may never substitute the last historical positive value.
+    per_is_complete = bool(
+        per is not None
+        or per_status in {
+            "unavailable_loss_making",
+            "unavailable_not_reported",
+            "unavailable_stale",
+        }
+    )
     return {
         "status": "observed",
         "completeness": (
             "complete"
-            if all(value is not None for value in complete_values)
+            if all(value is not None for value in complete_values) and per_is_complete
             else "partial"
         ),
         "market_cap": market_cap_value,
@@ -1356,10 +1434,15 @@ def _parse_yahoo_fundamentals(payload: object) -> dict:
         "market_cap_type": market_cap["type"] if market_cap else None,
         "market_cap_period_type": market_cap.get("period_type") if market_cap else None,
         "per": round(per["value"], 4) if per else None,
+        "per_status": per_status,
         "per_as_of": per["as_of"] if per else None,
         "per_type": per["type"] if per else None,
         "per_period_type": per.get("period_type") if per else None,
+        "per_reported_as_of": reported_per["as_of"] if reported_per else None,
         "pbr": pbr,
+        "pbr_as_of": market_cap["as_of"] if pbr is not None and market_cap else None,
+        "pbr_type": "calculatedMarketCapToEquity" if pbr is not None else None,
+        "pbr_period_type": "POINT_IN_TIME_OVER_REPORTED_EQUITY" if pbr is not None else None,
         "roe_pct": roe_pct,
         "roe_basis": roe_basis,
         "roe_calculated": roe_pct is not None,
@@ -1411,7 +1494,10 @@ def _fetch_yahoo_fundamentals(
         headers=request_headers,
         timeout=timeout,
     )
-    return _parse_yahoo_fundamentals(payload), fundamentals_url
+    return _parse_yahoo_fundamentals(
+        payload,
+        observed_at=observed_at,
+    ), fundamentals_url
 
 
 def _cache_yahoo_market_result(cache_key: str, result: dict) -> None:

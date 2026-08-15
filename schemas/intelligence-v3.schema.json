@@ -41,7 +41,7 @@
       "type": "object",
       "required": ["schema_version", "observed_at", "coverage_24h", "enrichment_batch", "daily_publication"],
       "properties": {
-        "schema_version": {"const": "trzip-processing-cycle-v1"},
+        "schema_version": {"const": "trzip-processing-cycle-v2"},
         "observed_at": {"type": "string", "format": "date-time"},
         "coverage_24h": {
           "type": "object",
@@ -205,8 +205,8 @@
             "required": [
               "presentation_position", "selection_origin", "lane", "display_name", "event_key", "category", "category_label",
               "sources", "data_mode", "observed_within_24h", "trend_definition", "why_now",
-              "context_research", "evidence_urls", "series", "visualization_series",
-              "keywords", "companies", "keyword_company_links",
+              "context_research", "evidence_urls", "series", "visualization_series", "attention_windows",
+              "keywords", "companies", "keyword_company_links", "keyword_company_link_coverage",
               "keyword_status", "company_role_category_count", "company_card_status", "ranking_effect"
             ],
             "properties": {
@@ -245,6 +245,10 @@
                 "items": {"$ref": "#/$defs/liveObservedSeriesPoint"}
               },
               "visualization_series": {"$ref": "#/$defs/liveSparseVisualization"},
+              "attention_windows": {
+                "type": "array", "minItems": 3, "maxItems": 3,
+                "items": {"$ref": "#/$defs/liveAttentionWindow"}
+              },
               "keywords": {
                 "type": "array", "minItems": 5, "maxItems": 5, "uniqueItems": true,
                 "items": {
@@ -258,7 +262,7 @@
                   "type": "object",
                   "required": [
                     "company", "stock_code", "exchange", "company_description",
-                    "connection_explanation", "company_role_category", "company_role_label",
+                    "connection_explanation", "company_role_category", "company_role_label", "matched_keywords",
                     "ontology_path", "ontology_complete", "evidence_sources", "relation_tier",
                     "listing_verification", "market_snapshot",
                     "official_domain", "logo_url", "logo_render_mode", "logo_asset_source",
@@ -278,6 +282,10 @@
                       "enum": ["manufacturing_development", "raw_materials_components", "content_production", "distribution", "retail_sales", "brand_marketing", "platform_service", "ownership_investment", "event_sponsorship"]
                     },
                     "company_role_label": {"type": "string", "minLength": 1},
+                    "matched_keywords": {
+                      "type": "array", "minItems": 1, "maxItems": 5, "uniqueItems": true,
+                      "items": {"type": "string", "pattern": "^(?:\\s*\\S){1,6}\\s*$"}
+                    },
                     "ontology_path": {
                       "type": "array", "minItems": 2,
                       "items": {"oneOf": [{"type": "string", "minLength": 1}, {"type": "object"}]}
@@ -349,8 +357,33 @@
                 }
               },
               "keyword_company_links": {
-                "type": "array", "minItems": 2,
+                "type": "array", "minItems": 10,
                 "items": {"$ref": "#/$defs/liveKeywordCompanyLink"}
+              },
+              "keyword_company_link_coverage": {
+                "type": "object", "additionalProperties": false,
+                "required": [
+                  "policy_version", "status", "ready", "keyword_count", "company_count",
+                  "valid_link_count", "linked_keyword_count", "linked_company_count",
+                  "unlinked_keywords", "unlinked_companies", "matched_keyword_mismatches",
+                  "invalid_link_indexes", "duplicate_pairs", "ranking_effect"
+                ],
+                "properties": {
+                  "policy_version": {"const": "public-keyword-company-link-coverage-v1"},
+                  "status": {"const": "ready"},
+                  "ready": {"const": true},
+                  "keyword_count": {"const": 5},
+                  "company_count": {"const": 10},
+                  "valid_link_count": {"type": "integer", "minimum": 10},
+                  "linked_keyword_count": {"const": 5},
+                  "linked_company_count": {"const": 10},
+                  "unlinked_keywords": {"type": "array", "maxItems": 0},
+                  "unlinked_companies": {"type": "array", "maxItems": 0},
+                  "matched_keyword_mismatches": {"type": "array", "maxItems": 0},
+                  "invalid_link_indexes": {"type": "array", "maxItems": 0},
+                  "duplicate_pairs": {"type": "array", "maxItems": 0},
+                  "ranking_effect": {"const": "none"}
+                }
               },
               "keyword_status": {"const": "ready"},
               "company_role_category_count": {"type": "integer", "minimum": 3, "maximum": 4},
@@ -608,6 +641,8 @@
       "type": "object",
       "required": [
         "status", "points", "available_point_count", "available_from", "available_to",
+        "expected_window_hours", "observed_span_hours", "observed_hour_count",
+        "coverage_ratio", "minimum_span_hours", "minimum_observed_hours",
         "basis", "interpolation", "missing_point_policy", "ranking_effect"
       ],
       "properties": {
@@ -616,6 +651,12 @@
         "available_point_count": {"type": "integer", "minimum": 1},
         "available_from": {"type": "string", "format": "date-time"},
         "available_to": {"type": "string", "format": "date-time"},
+        "expected_window_hours": {"enum": [168, 720, 2160]},
+        "observed_span_hours": {"type": "number", "minimum": 0},
+        "observed_hour_count": {"type": "integer", "minimum": 1},
+        "coverage_ratio": {"type": "number", "minimum": 0, "maximum": 1},
+        "minimum_span_hours": {"type": "number", "exclusiveMinimum": 0},
+        "minimum_observed_hours": {"type": "integer", "minimum": 2},
         "basis": {"const": "observed_x_google_hourly_points_only"},
         "interpolation": {"const": "none"},
         "missing_point_policy": {"const": "preserve_sparse_null_no_reuse"},
@@ -636,12 +677,77 @@
         "3m": {"$ref": "#/$defs/liveSparseWindow"}
       }
     },
+    "liveAttentionWindow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "key", "label", "metric", "status", "percent", "basis",
+        "is_absolute_mention_count", "ranking_effect"
+      ],
+      "properties": {
+        "key": {"enum": ["1w", "1m", "3m"]},
+        "label": {"enum": ["1주", "1개월", "3개월"]},
+        "metric": {"const": "normalized_attention_index_change"},
+        "status": {
+          "enum": [
+            "measured", "insufficient_observed_history", "unavailable_zero_baseline"
+          ]
+        },
+        "percent": {"type": ["number", "null"]},
+        "basis": {
+          "enum": [
+            "first_and_last_qualified_observed_point",
+            "insufficient_window_span_or_coverage",
+            "unavailable_zero_baseline"
+          ]
+        },
+        "is_absolute_mention_count": {"const": false},
+        "ranking_effect": {"const": "none"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"status": {"const": "measured"}}},
+          "then": {
+            "properties": {
+              "percent": {"type": "number"},
+              "basis": {"const": "first_and_last_qualified_observed_point"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "insufficient_observed_history"}}},
+          "then": {
+            "properties": {
+              "percent": {"const": null},
+              "basis": {"const": "insufficient_window_span_or_coverage"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"status": {"const": "unavailable_zero_baseline"}}},
+          "then": {
+            "properties": {
+              "percent": {"const": null},
+              "basis": {"const": "unavailable_zero_baseline"}
+            }
+          }
+        }
+      ]
+    },
     "liveKeywordCompanyLink": {
       "type": "object",
-      "required": ["keyword", "company", "connection_explanation", "evidence_urls"],
+      "required": [
+        "keyword", "company", "stock_code", "company_role_category",
+        "company_role_label", "connection_explanation", "evidence_urls"
+      ],
       "properties": {
         "keyword": {"type": "string", "pattern": "^(?:\\s*\\S){1,6}\\s*$"},
         "company": {"type": "string", "minLength": 1},
+        "stock_code": {"type": "string", "minLength": 1},
+        "company_role_category": {
+          "enum": ["manufacturing_development", "raw_materials_components", "content_production", "distribution", "retail_sales", "brand_marketing", "platform_service", "ownership_investment", "event_sponsorship"]
+        },
+        "company_role_label": {"type": "string", "minLength": 1},
         "connection_explanation": {"type": "string", "minLength": 1},
         "evidence_urls": {
           "type": "array", "minItems": 1, "uniqueItems": true,
@@ -678,7 +784,7 @@
             "as_of", "currency", "price_series", "price_points", "market_cap",
             "market_cap_krw", "market_cap_currency", "market_cap_source_url",
             "native_market_cap", "fx_rate_to_krw", "fx_as_of", "fx_provider",
-            "fx_source_url", "per", "per_source_url", "pbr", "pbr_source_url",
+            "fx_source_url", "per_status", "pbr", "pbr_source_url",
             "roe_pct", "roe", "roe_percent", "roe_source_url", "roe_basis",
             "roe_calculated", "roe_numerator", "roe_denominator",
             "field_provenance", "synthetic", "estimated", "display_only", "ranking_effect"
@@ -718,6 +824,7 @@
               }
             },
             "per": {"type": "number", "exclusiveMinimum": 0},
+            "per_status": {"enum": ["observed", "unavailable_loss_making", "unavailable_not_reported", "unavailable_stale"]},
             "per_source_url": {"type": "string", "pattern": "^https?://"},
             "per_as_of": {"type": "string", "minLength": 1},
             "per_type": {"type": "string", "minLength": 1},
@@ -776,7 +883,7 @@
             "field_provenance": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["price_series", "market_cap_krw", "per", "pbr", "roe_pct"],
+              "required": ["price_series", "market_cap_krw", "pbr", "roe_pct"],
               "properties": {
                 "price_series": {"$ref": "#/$defs/liveMarketFieldProvenance"},
                 "market_cap_krw": {"$ref": "#/$defs/liveMarketFieldProvenance"},
@@ -811,6 +918,16 @@
             {
               "if": {"required": ["per"]},
               "then": {"required": ["per_source_url"]}
+            },
+            {
+              "if": {"properties": {"per_status": {"const": "observed"}}},
+              "then": {
+                "required": ["per", "per_source_url", "per_as_of", "per_type", "per_period_type"],
+                "properties": {
+                  "field_provenance": {"required": ["per"]}
+                }
+              },
+              "else": {"not": {"required": ["per"]}}
             },
             {
               "if": {"required": ["pbr"]},

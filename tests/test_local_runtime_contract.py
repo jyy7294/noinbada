@@ -45,6 +45,9 @@ def test_codex_automation_runs_full_local_publication_pipeline():
     assert 'Write-RunLog -Phase "audit"' in runner
     assert "--preflight" in runner
     assert "publication preflight failed before remote push" in runner
+    assert 'Write-RunLog -Phase "enrichment_checkpoint_gate"' in runner
+    assert "$CheckpointReleaseGate.recent_checkpoint_recorded" in runner
+    assert "$Preflight.enrichment_checkpoint_gate.passed" in runner
     assert runner.index("--preflight") < runner.index('push origin "HEAD:refs/heads/live-data"')
     assert "--record-hourly-validation" in runner
     assert "--hourly-receipt-exists" in runner

@@ -433,6 +433,22 @@ const LIVE_LISTING_EVIDENCE_TYPES = new Set([
 const LIVE_PUBLIC_MARKET_SESSION_COUNT = 30;
 const LIVE_LISTING_FRESHNESS_DAYS = 4;
 const LIVE_LISTING_POST_OBSERVATION_AUDIT_DAYS = 1;
+const LIVE_MARKET_FIELD_POST_OBSERVATION_AUDIT_DAYS = 1;
+const LIVE_MARKET_FIELD_FRESHNESS_DAYS = Object.freeze({
+  price_series: 7,
+  market_cap_krw: 7,
+  per: 14,
+  pbr: 14,
+  roe_pct: 400,
+});
+const LIVE_PER_UNAVAILABLE_STATUSES = new Set([
+  'unavailable_loss_making', 'unavailable_not_reported', 'unavailable_stale',
+]);
+const LIVE_ATTENTION_WINDOW_SPECS = Object.freeze({
+  '1w': { hours: 168, label: '1주' },
+  '1m': { hours: 720, label: '1개월' },
+  '3m': { hours: 2160, label: '3개월' },
+});
 
 function publicHttpUrl(value, { httpsOnly = false } = {}) {
   try {
@@ -540,6 +556,19 @@ function publicCalendarDayMs(value) {
     ? timestamp : null;
 }
 
+function validLiveMarketFieldDate(value, field, observedAt) {
+  const observed = asDate(observedAt);
+  const fieldDay = publicCalendarDayMs(value);
+  const maxAgeDays = LIVE_MARKET_FIELD_FRESHNESS_DAYS[field];
+  if (!observed || fieldDay == null || !Number.isFinite(maxAgeDays)) return false;
+  const observedDay = Date.UTC(
+    observed.getUTCFullYear(), observed.getUTCMonth(), observed.getUTCDate(),
+  );
+  const ageDays = (observedDay - fieldDay) / (24 * 60 * 60 * 1000);
+  return ageDays >= -LIVE_MARKET_FIELD_POST_OBSERVATION_AUDIT_DAYS
+    && ageDays <= maxAgeDays;
+}
+
 function validLiveListingVerification(verification, company, observedAt) {
   if (!verification || typeof verification !== 'object') return false;
   const observed = asDate(observedAt);
@@ -589,7 +618,7 @@ function validLiveMarketSnapshot(company, observedAt) {
   const provenance = snapshot.field_provenance;
   if (!provenance || typeof provenance !== 'object') return false;
   const validProvenance = [
-    'price_series', 'market_cap_krw', 'per', 'pbr', 'roe_pct',
+    'price_series', 'market_cap_krw', 'pbr', 'roe_pct',
   ].every((field) => {
     const row = provenance[field];
     return row && typeof row === 'object'
@@ -597,9 +626,23 @@ function validLiveMarketSnapshot(company, observedAt) {
       && String(row.as_of || '').trim()
       && publicHttpUrl(row.source_url)
       && row.synthetic === false
-      && row.estimated === false;
+      && row.estimated === false
+      && validLiveMarketFieldDate(row.as_of, field, observedAt);
   });
+  const perStatus = String(snapshot.per_status || '').trim();
+  const perProvenance = provenance.per;
+  const validPer = perStatus === 'observed'
+    ? finitePublicNumber(snapshot.per, { positive: true })
+      && publicHttpUrl(snapshot.per_source_url)
+      && perProvenance && typeof perProvenance === 'object'
+      && String(perProvenance.provider || '').trim()
+      && publicHttpUrl(perProvenance.source_url)
+      && perProvenance.synthetic === false
+      && perProvenance.estimated === false
+      && validLiveMarketFieldDate(perProvenance.as_of, 'per', observedAt)
+    : LIVE_PER_UNAVAILABLE_STATUSES.has(perStatus) && snapshot.per == null;
   return validProvenance
+    && validPer
     && snapshot.status === 'observed'
     && snapshot.synthetic === false
     && snapshot.estimated === false
@@ -619,10 +662,8 @@ function validLiveMarketSnapshot(company, observedAt) {
     && String(snapshot.fx_provider || '').trim()
     && publicHttpUrl(snapshot.fx_source_url)
     && publicHttpUrl(snapshot.market_cap_source_url)
-    && finitePublicNumber(snapshot.per, { positive: true })
     && finitePublicNumber(snapshot.pbr, { positive: true })
     && finitePublicNumber(snapshot.roe_pct)
-    && publicHttpUrl(snapshot.per_source_url)
     && publicHttpUrl(snapshot.pbr_source_url)
     && publicHttpUrl(snapshot.roe_source_url)
     && validLiveListingVerification(company.listing_verification, company, observedAt);
@@ -653,7 +694,12 @@ function validSparseVisualization(item) {
     || visualization.canonical_series_unchanged !== true
     || visualization.ranking_effect !== 'none'
   ) return false;
-  return ['1w', '1m', '3m'].every((key) => {
+  const attention = Array.isArray(item?.attention_windows) ? item.attention_windows : [];
+  if (
+    attention.length !== 3
+    || attention.some((row, index) => row?.key !== Object.keys(LIVE_ATTENTION_WINDOW_SPECS)[index])
+  ) return false;
+  return Object.entries(LIVE_ATTENTION_WINDOW_SPECS).every(([key, spec], windowIndex) => {
     const window = visualization[key] || {};
     if (
       window.interpolation !== 'none'
@@ -665,7 +711,7 @@ function validSparseVisualization(item) {
     ) return false;
     let previousAt = -Infinity;
     const seen = new Set();
-    return window.points.every((point) => {
+    const pointsValid = window.points.every((point) => {
       const at = asDate(point?.at);
       const atMs = at?.getTime();
       const sources = Array.isArray(point?.observed_sources) ? point.observed_sources : [];
@@ -692,6 +738,49 @@ function validSparseVisualization(item) {
       }
       return valid;
     });
+    if (!pointsValid) return false;
+    const firstAt = asDate(window.points[0]?.at)?.getTime();
+    const lastAt = asDate(window.points.at(-1)?.at)?.getTime();
+    const observedHours = window.points.length;
+    const observedSpanHours = Math.round(((lastAt - firstAt) / (60 * 60 * 1000)) * 100) / 100;
+    const minimumSpanHours = Math.round((spec.hours * 0.8) * 100) / 100;
+    const minimumObservedHours = Math.max(2, Math.ceil(spec.hours * 0.2));
+    const coverageRatio = Math.round((observedHours / spec.hours) * 10000) / 10000;
+    const measurementReady = observedSpanHours >= minimumSpanHours
+      && observedHours >= minimumObservedHours;
+    const expectedStatus = measurementReady ? 'measured' : 'insufficient_observed_history';
+    const firstCombined = Number(window.points[0]?.combined);
+    const lastCombined = Number(window.points.at(-1)?.combined);
+    const attentionStatus = !measurementReady
+      ? 'insufficient_observed_history'
+      : firstCombined === 0 ? 'unavailable_zero_baseline' : 'measured';
+    const expectedPercent = attentionStatus === 'measured'
+      ? Math.round((((lastCombined - firstCombined) / firstCombined) * 100) * 10) / 10
+      : null;
+    const expectedBasis = attentionStatus === 'measured'
+      ? 'first_and_last_qualified_observed_point'
+      : attentionStatus === 'unavailable_zero_baseline'
+        ? 'unavailable_zero_baseline'
+        : 'insufficient_window_span_or_coverage';
+    const attentionRow = attention[windowIndex] || {};
+    return window.status === expectedStatus
+      && window.available_point_count === observedHours
+      && window.available_from === window.points[0]?.at
+      && window.available_to === window.points.at(-1)?.at
+      && window.expected_window_hours === spec.hours
+      && window.observed_span_hours === observedSpanHours
+      && window.observed_hour_count === observedHours
+      && window.coverage_ratio === coverageRatio
+      && window.minimum_span_hours === minimumSpanHours
+      && window.minimum_observed_hours === minimumObservedHours
+      && attentionRow.key === key
+      && attentionRow.label === spec.label
+      && attentionRow.metric === 'normalized_attention_index_change'
+      && attentionRow.status === attentionStatus
+      && attentionRow.percent === expectedPercent
+      && attentionRow.basis === expectedBasis
+      && attentionRow.is_absolute_mention_count === false
+      && attentionRow.ranking_effect === 'none';
   });
 }
 
@@ -708,23 +797,76 @@ function validLiveCard(item, observedAt) {
   const companyNames = new Set(
     companies.map((company) => String(company?.company || company?.name || '').trim()).filter(Boolean),
   );
+  const companyByName = new Map(
+    companies.map((company) => [
+      String(company?.company || company?.name || '').trim(), company,
+    ]),
+  );
   const companyIdentities = new Set(companies.map((company) => (
     `${String(company?.exchange || company?.market || '').trim()}\u0000${String(company?.stock_code || company?.ticker || '').trim()}`
   )));
   const keywordNames = new Set(keywordTexts);
   const linkedKeywords = new Set();
+  const linkedCompanies = new Set();
+  const linkKeywordsByCompany = new Map(
+    [...companyNames].map((company) => [company, new Set()]),
+  );
+  const linkPairs = new Set();
+  let validLinks = true;
   links.forEach((link) => {
     const keyword = normalizedPublicKeyword(link?.keyword);
     const company = String(link?.company || '').trim();
     const evidence = Array.isArray(link?.evidence_urls) ? link.evidence_urls : [];
-    if (
+    const companyRow = companyByName.get(company);
+    const pair = `${keyword}\u0000${company}`;
+    const valid = Boolean(
       keywordNames.has(keyword)
-      && companyNames.has(company)
+      && companyRow
       && String(link?.connection_explanation || link?.relationship_reason || '').trim()
       && evidence.length > 0
       && evidence.every((url) => publicHttpUrl(url))
-    ) linkedKeywords.add(keyword);
+      && String(link?.stock_code || '').trim()
+        === String(companyRow?.stock_code || companyRow?.ticker || '').trim()
+      && String(link?.company_role_category || '').trim()
+        === String(companyRow?.company_role_category || '').trim()
+      && String(link?.company_role_label || '').trim()
+        === String(companyRow?.company_role_label || '').trim()
+      && !linkPairs.has(pair)
+    );
+    if (!valid) {
+      validLinks = false;
+      return;
+    }
+    linkPairs.add(pair);
+    linkedKeywords.add(keyword);
+    linkedCompanies.add(company);
+    linkKeywordsByCompany.get(company)?.add(keyword);
   });
+  const matchedKeywordsValid = companies.every((company) => {
+    const companyName = String(company?.company || company?.name || '').trim();
+    const matched = Array.isArray(company?.matched_keywords)
+      ? company.matched_keywords.map(normalizedPublicKeyword).filter(Boolean) : [];
+    const matchedSet = new Set(matched);
+    const linked = linkKeywordsByCompany.get(companyName) || new Set();
+    return matched.length > 0
+      && matchedSet.size === matched.length
+      && [...matchedSet].every((keyword) => keywordNames.has(keyword) && linked.has(keyword))
+      && [...linked].every((keyword) => matchedSet.has(keyword));
+  });
+  const coverage = item?.keyword_company_link_coverage || {};
+  const declaredCoverageValid = coverage.policy_version === 'public-keyword-company-link-coverage-v1'
+    && coverage.status === 'ready'
+    && coverage.ready === true
+    && coverage.keyword_count === 5
+    && coverage.company_count === 10
+    && Number.isInteger(coverage.valid_link_count)
+    && coverage.valid_link_count === linkPairs.size
+    && coverage.valid_link_count >= 10
+    && coverage.linked_keyword_count === 5
+    && coverage.linked_company_count === 10
+    && ['unlinked_keywords', 'unlinked_companies', 'matched_keyword_mismatches', 'invalid_link_indexes', 'duplicate_pairs']
+      .every((field) => Array.isArray(coverage[field]) && coverage[field].length === 0)
+    && coverage.ranking_effect === 'none';
   const roles = new Set(companies.map((company) => company?.company_role_category).filter((role) => LIVE_COMPANY_ROLES.has(role)));
   return item?.selection_origin === 'canonical_validated_home_feed'
     && item?.lane === 'main'
@@ -755,7 +897,12 @@ function validLiveCard(item, observedAt) {
     && Array.isArray(context.evidence_urls)
     && context.evidence_urls.length > 0
     && context.evidence_urls.every((url) => publicHttpUrl(url))
-    && linkedKeywords.size >= 2
+    && links.length >= 10
+    && validLinks
+    && linkedKeywords.size === 5
+    && linkedCompanies.size === 10
+    && matchedKeywordsValid
+    && declaredCoverageValid
     && companies.every((company) => company
       && LIVE_COMPANY_ROLES.has(company.company_role_category)
       && String(company.company || company.name || '').trim()

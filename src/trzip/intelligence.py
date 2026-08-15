@@ -42,6 +42,10 @@ from .ontology import (
 )
 from .provider_verification import latest_verification_by_trend
 from .public_copy import public_connection_explanation
+from .public_company_contract import (
+    keyword_company_link_coverage,
+    public_url_is_valid,
+)
 from .ranking_v2 import build_period_rankings_v2
 from .presentation_feed import build_presentation_feed
 from .keyword_policy import keyword_fits_public_label
@@ -1710,7 +1714,7 @@ def _home_card(item: dict, group: str) -> dict:
         "company_card_status", "stock_impact_hypothesis", "data_confidence",
         "observed_at", "why_now", "verification_layer", "platform_observation_summary",
         "frontend_readiness_status", "company_card_reason", "disclaimer",
-        "keyword_company_links",
+        "keyword_company_links", "keyword_company_link_coverage",
     )
     card = {field: item[field] for field in allowed if field in item}
     card["flow_group"] = group
@@ -1979,8 +1983,20 @@ def _attach_keyword_company_links(item: dict) -> None:
         for row in keywords
         if isinstance(row, dict) and str(row.get("text") or "").strip()
     }
+    reviewed_links_by_company: dict[str, dict[str, list[str]]] = defaultdict(dict)
+    for link in item.get("keyword_company_links") or []:
+        if not isinstance(link, dict):
+            continue
+        company_name = str(link.get("company") or "").strip()
+        keyword_key = normalize_event_key(str(link.get("keyword") or ""))
+        evidence_urls = list(dict.fromkeys(
+            str(url).strip() for url in link.get("evidence_urls") or []
+            if public_url_is_valid(url)
+        ))
+        if company_name and keyword_key in keyword_by_key and evidence_urls:
+            reviewed_links_by_company[company_name][keyword_key] = evidence_urls
+
     links = []
-    linked_keyword_keys: set[str] = set()
     for company in companies:
         company_name = str(company.get("company") or "").strip()
         if not company_name:
@@ -1990,6 +2006,7 @@ def _attach_keyword_company_links(item: dict) -> None:
             for value in company.get("matched_keywords") or []
             if str(value).strip()
         }
+        explicit.update(reviewed_links_by_company.get(company_name, {}))
         haystack = " ".join(str(company.get(field) or "") for field in (
             "company_description", "company_summary", "relationship_reason",
             "reason", "company_role_label", "evidence_kind", "evidence_type",
@@ -2026,7 +2043,9 @@ def _attach_keyword_company_links(item: dict) -> None:
         )
         for keyword, basis in matched:
             normalized = normalize_event_key(keyword)
-            linked_keyword_keys.add(normalized)
+            link_evidence_urls = reviewed_links_by_company.get(
+                company_name, {}
+            ).get(normalized) or evidence_urls
             links.append({
                 "keyword": keyword,
                 "company": company_name,
@@ -2035,7 +2054,7 @@ def _attach_keyword_company_links(item: dict) -> None:
                 "company_role_label": company.get("company_role_label"),
                 "relationship_reason": reason,
                 "connection_explanation": company["connection_explanation"],
-                "evidence_urls": list(dict.fromkeys(evidence_urls)),
+                "evidence_urls": list(dict.fromkeys(link_evidence_urls)),
                 "match_basis": basis,
                 "affects_rank": False,
             })
@@ -2060,14 +2079,20 @@ def _attach_keyword_company_links(item: dict) -> None:
         if code in enrichment_by_code:
             candidate.update(enrichment_by_code[code])
     item["keyword_company_links"] = links
-    item["linked_keyword_count"] = len(linked_keyword_keys)
-    item["keyword_company_link_status"] = (
-        "ready" if len(linked_keyword_keys) >= 2 else "enrichment_pending"
+    coverage = keyword_company_link_coverage(
+        keywords=keywords,
+        companies=companies,
+        links=links,
+        require_link_metadata=True,
     )
-    item["unlinked_related_keywords"] = [
-        text for normalized, text in keyword_by_key.items()
-        if normalized not in linked_keyword_keys
-    ]
+    item["keyword_company_link_coverage"] = coverage
+    item["linked_keyword_count"] = coverage["linked_keyword_count"]
+    item["linked_company_count"] = coverage["linked_company_count"]
+    item["keyword_company_link_status"] = (
+        "ready" if coverage["ready"] else "enrichment_pending"
+    )
+    item["unlinked_related_keywords"] = list(coverage["unlinked_keywords"])
+    item["unlinked_companies"] = list(coverage["unlinked_companies"])
 
 
 _PUBLIC_RELATION_TIER_LABELS = {

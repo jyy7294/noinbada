@@ -516,7 +516,8 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
         status: 'observed', provider: 'yahoo_finance', as_of: '2026-08-15',
         source_url: 'https://example.com/market', price_source_url: 'https://example.com/price', currency: 'USD',
         last_price: 100, change_percent: null, price_series: Array.from({{length: 30}}, (_, i) => 90 + i),
-        display_only: true, ranking_effect: 'none', per: null, pbr: null, roe: 0,
+        display_only: true, ranking_effect: 'none',
+        per: null, per_status: 'unavailable_not_reported', pbr: null, roe: 0,
         roe_source_url: 'https://example.com/roe', roe_calculated: true,
         roe_basis: 'trailing_net_income / average_two_point_stockholders_equity * 100',
         roe_numerator: {{value: 0, as_of: '2026-08-15'}},
@@ -527,7 +528,7 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
       if (guard.companyPrice(observed) === '–') process.exit(13);
       const sheet = guard.buildSheet('A', 'Acme', 'desc', 0, '', observed);
       if (!sheet.hasMarketData || sheet.marketUnavailable) process.exit(14);
-      if (sheet.per !== '—' || sheet.pbr !== '—' || sheet.roe !== '0.0%') process.exit(15);
+      if (sheet.per !== 'N/A' || sheet.pbr !== '—' || sheet.roe !== '0.0%') process.exit(15);
 
       for (const mutation of [
         {{status: 'unavailable'}},
@@ -755,7 +756,10 @@ def test_live_home_accepts_only_v4_validated_non_synthetic_feed_and_allows_zero_
     assert "validLiveMarketSnapshot(company, observedAt)" in DATA
     assert "validLiveLogo(company)" in DATA
     assert "logoPolicy.low_resolution_fallback === 'card_excluded'" in DATA
-    assert "linkedKeywords.size >= 2" in DATA
+    assert "linkedKeywords.size === 5" in DATA
+    assert "linkedCompanies.size === 10" in DATA
+    assert "matchedKeywordsValid" in DATA
+    assert "declaredCoverageValid" in DATA
     assert "feed.status === 'empty' && items.length === 0" in DATA
     assert "feed.status === 'ready' && items.length > 0 && items.length <= 10" in DATA
     assert "function selectLiveHomeRows(payload, { fromCache = false, stale = false } = {})" in DATA
@@ -808,9 +812,13 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
         at: observedAt, x: 80, google_trends: null, combined: 80,
         observed_sources: ['x'],
       });
-      const sparseWindow = () => ({
+      const sparseWindow = (hours) => ({
         status: 'insufficient_observed_history', points: [sparsePoint()],
         available_point_count: 1, available_from: observedAt, available_to: observedAt,
+        expected_window_hours: hours, observed_span_hours: 0,
+        observed_hour_count: 1, coverage_ratio: Math.round((1 / hours) * 10000) / 10000,
+        minimum_span_hours: Math.round((hours * 0.8) * 100) / 100,
+        minimum_observed_hours: Math.max(2, Math.ceil(hours * 0.2)),
         basis: 'observed_x_google_hourly_points_only', interpolation: 'none',
         missing_point_policy: 'preserve_sparse_null_no_reuse', ranking_effect: 'none',
       });
@@ -858,7 +866,7 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
           fx_rate_to_krw: 1, fx_as_of: '2026-08-14', fx_provider: 'identity_krw',
           fx_source_url: 'https://global.krx.co.kr/',
           market_cap_source_url: 'https://global.krx.co.kr/',
-          per: 12.3, pbr: 1.2, roe_pct: 8.4,
+          per: 12.3, per_status: 'observed', pbr: 1.2, roe_pct: 8.4,
           per_source_url: 'https://finance.yahoo.com/quote/TEST.KS',
           pbr_source_url: 'https://finance.yahoo.com/quote/TEST.KS',
           roe_source_url: 'https://finance.yahoo.com/quote/TEST.KS',
@@ -885,8 +893,16 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
         visualization_series: {
           metric: 'normalized_attention_index', canonical_series_unchanged: true,
           data_mode: 'observed_sparse', interpolation: 'none', ranking_effect: 'none',
-          '1w': sparseWindow(), '1m': sparseWindow(), '3m': sparseWindow(),
+          '1w': sparseWindow(168), '1m': sparseWindow(720), '3m': sparseWindow(2160),
         },
+        attention_windows: [
+          ['1w', '1주'], ['1m', '1개월'], ['3m', '3개월'],
+        ].map(([key, label]) => ({
+          key, label, metric: 'normalized_attention_index_change',
+          status: 'insufficient_observed_history', percent: null,
+          basis: 'insufficient_window_span_or_coverage',
+          is_absolute_mention_count: false, ranking_effect: 'none',
+        })),
         context_research: {
           status: 'ready', trigger_title: `trigger-${i}`, why_now: 'documented context',
           evidence_urls: ['https://news.example.com/context'],
@@ -900,6 +916,7 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
           exchange: 'KRX',
           company_role_category: roles[c % roles.length],
           company_role_label: 'verified role',
+          matched_keywords: [`k${c % 5}`],
           company_description: 'listed company',
           connection_explanation: 'documented relation',
           ontology_complete: true,
@@ -910,11 +927,21 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
           market_snapshot: marketFor(),
           ...imageLogo(),
         }); }),
-        keyword_company_links: [0, 1].map((k) => ({
-          keyword: `k${k}`, company: `company-${i}-${k}`,
+        keyword_company_links: Array.from({length: 10}, (_, k) => ({
+          keyword: `k${k % 5}`, company: `company-${i}-${k}`,
+          stock_code: `S${i}${k}`,
+          company_role_category: roles[k % roles.length],
+          company_role_label: 'verified role',
           connection_explanation: 'documented keyword relation',
           evidence_urls: ['https://company.example.com/evidence'],
         })),
+        keyword_company_link_coverage: {
+          policy_version: 'public-keyword-company-link-coverage-v1',
+          status: 'ready', ready: true, keyword_count: 5, company_count: 10,
+          valid_link_count: 10, linked_keyword_count: 5, linked_company_count: 10,
+          unlinked_keywords: [], unlinked_companies: [], matched_keyword_mismatches: [],
+          invalid_link_indexes: [], duplicate_pairs: [], ranking_effect: 'none',
+        },
       });
       const feedFor = (items) => ({
         schema_version: 'trzip-presentation-feed-v4',
@@ -1002,7 +1029,17 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
       const syntheticMarket = completeCard(0); syntheticMarket.companies[0].market_snapshot.synthetic = true; reject(feedFor([syntheticMarket]), 55);
       const missingMarketProvenance = completeCard(0); delete missingMarketProvenance.companies[0].market_snapshot.field_provenance.roe_pct; reject(feedFor([missingMarketProvenance]), 56);
       const nonKrwMarketCap = completeCard(0); nonKrwMarketCap.companies[0].market_snapshot.market_cap_currency = 'USD'; reject(feedFor([nonKrwMarketCap]), 57);
+      const perNa = completeCard(0);
+      perNa.companies[0].market_snapshot.per_status = 'unavailable_loss_making';
+      delete perNa.companies[0].market_snapshot.per;
+      delete perNa.companies[0].market_snapshot.per_source_url;
+      delete perNa.companies[0].market_snapshot.field_provenance.per;
+      if (!api.selectLiveHomeRows({presentation_feed: feedFor([perNa])}).eligible) process.exit(60);
+      const stalePer = completeCard(0);
+      stalePer.companies[0].market_snapshot.field_provenance.per.as_of = '2026-03-19';
+      reject(feedFor([stalePer]), 61);
       const syntheticSparse = completeCard(0); syntheticSparse.visualization_series['1w'].interpolation = 'linear'; reject(feedFor([syntheticSparse]), 46);
+      const fakeZeroChange = completeCard(0); fakeZeroChange.attention_windows[0].percent = 0; reject(feedFor([fakeZeroChange]), 62);
       for (const [field, code] of [['supplemental_display_data_used', 47], ['fallback_used', 48], ['canonical_ranking_affected', 49]]) {
         const invalidTransition = feedFor([]); invalidTransition.transition[field] = true; reject(invalidTransition, code);
       }

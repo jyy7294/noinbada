@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from datetime import UTC, datetime, timedelta
 
 import pytest
 
@@ -105,7 +106,14 @@ def _company(index: int, *, complete: bool = True, source_url: bool = True) -> d
                 "roe_pct": "https://example.com/fundamentals",
             },
             "daily_ohlcv": [
-                {"date": f"2026-07-{index + 1:02d}", "close": 76 + index}
+                {
+                    "date": (
+                        f"2026-07-{index + 17:02d}"
+                        if index < 15
+                        else f"2026-08-{index - 14:02d}"
+                    ),
+                    "close": 76 + index,
+                }
                 for index in range(30)
             ],
             "summary": {
@@ -131,10 +139,15 @@ def _company(index: int, *, complete: bool = True, source_url: bool = True) -> d
             },
             "valuation": {
                 "per": 12.5,
+                "per_status": "observed",
                 "per_as_of": "2026-08-15",
                 "per_type": "trailingPeRatio",
                 "per_period_type": "TTM",
                 "pbr": 1.4,
+                "pbr_as_of": "2026-08-15",
+                "pbr_type": "calculatedMarketCapToEquity",
+                "pbr_period_type": "POINT_IN_TIME_OVER_REPORTED_EQUITY",
+                "market_cap_as_of": "2026-08-15",
                 "roe_pct": 9.2,
                 "roe_basis": (
                     "trailing_net_income / average_two_point_stockholders_equity * 100"
@@ -187,19 +200,21 @@ def _candidate(*, market_source_url: bool = True) -> dict:
     ]
     keywords = [
         {"text": text, "source": ["https://example.com/context"]}
-        for text in ("테스트", "확산", "제품", "소비", "문화")
+        for text in ("kw0", "kw1", "kw2", "kw3", "kw4")
     ]
+    for index, company in enumerate(companies):
+        company["matched_keywords"] = [f"kw{index % 5}"]
     links = [
         {
-            "keyword": keyword,
+            "keyword": f"kw{index % 5}",
             "company": f"기업{index}",
             "stock_code": f"{index:06d}",
-            "company_role_category": "manufacturing_development",
-            "company_role_label": "제조·개발",
+            "company_role_category": companies[index]["company_role_category"],
+            "company_role_label": companies[index]["company_role_label"],
             "connection_explanation": "공개 근거로 확인된 연결",
             "evidence_urls": [f"https://example.com/company/{index}"],
         }
-        for keyword, index in (("테스트", 1), ("확산", 2))
+        for index in range(1, 11)
     ]
     return {
         "event_key": "테스트트렌드",
@@ -301,10 +316,60 @@ def test_live_feed_is_sparse_and_never_reuses_previous_feed_when_current_is_empt
     assert len(points) == 2
     assert points[0]["combined"] == 50.0
     assert points[1]["google_trends"] is None
+    card = previous["items"][0]
+    assert all(
+        card["visualization_series"][key]["status"]
+        == "insufficient_observed_history"
+        for key in ("1w", "1m", "3m")
+    )
+    assert all(
+        row["status"] == "insufficient_observed_history"
+        and row["percent"] is None
+        for row in card["attention_windows"]
+    )
+    assert card["visualization_series"]["1w"]["observed_span_hours"] == 1.0
+    assert card["visualization_series"]["1w"]["minimum_span_hours"] == 134.4
     assert empty["status"] == "empty"
     assert empty["items"] == []
     assert empty["transition"]["fallback_used"] is False
     _validate_presentation_feed(empty)
+
+
+def test_only_window_with_qualified_actual_span_and_coverage_is_measured():
+    candidate = _candidate()
+    end = datetime.fromisoformat(OBSERVED_AT).astimezone(UTC)
+    candidate["series"] = [
+        {
+            "at": (end - timedelta(hours=offset)).isoformat(),
+            "source": "x",
+            "value": 50 + ((136 - offset) // 4),
+            "provenance": "observed",
+        }
+        for offset in range(136, -1, -4)
+    ]
+
+    feed = build_presentation_feed(_intelligence(candidate))
+    card = feed["items"][0]
+
+    assert card["visualization_series"]["1w"]["status"] == "measured"
+    assert card["visualization_series"]["1w"]["observed_span_hours"] == 136.0
+    assert card["visualization_series"]["1w"]["observed_hour_count"] == 35
+    assert card["attention_windows"][0] == {
+        "key": "1w",
+        "label": "1주",
+        "metric": "normalized_attention_index_change",
+        "status": "measured",
+        "percent": 68.0,
+        "basis": "first_and_last_qualified_observed_point",
+        "is_absolute_mention_count": False,
+        "ranking_effect": "none",
+    }
+    assert all(
+        row["status"] == "insufficient_observed_history"
+        and row["percent"] is None
+        for row in card["attention_windows"][1:]
+    )
+    _validate_presentation_feed(feed)
 
 
 def test_live_market_snapshot_requires_public_source_url():
@@ -354,6 +419,52 @@ def test_live_market_snapshot_requires_public_source_url():
     ]["type"] = "quarterlyNetIncome"
     with pytest.raises(ValueError, match="TTM/annual calculated provenance"):
         _validate_presentation_feed(tampered_roe)
+
+
+def test_live_market_snapshot_allows_explicit_per_na_but_rejects_stale_positive_per():
+    candidate = _candidate(market_source_url=True)
+    valuation = candidate["companies"][1]["market_reference"]["valuation"]
+    valuation.update({
+        "per": None,
+        "per_status": "unavailable_loss_making",
+        "per_reported_as_of": "2026-03-19",
+    })
+    valuation.pop("per_as_of", None)
+    valuation.pop("per_type", None)
+    valuation.pop("per_period_type", None)
+
+    feed = build_presentation_feed(_intelligence(candidate))
+    snapshot = feed["items"][0]["companies"][0]["market_snapshot"]
+
+    assert snapshot["per_status"] == "unavailable_loss_making"
+    assert "per" not in snapshot
+    assert snapshot["pbr"] == 1.4
+    assert snapshot["roe_pct"] == 9.2
+    _validate_presentation_feed(feed)
+    quality = evaluate_presentation_feed_quality(feed)
+    assert quality["passed"] is True
+    assert quality["trends"][0]["per_na_company_count"] == 1
+    assert quality["trends"][0]["measured_attention_window_count"] == 0
+
+    stale = deepcopy(feed)
+    stale_snapshot = stale["items"][0]["companies"][0]["market_snapshot"]
+    stale_snapshot.update({
+        "per_status": "observed",
+        "per": 53.8,
+        "per_source_url": "https://example.com/fundamentals",
+        "per_as_of": "2026-03-19",
+        "per_type": "trailingPeRatio",
+        "per_period_type": "TTM",
+    })
+    stale_snapshot["field_provenance"]["per"] = {
+        "provider": "verified-provider",
+        "as_of": "2026-03-19",
+        "source_url": "https://example.com/fundamentals",
+        "synthetic": False,
+        "estimated": False,
+    }
+    with pytest.raises(ValueError, match="complete actual market snapshot"):
+        _validate_presentation_feed(stale)
 
 
 def test_live_market_snapshot_fails_closed_on_partial_observed_series():

@@ -10,6 +10,7 @@ from trzip.hourly_store import (
 )
 from trzip.result_quality import (
     _presentation_card_display_failures,
+    _checkpoint_release_gate,
     _hourly_validation_receipt,
     _publication_window_source_gate,
     _source_gate,
@@ -49,6 +50,7 @@ def _company(index: int) -> dict:
         "connection_explanation": "키워드 0과 기업의 확인된 역할을 설명합니다.",
         "company_role_category": role_category,
         "company_role_label": role_label,
+        "matched_keywords": [f"키워드 {(index - 1) % 5}"],
         "value_chain_stage": stage,
         "ontology_complete": True,
         "ontology_path": [
@@ -664,6 +666,92 @@ def test_daily_publication_source_gate_allows_gaps_without_reuse(
     assert result["missing_hour_count"] == 21
     assert result["fabricated_hour_count"] == 0
     assert result["reused_previous_hour_count"] == 0
+
+
+def test_checkpoint_release_gate_allows_optional_disabled_and_deferred_work(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "checkpoint.sqlite3"
+    observed_at = datetime(2026, 8, 15, 21, tzinfo=UTC)
+    checkpoint_at = observed_at - timedelta(hours=2)
+    components = {
+        "naver_context": {
+            "status": "disabled_missing_config", "required_for_release": False,
+        },
+        "semantic_llm": {
+            "status": "disabled_missing_config", "required_for_release": False,
+        },
+        "approved_cache": {"status": "completed", "required_for_release": False},
+        "review_handoff": {"status": "deferred", "required_for_release": False},
+        "complete_card_gate": {"status": "completed", "required_for_release": True},
+    }
+    ledger_release = {
+        "checkpoint_recorded": True,
+        "release_ready": True,
+        "unresolved_candidate_count": 17,
+        "unresolved_candidates_excluded": True,
+        "optional_disabled_components": ["naver_context", "semantic_llm"],
+        "deferred_components": ["review_handoff"],
+    }
+    with connect(database) as connection:
+        connection.execute(
+            """CREATE TABLE enrichment_checkpoints (
+                 observed_at TEXT PRIMARY KEY,
+                 completed_at TEXT NOT NULL,
+                 summary_json TEXT NOT NULL
+               )"""
+        )
+        connection.execute(
+            "INSERT INTO enrichment_checkpoints VALUES (?,?,?)",
+            (
+                checkpoint_at.isoformat(),
+                checkpoint_at.isoformat(),
+                json.dumps({
+                    "execution_status": (
+                        "completed_with_deferred_work_and_optional_components_disabled"
+                    ),
+                    "component_execution": components,
+                    "release_gate": ledger_release,
+                }),
+            ),
+        )
+        connection.commit()
+    intelligence = {"processing_cycle": {"enrichment_batch": {"release_gate": {
+        "recent_checkpoint_recorded": True,
+        "release_ready": True,
+        "unresolved_candidates_excluded": True,
+    }}}}
+
+    result = _checkpoint_release_gate(
+        database, observed_at.isoformat(), intelligence
+    )
+
+    assert result["passed"] is True
+    assert result["optional_disabled_components"] == [
+        "naver_context", "semantic_llm",
+    ]
+    assert result["deferred_components"] == ["review_handoff"]
+    assert result["unresolved_candidate_count"] == 17
+
+
+def test_checkpoint_release_gate_fails_without_recent_ledger_row(tmp_path: Path) -> None:
+    database = tmp_path / "missing-checkpoint.sqlite3"
+    with connect(database):
+        pass
+    intelligence = {"processing_cycle": {"enrichment_batch": {"release_gate": {
+        "recent_checkpoint_recorded": False,
+        "release_ready": False,
+        "unresolved_candidates_excluded": True,
+    }}}}
+
+    result = _checkpoint_release_gate(
+        database,
+        datetime(2026, 8, 15, 21, tzinfo=UTC).isoformat(),
+        intelligence,
+    )
+
+    assert result["passed"] is False
+    assert "recent_enrichment_checkpoint_missing" in result["failures"]
 
 
 def test_daily_publication_source_gate_fails_when_one_source_has_no_valid_hour(

@@ -204,8 +204,13 @@ try {
     }
     $Coverage24h = $PublicationStatus.processing_cycle.coverage_24h
     $EnrichmentBatch = $PublicationStatus.processing_cycle.enrichment_batch
-    $ProcessingDetail = "checkpoint={0} observed_hours={1}/24 dual_source_hours={2}/24 missing_hours={3} complete_cards={4}" -f @(
+    $ProcessingDetail = "checkpoint={0} status={1} naver={2} semantic={3} approved_cache={4} handoff={5} observed_hours={6}/24 dual_source_hours={7}/24 missing_hours={8} complete_cards={9}" -f @(
         $EnrichmentBatch.executed
+        $EnrichmentBatch.status
+        $EnrichmentBatch.component_execution.naver_context.status
+        $EnrichmentBatch.component_execution.semantic_llm.status
+        $EnrichmentBatch.component_execution.approved_cache.status
+        $EnrichmentBatch.component_execution.review_handoff.status
         $Coverage24h.any_source_hour_count
         $Coverage24h.dual_source_hour_count
         $Coverage24h.missing_hour_count
@@ -297,6 +302,21 @@ try {
         exit 0
     }
 
+    # Daily publication requires a recent, persisted checkpoint execution.
+    # Optional provider/LLM work may honestly be disabled or deferred; the
+    # deterministic card gate must still finish and unresolved cards must stay
+    # out of the public feed.
+    $CheckpointReleaseGate = $EnrichmentBatch.release_gate
+    if (
+        $CheckpointReleaseGate.recent_checkpoint_recorded -ne $true -or
+        $CheckpointReleaseGate.release_ready -ne $true -or
+        $CheckpointReleaseGate.unresolved_candidates_excluded -ne $true
+    ) {
+        throw "daily publication requires a recent recorded enrichment checkpoint; unresolved cards remain unpublished"
+    }
+    Write-RunLog -Phase "enrichment_checkpoint_gate" -Status "ok" `
+        -Detail "checkpoint=$($EnrichmentBatch.last_executed.observed_at) disabled=$($CheckpointReleaseGate.optional_disabled_components -join ',') deferred=$($CheckpointReleaseGate.deferred_components -join ',') cutoff=$($EnrichmentBatch.review_cutoff_at)"
+
     # Audit the publication and SQLite ledger that are about to be published.
     # Earlier gaps are preserved, but the exact publication hour must contain
     # a complete independently valid X and Google observation.
@@ -327,20 +347,25 @@ try {
         $SourceRows = "x_hours={0} google_hours={1}" -f `
             $Preflight.source_gate.sources.x.valid_hour_count, `
             $Preflight.source_gate.sources.google_trends.valid_hour_count
-        throw "publication preflight failed before remote push; $SourceRows; failures=$($Preflight.contract.failures -join ',')"
+        $CheckpointFailures = @($Preflight.enrichment_checkpoint_gate.failures)
+        $ContractFailures = @($Preflight.contract.failures)
+        throw "publication preflight failed before remote push; $SourceRows; checkpoint_failures=$($CheckpointFailures -join ','); contract_failures=$($ContractFailures -join ',')"
     }
     $Preflight = Get-Content -LiteralPath $PreflightOutput -Raw -Encoding utf8 | ConvertFrom-Json
     if (-not $Preflight.policy_version -or
         -not $Preflight.source_gate.policy_version -or
         -not $Preflight.exact_hour_source_gate.policy_version -or
+        -not $Preflight.enrichment_checkpoint_gate.policy_version -or
+        $Preflight.enrichment_checkpoint_gate.passed -ne $true -or
         -not $Preflight.contract.policy_version -or
         -not $Preflight.contract.presentation_feed_quality.policy_version) {
         throw "publication preflight policy proof is incomplete"
     }
-    $PreflightPolicies = "preflight={0} window_source={1} exact_source={2} frontend={3} presentation={4}" -f `
+    $PreflightPolicies = "preflight={0} window_source={1} exact_source={2} checkpoint={3} frontend={4} presentation={5}" -f `
         $Preflight.policy_version, `
         $Preflight.source_gate.policy_version, `
         $Preflight.exact_hour_source_gate.policy_version, `
+        $Preflight.enrichment_checkpoint_gate.policy_version, `
         $Preflight.contract.policy_version, `
         $Preflight.contract.presentation_feed_quality.policy_version
     Write-RunLog -Phase "preflight" -Status "ok" `

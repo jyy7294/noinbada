@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import sqlite3
 from datetime import UTC, datetime, timedelta
 
 from trzip.hourly_store import HourlyObservation, store_verified_source_snapshot
@@ -80,6 +81,7 @@ def _complete_candidate_with_role_count(role_count: int) -> dict:
             "ontology_complete": True,
             "ontology_path": [{"from": "trend", "to": f"Company {index}"}],
             "company_role_category": role,
+            "matched_keywords": [f"키워드{index % 5 + 1}"],
             "listing_verification": listing,
             "market_reference": {
                 "status": "observed", "provider": "pykrx",
@@ -90,14 +92,28 @@ def _complete_candidate_with_role_count(role_count: int) -> dict:
                     for field in ("price_series", "market_cap_krw", "per", "pbr", "roe_pct")
                 },
                 "daily_ohlcv": [
-                    {"date": f"2026-07-{day:02d}", "close": 100 + day}
-                    for day in range(1, 31)
+                    {
+                        "date": (
+                            datetime(2026, 7, 17, tzinfo=UTC) + timedelta(days=day)
+                        ).date().isoformat(),
+                        "close": 100 + day,
+                    }
+                    for day in range(30)
                 ],
                 "summary": {
                     "as_of": "2026-08-15", "currency": "KRW",
                     "market_cap": 1_000_000, "market_cap_krw": 1_000_000,
                 },
-                "valuation": {"per": 10.0, "pbr": 1.0, "roe_pct": 8.0},
+                "valuation": {
+                    "per": 10.0,
+                    "per_status": "observed",
+                    "per_as_of": "2026-08-15",
+                    "pbr": 1.0,
+                    "pbr_as_of": "2026-08-15",
+                    "roe_pct": 8.0,
+                    "roe_numerator": {"as_of": "2026-08-15"},
+                    "market_cap_as_of": "2026-08-15",
+                },
                 "fx_reference": {
                     "status": "observed", "provider": "identity", "rate": 1.0,
                     "as_of": "2026-08-15", "source_url": "https://data.krx.co.kr/",
@@ -122,12 +138,12 @@ def _complete_candidate_with_role_count(role_count: int) -> dict:
         "companies": companies,
         "keyword_company_links": [
             {
-                "keyword": f"키워드{index + 1}",
+                "keyword": f"키워드{index % 5 + 1}",
                 "company": f"Company {index}",
                 "connection_explanation": "Public evidence explains the keyword link.",
                 "evidence_urls": [f"https://example.com/company/{index}"],
             }
-            for index in range(2)
+            for index in range(10)
         ],
         "series": [{
             "at": "2026-08-15T04:00:00+00:00",
@@ -170,23 +186,47 @@ def test_checkpoint_schedule_and_actual_status_are_distinct(tmp_path):
         handoff_status={"status": "not_configured"},
     )
     assert disabled["enrichment_batch"]["attempted"] is True
-    assert disabled["enrichment_batch"]["status"] == "disabled_missing_config"
+    assert disabled["enrichment_batch"]["status"] == (
+        "completed_with_optional_components_disabled"
+    )
+    assert disabled["enrichment_batch"]["release_gate"]["release_ready"] is True
+    assert disabled["enrichment_batch"]["component_execution"]["semantic_llm"][
+        "status"
+    ] == "disabled_missing_config"
 
     attempted = build_processing_cycle(
         {"unified_ranking": []},
         path=path,
-        at=at,
+        at=at + timedelta(hours=4),
         enrichment_checkpoint_executed=True,
         verification_status="disabled_missing_config",
         semantic_status="disabled_missing_config",
         handoff_status={"status": "exported_waiting_review"},
     )
-    assert attempted["enrichment_batch"]["status"] == "attempted"
+    assert attempted["enrichment_batch"]["status"] == (
+        "completed_with_deferred_work_and_optional_components_disabled"
+    )
     assert attempted["enrichment_batch"]["component_status"] == {
         "naver_context": "disabled_missing_config",
         "semantic_llm": "disabled_missing_config",
+        "approved_cache": "empty",
         "review_handoff": "exported_waiting_review",
+        "complete_card_gate": "completed",
     }
+    assert attempted["enrichment_batch"]["component_execution"]["review_handoff"][
+        "status"
+    ] == "deferred"
+    with sqlite3.connect(path) as connection:
+        rows = connection.execute(
+            "SELECT observed_at,summary_json FROM enrichment_checkpoints ORDER BY observed_at"
+        ).fetchall()
+    assert len(rows) == 2
+    stored = json.loads(rows[-1][1])
+    assert stored["release_gate"]["checkpoint_recorded"] is True
+    assert stored["component_execution"]["semantic_llm"]["status"] == (
+        "disabled_missing_config"
+    )
+    assert stored["component_execution"]["review_handoff"]["status"] == "deferred"
 
 
 def test_complete_card_gate_accepts_three_roles_and_rejects_two_roles():

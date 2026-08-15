@@ -20,16 +20,59 @@ from .company_roles import (
 from .hourly_store import connect, floor_hour, source_hour_quality
 from .keyword_policy import keyword_fits_public_label
 from .public_company_contract import (
+    keyword_company_link_coverage,
     market_reference_is_public_ready,
     market_snapshot_is_public_ready,
     verified_image_logo_is_public_ready,
 )
 
 
-SCHEMA_VERSION = "trzip-processing-cycle-v1"
-CHECKPOINT_POLICY = "four-hour-enrichment-checkpoint-v1"
-COMPLETE_CARD_POLICY = "complete-live-card-v4"
+SCHEMA_VERSION = "trzip-processing-cycle-v2"
+CHECKPOINT_POLICY = "four-hour-enrichment-checkpoint-v2"
+COMPLETE_CARD_POLICY = "complete-live-card-v5"
 RANK_SOURCES = ("x", "google_trends")
+CHECKPOINT_MAX_AGE_HOURS = 4
+
+
+def _component_execution_status(component: str, raw_status: str) -> str:
+    """Collapse provider-specific wording into one auditable state vocabulary.
+
+    The raw status is retained separately.  This normalized state deliberately
+    does not call a missing LLM configuration ``completed`` merely because the
+    rest of the checkpoint finished.
+    """
+
+    status = str(raw_status or "unknown")
+    if status in {
+        "disabled_missing_config", "disabled_not_configured",
+        "disabled_by_runtime_policy", "not_configured",
+    }:
+        return "disabled_missing_config"
+    if status in {
+        "deferred_to_enrichment_checkpoint", "exported_waiting_review",
+    }:
+        return "deferred"
+    if "failed" in status or "rejected" in status:
+        return "failed_non_blocking"
+    if status in {"attempted", "attempted_no_accepted_decision"}:
+        return "attempted"
+    if component == "approved_cache" and status in {"empty", "reapplied"}:
+        return "completed"
+    if status in {
+        "completed", "skipped_no_candidates", "skipped_no_eligible_candidates",
+        "skipped_already_recorded_for_hour", "reviewed_imported",
+        "reviewed_imported_previous", "reviewed_empty", "reviewed_empty_previous",
+    }:
+        return "completed"
+    return "attempted"
+
+
+def _checkpoint_age_hours(observed_at: str, at: datetime) -> float | None:
+    try:
+        stamp = datetime.fromisoformat(str(observed_at)).astimezone(UTC)
+    except (TypeError, ValueError):
+        return None
+    return round(max(0.0, (floor_hour(at) - stamp).total_seconds() / 3600), 6)
 
 
 def checkpoint_due(at: datetime, *, daily_publish_hour_kst: int = 6) -> bool:
@@ -199,35 +242,45 @@ def complete_card_gate(
             continue
         complete_identities.add(identity)
         unique_complete_companies.append(company)
+    # Source enrichment may retain more than ten candidates.  An otherwise
+    # complete eleventh row without an exact reviewed keyword bridge must not
+    # displace one of the ten linked rows during role-diverse projection.
+    source_link_coverage = keyword_company_link_coverage(
+        keywords=keywords,
+        companies=unique_complete_companies,
+        links=item.get("keyword_company_links") or [],
+        require_link_metadata=False,
+    )
+    link_ineligible_names = set(source_link_coverage["unlinked_companies"]) | set(
+        source_link_coverage["matched_keyword_mismatches"]
+    )
+    link_complete_companies = [
+        company for company in unique_complete_companies
+        if str(company.get("company") or "").strip() not in link_ineligible_names
+    ]
     projected_companies = select_role_diverse_company_projection(
-        unique_complete_companies,
+        link_complete_companies,
         limit=10,
     )
-    company_names = {
-        str(row.get("company") or "").strip() for row in projected_companies
-    }
     role_categories = {
         str(row.get("company_role_category") or "").strip()
         for row in projected_companies
         if str(row.get("company_role_category") or "").strip()
     }
-    linked_keywords: set[str] = set()
-    linked_companies: set[str] = set()
-    valid_links = 0
-    for link in item.get("keyword_company_links") or []:
-        keyword = str(link.get("keyword") or "").strip()
-        company = str(link.get("company") or "").strip()
-        evidence = list(link.get("evidence_urls") or [])
-        if (
-            keyword in keyword_set
-            and company in company_names
-            and str(link.get("connection_explanation") or link.get("relationship_reason") or "").strip()
-            and evidence
-            and all(_public_url(url) for url in evidence)
-        ):
-            valid_links += 1
-            linked_keywords.add(keyword)
-            linked_companies.add(company)
+    projected_company_names = {
+        str(row.get("company") or "").strip() for row in projected_companies
+    }
+    projected_links = [
+        link for link in item.get("keyword_company_links") or []
+        if isinstance(link, dict)
+        and str(link.get("company") or "").strip() in projected_company_names
+    ]
+    link_coverage = keyword_company_link_coverage(
+        keywords=keywords,
+        companies=projected_companies,
+        links=projected_links,
+        require_link_metadata=public_projection,
+    )
 
     window_start = observed_at - timedelta(hours=23)
     observed_stamps = []
@@ -242,6 +295,7 @@ def complete_card_gate(
             observed_stamps.append(stamp)
 
     company_count = len(unique_complete_companies)
+    projected_company_count = len(projected_companies)
     company_count_check = (
         company_count == 10 if public_projection else company_count >= 10
     )
@@ -271,7 +325,18 @@ def complete_card_gate(
         "three_to_four_company_roles": public_company_role_count_is_valid(
             len(role_categories)
         ),
-        "at_least_two_keywords_linked_to_companies": len(linked_keywords) >= 2,
+        "every_public_keyword_linked": bool(
+            len(keyword_set) == 5
+            and link_coverage["linked_keyword_count"] == len(keyword_set)
+        ),
+        "every_public_company_linked": bool(
+            projected_company_count == 10
+            and link_coverage["linked_company_count"] == projected_company_count
+        ),
+        "company_matched_keywords_match_links": bool(
+            not link_coverage["matched_keyword_mismatches"]
+        ),
+        "keyword_company_link_contract": link_coverage["ready"],
     }
     missing = [key for key, passed in checks.items() if not passed]
     return {
@@ -281,9 +346,13 @@ def complete_card_gate(
         "missing": missing,
         "keyword_count": len(keywords),
         "complete_company_count": company_count,
+        "projected_company_count": projected_company_count,
         "public_projection": public_projection,
         "role_category_count": len(role_categories),
-        "valid_keyword_company_link_count": valid_links,
+        "valid_keyword_company_link_count": link_coverage["valid_link_count"],
+        "linked_keyword_count": link_coverage["linked_keyword_count"],
+        "linked_company_count": link_coverage["linked_company_count"],
+        "keyword_company_link_coverage": link_coverage,
         "ranking_effect": "none",
     }
 
@@ -348,65 +417,140 @@ def build_processing_cycle(
         "pending_card_count": len(gates) - len(ready_keys),
         "gate_policy_version": COMPLETE_CARD_POLICY,
     }
+    handoff = handoff_status or {}
+    approved_cache = handoff.get("approved_cache") or {}
     checkpoint_components = {
-        "naver_context": verification_status or "unknown",
-        "semantic_llm": semantic_status or "unknown",
-        "review_handoff": (handoff_status or {}).get("status", "not_configured"),
+        "naver_context": str(verification_status or "unknown"),
+        "semantic_llm": str(semantic_status or "unknown"),
+        "approved_cache": str(approved_cache.get("status") or "empty"),
+        "review_handoff": str(handoff.get("status") or "not_configured"),
+        "complete_card_gate": "completed",
     }
-    attempted = enrichment_checkpoint_executed
-    disabled_missing_config = attempted and all(
-        status in {
-            "disabled_by_runtime_policy",
-            "disabled_missing_config",
-            "disabled_not_configured",
-            "not_configured",
+    component_execution = {
+        name: {
+            "status": _component_execution_status(name, status),
+            "detail": status,
+            # All four enrichment sources are optional for ranking and release.
+            # The deterministic complete-card gate is the only required stage;
+            # incomplete candidates remain internal and are never padded.
+            "required_for_release": name == "complete_card_gate",
+            "ranking_effect": "none",
         }
-        for status in checkpoint_components.values()
+        for name, status in checkpoint_components.items()
+    }
+    if approved_cache:
+        component_execution["approved_cache"].update({
+            "reapplied_count": int(approved_cache.get("reapplied_count") or 0),
+            "rejected_count": int(approved_cache.get("rejected_count") or 0),
+        })
+        if component_execution["approved_cache"]["rejected_count"]:
+            component_execution["approved_cache"].update({
+                "status": "failed_non_blocking",
+                "detail": "invalid_cache_entries_rejected",
+            })
+    attempted = enrichment_checkpoint_executed
+    normalized_states = {
+        row["status"] for row in component_execution.values()
+    }
+    optional_disabled = sorted(
+        name for name, row in component_execution.items()
+        if not row["required_for_release"]
+        and row["status"] == "disabled_missing_config"
     )
-    component_failed = any(
-        "failed" in status or "rejected" in status
-        for status in checkpoint_components.values()
+    deferred_components = sorted(
+        name for name, row in component_execution.items()
+        if row["status"] == "deferred"
     )
-    waiting_for_review = checkpoint_components["review_handoff"] == "exported_waiting_review"
-    batch_summary["component_status"] = checkpoint_components
+    nonblocking_failures = sorted(
+        name for name, row in component_execution.items()
+        if not row["required_for_release"]
+        and row["status"] == "failed_non_blocking"
+    )
+    blocking_failures = sorted(
+        name for name, row in component_execution.items()
+        if row["required_for_release"]
+        and row["status"] != "completed"
+    )
+    release_gate = {
+        "policy_version": "daily-checkpoint-release-gate-v1",
+        "checkpoint_recorded": bool(enrichment_checkpoint_executed),
+        "recent_checkpoint_max_age_hours": CHECKPOINT_MAX_AGE_HOURS,
+        "complete_card_gate_completed": not blocking_failures,
+        "optional_disabled_components": optional_disabled,
+        "deferred_components": deferred_components,
+        "nonblocking_component_failures": nonblocking_failures,
+        "unresolved_candidate_count": batch_summary["pending_card_count"],
+        "unresolved_candidates_excluded": True,
+        "padding_forbidden": True,
+        "release_ready": bool(enrichment_checkpoint_executed and not blocking_failures),
+    }
+    batch_summary.update({
+        "component_status": checkpoint_components,
+        "component_execution": component_execution,
+        "release_gate": release_gate,
+        "review_cutoff_at": handoff.get("review_cutoff_at"),
+        "deferred_after_cutoff_count": int(
+            handoff.get("deferred_after_cutoff_count") or 0
+        ),
+    })
 
     if enrichment_checkpoint_executed:
-        batch_status = (
-            "failed_non_blocking" if component_failed
-            else "disabled_missing_config" if disabled_missing_config
-            else "attempted" if waiting_for_review
-            else "completed"
-        )
-        # Only a checkpoint whose configured components actually completed is
-        # eligible to advance ``last_completed``.  Exporting a handoff queue is
-        # useful work, but it is still waiting for review and must not be
-        # recorded as a completed enrichment pass.
-        if batch_status == "completed":
-            _initialize_checkpoint_store(path)
-            completed_at = datetime.now(UTC).isoformat()
-            with connect(path) as connection:
-                connection.execute(
-                    """INSERT INTO enrichment_checkpoints
-                       (observed_at,completed_at,summary_json) VALUES (?,?,?)
-                       ON CONFLICT(observed_at) DO UPDATE SET
-                         completed_at=excluded.completed_at,
-                         summary_json=excluded.summary_json""",
-                    (
-                        at.isoformat(),
-                        completed_at,
-                        json.dumps(batch_summary, ensure_ascii=False, sort_keys=True),
-                    ),
-                )
-            latest = {
-                "observed_at": at.isoformat(),
-                "completed_at": completed_at,
-                "summary": batch_summary,
-            }
+        # Completing the dispatcher and recording its component outcomes is a
+        # different fact from every optional component succeeding.  Every due
+        # run therefore receives an immutable ledger row even when the semantic
+        # model is unconfigured or a review remains queued.
+        if blocking_failures:
+            batch_status = "failed_blocking"
+        elif nonblocking_failures:
+            batch_status = "completed_with_nonblocking_failures"
+        elif deferred_components and optional_disabled:
+            batch_status = "completed_with_deferred_work_and_optional_components_disabled"
+        elif deferred_components:
+            batch_status = "completed_with_deferred_work"
+        elif optional_disabled:
+            batch_status = "completed_with_optional_components_disabled"
+        elif "attempted" in normalized_states:
+            batch_status = "completed_with_attempted_optional_work"
         else:
-            latest = _latest_checkpoint(path, at)
+            batch_status = "completed"
+        batch_summary["execution_status"] = batch_status
+        _initialize_checkpoint_store(path)
+        completed_at = datetime.now(UTC).isoformat()
+        serialized = json.dumps(batch_summary, ensure_ascii=False, sort_keys=True)
+        with connect(path) as connection:
+            connection.execute(
+                """INSERT INTO enrichment_checkpoints
+                   (observed_at,completed_at,summary_json) VALUES (?,?,?)
+                   ON CONFLICT(observed_at) DO NOTHING""",
+                (at.isoformat(), completed_at, serialized),
+            )
+        latest = _latest_checkpoint(path, at)
+        if latest is None:
+            raise RuntimeError("enrichment checkpoint execution was not recorded")
     else:
         latest = _latest_checkpoint(path, at)
         batch_status = "missed_due_checkpoint" if due else "deferred_to_enrichment_checkpoint"
+
+    latest_age_hours = (
+        _checkpoint_age_hours(latest.get("observed_at"), at)
+        if latest else None
+    )
+    recent_checkpoint_recorded = bool(
+        latest is not None
+        and latest_age_hours is not None
+        and latest_age_hours <= CHECKPOINT_MAX_AGE_HOURS
+        and (latest.get("summary") or {}).get("release_gate", {}).get(
+            "checkpoint_recorded"
+        ) is True
+    )
+    release_gate["recent_checkpoint_recorded"] = recent_checkpoint_recorded
+    release_gate["latest_checkpoint_age_hours"] = latest_age_hours
+    # The current row was serialized before the derived recency values were
+    # known. Keep the published execution view explicit; the preflight also
+    # proves recency independently against SQLite.
+    release_gate["release_ready"] = bool(
+        release_gate["release_ready"] and recent_checkpoint_recorded
+    )
 
     kst_hour = (at + timedelta(hours=9)).hour
     return {
@@ -442,8 +586,18 @@ def build_processing_cycle(
             "attempted": attempted,
             "status": batch_status,
             "component_status": checkpoint_components,
+            "component_execution": component_execution,
             "current_summary": batch_summary,
+            "last_executed": latest,
+            # Backward-compatible alias: this means the checkpoint dispatcher
+            # finished and recorded its truthful component states, not that an
+            # optional LLM or human review necessarily completed.
             "last_completed": latest,
+            "release_gate": release_gate,
+            "review_cutoff_at": handoff.get("review_cutoff_at"),
+            "deferred_after_cutoff_count": int(
+                handoff.get("deferred_after_cutoff_count") or 0
+            ),
             "remote_publish_performed": False,
         },
         "daily_publication": {

@@ -20,6 +20,7 @@ from .presentation_feed import (
     logo_display_contract_is_valid,
 )
 from .public_company_contract import (
+    keyword_company_link_coverage,
     listing_verification_is_valid,
     market_snapshot_is_public_ready,
 )
@@ -927,8 +928,33 @@ def _evaluate_canonical_frontend_result(intelligence: dict) -> dict:
             linked_companies.add(company_name)
         if invalid_link:
             item_failures.append("invalid_keyword_company_link")
-        if len(linked_keywords) < 2:
-            item_failures.append(f"keyword_company_link_count:{len(linked_keywords)}")
+        link_coverage = keyword_company_link_coverage(
+            keywords=keywords,
+            companies=companies,
+            links=keyword_company_links,
+            require_link_metadata=presentation_display_contract,
+        )
+        if not link_coverage["ready"]:
+            if link_coverage["unlinked_keywords"]:
+                item_failures.append(
+                    "unlinked_public_keywords:"
+                    + ",".join(link_coverage["unlinked_keywords"])
+                )
+            if link_coverage["unlinked_companies"]:
+                item_failures.append(
+                    "unlinked_public_companies:"
+                    + ",".join(link_coverage["unlinked_companies"])
+                )
+            if link_coverage["matched_keyword_mismatches"]:
+                item_failures.append(
+                    "company_matched_keywords_mismatch:"
+                    + ",".join(link_coverage["matched_keyword_mismatches"])
+                )
+            if (
+                link_coverage["invalid_link_indexes"]
+                or link_coverage["duplicate_pairs"]
+            ):
+                item_failures.append("keyword_company_link_contract_invalid")
         if item.get("frontend_readiness_status") != "ready":
             item_failures.append("frontend_enrichment_pending")
         failures.extend(f"{name}:{reason}" for reason in item_failures)
@@ -1123,9 +1149,46 @@ def evaluate_presentation_feed_quality(feed: dict) -> dict:
                     item_failures.append(
                         f"market_snapshot_incomplete:{company_name}"
                     )
+            attention_rows = list(item.get("attention_windows") or [])
+            attention_statuses = {
+                str(row.get("key") or ""): str(row.get("status") or "")
+                for row in attention_rows
+                if isinstance(row, dict)
+            }
+            if any(
+                row.get("status") in {
+                    "insufficient_observed_history", "unavailable_zero_baseline"
+                }
+                and row.get("percent") is not None
+                for row in attention_rows
+                if isinstance(row, dict)
+            ):
+                item_failures.append("unqualified_attention_percent_exposed")
+            link_coverage = keyword_company_link_coverage(
+                keywords=item.get("keywords") or [],
+                companies=item.get("companies") or [],
+                links=item.get("keyword_company_links") or [],
+                require_link_metadata=True,
+            )
+            if not link_coverage["ready"]:
+                item_failures.append("keyword_company_link_coverage_incomplete")
+            if item.get("keyword_company_link_coverage") != link_coverage:
+                item_failures.append("keyword_company_link_coverage_receipt_mismatch")
             trend_checks.append({
                 "display_name": str(item.get("display_name") or ""),
                 "company_count": len(item.get("companies") or []),
+                "linked_keyword_count": link_coverage["linked_keyword_count"],
+                "linked_company_count": link_coverage["linked_company_count"],
+                "attention_window_statuses": attention_statuses,
+                "measured_attention_window_count": sum(
+                    status == "measured" for status in attention_statuses.values()
+                ),
+                "per_na_company_count": sum(
+                    str(
+                        (company.get("market_snapshot") or {}).get("per_status") or ""
+                    ).startswith("unavailable_")
+                    for company in item.get("companies") or []
+                ),
                 "role_categories": sorted({
                     str(company.get("company_role_category") or "")
                     for company in item.get("companies") or []
@@ -1609,6 +1672,110 @@ def _publication_window_source_gate(
     }
 
 
+def _checkpoint_release_gate(
+    path: Path,
+    observed_at: str,
+    intelligence: dict,
+    *,
+    max_age_hours: int = 4,
+) -> dict:
+    """Prove that a recent enrichment dispatcher run is recorded in SQLite.
+
+    Optional NAVER/semantic/review stages may be disabled or deferred.  They do
+    not affect X/Google ranking and cannot block a complete card.  The gate does
+    require the deterministic card check to finish and every unresolved card to
+    remain excluded from the public projection.
+    """
+
+    end, stamp = _normalized_exact_hour(observed_at)
+    start_stamp = (end - timedelta(hours=max_age_hours)).isoformat()
+    connection = sqlite3.connect(path)
+    try:
+        if not _table_exists(connection, "enrichment_checkpoints"):
+            row = None
+        else:
+            row = connection.execute(
+                """SELECT observed_at,completed_at,summary_json
+                   FROM enrichment_checkpoints
+                   WHERE observed_at BETWEEN ? AND ?
+                   ORDER BY observed_at DESC LIMIT 1""",
+                (start_stamp, stamp),
+            ).fetchone()
+    finally:
+        connection.close()
+
+    failures: list[str] = []
+    summary: dict = {}
+    if row is None:
+        failures.append("recent_enrichment_checkpoint_missing")
+        checkpoint_at = completed_at = None
+    else:
+        checkpoint_at, completed_at = row[0], row[1]
+        try:
+            summary = json.loads(row[2])
+        except (TypeError, ValueError, json.JSONDecodeError):
+            failures.append("enrichment_checkpoint_summary_invalid")
+    ledger_release = summary.get("release_gate") or {}
+    component_execution = summary.get("component_execution") or {}
+    allowed_states = {
+        "attempted", "completed", "disabled_missing_config", "deferred",
+        "failed_non_blocking",
+    }
+    if row is not None:
+        if ledger_release.get("checkpoint_recorded") is not True:
+            failures.append("enrichment_checkpoint_not_recorded")
+        if ledger_release.get("release_ready") is not True:
+            failures.append("enrichment_checkpoint_not_release_ready")
+        if ledger_release.get("unresolved_candidates_excluded") is not True:
+            failures.append("unresolved_enrichment_not_fail_closed")
+        if not isinstance(component_execution, dict) or not component_execution:
+            failures.append("enrichment_component_execution_missing")
+        elif any(
+            not isinstance(value, dict)
+            or value.get("status") not in allowed_states
+            for value in component_execution.values()
+        ):
+            failures.append("enrichment_component_status_invalid")
+        elif any(
+            value.get("required_for_release") is True
+            and value.get("status") != "completed"
+            for value in component_execution.values()
+        ):
+            failures.append("required_enrichment_component_incomplete")
+
+    published_gate = (
+        (intelligence.get("processing_cycle") or {})
+        .get("enrichment_batch", {})
+        .get("release_gate", {})
+    )
+    if (
+        published_gate.get("recent_checkpoint_recorded") is not True
+        or published_gate.get("release_ready") is not True
+        or published_gate.get("unresolved_candidates_excluded") is not True
+    ):
+        failures.append("published_checkpoint_release_gate_invalid")
+    return {
+        "policy_version": "daily-enrichment-checkpoint-proof-v1",
+        "passed": not failures,
+        "window": {"from": start_stamp, "to": stamp, "max_age_hours": max_age_hours},
+        "checkpoint_observed_at": checkpoint_at,
+        "checkpoint_completed_at": completed_at,
+        "execution_status": summary.get("execution_status"),
+        "component_execution": component_execution,
+        "optional_disabled_components": ledger_release.get(
+            "optional_disabled_components", []
+        ),
+        "deferred_components": ledger_release.get("deferred_components", []),
+        "unresolved_candidate_count": ledger_release.get(
+            "unresolved_candidate_count", 0
+        ),
+        "unresolved_candidates_excluded": ledger_release.get(
+            "unresolved_candidates_excluded"
+        ),
+        "failures": failures,
+    }
+
+
 def evaluate_actual_hour(path: Path, at: datetime) -> dict:
     normalized = at.astimezone(UTC).replace(minute=0, second=0, microsecond=0)
     stamp = normalized.isoformat()
@@ -1785,12 +1952,20 @@ def main() -> int:
             args.database, normalized_end
         )
         contract = evaluate_frontend_result(intelligence)
+        checkpoint_gate = _checkpoint_release_gate(
+            args.database, normalized_end, intelligence
+        )
         result = {
-            "policy_version": "daily-publication-preflight-v3",
+            "policy_version": "daily-publication-preflight-v4",
             "observed_at": normalized_end,
-            "passed": source_gate["passed"] and contract["passed"],
+            "passed": (
+                source_gate["passed"]
+                and checkpoint_gate["passed"]
+                and contract["passed"]
+            ),
             "source_gate": source_gate,
             "exact_hour_source_gate": source_gate["exact_hour_source_gate"],
+            "enrichment_checkpoint_gate": checkpoint_gate,
             "contract": contract,
         }
         encoded = json.dumps(result, ensure_ascii=False, indent=2).encode("utf-8")

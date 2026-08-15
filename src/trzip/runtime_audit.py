@@ -1099,6 +1099,7 @@ def _audit_database(
                 report.fail("latest_x_count_does_not_match_sqlite")
         _audit_daily_aggregates(intelligence, report)
         _audit_provider_ledger(connection, report)
+        _audit_enrichment_checkpoint(connection, report, intelligence, metadata)
     except sqlite3.Error:
         report.fail("sqlite_audit_query_failed")
     finally:
@@ -1132,6 +1133,90 @@ def _audit_daily_aggregates(intelligence: dict[str, Any], report: AuditReport) -
     if len(keys) != len(set(keys)) or invalid:
         report.fail("daily_aggregate_integrity_error")
     report.metrics["daily_aggregate_count"] = len(rows)
+
+
+def _audit_enrichment_checkpoint(
+    connection: sqlite3.Connection,
+    report: AuditReport,
+    intelligence: dict[str, Any],
+    metadata: dict[str, Any],
+) -> None:
+    """Audit execution evidence without treating an optional LLM as required."""
+
+    processing = intelligence.get("processing_cycle") or {}
+    enrichment = processing.get("enrichment_batch") or {}
+    daily_due = (processing.get("daily_publication") or {}).get("due") is True
+    checkpoint_due = enrichment.get("due") is True
+    published_gate = enrichment.get("release_gate") or {}
+    observed_at = _parse_audit_timestamp(metadata.get("observed_at"))
+    row = None
+    if observed_at is not None and _table_exists(connection, "enrichment_checkpoints"):
+        start = observed_at - timedelta(hours=4)
+        row = connection.execute(
+            """SELECT observed_at,completed_at,summary_json
+               FROM enrichment_checkpoints
+               WHERE observed_at BETWEEN ? AND ?
+               ORDER BY observed_at DESC LIMIT 1""",
+            (start.isoformat(), observed_at.isoformat()),
+        ).fetchone()
+    summary: dict[str, Any] = {}
+    if row is not None:
+        try:
+            summary = json.loads(row[2])
+        except (TypeError, ValueError, json.JSONDecodeError):
+            report.fail("enrichment_checkpoint_summary_invalid")
+    ledger_gate = summary.get("release_gate") or {}
+    components = summary.get("component_execution") or {}
+    report.metrics["enrichment_checkpoint"] = {
+        "daily_publication_due": daily_due,
+        "checkpoint_due": checkpoint_due,
+        "latest_observed_at": row[0] if row else None,
+        "latest_completed_at": row[1] if row else None,
+        "execution_status": summary.get("execution_status"),
+        "component_execution": components,
+        "optional_disabled_components": ledger_gate.get(
+            "optional_disabled_components", []
+        ),
+        "deferred_components": ledger_gate.get("deferred_components", []),
+        "unresolved_candidate_count": ledger_gate.get(
+            "unresolved_candidate_count", 0
+        ),
+    }
+    if not (daily_due or checkpoint_due):
+        return
+    if row is None:
+        report.fail("recent_enrichment_checkpoint_missing")
+        return
+    if checkpoint_due and row[0] != metadata.get("observed_at"):
+        report.fail("due_enrichment_checkpoint_not_recorded_for_current_hour")
+    allowed_states = {
+        "attempted", "completed", "disabled_missing_config", "deferred",
+        "failed_non_blocking",
+    }
+    if (
+        ledger_gate.get("checkpoint_recorded") is not True
+        or ledger_gate.get("release_ready") is not True
+        or ledger_gate.get("unresolved_candidates_excluded") is not True
+        or not isinstance(components, dict)
+        or not components
+        or any(
+            not isinstance(value, dict)
+            or value.get("status") not in allowed_states
+            for value in components.values()
+        )
+        or any(
+            value.get("required_for_release") is True
+            and value.get("status") != "completed"
+            for value in components.values()
+        )
+    ):
+        report.fail("enrichment_checkpoint_release_contract_failed")
+    if (
+        published_gate.get("recent_checkpoint_recorded") is not True
+        or published_gate.get("release_ready") is not True
+        or published_gate.get("unresolved_candidates_excluded") is not True
+    ):
+        report.fail("published_enrichment_checkpoint_gate_invalid")
 
 
 def _audit_provider_ledger(connection: sqlite3.Connection, report: AuditReport) -> None:

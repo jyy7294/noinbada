@@ -120,8 +120,8 @@ powershell -ExecutionPolicy Bypass -File "$runtime\scripts\collect-hourly.ps1" -
 확인 항목:
 
 - SQLite 최신 시각의 X 순위가 정확히 1~30이고 Google 행 수가 페이지 선언 총건수와 같습니다.
-- 최신 `status.json`의 `partial=false`이고 두 핵심 출처가 `observed`입니다.
-- 단일 출처면 결과가 발행되더라도 `ranking_availability.is_combined_rank=false`입니다.
+- 최신 `status.json`과 원장 감사에는 최근 24시간의 X·Google 실제 관측 시각 수와 결측 시각이 함께 기록돼 있습니다. 다른 정각의 결측은 허용하지만 이전값 재사용·보간·생성으로 채우지 않습니다.
+- 매일 06:00 KST와 최종 게시 시각에는 그 정각의 X 30개와 Google 전체 목록이 모두 `observed`여야 하며, 한쪽이라도 실패하면 로컬 분석만 남기고 원격 게시하지 않습니다.
 - 세 latest 문서의 `publication_id`, `generated_at`, `observed_at`이 일치합니다.
 - 공개 운영 상태에 사용자명, 로컬 경로, 토큰, 비밀키, 요청 쿼리가 없습니다.
 - `live-data` 로컬 HEAD와 원격 SHA가 같습니다.

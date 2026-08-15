@@ -1421,7 +1421,16 @@ class Component extends DCLogic {
       || !completeObservedPrices
     ) return null;
     const publicUrl = (value) => /^https?:\/\/[^\s/]+/i.test(String(value || '').trim());
-    if (snapshot.per != null && (!Number.isFinite(Number(snapshot.per)) || Number(snapshot.per) <= 0 || !publicUrl(snapshot.per_source_url))) return null;
+    const perStatus = String(snapshot.per_status || '').trim();
+    const unavailablePerStatuses = new Set([
+      'unavailable_loss_making', 'unavailable_not_reported', 'unavailable_stale',
+    ]);
+    if (perStatus === 'observed') {
+      if (!Number.isFinite(Number(snapshot.per)) || Number(snapshot.per) <= 0
+        || !publicUrl(snapshot.per_source_url)) return null;
+    } else if (!unavailablePerStatuses.has(perStatus) || snapshot.per != null) {
+      return null;
+    }
     if (snapshot.pbr != null && (!Number.isFinite(Number(snapshot.pbr)) || Number(snapshot.pbr) <= 0 || !publicUrl(snapshot.pbr_source_url))) return null;
     if (snapshot.roe != null) {
       const numerator = snapshot.roe_numerator;
@@ -5041,7 +5050,9 @@ class Component extends DCLogic {
       changeStyle: 'font-weight:800;font-size:13px;color:' + (change > 0 ? '#E5395F' : change < 0 ? '#2E6BE6' : '#8B8D98') + ';',
       marketCap: hasKrwMarketCap ? formatKrwMarketCap(marketCapKrw) : '—',
       marketCapAsOf: hasKrwMarketCap ? fxAsOf : '',
-      per: hasMarketData ? metric(snapshot.per, '배', true) : '—',
+      per: hasMarketData
+        ? (snapshot.per_status === 'observed' ? metric(snapshot.per, '배', true) : 'N/A')
+        : '—',
       pbr: hasMarketData ? metric(snapshot.pbr, '배', true) : '—',
       roe: hasMarketData ? metric(snapshot.roe, '%') : '—',
       pricePoints
