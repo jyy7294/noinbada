@@ -143,6 +143,19 @@
         },
         "status": {"const": "ready"},
         "frontend_default": {"const": true},
+        "logo_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "avatar_size_px", "minimum_raster_dimension_px", "vector_assets_allowed", "low_resolution_fallback", "runtime_probe_for_generic_favicons"],
+          "properties": {
+            "version": {"const": "avatar-sharpness-v1"},
+            "avatar_size_px": {"const": 44},
+            "minimum_raster_dimension_px": {"const": 64},
+            "vector_assets_allowed": {"const": true},
+            "low_resolution_fallback": {"const": "initials"},
+            "runtime_probe_for_generic_favicons": {"const": true}
+          }
+        },
         "items": {
           "type": "array", "minItems": 10, "maxItems": 10,
           "items": {
@@ -154,6 +167,19 @@
             ],
             "properties": {
               "presentation_position": {"type": "integer", "minimum": 1, "maximum": 10},
+              "rank_movement": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["current_rank", "previous_rank", "delta", "status", "label", "basis"],
+                "properties": {
+                  "current_rank": {"type": "integer", "minimum": 1, "maximum": 10},
+                  "previous_rank": {"type": ["integer", "null"], "minimum": 1, "maximum": 10},
+                  "delta": {"type": ["integer", "null"], "minimum": -9, "maximum": 9},
+                  "status": {"enum": ["new", "unchanged", "up", "down"]},
+                  "label": {"type": "string", "pattern": "^(NEW|유지|▲[1-9]|▼[1-9])$"},
+                  "basis": {"const": "previous_published_presentation_feed"}
+                }
+              },
               "display_name": {"type": "string", "minLength": 1},
               "event_key": {"type": "string", "minLength": 1},
               "category": {"enum": ["food", "content", "sports", "lifestyle", "culture", "consumer", "technology", "market"]},

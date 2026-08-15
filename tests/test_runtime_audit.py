@@ -412,11 +412,26 @@ def test_runtime_audit_accepts_immutable_v2_feed_with_legacy_marker(
     intelligence = json.loads(intelligence_path.read_text(encoding="utf-8"))
     feed = intelligence["presentation_feed"]
     feed["schema_version"] = "trzip-presentation-feed-v2"
+    feed.pop("logo_policy", None)
     for item in feed["items"]:
         for company in item["companies"]:
-            company.pop("logo_asset_source", None)
-            company.pop("logo_asset_host", None)
-            company.pop("logo_asset_verification", None)
+            if not company.get("logo_url"):
+                company["logo_url"] = company["logo_rejected_asset_url"]
+            for field in (
+                "logo_asset_source",
+                "logo_asset_host",
+                "logo_asset_verification",
+                "logo_quality_policy",
+                "logo_render_mode",
+                "logo_asset_format",
+                "logo_asset_width",
+                "logo_asset_height",
+                "logo_minimum_dimension",
+                "logo_runtime_probe_required",
+                "logo_asset_quality",
+                "logo_rejected_asset_url",
+            ):
+                company.pop(field, None)
     intelligence_path.write_text(
         json.dumps(intelligence, ensure_ascii=False), encoding="utf-8"
     )

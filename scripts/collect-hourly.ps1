@@ -15,8 +15,14 @@ $DatabasePath = Join-Path $RuntimeRoot "data\trzip-hourly.sqlite3"
 $LiveDataRoot = Join-Path $RuntimeRoot "live-data"
 $LogRoot = Join-Path $RuntimeRoot "logs"
 $Python = Join-Path $ProjectRoot ".venv\Scripts\python.exe"
+$QualityOutput = Join-Path $PublicationRoot "monitoring\result_quality.json"
 $RunId = [guid]::NewGuid().ToString("N")
 $StartedAt = [DateTimeOffset]::UtcNow
+$CurrentHour = $StartedAt.ToString("yyyy-MM-ddTHH:00:00+00:00")
+$CurrentKstHour = [TimeZoneInfo]::ConvertTimeBySystemTimeZoneId(
+    $StartedAt,
+    "Korea Standard Time"
+).Hour
 $Mutex = [Threading.Mutex]::new($false, "Global\TRZIP-NOINBADA-HOURLY-V1")
 $HasMutex = $false
 
@@ -75,11 +81,39 @@ function Sync-PublicDirectory {
     }
 }
 
+function Write-AtomicJson {
+    param(
+        [Parameter(Mandatory=$true)][string]$Path,
+        [Parameter(Mandatory=$true)][object]$Value
+    )
+    $Parent = Split-Path -Parent $Path
+    New-Item -ItemType Directory -Force -Path $Parent | Out-Null
+    $Temporary = "$Path.$RunId.tmp"
+    try {
+        $Json = $Value | ConvertTo-Json -Depth 100
+        [IO.File]::WriteAllText(
+            $Temporary,
+            $Json,
+            [Text.UTF8Encoding]::new($false)
+        )
+        if (Test-Path -LiteralPath $Path) {
+            [IO.File]::Replace($Temporary, $Path, $null)
+        } else {
+            [IO.File]::Move($Temporary, $Path)
+        }
+    } finally {
+        if (Test-Path -LiteralPath $Temporary) {
+            Remove-Item -LiteralPath $Temporary -Force
+        }
+    }
+}
+
 try {
     $HasMutex = $Mutex.WaitOne(0)
     if (-not $HasMutex) {
-        Write-RunLog -Phase "lock" -Status "skipped" -Detail "another hourly run is active"
-        exit 0
+        Write-RunLog -Phase "lock" -Status "conflict" `
+            -Detail "another hourly run is active; scheduled_for=$CurrentHour"
+        exit 75
     }
     Write-RunLog -Phase "start" -Status "running" -Detail $ProjectRoot
     if (-not (Test-Path -LiteralPath $Python)) { throw "Python environment missing: $Python" }
@@ -88,21 +122,60 @@ try {
     }
     New-Item -ItemType Directory -Force -Path $PublicationRoot,(Split-Path -Parent $DatabasePath) | Out-Null
 
-    # A verified exact hour is a completed immutable unit. Re-running within
-    # that hour must not rewrite local publication files or create another id.
-    $CurrentHour = [DateTimeOffset]::UtcNow.ToString("yyyy-MM-ddTHH:00:00+00:00")
+    # Register this invocation before collection. The next invocation can then
+    # distinguish a true missed trigger from an attempted source failure.
+    $TriggerOutput = @(& $Python -m trzip.result_quality --database $DatabasePath `
+        --end $CurrentHour --register-trigger)
+    if ($LASTEXITCODE -ne 0) { throw "failed to register the exact-hour trigger" }
+    try {
+        $TriggerResult = ($TriggerOutput -join [Environment]::NewLine) |
+            ConvertFrom-Json
+    } catch {
+        throw "exact-hour trigger registration returned invalid JSON"
+    }
+    $MissedTriggerCount = @($TriggerResult.missed_hours).Count
+    $TriggerStatus = if ($MissedTriggerCount -eq 0) { "registered" } else { "gap_detected" }
+    Write-RunLog -Phase "trigger" -Status $TriggerStatus `
+        -Detail "scheduled_for=$CurrentHour missed_hours=$MissedTriggerCount"
+
+    # Local validation receipts, not remote publication receipts, make an
+    # exact hour immutable. A daily-publication retry may reuse the already
+    # verified local bundle but must never regenerate a different one.
     & $Python -m trzip.result_quality --database $DatabasePath `
-        --end $CurrentHour --receipt-exists
-    if ($LASTEXITCODE -eq 0) {
-        Write-RunLog -Phase "idempotency" -Status "already_verified" -Detail $CurrentHour
-        exit 0
+        --end $CurrentHour --hourly-receipt-exists
+    $HourlyReceiptExitCode = $LASTEXITCODE
+    if ($HourlyReceiptExitCode -notin @(0,1)) {
+        throw "failed to inspect the hourly validation receipt"
+    }
+    $HourlyAlreadyVerified = $HourlyReceiptExitCode -eq 0
+    $ReuseVerifiedLocal = $false
+    if ($HourlyAlreadyVerified) {
+        if ($CurrentKstHour -ne $DailyPublishHourKst) {
+            Write-RunLog -Phase "idempotency" -Status "already_verified" -Detail $CurrentHour
+            exit 0
+        }
+        & $Python -m trzip.result_quality --database $DatabasePath `
+            --end $CurrentHour --receipt-exists
+        $PublicationReceiptExitCode = $LASTEXITCODE
+        if ($PublicationReceiptExitCode -eq 0) {
+            Write-RunLog -Phase "idempotency" -Status "already_published" -Detail $CurrentHour
+            exit 0
+        }
+        if ($PublicationReceiptExitCode -ne 1) {
+            throw "failed to inspect the daily publication receipt"
+        }
+        $ReuseVerifiedLocal = $true
+        Write-RunLog -Phase "recovery" -Status "reuse_verified_local" `
+            -Detail "daily publication retry for $CurrentHour"
     }
 
     Set-Location $ProjectRoot
     # Raw ledger and published daily aggregates are retained indefinitely by
     # default. Pruning requires an explicit positive --retention-days value.
-    & $Python -m trzip.local_pipeline --output $PublicationRoot --database $DatabasePath
-    if ($LASTEXITCODE -ne 0) { throw "local pipeline exited with code $LASTEXITCODE" }
+    if (-not $ReuseVerifiedLocal) {
+        & $Python -m trzip.local_pipeline --output $PublicationRoot --database $DatabasePath
+        if ($LASTEXITCODE -ne 0) { throw "local pipeline exited with code $LASTEXITCODE" }
+    }
     & $Python -c "from pathlib import Path; from trzip.publication_pipeline import validate_frontend_delivery; validate_frontend_delivery(Path(r'$PublicationRoot'))"
     if ($LASTEXITCODE -ne 0) { throw "frontend delivery manifest validation failed" }
     Write-RunLog -Phase "pipeline" -Status "ok"
@@ -113,13 +186,47 @@ try {
     } catch {
         throw "publication status is missing or invalid"
     }
+    if ([string]$PublicationStatus.observed_at -ne $CurrentHour) {
+        throw "local publication does not match the current exact hour"
+    }
     if ($PublicationStatus.publishable -ne $true) {
+        & $Python -m trzip.result_quality --database $DatabasePath `
+            --end $PublicationStatus.observed_at --count 8 --output $QualityOutput | Out-Null
+        if ($LASTEXITCODE -notin @(0,1)) {
+            throw "failed to refresh local result quality after source failure"
+        }
         $SourceDetail = "x={0} google={1}" -f `
             $PublicationStatus.source_status.x,$PublicationStatus.source_status.google_trends
         Write-RunLog -Phase "publish" -Status "local_only" `
             -Detail "same-hour X+Google gate not met; $SourceDetail"
-        exit 0
+        exit 1
     }
+
+    # Record the exact source and frontend-contract proof before considering
+    # remote publication. Repeating the same proof is a no-op; any conflict is
+    # rejected by the immutable SQLite receipt.
+    & $Python -m trzip.result_quality --database $DatabasePath `
+        --end $PublicationStatus.observed_at --count 8 --output $QualityOutput `
+        --record-hourly-validation `
+        --intelligence (Join-Path $PublicationRoot "latest\intelligence.json") `
+        --manifest (Join-Path $PublicationRoot "latest\manifest.json") | Out-Null
+    $LocalQualityExitCode = $LASTEXITCODE
+    if ($LocalQualityExitCode -notin @(0,1)) {
+        throw "hourly validation receipt failed; exit=$LocalQualityExitCode"
+    }
+    & $Python -m trzip.result_quality --database $DatabasePath `
+        --end $PublicationStatus.observed_at --hourly-receipt-exists
+    if ($LASTEXITCODE -ne 0) { throw "hourly validation receipt was not persisted" }
+    $LocalQuality = Get-Content -LiteralPath $QualityOutput -Raw -Encoding utf8 | ConvertFrom-Json
+    $LocalStreak = $LocalQuality.local_hourly_validation.current_consecutive_success_count
+    $LocalRemaining = $LocalQuality.local_hourly_validation.remaining_success_hours
+    $LocalStatus = if ($LocalQuality.local_hourly_validation.passed -eq $true) {
+        "complete"
+    } else {
+        "in_progress"
+    }
+    Write-RunLog -Phase "hourly_validation" -Status $LocalStatus `
+        -Detail "streak=$LocalStreak/8 remaining=$LocalRemaining receipt=immutable"
 
     # Collection, ledger updates, rolling analysis and enrichment queues run
     # every hour above. The public frontend snapshot is intentionally promoted
@@ -172,7 +279,7 @@ try {
         throw "publication preflight failed before remote push; $SourceRows; failures=$($Preflight.contract.failures -join ',')"
     }
     Write-RunLog -Phase "preflight" -Status "ok" `
-        -Detail "source-v2 and frontend-v5 contracts passed before remote publication"
+        -Detail "source-v2 and frontend-v8 contracts passed before remote publication"
 
     # A verified hour is immutable.  Reject a newly generated publication for
     # that same hour before copying, committing, or pushing any remote bytes.
@@ -180,7 +287,7 @@ try {
         --end $PublicationStatus.observed_at --assert-receipt-available `
         --publication-id $PublicationStatus.publication_id
     if ($LASTEXITCODE -ne 0) {
-        throw "immutable hourly receipt conflicts with generated publication; remote was not changed"
+        throw "immutable daily publication receipt conflicts with generated publication; remote was not changed"
     }
 
     $DirtyBefore = @(& git -C $LiveDataRoot status --porcelain)
@@ -279,9 +386,33 @@ try {
     if ($LASTEXITCODE -ne 0 -or $LocalManifestBlob -ne $RemoteManifestBlob) {
         throw "local publication manifest bytes do not match the verified remote object"
     }
-    # Count an hour only after the exact publication has passed runtime audit
-    # and its remote SHA has been independently verified.
-    $QualityOutput = Join-Path $PublicationRoot "monitoring\result_quality.json"
+    # The list-view delta baseline advances only after the exact frontend
+    # publication has been independently verified on the remote branch.
+    $CurrentIntelligencePath = Join-Path $PublicationRoot "latest\intelligence.json"
+    try {
+        $CurrentIntelligence = Get-Content -LiteralPath $CurrentIntelligencePath `
+            -Raw -Encoding utf8 | ConvertFrom-Json
+    } catch {
+        throw "current intelligence is missing or invalid after remote verification"
+    }
+    if (
+        $CurrentIntelligence.publication_id -ne $PublicationStatus.publication_id -or
+        $null -eq $CurrentIntelligence.presentation_feed
+    ) {
+        throw "current presentation feed does not match the verified remote publication"
+    }
+    $LastRemotePresentation = [ordered]@{
+        publication_id = [string]$PublicationStatus.publication_id
+        observed_at = [string]$PublicationStatus.observed_at
+        presentation_feed = $CurrentIntelligence.presentation_feed
+    }
+    $LastRemotePresentationPath = Join-Path $PublicationRoot `
+        "monitoring\last-remote-presentation.json"
+    Write-AtomicJson -Path $LastRemotePresentationPath -Value $LastRemotePresentation
+    Write-RunLog -Phase "presentation_baseline" -Status "updated" `
+        -Detail "publication_id=$($PublicationStatus.publication_id) remote_verified=true"
+    # Attach the independent daily remote-publication proof to the local hourly
+    # validation result after the remote SHA and manifest bytes are verified.
     & $Python -m trzip.result_quality --database $DatabasePath `
         --end $PublicationStatus.observed_at --count 8 --output $QualityOutput `
         --record-publication --publication-id $PublicationStatus.publication_id `
@@ -304,7 +435,7 @@ try {
     if ($LASTEXITCODE -ne 0) {
         & git -C $LiveDataRoot -c user.name="trzip-local-collector" `
             -c user.email="trzip-local-collector@users.noreply.github.com" `
-            commit -m "data: record verified hourly result $commitStamp"
+            commit -m "data: record verified daily publication $commitStamp"
         if ($LASTEXITCODE -ne 0) { throw "failed to attach verified monitoring result" }
         & git -C $LiveDataRoot push origin "HEAD:refs/heads/live-data"
         if ($LASTEXITCODE -ne 0) { throw "failed to publish verified monitoring result" }
@@ -315,8 +446,28 @@ try {
     $commit = (& git -C $LiveDataRoot rev-parse --short HEAD).Trim()
     Write-RunLog -Phase "publish" -Status "ok" -Detail "$commit remote_verified=true"
 } catch {
-    Write-RunLog -Phase "failed" -Status "error" -Detail $_.Exception.Message
-    Write-Error $_
+    $Failure = $_
+    # Keep the local monitoring view aligned with the newest attempted hour,
+    # even when collection, validation, or the daily remote promotion fails.
+    # A failed attempt cannot create or mutate an hourly validation receipt.
+    if (
+        (Test-Path -LiteralPath $Python) -and
+        (Test-Path -LiteralPath $DatabasePath)
+    ) {
+        try {
+            & $Python -m trzip.result_quality --database $DatabasePath `
+                --end $CurrentHour --count 8 --output $QualityOutput | Out-Null
+            if ($LASTEXITCODE -notin @(0,1)) {
+                Write-RunLog -Phase "monitoring" -Status "refresh_failed" `
+                    -Detail "result_quality exit=$LASTEXITCODE"
+            }
+        } catch {
+            Write-RunLog -Phase "monitoring" -Status "refresh_failed" `
+                -Detail $_.Exception.Message
+        }
+    }
+    Write-RunLog -Phase "failed" -Status "error" -Detail $Failure.Exception.Message
+    Write-Error $Failure
     exit 1
 } finally {
     if ($HasMutex) { $Mutex.ReleaseMutex() }

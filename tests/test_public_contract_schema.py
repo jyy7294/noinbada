@@ -3,7 +3,11 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from jsonschema import Draft202012Validator
-from trzip.presentation_feed import logo_asset_contract_is_valid
+from trzip.presentation_feed import (
+    LOGO_ASSET_VERIFICATION,
+    logo_asset_contract_is_valid,
+    logo_display_contract_is_valid,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -131,11 +135,16 @@ def test_latest_generated_publication_conforms_to_all_public_schemas(tmp_path, m
         for key, size in (("1w", 7), ("1m", 30), ("3m", 13)):
             assert len(item["visualization_series"][key]["combined"]) == size
         assert all(
-            logo_asset_contract_is_valid(
-                company["company"], company["official_domain"], company["logo_url"]
+            (
+                company["logo_render_mode"] == "initials"
+                and company["logo_url"] == ""
+                or logo_asset_contract_is_valid(
+                    company["company"], company["official_domain"], company["logo_url"]
+                )
             )
             and company["logo_asset_verification"]
-            == "static_allowlist_http_200_image_2026_08_15"
+            == LOGO_ASSET_VERIFICATION
+            and logo_display_contract_is_valid(company)
             and len(company["market_snapshot"]["price_series"]) == 30
             for company in item["companies"]
         )

@@ -29,10 +29,14 @@ from .keyword_candidates import sync_provider_keyword_candidates
 from .keyword_policy import keyword_fits_public_label
 from .normalization_evaluation import evaluate_regression_set
 from .presentation_feed import (
+    LOGO_ASSET_VERIFICATION,
+    LOGO_MINIMUM_DIMENSION,
+    LOGO_QUALITY_POLICY,
     PRESENTATION_STAGES,
     REFERENCE_TOP10,
     build_presentation_feed,
     logo_asset_contract_is_valid,
+    logo_display_contract_is_valid,
 )
 from .semantic_adjudication import run_semantic_adjudication
 from .provider_verification import (
@@ -859,6 +863,18 @@ def _validate_presentation_feed(feed: dict) -> None:
     }:
         raise ValueError("frontend presentation_feed schema version is invalid")
     strict_logo_contract = schema_version == "trzip-presentation-feed-v3"
+    logo_policy = feed.get("logo_policy") or {}
+    strict_display_logo_contract = logo_policy.get("version") == LOGO_QUALITY_POLICY
+    if logo_policy and (
+        not strict_display_logo_contract
+        or logo_policy.get("avatar_size_px") != 44
+        or logo_policy.get("minimum_raster_dimension_px")
+        != LOGO_MINIMUM_DIMENSION
+        or logo_policy.get("vector_assets_allowed") is not True
+        or logo_policy.get("low_resolution_fallback") != "initials"
+        or logo_policy.get("runtime_probe_for_generic_favicons") is not True
+    ):
+        raise ValueError("frontend presentation logo quality policy is invalid")
     if feed.get("status") != "ready" or feed.get("frontend_default") is not True:
         raise ValueError("frontend presentation_feed is not ready as the default feed")
     if len(items) != 10:
@@ -875,6 +891,38 @@ def _validate_presentation_feed(feed: dict) -> None:
         position = item["presentation_position"]
         if item.get("presentation_rank") != position or item.get("current_rank") != position:
             raise ValueError("frontend presentation rank aliases must match the Top10 position")
+        movement = item.get("rank_movement") or {}
+        if schema_version == "trzip-presentation-feed-v3":
+            status = movement.get("status")
+            delta = movement.get("delta")
+            previous_rank = movement.get("previous_rank")
+            expected_labels = {
+                "new": "NEW",
+                "unchanged": "유지",
+            }
+            if (
+                movement.get("current_rank") != position
+                or movement.get("basis") != "previous_published_presentation_feed"
+                or status not in {"new", "unchanged", "up", "down"}
+            ):
+                raise ValueError("frontend presentation rank movement contract is invalid")
+            if status == "new":
+                valid_movement = previous_rank is None and delta is None
+            elif not isinstance(previous_rank, int) or not isinstance(delta, int):
+                valid_movement = False
+            elif status == "unchanged":
+                valid_movement = delta == 0 and previous_rank == position
+            elif status == "up":
+                valid_movement = delta > 0 and previous_rank - position == delta
+            else:
+                valid_movement = delta < 0 and previous_rank - position == delta
+            expected_label = expected_labels.get(status)
+            if status == "up" and isinstance(delta, int):
+                expected_label = f"▲{delta}"
+            if status == "down" and isinstance(delta, int):
+                expected_label = f"▼{abs(delta)}"
+            if not valid_movement or movement.get("label") != expected_label:
+                raise ValueError("frontend presentation rank movement contract is invalid")
         if item.get("ranking_effect") != "none":
             raise ValueError("frontend presentation_feed cannot affect canonical ranking")
         if not str(item.get("trend_definition") or "").strip():
@@ -974,24 +1022,46 @@ def _validate_presentation_feed(feed: dict) -> None:
                 raise ValueError("frontend presentation companies require public HTTP evidence")
             official_domain = str(company.get("official_domain") or "").strip().casefold()
             logo_url = str(company.get("logo_url") or "").strip()
+            initials_fallback = (
+                strict_display_logo_contract
+                and company.get("logo_render_mode") == "initials"
+            )
             if (
                 not official_domain
                 or "." not in official_domain
-                or not logo_url.startswith(("http://", "https://"))
+                or (
+                    not initials_fallback
+                    and not logo_url.startswith(("http://", "https://"))
+                )
             ):
                 raise ValueError("frontend presentation companies require an official-domain logo")
             if strict_logo_contract and (
-                not logo_asset_contract_is_valid(
-                    str(company.get("company") or ""), official_domain, logo_url
+                (
+                    not initials_fallback
+                    and not logo_asset_contract_is_valid(
+                        str(company.get("company") or ""), official_domain, logo_url
+                    )
                 )
                 or company.get("logo_asset_source") not in {
-                    "official_page_asset", "official_domain_declared_favicon",
+                    "official_page_asset",
+                    "official_domain_declared_favicon",
+                    "initials_fallback",
                 }
                 or not str(company.get("logo_asset_host") or "").strip()
-                or company.get("logo_asset_verification")
-                != "static_allowlist_http_200_image_2026_08_15"
+                or company.get("logo_asset_verification") not in {
+                    "static_allowlist_http_200_image_2026_08_15",
+                    LOGO_ASSET_VERIFICATION,
+                }
             ):
                 raise ValueError("frontend presentation companies require verified v3 logo metadata")
+            if strict_display_logo_contract and (
+                company.get("logo_quality_policy") != LOGO_QUALITY_POLICY
+                or company.get("logo_asset_verification") != LOGO_ASSET_VERIFICATION
+                or not logo_display_contract_is_valid(company)
+            ):
+                raise ValueError(
+                    "frontend presentation companies require a blur-safe logo display contract"
+                )
             snapshot = company.get("market_snapshot") or {}
             if (
                 snapshot.get("display_only") is not True
@@ -1936,7 +2006,14 @@ def run(root: Path, *, retention_days: int = 0, database_path: Path | None = Non
     # enrichment pass. Some passes rebuild the live contract and intentionally
     # discard non-canonical keys, so attaching it earlier would make the final
     # publication and the frontend delivery disagree.
-    intelligence["presentation_feed"] = build_presentation_feed(intelligence)
+    previous_remote_presentation = _read_json(
+        root / "monitoring" / "last-remote-presentation.json",
+        {},
+    )
+    intelligence["presentation_feed"] = build_presentation_feed(
+        intelligence,
+        previous_feed=previous_remote_presentation.get("presentation_feed"),
+    )
     # Manual daily lists are enrichment caches only. They must never select,
     # promote, suppress, score or categorise a live trend.
     intelligence["editorial_review_pack"] = build_editorial_review_pack(

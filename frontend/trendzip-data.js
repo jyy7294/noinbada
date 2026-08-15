@@ -110,12 +110,41 @@ function dataStatus(payload, metadata, runtimeStatus, { fromCache = false, now =
   };
 }
 
-function rankDelta(item) {
-  const values = Object.values(item.rank_change_by_source || {}).filter(Number.isFinite);
-  if (!values.length) return item.lifecycle === 'new' ? '신규 포착' : '순위 유지';
-  const best = [...values].sort((a, b) => Math.abs(b) - Math.abs(a))[0];
-  if (best === 0) return '순위 유지';
-  return best > 0 ? `순위 +${best}` : `순위 ${best}`;
+function rankMovement(item, presentationItem) {
+  const explicit = item.rank_movement;
+  if (
+    explicit
+    && ['new', 'unchanged', 'up', 'down'].includes(explicit.status)
+    && typeof explicit.label === 'string'
+  ) {
+    return explicit;
+  }
+  if (presentationItem) {
+    return {
+      current_rank: Number(item.presentation_position || item.current_rank || 0),
+      previous_rank: null,
+      delta: null,
+      status: 'new',
+      label: 'NEW',
+      basis: 'previous_published_presentation_feed',
+    };
+  }
+  const periodChange = Number.isFinite(item.rank_change) ? Number(item.rank_change) : null;
+  const sourceValues = Object.values(item.rank_change_by_source || {}).filter(Number.isFinite);
+  const change = periodChange == null && sourceValues.length
+    ? [...sourceValues].sort((a, b) => Math.abs(b) - Math.abs(a))[0]
+    : periodChange;
+  if (change == null || item.rank_change_status === 'new_in_period') {
+    return { status: 'new', label: 'NEW', delta: null, previous_rank: null };
+  }
+  if (change === 0) {
+    return { status: 'unchanged', label: '유지', delta: 0 };
+  }
+  return {
+    status: change > 0 ? 'up' : 'down',
+    label: change > 0 ? `▲${change}` : `▼${Math.abs(change)}`,
+    delta: change,
+  };
 }
 
 function normalizeTrend(item) {
@@ -144,6 +173,7 @@ function normalizeTrend(item) {
   const observedDayLabel = item.observed_day_label
     || item.trend_story?.diffusion?.observed_day_label
     || null;
+  const movement = rankMovement(item, presentationItem);
   return {
     id: topic,
     topic,
@@ -153,7 +183,8 @@ function normalizeTrend(item) {
     rankLabel: String(rank || '--').padStart(2, '0'),
     category: item.category,
     categoryKo: item.category_label || CATEGORY_KO[item.category] || '기타',
-    delta: presentationItem ? '발행 순번' : rankDelta(item),
+    delta: movement.label,
+    rankMovement: movement,
     rankKind: presentationItem ? 'publication' : 'observed',
     lifecycle: item.lifecycle,
     lifecycleLabel: item.lifecycle_reason,

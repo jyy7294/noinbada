@@ -15,9 +15,6 @@ def test_frontend_has_no_demo_or_export_ui_copy() -> None:
         "JSON 내보내기",
         "CSV 내보내기",
         "legacyPreviewTrends",
-        "리센느",
-        "두바이초콜릿",
-        "두바이 초콜릿",
         "A식품",
         "H초콜릿",
         "P피스타치오무역",
@@ -42,26 +39,46 @@ def test_company_logos_are_used_across_company_and_portfolio_surfaces() -> None:
     assert "portfolio.companies.map" in INDEX
     assert "center/contain no-repeat" in INDEX
     assert "center/cover no-repeat" not in INDEX
-    assert "img.naturalWidth >= 16" in INDEX
+    assert "img.naturalWidth >= policy.minimum" in INDEX
+    assert "img.naturalHeight >= policy.minimum" in INDEX
+    assert "company.logo_render_mode === 'initials'" in INDEX
+    assert "policy.mode === 'initials'" in INDEX
+    assert "minimum = Math.max(64" in INDEX
+    assert "initialsOnlyLogoDomains = new Set" in INDEX
+    for domain in (
+        "livsmed.com", "monami.com", "kolmar.co.kr",
+        "orionworld.com", "crown.co.kr", "ht.co.kr",
+    ):
+        assert f"'{domain}'" in INDEX
     assert "return this.logoCache[name] || '';" in INDEX
     assert "const logo = company.logo_url ||" not in INDEX
+    assert 'data-my-stash-companies="1"' in INDEX
+    assert "this.activePortfolio.companies.slice(0, 5)" in INDEX
+    assert "companies.map(companyChip).join('')" in INDEX
 
 
 def test_known_company_logos_prefer_verified_official_assets() -> None:
     official_assets = {
-        "nikon.com": "https://www.nikon.com/favicon.ico",
+        "nikon.com": "https://www.nikon.com/etc.clientlibs/nikoncore/clientlibs/clientlib-site/resources/img/logo.svg",
         "teledyne.com": "https://cdn.teledyne.com/assets/common/images/favicon.ico",
-        "hamamatsu.com": "https://www.hamamatsu.com/etc.clientlibs/hpk-global-web/clientlibs/clientlib-site-resources/resources/favicon.ico",
+        "hamamatsu.com": "https://www.hamamatsu.com/content/dam/hamamatsu-photonics/system/images/logo.svg",
         "harim.com": "https://harim.com/main/img/ci.png",
         "harim.co.kr": "https://harim.com/main/img/ci.png",
         "company.emart.com": "https://stimg.emart.com/company/ko/images/common/sub_logo_company.png",
         "emartcompany.com": "https://stimg.emart.com/company/ko/images/common/sub_logo_company.png",
-        "gsretail.com": "https://hpimg.gsretail.com/_ui/desktop/common/images/gsretail/corporation/logo_gs_en.png",
+        "gsretail.com": "https://hpimg.gsretail.com/_ui/desktop/common/images/icon/gsretail_114.png",
         "company.lottetour.com": "https://company.lottetour.com/images/common/header_logo.png",
         "lottetour.com": "https://company.lottetour.com/images/common/header_logo.png",
         "manutd.com": "https://contentfulproxy.stadion.io/unzgbvss5tuy/5GFoxbOTd249o0VhuZNczI/cde0cb3a7b895c6a99f2796433232819/TONAL_CREST_Black%C3%83___3x-png.png?fm=webp&fit=pad&f=center&w=184&h=184",
         "nongshim.com": "https://www.nongshim.com/resources2/images/common/pop-logo.jpg",
         "lottewellfood.com": "https://www.lottewellfood.com/favicon.ico",
+        "wonik.com": "https://wonik.com/assets/images/favicon/apple-icon-144x144.png",
+        "mazetx.com": "https://mazetx.com/wp-content/uploads/2019/10/cropped-apple-touch-icon-192x192.png",
+        "gene.com": "https://www.gene.com/assets/frontend/img/favicon-prefers-light-mode.svg",
+        "doosan.com": "https://www.doosan.com/images/common/favicon-152.png",
+        "bi-nex.com": "https://bi-nex.com/logo192.png",
+        "cj.co.kr": "https://www.cj.co.kr/resources/img/icon.png",
+        "dhflour.co.kr": "https://dhflour.co.kr/image/thumbnail?code=fl6a473a28ed77a&width=144&height=144",
     }
     for domain, url in official_assets.items():
         assert f"'{domain}': '{url}'" in INDEX
@@ -73,14 +90,23 @@ def test_known_company_logos_prefer_verified_official_assets() -> None:
     assert '<link rel="icon" href="data:,">' in INDEX
 
 
-def test_chart_uses_selected_period_and_all_x_google_series() -> None:
-    assert "visualizationSeries: item.visualization_series || {}" in DATA
-    assert "buildChartPanels(t, rangeIndex = 0)" in INDEX
-    assert "['1w', '1m', '3m'][rangeIndex]" in INDEX
-    assert "this.buildChartPanels(curTrend, this.state.range)" in INDEX
-    assert "전체 채널" in INDEX
-    assert "Google 검색" in INDEX
-    assert "domain=x.com" in INDEX
+def test_interest_chart_is_one_combined_keyword_aware_curve() -> None:
+    assert "언급량 추이 · 관심지수" in INDEX
+    assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
+    assert "const count = [7, 11, 13][rangeIndex]" in INDEX
+    assert "const eventRamp = /개기일식|유성우|말복|불꽃축제|메츠|맨유|데포르티보|오디세이/" in INDEX
+    assert "const lateBreakout = /휴머노이드|홈플러스|재개장/" in INDEX
+    assert "const periodProfile = [" in INDEX
+    assert "eventCenter: 0.78" in INDEX
+    assert "values[index - 1] + 0.65" in INDEX
+    assert 'data-interest-line="1"' in INDEX
+    assert 'data-interest-area="1"' in INDEX
+    assert "patchInterestChart()" in INDEX
+    assert "sourceSignals" in INDEX
+    chart_surface = INDEX[INDEX.index("언급량 추이 · 관심지수"): INDEX.index("함께 언급된 키워드")]
+    assert "chartPanels" not in chart_surface
+    assert "전체 채널" not in chart_surface
+    assert "채널 추가하기" not in chart_surface
 
 
 def test_company_sheet_contains_price_chart_and_valuation_metrics() -> None:
@@ -98,6 +124,13 @@ def test_company_sheet_contains_price_chart_and_valuation_metrics() -> None:
     assert 'data-sheet-price-line="1"' in INDEX
     assert 'points="{{ sheetPricePoints }}"' not in INDEX
     assert "patchCompanySheetChart()" in INDEX
+    assert "관계 등급" not in INDEX
+    assert "근거 상태" not in INDEX
+    assert "기업 연결 근거 보기" not in INDEX
+    assert "관심기업 등록" in INDEX
+    assert "키움 종목홈으로 가기" in INDEX
+    assert "trzip_company_watchlist_v1" in INDEX
+    assert "https://www.kiwoom.com/h/domestic/stock/VStockMainView" in INDEX
 
 
 def test_long_home_names_use_two_line_clamp_and_short_name() -> None:
@@ -127,6 +160,19 @@ def test_portfolio_surfaces_hydrate_from_presentation_feed_before_display() -> N
     assert "homeMeta" not in INDEX
 
 
+def test_popular_portfolios_keep_the_approved_community_seed_examples() -> None:
+    for title in (
+        "리센느 매매법",
+        "두바이초콜릿 이름값 3종 담았다",
+        "초콜릿 원재료 쪽으로 파봤습니다",
+        "이름 안 겹쳐도 수혜주는 따로 있다",
+    ):
+        assert title in INDEX
+    for company in ("원익", "리브스메드", "두산", "바이넥스", "한국콜마", "오리온", "CJ제일제당", "대한제분"):
+        assert company in INDEX
+    assert "dataMode: 'seed_portfolio'" in INDEX
+
+
 def test_maker_and_saved_portfolios_use_current_trends_and_companies() -> None:
     assert "hydrateMaker(selectedTrendId)" in INDEX
     assert 'data-trend-id="' in INDEX
@@ -151,3 +197,52 @@ def test_live_data_loader_has_timeout_and_retry_guards() -> None:
     assert "manifest?.bundle?.presentation || manifest?.bundle?.rankings" in DATA
     assert "if (this.publishedView)" in INDEX
     assert "window.__singleScreen(activeScreen)" in INDEX
+
+
+def test_status_bars_show_live_kst_instead_of_fixed_mock_time() -> None:
+    assert INDEX.count('<span data-status-time="kst">') == 8
+    assert ">9:41<" not in INDEX
+    assert "syncStatusClock(now = new Date())" in INDEX
+    assert "timeZone: 'Asia/Seoul'" in INDEX
+    assert "hourCycle: 'h23'" in INDEX
+    assert "60000 - (Date.now() % 60000)" in INDEX
+    assert "setInterval(tick, 60000)" in INDEX
+
+
+def test_list_view_uses_previous_publication_rank_movement_not_weekly_percent() -> None:
+    assert "rankMovement: movement" in DATA
+    assert "previous_published_presentation_feed" in DATA
+    assert "rankMovementLabel" in INDEX
+    assert "movement.status === 'up'" in INDEX
+    assert "movement.status === 'down'" in INDEX
+    assert "이전 발행 대비" in INDEX
+    list_renderer = INDEX[INDEX.index("const list = document.querySelector('[data-list-view2]');"):]
+    list_renderer = list_renderer[: list_renderer.index("  dialGo(label)")]
+    assert "trend.lift" not in list_renderer
+    assert "최근 1주" not in list_renderer
+
+
+def test_prototype_debug_navigation_is_hidden_without_explicit_debug_query() -> None:
+    assert "debugNavEnabled = new URLSearchParams(window.location.search).get('debug') === '1'" in INDEX
+    assert "if (!debugNavEnabled)" in INDEX
+    assert "if (nav) nav.remove();" in INDEX
+
+
+def test_trend_selector_uses_consistent_vector_images_instead_of_unicode_emoji() -> None:
+    assert "const TWEMOJI_SVG_BASE = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/'" in INDEX
+    assert '<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">' in INDEX
+    assert 'src="{{ opt.optIconUrl }}"' in INDEX
+    assert 'alt="{{ opt.optIconAlt }}"' in INDEX
+    assert 'object-fit:contain' in INDEX
+    assert 'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';"' in INDEX
+    assert '{{ opt.optIconFallback }}' in INDEX
+    assert '{{ opt.optEmoji }}' not in INDEX
+    assert 'optEmoji: t.emoji' not in INDEX
+
+    # 유성우는 일식·달 아이콘을 재사용하지 않고 별똥별 벡터를 쓴다.
+    assert "[/페르세우스|유성우|별똥별/, '1f320', '유']" in INDEX
+    assert "[/개기일식|일식/, '1f311', '일']" in INDEX
+
+    # 승인 Top10의 모든 의미 유형이 하나의 핀 고정 벡터 라이브러리로 매핑된다.
+    for code in ('1f320', '1f311', '1f372', '1f386', '26be', '26bd', '1f3ac', '1f916', '1f3ec'):
+        assert f"'{code}'" in INDEX

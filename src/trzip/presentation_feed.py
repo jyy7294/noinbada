@@ -17,6 +17,9 @@ from .keyword_policy import keyword_fits_public_label, normalized_keyword_text
 
 VERIFIED_AT = "2026-08-14T00:00:00+00:00"
 GOOGLE_TRENDS_KR = "https://trends.google.com/trending?geo=KR"
+LOGO_MINIMUM_DIMENSION = 64
+LOGO_QUALITY_POLICY = "avatar-sharpness-v1"
+LOGO_ASSET_VERIFICATION = "static_allowlist_image_quality_2026_08_15"
 
 
 COMPANY_DOMAINS = {
@@ -57,37 +60,74 @@ COMPANY_LOGO_ASSETS = {
     "Nikon": {
         "official_domain": "nikon.com",
         "asset_host": "www.nikon.com",
-        "url": "https://www.nikon.com/favicon.ico",
+        "url": (
+            "https://www.nikon.com/etc.clientlibs/nikoncore/clientlibs/"
+            "clientlib-site/resources/img/logo.svg"
+        ),
+        "format": "svg",
+        "width": 68,
+        "height": 68,
+        "render_mode": "image",
     },
     "Teledyne Technologies": {
         "official_domain": "teledyne.com",
         "asset_host": "cdn.teledyne.com",
         "url": "https://cdn.teledyne.com/assets/common/images/favicon.ico",
+        "format": "ico",
+        "width": 16,
+        "height": 16,
+        "render_mode": "initials",
     },
     "Hamamatsu Photonics": {
         "official_domain": "hamamatsu.com",
         "asset_host": "www.hamamatsu.com",
-        "url": "https://www.hamamatsu.com/etc.clientlibs/hpk-global-web/clientlibs/clientlib-site-resources/resources/favicon.ico",
+        "url": (
+            "https://www.hamamatsu.com/content/dam/hamamatsu-photonics/"
+            "system/images/logo.svg"
+        ),
+        "format": "svg",
+        "width": 180,
+        "height": 26,
+        "render_mode": "image",
     },
     "하림": {
         "official_domain": "harim.com",
         "asset_host": "harim.com",
         "url": "https://harim.com/main/img/ci.png",
+        "format": "png",
+        "width": 198,
+        "height": 149,
+        "render_mode": "image",
     },
     "이마트": {
         "official_domain": "company.emart.com",
         "asset_host": "stimg.emart.com",
         "url": "https://stimg.emart.com/company/ko/images/common/sub_logo_company.png",
+        "format": "png",
+        "width": 53,
+        "height": 17,
+        "render_mode": "initials",
     },
     "GS리테일": {
         "official_domain": "gsretail.com",
         "asset_host": "hpimg.gsretail.com",
-        "url": "https://hpimg.gsretail.com/_ui/desktop/common/images/gsretail/corporation/logo_gs_en.png",
+        "url": (
+            "https://hpimg.gsretail.com/_ui/desktop/common/images/"
+            "icon/gsretail_114.png"
+        ),
+        "format": "png",
+        "width": 114,
+        "height": 114,
+        "render_mode": "image",
     },
     "롯데관광개발": {
         "official_domain": "company.lottetour.com",
         "asset_host": "company.lottetour.com",
         "url": "https://company.lottetour.com/images/common/header_logo.png",
+        "format": "png",
+        "width": 89,
+        "height": 32,
+        "render_mode": "initials",
     },
     "Manchester United plc": {
         "official_domain": "manutd.com",
@@ -97,22 +137,48 @@ COMPANY_LOGO_ASSETS = {
             "5GFoxbOTd249o0VhuZNczI/cde0cb3a7b895c6a99f2796433232819/"
             "TONAL_CREST_Black%C3%83___3x-png.png?fm=webp&fit=pad&f=center&w=184&h=184"
         ),
+        "format": "webp",
+        "width": 184,
+        "height": 184,
+        "render_mode": "image",
     },
     "농심": {
         "official_domain": "nongshim.com",
         "asset_host": "www.nongshim.com",
         "url": "https://www.nongshim.com/resources2/images/common/pop-logo.jpg",
+        "format": "jpeg",
+        "width": 103,
+        "height": 44,
+        "render_mode": "initials",
     },
     "롯데웰푸드": {
         "official_domain": "lottewellfood.com",
         "asset_host": "www.lottewellfood.com",
         "url": "https://www.lottewellfood.com/favicon.ico",
+        "format": "ico",
+        "width": 48,
+        "height": 48,
+        "render_mode": "initials",
     },
 }
 
 COMPANY_LOGO_OVERRIDES = {
     company: str(asset["url"])
     for company, asset in COMPANY_LOGO_ASSETS.items()
+}
+
+# Immutable v3 publications created before avatar-sharpness-v1 keep validating
+# during audit. New feeds never select these lower-resolution URLs.
+LEGACY_COMPANY_LOGO_URLS = {
+    "Nikon": "https://www.nikon.com/favicon.ico",
+    "Hamamatsu Photonics": (
+        "https://www.hamamatsu.com/etc.clientlibs/hpk-global-web/clientlibs/"
+        "clientlib-site-resources/resources/favicon.ico"
+    ),
+    "GS리테일": (
+        "https://hpimg.gsretail.com/_ui/desktop/common/images/gsretail/"
+        "corporation/logo_gs_en.png"
+    ),
 }
 
 
@@ -128,9 +194,12 @@ def logo_asset_contract_is_valid(
         return False
     asset = COMPANY_LOGO_ASSETS.get(company)
     if asset is not None:
+        accepted_urls = {str(asset["url"])}
+        if company in LEGACY_COMPANY_LOGO_URLS:
+            accepted_urls.add(LEGACY_COMPANY_LOGO_URLS[company])
         return (
             normalized_domain == str(asset["official_domain"]).casefold()
-            and normalized_url == asset["url"]
+            and normalized_url in accepted_urls
             and parsed.hostname == str(asset["asset_host"]).casefold()
         )
     expected = (
@@ -138,6 +207,59 @@ def logo_asset_contract_is_valid(
         f"https%3A%2F%2F{normalized_domain}"
     )
     return normalized_url == expected
+
+
+def logo_display_contract_is_valid(company: dict) -> bool:
+    """Validate the offline policy that prevents low-resolution avatar upscaling.
+
+    Official vector assets are resolution independent.  Raster assets are
+    rendered only when both natural dimensions meet the 64px floor.  Generic
+    favicon results have unstable dimensions, so the browser must probe them
+    and fall back to initials when the floor is not met.
+    """
+
+    mode = str(company.get("logo_render_mode") or "")
+    asset_format = str(company.get("logo_asset_format") or "").casefold()
+    width = company.get("logo_asset_width")
+    height = company.get("logo_asset_height")
+    minimum = company.get("logo_minimum_dimension")
+    runtime_probe = company.get("logo_runtime_probe_required")
+    quality = str(company.get("logo_asset_quality") or "")
+    if minimum != LOGO_MINIMUM_DIMENSION or not quality:
+        return False
+    if mode == "image":
+        if runtime_probe is not False:
+            return False
+        asset = COMPANY_LOGO_ASSETS.get(str(company.get("company") or ""))
+        if asset is not None and str(company.get("logo_url") or "") != asset["url"]:
+            return False
+        return asset_format == "svg" or (
+            isinstance(width, int)
+            and isinstance(height, int)
+            and width >= minimum
+            and height >= minimum
+        )
+    if mode == "initials":
+        return (
+            runtime_probe is False
+            and isinstance(width, int)
+            and isinstance(height, int)
+            and (width < minimum or height < minimum)
+            and not str(company.get("logo_url") or "").strip()
+            and str(company.get("logo_rejected_asset_url") or "").startswith(
+                "https://"
+            )
+        )
+    if mode == "runtime_probe":
+        return (
+            runtime_probe is True
+            and asset_format == "remote_declared_icon"
+            and width == 0
+            and height == 0
+            and company.get("logo_asset_source")
+            == "official_domain_declared_favicon"
+        )
+    return False
 
 
 SUPPLEMENT_COMPANY_CATALOG = {
@@ -689,16 +811,28 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
         raise ValueError(f"{display_name}: public company evidence URL is required for {company}")
     if not official_domain or "." not in official_domain or "/" in official_domain:
         raise ValueError(f"{display_name}: official company domain is required for {company}")
-    logo_url = COMPANY_LOGO_OVERRIDES.get(
-        company,
-        # domain_url asks Google's favicon endpoint to resolve the official
-        # site's declared icon. Explicit official assets are preferred where
-        # the proxy is known to return a missing image.
-        f"https://www.google.com/s2/favicons?sz=128&domain_url=https%3A%2F%2F{official_domain}",
-    )
-    if not logo_asset_contract_is_valid(company, official_domain, logo_url):
-        raise ValueError(f"{display_name}: logo asset contract is invalid for {company}")
     logo_asset = COMPANY_LOGO_ASSETS.get(company)
+    logo_render_mode = (
+        str(logo_asset["render_mode"]) if logo_asset else "runtime_probe"
+    )
+    logo_url = (
+        ""
+        if logo_render_mode == "initials"
+        else COMPANY_LOGO_OVERRIDES.get(
+            company,
+            # domain_url asks Google's favicon endpoint to resolve the official
+            # site's declared icon. The browser still applies the natural-size
+            # gate because proxy results can change over time.
+            f"https://www.google.com/s2/favicons?sz=128&domain_url=https%3A%2F%2F{official_domain}",
+        )
+    )
+    if logo_url and not logo_asset_contract_is_valid(company, official_domain, logo_url):
+        raise ValueError(f"{display_name}: logo asset contract is invalid for {company}")
+    logo_asset_format = (
+        str(logo_asset["format"]) if logo_asset else "remote_declared_icon"
+    )
+    logo_asset_width = int(logo_asset["width"]) if logo_asset else 0
+    logo_asset_height = int(logo_asset["height"]) if logo_asset else 0
 
     row = with_company_role({
         **source,
@@ -720,13 +854,36 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
         "official_domain": official_domain,
         "logo_url": logo_url,
         "logo_asset_source": (
-            "official_page_asset" if logo_asset else "official_domain_declared_favicon"
+            "initials_fallback"
+            if logo_render_mode == "initials"
+            else "official_page_asset"
+            if logo_asset
+            else "official_domain_declared_favicon"
         ),
         "logo_asset_host": (
             str(logo_asset["asset_host"])
             if logo_asset else "www.google.com"
         ),
-        "logo_asset_verification": "static_allowlist_http_200_image_2026_08_15",
+        "logo_asset_verification": LOGO_ASSET_VERIFICATION,
+        "logo_quality_policy": LOGO_QUALITY_POLICY,
+        "logo_render_mode": logo_render_mode,
+        "logo_asset_format": logo_asset_format,
+        "logo_asset_width": logo_asset_width,
+        "logo_asset_height": logo_asset_height,
+        "logo_minimum_dimension": LOGO_MINIMUM_DIMENSION,
+        "logo_runtime_probe_required": logo_render_mode == "runtime_probe",
+        "logo_asset_quality": (
+            "vector"
+            if logo_asset_format == "svg"
+            else "high_resolution"
+            if logo_render_mode == "image"
+            else "initials_fallback"
+            if logo_render_mode == "initials"
+            else "unverified_dimensions_runtime_gate"
+        ),
+        "logo_rejected_asset_url": (
+            str(logo_asset["url"]) if logo_render_mode == "initials" else ""
+        ),
         "market_snapshot": _market_snapshot(company, ticker, market),
         "candidate_rank": position,
         "verification_status": "evidence_verified",
@@ -737,6 +894,8 @@ def _presentation_company_row(display_name: str, position: int, source: dict) ->
     })
     if not row.get("company_role_public"):
         raise ValueError(f"{display_name}: explicit public company role is required for {company}")
+    if not logo_display_contract_is_valid(row):
+        raise ValueError(f"{display_name}: logo display contract is invalid for {company}")
     return row
 
 
@@ -865,19 +1024,96 @@ def _reference_card(reference: dict, candidates: list[dict]) -> dict:
     }
 
 
-def build_presentation_feed(intelligence: dict) -> dict:
+def _presentation_identity(item: dict) -> tuple[str, ...]:
+    """Return stable identifiers used only for publication-to-publication movement."""
+
+    return tuple(
+        key
+        for key in {
+            _key(item.get("event_key")),
+            _key(item.get("display_name")),
+            _key(item.get("topic")),
+        }
+        if key
+    )
+
+
+def _presentation_movement(
+    item: dict,
+    current_position: int,
+    previous_items: list[dict],
+) -> dict:
+    current_identity = set(_presentation_identity(item))
+    previous = next(
+        (
+            row
+            for row in previous_items
+            if current_identity & set(_presentation_identity(row))
+        ),
+        None,
+    )
+    previous_position = None
+    if previous is not None:
+        raw_position = previous.get("presentation_position") or previous.get("current_rank")
+        if isinstance(raw_position, int) and 1 <= raw_position <= 10:
+            previous_position = raw_position
+    if previous_position is None:
+        return {
+            "current_rank": current_position,
+            "previous_rank": None,
+            "delta": None,
+            "status": "new",
+            "label": "NEW",
+            "basis": "previous_published_presentation_feed",
+        }
+    delta = previous_position - current_position
+    if delta > 0:
+        status, label = "up", f"▲{delta}"
+    elif delta < 0:
+        status, label = "down", f"▼{abs(delta)}"
+    else:
+        status, label = "unchanged", "유지"
+    return {
+        "current_rank": current_position,
+        "previous_rank": previous_position,
+        "delta": delta,
+        "status": status,
+        "label": label,
+        "basis": "previous_published_presentation_feed",
+    }
+
+
+def build_presentation_feed(
+    intelligence: dict,
+    *,
+    previous_feed: dict | None = None,
+) -> dict:
     """Return the exact reviewed Top10 in the order approved by the user."""
 
     candidates = list(intelligence.get("unified_ranking") or [])
     items = [_reference_card(item, candidates) for item in REFERENCE_TOP10]
+    previous_items = list((previous_feed or {}).get("items") or [])
     for position, item in enumerate(items, 1):
         item["presentation_position"] = position
         item["presentation_rank"] = position
         item["current_rank"] = position
+        item["rank_movement"] = _presentation_movement(
+            item,
+            position,
+            previous_items,
+        )
     return {
         "schema_version": "trzip-presentation-feed-v3",
         "status": "ready",
         "frontend_default": True,
+        "logo_policy": {
+            "version": LOGO_QUALITY_POLICY,
+            "avatar_size_px": 44,
+            "minimum_raster_dimension_px": LOGO_MINIMUM_DIMENSION,
+            "vector_assets_allowed": True,
+            "low_resolution_fallback": "initials",
+            "runtime_probe_for_generic_favicons": True,
+        },
         "items": items,
         "transition": {
             "enabled": False,

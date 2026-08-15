@@ -12,7 +12,12 @@ from .company_roles import COMPANY_ROLE_LABELS
 from .hourly_store import ELIGIBLE_COLLECTOR_SQL
 from .keyword_policy import keyword_fits_public_label
 from .ontology import MINIMUM_FRONTEND_COMPANIES
-from .presentation_feed import logo_asset_contract_is_valid
+from .presentation_feed import (
+    LOGO_ASSET_VERIFICATION,
+    LOGO_QUALITY_POLICY,
+    logo_asset_contract_is_valid,
+    logo_display_contract_is_valid,
+)
 from .readiness import MVP_CONSECUTIVE_SOURCE_HOURS
 
 
@@ -21,6 +26,11 @@ PUBLIC_BROAD_CATEGORIES = {
     "consumer", "technology", "market",
 }
 PUBLIC_RELATION_TIERS = {"direct", "value_chain", "industry_watch"}
+HOURLY_VALIDATION_RECEIPT_POLICY = "hourly-local-validation-receipt-v1"
+CURRENT_FRONTEND_RESULT_POLICIES = {
+    "frontend-result-quality-v7",  # canonical rank-free home_feed
+    "frontend-result-quality-v8",  # reviewed presentation_feed frontend
+}
 
 
 def _is_git_or_sha256_hex(value: object, lengths: set[int]) -> bool:
@@ -31,6 +41,458 @@ def _is_git_or_sha256_hex(value: object, lengths: set[int]) -> bool:
 def _valid_public_url(value: str) -> bool:
     parsed = urlparse(value)
     return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def _presentation_logo_contract_is_valid(company: dict) -> bool:
+    """Validate a v3 logo row without requiring a deliberately blank image URL.
+
+    The display policy has three valid modes: a verified sharp image, a
+    browser-probed official-domain icon, or initials when the only reviewed
+    raster is too small.  Initials are a quality-preserving result, not a
+    missing-logo state.
+    """
+
+    company_name = str(company.get("company") or "").strip()
+    official_domain = str(company.get("official_domain") or "").strip().casefold()
+    mode = str(company.get("logo_render_mode") or "").strip()
+    logo_url = str(company.get("logo_url") or "").strip()
+    if (
+        not company_name
+        or not official_domain
+        or "." not in official_domain
+        or "/" in official_domain
+        or not str(company.get("logo_asset_host") or "").strip()
+        or company.get("logo_asset_verification") != LOGO_ASSET_VERIFICATION
+        or company.get("logo_quality_policy") != LOGO_QUALITY_POLICY
+        or not logo_display_contract_is_valid(company)
+    ):
+        return False
+    if mode == "initials":
+        return (
+            company.get("logo_asset_source") == "initials_fallback"
+            and not logo_url
+            and _valid_public_url(
+                str(company.get("logo_rejected_asset_url") or "").strip()
+            )
+        )
+    if mode == "image":
+        expected_source = "official_page_asset"
+    elif mode == "runtime_probe":
+        expected_source = "official_domain_declared_favicon"
+    else:
+        return False
+    return (
+        company.get("logo_asset_source") == expected_source
+        and _valid_public_url(logo_url)
+        and logo_asset_contract_is_valid(company_name, official_domain, logo_url)
+    )
+
+
+def _canonical_json(value: object) -> str:
+    return json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+
+
+def _normalized_exact_hour(value: str | datetime) -> tuple[datetime, str]:
+    parsed = datetime.fromisoformat(value) if isinstance(value, str) else value
+    if parsed.tzinfo is None:
+        raise ValueError("hourly validation time must include a timezone")
+    normalized = parsed.astimezone(UTC).replace(minute=0, second=0, microsecond=0)
+    if parsed.astimezone(UTC) != normalized:
+        raise ValueError("hourly validation time must be an exact UTC hour")
+    return normalized, normalized.isoformat()
+
+
+def _table_exists(connection: sqlite3.Connection, name: str) -> bool:
+    return connection.execute(
+        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",
+        (name,),
+    ).fetchone() is not None
+
+
+def _ensure_hourly_validation_tables(connection: sqlite3.Connection) -> None:
+    connection.executescript(
+        """
+        CREATE TABLE IF NOT EXISTS hourly_validation_receipts (
+            observed_at TEXT PRIMARY KEY,
+            validated_at TEXT NOT NULL,
+            policy_version TEXT NOT NULL,
+            publication_id TEXT NOT NULL,
+            frontend_manifest_sha256 TEXT NOT NULL,
+            source_snapshot_sha256 TEXT NOT NULL,
+            contract_json TEXT NOT NULL,
+            source_gate_json TEXT NOT NULL,
+            receipt_sha256 TEXT NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS hourly_validation_triggers (
+            observed_at TEXT PRIMARY KEY,
+            registered_at TEXT NOT NULL
+        );
+        CREATE TABLE IF NOT EXISTS hourly_validation_gaps (
+            observed_at TEXT PRIMARY KEY,
+            detected_at TEXT NOT NULL,
+            detected_by_hour TEXT NOT NULL,
+            reason TEXT NOT NULL
+        );
+        """
+    )
+    columns = {
+        row[1]
+        for row in connection.execute("PRAGMA table_info(hourly_validation_receipts)")
+    }
+    if "publication_id" not in columns:
+        connection.execute(
+            "ALTER TABLE hourly_validation_receipts ADD COLUMN publication_id TEXT"
+        )
+    if "frontend_manifest_sha256" not in columns:
+        connection.execute(
+            "ALTER TABLE hourly_validation_receipts "
+            "ADD COLUMN frontend_manifest_sha256 TEXT"
+        )
+
+
+def _source_snapshot_sha256(path: Path, observed_at: str) -> str:
+    connection = sqlite3.connect(path)
+    try:
+        rows = connection.execute(
+            """
+            SELECT source, topic, source_rank, value, provenance,
+                   COALESCE(source_payload_json, ''),
+                   COALESCE(related_terms_json, ''),
+                   COALESCE(collector_version, '')
+            FROM hourly_observations
+            WHERE observed_at=? AND source IN ('x', 'google_trends')
+              AND provenance='observed'
+              AND {ELIGIBLE_COLLECTOR_SQL}
+            ORDER BY source, source_rank, topic
+            """.format(ELIGIBLE_COLLECTOR_SQL=ELIGIBLE_COLLECTOR_SQL),
+            (observed_at,),
+        ).fetchall()
+    finally:
+        connection.close()
+    encoded = _canonical_json([list(row) for row in rows]).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _hourly_receipt_digest(
+    *, observed_at: str, publication_id: str,
+    frontend_manifest_sha256: str, source_snapshot_sha256: str,
+    contract: dict, source_gate: dict,
+) -> str:
+    payload = {
+        "policy_version": HOURLY_VALIDATION_RECEIPT_POLICY,
+        "observed_at": observed_at,
+        "publication_id": publication_id,
+        "frontend_manifest_sha256": frontend_manifest_sha256,
+        "source_snapshot_sha256": source_snapshot_sha256,
+        "contract": contract,
+        "source_gate": source_gate,
+    }
+    return hashlib.sha256(_canonical_json(payload).encode("utf-8")).hexdigest()
+
+
+def register_hourly_trigger(path: Path, at: datetime) -> dict:
+    """Register one invocation and immutably mark skipped exact hours.
+
+    The first invocation uses the latest existing collection audit as its
+    baseline, so deploying this monitor does not manufacture historical gaps.
+    Later invocations record every absent trigger between the two exact hours.
+    """
+
+    normalized, stamp = _normalized_exact_hour(at)
+    connection = sqlite3.connect(path)
+    try:
+        _ensure_hourly_validation_tables(connection)
+        connection.commit()
+        connection.execute("BEGIN IMMEDIATE")
+        previous_row = connection.execute(
+            "SELECT MAX(observed_at) FROM hourly_validation_triggers"
+        ).fetchone()
+        previous_stamp = previous_row[0] if previous_row else None
+        if previous_stamp is None:
+            candidates: list[str] = []
+            for table in ("collection_audit", "hourly_validation_receipts"):
+                if _table_exists(connection, table):
+                    row = connection.execute(
+                        f"SELECT MAX(observed_at) FROM {table}"
+                    ).fetchone()
+                    if row and row[0]:
+                        candidates.append(str(row[0]))
+            previous_stamp = max(candidates, default=None)
+        previous = (
+            datetime.fromisoformat(previous_stamp).astimezone(UTC)
+            if previous_stamp else None
+        )
+        if previous and normalized < previous:
+            raise ValueError("hourly trigger precedes the last registered trigger")
+
+        detected_at = datetime.now(UTC).isoformat()
+        missed: list[str] = []
+        cursor = previous + timedelta(hours=1) if previous else normalized
+        while cursor < normalized:
+            missing_stamp = cursor.isoformat()
+            has_receipt = connection.execute(
+                "SELECT 1 FROM hourly_validation_receipts WHERE observed_at=?",
+                (missing_stamp,),
+            ).fetchone()
+            has_audit = (
+                _table_exists(connection, "collection_audit")
+                and connection.execute(
+                    "SELECT 1 FROM collection_audit WHERE observed_at=? LIMIT 1",
+                    (missing_stamp,),
+                ).fetchone()
+            )
+            if not has_receipt and not has_audit:
+                connection.execute(
+                    """
+                    INSERT OR IGNORE INTO hourly_validation_gaps(
+                        observed_at, detected_at, detected_by_hour, reason
+                    ) VALUES (?, ?, ?, 'missed_trigger')
+                    """,
+                    (missing_stamp, detected_at, stamp),
+                )
+                missed.append(missing_stamp)
+            cursor += timedelta(hours=1)
+        connection.execute(
+            "INSERT OR IGNORE INTO hourly_validation_triggers(observed_at, registered_at) "
+            "VALUES (?, ?)",
+            (stamp, detected_at),
+        )
+        connection.commit()
+    except Exception:
+        connection.rollback()
+        raise
+    finally:
+        connection.close()
+    return {
+        "policy_version": "hourly-trigger-gap-monitor-v1",
+        "observed_at": stamp,
+        "missed_hours": missed,
+    }
+
+
+def record_hourly_validation_receipt(
+    path: Path, *, observed_at: str, publication_id: str,
+    frontend_manifest_sha256: str, contract: dict, source_gate: dict,
+) -> dict:
+    """Persist an immutable local proof for one fully validated exact hour."""
+
+    _, stamp = _normalized_exact_hour(observed_at)
+    connection = sqlite3.connect(path)
+    try:
+        _ensure_hourly_validation_tables(connection)
+        connection.commit()
+        connection.execute("BEGIN IMMEDIATE")
+        # Hold the SQLite writer reservation while deriving and inserting the
+        # proof so source rows cannot change between validation and hashing.
+        actual_source_gate = _source_gate(path, stamp)
+        if source_gate != actual_source_gate:
+            raise ValueError("hourly validation source gate does not match the ledger")
+        if (
+            source_gate.get("policy_version") != "hourly-source-proof-v2"
+            or source_gate.get("passed") is not True
+        ):
+            raise ValueError("hourly validation source gate did not pass")
+        if (
+            contract.get("policy_version") not in CURRENT_FRONTEND_RESULT_POLICIES
+            or contract.get("passed") is not True
+        ):
+            raise ValueError("hourly validation frontend contract did not pass")
+        if not str(publication_id).strip():
+            raise ValueError("hourly validation publication_id is required")
+        if not _is_git_or_sha256_hex(frontend_manifest_sha256, {64}):
+            raise ValueError("hourly validation frontend manifest SHA-256 is invalid")
+
+        source_digest = _source_snapshot_sha256(path, stamp)
+        contract_json = _canonical_json(contract)
+        source_gate_json = _canonical_json(source_gate)
+        receipt_digest = _hourly_receipt_digest(
+            observed_at=stamp,
+            publication_id=publication_id,
+            frontend_manifest_sha256=frontend_manifest_sha256,
+            source_snapshot_sha256=source_digest,
+            contract=contract,
+            source_gate=source_gate,
+        )
+        immutable = (
+            HOURLY_VALIDATION_RECEIPT_POLICY,
+            publication_id,
+            frontend_manifest_sha256,
+            source_digest,
+            contract_json,
+            source_gate_json,
+            receipt_digest,
+        )
+        if connection.execute(
+            "SELECT 1 FROM hourly_validation_gaps WHERE observed_at=?",
+            (stamp,),
+        ).fetchone():
+            raise ValueError("cannot validate an hour recorded as a missed trigger")
+        existing = connection.execute(
+            """
+            SELECT policy_version, publication_id, frontend_manifest_sha256,
+                   source_snapshot_sha256, contract_json, source_gate_json,
+                   receipt_sha256
+            FROM hourly_validation_receipts WHERE observed_at=?
+            """,
+            (stamp,),
+        ).fetchone()
+        if existing:
+            if tuple(existing) != immutable:
+                raise ValueError(
+                    "an immutable hourly validation receipt already exists for this observed_at"
+                )
+            connection.commit()
+        else:
+            connection.execute(
+                """
+                INSERT INTO hourly_validation_receipts(
+                    observed_at, validated_at, policy_version,
+                    publication_id, frontend_manifest_sha256,
+                    source_snapshot_sha256, contract_json, source_gate_json,
+                    receipt_sha256
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    stamp, datetime.now(UTC).isoformat(),
+                    HOURLY_VALIDATION_RECEIPT_POLICY, publication_id,
+                    frontend_manifest_sha256, source_digest,
+                    contract_json, source_gate_json, receipt_digest,
+                ),
+            )
+            connection.commit()
+    except Exception:
+        connection.rollback()
+        raise
+    finally:
+        connection.close()
+    return _hourly_validation_receipt(path, stamp)
+
+
+def _hourly_validation_gap(path: Path, observed_at: str) -> dict | None:
+    connection = sqlite3.connect(path)
+    try:
+        if not _table_exists(connection, "hourly_validation_gaps"):
+            return None
+        row = connection.execute(
+            "SELECT detected_at, detected_by_hour, reason "
+            "FROM hourly_validation_gaps WHERE observed_at=?",
+            (observed_at,),
+        ).fetchone()
+    finally:
+        connection.close()
+    if not row:
+        return None
+    return {
+        "observed_at": observed_at,
+        "detected_at": row[0],
+        "detected_by_hour": row[1],
+        "reason": row[2],
+    }
+
+
+def _hourly_validation_receipt(path: Path, observed_at: str) -> dict:
+    connection = sqlite3.connect(path)
+    try:
+        columns = (
+            set()
+            if not _table_exists(connection, "hourly_validation_receipts")
+            else {
+                row[1]
+                for row in connection.execute(
+                    "PRAGMA table_info(hourly_validation_receipts)"
+                )
+            }
+        )
+        required_columns = {
+            "publication_id", "frontend_manifest_sha256",
+            "source_snapshot_sha256", "contract_json", "source_gate_json",
+            "receipt_sha256",
+        }
+        if not required_columns.issubset(columns):
+            row = None
+        else:
+            row = connection.execute(
+                """
+                SELECT validated_at, policy_version, publication_id,
+                       frontend_manifest_sha256, source_snapshot_sha256,
+                       contract_json, source_gate_json, receipt_sha256
+                FROM hourly_validation_receipts WHERE observed_at=?
+                """,
+                (observed_at,),
+            ).fetchone()
+    finally:
+        connection.close()
+    if not row:
+        return {
+            "passed": False,
+            "observed_at": observed_at,
+            "failure": "missing_hourly_validation_receipt",
+            "contract": None,
+            "source_gate": None,
+        }
+    try:
+        contract = json.loads(row[5])
+        source_gate = json.loads(row[6])
+    except (TypeError, ValueError, json.JSONDecodeError):
+        contract, source_gate = None, None
+    current_source_digest = _source_snapshot_sha256(path, observed_at)
+    expected_receipt_digest = (
+        _hourly_receipt_digest(
+            observed_at=observed_at,
+            publication_id=row[2],
+            frontend_manifest_sha256=row[3],
+            source_snapshot_sha256=row[4],
+            contract=contract,
+            source_gate=source_gate,
+        )
+        if isinstance(contract, dict) and isinstance(source_gate, dict)
+        else None
+    )
+    failures = []
+    if row[1] != HOURLY_VALIDATION_RECEIPT_POLICY:
+        failures.append("legacy_hourly_validation_receipt_policy")
+    if not row[2]:
+        failures.append("missing_hourly_publication_id")
+    if not _is_git_or_sha256_hex(row[3], {64}):
+        failures.append("invalid_frontend_manifest_sha256")
+    if row[4] != current_source_digest:
+        failures.append("source_snapshot_digest_mismatch")
+    if row[7] != expected_receipt_digest:
+        failures.append("hourly_validation_receipt_digest_mismatch")
+    if not (
+        isinstance(contract, dict)
+        and contract.get("policy_version") in CURRENT_FRONTEND_RESULT_POLICIES
+        and contract.get("passed") is True
+    ):
+        failures.append("frontend_contract_not_verified")
+    if not (
+        isinstance(source_gate, dict)
+        and source_gate.get("policy_version") == "hourly-source-proof-v2"
+        and source_gate.get("passed") is True
+    ):
+        failures.append("source_gate_not_verified")
+    return {
+        "passed": not failures,
+        "observed_at": observed_at,
+        "validated_at": row[0],
+        "policy_version": row[1],
+        "publication_id": row[2],
+        "frontend_manifest_sha256": row[3],
+        "source_snapshot_sha256": row[4],
+        "receipt_sha256": row[7],
+        "contract": contract,
+        "source_gate": source_gate,
+        "failures": failures,
+    }
+
+
+def hourly_validation_receipt_exists(path: Path, observed_at: str) -> bool:
+    return _hourly_validation_receipt(path, observed_at).get("passed") is True
 
 
 def _ontology_path_reaches_company(path: object, company_name: str) -> bool:
@@ -381,18 +843,8 @@ def _evaluate_canonical_frontend_result(intelligence: dict) -> dict:
             if not _ontology_path_reaches_company(company.get("ontology_path"), company_name):
                 item_failures.append(f"ontology_path_not_to_company:{company_name}")
             if presentation_display_contract:
-                official_domain = str(company.get("official_domain") or "").strip().casefold()
-                logo_url = str(company.get("logo_url") or "").strip()
                 snapshot = company.get("market_snapshot") or {}
-                if (
-                    not official_domain
-                    or not _valid_public_url(logo_url)
-                    or not logo_asset_contract_is_valid(
-                        company_name, official_domain, logo_url
-                    )
-                    or company.get("logo_asset_verification")
-                    != "static_allowlist_http_200_image_2026_08_15"
-                ):
+                if not _presentation_logo_contract_is_valid(company):
                     item_failures.append(f"missing_official_logo:{company_name}")
                 if (
                     snapshot.get("display_only") is not True
@@ -480,22 +932,34 @@ def _presentation_card_display_failures(
         company_name = str(company.get("company") or "").strip()
         official_domain = str(company.get("official_domain") or "").strip().casefold()
         logo_url = str(company.get("logo_url") or "").strip()
-        if (
+        if strict_logo_contract:
+            mode = str(company.get("logo_render_mode") or "").strip()
+            identity_missing = (
+                not official_domain
+                or "." not in official_domain
+                or "/" in official_domain
+                or mode not in {"image", "runtime_probe", "initials"}
+                or (
+                    mode in {"image", "runtime_probe"}
+                    and not _valid_public_url(logo_url)
+                )
+                or (
+                    mode == "initials"
+                    and not _valid_public_url(
+                        str(company.get("logo_rejected_asset_url") or "").strip()
+                    )
+                )
+            )
+            if identity_missing:
+                failures.append(f"missing_official_logo:{company_name}")
+            elif not _presentation_logo_contract_is_valid(company):
+                failures.append(f"invalid_v3_logo_metadata:{company_name}")
+        elif (
             not official_domain
             or "." not in official_domain
             or not _valid_public_url(logo_url)
         ):
             failures.append(f"missing_official_logo:{company_name}")
-        elif strict_logo_contract and (
-            not logo_asset_contract_is_valid(company_name, official_domain, logo_url)
-            or company.get("logo_asset_source") not in {
-                "official_page_asset", "official_domain_declared_favicon",
-            }
-            or not str(company.get("logo_asset_host") or "").strip()
-            or company.get("logo_asset_verification")
-            != "static_allowlist_http_200_image_2026_08_15"
-        ):
-            failures.append(f"invalid_v3_logo_metadata:{company_name}")
         snapshot = company.get("market_snapshot") or {}
         if (
             snapshot.get("display_only") is not True
@@ -658,6 +1122,12 @@ def evaluate_frontend_result(intelligence: dict) -> dict:
 def _source_gate(path: Path, observed_at: str) -> dict:
     connection = sqlite3.connect(path)
     try:
+        if not _table_exists(connection, "hourly_observations"):
+            return {
+                "policy_version": "hourly-source-proof-v2",
+                "passed": False,
+                "sources": {},
+            }
         rows = connection.execute(
             """
             SELECT source, COUNT(*) AS row_count,
@@ -763,45 +1233,46 @@ def _source_gate(path: Path, observed_at: str) -> dict:
 
 
 def evaluate_actual_hour(path: Path, at: datetime) -> dict:
-    from .editorial_review import apply_frontend_enrichment_cache
-    from .intelligence import build_intelligence, refresh_frontend_readiness
-
     normalized = at.astimezone(UTC).replace(minute=0, second=0, microsecond=0)
     stamp = normalized.isoformat()
+    hourly_receipt = _hourly_validation_receipt(path, stamp)
+    gap = _hourly_validation_gap(path, stamp)
     publication = _publication_receipt(path, stamp)
-    source_gate = publication.get("source_gate") or _source_gate(path, stamp)
+    source_gate = (
+        hourly_receipt.get("source_gate")
+        or publication.get("source_gate")
+        or _source_gate(path, stamp)
+    )
     if source_gate.get("policy_version") != "hourly-source-proof-v2":
         source_gate = {
             **source_gate,
             "passed": False,
             "failure": "legacy_source_gate_policy",
         }
-    contract = publication.get("contract")
-    if contract is not None and contract.get("policy_version") not in {
-        "frontend-result-quality-v5", "frontend-result-quality-v6",
-        "frontend-result-quality-v7", "frontend-result-quality-v8",
-    }:
+    contract = hourly_receipt.get("contract") or publication.get("contract")
+    if contract is not None and contract.get("policy_version") not in CURRENT_FRONTEND_RESULT_POLICIES:
         contract = {
             **contract,
             "passed": False,
             "failure": "legacy_frontend_result_policy",
         }
     if contract is None:
-        intelligence = build_intelligence(normalized, hours=24, path=path)
-        apply_frontend_enrichment_cache(intelligence, verified_at=stamp)
-        refresh_frontend_readiness(intelligence)
-        contract = evaluate_frontend_result(intelligence)
-    local_passed = source_gate["passed"] and contract["passed"]
+        contract = {
+            "policy_version": "frontend-result-quality-v8",
+            "passed": False,
+            "home_content_ready": False,
+            "failure": "missing_hourly_validation_receipt",
+        }
+    local_passed = hourly_receipt.get("passed") is True and gap is None
     return {
         "observed_at": stamp,
-        # Hourly collection and contract proof is local. Remote publication is
-        # daily, so requiring a remote receipt for every hour would make an
-        # eight-hour validation streak impossible by construction.
         "local_passed": local_passed,
         "content_ready": contract.get("home_content_ready") is True,
         "passed": local_passed and publication["passed"],
         "source_gate": source_gate,
         "contract": contract,
+        "hourly_validation_receipt": hourly_receipt,
+        "missed_trigger": gap,
         "publication": publication,
     }
 
@@ -817,7 +1288,7 @@ def evaluate_local_consecutive_hours(
             break
         current_streak += 1
     return {
-        "policy_version": "consecutive-local-result-v1",
+        "policy_version": "consecutive-local-result-v2",
         "required_consecutive_hours": count,
         "passed": (
             len(evaluations) == count
@@ -848,7 +1319,7 @@ def evaluate_consecutive_hours(
     )
     integrity_passed = local["passed"] and end_publication["passed"]
     return {
-        "policy_version": "consecutive-actual-result-v3",
+        "policy_version": "consecutive-actual-result-v4",
         "required_consecutive_hours": count,
         "passed": integrity_passed,
         "presentation_ready": integrity_passed and end_content_ready,
@@ -879,23 +1350,50 @@ def main() -> int:
     parser.add_argument("--remote-manifest-blob")
     parser.add_argument("--assert-receipt-available", action="store_true")
     parser.add_argument("--receipt-exists", action="store_true")
+    parser.add_argument("--record-hourly-validation", action="store_true")
+    parser.add_argument("--hourly-receipt-exists", action="store_true")
+    parser.add_argument("--register-trigger", action="store_true")
     parser.add_argument(
         "--preflight",
         action="store_true",
         help="validate same-hour sources and frontend contract before remote publication",
     )
     args = parser.parse_args()
-    if args.receipt_exists:
+    exact_hour_modes = any((
+        args.register_trigger,
+        args.hourly_receipt_exists,
+        args.receipt_exists,
+        args.assert_receipt_available,
+        args.preflight,
+        args.record_hourly_validation,
+        args.record_publication,
+    ))
+    if exact_hour_modes:
+        try:
+            _, normalized_end = _normalized_exact_hour(args.end)
+        except ValueError as exc:
+            parser.error(str(exc))
+    else:
         normalized_end = args.end.astimezone(UTC).replace(
             minute=0, second=0, microsecond=0
         ).isoformat()
+    hourly_validation_recorded = False
+    if args.register_trigger:
+        try:
+            result = register_hourly_trigger(args.database, args.end)
+        except ValueError as exc:
+            parser.error(str(exc))
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0
+    if args.hourly_receipt_exists:
+        return 0 if hourly_validation_receipt_exists(
+            args.database, normalized_end
+        ) else 1
+    if args.receipt_exists:
         return 0 if publication_receipt_exists(args.database, normalized_end) else 1
     if args.assert_receipt_available:
         if not args.publication_id:
             parser.error("--assert-receipt-available requires --publication-id")
-        normalized_end = args.end.astimezone(UTC).replace(
-            minute=0, second=0, microsecond=0
-        ).isoformat()
         assert_publication_receipt_available(
             args.database,
             observed_at=normalized_end,
@@ -905,9 +1403,6 @@ def main() -> int:
     if args.preflight:
         if not args.intelligence:
             parser.error("--preflight requires --intelligence")
-        normalized_end = args.end.astimezone(UTC).replace(
-            minute=0, second=0, microsecond=0
-        ).isoformat()
         intelligence = json.loads(args.intelligence.read_text(encoding="utf-8"))
         source_gate = _source_gate(args.database, normalized_end)
         contract = evaluate_frontend_result(intelligence)
@@ -926,6 +1421,40 @@ def main() -> int:
             temporary.replace(args.output)
         print(encoded.decode("utf-8"))
         return 0 if result["passed"] else 1
+    if args.record_hourly_validation:
+        if args.record_publication:
+            parser.error(
+                "--record-hourly-validation and --record-publication are separate operations"
+            )
+        if not args.intelligence or not args.manifest:
+            parser.error(
+                "--record-hourly-validation requires --intelligence and --manifest"
+            )
+        intelligence = json.loads(args.intelligence.read_text(encoding="utf-8"))
+        manifest_bytes = args.manifest.read_bytes()
+        manifest = json.loads(manifest_bytes.decode("utf-8"))
+        if (
+            manifest.get("observed_at") != normalized_end
+            or not manifest.get("publication_id")
+            or manifest.get("publication_id") != intelligence.get("publication_id")
+        ):
+            parser.error(
+                "--manifest and --intelligence do not match the requested exact hour"
+            )
+        source_gate = _source_gate(args.database, normalized_end)
+        contract = evaluate_frontend_result(intelligence)
+        try:
+            record_hourly_validation_receipt(
+                args.database,
+                observed_at=normalized_end,
+                publication_id=str(manifest["publication_id"]),
+                frontend_manifest_sha256=hashlib.sha256(manifest_bytes).hexdigest(),
+                contract=contract,
+                source_gate=source_gate,
+            )
+        except ValueError as exc:
+            parser.error(str(exc))
+        hourly_validation_recorded = True
     if args.record_publication:
         if not args.publication_id or not args.remote_sha:
             parser.error("--record-publication requires --publication-id and --remote-sha")
@@ -942,9 +1471,6 @@ def main() -> int:
             parser.error("--intelligence publication_id does not match --publication-id")
         manifest_bytes = args.manifest.read_bytes()
         manifest = json.loads(manifest_bytes.decode("utf-8"))
-        normalized_end = args.end.astimezone(UTC).replace(
-            minute=0, second=0, microsecond=0
-        ).isoformat()
         if (
             manifest.get("publication_id") != args.publication_id
             or manifest.get("observed_at") != normalized_end
@@ -970,6 +1496,10 @@ def main() -> int:
         temporary.write_bytes(encoded)
         temporary.replace(args.output)
     print(encoded.decode("utf-8"))
+    if hourly_validation_recorded:
+        # A valid local receipt is a successful command even while the separate
+        # daily remote-publication proof or eight-hour maturity remains pending.
+        return 0
     return 0 if result["passed"] else 1
 
 

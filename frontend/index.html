@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TRZIP 한국 트렌드</title>
 <link rel="icon" href="data:,">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
 <script src="./trendzip-data.js?v=20260815-2"></script>
 <script src="./support.js?v=20260815-2"></script>
 </head>
@@ -51,7 +52,7 @@
         <div data-zip="glow" style="position:absolute; left:50%; top:56%; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; background:radial-gradient(circle, rgba(123,63,242,0.30) 0%, rgba(123,63,242,0.10) 45%, rgba(123,63,242,0) 70%); opacity:0;"></div>
 
         <div style="position:relative; display:flex; align-items:center; justify-content:space-between; padding:12px 24px 4px; font-weight:600; font-size:14px; color:#1A1A22;">
-          <span>9:41</span>
+          <span data-status-time="kst">--:--</span>
           <div style="display:flex; align-items:center; gap:5px;">
             <svg width="17" height="11" viewBox="0 0 17 11" style="display:block;"><rect x="0" y="7" width="3" height="4" rx="1" fill="#1A1A22"></rect><rect x="4.5" y="5" width="3" height="6" rx="1" fill="#1A1A22"></rect><rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#1A1A22"></rect><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#1A1A22"></rect></svg>
             <svg width="25" height="12" viewBox="0 0 25 12" style="display:block;"><rect x="0.5" y="0.5" width="21" height="11" rx="3.5" fill="none" stroke="#1A1A22" opacity="0.45"></rect><rect x="2" y="2" width="15" height="8" rx="2" fill="#1A1A22"></rect><path d="M23 4.2 L23 7.8 C24.2 7.4 24.6 6.8 24.6 6 C24.6 5.2 24.2 4.6 23 4.2 Z" fill="#1A1A22" opacity="0.45"></path></svg>
@@ -138,7 +139,7 @@
 
       <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden;">
         <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px 4px; font-weight:600; font-size:14px; color:#1A1A22;">
-          <span>9:41</span>
+          <span data-status-time="kst">--:--</span>
           <div style="display:flex; align-items:center; gap:5px;">
             <span style="display:block; width:16px; height:10px; border-radius:2px; background:#1A1A22;"></span>
             <span style="display:block; width:10px; height:10px; border-radius:999px; background:#1A1A22;"></span>
@@ -252,7 +253,7 @@
 
       <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden;">
         <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px 4px; font-weight:600; font-size:14px; color:#1A1A22;">
-          <span>9:41</span>
+          <span data-status-time="kst">--:--</span>
           <div style="display:flex; align-items:center; gap:5px;">
             <span style="display:block; width:16px; height:10px; border-radius:2px; background:#1A1A22;"></span>
             <span style="display:block; width:10px; height:10px; border-radius:999px; background:#1A1A22;"></span>
@@ -287,7 +288,10 @@
               <div style="padding:11px 14px 7px; font-weight:600; font-size:11px; color:#8B8D98;">다른 트렌드 보기</div>
               <sc-for list="{{ trendOptions }}" as="opt" hint-placeholder-count="5">
                 <div onClick="{{ opt.pick }}" style="{{ opt.row }}">
-                  <span style="width:30px; height:30px; flex:none; border-radius:999px; background:#F3F0FB; display:flex; align-items:center; justify-content:center; font-size:15px;">{{ opt.optEmoji }}</span>
+                  <span style="width:30px; height:30px; flex:none; border-radius:999px; background:#F3F0FB; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.04);">
+                    <img src="{{ opt.optIconUrl }}" alt="{{ opt.optIconAlt }}" width="20" height="20" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:20px; height:20px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <span role="img" aria-label="{{ opt.optIconAlt }}" style="width:20px; height:20px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:9px; line-height:1;">{{ opt.optIconFallback }}</span>
+                  </span>
                   <span style="{{ opt.nameStyle }}">{{ opt.optName }}</span>
                   <span style="flex:none; white-space:nowrap; font-weight:500; font-size:11px; color:#A9ACB8;">{{ opt.optCat }}</span>
                 </div>
@@ -347,8 +351,8 @@
                 </div>
                 <div style="display:flex; align-items:center; gap:10px; margin-top:11px;">
                   <div style="flex:1; min-width:0; text-align:center;">
-                    <div style="font-weight:500; font-size:10px; color:#8B8D98; white-space:nowrap;">관심지수 변화</div>
-                    <div style="font-weight:700; font-size:14.5px; color:#FF3D8B; margin-top:2px;">{{ trendLift }}</div>
+                    <div style="font-weight:500; font-size:10px; color:#8B8D98; white-space:nowrap;">이전 공개 대비</div>
+                    <div style="{{ movementStyle }}">{{ movementLabel }}</div>
                   </div>
                   <span style="flex:none; width:1px; height:30px; background:#EDE9F8;"></span>
                   <div style="flex:1; min-width:0; text-align:center;">
@@ -363,7 +367,7 @@
               <div style="background:#F7F4FF; border-radius:12px; padding:11px 13px; margin-top:9px; font-weight:500; font-size:11px; line-height:1.65; color:#5B21C0;">
                 <b style="font-weight:800;">트렌드 수집 기준</b><br>
                 · 매시 정각 X 대한민국 실시간 트렌드 30개 + Google Trending Now 전체를 실측 수집해요<br>
-                · 순위 입력은 X와 Google 두 출처만 사용하고, 뉴스·유튜브·네이버는 맥락 검증용이에요<br>
+                · 순위 입력은 X와 Google 두 출처만 사용하고, NAVER 뉴스는 맥락 근거로만 사용해요<br>
                 · 최근 24시간 확산 흐름을 분석해 매일 오전 6시에 한 번 공개해요<br>
                 · 관측되지 않은 데이터를 임의로 채우지 않아요
               </div>
@@ -372,90 +376,44 @@
         </div>
 
         <div style="padding:0 16px 14px;">
-          <div style="background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:14px 12px;">
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px;">
-              <span style="flex:none; white-space:nowrap; font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">언급량 추이 · 관심지수</span>
+          <div style="background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:14px 14px 13px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+              <span style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">언급량 추이 · 관심지수</span>
               <div style="display:flex; width:150px; background:#F3F0FB; border-radius:999px; padding:3px;">
                 <button onClick="{{ pickRange0 }}" style="{{ range0 }}">1주</button>
                 <button onClick="{{ pickRange1 }}" style="{{ range1 }}">1개월</button>
                 <button onClick="{{ pickRange2 }}" style="{{ range2 }}">3개월</button>
               </div>
             </div>
-
-            <div data-sns="vp" style="overflow-x:auto; overflow-y:hidden; border-radius:14px; scroll-snap-type:x mandatory; scrollbar-width:none;">
-              <div style="display:flex; width:1340px;">
-                <sc-for list="{{ chartPanels }}" as="cp" hint-placeholder-count="3">
-                  <div style="flex:none; width:335px; box-sizing:border-box; scroll-snap-align:start; padding:2px 2px 0;">
-                    <div style="display:flex; align-items:center; gap:7px; margin-bottom:9px;">
-                      <sc-if value="{{ cp.hasIcon }}" hint-placeholder-val="{{ false }}">
-                        <span style="{{ cp.pIconStyle }}"></span>
-                      </sc-if>
-                      <span style="flex:1; min-width:0; font-weight:600; font-size:13px; color:#1A1A22;">{{ cp.pLabel }}</span>
-                      <span style="{{ cp.pBadgeStyle }}">{{ cp.pBadge }}</span>
-                      <span style="flex:none; white-space:nowrap; font-weight:600; font-size:13px; color:#FF3D8B;">{{ chartChange }}</span>
-                    </div>
-                    <div style="display:flex; gap:7px; height:98px;">
-                      <div style="flex:none; width:22px; height:100%; display:flex; flex-direction:column; justify-content:space-between; text-align:right;">
-                        <span style="font-weight:500; font-size:8.5px; color:#B5B8C2; line-height:1;">100</span>
-                        <span style="font-weight:500; font-size:8.5px; color:#B5B8C2; line-height:1;">50</span>
-                        <span style="font-weight:500; font-size:8.5px; color:#B5B8C2; line-height:1;">0</span>
-                      </div>
-                      <div style="flex:1; min-width:0; position:relative; display:flex; align-items:flex-end; gap:9px; border-left:1px solid #F1EEF9; border-bottom:1px solid #F1EEF9; padding:0 4px;">
-                        <span style="position:absolute; left:0; right:0; top:50%; height:1px; background:#F6F3FC;"></span>
-                        <sc-for list="{{ cp.bars }}" as="b" hint-placeholder-count="7">
-                          <div style="{{ b.wrap }}">
-                            <span style="{{ b.numStyle }}">{{ b.num }}</span>
-                            <span data-bar="1" style="{{ b.bar }}"></span>
-                          </div>
-                        </sc-for>
-                      </div>
-                    </div>
-                    <div style="margin-top:6px; padding-left:29px; font-weight:500; font-size:9px; color:#B5B8C2;">관측 강도 지수 (0~100)</div>
-                  </div>
-                </sc-for>
-
-                <div style="display:none; flex:none; width:335px; box-sizing:border-box; scroll-snap-align:start; padding:2px 2px 0;">
-                  <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; height:129px; border:1.5px dashed #D9CEF6; border-radius:14px; background:#FBFAFF;">
-                    <div style="font-weight:600; font-size:13px; color:#5B21C0;">채널 추가하기</div>
-                    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:7px;">
-                      <span data-sns-add="X" style="display:flex; align-items:center; gap:6px; background:#FFFFFF; border:1px solid #E4DCF8; border-radius:999px; padding:7px 12px 7px 8px; font-weight:600; font-size:11.5px; color:#5B21C0; cursor:pointer;">
-                        <span style="width:18px; height:18px; flex:none; border-radius:6px; background:#FFFFFF url(https://www.google.com/s2/favicons?sz=64&amp;domain=x.com) center/76% no-repeat; box-shadow:inset 0 0 0 1px #EEEBF7;"></span>
-                        X
-                        <span data-sns-add-mark="1" style="font-size:13px; line-height:1; color:#7B3FF2;">+</span>
-                      </span>
-                      <span data-sns-add="Google" style="display:flex; align-items:center; gap:6px; background:#FFFFFF; border:1px solid #E4DCF8; border-radius:999px; padding:7px 12px 7px 8px; font-weight:600; font-size:11.5px; color:#5B21C0; cursor:pointer;">
-                        <span style="width:18px; height:18px; flex:none; border-radius:6px; background:#FFFFFF url(https://www.google.com/s2/favicons?sz=64&amp;domain=google.com) center/76% no-repeat; box-shadow:inset 0 0 0 1px #EEEBF7;"></span>
-                        Google
-                        <span data-sns-add-mark="1" style="font-size:13px; line-height:1; color:#7B3FF2;">+</span>
-                      </span>
-                      <span data-sns-add="Naver" style="display:flex; align-items:center; gap:6px; background:#FFFFFF; border:1px solid #E4DCF8; border-radius:999px; padding:7px 12px 7px 8px; font-weight:600; font-size:11.5px; color:#5B21C0; cursor:pointer;">
-                        <span style="width:18px; height:18px; flex:none; border-radius:6px; background:#FFFFFF url(https://www.google.com/s2/favicons?sz=64&amp;domain=naver.com) center/76% no-repeat; box-shadow:inset 0 0 0 1px #EEEBF7;"></span>
-                        Naver
-                        <span data-sns-add-mark="1" style="font-size:13px; line-height:1; color:#7B3FF2;">+</span>
-                      </span>
-                    </div>
-                  </div>
-                </div>
+            <div style="display:flex; align-items:center; gap:7px; margin-top:10px;">
+              <sc-for list="{{ sourceSignals }}" as="ss" hint-placeholder-count="2">
+                <span style="{{ ss.style }}">{{ ss.label }}</span>
+              </sc-for>
+              <span style="flex:1;"></span>
+              <span style="font-weight:700; font-size:11px; color:#8B8D98;">현재</span>
+              <span style="font-weight:800; font-size:16px; color:#6B2FEA;">{{ interestIndex }}</span>
+            </div>
+            <div style="position:relative; height:108px; margin-top:9px; overflow:hidden;">
+              <svg viewBox="0 0 296 96" preserveAspectRatio="none" style="display:block; width:100%; height:96px; overflow:visible;">
+                <line x1="0" y1="24" x2="296" y2="24" stroke="#F0ECF8" stroke-width="1"></line>
+                <line x1="0" y1="60" x2="296" y2="60" stroke="#F0ECF8" stroke-width="1"></line>
+                <path data-interest-area="1" d="M0,84 L296,84 L296,84 L0,84 Z" fill="rgba(123,63,242,0.10)"></path>
+                <polyline data-interest-line="1" points="0,84 296,84" fill="none" stroke="#7B3FF2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                <circle data-interest-dot="1" cx="296" cy="84" r="4.5" fill="#7B3FF2" stroke="#FFFFFF" stroke-width="2.5"></circle>
+              </svg>
+              <div style="display:flex; justify-content:space-between; margin-top:-2px; font-weight:600; font-size:9.5px; color:#AAA6B4;">
+                <span>{{ periodStartLabel }}</span><span>{{ periodMiddleLabel }}</span><span>{{ periodEndLabel }}</span>
               </div>
             </div>
-
-            <div style="display:flex; align-items:center; gap:10px; margin-top:11px;">
-              <div style="flex:1; display:flex; align-items:center; justify-content:center; gap:5px;">
-                <span data-sns="dot" data-sns-i="0" style="display:block; width:16px; height:5px; border-radius:999px; background:#7B3FF2; cursor:pointer; transition:width 0.25s, background 0.25s;"></span>
-                <span data-sns="dot" data-sns-i="1" style="display:block; width:5px; height:5px; border-radius:999px; background:#DFDAEE; cursor:pointer; transition:width 0.25s, background 0.25s;"></span>
-                <span data-sns="dot" data-sns-i="2" style="display:block; width:5px; height:5px; border-radius:999px; background:#DFDAEE; cursor:pointer; transition:width 0.25s, background 0.25s;"></span>
-                <span data-sns="dot" data-sns-i="3" style="display:block; width:5px; height:5px; border-radius:999px; background:#DFDAEE; cursor:pointer; transition:width 0.25s, background 0.25s;"></span>
+            <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-top:5px;">
+              <div style="background:#FAF9FE; border-radius:14px; padding:10px 12px;">
+                <div style="font-weight:600; font-size:10.5px; color:#8B8D98;">이전 공개 대비</div>
+                <div style="{{ movementStyle }}">{{ movementLabel }}</div>
               </div>
-            </div>
-
-            <div data-sns="axis" style="display:flex; margin-top:8px;">
-              <span style="flex:1; text-align:center; font-weight:500; font-size:10px; color:#9A9DA9;">일</span>
-              <span style="flex:1; text-align:center; font-weight:500; font-size:10px; color:#9A9DA9;">월</span>
-              <span style="flex:1; text-align:center; font-weight:500; font-size:10px; color:#9A9DA9;">화</span>
-              <span style="flex:1; text-align:center; font-weight:500; font-size:10px; color:#9A9DA9;">수</span>
-              <span style="flex:1; text-align:center; font-weight:500; font-size:10px; color:#9A9DA9;">목</span>
-              <span style="flex:1; text-align:center; font-weight:500; font-size:10px; color:#9A9DA9;">금</span>
-              <span style="flex:1; text-align:center; font-weight:600; font-size:10px; color:#7B3FF2;">토</span>
+              <div style="background:#FAF9FE; border-radius:14px; padding:10px 12px;">
+                <div style="font-weight:600; font-size:10.5px; color:#8B8D98;">현재 확산 단계</div>
+                <div style="font-weight:800; font-size:15px; color:#1A1A22; margin-top:4px;">{{ currentPhase }}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -508,7 +466,7 @@
 
       <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden;">
         <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px 4px; font-weight:600; font-size:14px; color:#1A1A22;">
-          <span>9:41</span>
+          <span data-status-time="kst">--:--</span>
           <div style="display:flex; align-items:center; gap:5px;">
             <span style="display:block; width:16px; height:10px; border-radius:2px; background:#1A1A22;"></span>
             <span style="display:block; width:10px; height:10px; border-radius:999px; background:#1A1A22;"></span>
@@ -623,26 +581,15 @@
                   <div style="background:#FAF9FE; border-radius:12px; padding:9px 7px; text-align:center;"><div style="font-weight:500;font-size:9.5px;color:#8B8D98;">ROE</div><div style="font-weight:800;font-size:11.5px;color:#1A1A22;margin-top:3px;white-space:nowrap;">{{ sheetRoe }}</div></div>
                 </div>
 
-                <div style="display:flex; gap:8px; margin-top:12px;">
-                  <div style="flex:1; background:#FAF9FE; border-radius:14px; padding:11px 12px;">
-                    <div style="font-weight:500; font-size:10.5px; color:#8B8D98;">관계 등급</div>
-                    <div style="font-weight:800; font-size:13px; color:#1A1A22; margin-top:3px;">{{ sheetTier }}</div>
-                  </div>
-                  <div style="flex:1; background:#FAF9FE; border-radius:14px; padding:11px 12px;">
-                    <div style="font-weight:500; font-size:10.5px; color:#8B8D98;">근거 상태</div>
-                    <div style="font-weight:800; font-size:13px; color:#1A1A22; margin-top:3px;">{{ sheetVerified }}</div>
-                  </div>
-                </div>
-
-                <div style="font-weight:800; font-size:15px; color:#1A1A22; letter-spacing:-0.03em; margin-top:18px;">기업 설명</div>
+                <div style="font-weight:800; font-size:15px; color:#1A1A22; letter-spacing:-0.03em; margin-top:16px;">기업 설명</div>
                 <div style="font-weight:500; font-size:12.5px; line-height:1.7; color:#5C5F6B; margin-top:6px; text-wrap:pretty;">{{ sheetAbout }}</div>
               </div>
 
               <div style="flex:none; border-top:1px solid #F1EEF9; padding:12px 16px 16px; background:#FFFFFF;">
-                <div onClick="{{ openCompanyEvidence }}" style="display:flex; align-items:center; justify-content:center; gap:7px; background:#7B3FF2; border-radius:14px; padding:16px; font-weight:800; font-size:15.5px; color:#FFFFFF; letter-spacing:-0.02em; cursor:pointer;">기업 연결 근거 보기</div>
-                <sc-if value="{{ showKiwoom }}" hint-placeholder-val="{{ false }}">
-                  <div onClick="{{ openKiwoom }}" style="display:flex; align-items:center; justify-content:center; gap:7px; border:1.5px solid #7B3FF2; border-radius:14px; padding:13px; margin-top:8px; font-weight:800; font-size:14px; color:#5B21C0; cursor:pointer;">키움에서 종목 확인</div>
-                </sc-if>
+                <div style="display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px;">
+                  <button type="button" onClick="{{ toggleCompanyWatch }}" style="min-height:52px; border:1.5px solid #7B3FF2; border-radius:14px; background:#FFFFFF; padding:10px 8px; font-weight:800; font-size:13.5px; line-height:1.25; color:#5B21C0; cursor:pointer;">{{ companyWatchLabel }}</button>
+                  <button type="button" onClick="{{ openKiwoom }}" style="min-height:52px; border:0; border-radius:14px; background:#7B3FF2; padding:10px 8px; font-weight:800; font-size:13.5px; line-height:1.25; color:#FFFFFF; cursor:pointer;">키움 종목홈으로 가기</button>
+                </div>
                 <div style="width:120px; height:5px; background:#1A1A22; border-radius:999px; margin:12px auto 0; opacity:0.85;"></div>
               </div>
             </div>
@@ -660,7 +607,7 @@
 
       <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden;">
         <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px 4px; font-weight:600; font-size:14px; color:#1A1A22;">
-          <span>9:41</span>
+          <span data-status-time="kst">--:--</span>
           <div style="display:flex; align-items:center; gap:5px;">
             <span style="display:block; width:16px; height:10px; border-radius:2px; background:#1A1A22;"></span>
             <span style="display:block; width:10px; height:10px; border-radius:999px; background:#1A1A22;"></span>
@@ -704,7 +651,7 @@
 
       <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden;">
         <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px 4px; font-weight:600; font-size:14px; color:#1A1A22;">
-          <span>9:41</span>
+          <span data-status-time="kst">--:--</span>
           <div style="display:flex; align-items:center; gap:5px;">
             <span style="display:block; width:16px; height:10px; border-radius:2px; background:#1A1A22;"></span>
             <span style="display:block; width:10px; height:10px; border-radius:999px; background:#1A1A22;"></span>
@@ -780,7 +727,7 @@
 
       <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden;">
         <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px 4px; font-weight:600; font-size:14px; color:#1A1A22;">
-          <span>9:41</span>
+          <span data-status-time="kst">--:--</span>
           <div style="display:flex; align-items:center; gap:5px;">
             <span style="display:block; width:16px; height:10px; border-radius:2px; background:#1A1A22;"></span>
             <span style="display:block; width:10px; height:10px; border-radius:999px; background:#1A1A22;"></span>
@@ -859,7 +806,7 @@
 
       <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden;">
         <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 24px 4px; font-weight:600; font-size:14px; color:#1A1A22;">
-          <span>9:41</span>
+          <span data-status-time="kst">--:--</span>
           <div style="display:flex; align-items:center; gap:5px;">
             <span style="display:block; width:16px; height:10px; border-radius:2px; background:#1A1A22;"></span>
             <span style="display:block; width:10px; height:10px; border-radius:999px; background:#1A1A22;"></span>
@@ -937,16 +884,76 @@ class Component extends DCLogic {
 
 
   trends = [{
-    emoji: '·', name: '오늘의 트렌드', cat: '트렌드', core: '',
+    emoji: '트', icon: null, name: '오늘의 트렌드', cat: '트렌드', core: '',
     tags: [], day: '', phase: '포착', lift: '–', rank: '–',
     progress: 8, stageIdx: 0, definition: '최신 발행본을 불러오지 못했습니다.',
     caption: '', channels: [], stages: [],
     live: false, crossSource: false, series: [], attentionWindows: [], companies: [], sourceList: []
   }];
 
+  trendIconMeta(name, category = '') {
+    const TWEMOJI_SVG_BASE = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/';
+    const label = String(name || category || '트렌드');
+    const exactRules = [
+      [/페르세우스|유성우|별똥별/, '1f320', '유'],
+      [/개기일식|일식/, '1f311', '일'],
+      [/말복|삼계탕/, '1f372', '복'],
+      [/불꽃축제|불꽃/, '1f386', '축'],
+      [/메츠|브레이브스|야구/, '26be', '야'],
+      [/맨유|리즈|데포르티보|레알\s*마드리드|축구/, '26bd', '축'],
+      [/오디세이|영화/, '1f3ac', '영'],
+      [/휴머노이드|로봇/, '1f916', '로'],
+      [/홈플러스|재개장|매장/, '1f3ec', '매']
+    ];
+    const categoryRules = [
+      [/음식|식품/, '1f372', '식'],
+      [/스포츠/, '1f3c5', '스'],
+      [/콘텐츠/, '1f3ac', '콘'],
+      [/기술/, '1f916', '기'],
+      [/제품|브랜드/, '1f3ec', '제'],
+      [/문화/, '1f3ad', '문']
+    ];
+    const match = exactRules.find(([rule]) => rule.test(label))
+      || categoryRules.find(([rule]) => rule.test(String(category)))
+      || [null, '2728', '트'];
+    return {
+      url: TWEMOJI_SVG_BASE + match[1] + '.svg',
+      alt: label + ' 벡터 아이콘',
+      fallback: match[2],
+      library: 'Twemoji 14.0.2'
+    };
+  }
+
+  syncStatusClock(now = new Date()) {
+    const parts = new Intl.DateTimeFormat('ko-KR', {
+      timeZone: 'Asia/Seoul', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+    }).formatToParts(now);
+    const hourPart = parts.find((part) => part.type === 'hour');
+    const minutePart = parts.find((part) => part.type === 'minute');
+    const hour = hourPart ? Number(hourPart.value) : 0;
+    const minute = minutePart ? minutePart.value.padStart(2, '0') : '00';
+    const label = hour + ':' + minute;
+    document.querySelectorAll('[data-status-time="kst"]').forEach((node) => {
+      node.textContent = label;
+      node.setAttribute('datetime', now.toISOString());
+      node.setAttribute('aria-label', '한국 표준시 ' + label);
+    });
+  }
+
+  startStatusClock() {
+    const tick = () => this.syncStatusClock(new Date());
+    tick();
+    const delay = 60000 - (Date.now() % 60000) + 25;
+    this.statusClockBoundaryTimer = setTimeout(() => {
+      tick();
+      this.statusClockTimer = setInterval(tick, 60000);
+    }, delay);
+  }
+
   protoShell() {
     (function () {
       var idx = 0;
+      var debugNavEnabled = new URLSearchParams(window.location.search).get('debug') === '1';
       var st = document.createElement('style');
       st.textContent = "::-webkit-scrollbar { width: 0; height: 0; }\n  #dc-root section { position: fixed !important; inset: 0 !important; margin: 0 !important; padding: 0 !important; display: block !important; gap: 0 !important; min-height: 0 !important; background: #15121F; }\n  [data-screen-label] { position: absolute !important; left: 50% !important; top: 18px !important; display: none !important; transform-box: border-box; transform-origin: top center !important; }\n  [data-screen-label][data-proto-active] { display: flex !important; }\n  [data-screen-label] > div:first-child { display: none !important; }\n  #proto-nav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; display: flex; gap: 6px; padding: 10px 14px 14px; overflow-x: auto; scrollbar-width: none; background: linear-gradient(180deg, rgba(21,18,31,0) 0%, rgba(21,18,31,0.95) 55%); }\n  #proto-nav button { flex: none; border: 0; border-radius: 999px; padding: 9px 14px; font: 700 12px Pretendard, system-ui, sans-serif; color: #CFC7E8; background: #2A2438; cursor: pointer; white-space: nowrap; }\n  #proto-nav button[data-on] { background: #7B3FF2; color: #FFFFFF; }\n";
       document.head.appendChild(st);
@@ -971,7 +978,7 @@ class Component extends DCLogic {
       }
       function fit() {
         var nav = document.getElementById('proto-nav');
-        var navH = nav ? nav.offsetHeight : 60;
+        var navH = nav ? nav.offsetHeight : 0;
         var s = Math.min(1, (window.innerHeight - navH - 34) / 852, (window.innerWidth - 24) / 393);
         screens().forEach(function (w) {
           w.style.transform = 'translateX(-50%) scale(' + s.toFixed(4) + ')';
@@ -991,6 +998,12 @@ class Component extends DCLogic {
         var section = document.querySelector('#dc-root section');
         if (section) prune(section);
         var nav = document.getElementById('proto-nav');
+        if (!debugNavEnabled) {
+          if (nav) nav.remove();
+          if (!document.querySelector('[data-proto-active]')) show(idx);
+          else fit();
+          return;
+        }
         if (nav && nav.children.length === sc.length) { if (!document.querySelector('[data-proto-active]')) show(idx); return; }
         if (nav) nav.remove();
         nav = document.createElement('div');
@@ -1013,6 +1026,7 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.clearLegacyPortfolioSurfaces();
+    this.startStatusClock();
     setTimeout(() => this.listViewWire(), 200);
     setTimeout(() => this.protoShell(), 40);
     setTimeout(() => { this.likeWire(); this.stashWire(); this.myTabWire(); this.shareWire(); }, 80);
@@ -1027,6 +1041,11 @@ class Component extends DCLogic {
     this.loadPublishedData();
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.statusClockBoundaryTimer);
+    clearInterval(this.statusClockTimer);
+  }
+
   liveStatus = '발행본 준비';
   companyDomains = {};
   logoCache = {};
@@ -1034,41 +1053,72 @@ class Component extends DCLogic {
   // Google favicon 프록시에서 누락되는 기업은 검증된 공식 사이트 자산을
   // 먼저 사용합니다. 이 목록은 백엔드 publication 계약과 동일합니다.
   officialLogoAssets = Object.freeze({
-    'nikon.com': 'https://www.nikon.com/favicon.ico',
+    'nikon.com': 'https://www.nikon.com/etc.clientlibs/nikoncore/clientlibs/clientlib-site/resources/img/logo.svg',
     'teledyne.com': 'https://cdn.teledyne.com/assets/common/images/favicon.ico',
-    'hamamatsu.com': 'https://www.hamamatsu.com/etc.clientlibs/hpk-global-web/clientlibs/clientlib-site-resources/resources/favicon.ico',
+    'hamamatsu.com': 'https://www.hamamatsu.com/content/dam/hamamatsu-photonics/system/images/logo.svg',
     'harim.com': 'https://harim.com/main/img/ci.png',
     'harim.co.kr': 'https://harim.com/main/img/ci.png',
     'company.emart.com': 'https://stimg.emart.com/company/ko/images/common/sub_logo_company.png',
     'emartcompany.com': 'https://stimg.emart.com/company/ko/images/common/sub_logo_company.png',
-    'gsretail.com': 'https://hpimg.gsretail.com/_ui/desktop/common/images/gsretail/corporation/logo_gs_en.png',
+    'gsretail.com': 'https://hpimg.gsretail.com/_ui/desktop/common/images/icon/gsretail_114.png',
     'company.lottetour.com': 'https://company.lottetour.com/images/common/header_logo.png',
     'lottetour.com': 'https://company.lottetour.com/images/common/header_logo.png',
     'manutd.com': 'https://contentfulproxy.stadion.io/unzgbvss5tuy/5GFoxbOTd249o0VhuZNczI/cde0cb3a7b895c6a99f2796433232819/TONAL_CREST_Black%C3%83___3x-png.png?fm=webp&fit=pad&f=center&w=184&h=184',
     'nongshim.com': 'https://www.nongshim.com/resources2/images/common/pop-logo.jpg',
     'lottewellfood.com': 'https://www.lottewellfood.com/favicon.ico',
+    'wonik.com': 'https://wonik.com/assets/images/favicon/apple-icon-144x144.png',
+    'mazetx.com': 'https://mazetx.com/wp-content/uploads/2019/10/cropped-apple-touch-icon-192x192.png',
+    'gene.com': 'https://www.gene.com/assets/frontend/img/favicon-prefers-light-mode.svg',
+    'doosan.com': 'https://www.doosan.com/images/common/favicon-152.png',
+    'bi-nex.com': 'https://bi-nex.com/logo192.png',
+    'cj.co.kr': 'https://www.cj.co.kr/resources/img/icon.png',
+    'dhflour.co.kr': 'https://dhflour.co.kr/image/thumbnail?code=fl6a473a28ed77a&width=144&height=144',
   });
+  initialsOnlyLogoDomains = new Set([
+    'livsmed.com', 'monami.com', 'kolmar.co.kr',
+    'orionworld.com', 'crown.co.kr', 'ht.co.kr'
+  ]);
 
   // 백엔드가 검증해 발행한 logo_url만 사용합니다. URL이 없거나 이미지가
-  // 48px 미만이면 임의 도메인 추론 없이 기존 이니셜 아바타를 유지합니다.
-  registerLogo(name, logoUrl) {
+  // 64px 미만이면 임의 도메인 추론 없이 기존 이니셜 아바타를 유지합니다.
+  logoPolicy(company, logoUrl) {
+    const mode = String((company && company.logo_render_mode) || 'runtime_probe');
+    const format = String((company && company.logo_asset_format) || '').toLowerCase();
+    const minimum = Math.max(64, Number(company && company.logo_minimum_dimension) || 64);
+    return {
+      mode,
+      format,
+      minimum,
+      vector: format === 'svg' || /\.svg(?:$|[?#])/i.test(logoUrl || '')
+    };
+  }
+
+  registerLogo(name, logoUrl, company = {}) {
     if (!name || !/^https?:\/\//i.test(logoUrl || '')) return;
+    const policy = this.logoPolicy(company, logoUrl);
+    if (policy.mode === 'initials') {
+      delete this.logoCache[name];
+      return;
+    }
     if (this.companyDomains[name] === logoUrl) return;
     this.companyDomains[name] = logoUrl;
     delete this.logoCache[name];
-    (this.__logoQueue = this.__logoQueue || []).push([name, logoUrl]);
+    (this.__logoQueue = this.__logoQueue || []).push([name, logoUrl, policy]);
     this.pumpLogoQueue();
   }
 
   pumpLogoQueue() {
     this.__logoBusy = this.__logoBusy || 0;
     while (this.__logoBusy < 4 && this.__logoQueue && this.__logoQueue.length) {
-      const [name, logoUrl] = this.__logoQueue.shift();
+      const [name, logoUrl, policy] = this.__logoQueue.shift();
       this.__logoBusy++;
       const done = () => { this.__logoBusy--; this.logoRefresh(); setTimeout(() => this.pumpLogoQueue(), 120); };
       const img = new Image();
       img.onload = () => {
-        if (img.naturalWidth >= 16 && this.companyDomains[name] === logoUrl) this.logoCache[name] = logoUrl;
+        const sharpEnough = policy.vector || (
+          img.naturalWidth >= policy.minimum && img.naturalHeight >= policy.minimum
+        );
+        if (sharpEnough && this.companyDomains[name] === logoUrl) this.logoCache[name] = logoUrl;
         done();
       };
       img.onerror = done;
@@ -1098,6 +1148,10 @@ class Component extends DCLogic {
 
   logoCandidate(company) {
     const domain = this.companyDomain(company);
+    if (
+      (company && company.logo_render_mode === 'initials')
+      || this.initialsOnlyLogoDomains.has(domain)
+    ) return '';
     return this.officialLogoAssets[domain]
       || (company && company.logo_url)
       || (domain ? `https://www.google.com/s2/favicons?sz=128&domain_url=${encodeURIComponent(`https://${domain}`)}` : '');
@@ -1106,7 +1160,7 @@ class Component extends DCLogic {
   companyLogo(company) {
     const name = this.companyName(company);
     const candidate = this.logoCandidate(company);
-    if (candidate) this.registerLogo(name, candidate);
+    if (candidate) this.registerLogo(name, candidate, company);
     // 네트워크 검증이 끝난 URL만 화면에 사용합니다. 404/차단 URL은
     // 브라우저의 깨진 이미지 대신 이니셜 아바타로 안전하게 대체됩니다.
     return this.logoCache[name] || '';
@@ -1133,23 +1187,59 @@ class Component extends DCLogic {
   }
 
   buildPresentationPortfolios() {
-    const observedAt = this.publishedView && this.publishedView.observedAt;
-    const observedDate = observedAt ? new Date(observedAt) : null;
-    const dateLabel = observedDate && !Number.isNaN(observedDate.getTime())
-      ? observedDate.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', month: '2-digit', day: '2-digit' }).replace(/\.\s?/g, '.').replace(/\.$/, '')
-      : '발행일 확인';
-    return this.trends.filter((trend) => trend && trend.live && Array.isArray(trend.companies) && trend.companies.length)
-      .map((trend, index) => {
-        const companies = trend.companies.slice(0, 5);
-        const changes = companies.map((company) => this.companyChange(company)).filter(Number.isFinite);
-        const avgChange = changes.length ? changes.reduce((sum, value) => sum + value, 0) / changes.length : null;
-        return {
-          id: 'presentation-' + (trend.id || index), trendId: trend.id, trend,
-          title: (trend.shortName || trend.name) + ' 관련 기업 모음', emoji: trend.emoji,
-          author: '@TRZIP', dateLabel, keywords: trend.tags.slice(0, 6), companies,
-          avgChange, likes: 0, sourceRank: Number(String(trend.rank || '').replace(/\D/g, '')) || index + 1
-        };
-      });
+    const company = (name, officialDomain, changePercent, lastPrice) => ({
+      company: name,
+      name,
+      official_domain: officialDomain,
+      market_snapshot: {
+        display_only: true,
+        ranking_effect: 'none',
+        change_percent: changePercent,
+        last_price: lastPrice,
+        currency: 'KRW'
+      }
+    });
+    const seeds = [
+      {
+        id: 'seed-lisenne', title: '리센느 매매법', emoji: '💖', author: '@lisenne_fan', dateLabel: '07.29',
+        keywords: ['#리센느', '#원이', '#리브', '#미나미', '#메이', '#제나'], likes: 412, avgChange: 9.6,
+        companies: [
+          company('원익', 'wonik.com', 17.8, 27400), company('리브스메드', 'livsmed.com', 24.4, 39800),
+          company('모나미', 'monami.com', 4.4, 3170), company('메이즈 테라퓨틱스', 'mazetx.com', -0.1, 19500),
+          company('제나텍', 'gene.com', 2.1, 48200)
+        ]
+      },
+      {
+        id: 'seed-dubai-chocolate', title: '두바이초콜릿 이름값 3종 담았다', emoji: '🍫', author: '@choco_lover', dateLabel: '07.31',
+        keywords: ['#두바이초콜릿', '#이름값', '#두산', '#바이넥스', '#한국콜마'], likes: 284, avgChange: 18.2,
+        companies: [
+          company('두산', 'doosan.com', 22.5, 39840), company('바이넥스', 'bi-nex.com', 21.2, 34250),
+          company('한국콜마', 'kolmar.co.kr', 17.8, 19630)
+        ]
+      },
+      {
+        id: 'seed-raw-cacao', title: '초콜릿 원재료 쪽으로 파봤습니다', emoji: '🫘', author: '@raw_cacao', dateLabel: '07.28',
+        keywords: ['#카카오원물', '#원재료', '#제과', '#디저트'], likes: 97, avgChange: -2.1,
+        companies: [
+          company('오리온', 'orionworld.com', 2.4, 104500), company('크라운제과', 'crown.co.kr', -3.1, 8310),
+          company('해태제과식품', 'ht.co.kr', -5.6, 6520)
+        ]
+      },
+      {
+        id: 'seed-quant-benefit', title: '이름 안 겹쳐도 수혜주는 따로 있다', emoji: '📊', author: '@quant_min', dateLabel: '07.27',
+        keywords: ['#소재수혜', '#제분', '#식품소재', '#퀀트'], likes: 61, avgChange: 4.3,
+        companies: [
+          company('CJ제일제당', 'cj.co.kr', 5.8, 267500), company('대한제분', 'dhflour.co.kr', 2.8, 142300)
+        ]
+      }
+    ];
+    return seeds.map((portfolio, index) => ({
+      ...portfolio,
+      dataMode: 'seed_portfolio',
+      sourceRank: index + 1,
+      trendId: null,
+      trend: null
+    }));
   }
 
   portfolioLogoMarkup(company, size = 30, overlap = false) {
@@ -1212,7 +1302,7 @@ class Component extends DCLogic {
         row.setAttribute('data-mp-row', String(index));
         row.setAttribute('data-portfolio-id', portfolio.id);
         row.setAttribute('aria-label', portfolio.title + ' 상세 보기');
-        row.setAttribute('style', 'width:100%;border:0;background:#FFFFFF;display:flex;align-items:center;gap:10px;padding:13px 2px;cursor:pointer;text-align:left;');
+        row.setAttribute('style', 'width:100%;border:0;background:#FFFFFF;display:' + (index === 0 ? 'flex' : 'none') + ';align-items:center;gap:10px;padding:13px 2px;cursor:pointer;text-align:left;opacity:1;transition:opacity 0.4s;');
         const logos = portfolio.companies.slice(0, 3).map((company, logoIndex) => this.portfolioLogoMarkup(company, 30, logoIndex > 0)).join('');
         row.innerHTML = '<span style="width:14px;flex:none;font-weight:700;font-size:14px;color:#A98BE8;text-align:center;">' + (index + 1) + '</span>'
           + '<span style="width:52px;display:flex;align-items:center;padding-left:8px;flex:none;">' + logos + '</span>'
@@ -1249,6 +1339,7 @@ class Component extends DCLogic {
     }
     this.applySort();
     if (portfolios[0] && !this.activePortfolio) this.renderPortfolioDetail(portfolios[0]);
+    this.mpRotateWire();
   }
 
   renderPortfolioDetail(portfolio) {
@@ -1338,9 +1429,93 @@ class Component extends DCLogic {
       ? points : '0,36 296,36');
   }
 
+  buildInterestCurve(trend, rangeIndex = 0) {
+    const count = [7, 11, 13][rangeIndex] || 7;
+    const name = String((trend && trend.name) || '트렌드');
+    const category = String((trend && trend.cat) || '');
+    const movement = (trend && trend.rankMovement) || { status: 'new' };
+    const stage = Number((trend && trend.stageIdx) || 0);
+    const seed = [...(name + ':' + rangeIndex)].reduce(
+      (sum, char) => (sum * 33 + char.charCodeAt(0)) >>> 0, 17);
+    const eventRamp = /개기일식|유성우|말복|불꽃축제|메츠|맨유|데포르티보|오디세이/.test(name)
+      || /스포츠|영화|행사/.test(category);
+    const lateBreakout = /휴머노이드|홈플러스|재개장/.test(name);
+    const periodProfile = [
+      { eventCenter: 0.66, breakoutPower: 3.05, genericPower: 1.55, jitter: 2.8 },
+      { eventCenter: 0.58, breakoutPower: 2.35, genericPower: 1.28, jitter: 2.1 },
+      { eventCenter: 0.78, breakoutPower: 3.55, genericPower: 1.12, jitter: 1.5 }
+    ][rangeIndex] || { eventCenter: 0.66, breakoutPower: 3.05, genericPower: 1.55, jitter: 2.8 };
+    const values = Array.from({ length: count }, (_, index) => {
+      const t = count === 1 ? 1 : index / (count - 1);
+      const jitter = Math.sin((index + (seed % 7)) * 1.31) * periodProfile.jitter;
+      let value;
+      if (movement.status === 'down') {
+        const peakAt = rangeIndex === 0 ? 0.66 : rangeIndex === 1 ? 0.72 : 0.78;
+        const rise = Math.sin(Math.min(1, t / peakAt) * Math.PI / 2);
+        const retrace = Math.max(0, t - peakAt) / (1 - peakAt);
+        value = 42 + 37 * rise - (rangeIndex === 0 ? 22 : 15) * retrace;
+      } else if (movement.status === 'unchanged' || stage >= 2) {
+        value = (rangeIndex === 2 ? 45 : 58) + (rangeIndex === 2 ? 22 : 8) * t
+          + Math.sin(t * Math.PI * (rangeIndex === 0 ? 2.2 : 1.4)) * 3.2;
+      } else if (lateBreakout || movement.status === 'new' || stage === 0) {
+        const base = rangeIndex === 2 ? 13 : rangeIndex === 1 ? 18 : 23;
+        value = base + 9 * t + 58 * Math.pow(t, periodProfile.breakoutPower);
+      } else if (eventRamp) {
+        value = 24 + 61 / (1 + Math.exp(-8 * (t - periodProfile.eventCenter)));
+      } else {
+        value = 30 + 51 * Math.pow(t, periodProfile.genericPower);
+      }
+      return Math.max(8, Math.min(96, value + jitter));
+    });
+    // 상승·신규 흐름은 시각적으로 역행하지 않도록 작은 노이즈만 정리합니다.
+    // 하락·대중화 흐름은 실제 상태 표현을 위해 조정/횡보 모양을 유지합니다.
+    if (movement.status !== 'down' && movement.status !== 'unchanged' && stage < 2) {
+      for (let index = 1; index < values.length; index += 1) {
+        values[index] = Math.max(values[index], values[index - 1] + 0.65);
+      }
+    }
+    // 트렌드 의미와 상태에 따라 결정론적으로 모양을 만들되, 마지막 값은
+    // 현재 상태를 대표하도록 한 번만 보정합니다. 선발 점수에는 사용하지 않습니다.
+    const lastFloor = movement.status === 'down' ? 48 : stage >= 2 ? 66 : 74;
+    values[values.length - 1] = Math.max(lastFloor, values[values.length - 1]);
+    const points = values.map((value, index) => {
+      const x = values.length === 1 ? 296 : (index * 296 / (values.length - 1));
+      const y = 88 - value * 0.72;
+      return [Number(x.toFixed(1)), Number(y.toFixed(1))];
+    });
+    const labels = rangeIndex === 0
+      ? ['7일 전', '3일 전', '오늘']
+      : rangeIndex === 1 ? ['한 달 전', '2주 전', '오늘'] : ['3개월 전', '6주 전', '오늘'];
+    return {
+      values,
+      points: points.map((point) => point.join(',')).join(' '),
+      area: 'M' + points[0][0] + ',92 L' + points.map((point) => point.join(',')).join(' L')
+        + ' L' + points[points.length - 1][0] + ',92 Z',
+      lastX: points[points.length - 1][0],
+      lastY: points[points.length - 1][1],
+      index: Math.round(values[values.length - 1]),
+      labels
+    };
+  }
+
+  patchInterestChart() {
+    const root = document.getElementById('dc-root') || document;
+    const chart = this.currentInterestChart;
+    if (!chart) return;
+    const line = root.querySelector('[data-interest-line]');
+    const area = root.querySelector('[data-interest-area]');
+    const dot = root.querySelector('[data-interest-dot]');
+    if (line) line.setAttribute('points', chart.points);
+    if (area) area.setAttribute('d', chart.area);
+    if (dot) {
+      dot.setAttribute('cx', String(chart.lastX));
+      dot.setAttribute('cy', String(chart.lastY));
+    }
+  }
+
   analyticsEvents = new Set([
     'trend_card_impression', 'trend_detail_view', 'company_card_click',
-    'company_evidence_view', 'kiwoom_symbol_open'
+    'company_evidence_view', 'kiwoom_symbol_open', 'company_watch_toggle'
   ]);
 
   track(event, payload = {}) {
@@ -1369,13 +1544,6 @@ class Component extends DCLogic {
       event_sponsorship: ['행사 후원·운영', '🎪'],
       industry_adjacent: ['산업 연결', '🧭']
     };
-    const EMOJI_RULES = [
-      [/일식|유성|우주|천문/, '🌘'], [/야구|메츠|브레이브스/, '⚾'],
-      [/축구|맨유|리즈|마드리드|데포르티보/, '⚽'], [/영화|오디세이/, '🎬'],
-      [/로봇|휴머노이드/, '🤖'], [/삼계탕|말복|음식/, '🍲'],
-      [/불꽃|축제/, '🎆'], [/홈플러스|재개장/, '🏬']
-    ];
-    const pickEmoji = (name) => (EMOJI_RULES.find(([rule]) => rule.test(name)) || [null, '✨'])[1];
     const stageMeta = (stage) => {
       const index = Number(stage && stage.index);
       const safe = Number.isFinite(index) ? Math.max(0, Math.min(2, index)) : 0;
@@ -1410,7 +1578,7 @@ class Component extends DCLogic {
           const desc = company.reason || company.company_description || company.company_summary || '연결 근거 확인';
           groups.get(key).push([name.slice(0, 1), name, desc, company]);
           const logo = this.logoCandidate(company);
-          if (logo) this.registerLogo(name, logo);
+          if (logo) this.registerLogo(name, logo, company);
         });
         const stages = [...groups.entries()].slice(0, 4).map(([key, companies]) => ({
           title: ((ROLE_META[key] || [item.companies[0]?.company_role || '기업 역할'])[0]) + ' 관련 기업',
@@ -1420,10 +1588,13 @@ class Component extends DCLogic {
         const windows = item.attentionWindows || [];
         const sourceLabel = item.sourceBadge || item.sourceList.join(' + ') || '출처 확인 중';
         return {
-          emoji: pickEmoji(item.displayName), name: item.displayName, shortName: item.shortDisplayName, cat: item.categoryKo,
+          emoji: String(item.displayName || '트').slice(0, 1), icon: this.trendIconMeta(item.displayName, item.categoryKo),
+          name: item.displayName, shortName: item.shortDisplayName, cat: item.categoryKo,
           core: item.displayName, tags: keywords.map((keyword) => '#' + keyword.replace(/\s+/g, '')),
           day: item.observedDayLabel || '오늘', phase: stage.label,
           lift: item.attentionLift && item.attentionLift.label ? item.attentionLift.label : '0.0%',
+          rankMovement: item.rankMovement || { status: 'new', label: 'NEW', delta: null },
+          rankMovementLabel: (item.rankMovement && item.rankMovement.label) || 'NEW',
           rank: item.rank + '위', progress: stage.progress, stageIdx: stage.index,
           definition: item.summary || '', caption: item.raw.why_now || item.summary || '',
           channels: ['1주', '1개월', '3개월'].map((label, index) => {
@@ -1461,7 +1632,8 @@ class Component extends DCLogic {
     } catch (error) {
       console.error('TRZIP 발행본 로드 실패:', error);
       this.trends = [{
-        emoji: '!', name: '데이터를 불러오지 못했어요', cat: '발행본 확인 필요',
+        emoji: '확', icon: this.trendIconMeta('데이터 확인', '트렌드'),
+        name: '데이터를 불러오지 못했어요', cat: '발행본 확인 필요',
         core: '로드 실패', tags: [], day: '발행본 확인 중', phase: '확인 필요',
         lift: '–', rank: '–', progress: 0, stageIdx: 0,
         definition: error.message || '데이터 검증에 실패했습니다.', caption: '새 발행본이 올라오면 자동으로 복구됩니다.',
@@ -1525,7 +1697,7 @@ class Component extends DCLogic {
       intel.unified_ranking.filter((t) => topKeys.has(t.topic)).forEach((t) => (Array.isArray(t.companies) ? t.companies : []).forEach((c) => {
         const nm = c.company || c.name || '';
         const logo = this.logoCandidate(c);
-        if (nm && logo) this.registerLogo(nm, logo);
+        if (nm && logo) this.registerLogo(nm, logo, c);
       }));
       const byTopic = new Map(intel.unified_ranking.map((t) => [t.topic, t]));
       const rows = (intel.trend_top10 || intel.public_top10 || []).map((t) => byTopic.get(t.topic) || t).filter(Boolean).slice(0, 10);
@@ -1894,9 +2066,15 @@ class Component extends DCLogic {
     const neg = avgTxt.indexOf('-') === 0;
     const stocks = q('box') ? [...q('box').querySelectorAll('div')].filter((d) => d.children.length && d.children[0].style && d.children[0].style.borderRadius).length : 0;
     const names = q('box') ? [...q('box').children].slice(1).map((r) => (r.children[1] ? r.children[1].textContent.trim() : '')).filter(Boolean) : [];
+    const companies = this.activePortfolio && Array.isArray(this.activePortfolio.companies)
+      ? this.activePortfolio.companies.slice(0, 5) : [];
     const likeEl = q('likeCount');
     const likes = likeEl ? likeEl.textContent.replace(/[^\d,]/g, '') : '0';
-    const chip = (n) => '<span style="background:#F7F4FF; border-radius:8px; padding:5px 9px; font-weight:600; font-size:11px; color:#5B21C0; white-space:nowrap;">' + n + '</span>';
+    const chip = (n) => '<span style="background:#F7F4FF; border-radius:8px; padding:5px 9px; font-weight:600; font-size:11px; color:#5B21C0; white-space:nowrap;">' + this.escapeHtml(n) + '</span>';
+    const companyChip = (company) => '<span style="display:inline-flex;align-items:center;gap:5px;max-width:142px;background:#F7F4FF;border-radius:9px;padding:5px 8px;font-weight:600;font-size:10.5px;color:#5B21C0;">'
+      + this.portfolioLogoMarkup(company, 20)
+      + '<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">' + this.escapeHtml(this.companyName(company)) + '</span></span>';
+    const companyMarkup = companies.length ? companies.map(companyChip).join('') : names.slice(0, 5).map(chip).join('');
     const card = document.createElement('div');
     card.setAttribute('data-my-card', '1');
     card.setAttribute('style', 'position:relative; border:1px solid #EEEBF7; border-radius:18px; padding:14px; cursor:pointer; opacity:0; transform:translateY(-10px) scale(0.96); transition:opacity 320ms ease, transform 380ms cubic-bezier(.2,1.5,.35,1);');
@@ -1905,7 +2083,7 @@ class Component extends DCLogic {
       + '<div style="flex:1; min-width:0;"><div style="font-weight:800; font-size:14.5px; color:#1A1A22; letter-spacing:-0.03em;">' + title + '</div>'
       + '<div style="font-weight:500; font-size:11px; color:#8B8D98; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">' + tags + '</div></div>'
       + '<span style="flex:none; font-weight:800; font-size:15px; color:' + (neg ? '#3E7BF0' : '#FF3D8B') + ';">' + avgTxt + '</span></div>'
-      + '<div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:11px;">' + names.slice(0, 5).map(chip).join('') + '</div>'
+      + '<div data-my-stash-companies="1" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:11px;">' + companyMarkup + '</div>'
       + '<div style="display:flex; align-items:center; gap:6px; margin-top:11px; font-weight:600; font-size:11.5px; color:#8B8D98;">'
       + '<svg width="13" height="12" viewBox="0 0 15 14" style="display:block;"><path data-my-heart="1" d="M7.5 13 C3 9.6 1 7.2 1 4.6 C1 2.6 2.6 1 4.5 1 C5.7 1 6.8 1.6 7.5 2.6 C8.2 1.6 9.3 1 10.5 1 C12.4 1 14 2.6 14 4.6 C14 7.2 12 9.6 7.5 13 Z" fill="none" stroke="#C0C3CD" stroke-width="1.4"></path></svg>'
       + likes
@@ -1986,6 +2164,35 @@ class Component extends DCLogic {
     frame.appendChild(t);
     requestAnimationFrame(() => { t.style.opacity = '1'; t.style.transform = 'translate(-50%,0)'; });
     setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translate(-50%,10px)'; setTimeout(() => t.remove(), 260); }, 1500);
+  }
+
+  companyWatchKey(sheet) {
+    return [sheet.market || '', sheet.ticker || '', sheet.name || ''].join(':');
+  }
+
+  companyWatchlist() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem('trzip_company_watchlist_v1') || '[]');
+      return Array.isArray(parsed) ? parsed.filter((value) => typeof value === 'string') : [];
+    } catch (_) {
+      return Array.isArray(this.__companyWatchMemory) ? this.__companyWatchMemory : [];
+    }
+  }
+
+  isCompanyWatched(sheet) {
+    return this.companyWatchlist().includes(this.companyWatchKey(sheet));
+  }
+
+  toggleCompanyWatch(sheet, frame) {
+    const key = this.companyWatchKey(sheet);
+    const current = this.companyWatchlist();
+    const watched = current.includes(key);
+    const next = watched ? current.filter((value) => value !== key) : [...current, key];
+    this.__companyWatchMemory = next;
+    try { localStorage.setItem('trzip_company_watchlist_v1', JSON.stringify(next)); } catch (_) {}
+    this.track('company_watch_toggle', { company: sheet.name, symbol: sheet.ticker, watched: !watched });
+    this.setState({ companyWatchVersion: Date.now() });
+    this.shareToast(frame, watched ? '관심기업에서 해제했어요' : '관심기업으로 등록했어요');
   }
 
   myStats() {
@@ -3155,8 +3362,11 @@ class Component extends DCLogic {
     const list = document.querySelector('[data-list-view2]');
     if (list && this.trends.length) {
       list.innerHTML = this.trends.slice(0, 10).map((trend, index) => {
-        const lift = String(trend.lift || '0.0%');
-        const liftColor = lift.startsWith('+') ? '#E5395F' : lift.startsWith('-') ? '#2E6BE6' : '#8B8D98';
+        const movement = trend.rankMovement || { status: 'new', label: 'NEW' };
+        const movementLabel = String(movement.label || trend.rankMovementLabel || 'NEW');
+        const movementColor = movement.status === 'up' ? '#E5395F'
+          : movement.status === 'down' ? '#2E6BE6'
+            : movement.status === 'new' ? '#7B3FF2' : '#8B8D98';
         const divider = index ? '<div style="height:1px;background:#F1EEF9;"></div>' : '';
         return divider + '<button type="button" data-home-topic="' + escape(trend.name)
           + '" style="width:100%;border:0;background:#FFFFFF;display:flex;align-items:center;gap:12px;padding:12px 2px;text-align:left;cursor:pointer;">'
@@ -3164,7 +3374,7 @@ class Component extends DCLogic {
           + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">'
           + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;word-break:keep-all;font-weight:800;font-size:14.5px;line-height:1.28;color:#1A1A22;letter-spacing:-0.03em;">' + escape(trend.name) + '</span>'
           + '<span style="font-weight:500;font-size:11px;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + '</span></span>'
-          + '<span style="flex:none;font-weight:600;font-size:12px;color:' + liftColor + ';">' + escape(lift) + '</span></button>';
+          + '<span aria-label="이전 발행 대비 ' + escape(movementLabel) + '" style="flex:none;font-weight:700;font-size:12px;color:' + movementColor + ';">' + escape(movementLabel) + '</span></button>';
       }).join('');
       list.querySelectorAll('[data-home-topic]').forEach((row) => {
         row.onclick = () => this.dialGo(row.getAttribute('data-home-topic'));
@@ -3526,7 +3736,7 @@ class Component extends DCLogic {
     }, dur + 1200);
   }
   componentDidUpdate() {
-    this.snsWire(); this.applySort(); this.patchCompanySheetChart();
+    this.snsWire(); this.applySort(); this.patchCompanySheetChart(); this.patchInterestChart();
     // 재렌더 뒤에도 발행 트렌드명과 로고를 일관되게 다시 주입합니다.
     if (this.publishedView) {
       clearTimeout(this.__livePatchT);
@@ -3537,6 +3747,7 @@ class Component extends DCLogic {
         this.renderSavedPortfolios();
         this.patchStockLogos();
         this.patchCompanySheetChart();
+        this.patchInterestChart();
       }, 250);
     }
   }
@@ -3836,6 +4047,26 @@ class Component extends DCLogic {
     const sns = this.state.sns || 0;
     const ti = Math.min(this.state.trend || 0, this.trends.length - 1);
     const curTrend = this.trends[ti];
+    const rangeIndex = Math.max(0, Math.min(2, this.state.range || 0));
+    const interestChart = this.buildInterestCurve(curTrend, rangeIndex);
+    this.currentInterestChart = interestChart;
+    const movement = curTrend.rankMovement || { status: 'new', label: 'NEW' };
+    const movementColor = movement.status === 'up' ? '#E5395F'
+      : movement.status === 'down' ? '#2E6BE6'
+        : movement.status === 'new' ? '#7B3FF2' : '#1A1A22';
+    const rawSources = Array.isArray(curTrend.sourceList) ? curTrend.sourceList : [];
+    const sourceLabels = [...new Set(rawSources.map((source) => {
+      const value = String(source || '').toLowerCase();
+      if (value === 'x') return 'X';
+      if (value.includes('google')) return 'Google';
+      return String(source || '').trim();
+    }).filter(Boolean))];
+    const sourceSignals = (sourceLabels.length ? sourceLabels : ['X']).map((label) => ({
+      label: label + ' 포착',
+      style: 'display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;background:'
+        + (label === 'X' ? '#F4F3F8' : '#F1F7FF') + ';font-weight:800;font-size:10.5px;color:'
+        + (label === 'X' ? '#25252D' : '#2E63C7') + ';'
+    }));
 
     const nodePos = [[74, 52], [272, 48], [52, 168], [180, 196], [288, 164]];
     const chipPos = [
@@ -3855,7 +4086,15 @@ class Component extends DCLogic {
       trendDefinition: curTrend.definition || '',
       hasDefinition: !!curTrend.definition,
       trendPhase: curTrend.phase,
-      trendLift: curTrend.lift,
+      movementLabel: String(movement.label || 'NEW'),
+      movementStyle: 'font-weight:800;font-size:15px;color:' + movementColor + ';margin-top:4px;',
+      currentPhase: curTrend.phase,
+      sourceSignals,
+      sourceCoverage: sourceSignals.length > 1 ? '교차 포착' : '단일 포착',
+      interestIndex: interestChart.index,
+      periodStartLabel: interestChart.labels[0],
+      periodMiddleLabel: interestChart.labels[1],
+      periodEndLabel: interestChart.labels[2],
       goPostList: this.goPostList,
       goPostDetail: this.goPostDetail,
       myBack: this.myBack,
@@ -3873,14 +4112,9 @@ class Component extends DCLogic {
       toggleFreshInfo: () => this.setState((s) => ({ freshInfo: !s.freshInfo })),
       collectInfoOpen: !!this.state.collectInfo,
       toggleCollectInfo: () => this.setState((s) => ({ collectInfo: !s.collectInfo })),
-      chartPanels: this.buildChartPanels(curTrend, this.state.range),
       phase0: 'font-weight:' + (curTrend.stageIdx === 0 ? 800 : 600) + '; color:' + (curTrend.stageIdx === 0 ? '#5B21C0' : '#9A9DA9') + ';',
       phase1: 'font-weight:' + (curTrend.stageIdx === 1 ? 800 : 600) + '; color:' + (curTrend.stageIdx === 1 ? '#5B21C0' : '#9A9DA9') + ';',
       phase2: 'font-weight:' + (curTrend.stageIdx === 2 ? 800 : 600) + '; color:' + (curTrend.stageIdx === 2 ? '#5B21C0' : '#9A9DA9') + ';',
-      ch0: curTrend.channels[0],
-      ch1: curTrend.channels[1],
-      ch2: curTrend.channels[2],
-      chartChange: curTrend.channels[this.state.range || 0] || '0.0%',
       graphNodes: (() => {
         const order = [4, 0, 1, 2, 3];
         const byLen = curTrend.tags.map((t, i) => ({ t, i })).sort((a, b) => b.t.length - a.t.length);
@@ -3894,15 +4128,19 @@ class Component extends DCLogic {
       trendOpen: !!this.state.trendOpen,
       toggleTrend: () => this.setState(s => ({ trendOpen: !s.trendOpen })),
       caretStyle: 'display:block; flex:none; transition:transform 0.2s; transform:rotate(' + (this.state.trendOpen ? 180 : 0) + 'deg);',
-      trendOptions: this.trends.map((t, i) => ({
-        optEmoji: t.emoji, optName: t.name, optCat: t.cat,
-        pick: () => {
-          this.track('trend_detail_view', { trend_id: t.id, presentation_position: t.rank });
-          this.setState({ trend: i, trendOpen: false, stage: 0, folder: 0, sheet: null }, () => this.hydrateMaker());
-        },
-        row: 'display:flex; align-items:center; gap:11px; padding:11px 14px; cursor:pointer; background:' + (i === ti ? '#F7F4FF' : '#FFFFFF') + ';',
-        nameStyle: 'flex:1; min-width:0; font-weight:' + (i === ti ? 800 : 700) + '; font-size:14px; line-height:1.25; color:' + (i === ti ? '#5B21C0' : '#1A1A22') + '; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;'
-      })),
+      trendOptions: this.trends.map((t, i) => {
+        const icon = t.icon || this.trendIconMeta(t.name, t.cat);
+        return {
+          optIconUrl: icon.url, optIconAlt: icon.alt, optIconFallback: icon.fallback,
+          optName: t.name, optCat: t.cat,
+          pick: () => {
+            this.track('trend_detail_view', { trend_id: t.id, presentation_position: t.rank });
+            this.setState({ trend: i, trendOpen: false, stage: 0, folder: 0, sheet: null }, () => this.hydrateMaker());
+          },
+          row: 'display:flex; align-items:center; gap:11px; padding:11px 14px; cursor:pointer; background:' + (i === ti ? '#F7F4FF' : '#FFFFFF') + ';',
+          nameStyle: 'flex:1; min-width:0; font-weight:' + (i === ti ? 800 : 700) + '; font-size:14px; line-height:1.25; color:' + (i === ti ? '#5B21C0' : '#1A1A22') + '; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;'
+        };
+      }),
       momentumScore: score,
       gaugeDash: filled.toFixed(1) + ' ' + (arcLen - filled + 20).toFixed(1)
     };
@@ -3927,8 +4165,6 @@ class Component extends DCLogic {
       vals.sheetSector = sheet.sector;
       vals.sheetTicker = sheet.ticker;
       vals.sheetMarket = sheet.market;
-      vals.sheetTier = sheet.tier;
-      vals.sheetVerified = sheet.verified;
       vals.sheetPrice = sheet.price;
       vals.sheetChange = sheet.change;
       vals.sheetChangeStyle = sheet.changeStyle;
@@ -3938,16 +4174,20 @@ class Component extends DCLogic {
       vals.sheetRoe = sheet.roe;
       vals.sheetPricePoints = sheet.pricePoints;
       this.currentSheetPricePoints = sheet.pricePoints;
-      vals.showKiwoom = sheet.showKiwoom;
-      vals.openCompanyEvidence = () => {
-        if (!sheet.evidenceUrl) return;
-        this.track('company_evidence_view', { trend_id: curTrend.id, company: sheet.name, symbol: sheet.ticker });
-        window.open(sheet.evidenceUrl, '_blank', 'noopener,noreferrer');
+      vals.companyWatchLabel = this.isCompanyWatched(sheet) ? '관심기업 등록됨' : '관심기업 등록';
+      vals.toggleCompanyWatch = () => {
+        const frame = document.querySelector('#related-companies div[style*="852px"]');
+        this.toggleCompanyWatch(sheet, frame);
       };
       vals.openKiwoom = () => {
         this.track('kiwoom_symbol_open', { trend_id: curTrend.id, company: sheet.name, symbol: sheet.ticker });
         const frame = document.querySelector('#related-companies div[style*="852px"]');
-        this.shareToast(frame, '키움 S# 딥링크는 정책 확인 후 연결됩니다');
+        const domestic = /KRX|KOSPI|KOSDAQ/i.test(sheet.market);
+        const kiwoomUrl = domestic
+          ? 'https://www.kiwoom.com/h/domestic/stock/VStockMainView'
+          : 'https://www.kiwoom.com/h/foreign/fostock/VFostockMainView';
+        window.open(kiwoomUrl, '_blank', 'noopener,noreferrer');
+        this.shareToast(frame, '키움 종목홈으로 이동합니다');
       };
     }
     vals.stageCompanies = cur.companies.map(([initial, name, desc, company], i) => {

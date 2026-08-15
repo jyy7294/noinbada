@@ -46,6 +46,22 @@ def test_codex_automation_runs_full_local_publication_pipeline():
     assert "--preflight" in runner
     assert "publication preflight failed before remote push" in runner
     assert runner.index("--preflight") < runner.index('push origin "HEAD:refs/heads/live-data"')
+    assert "--record-hourly-validation" in runner
+    assert "--hourly-receipt-exists" in runner
+    assert "--register-trigger" in runner
+    assert 'Write-RunLog -Phase "trigger"' in runner
+    assert 'Write-RunLog -Phase "lock" -Status "conflict"' in runner
+    assert "exit 75" in runner
+    assert runner.index("--record-hourly-validation") < runner.index(
+        'if ($KstHour -ne $DailyPublishHourKst)'
+    )
+    assert runner.index('if ($KstHour -ne $DailyPublishHourKst)') < runner.index(
+        "--record-publication"
+    )
+    assert "last-remote-presentation.json" in runner
+    assert runner.index("remotePublished -ne $localPublished") < runner.index(
+        "last-remote-presentation.json"
+    )
     assert "Register-ScheduledTask" not in setup
     assert "Disable-ScheduledTask" in setup
     assert "+refs/heads/live-data:refs/remotes/origin/live-data" in setup
@@ -75,10 +91,12 @@ def test_new_pc_bootstrap_installs_runtime_automation_and_runs_tests():
     assert "GitHub Actions" in prompt
     assert "Windows 작업 스케줄러" in prompt
     assert "hourly-source-proof-v2" in prompt
-    assert "frontend-result-quality-v5" in prompt
-    assert "관련 키워드 정확히 5개" in prompt
+    assert "frontend-result-quality-v8" in prompt
+    assert "presentation_feed" in prompt
+    assert "6글자 이하 키워드 정확히 5개" in prompt
     assert "국내외 상장기업 최소 10개" in prompt
-    assert "8시간 연속 성공" in prompt
+    assert "hourly_validation_receipt" in prompt
+    assert "최근 8회 연속 정각 성공" in prompt
     assert "로그인 쿠키와 토큰을 자동 복사하지 않는" in guide
 
 

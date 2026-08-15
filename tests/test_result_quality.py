@@ -1,16 +1,31 @@
 from pathlib import Path
 import json
+import sys
 from datetime import UTC, datetime, timedelta
+
+import pytest
 
 from trzip.hourly_store import HourlyObservation, connect, upsert
 from trzip.result_quality import (
+    _hourly_validation_receipt,
     _source_gate,
+    evaluate_actual_hour,
     evaluate_consecutive_hours,
     evaluate_frontend_result,
     evaluate_local_consecutive_hours,
+    hourly_validation_receipt_exists,
+    main as result_quality_main,
+    publication_receipt_exists,
+    record_hourly_validation_receipt,
     record_publication_receipt,
+    register_hourly_trigger,
 )
-from trzip.presentation_feed import build_presentation_feed
+from trzip.presentation_feed import (
+    LOGO_ASSET_VERIFICATION,
+    LOGO_MINIMUM_DIMENSION,
+    LOGO_QUALITY_POLICY,
+    build_presentation_feed,
+)
 
 
 def _company(index: int) -> dict:
@@ -44,7 +59,16 @@ def _company(index: int) -> dict:
         ),
         "logo_asset_source": "official_domain_declared_favicon",
         "logo_asset_host": "www.google.com",
-        "logo_asset_verification": "static_allowlist_http_200_image_2026_08_15",
+        "logo_asset_verification": LOGO_ASSET_VERIFICATION,
+        "logo_quality_policy": LOGO_QUALITY_POLICY,
+        "logo_render_mode": "runtime_probe",
+        "logo_asset_format": "remote_declared_icon",
+        "logo_asset_width": 0,
+        "logo_asset_height": 0,
+        "logo_minimum_dimension": LOGO_MINIMUM_DIMENSION,
+        "logo_runtime_probe_required": True,
+        "logo_asset_quality": "unverified_dimensions_runtime_gate",
+        "logo_rejected_asset_url": "",
         "market_snapshot": {
             "last_price": 10000 + index,
             "change_percent": 1.2,
@@ -161,6 +185,38 @@ def test_presentation_quality_rejects_a_missing_logo_without_hiding_canonical_st
     assert result["company_ready_count"] == 9
     assert result["presentation_content_ready"] is False
     assert any("missing_official_logo" in failure for failure in result["failures"])
+
+
+def test_presentation_quality_accepts_initials_for_reviewed_low_resolution_logo():
+    feed = build_presentation_feed({"unified_ranking": []})
+    initials_company = next(
+        company
+        for item in feed["items"]
+        for company in item["companies"]
+        if company.get("logo_render_mode") == "initials"
+    )
+
+    result = evaluate_frontend_result({
+        "home_feed": {"status": "empty", "groups": []},
+        "presentation_feed": feed,
+    })
+
+    assert initials_company["logo_url"] == ""
+    assert initials_company["logo_rejected_asset_url"].startswith("https://")
+    assert result["passed"] is True
+
+
+def test_presentation_quality_rejects_missing_blur_safe_logo_policy():
+    feed = build_presentation_feed({"unified_ranking": []})
+    feed["items"][0]["companies"][0].pop("logo_quality_policy")
+
+    result = evaluate_frontend_result({
+        "home_feed": {"status": "empty", "groups": []},
+        "presentation_feed": feed,
+    })
+
+    assert result["passed"] is False
+    assert any("invalid_v3_logo_metadata" in failure for failure in result["failures"])
 
 
 def test_home_selection_rejects_pending_keyword_and_company_enrichment():
@@ -445,7 +501,27 @@ def test_eight_hour_local_streak_requires_only_daily_end_publication(
     database = tmp_path / "runtime.sqlite3"
     end = datetime(2026, 8, 14, 21, tzinfo=UTC)
     for offset in reversed(range(8)):
-        _write_complete_source_hour(database, end - timedelta(hours=offset))
+        hour = end - timedelta(hours=offset)
+        _write_complete_source_hour(database, hour)
+
+    without_receipts = evaluate_local_consecutive_hours(database, end=end, count=8)
+    assert without_receipts["passed"] is False
+    assert without_receipts["current_consecutive_success_count"] == 0
+
+    contract = evaluate_frontend_result({"home_feed": {"status": "empty", "groups": []}})
+    for offset in reversed(range(8)):
+        hour = end - timedelta(hours=offset)
+        stamp = hour.astimezone(UTC).replace(
+            minute=0, second=0, microsecond=0
+        ).isoformat()
+        record_hourly_validation_receipt(
+            database,
+            observed_at=stamp,
+            publication_id=f"pub-{stamp}",
+            frontend_manifest_sha256="a" * 64,
+            contract=contract,
+            source_gate=_source_gate(database, stamp),
+        )
 
     local = evaluate_local_consecutive_hours(database, end=end, count=8)
     before_publication = evaluate_consecutive_hours(database, end=end, count=8)
@@ -470,7 +546,164 @@ def test_eight_hour_local_streak_requires_only_daily_end_publication(
 
     after_publication = evaluate_consecutive_hours(database, end=end, count=8)
 
-    assert after_publication["policy_version"] == "consecutive-actual-result-v3"
+    assert after_publication["policy_version"] == "consecutive-actual-result-v4"
     assert after_publication["passed"] is True
     assert after_publication["daily_publication_verified"] is True
     assert after_publication["presentation_ready"] is False
+
+
+def test_hourly_validation_receipt_is_idempotent_immutable_and_source_bound(
+    tmp_path: Path,
+) -> None:
+    database = tmp_path / "hourly-receipt.sqlite3"
+    at = datetime(2026, 8, 15, 1, tzinfo=UTC)
+    stamp = at.isoformat()
+    _write_complete_source_hour(database, at)
+    source_gate = _source_gate(database, stamp)
+    contract = evaluate_frontend_result({"home_feed": {"status": "empty", "groups": []}})
+
+    first = record_hourly_validation_receipt(
+        database, observed_at=stamp, publication_id="pub-hourly-receipt",
+        frontend_manifest_sha256="b" * 64, contract=contract,
+        source_gate=source_gate,
+    )
+    second = record_hourly_validation_receipt(
+        database, observed_at=stamp, publication_id="pub-hourly-receipt",
+        frontend_manifest_sha256="b" * 64, contract=contract,
+        source_gate=source_gate,
+    )
+
+    assert first["passed"] is True
+    assert second["receipt_sha256"] == first["receipt_sha256"]
+    assert hourly_validation_receipt_exists(database, stamp) is True
+    assert publication_receipt_exists(database, stamp) is False
+    with pytest.raises(ValueError, match="frontend contract did not pass"):
+        record_hourly_validation_receipt(
+            database,
+            observed_at=stamp,
+            publication_id="pub-hourly-receipt",
+            frontend_manifest_sha256="b" * 64,
+            contract={**contract, "policy_version": "frontend-result-quality-v6"},
+            source_gate=source_gate,
+        )
+    with pytest.raises(ValueError, match="immutable hourly validation receipt"):
+        record_hourly_validation_receipt(
+            database,
+            observed_at=stamp,
+            publication_id="pub-hourly-receipt",
+            frontend_manifest_sha256="c" * 64,
+            contract=contract,
+            source_gate=source_gate,
+        )
+    with pytest.raises(ValueError, match="immutable hourly validation receipt"):
+        record_hourly_validation_receipt(
+            database,
+            observed_at=stamp,
+            publication_id="pub-hourly-receipt",
+            frontend_manifest_sha256="b" * 64,
+            contract={**contract, "home_content_ready": True},
+            source_gate=source_gate,
+        )
+
+    with connect(database) as connection:
+        connection.execute(
+            "UPDATE hourly_observations SET topic='mutated' "
+            "WHERE observed_at=? AND source='google_trends' AND source_rank=1",
+            (stamp,),
+        )
+
+    tampered = _hourly_validation_receipt(database, stamp)
+    assert tampered["passed"] is False
+    assert "source_snapshot_digest_mismatch" in tampered["failures"]
+
+
+def test_hourly_validation_cli_is_safe_to_repeat_and_manifest_bound(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    database = tmp_path / "hourly-cli.sqlite3"
+    at = datetime(2026, 8, 15, 2, tzinfo=UTC)
+    stamp = at.isoformat()
+    _write_complete_source_hour(database, at)
+    publication_id = "pub-hourly-cli"
+    intelligence_path = tmp_path / "intelligence.json"
+    manifest_path = tmp_path / "manifest.json"
+    output_path = tmp_path / "result_quality.json"
+    intelligence_path.write_text(
+        json.dumps({
+            "publication_id": publication_id,
+            "home_feed": {"status": "empty", "groups": []},
+        }),
+        encoding="utf-8",
+    )
+    manifest_path.write_text(
+        json.dumps({"publication_id": publication_id, "observed_at": stamp}),
+        encoding="utf-8",
+    )
+    arguments = [
+        "trzip.result_quality",
+        "--database", str(database),
+        "--end", stamp,
+        "--record-hourly-validation",
+        "--intelligence", str(intelligence_path),
+        "--manifest", str(manifest_path),
+        "--count", "1",
+        "--output", str(output_path),
+    ]
+
+    monkeypatch.setattr(sys, "argv", arguments)
+    assert result_quality_main() == 0
+    first_receipt = _hourly_validation_receipt(database, stamp)
+    monkeypatch.setattr(sys, "argv", arguments)
+    assert result_quality_main() == 0
+
+    assert _hourly_validation_receipt(database, stamp)["receipt_sha256"] == (
+        first_receipt["receipt_sha256"]
+    )
+    assert json.loads(output_path.read_text(encoding="utf-8"))[
+        "local_hourly_validation"
+    ]["current_consecutive_success_count"] == 1
+
+    manifest_path.write_text(
+        json.dumps({
+            "publication_id": publication_id,
+            "observed_at": (at + timedelta(hours=1)).isoformat(),
+        }),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sys, "argv", arguments)
+    with pytest.raises(SystemExit) as failure:
+        result_quality_main()
+    assert failure.value.code == 2
+
+
+def test_trigger_registration_records_only_true_missed_hours(tmp_path: Path) -> None:
+    database = tmp_path / "trigger-gaps.sqlite3"
+    first = datetime(2026, 8, 15, 1, tzinfo=UTC)
+
+    assert register_hourly_trigger(database, first)["missed_hours"] == []
+    assert register_hourly_trigger(database, first)["missed_hours"] == []
+    third = register_hourly_trigger(database, first + timedelta(hours=3))
+
+    assert third["missed_hours"] == [
+        "2026-08-15T02:00:00+00:00",
+        "2026-08-15T03:00:00+00:00",
+    ]
+    missed = evaluate_actual_hour(database, first + timedelta(hours=1))
+    assert missed["local_passed"] is False
+    assert missed["missed_trigger"]["reason"] == "missed_trigger"
+    missed_hour = first + timedelta(hours=1)
+    missed_stamp = missed_hour.isoformat()
+    _write_complete_source_hour(database, missed_hour)
+    with pytest.raises(ValueError, match="recorded as a missed trigger"):
+        record_hourly_validation_receipt(
+            database,
+            observed_at=missed_stamp,
+            publication_id="pub-retroactive-gap",
+            frontend_manifest_sha256="d" * 64,
+            contract=evaluate_frontend_result({
+                "home_feed": {"status": "empty", "groups": []},
+            }),
+            source_gate=_source_gate(database, missed_stamp),
+        )
+    with pytest.raises(ValueError, match="precedes the last registered trigger"):
+        register_hourly_trigger(database, first + timedelta(hours=2))
