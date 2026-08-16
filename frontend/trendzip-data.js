@@ -1174,6 +1174,8 @@ function validateShowcasePayload(payload, manifest) {
     throw new Error('시연 카드 수가 올바르지 않습니다.');
   }
   const eventKeys = new Set();
+  const allStockCodes = [];
+  let totalCompanyCount = 0;
   cards.forEach((card, index) => {
     const companies = Array.isArray(card.companies) ? card.companies : [];
     const keywords = Array.isArray(card.related_keywords) ? card.related_keywords : [];
@@ -1186,19 +1188,26 @@ function validateShowcasePayload(payload, manifest) {
       || !Number.isFinite(Number(card.full_ledger_score))
       || keywords.length !== 5
       || new Set(keywords.map((keyword) => String(keyword.text || ''))).size !== 5
-      || companies.length !== 10
-      || stockCodes.size !== 10
+      || companies.length < 5 || companies.length > 10
+      || stockCodes.size !== companies.length
       || roles.size < 3 || roles.size > 4
       || card.enrichment_mode !== 'reconstructed_demo'
       || card.ranking_effect !== 'none'
       || companies.some((company) => company.relationship_status !== 'reconstructed_demo'
         || company.ranking_effect !== 'none'
+        || !String(company.connection_explanation || '').trim()
         || !/^https:\/\//.test(String(company.company_identity_url || ''))
         || !validLiveMarketSnapshot(company, payload.source_observed_at))) {
       throw new Error(`시연 카드 계약 오류: ${eventKey || index + 1}`);
     }
+    totalCompanyCount += companies.length;
+    allStockCodes.push(...stockCodes);
     eventKeys.add(eventKey);
   });
+  if (Number(manifest.market_data && manifest.market_data.snapshot_count) !== totalCompanyCount
+    || Number(manifest.market_data && manifest.market_data.unique_security_count) !== new Set(allStockCodes).size) {
+    throw new Error('시연 기업 시장 데이터 개수가 일치하지 않습니다.');
+  }
   return cards;
 }
 
@@ -1217,8 +1226,9 @@ async function loadShowcase() {
     || !manifest.market_data
     || manifest.market_data.status !== 'observed'
     || manifest.market_data.provider !== 'pykrx+yahoo_finance'
-    || Number(manifest.market_data.snapshot_count) !== 100
-    || Number(manifest.market_data.unique_security_count) < 10
+    || Number(manifest.market_data.snapshot_count) < 50
+    || Number(manifest.market_data.snapshot_count) > 100
+    || Number(manifest.market_data.unique_security_count) < 5
     || manifest.market_data.synthetic !== false
     || manifest.market_data.estimated !== false
     || manifest.market_data.ranking_effect !== 'none'

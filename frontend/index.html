@@ -37,7 +37,8 @@
     html, body, body > x-dc, #dc-root { width:100%; height:100%; min-height:100%; overflow:hidden; background:#FFFFFF; }
     #dc-root > section { position:fixed !important; inset:0 !important; width:100% !important; height:100dvh !important; min-height:0 !important; padding:0 !important; background:#FFFFFF !important; }
     [data-screen-label] { position:fixed !important; inset:0 !important; width:100% !important; height:100dvh !important; transform:none !important; transform-origin:center !important; gap:0 !important; }
-    [data-screen-label] > div[style*="width:393px"][style*="height:852px"] {
+    [data-screen-label] > div[style*="width:393px"][style*="height:852px"],
+    [data-screen-label] > div[style*="width: 393px"][style*="height: 852px"] {
       width:100% !important;
       height:100dvh !important;
       min-height:100dvh !important;
@@ -47,7 +48,9 @@
       box-sizing:border-box !important;
     }
     [data-screen-label] > div[style*="width:393px"] > div[style*="padding:12px 24px 4px"],
-    [data-screen-label] div[style*="width:120px"][style*="height:5px"] { display:none !important; }
+    [data-screen-label] > div[style*="width: 393px"] > div[style*="padding: 12px 24px 4px"],
+    [data-screen-label] div[style*="width:120px"][style*="height:5px"],
+    [data-screen-label] div[style*="width: 120px"][style*="height: 5px"] { display:none !important; }
     [data-vd-stage] { height:clamp(300px, 42dvh, 370px) !important; }
     #related-companies [data-folder-card] { padding:16px 14px !important; border-radius:6px 16px 16px 16px !important; }
     #related-companies [data-folder-body] { gap:6px !important; margin-top:10px !important; }
@@ -466,7 +469,7 @@
           <button type="button" onClick="{{ goCompanies }}" style="width:100%; border:0; display:flex; align-items:center; gap:11px; background:#F7F4FF; border-radius:18px; padding:15px 16px; font-family:inherit; text-align:left; cursor:pointer;">
             <div style="flex:1; min-width:0;">
               <div style="font-weight:800; font-size:15.5px; color:#1A1A22; letter-spacing:-0.03em;">관련 기업 보기</div>
-              <div style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:2px;">공급망 단계별로 볼 수 있어요</div>
+              <div style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:2px;">기업의 연결 역할별로 볼 수 있어요</div>
             </div>
             <svg width="16" height="16" viewBox="0 0 16 16" style="display:block; flex:none;"><polyline points="6,4 10,8 6,12" fill="none" stroke="#7B3FF2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
           </button>
@@ -512,7 +515,7 @@
         <div style="padding:18px 16px 12px;">
           <div style="display:flex; align-items:baseline; gap:7px;">
             <span style="font-weight:800; font-size:18px; color:#1A1A22; letter-spacing:-0.03em;">관련 기업</span>
-            <span style="font-weight:500; font-size:11.5px; color:#8B8D98;">공급망 단계별 폴더로 정리했어요</span>
+            <span style="font-weight:500; font-size:11.5px; color:#8B8D98;">연결 역할별로 정리했어요</span>
           </div>
 
         </div>
@@ -560,7 +563,7 @@
         <div style="padding:14px 16px 18px;">
           <div style="display:flex; align-items:center; justify-content:center; gap:5px; font-weight:500; font-size:10px; color:#A9ACB8;">
             <span style="width:12px; height:12px; flex:none; border-radius:999px; border:1px solid #C9CCD5; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:8px; color:#A9ACB8;">!</span>
-            공급망 연관성은 참고 정보이며 투자 권유가 아닙니다.
+            기업 연결은 참고 정보이며 투자 권유가 아닙니다.
           </div>
         </div>
         </div>
@@ -1013,7 +1016,7 @@ class Component extends DCLogic {
     (function () {
       var idx = 0;
       var st = document.createElement('style');
-      st.textContent = "::-webkit-scrollbar { width: 0; height: 0; }\n  #dc-root > section { position: fixed !important; inset: 0 !important; margin: 0 !important; padding: 0 !important; display: block !important; gap: 0 !important; min-height: 0 !important; background: #15121F; }\n  [data-screen-label] { position: absolute !important; left: 50% !important; top: 18px !important; display: none !important; transform-box: border-box; transform-origin: top center !important; }\n  [data-screen-label][data-proto-active] { display: flex !important; }\n  [data-screen-label] > div:first-child { display: none !important; }\n";
+      st.textContent = "::-webkit-scrollbar { width: 0; height: 0; }\n  #dc-root > section { position: fixed !important; inset: 0 !important; margin: 0 !important; padding: 0 !important; display: block !important; gap: 0 !important; min-height: 0 !important; background: #15121F; }\n  [data-screen-label] { position: absolute !important; left: 50% !important; top: 18px !important; display: none !important; transform-box: border-box; transform-origin: top center !important; }\n  [data-screen-label][data-proto-active] { display: flex !important; }\n  [data-screen-label] > div:first-child { display: none !important; }\n  @media (max-width: 600px) { [data-screen-label] { position: fixed !important; inset: 0 !important; left: 0 !important; top: 0 !important; width: 100% !important; height: 100dvh !important; } }\n";
       document.head.appendChild(st);
       function screens() { return [].slice.call(document.querySelectorAll('[data-screen-label]')); }
       function reducedMotion() { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
@@ -1063,6 +1066,14 @@ class Component extends DCLogic {
         }, 145);
       }
       function fit() {
+        if (window.matchMedia && window.matchMedia('(max-width: 600px)').matches) {
+          screens().forEach(function (w) {
+            w.style.transform = 'none';
+            w.style.transformOrigin = 'center';
+          });
+          window.scrollTo({ left: 0, top: 0, behavior: 'auto' });
+          return;
+        }
         var s = Math.min(1, (window.innerHeight - 34) / 852, (window.innerWidth - 24) / 393);
         screens().forEach(function (w) {
           w.style.transform = 'translateX(-50%) scale(' + s.toFixed(4) + ')';

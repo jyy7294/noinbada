@@ -20,14 +20,20 @@ def test_public_showcase_is_hash_pinned_and_has_exact_approved_shape() -> None:
     assert SHOWCASE_MANIFEST["display_status"] == "시연 LIVE"
     assert SHOWCASE_MANIFEST["display_time_policy"] == "client_kst_floor_hour"
     assert SHOWCASE_MANIFEST["approval"]["approved_count"] == 10
+    total_companies = sum(len(card["companies"]) for card in SHOWCASE["cards"])
+    unique_securities = {
+        company["stock_code"]
+        for card in SHOWCASE["cards"]
+        for company in card["companies"]
+    }
     assert SHOWCASE_MANIFEST["market_data"] == {
         "estimated": False,
         "provider": "pykrx+yahoo_finance",
         "ranking_effect": "none",
-        "snapshot_count": 100,
+        "snapshot_count": total_companies,
         "status": "observed",
         "synthetic": False,
-        "unique_security_count": 23,
+        "unique_security_count": len(unique_securities),
     }
     assert hashlib.sha256(payload_path.read_bytes()).hexdigest() == SHOWCASE_MANIFEST["showcase"]["sha256"]
     assert SHOWCASE["source_ranking_mode"] == "actual_full_ledger_no_recency"
@@ -36,13 +42,15 @@ def test_public_showcase_is_hash_pinned_and_has_exact_approved_shape() -> None:
     for order, card in enumerate(SHOWCASE["cards"], 1):
         assert card["presentation_order"] == order
         assert len(card["related_keywords"]) == 5
-        assert len(card["companies"]) == 10
+        assert 5 <= len(card["companies"]) <= 10
         assert 3 <= len({company["company_role_category"] for company in card["companies"]}) <= 4
         assert all(company["relationship_status"] == "reconstructed_demo" for company in card["companies"])
         assert all(company["market_snapshot"]["status"] == "observed" for company in card["companies"])
         assert all(len(company["market_snapshot"]["price_points"]) == 30 for company in card["companies"])
         assert all(company["market_snapshot"]["market_cap_currency"] == "KRW" for company in card["companies"])
         assert all(company["market_snapshot"]["synthetic"] is False for company in card["companies"])
+        assert all(company["connection_explanation"] for company in card["companies"])
+        assert all("연결 시나리오" not in company["connection_explanation"] for company in card["companies"])
 
 
 def test_frontend_defaults_to_validated_showcase_without_touching_live_contract() -> None:
@@ -964,6 +972,9 @@ def test_mobile_production_fills_the_real_viewport_without_a_nested_device_mocku
     assert "border:0 !important" in INDEX
     assert "border-radius:0 !important" in INDEX
     assert "box-shadow:none !important" in INDEX
+    assert "window.matchMedia('(max-width: 600px)').matches" in INDEX
+    assert "window.scrollTo({ left: 0, top: 0, behavior: 'auto' })" in INDEX
+    assert "@media (max-width: 600px) { [data-screen-label] { position: fixed !important" in INDEX
     assert 'div[style*="padding:12px 24px 4px"]' in INDEX
     assert 'div[style*="width:120px"][style*="height:5px"]' in INDEX
     assert "[data-vd-stage] { height:clamp(300px, 42dvh, 370px) !important; }" in INDEX

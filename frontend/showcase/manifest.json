@@ -11,10 +11,10 @@
     "estimated": false,
     "provider": "pykrx+yahoo_finance",
     "ranking_effect": "none",
-    "snapshot_count": 100,
+    "snapshot_count": 55,
     "status": "observed",
     "synthetic": false,
-    "unique_security_count": 23
+    "unique_security_count": 31
   },
   "mode": "showcase_live_simulation",
   "ranking_formula_version": "peak25_mean40_persistence20_breadth15_v1",
@@ -26,7 +26,7 @@
   "schema_version": "trzip-showcase-delivery-v1",
   "showcase": {
     "path": "showcase.json",
-    "sha256": "d470804a8cb557d7c61a4d7ce2bdde388c5b0d1af5f84eb4b27843ddafafeb45"
+    "sha256": "22820204bc1080489a54dbd2fc31fea1f700bc27037c9ebc4b086e45c9efd80e"
   },
   "source_observed_at": "2026-08-16T00:00:00+00:00"
 }

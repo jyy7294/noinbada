@@ -24,7 +24,10 @@ from trzip.showcase_live_simulation import (
 )
 
 
-KOSDAQ_STOCK_CODES = {"035760", "136480", "195500"}
+KOSDAQ_STOCK_CODES = {
+    "035760", "035900", "041510", "048910", "067160", "080160",
+    "136480", "195500", "206560", "207760", "299900", "419530",
+}
 
 
 def _sha256(path: Path) -> str:
