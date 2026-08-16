@@ -5335,8 +5335,10 @@ class Component extends DCLogic {
       const turn = activeWords.length * STEP;
       if (stage.clientHeight > 0) stage.__h = stage.clientHeight;
       const width = stage.clientWidth || 393;
-      // 화면 폭이 넓어져도 다이얼 축이 오른쪽으로 밀려나지 않게 고정 범위에 둡니다.
-      const nodeX = Math.max(240, Math.min(300, width - 320));
+      // 모바일에서는 왼쪽 핵심 정보와 오른쪽 키워드 열을 한 화면의
+      // 한 덩어리로 읽을 수 있게 둡니다. 제목을 침범하지 않는 범위에서
+      // 다이얼 축을 22px 안쪽으로 당겨 불필요한 빈 공간을 줄입니다.
+      const nodeX = Math.max(218, Math.min(278, width - 320));
       const cx = nodeX - R;
       const cy = (stage.clientHeight || stage.__h || parseFloat(stage.style.height) || 250) / 2;
       let best = 0, bd = Infinity;
