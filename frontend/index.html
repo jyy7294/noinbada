@@ -407,11 +407,11 @@
               </div>
               <div style="flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center;">
                 <div style="display:flex; justify-content:space-between; font-weight:500; font-size:10px; color:#9A9DA9;">
-                  <span style="{{ phase0 }}">포착</span><span style="{{ phase1 }}">확산</span><span style="{{ phase2 }}">대중화</span>
+                  <span data-freshness-phase="0" style="{{ phase0 }}">포착</span><span data-freshness-phase="1" style="{{ phase1 }}">확산</span><span data-freshness-phase="2" style="{{ phase2 }}">대중화</span>
                 </div>
-                <div style="position:relative; height:6px; margin-top:7px;">
+                <div data-freshness-track="1" data-freshness-target="{{ freshStageTarget }}" style="position:relative; height:6px; margin-top:7px;">
                   <div style="position:absolute; inset:0; border-radius:999px; background:#E5E0ED;"></div>
-                  <div style="{{ barFill }}"></div><div style="{{ barKnob }}"></div>
+                  <div data-freshness-fill="1" style="{{ barFill }}"></div><div data-freshness-knob="1" style="{{ barKnob }}"></div>
                 </div>
                 <div style="display:flex; align-items:center; gap:10px; margin-top:11px;">
                   <div style="flex:1; min-width:0; text-align:center;"><div style="font-weight:500; font-size:10px; color:#8B8D98; white-space:nowrap;">이전 공개 대비</div><div style="{{ movementStyle }}">{{ movementLabel }}</div></div>
@@ -3964,6 +3964,35 @@ class Component extends DCLogic {
         { opacity: 1, transform: 'translateY(0)' }
       ], { duration: 300, delay: index * 55, easing: 'cubic-bezier(.22,.61,.36,1)', fill: 'both' });
     });
+    this.animateFreshnessGauge();
+  }
+
+  animateFreshnessGauge() {
+    if (this.prefersReducedMotion()) return;
+    const card = document.querySelector('#trend-detail [data-freshness-card]');
+    const track = card && card.querySelector('[data-freshness-track]');
+    const fill = card && card.querySelector('[data-freshness-fill]');
+    const knob = card && card.querySelector('[data-freshness-knob]');
+    if (!card || !track || !fill || !knob || typeof fill.animate !== 'function') return;
+    const target = Math.max(0, Math.min(100, Number(track.dataset.freshnessTarget)));
+    const trendKey = String(this.state.trend || 0) + ':' + target;
+    if (card.dataset.freshnessMotionKey === trendKey) return;
+    card.dataset.freshnessMotionKey = trendKey;
+    fill.animate([
+      { width: '0%', opacity: 0.45 },
+      { width: target + '%', opacity: 1 }
+    ], { duration: 620, delay: 125, easing: 'cubic-bezier(.16,.82,.24,1)', fill: 'backwards' });
+    knob.animate([
+      { left: '0%', opacity: 0, transform: 'scale(.45)' },
+      { left: target + '%', opacity: 1, transform: 'scale(1)' }
+    ], { duration: 700, delay: 125, easing: 'cubic-bezier(.16,.82,.24,1)', fill: 'backwards' });
+    const phase = card.querySelector('[data-freshness-phase="' + Math.round(target / 50) + '"]');
+    if (phase && typeof phase.animate === 'function') {
+      phase.animate([
+        { opacity: 0.45, transform: 'translateY(3px)' },
+        { opacity: 1, transform: 'translateY(0)' }
+      ], { duration: 260, delay: 610, easing: 'ease-out', fill: 'backwards' });
+    }
   }
 
   goCompanies = () => {
@@ -5969,6 +5998,7 @@ class Component extends DCLogic {
       goCompanies: this.goCompanies,
       trendRank: curTrend.rank,
       trendCaption: curTrend.caption,
+      freshStageTarget: [8, 50, 100][curTrend.stageIdx],
       barFill: 'position:absolute; left:0; top:0; bottom:0; border-radius:999px; background:#7B3FF2; width:' + [8, 50, 100][curTrend.stageIdx] + '%;',
       barKnob: 'position:absolute; top:-4px; width:14px; height:14px; margin-left:-7px; border-radius:999px; background:#7B3FF2; border:2.5px solid #FFFFFF; box-shadow:0 1px 4px rgba(91,33,192,0.35); left:' + [8, 50, 100][curTrend.stageIdx] + '%;',
       scoreMix: '통합 관측 · 현재 순서',

@@ -2002,6 +2002,11 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'data-freshness-card="1"' in INDEX
     assert 'background:#FAFAFC; border:1px solid #ECE8F3' in INDEX
     assert 'data-freshness-explanation="1"' in INDEX
+    assert 'data-freshness-track="1"' in INDEX
+    assert 'data-freshness-fill="1"' in INDEX
+    assert 'data-freshness-knob="1"' in INDEX
+    assert 'animateFreshnessGauge()' in INDEX
+    assert "cubic-bezier(.16,.82,.24,1)" in INDEX
     assert '포착: 첫 관측 후 3시간 이내 또는 비교 관측 부족' in INDEX
     assert '확산: 직전 비교창 대비 관심 위치 12% 이상 상승' in INDEX
     assert '대중화: 3시간 이상 반복 관측되며 확산 조건은 아닐 때' in INDEX
