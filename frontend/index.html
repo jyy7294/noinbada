@@ -361,50 +361,12 @@
 
         <div style="padding:0 16px 14px;">
           <div data-freshness-card="1" style="background:#FAFAFC; border:1px solid #ECE8F3; border-radius:18px; padding:13px 13px 12px;">
-            <div style="display:flex; align-items:center; gap:6px;">
-              <span style="font-weight:700; font-size:14px; color:#4B4D57; letter-spacing:-0.02em;">트렌드 신선도</span>
-              <button type="button" aria-label="트렌드 신선도 기준 보기" aria-expanded="{{ freshInfoOpen }}" onClick="{{ toggleFreshInfo }}" style="width:28px;height:28px;border:0;background:transparent;padding:7px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#B5B8C2" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#B5B8C2" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#B5B8C2"></circle></svg></button>
-            </div>
-            <sc-if value="{{ freshInfoOpen }}" hint-placeholder-val="{{ false }}">
-              <div data-freshness-explanation="1" style="background:#F3EFFC; border-radius:12px; padding:11px 13px; margin-top:9px; font-weight:500; font-size:11px; line-height:1.65; color:#5B21C0;">
-                전체 수집 기간의 흐름을 사건 단위로 통합해, 안전 기준과 최종 승인을 통과한 소비·문화·기술 트렌드만 표시합니다. 관심지수는 공개 순위의 흐름을 쉽게 비교하기 위한 지표이며 투자 판단용이 아닙니다.
-              </div>
-            </sc-if>
-
-            <div style="display:flex; gap:10px; align-items:stretch; margin-top:9px;">
-              <div style="flex:none; width:104px; padding:6px 0 7px; display:flex; align-items:center; justify-content:center;">
-                <div style="display:flex; align-items:center; gap:9px;">
-                  <div style="flex:1; min-width:0;">
-                    <div style="font-weight:500; font-size:10.5px; color:#8B8D98; white-space:nowrap; text-align:center;">트zip 인기차트</div>
-                    <div style="font-weight:700; font-size:13.5px; color:#1A1A22; letter-spacing:-0.02em; white-space:nowrap; text-align:center;">{{ trendDay }}</div>
-
-                  </div>
-                </div>
-              </div>
-
-              <div style="flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center;">
-                <div style="display:flex; justify-content:space-between; font-weight:500; font-size:10px; color:#9A9DA9;">
-                  <span style="{{ phase0 }}">포착</span>
-                  <span style="{{ phase1 }}">확산</span>
-                  <span style="{{ phase2 }}">대중화</span>
-                </div>
-                <div style="position:relative; height:6px; margin-top:7px;">
-                  <div style="position:absolute; inset:0; border-radius:999px; background:#E5E0ED;"></div>
-                  <div style="{{ barFill }}"></div>
-                  <div style="{{ barKnob }}"></div>
-                </div>
-                <div style="display:flex; align-items:center; gap:10px; margin-top:11px;">
-                  <div style="flex:1; min-width:0; text-align:center;">
-                    <div style="font-weight:500; font-size:10px; color:#8B8D98; white-space:nowrap;">이전 공개 대비</div>
-                    <div style="{{ movementStyle }}">{{ movementLabel }}</div>
-                  </div>
-                  <span style="flex:none; width:1px; height:30px; background:#E5E0ED;"></span>
-                  <div style="flex:1; min-width:0; text-align:center;">
-                    <div style="font-weight:500; font-size:10px; color:#8B8D98; white-space:nowrap;">현재 순위</div>
-                    <div style="font-weight:700; font-size:14.5px; color:#1A1A22; margin-top:2px;">{{ trendRank }}</div>
-                  </div>
-                </div>
-              </div>
+            <div style="font-weight:700; font-size:14px; color:#4B4D57; letter-spacing:-0.02em;">트렌드 신선도</div>
+            <p data-freshness-explanation="1" style="margin:5px 0 0; font-weight:500; font-size:11px; line-height:1.5; color:#777A86;">최근 포착 시점·순위 변화·지속 관측을 함께 반영합니다.</p>
+            <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin-top:11px;">
+              <div style="background:#F7F5FC;border-radius:11px;padding:8px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">관측 상태</span><span style="display:block;margin-top:3px;font-weight:800;font-size:12px;color:#5B21C0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ trendPhase }}</span></div>
+              <div style="background:#F7F5FC;border-radius:11px;padding:8px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">이전 대비</span><span style="display:block;margin-top:3px;{{ movementStyle }}">{{ movementLabel }}</span></div>
+              <div style="background:#F7F5FC;border-radius:11px;padding:8px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">현재 순위</span><span style="display:block;margin-top:3px;font-weight:800;font-size:13px;color:#1A1A22;">{{ trendRank }}</span></div>
             </div>
 
             <sc-if value="{{ collectInfoOpen }}" hint-placeholder-val="{{ false }}">
@@ -422,20 +384,15 @@
         <div style="padding:0 16px 14px;">
           <div data-interest-card="1" style="background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:14px 14px 13px;">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
-              <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">통합 관심지수</span>
+              <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">관심 흐름</span>
               <div style="display:flex; width:150px; background:#F3F0FB; border-radius:999px; padding:3px;">
                 <button onClick="{{ pickRange0 }}" aria-disabled="{{ rangeDisabled0 }}" style="{{ range0 }}">{{ rangeLabel0 }}</button>
-                <button onClick="{{ pickRange1 }}" aria-disabled="{{ rangeDisabled1 }}" style="{{ range1 }}">1개월</button>
-                <button onClick="{{ pickRange2 }}" aria-disabled="{{ rangeDisabled2 }}" style="{{ range2 }}">3개월</button>
+                <button onClick="{{ pickRange1 }}" aria-disabled="{{ rangeDisabled1 }}" style="{{ range1 }}">1주일</button>
+                <button onClick="{{ pickRange2 }}" aria-disabled="{{ rangeDisabled2 }}" style="{{ range2 }}">1개월</button>
               </div>
             </div>
             <div style="display:flex; align-items:center; justify-content:flex-end; margin-top:10px;">
               <span data-interest-range-caption="1" style="font-weight:700; font-size:10.5px; color:#8B8D98;">{{ interestRangeCaption }}</span>
-            </div>
-            <div data-interest-summary="1" role="group" aria-label="{{ interestSummaryLabel }}" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin-top:9px;">
-              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">최고 지수</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestPeak }}</span></div>
-              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">현재 지수</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestCurrent }}</span></div>
-              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">관측 횟수</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestObservationCount }}회</span></div>
             </div>
             <div style="position:relative; height:108px; margin-top:9px; overflow:hidden;">
               <div data-interest-visual="1" role="img" aria-labelledby="interest-chart-title interest-chart-disclosure" style="position:relative;display:block;width:100%;height:96px;overflow:hidden;border-bottom:1px solid #EDE8F7;">
@@ -1145,7 +1102,7 @@ class Component extends DCLogic {
   }
 
   liveStatus = '';
-  interestDisclosure = '실제 통합 관측 순위와 현재 공개 순위를 조합한 0~100 표시지수입니다. 절대 언급량·주가·매수신호가 아니며 결측은 보간하지 않고 90분 넘게 빈 구간은 연결하지 않습니다.';
+  interestDisclosure = '선택한 기간의 관심 흐름을 비교해 볼 수 있습니다.';
   companyDomains = {};
   logoCache = {};
 
@@ -1836,11 +1793,11 @@ class Component extends DCLogic {
 
   buildInterestCurve(trend, rangeIndex = 0) {
     const MAX_CONTIGUOUS_GAP_MS = 90 * 60 * 1000;
-    const rangeKey = ['24h', '1m', '3m'][rangeIndex] || '24h';
+    const rangeKey = ['24h', '1w', '1m'][rangeIndex] || '24h';
     const rangeSpecs = {
       '24h': { sourceKey: '1w', windowMs: 24 * 60 * 60 * 1000, label: '24시간', start: '24시간 전' },
+      '1w': { sourceKey: '1w', windowMs: 7 * 24 * 60 * 60 * 1000, label: '1주일', start: '1주일 전' },
       '1m': { sourceKey: '1m', windowMs: 30 * 24 * 60 * 60 * 1000, label: '1개월', start: '한 달 전' },
-      '3m': { sourceKey: '3m', windowMs: 90 * 24 * 60 * 60 * 1000, label: '3개월', start: '3개월 전' }
     };
     const rangeSpec = rangeSpecs[rangeKey];
     const rankStyle = this.rankResponsiveInterestStyle(trend);
@@ -2438,10 +2395,10 @@ class Component extends DCLogic {
             cat: CATEGORY_KO[card.category] || '기타',
             core: card.display_name,
             tags: keywords.map((keyword) => '#' + keyword.replace(/\s+/g, '')),
-            day: '전체기간', phase: '대중화',
+            day: '최근 관측', phase: '새로 포착',
             lift: Number(card.full_ledger_score).toFixed(2),
             rankMovement: movement, rankMovementLabel: 'NEW',
-            rank: card.presentation_order + '위', progress: 100, stageIdx: 2,
+            rank: card.presentation_order + '위', progress: 18, stageIdx: 0,
             definition: card.trend_definition,
             caption: '전체 수집 기간의 흐름과 최종 공개 순위를 함께 반영한 관심지수입니다.',
             channels: ['통합', '—', '—'], attentionWindows: [],
@@ -2461,7 +2418,7 @@ class Component extends DCLogic {
         this.liveObservedAt = '기준 ' + new Date(view.displayAsOf).toLocaleString('ko-KR', {
           timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'
         });
-        this.interestDisclosure = '공개 순위의 흐름을 0~100으로 표현한 관심지수입니다. 절대 언급량·주가·매수신호가 아닙니다.';
+        this.interestDisclosure = '선택한 기간의 관심 흐름을 비교해 볼 수 있습니다.';
         const requestedTrend = new URLSearchParams(window.location.search).get('trend');
         const requestedIndex = requestedTrend
           ? mapped.findIndex((trend) => trend.id === requestedTrend || trend.name === requestedTrend)
@@ -2631,7 +2588,7 @@ class Component extends DCLogic {
       for (const [re, em] of EMOJI_RULES) if (re.test(hay)) return em;
       return CAT_EMOJI[category] || '✨';
     };
-    const LIFE = { new: ['막 뜨는 중 🔥', 30, 0], rising: ['확산 중 🔥', 55, 1], sustained: ['대중화 진입', 80, 2], rebounding: ['재상승 중 🔥', 50, 1], cooling: ['관심 감소', 92, 2], expired: ['시들해짐', 96, 2], insufficient_data: ['막 포착됨', 20, 0] };
+    const LIFE = { new: ['새로 포착', 30, 0], rising: ['상승 중', 55, 1], sustained: ['꾸준히 관측', 80, 2], rebounding: ['재상승', 50, 1], cooling: ['관심 감소', 92, 2], expired: ['관측 종료', 96, 2], insufficient_data: ['새로 포착', 20, 0] };
     // 백엔드 역할 분류 10종 (src/trzip/company_roles.py 최신화)
     const ROLE_META = {
       manufacturing_development: ['제조·개발', '🏭'], raw_materials_components: ['원재료·핵심부품', '🌰'],
@@ -5730,14 +5687,10 @@ class Component extends DCLogic {
       interestPeak: interestChart.peak,
       interestCurrent: interestChart.current,
       interestObservationCount: interestChart.observationCount,
-      rangeLabel0: curTrend.showcase ? '전체' : '24시간',
-      interestRangeCaption: curTrend.showcase
-        ? '전체기간 · 공개 순위 흐름'
-        : '순위 기반 · 실제 ' + interestChart.rangeLabel + ' 관측',
+      rangeLabel0: '24시간',
+      interestRangeCaption: interestChart.rangeLabel + ' 관심 흐름',
       interestEmptyLabel: interestChart.rangeLabel + ' 내 비교할 관측값이 부족합니다',
-      interestSummaryLabel: (curTrend.showcase ? '전체기간 ' : '실제 ') + interestChart.rangeLabel + ' 순위 막대 흐름. 최고 지수 '
-        + interestChart.peak + ', 현재 지수 ' + interestChart.current
-        + ', ' + interestChart.observationCount + '회 관측',
+      interestSummaryLabel: interestChart.rangeLabel + ' 관심 흐름 막대그래프',
       periodStartLabel: interestChart.labels[0],
       periodMiddleLabel: interestChart.labels[1],
       periodEndLabel: interestChart.labels[2],

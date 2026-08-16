@@ -577,10 +577,10 @@ def test_live_logo_candidate_runtime_honors_initials_and_seed_scope() -> None:
 
 def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> None:
     assert "관심 흐름" in INDEX
-    assert "통합 관심지수" in INDEX
+    assert "관심 흐름" in INDEX
     assert 'data-interest-range-caption="1"' in INDEX
     assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
-    assert "const rangeKey = ['24h', '1m', '3m'][rangeIndex]" in INDEX
+    assert "const rangeKey = ['24h', '1w', '1m'][rangeIndex]" in INDEX
     assert "trend.visualizationSeries" in INDEX
     assert "visualization[rangeSpec.sourceKey]" in INDEX
     assert "publishedWindow && publishedWindow.points" in INDEX
@@ -608,7 +608,7 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert 'data-interest-single-points="1"' not in INDEX
     assert 'data-interest-observation-points="1"' not in INDEX
     assert 'data-interest-bars="1"' in INDEX
-    assert 'data-interest-summary="1"' in INDEX
+    assert 'data-interest-summary="1"' not in INDEX
     assert "const observationPoints = points.filter(Boolean)" in INDEX
     assert "peak: Math.round(peakValue)" in INDEX
     assert "observationCount" in INDEX
@@ -628,8 +628,8 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert 'data-interest-bars="1"' in INDEX
     assert 'data-interest-bar="1"' in INDEX
     assert 'aria-labelledby="interest-chart-title interest-chart-disclosure"' in INDEX
-    assert "공개 순위의 흐름을 0~100으로 표현한 관심지수입니다." in INDEX
-    assert "절대 언급량·주가·매수신호가 아닙니다." in INDEX
+    assert "선택한 기간의 관심 흐름을 비교해 볼 수 있습니다." in INDEX
+    assert "0~100 표시지수" not in INDEX
     assert "patchInterestChart()" in INDEX
     assert "sourceSignals" not in INDEX
     assert "sourceLabels" not in INDEX
@@ -639,7 +639,7 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert "return '0.0%'" not in INDEX
     assert "출처 미확인" not in INDEX
     assert "displayOnly: true" not in INDEX
-    chart_surface = INDEX[INDEX.index("통합 관심지수"): INDEX.index("함께 언급된 키워드")]
+    chart_surface = INDEX[INDEX.index("관심 흐름"): INDEX.index("함께 언급된 키워드")]
     assert "chartPanels" not in chart_surface
     assert "전체 채널" not in chart_surface
     assert "채널 추가하기" not in chart_surface
@@ -833,13 +833,13 @@ def test_interest_chart_prefers_rank_responsive_backend_windows_for_all_ranges()
         series: [{at: new Date(base).toISOString(), value: 99, source: 'x', provenance: 'observed'}]
       };
       const charts = [0, 1, 2].map((range) => component.buildInterestCurve(trend, range));
-      if (charts.map((chart) => chart.current).join(',') !== '80,70,40') {
+      if (charts.map((chart) => chart.current).join(',') !== '80,80,70') {
         throw new Error('frontend did not consume each published display window directly');
       }
-      if (charts.map((chart) => chart.observationCount).join(',') !== '2,3,4') {
+      if (charts.map((chart) => chart.observationCount).join(',') !== '2,3,3') {
         throw new Error('display window point counts were recomputed from raw series');
       }
-      if (charts.map((chart) => chart.sourceWindowKey).join(',') !== '1w,1m,3m') {
+      if (charts.map((chart) => chart.sourceWindowKey).join(',') !== '1w,1w,1m') {
         throw new Error('rank-responsive windows did not take precedence');
       }
       if (charts.some((chart) => chart.displaySeriesMode !== 'rank_responsive_display')) {
@@ -869,12 +869,11 @@ def test_interest_chart_prefers_rank_responsive_backend_windows_for_all_ranges()
       component.publishedView = null;
       const insufficientSeries = JSON.parse(JSON.stringify(visualizationSeries));
       insufficientSeries['1m'].status = 'insufficient_observed_history';
-      insufficientSeries['3m'].status = 'insufficient_observed_history';
       const insufficientTrend = {rank: 2, rankMovement, visualizationSeries: insufficientSeries};
       if (!component.buildInterestCurve(insufficientTrend, 0).available
-        || component.buildInterestCurve(insufficientTrend, 1).available
+        || !component.buildInterestCurve(insufficientTrend, 1).available
         || component.buildInterestCurve(insufficientTrend, 2).available) {
-        throw new Error('incomplete 1m/3m history was stretched into a measured period');
+        throw new Error('incomplete 1개월 history was stretched into a measured period');
       }
     """
     result = subprocess.run(
@@ -1258,8 +1257,8 @@ def test_selection_guide_uses_plain_language_and_human_final_approval() -> None:
 def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -> None:
     assert ">트렌드</span>" in INDEX
     assert "통합 트렌드" not in INDEX
-    assert ">통합 관심지수</span>" in INDEX
-    assert "전체 수집 기간의 흐름을 사건 단위로 통합해" in INDEX
+    assert ">관심 흐름</span>" in INDEX
+    assert "최근 포착 시점·순위 변화·지속 관측을 함께 반영합니다." in INDEX
     assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
     assert "전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요" in INDEX
     assert "+ ' · 통합 트렌드</span>" not in INDEX
@@ -1933,7 +1932,7 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'background:#FAFAFC; border:1px solid #ECE8F3' in INDEX
     assert 'data-freshness-explanation="1"' in INDEX
     assert 'data-interest-card="1"' in INDEX
-    assert '통합 관심지수' in INDEX
+    assert '관심 흐름' in INDEX
     assert 'data-company-role-folder="1"' in INDEX
     assert 'data-folder-toggle="1"' in INDEX
     assert 'aria-label="{{ f.title }} {{ f.count }} 기업 목록 열기 또는 접기"' in INDEX
