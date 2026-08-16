@@ -140,10 +140,11 @@ def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None
     assert "if (rows.length < 2 || window.__mpRotate) return;" in INDEX
 
 
-def test_zipper_handoff_does_not_pause_on_a_blank_intermediate_screen() -> None:
-    zipper = INDEX[INDEX.index("  zipWire() {") : INDEX.index("  listViewWire() {")]
-    assert "ease(y, MAX, 620, () => this.panTo(root.querySelector('[data-screen-label=\"01 홈\"]')));" in zipper
-    assert "setTimeout(() => this.panTo(root.querySelector('[data-screen-label=\"01 홈\"]')), 240)" not in zipper
+def test_app_enters_home_directly_without_a_zipper_handoff() -> None:
+    shell = INDEX[INDEX.index("  protoShell() {") : INDEX.index("  componentDidMount() {")]
+    mount = INDEX[INDEX.index("  componentDidMount() {") : INDEX.index("  componentWillUnmount() {")]
+    assert "var idx = 1;" in shell
+    assert "this.zipWire()" not in mount
 
 
 def test_critical_mobile_controls_have_accessible_touch_targets() -> None:

@@ -1024,7 +1024,9 @@ class Component extends DCLogic {
 
   protoShell() {
     (function () {
-      var idx = 0;
+      // 지퍼 인트로와 홈을 연달아 전환하면 모바일에서 빈 프레임과
+      // 터치 누락이 생깁니다. 앱은 곧바로 홈을 첫 화면으로 엽니다.
+      var idx = 1;
       var st = document.createElement('style');
       st.textContent = "::-webkit-scrollbar { width: 0; height: 0; }\n  #dc-root > section { position: fixed !important; inset: 0 !important; margin: 0 !important; padding: 0 !important; display: block !important; gap: 0 !important; min-height: 0 !important; background: #15121F; }\n  [data-screen-label] { position: absolute !important; left: 50% !important; top: 18px !important; display: none !important; transform-box: border-box; transform-origin: top center !important; }\n  [data-screen-label][data-proto-active] { display: flex !important; }\n  [data-screen-label] > div:first-child { display: none !important; }\n  @media (max-width: 600px) { [data-screen-label] { position: fixed !important; inset: 0 !important; left: 0 !important; top: 0 !important; width: 100% !important; height: 100dvh !important; } }\n";
       document.head.appendChild(st);
@@ -1124,7 +1126,6 @@ class Component extends DCLogic {
     setTimeout(() => this.listViewWire(), 200);
     setTimeout(() => this.protoShell(), 40);
     setTimeout(() => { this.likeWire(); this.stashWire(); this.myTabWire(); this.renderCompanyWatchlist(); this.shareWire(); }, 80);
-    setTimeout(() => this.zipWire(), 90);
     setTimeout(() => this.mkWire(), 120);
     setTimeout(() => this.snsWire(), 60);
     setTimeout(() => this.dialWire(), 80);
