@@ -21,7 +21,9 @@ KST = timezone(timedelta(hours=9))
 SHOWCASE_SELECTION = (
     ("대한민국 광복절", "대한독립만세", "public_event"),
     ("개기일식", "개기일식", "astronomy"),
-    ("AC 밀란 vs 맨유", "AC 밀란 vs 맨유", "sports"),
+    # The source-row identity is retained for the recorded showcase input;
+    # the public scenario is a separate K-pop discovery card.
+    ("AC 밀란 vs 맨유", "리센느", "music"),
     ("페르세우스 유성우", "페르세우스 유성우", "astronomy"),
     ("한화 vs 삼성", "한화 vs 삼성", "sports"),
     ("둠스데이", "둠스데이", "content"),
@@ -41,8 +43,8 @@ SHOWCASE_PRESENTATION = {
         "개기일식 관측 시기와 장비·촬영 정보를 함께 찾는 천문 관측 흐름입니다.",
     ),
     "AC 밀란 vs 맨유": (
-        "sports_attendance",
-        "AC 밀란과 맨유 경기 일정·중계·하이라이트를 함께 찾는 축구 관람 흐름입니다.",
+        "music_performance",
+        "리센느의 신곡·무대·멤버 콘텐츠를 함께 찾아보는 K-pop 팬덤 관심 흐름입니다.",
     ),
     "페르세우스 유성우": (
         "technology_tool",
@@ -77,7 +79,7 @@ SHOWCASE_PRESENTATION = {
 KEYWORDS = {
     "대한민국 광복절": ("광복절", "독립운동", "태극기", "기념행사", "역사콘텐츠"),
     "개기일식": ("일식관측", "태양필터", "천문대", "망원경", "일식촬영"),
-    "AC 밀란 vs 맨유": ("AC밀란", "맨유", "친선경기", "축구중계", "하이라이트"),
+    "AC 밀란 vs 맨유": ("리센느", "신곡", "음악방송", "멤버콘텐츠", "팬미팅"),
     "페르세우스 유성우": ("유성우", "별똥별", "극대기", "천체촬영", "관측명소"),
     "한화 vs 삼성": ("프로야구", "야구중계", "선발투수", "경기결과", "야구직관"),
     "둠스데이": ("어벤져스", "마블영화", "MCU", "히어로", "개봉정보"),
@@ -103,11 +105,11 @@ COMPANY_CARDS = {
         ("모두투어", "080160", "event_sponsorship", "https://www.modetour.com/", "천문 현상 관측 목적지 여행 상품"),
     ),
     "AC 밀란 vs 맨유": (
-        ("CJ ENM", "035760", "content_production", "https://www.cjenm.com/", "스포츠 중계 채널·OTT 콘텐츠 운영"),
-        ("SOOP", "067160", "distribution", "https://corp.sooplive.co.kr/", "축구·스포츠 라이브 스트리밍 유통"),
-        ("KT", "030200", "platform_service", "https://corp.kt.com/", "Genie TV 스포츠 채널 유통"),
-        ("LG유플러스", "032640", "platform_service", "https://www.lguplus.com/", "U+tv 스포츠 채널 유통"),
-        ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "축구 경기 일정·뉴스·팬 콘텐츠 유통"),
+        ("CJ ENM", "035760", "content_production", "https://www.cjenm.com/", "음악 방송·무대·공연 콘텐츠 제작과 유통"),
+        ("SOOP", "067160", "distribution", "https://corp.sooplive.co.kr/", "아티스트·팬 커뮤니티 라이브 콘텐츠 유통"),
+        ("KT", "030200", "platform_service", "https://corp.kt.com/", "음원·공연을 포함한 디지털 콘텐츠 서비스 생태계"),
+        ("LG유플러스", "032640", "platform_service", "https://www.lguplus.com/", "아이돌·공연 중심 미디어와 라이브 콘텐츠 서비스"),
+        ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "아티스트 검색·클립·팬 콘텐츠 탐색 플랫폼"),
     ),
     "페르세우스 유성우": (
         ("삼성전자", "005930", "manufacturing_development", "https://www.samsung.com/sec/", "야간 촬영용 스마트폰 카메라·기기"),
