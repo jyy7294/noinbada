@@ -139,7 +139,7 @@ def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> No
 
 
 def test_home_list_view_fits_all_top_ten_without_internal_scroll() -> None:
-    assert 'data-list-view2="1" style="display:none; margin:6px -16px 0; height:clamp(400px, 55dvh, 430px); overflow:hidden; background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:3px 12px;' in INDEX
+    assert 'data-list-view2="1" style="display:none; flex-direction:column; margin:6px -16px 0; height:clamp(400px, 55dvh, 430px); overflow:hidden; background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:3px 12px;' in INDEX
     assert 'data-home-portfolios="1" style="visibility:hidden; margin:16px -16px 0;' in INDEX
     view_toggle = INDEX[INDEX.index("  viewToggleWire2()") : INDEX.index("  goPostList =")]
     assert "scroller.style.overflowY = 'hidden'" in view_toggle
