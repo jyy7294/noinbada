@@ -50,6 +50,12 @@ def test_codex_automation_runs_full_local_publication_pipeline():
     assert "$Preflight.enrichment_checkpoint_gate.passed" in runner
     assert runner.index("--preflight") < runner.index('push origin "HEAD:refs/heads/live-data"')
     assert "--record-hourly-validation" in runner
+    assert "--require-final-approval" in runner
+    assert "awaiting_product_owner_approval" in runner
+    assert "$FinalApproval.verified -ne $true" in runner
+    assert runner.index("awaiting_product_owner_approval") < runner.index(
+        "--record-hourly-validation"
+    )
     assert "--hourly-receipt-exists" in runner
     assert "--register-trigger" in runner
     assert "$PublicationStatusPath -Raw -Encoding utf8 | ConvertFrom-Json" in runner

@@ -9,6 +9,8 @@ from dataclasses import asdict, dataclass
 from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
+from .source_safety import is_spam_solicitation
+
 KST = timedelta(hours=9)
 
 # Only these source/collector cohorts have the same sampling frame as the
@@ -337,6 +339,13 @@ def upsert(rows: list[HourlyObservation], path: Path | None = None) -> int:
         raise ValueError("production ledger accepts observed rows only")
     if any(not collector_version_is_approved(row.source, row.collector_version) for row in rows):
         raise ValueError("collector version is not approved for source")
+    if any(
+        row.source == "x"
+        and row.collector_version == "x_current_session_kr_v1"
+        and is_spam_solicitation(row.topic)
+        for row in rows
+    ):
+        raise ValueError("live X source snapshot contains solicitation/contact spam")
     with connect(path) as connection:
         connection.executemany("""
             INSERT INTO hourly_observations
@@ -369,6 +378,8 @@ def store_verified_source_snapshot(
         raise ValueError("snapshot rows must share one hour, source, and observed provenance")
     if any(not collector_version_is_approved(row.source, row.collector_version) for row in rows):
         raise ValueError("collector version is not approved for source")
+    if source == "x" and any(is_spam_solicitation(row.topic) for row in rows):
+        raise ValueError("live X source snapshot contains solicitation/contact spam")
     ranks = [row.source_rank for row in rows]
     if len(ranks) != len(set(ranks)):
         raise ValueError("snapshot rows must have unique source ranks")
@@ -442,6 +453,8 @@ def _first_verified_snapshot_for_hour(
     ]
     if source == "x":
         if len(rows) != 30:
+            return None
+        if any(is_spam_solicitation(row.topic) for row in rows):
             return None
         try:
             evidence = json.loads(rows[0].source_payload_json or "{}")
@@ -603,6 +616,11 @@ def snapshot(
                ORDER BY source, source_rank""",
             (stamp,),
         ).fetchall()
+    if live_only and any(
+        row["source"] == "x" and is_spam_solicitation(row["topic"])
+        for row in rows
+    ):
+        rows = [row for row in rows if row["source"] != "x"]
     return [dict(row) for row in rows]
 
 
@@ -711,7 +729,24 @@ def source_hour_quality(
                 ORDER BY counts.observed_at, counts.source""",
             (floor_hour(start).isoformat(), floor_hour(end).isoformat()),
         ).fetchall()
-    return [dict(row) for row in rows]
+    result = [dict(row) for row in rows]
+    with connect(path) as connection:
+        x_topics = connection.execute(
+            """SELECT observed_at, topic FROM hourly_observations
+               WHERE observed_at BETWEEN ? AND ?
+                 AND source='x' AND provenance='observed'
+                 AND collector_version='x_current_session_kr_v1'""",
+            (floor_hour(start).isoformat(), floor_hour(end).isoformat()),
+        ).fetchall()
+    spam_hours = {
+        str(row["observed_at"])
+        for row in x_topics
+        if is_spam_solicitation(row["topic"])
+    }
+    for item in result:
+        if item.get("source") == "x" and item.get("observed_at") in spam_hours:
+            item["quality_status"] = "quarantined_source_spam"
+    return result
 
 
 def latest_audit(at: datetime, path: Path | None = None) -> dict[str, dict]:

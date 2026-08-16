@@ -8,6 +8,53 @@ ROOT = Path(__file__).resolve().parents[1]
 INDEX = (ROOT / "frontend" / "index.html").read_text(encoding="utf-8")
 DATA = (ROOT / "frontend" / "trendzip-data.js").read_text(encoding="utf-8")
 STOCKS = (ROOT / "frontend" / "mock-stock-universe.js").read_text(encoding="utf-8")
+SHOWCASE_MANIFEST = json.loads((ROOT / "frontend" / "showcase" / "manifest.json").read_text(encoding="utf-8"))
+SHOWCASE = json.loads((ROOT / "frontend" / "showcase" / "showcase.json").read_text(encoding="utf-8"))
+
+
+def test_public_showcase_is_hash_pinned_and_has_exact_approved_shape() -> None:
+    import hashlib
+
+    payload_path = ROOT / "frontend" / "showcase" / "showcase.json"
+    assert SHOWCASE_MANIFEST["mode"] == "showcase_live_simulation"
+    assert SHOWCASE_MANIFEST["display_status"] == "시연 LIVE"
+    assert SHOWCASE_MANIFEST["display_time_policy"] == "client_kst_floor_hour"
+    assert SHOWCASE_MANIFEST["approval"]["approved_count"] == 10
+    assert SHOWCASE_MANIFEST["market_data"] == {
+        "estimated": False,
+        "provider": "pykrx+yahoo_finance",
+        "ranking_effect": "none",
+        "snapshot_count": 100,
+        "status": "observed",
+        "synthetic": False,
+        "unique_security_count": 23,
+    }
+    assert hashlib.sha256(payload_path.read_bytes()).hexdigest() == SHOWCASE_MANIFEST["showcase"]["sha256"]
+    assert SHOWCASE["source_ranking_mode"] == "actual_full_ledger_no_recency"
+    assert SHOWCASE["enrichment_mode"] == "reconstructed_demo"
+    assert len(SHOWCASE["cards"]) == 10
+    for order, card in enumerate(SHOWCASE["cards"], 1):
+        assert card["presentation_order"] == order
+        assert len(card["related_keywords"]) == 5
+        assert len(card["companies"]) == 10
+        assert 3 <= len({company["company_role_category"] for company in card["companies"]}) <= 4
+        assert all(company["relationship_status"] == "reconstructed_demo" for company in card["companies"])
+        assert all(company["market_snapshot"]["status"] == "observed" for company in card["companies"])
+        assert all(len(company["market_snapshot"]["price_points"]) == 30 for company in card["companies"])
+        assert all(company["market_snapshot"]["market_cap_currency"] == "KRW" for company in card["companies"])
+        assert all(company["market_snapshot"]["synthetic"] is False for company in card["companies"])
+
+
+def test_frontend_defaults_to_validated_showcase_without_touching_live_contract() -> None:
+    assert "api.loadTrends({ mode: 'showcase' })" in INDEX
+    assert "SHOWCASE_MANIFEST_URL = './showcase/manifest.json'" in DATA
+    assert "async function loadShowcase()" in DATA
+    assert "validateShowcasePayload(payload, manifest)" in DATA
+    assert "sha256Hex(payloadText)" in DATA
+    assert "showcase_rank_response" in INDEX
+    assert "data_provenance: 'reconstructed_demo'" in INDEX
+    assert "this.liveStatus = '시연 LIVE'" in INDEX
+    assert "loadShowcase," in DATA
 
 
 def test_frontend_has_no_demo_or_export_ui_copy() -> None:
@@ -978,7 +1025,7 @@ def test_selection_disclosure_distinguishes_source_rank_from_home_candidate_orde
 def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -> None:
     assert ">통합 트렌드</span>" in INDEX
     assert ">통합 관심지수</span>" in INDEX
-    assert "최근 24시간의 실제 관측을 사건 단위로 통합해" in INDEX
+    assert "전체 수집 기간의 실제 원천 순위를 사건 단위로 통합해" in INDEX
     assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
     assert "매시 수집한 실제 관측 순위만 사용합니다." in INDEX
     assert "+ ' · 통합 트렌드</span>" in INDEX

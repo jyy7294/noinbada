@@ -25,11 +25,13 @@ from .public_company_contract import (
     market_snapshot_is_public_ready,
     verified_image_logo_is_public_ready,
 )
+from .trend_fit import assess_trend_fit
 
 
 SCHEMA_VERSION = "trzip-processing-cycle-v2"
 CHECKPOINT_POLICY = "four-hour-enrichment-checkpoint-v2"
 COMPLETE_CARD_POLICY = "complete-live-card-v5"
+TREND_CANDIDATE_POLICY = "observed-trend-candidate-v1"
 RANK_SOURCES = ("x", "google_trends")
 CHECKPOINT_MAX_AGE_HOURS = 4
 
@@ -179,6 +181,88 @@ def observed_coverage_24h(
 
 def _public_url(value: object) -> bool:
     return str(value or "").startswith(("http://", "https://"))
+
+
+def trend_candidate_gate(
+    item: dict,
+    *,
+    observed_at: datetime | None = None,
+) -> dict:
+    """Keep real trend subjects independent from optional enrichment.
+
+    This gate answers only whether an observed expression may be shown to the
+    product owner for final selection.  Context, five related keywords,
+    companies and market data are deliberately excluded: those are slower
+    enrichment outputs and never grounds for deleting a real trend candidate.
+    """
+
+    observed_at = floor_hour(observed_at or datetime.now(UTC))
+    window_start = observed_at - timedelta(hours=23)
+    observed_stamps: list[datetime] = []
+    for row in item.get("series") or []:
+        if row.get("provenance") != "observed" or row.get("source") not in RANK_SOURCES:
+            continue
+        try:
+            stamp = datetime.fromisoformat(str(row.get("at") or "")).astimezone(UTC)
+        except (TypeError, ValueError):
+            continue
+        if window_start <= stamp <= observed_at:
+            observed_stamps.append(stamp)
+
+    display_name = str(item.get("display_name") or item.get("topic") or "").strip()
+    stored_fit = item.get("trend_fit") or {}
+    fresh_fit = assess_trend_fit(
+        display_name,
+        category=str(item.get("category") or "unclassified"),
+    )
+
+    def flagged(name: str) -> bool:
+        return stored_fit.get(name) is True or fresh_fit.get(name) is True
+
+    checks = {
+        "observed_within_24h": bool(observed_stamps),
+        "candidate_lane_not_issue": item.get("lane") != "issue",
+        "nonempty_observed_name": bool(display_name),
+        "recognized_concrete_trend": bool(
+            stored_fit.get("selection") == "main"
+            or fresh_fit.get("selection") == "main"
+        ),
+        "not_spam_solicitation": not flagged("spam_solicitation"),
+        "not_hard_issue": not flagged("hard_issue"),
+        "not_generic_category_word": not flagged("generic_category_word"),
+        "not_standalone_market_subject": not flagged("standalone_market_subject"),
+        "not_standalone_corporate_subject": not flagged("standalone_corporate_subject"),
+        "not_nonspecific_sports_subject": not flagged("nonspecific_sports_subject"),
+    }
+    missing = [name for name, passed in checks.items() if not passed]
+    # The full observed ledger is the owner's review universe.  Lexical
+    # specificity decides whether a row is automatically recommended, not
+    # whether a safe, actually observed row disappears before human review.
+    # Hard safety failures remain impossible to approve.
+    owner_review_checks = {
+        name: checks[name]
+        for name in (
+            "observed_within_24h",
+            "candidate_lane_not_issue",
+            "nonempty_observed_name",
+            "not_spam_solicitation",
+            "not_hard_issue",
+        )
+    }
+    owner_review_missing = [
+        name for name, passed in owner_review_checks.items() if not passed
+    ]
+    return {
+        "policy_version": TREND_CANDIDATE_POLICY,
+        "eligible": not missing,
+        "owner_review_eligible": not owner_review_missing,
+        "checks": checks,
+        "missing": missing,
+        "owner_review_checks": owner_review_checks,
+        "owner_review_missing": owner_review_missing,
+        "enrichment_required_for_candidate": False,
+        "ranking_effect": "none",
+    }
 
 
 def complete_card_gate(

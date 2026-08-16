@@ -1,0 +1,32 @@
+{
+  "approval": {
+    "approved_by": "이찬희",
+    "approved_count": 10,
+    "review_sha256": "11f4e1c1736ee433c1aa849ef1d97c0801e7659460df95ea6ca7c26c69ada273"
+  },
+  "card_count": 10,
+  "display_status": "시연 LIVE",
+  "display_time_policy": "client_kst_floor_hour",
+  "market_data": {
+    "estimated": false,
+    "provider": "pykrx+yahoo_finance",
+    "ranking_effect": "none",
+    "snapshot_count": 100,
+    "status": "observed",
+    "synthetic": false,
+    "unique_security_count": 23
+  },
+  "mode": "showcase_live_simulation",
+  "ranking_formula_version": "peak25_mean40_persistence20_breadth15_v1",
+  "ranking_window": {
+    "from": "2026-08-12T13:00:00+00:00",
+    "observed_hour_count": 41,
+    "to": "2026-08-16T00:00:00+00:00"
+  },
+  "schema_version": "trzip-showcase-delivery-v1",
+  "showcase": {
+    "path": "showcase.json",
+    "sha256": "d470804a8cb557d7c61a4d7ce2bdde388c5b0d1af5f84eb4b27843ddafafeb45"
+  },
+  "source_observed_at": "2026-08-16T00:00:00+00:00"
+}

@@ -41,7 +41,7 @@ SCORE_FORMULA_CONTRACTS = {
         ),
         "freshness_multiplier": True,
     },
-    "spread35_velocity25_breadth20_persistence10_recency10_v2": {
+    "spread35_velocity25_breadth20_persistence10_recency10_v3": {
         "components": (
             ("period_strength_points", 35.0),
             ("momentum_points", 25.0),
@@ -52,7 +52,7 @@ SCORE_FORMULA_CONTRACTS = {
         "freshness_multiplier": False,
     },
 }
-PERIOD_SCORE_FORMULA = "spread35_velocity25_breadth20_persistence10_recency10_v2"
+PERIOD_SCORE_FORMULA = "spread35_velocity25_breadth20_persistence10_recency10_v3"
 EXPECTED_SCHEMAS = {
     "intelligence": "trzip-intelligence-v3",
     "metadata": "trzip-live-data-v3",

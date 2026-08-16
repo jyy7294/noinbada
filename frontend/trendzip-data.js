@@ -15,6 +15,7 @@ const METADATA_URL = `${LIVE_DATA_BASE}/metadata.json`;
 const CACHE_KEY = 'trzip:latest-intelligence:v3';
 const PORTFOLIO_KEY = 'trzip:portfolios:v1';
 const ARCHIVE_URL = './trend-archive.json';
+const SHOWCASE_MANIFEST_URL = './showcase/manifest.json';
 // The public home feed is an immutable daily publication created at 06:00 KST,
 // not an hourly endpoint. Keep a successful publication current until the next
 // daily slot, then allow a short delivery grace period before failing closed.
@@ -1158,7 +1159,8 @@ function viewModel(bundle, { source, fromCache }) {
 }
 
 async function loadTrends({ mode = 'live' } = {}) {
-  if (mode !== 'live') throw new Error('운영 화면은 live-data만 사용합니다.');
+  if (mode === 'showcase') return loadShowcase();
+  if (mode !== 'live') throw new Error('지원하지 않는 데이터 모드입니다.');
   try {
     const nonce = Date.now();
     const [rankings, statusResponse, metadataResponse] = await Promise.all([
@@ -1186,6 +1188,98 @@ async function loadTrends({ mode = 'live' } = {}) {
       error: String(error),
     };
   }
+}
+
+function kstFloorHourIso(now = new Date()) {
+  const shifted = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+  const pad = (value) => String(value).padStart(2, '0');
+  return `${shifted.getUTCFullYear()}-${pad(shifted.getUTCMonth() + 1)}-${pad(shifted.getUTCDate())}`
+    + `T${pad(shifted.getUTCHours())}:00:00+09:00`;
+}
+
+function validateShowcasePayload(payload, manifest) {
+  if (!payload || payload.schema_version !== 'trzip-showcase-live-simulation-v1'
+    || payload.mode !== 'showcase_live_simulation'
+    || payload.display_status !== '시연 LIVE'
+    || payload.display_time_policy !== 'client_kst_floor_hour'
+    || payload.source_ranking_mode !== 'actual_full_ledger_no_recency'
+    || payload.enrichment_mode !== 'reconstructed_demo') {
+    throw new Error('시연 데이터 계약을 확인할 수 없습니다.');
+  }
+  const cards = Array.isArray(payload.cards) ? payload.cards : [];
+  if (cards.length !== 10 || Number(manifest.card_count) !== cards.length) {
+    throw new Error('시연 카드 수가 올바르지 않습니다.');
+  }
+  const eventKeys = new Set();
+  cards.forEach((card, index) => {
+    const companies = Array.isArray(card.companies) ? card.companies : [];
+    const keywords = Array.isArray(card.related_keywords) ? card.related_keywords : [];
+    const roles = new Set(companies.map((company) => String(company.company_role_category || '')));
+    const stockCodes = new Set(companies.map((company) => String(company.stock_code || '')));
+    const eventKey = String(card.event_key || '');
+    if (!eventKey || eventKeys.has(eventKey)
+      || Number(card.presentation_order) !== index + 1
+      || !Number.isInteger(Number(card.full_ledger_rank))
+      || !Number.isFinite(Number(card.full_ledger_score))
+      || keywords.length !== 5
+      || new Set(keywords.map((keyword) => String(keyword.text || ''))).size !== 5
+      || companies.length !== 10
+      || stockCodes.size !== 10
+      || roles.size < 3 || roles.size > 4
+      || card.enrichment_mode !== 'reconstructed_demo'
+      || card.ranking_effect !== 'none'
+      || companies.some((company) => company.relationship_status !== 'reconstructed_demo'
+        || company.ranking_effect !== 'none'
+        || !/^https:\/\//.test(String(company.company_identity_url || ''))
+        || !validLiveMarketSnapshot(company, payload.source_observed_at))) {
+      throw new Error(`시연 카드 계약 오류: ${eventKey || index + 1}`);
+    }
+    eventKeys.add(eventKey);
+  });
+  return cards;
+}
+
+async function loadShowcase() {
+  const nonce = Date.now();
+  const manifestResponse = await fetchWithRetry(`${SHOWCASE_MANIFEST_URL}?t=${nonce}`, { cache: 'no-store' });
+  if (!manifestResponse.ok) throw new Error(`TRZIP showcase manifest ${manifestResponse.status}`);
+  const manifest = await manifestResponse.json();
+  const entry = manifest && manifest.showcase;
+  if (manifest.schema_version !== 'trzip-showcase-delivery-v1'
+    || manifest.mode !== 'showcase_live_simulation'
+    || manifest.display_status !== '시연 LIVE'
+    || manifest.display_time_policy !== 'client_kst_floor_hour'
+    || Number(manifest.card_count) !== 10
+    || Number(manifest.approval && manifest.approval.approved_count) !== 10
+    || !manifest.market_data
+    || manifest.market_data.status !== 'observed'
+    || manifest.market_data.provider !== 'pykrx+yahoo_finance'
+    || Number(manifest.market_data.snapshot_count) !== 100
+    || Number(manifest.market_data.unique_security_count) < 10
+    || manifest.market_data.synthetic !== false
+    || manifest.market_data.estimated !== false
+    || manifest.market_data.ranking_effect !== 'none'
+    || !entry || entry.path !== 'showcase.json'
+    || !/^[a-f0-9]{64}$/i.test(String(entry.sha256 || ''))) {
+    throw new Error('시연 manifest 계약을 확인할 수 없습니다.');
+  }
+  const payloadResponse = await fetchWithRetry(`./showcase/${entry.path}?t=${nonce}`, { cache: 'no-store' });
+  if (!payloadResponse.ok) throw new Error(`TRZIP showcase ${payloadResponse.status}`);
+  const payloadText = await payloadResponse.text();
+  if ((await sha256Hex(payloadText)) !== String(entry.sha256).toLowerCase()) {
+    throw new Error('시연 데이터 해시가 일치하지 않습니다.');
+  }
+  const payload = JSON.parse(payloadText);
+  const cards = validateShowcasePayload(payload, manifest);
+  return {
+    source: 'showcase-publication',
+    showcase: true,
+    displayAsOf: kstFloorHourIso(),
+    observedAt: payload.source_observed_at,
+    cards,
+    manifest,
+    raw: payload,
+  };
 }
 
 function sortTrends(trends, mode = 'score') {
@@ -1285,6 +1379,7 @@ const dataContract = Object.freeze({
   status: STATUS_URL,
   metadata: METADATA_URL,
   archive: ARCHIVE_URL,
+  showcase: SHOWCASE_MANIFEST_URL,
   cache: CACHE_KEY,
   portfolios: PORTFOLIO_KEY,
   freshForMinutes: FRESH_FOR_MINUTES,
@@ -1294,6 +1389,7 @@ const dataContract = Object.freeze({
 globalThis.TRZIP_DATA_API = Object.freeze({
   validatedBundle,
   loadTrends,
+  loadShowcase,
   loadArchive,
   validatedArchive,
   sortTrends,

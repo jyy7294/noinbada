@@ -11,7 +11,8 @@
     "unified_ranking", "all_observed_ranking", "presentation_feed", "home_feed", "home_top10", "home_status", "rising_top10",
     "category_summary", "trend_top10", "public_top10", "company_ready_trends",
     "ontology_enrichment_queue", "enrichment_work_queue", "provider_keyword_candidate_queue",
-    "lanes", "verification_run", "collection_status", "processing_cycle"
+    "lanes", "verification_run", "collection_status", "processing_cycle",
+    "final_publication_review", "final_release_approval"
   ],
   "properties": {
     "schema_version": {"const": "trzip-intelligence-v3"},
@@ -57,6 +58,19 @@
         "daily_publication": {"type": "object"}
       }
     },
+    "final_publication_review": {
+      "type": "object",
+      "required": ["schema_version", "observed_at", "candidate_count", "automatic_filter_passed_count", "candidates", "review_sha256"],
+      "properties": {
+        "schema_version": {"const": "trzip-final-publication-review-v2"},
+        "observed_at": {"type": "string", "format": "date-time"},
+        "candidate_count": {"type": "integer", "minimum": 0},
+        "automatic_filter_passed_count": {"type": "integer", "minimum": 0},
+        "candidates": {"type": "array"},
+        "review_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "final_release_approval": {"$ref": "#/$defs/finalReleaseApproval"},
     "ranking_default_period": {"const": "daily"},
     "ranking_periods": {
       "type": "array",
@@ -156,7 +170,7 @@
     "presentation_feed": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["schema_version", "status", "frontend_default", "observed_at", "selection_policy", "source_provenance", "logo_policy", "items", "transition"],
+      "required": ["schema_version", "status", "frontend_default", "observed_at", "selection_policy", "source_provenance", "logo_policy", "final_release_approval", "items", "transition"],
       "properties": {
         "schema_version": {"const": "trzip-presentation-feed-v4"},
         "status": {"enum": ["ready", "empty"]},
@@ -196,6 +210,24 @@
             "runtime_probe_for_generic_favicons": {"const": false},
             "official_page_resolver_required": {"const": true},
             "asset_sha256_required": {"const": true}
+          }
+        },
+        "final_release_approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required", "approved_event_keys", "published_event_keys", "unapproved_item_count", "ranking_effect"],
+          "properties": {
+            "required": {"type": "boolean"},
+            "approved_event_keys": {
+              "type": "array", "maxItems": 10, "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
+            "published_event_keys": {
+              "type": "array", "maxItems": 10, "uniqueItems": true,
+              "items": {"type": "string", "minLength": 1}
+            },
+            "unapproved_item_count": {"const": 0},
+            "ranking_effect": {"const": "none"}
           }
         },
         "items": {
@@ -596,6 +628,20 @@
     }
   },
   "$defs": {
+    "finalReleaseApproval": {
+      "type": "object",
+      "required": ["policy_version", "required", "status", "verified", "approved_event_keys", "approved_count", "review_sha256", "ranking_effect"],
+      "properties": {
+        "policy_version": {"const": "trzip-final-publication-approval-v1"},
+        "required": {"type": "boolean"},
+        "status": {"enum": ["not_required_local_draft", "pending_product_owner_approval", "invalid_final_review", "invalid_approval_receipt", "verified"]},
+        "verified": {"type": "boolean"},
+        "approved_event_keys": {"type": "array", "maxItems": 10, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
+        "approved_count": {"type": "integer", "minimum": 0, "maximum": 10},
+        "review_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "ranking_effect": {"const": "none"}
+      }
+    },
     "liveContextResearch": {
       "type": "object",
       "required": ["status", "trigger_title", "why_now", "evidence_urls"],
@@ -1267,7 +1313,7 @@
         "label": {"type": "string", "minLength": 1},
         "default": {"type": "boolean"},
         "window": {"$ref": "#/$defs/rankingWindow"},
-        "formula_version": {"const": "spread35_velocity25_breadth20_persistence10_recency10_v2"},
+        "formula_version": {"const": "spread35_velocity25_breadth20_persistence10_recency10_v3"},
         "data_readiness": {"type": "object"},
         "company_detail_policy": {"const": "shared_by_detail_event_key"},
         "company_count_affects_rank": {"const": false},
@@ -1392,7 +1438,7 @@
         "recency_points": {"type": "number", "minimum": 0, "maximum": 10},
         "cross_source_points": {"type": "number", "minimum": 0, "maximum": 20},
         "total_points": {"type": "number", "minimum": 0, "maximum": 100},
-        "formula_version": {"const": "spread35_velocity25_breadth20_persistence10_recency10_v2"},
+        "formula_version": {"const": "spread35_velocity25_breadth20_persistence10_recency10_v3"},
         "rounding_policy": {"const": "each_component_2dp_then_sum_2dp"}
       }
     },

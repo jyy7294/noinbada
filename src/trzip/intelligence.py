@@ -46,7 +46,8 @@ from .public_company_contract import (
     keyword_company_link_coverage,
     public_url_is_valid,
 )
-from .ranking_v2 import build_period_rankings_v2
+from .ranking_v2 import build_full_ledger_demo_ranking, build_period_rankings_v2
+from .source_safety import is_spam_solicitation
 from .presentation_feed import build_presentation_feed
 from .keyword_policy import keyword_fits_public_label
 from .trend_fit import assess_trend_fit
@@ -129,15 +130,55 @@ def canonical_topic(raw: str, related_terms_json: str | None = None) -> str:
     # suffixes and format-only team markers before ranking so one match cannot
     # occupy multiple positions.  This is a general linguistic rule, not a
     # manually curated trend whitelist.
+    # One deterministic public fixture grammar: ``팀A vs 팀B``.  Common
+    # Korean/English spellings are normalized only for team identity; raw
+    # source labels remain preserved in ``raw_terms`` and evidence.
     fixture = re.fullmatch(r"(.+?)\s+(?:대|vs\.?|v\.?)\s+(.+?)(?:\s+순위)?", normalized)
     if fixture:
         def normalize_team(value: str) -> str:
             team = re.sub(r"\s+fc$", "", value.strip())
             team = re.sub(r"^엘\s*에이\b", "로스앤젤레스", team)
-            return " ".join(team.split())
+            aliases = {
+                "milan": "AC 밀란",
+                "ac milan": "AC 밀란",
+                "ac밀란": "AC 밀란",
+                "밀란": "AC 밀란",
+                "man united": "맨유",
+                "man utd": "맨유",
+                "manchester united": "맨유",
+                "맨체스터 유나이티드": "맨유",
+                "kia": "KIA",
+                "lg": "LG",
+                "ssg": "SSG",
+                "nc": "NC",
+                "kt": "KT",
+                "ind": "인도",
+                "india": "인도",
+                "sl": "스리랑카",
+                "sri lanka": "스리랑카",
+                "australia": "호주",
+                "bangladesh": "방글라데시",
+            }
+            compact = " ".join(team.split())
+            if compact in aliases:
+                return aliases[compact]
+            compact = re.sub(r"^fc\s+", "FC ", compact)
+            compact = re.sub(r"fc$", "FC", compact)
+            return compact
 
         left, right = (normalize_team(value) for value in fixture.groups())
-        return f"{left} 대 {right}"
+        pair_order = {
+            frozenset({"인도", "스리랑카"}): ("인도", "스리랑카"),
+            frozenset({"호주", "방글라데시"}): ("호주", "방글라데시"),
+        }
+        left, right = pair_order.get(frozenset({left, right}), (left, right))
+        return f"{left} vs {right}"
+    korean_international = re.fullmatch(r"(야구|축구|농구|배구)\s+한일전", normalized)
+    if korean_international:
+        return f"한국 vs 일본 {korean_international.group(1)}"
+    korean_international = re.fullmatch(r"한국\s+일본\s+(야구|축구|농구|배구)", normalized)
+    if korean_international:
+        return f"한국 vs 일본 {korean_international.group(1)}"
     # Release suffixes are format variants for common macro indicators, not a
     # reviewed trend alias. Keep this deterministic family rule deliberately
     # narrow so arbitrary nouns ending in "발표" are never merged.
@@ -201,6 +242,11 @@ def _category(topic: str) -> str:
     lowered = topic.casefold()
     if re.fullmatch(r"[초중말]복", lowered):
         return "seasonal_food_ritual"
+    if re.fullmatch(r".+\s+(?:대|vs\.?|v\.?)\s+.+", lowered) or re.fullmatch(
+        r"(?:야구|축구|농구|배구)\s+한일전|한국\s+일본\s+(?:야구|축구|농구|배구)",
+        lowered,
+    ):
+        return "sports_participation"
     heuristic_categories = (
         (("밥", "초밥", "치킨", "라면", "닭", "빵", "쿠키", "초콜릿", "커피", "맛집", "음식", "삼계탕", "보양식", "디저트"), "food_culinary"),
         ((
@@ -614,6 +660,15 @@ def _home_context_gate(item: dict) -> tuple[bool, str]:
         )
         if not has_market_context:
             return False, "market_context_evidence_missing"
+    if (
+        item.get("broad_category") == "sports"
+        and (item.get("trend_fit") or {}).get("plain_sports_fixture") is True
+        and set(item.get("period_sources") or []).intersection({"x", "google_trends"})
+    ):
+        # The observed A-vs-B expression is itself a concrete scheduled event.
+        # It does not need a news article saying that the match exists. Team or
+        # sport names without an actual fixture still remain in Review above.
+        return True, "specific_observed_sports_fixture"
     context_research = item.get("context_research") or {}
     trigger_title = str(context_research.get("trigger_title") or "").strip()
     trigger_summary = str(context_research.get("why_now") or "").strip()
@@ -683,7 +738,7 @@ def _series_rows(
             .replace("collector_version", "observation.collector_version")
         )
         with connect(path) as connection:
-            return connection.execute(
+            rows = connection.execute(
                 f"""WITH live_counts AS (
                         SELECT observed_at, source, provenance,
                                COUNT(*) AS row_count,
@@ -735,6 +790,21 @@ def _series_rows(
                     floor_hour(end).isoformat(),
                 ),
             ).fetchall()
+        spam_hours = {
+            str(row["observed_at"])
+            for row in rows
+            if row["source"] == "x" and is_spam_solicitation(row["topic"])
+        }
+        if spam_hours:
+            # Preserve the immutable raw ledger for audit, but exclude the
+            # complete contaminated X hour. Removing only the spam rows would
+            # silently rerank the remaining rows and manufacture a new source
+            # snapshot that X never published.
+            rows = [
+                row for row in rows
+                if not (row["source"] == "x" and str(row["observed_at"]) in spam_hours)
+            ]
+        return rows
 
     qualified_collector_sql = (
         ELIGIBLE_COLLECTOR_SQL
@@ -1499,6 +1569,10 @@ def _build_period_views(
             item["home_rank"] = main_rank
         for publication_rank, item in enumerate(main_ranking, 1):
             item["publication_rank"] = publication_rank
+        completed_period_home = [
+            item for item in main_ranking
+            if item.get("frontend_readiness_status") == "ready"
+        ]
         period_views[key] = {
             "key": key,
             "label": raw_view["label"],
@@ -1509,7 +1583,7 @@ def _build_period_views(
             "company_detail_policy": "shared_by_detail_event_key",
             "company_count_affects_rank": False,
             "unified_ranking": ranking,
-            "period_top10": select_balanced_home_top10(main_ranking),
+            "period_top10": select_balanced_home_top10(completed_period_home),
         }
     return periods, period_views
 
@@ -2509,6 +2583,10 @@ def build_intelligence(
         ranking_rows,
         at=end,
     )
+    full_ledger_demo_ranking = build_full_ledger_demo_ranking(
+        ranking_rows,
+        at=end,
+    )
     default_period = period_ranking_contract["default_period"]
     default_ranking_contract = period_ranking_contract["views"][default_period]
     ranking_v2 = {
@@ -2910,7 +2988,7 @@ def build_intelligence(
         display_name = representative_term
         display_name_policy = "observed_representative_term"
         canonical_name = str(event_resolution["canonical"] or "").strip()
-        if re.fullmatch(r".+\s+대\s+.+", event_key) and event_key != representative_term:
+        if re.fullmatch(r".+\s+vs\s+.+", event_key) and event_key != representative_term:
             # Fixture query suffixes are still retained in raw_terms and
             # representative evidence, while the card title uses the compact
             # canonical event name shared by every source expression.
@@ -3497,6 +3575,7 @@ def build_intelligence(
         "ranking_default_period": period_ranking_contract["default_period"],
         "ranking_periods": ranking_periods,
         "ranking_views": ranking_views,
+        "full_ledger_demo_ranking": full_ledger_demo_ranking,
         "ranking_top_level_alias": {
             "period": "daily",
             "unified_ranking": "daily_period_aggregate",

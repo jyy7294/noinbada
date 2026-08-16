@@ -186,6 +186,9 @@ try {
         } else {
             $PipelineArguments += "--defer-enrichment-checkpoint"
         }
+        if ($CurrentKstHour -eq $DailyPublishHourKst) {
+            $PipelineArguments += "--require-final-approval"
+        }
         & $Python @PipelineArguments
         if ($LASTEXITCODE -ne 0) { throw "local pipeline exited with code $LASTEXITCODE" }
     }
@@ -254,6 +257,29 @@ try {
         Write-RunLog -Phase "publish" -Status "blocked_exact_hour_source_gap" `
             -Detail "daily publication requires both X and Google at the exact publish hour; 24h gaps remain allowed elsewhere"
         exit 1
+    }
+
+    # A valid source snapshot and an automatically complete card are not final
+    # publication permission.  The product owner must approve the exact review
+    # hash for this observation hour before an immutable validation receipt or
+    # any remote write can occur.
+    if ($CurrentKstHour -eq $DailyPublishHourKst) {
+        $FinalApproval = $PublicationStatus.final_release_approval
+        if (
+            $null -eq $FinalApproval -or
+            $FinalApproval.required -ne $true -or
+            $FinalApproval.verified -ne $true
+        ) {
+            $ReviewPath = Join-Path $PublicationRoot "latest\final-publication-review.json"
+            Write-RunLog -Phase "final_release_approval" -Status "awaiting_product_owner_approval" `
+                -Detail "remote publication blocked before receipt; review=$ReviewPath"
+            Write-Output "Final publication review: $ReviewPath"
+            Write-Output "Approve only eligible event keys, then rerun this exact hour."
+            exit 2
+        }
+        $ApprovedKeys = @($FinalApproval.approved_event_keys)
+        Write-RunLog -Phase "final_release_approval" -Status "verified" `
+            -Detail ("approved_count={0} review_sha={1}" -f $ApprovedKeys.Count,$FinalApproval.review_sha256)
     }
 
     # Record the exact source and frontend-contract proof before considering

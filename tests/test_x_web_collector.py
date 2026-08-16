@@ -97,6 +97,21 @@ def test_bridge_rejects_missing_rank_even_when_row_count_is_thirty():
     assert caught.value.code == "incomplete_scroll"
 
 
+def test_bridge_rejects_whole_hour_when_x_contains_solicitation_spam():
+    payload = _payload("2026-08-12T12:00:04Z")
+    payload["trends"][0]["topic"] = "라인 qq750"
+
+    with pytest.raises(XCollectionError) as caught:
+        _validate_bridge_payload(
+            payload,
+            now=datetime(2026, 8, 12, 12, 1, tzinfo=UTC),
+            minimum_rows=30,
+        )
+
+    assert caught.value.code == "source_spam_detected"
+    assert "without reranking or filling" in caught.value.detail
+
+
 def test_collect_x_reads_sanitized_inbox_without_launching_browser(tmp_path):
     inbox = tmp_path / "x-current-session.json"
     inbox.write_text(json.dumps(_payload("2026-08-12T12:00:04Z"), ensure_ascii=False), encoding="utf-8")

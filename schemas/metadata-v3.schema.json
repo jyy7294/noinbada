@@ -5,7 +5,7 @@
   "type": "object",
   "required": [
     "schema_version", "publication_id", "generated_at", "observed_at", "mode", "publishable",
-    "storage", "collection", "coverage", "collection_health", "company_identity_data", "processing_cycle"
+    "storage", "collection", "coverage", "collection_health", "company_identity_data", "processing_cycle", "final_release_approval"
   ],
   "properties": {
     "schema_version": {"const": "trzip-live-data-v3"},
@@ -15,6 +15,19 @@
     "mode": {"const": "live"},
     "publishable": {"type": "boolean"},
     "processing_cycle": {"type": "object"},
+    "final_release_approval": {
+      "type": "object",
+      "required": ["policy_version", "required", "status", "verified", "approved_event_keys", "approved_count", "review_sha256", "ranking_effect"],
+      "properties": {
+        "policy_version": {"const": "trzip-final-publication-approval-v1"},
+        "required": {"type": "boolean"},
+        "verified": {"type": "boolean"},
+        "approved_event_keys": {"type": "array", "maxItems": 10, "uniqueItems": true},
+        "approved_count": {"type": "integer", "minimum": 0, "maximum": 10},
+        "review_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "ranking_effect": {"const": "none"}
+      }
+    },
     "storage": {"const": "local-sqlite-published-to-live-data"},
     "collection": {"type": "object"},
     "coverage": {"type": "object"},

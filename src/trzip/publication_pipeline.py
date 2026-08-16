@@ -31,6 +31,10 @@ from .company_adapters import (
 from .company_roles import COMPANY_ROLE_LABELS, public_company_role_count_is_valid
 from .enrichment_queue import sync_enrichment_queue
 from .enrichment_handoff import run_handoff
+from .final_publication_approval import (
+    build_final_publication_review,
+    verify_approval,
+)
 from .editorial_review import apply_frontend_enrichment_cache, build_editorial_review_pack
 from .event_resolution import normalize_event_key
 from .ontology import MINIMUM_FRONTEND_COMPANIES
@@ -821,6 +825,15 @@ def _validate_contract(intelligence: dict, metadata: dict, status: dict | None =
         raise ValueError("All publication documents must share one processing cycle audit")
     if processing_cycle.get("observed_at") not in observed_at:
         raise ValueError("Processing cycle must describe the publication observation hour")
+    final_approval = intelligence.get("final_release_approval")
+    if final_approval is not None and (
+        not isinstance(final_approval, dict)
+        or any(
+            document.get("final_release_approval") != final_approval
+            for document in documents[1:]
+        )
+    ):
+        raise ValueError("All publication documents must share one final release approval")
     coverage_24h = processing_cycle.get("coverage_24h") or {}
     if (
         coverage_24h.get("missing_hour_policy") != "allowed_no_fill_no_reuse"
@@ -1007,6 +1020,21 @@ def _validate_live_presentation_feed(feed: dict) -> None:
         raise ValueError("live presentation must be the frontend default")
     if feed.get("selection_policy") != "validated_live_home_feed_v1":
         raise ValueError("live presentation selection policy is invalid")
+    release_approval = feed.get("final_release_approval") or {}
+    approved_keys = list(release_approval.get("approved_event_keys") or [])
+    published_keys = [str(item.get("event_key") or "") for item in items]
+    if (
+        release_approval.get("required") not in {True, False}
+        or release_approval.get("published_event_keys") != published_keys
+        or release_approval.get("unapproved_item_count") != 0
+        or release_approval.get("ranking_effect") != "none"
+        or len(approved_keys) != len(set(approved_keys))
+    ):
+        raise ValueError("live presentation final release approval receipt is invalid")
+    if release_approval.get("required") is True and any(
+        key not in approved_keys for key in published_keys
+    ):
+        raise ValueError("live presentation contains a trend without product-owner approval")
     source_provenance = feed.get("source_provenance") or {}
     if source_provenance != {
         "ranking_sources": ["x", "google_trends"],
@@ -2074,9 +2102,10 @@ def _write_frontend_delivery(
         ("metadata", "metadata.json"),
         ("status", "status.json"),
         ("editorial_review", "editorial-review.json"),
+        ("final_publication_review", "final-publication-review.json"),
     ):
         path = latest / filename
-        if kind == "editorial_review" and not path.exists():
+        if kind in {"editorial_review", "final_publication_review"} and not path.exists():
             continue
         compatibility_documents[kind] = {
             "path": filename,
@@ -2974,6 +3003,7 @@ PUBLIC_SOURCE_FAILURE_CODES = frozenset({
     "incomplete_scroll",
     "snapshot_invalid",
     "snapshot_stale",
+    "source_spam_detected",
     "unavailable",
     "api_authentication",
     "quota_or_rate_limit",
@@ -3018,6 +3048,7 @@ def _public_source_status(source: str, detail: object, raw_status: object = None
         for code in (
             "current_session_not_ready", "auth_required", "selector_changed", "empty",
             "region_unverified", "incomplete_scroll", "snapshot_invalid", "snapshot_stale",
+            "source_spam_detected",
         ):
             if code in value:
                 return code
@@ -3283,6 +3314,7 @@ def run(
     enrichment_checkpoint: bool = True,
     daily_publish_hour_kst: int = 6,
     live_only: bool = False,
+    require_final_approval: bool = False,
 ) -> dict:
     """Run the laptop-owned pipeline and write the static publication contract."""
     root.mkdir(parents=True, exist_ok=True)
@@ -3404,6 +3436,27 @@ def run(
         daily_publish_hour_kst=daily_publish_hour_kst,
         live_only=live_only,
     )
+    final_review = build_final_publication_review(intelligence)
+    if require_final_approval:
+        final_approval = verify_approval(
+            final_review,
+            approval_root=database_path.parent.parent / "final-publication-approvals",
+        )
+        approved_event_keys = final_approval["approved_event_keys"]
+    else:
+        final_approval = {
+            "policy_version": "trzip-final-publication-approval-v1",
+            "required": False,
+            "status": "not_required_local_draft",
+            "verified": False,
+            "approved_event_keys": [],
+            "approved_count": 0,
+            "review_sha256": final_review["review_sha256"],
+            "ranking_effect": "none",
+        }
+        approved_event_keys = None
+    intelligence["final_publication_review"] = final_review
+    intelligence["final_release_approval"] = final_approval
     # Build the approved presentation projection only after every deterministic
     # enrichment pass. Some passes rebuild the live contract and intentionally
     # discard non-canonical keys, so attaching it earlier would make the final
@@ -3416,6 +3469,7 @@ def run(
     intelligence["presentation_feed"] = build_presentation_feed(
         intelligence,
         previous_feed=previous_remote_feed,
+        approved_event_keys=approved_event_keys,
     )
     # Manual daily lists are enrichment caches only. They must never select,
     # promote, suppress, score or categorise a live trend.
@@ -3476,6 +3530,7 @@ def run(
         "company_identity_data": intelligence["company_identity_status"],
         "collection_health": collection_health,
         "processing_cycle": intelligence["processing_cycle"],
+        "final_release_approval": final_approval,
         "frontend_delivery": _delivery_descriptor(
             publication_id,
             len(_period_detail_items(intelligence)),
@@ -3494,6 +3549,7 @@ def run(
         "recorded_runs": collection_health["recorded_runs"],
         "measurement_status": collection_health["status"],
         "processing_cycle": intelligence["processing_cycle"],
+        "final_release_approval": final_approval,
         "frontend_delivery_manifest": "manifest.json",
     }
     _validate_contract(intelligence, metadata, status)
@@ -3506,6 +3562,7 @@ def run(
     )
     _write_json(root / "latest" / "metadata.json", metadata)
     _write_json(root / "latest" / "status.json", status)
+    _write_json(root / "latest" / "final-publication-review.json", final_review)
     persisted_intelligence = _read_json(root / "latest" / "intelligence.json", {})
     persisted_metadata = _read_json(root / "latest" / "metadata.json", {})
     persisted_status = _read_json(root / "latest" / "status.json", {})
@@ -3544,6 +3601,11 @@ def main() -> None:
         default=6,
         choices=range(24),
     )
+    parser.add_argument(
+        "--require-final-approval",
+        action="store_true",
+        help="fail closed to product-owner-approved event keys for a remote release candidate",
+    )
     args = parser.parse_args()
     scheduled_checkpoint = checkpoint_due(
         floor_hour(datetime.now(UTC)),
@@ -3560,6 +3622,7 @@ def main() -> None:
         enrichment_checkpoint=scheduled_checkpoint,
         daily_publish_hour_kst=args.daily_publish_hour_kst,
         live_only=True,
+        require_final_approval=args.require_final_approval,
     )
     print(json.dumps(result, ensure_ascii=False, indent=2))
 

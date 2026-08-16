@@ -11,6 +11,8 @@ from pathlib import Path
 from typing import Callable
 from urllib.parse import urlparse
 
+from .source_safety import is_spam_solicitation
+
 
 X_TRENDS_URL = "https://x.com/explore/tabs/trending"
 RANK_RE = re.compile(r"^\d{1,3}$")
@@ -216,6 +218,14 @@ def _validate_bridge_payload(
         seen_topics.add(topic_key)
         trends.append(XTrend(rank=rank, topic=topic))
     trends.sort(key=lambda item: item.rank)
+
+    spam_topics = [trend.topic for trend in trends if is_spam_solicitation(trend.topic)]
+    if spam_topics:
+        raise XCollectionError(
+            "source_spam_detected",
+            "X realtime snapshot contains solicitation/contact spam; "
+            "the entire hour is rejected without reranking or filling",
+        )
 
     required_rows = max(30, minimum_rows)
     required_ranks = set(range(1, required_rows + 1))

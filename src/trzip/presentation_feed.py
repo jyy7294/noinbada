@@ -12,6 +12,7 @@ import json
 import math
 from collections import defaultdict
 from datetime import UTC, datetime, timedelta
+from typing import Collection
 from urllib.parse import urlparse
 
 from .company_logo_assets import resolve_company_logo, reviewed_company_homepage
@@ -2310,8 +2311,14 @@ def build_presentation_feed(
     intelligence: dict,
     *,
     previous_feed: dict | None = None,
+    approved_event_keys: Collection[str] | None = None,
 ) -> dict:
-    """Project at most ten complete observed cards; never pad with fixtures."""
+    """Project at most ten complete observed cards; never pad with fixtures.
+
+    ``None`` keeps the deterministic local draft used by tests and hourly
+    review.  Passing a collection activates the final human release gate and
+    permits only those exact event keys.
+    """
 
     from .processing_cycle import complete_card_gate
 
@@ -2342,12 +2349,17 @@ def build_presentation_feed(
         if by_key.get(event_key) is not None
     ] + remaining
     seen_candidates = set()
+    approval_filter = None if approved_event_keys is None else {
+        str(key).strip() for key in approved_event_keys if str(key).strip()
+    }
     items = []
     for candidate in ordered_candidates:
         event_key = str(candidate.get("event_key") or "")
         if not event_key or event_key in seen_candidates:
             continue
         seen_candidates.add(event_key)
+        if approval_filter is not None and event_key not in approval_filter:
+            continue
         if not complete_card_gate(candidate, observed_at=observed_at)["ready"]:
             continue
         projected = _live_card(candidate, observed_at)
@@ -2396,6 +2408,13 @@ def build_presentation_feed(
         "status": "ready" if items else "empty",
         "frontend_default": True,
         "selection_policy": "validated_live_home_feed_v1",
+        "final_release_approval": {
+            "required": approval_filter is not None,
+            "approved_event_keys": sorted(approval_filter or []),
+            "published_event_keys": [str(item.get("event_key") or "") for item in items],
+            "unapproved_item_count": 0,
+            "ranking_effect": "none",
+        },
         "source_provenance": {
             "ranking_sources": ["x", "google_trends"],
             "collector_versions": {

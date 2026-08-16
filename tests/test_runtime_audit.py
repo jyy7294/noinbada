@@ -81,7 +81,7 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
             "recency_points": 10.0,
             "cross_source_points": 20.0,
             "total_points": 80.0,
-            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v3",
             "rounding_policy": "each_component_2dp_then_sum_2dp",
         },
         "candidate_status": "is_current",
@@ -171,7 +171,7 @@ def _write_runtime(root: Path, *, history_hours: int = 96) -> None:
         view_item["freshness"]["half_life_hours"] = period["window"]["hours"] / 2
         ranking_views[period["key"]] = {
             **period,
-            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v2",
+            "formula_version": "spread35_velocity25_breadth20_persistence10_recency10_v3",
             "data_readiness": {"status": "ready"},
             "company_detail_policy": "shared_by_detail_event_key",
             "company_count_affects_rank": False,

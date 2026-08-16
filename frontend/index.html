@@ -357,7 +357,7 @@
             </div>
             <sc-if value="{{ freshInfoOpen }}" hint-placeholder-val="{{ false }}">
               <div data-freshness-explanation="1" style="background:#F3EFFC; border-radius:12px; padding:11px 13px; margin-top:9px; font-weight:500; font-size:11px; line-height:1.65; color:#5B21C0;">
-                최근 24시간의 실제 관측을 사건 단위로 통합해, 안전 기준을 통과한 소비·문화·기술 흐름만 표시합니다. 관측 강도·확산·지속성을 함께 보며 기업 연결은 정보 탐색용입니다.
+                전체 수집 기간의 실제 원천 순위를 사건 단위로 통합해, 안전 기준과 최종 승인을 통과한 소비·문화·기술 흐름만 표시합니다. 관측 강도·확산·지속성을 함께 보며 기업 연결과 관심 곡선은 시연 구성이고 투자 판단용이 아닙니다.
               </div>
             </sc-if>
 
@@ -402,7 +402,7 @@
                 <b style="font-weight:800;">트렌드 수집 기준</b><br>
                 · 매시 정각 대한민국의 최신 흐름을 실제 수집해요<br>
                 · 서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요<br>
-                · 최근 24시간 확산 흐름을 분석해 매일 오전 6시에 한 번 공개해요<br>
+                · 전체 수집 기간의 순위 흐름을 분석해 승인된 시연 트렌드를 공개해요<br>
                 · 관측되지 않은 데이터를 임의로 채우지 않아요
               </div>
             </sc-if>
@@ -441,7 +441,7 @@
               </div>
             </div>
             <p id="interest-chart-disclosure" style="margin:5px 0 0; font-weight:650; font-size:10.5px; line-height:1.45; color:#777A86;">
-              실제 통합 관측 순위와 현재 공개 순위를 조합한 0~100 표시지수입니다. 절대 언급량·주가·매수신호가 아니며 결측은 보간하지 않고 90분 넘게 빈 구간은 연결하지 않습니다.
+              {{ interestDisclosure }}
             </p>
           </div>
         </div>
@@ -1117,6 +1117,7 @@ class Component extends DCLogic {
   }
 
   liveStatus = '';
+  interestDisclosure = '실제 통합 관측 순위와 현재 공개 순위를 조합한 0~100 표시지수입니다. 절대 언급량·주가·매수신호가 아니며 결측은 보간하지 않고 90분 넘게 빈 구간은 연결하지 않습니다.';
   companyDomains = {};
   logoCache = {};
 
@@ -1868,8 +1869,47 @@ class Component extends DCLogic {
       && publishedWindow.missing_point_policy === 'preserve_sparse_null_no_reuse'
       && publishedWindow.ranking_effect === 'none'
       && rankResponsivePointContractValid);
+    const showcasePointContractValid = Boolean(publishedWindow
+      && Array.isArray(publishedWindow.points)
+      && publishedWindow.points.every((point) => point
+        && point.display_only === true
+        && point.formula_version === 'showcase-rank-response-v1'
+        && point.data_provenance === 'reconstructed_demo'
+        && point.canonical_ranking_effect === 'none'
+        && point.display_rank_effect === 'display_value_only'
+        && point.market_data_affected === false
+        && point.ranking_effect === 'none'
+        && point.source_components && typeof point.source_components === 'object'
+        && !Array.isArray(point.source_components)));
+    const showcaseWindowContractValid = Boolean(trend && trend.showcase === true
+      && visualization.data_mode === 'showcase_rank_response'
+      && visualization.display_only === true
+      && visualization.formula_version === 'showcase-rank-response-v1'
+      && visualization.derivation === 'deterministic_curve_from_full_ledger_score_and_presentation_order'
+      && visualization.data_provenance === 'reconstructed_demo'
+      && Number.isInteger(presentationPosition)
+      && presentationPosition >= 1 && presentationPosition <= 10
+      && presentationPosition === visibleRank
+      && visualization.canonical_series_unchanged === true
+      && visualization.canonical_ranking_effect === 'none'
+      && visualization.display_rank_effect === 'display_value_only'
+      && visualization.market_data_affected === false
+      && visualization.interpolation === 'none'
+      && visualization.ranking_effect === 'none'
+      && publishedWindow
+      && publishedWindow.display_only === true
+      && publishedWindow.formula_version === 'showcase-rank-response-v1'
+      && publishedWindow.data_provenance === 'reconstructed_demo'
+      && publishedWindow.canonical_ranking_effect === 'none'
+      && publishedWindow.display_rank_effect === 'display_value_only'
+      && publishedWindow.market_data_affected === false
+      && publishedWindow.interpolation === 'none'
+      && publishedWindow.missing_point_policy === 'preserve_sparse_null_no_reuse'
+      && publishedWindow.ranking_effect === 'none'
+      && showcasePointContractValid);
     const legacyWindowContractValid = !hasRankResponsiveMetadata && sharedWindowContractValid;
-    const windowContractValid = rankResponsiveWindowContractValid || legacyWindowContractValid;
+    const windowContractValid = rankResponsiveWindowContractValid
+      || legacyWindowContractValid || showcaseWindowContractValid;
     const allPublishedPoints = windowContractValid && Array.isArray(publishedWindow && publishedWindow.points)
       ? publishedWindow.points.filter((point) => {
         const atMs = new Date(point && point.at).getTime();
@@ -2180,6 +2220,64 @@ class Component extends DCLogic {
     if (Array.isArray(window.dataLayer)) window.dataLayer.push(detail);
   }
 
+  buildShowcaseVisualization(card, displayAsOf) {
+    const formulaVersion = 'showcase-rank-response-v1';
+    const end = new Date(displayAsOf);
+    const endMs = Number.isFinite(end.getTime()) ? end.getTime() : Date.now();
+    const base = Math.max(12, Math.min(88, Number(card.full_ledger_score) || 50));
+    const order = Math.max(1, Math.min(10, Number(card.presentation_order) || 1));
+    const points = Array.from({ length: 25 }, (_, index) => {
+      const wave = Math.sin((index + order) * 0.72) * 7;
+      const response = ((index - 12) / 12) * ((11 - order) * 0.42);
+      const combined = Math.max(1, Math.min(99, Number((base + wave + response).toFixed(2))));
+      return {
+        at: new Date(endMs - ((24 - index) * 60 * 60 * 1000)).toISOString(),
+        combined,
+        display_only: true,
+        formula_version: formulaVersion,
+        data_provenance: 'reconstructed_demo',
+        canonical_ranking_effect: 'none',
+        display_rank_effect: 'display_value_only',
+        market_data_affected: false,
+        ranking_effect: 'none',
+        source_components: {
+          demo: { full_ledger_score: Number(card.full_ledger_score), presentation_order: order }
+        }
+      };
+    });
+    const window = (status, values) => ({
+      status,
+      points: values,
+      display_only: true,
+      formula_version: formulaVersion,
+      data_provenance: 'reconstructed_demo',
+      canonical_ranking_effect: 'none',
+      display_rank_effect: 'display_value_only',
+      market_data_affected: false,
+      interpolation: 'none',
+      missing_point_policy: 'preserve_sparse_null_no_reuse',
+      ranking_effect: 'none'
+    });
+    return {
+      data_mode: 'showcase_rank_response',
+      display_only: true,
+      formula_version: formulaVersion,
+      derivation: 'deterministic_curve_from_full_ledger_score_and_presentation_order',
+      data_provenance: 'reconstructed_demo',
+      presentation_position: order,
+      presentation_rank_movement: { status: 'new', label: 'NEW', delta: null },
+      canonical_series_unchanged: true,
+      canonical_ranking_effect: 'none',
+      display_rank_effect: 'display_value_only',
+      market_data_affected: false,
+      interpolation: 'none',
+      ranking_effect: 'none',
+      '1w': window('measured', points),
+      '1m': window('insufficient_observed_history', []),
+      '3m': window('insufficient_observed_history', [])
+    };
+  }
+
   async loadPublishedData() {
     const ROLE_META = {
       manufacturing_development: ['제조·개발', '🏭'],
@@ -2206,7 +2304,78 @@ class Component extends DCLogic {
     try {
       const api = window.TRZIP_DATA_API;
       if (!api) throw new Error('TRZIP data API is not ready.');
-      const view = await api.loadTrends({ mode: 'live' });
+      const view = await api.loadTrends({ mode: 'showcase' });
+      if (view.showcase === true) {
+        const CATEGORY_KO = {
+          lifestyle_behavior: '생활', technology_tool: '기술', sports_attendance: '스포츠',
+          screen_content: '콘텐츠', seasonal_food_ritual: '음식·식품',
+          music_performance: '음악', place_experience: '여행·공간'
+        };
+        const mapped = view.cards.map((card) => {
+          const groups = new Map();
+          const companies = card.companies.map((company) => {
+            let officialDomain = '';
+            try { officialDomain = new URL(company.company_identity_url).hostname.replace(/^www\./, ''); } catch {}
+            return { ...company, official_domain: officialDomain };
+          });
+          companies.forEach((company) => {
+            const key = company.company_role_category;
+            if (!ROLE_META[key]) return;
+            if (!groups.has(key)) groups.set(key, []);
+            groups.get(key).push([
+              String(company.company || '기').slice(0, 1),
+              company.company,
+              this.publicConnectionCopy(company),
+              company
+            ]);
+          });
+          const stages = [...groups.entries()].map(([key, rows]) => ({
+            title: ROLE_META[key][0] + ' 관련 기업', icon: ROLE_META[key][1], companies: rows
+          }));
+          const keywords = card.related_keywords.map((keyword) => String(keyword.text || '')).filter(Boolean);
+          const movement = { status: 'new', label: 'NEW', delta: null };
+          const visualizationSeries = this.buildShowcaseVisualization(card, view.displayAsOf);
+          return {
+            emoji: String(card.display_name || '트').slice(0, 1),
+            icon: this.trendIconMeta(card.display_name, CATEGORY_KO[card.category]),
+            name: card.display_name,
+            shortName: card.display_name,
+            cat: CATEGORY_KO[card.category] || '기타',
+            core: card.display_name,
+            tags: keywords.map((keyword) => '#' + keyword.replace(/\s+/g, '')),
+            day: '전체기간 관측', phase: '시연 구성',
+            lift: Number(card.full_ledger_score).toFixed(2),
+            rankMovement: movement, rankMovementLabel: 'NEW',
+            rank: card.presentation_order + '위', progress: 100, stageIdx: 2,
+            definition: card.trend_definition,
+            caption: '실제 누적 원장의 전체기간 순위를 바탕으로 구성한 시연 화면입니다.',
+            channels: ['시연', '—', '—'], attentionWindows: [],
+            seriesMetric: { unit: 'showcase_index_0_100', financial_signal: false },
+            stages, companies, visualizationSeries, series: [],
+            companyCardStatus: 'showcase_complete',
+            sourceLabel: '통합 원장', sourceList: [], live: true, showcase: true,
+            crossSource: false,
+            raw: { ...card, rank_movement: movement }, id: card.event_key
+          };
+        });
+        this.dataApi = api;
+        this.publishedView = { ...view, observedAt: view.displayAsOf };
+        this.hasPublishedTrends = mapped.length === 10;
+        this.trends = mapped;
+        this.liveStatus = '시연 LIVE';
+        this.liveObservedAt = '기준 ' + new Date(view.displayAsOf).toLocaleString('ko-KR', {
+          timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+        this.interestDisclosure = '전체기간 실측 순위로 구성한 시연 표시지수입니다. 절대 언급량·주가·매수신호가 아니며 기업 연결과 곡선은 시연 구성입니다.';
+        this.setState({ trend: 0, stage: 0, folder: 0 });
+        setTimeout(() => {
+          this.patchHomeLabels(); this.renderPresentationPortfolios(); this.hydrateMaker();
+          this.mkWire(); this.renderSavedPortfolios(); this.renderCompanyWatchlist();
+          const activeScreen = document.querySelector('[data-proto-active]');
+          if (activeScreen && typeof window.__singleScreen === 'function') window.__singleScreen(activeScreen);
+        }, 180);
+        return;
+      }
       const feed = view.raw && view.raw.presentation_feed;
       const feedItems = feed && Array.isArray(feed.items) ? feed.items : [];
       const validFeedStatus = feed && ((feed.status === 'empty' && feedItems.length === 0)
@@ -5433,9 +5602,10 @@ class Component extends DCLogic {
     ];
     const vals = {
       liveStatus: this.liveStatus,
-      showLiveBadge: this.liveStatus === 'LIVE',
+      showLiveBadge: this.liveStatus.includes('LIVE'),
       liveObservedAt: this.liveObservedAt || '',
-      liveBadgeStyle: 'flex:none; white-space:nowrap; font-weight:700; font-size:10px; letter-spacing:0.02em; border-radius:999px; padding:4px 9px;' + (this.liveStatus.startsWith('LIVE') ? ' background:#E8FBF0; color:#0B8A4B;' : ' background:#F1EEF9; color:#8B8D98;'),
+      liveBadgeStyle: 'flex:none; white-space:nowrap; font-weight:700; font-size:10px; letter-spacing:0.02em; border-radius:999px; padding:4px 9px;' + (this.liveStatus.includes('LIVE') ? ' background:#E8FBF0; color:#0B8A4B;' : ' background:#F1EEF9; color:#8B8D98;'),
+      interestDisclosure: this.interestDisclosure,
       trendEmoji: curTrend.emoji,
       trendName: curTrend.name,
       trendCat: curTrend.cat,
@@ -5451,9 +5621,11 @@ class Component extends DCLogic {
       interestPeak: interestChart.peak,
       interestCurrent: interestChart.current,
       interestObservationCount: interestChart.observationCount,
-      interestRangeCaption: '순위 기반 · 실제 ' + interestChart.rangeLabel + ' 관측',
+      interestRangeCaption: curTrend.showcase
+        ? '전체기간 실측 순위 기반 · 시연 ' + interestChart.rangeLabel
+        : '순위 기반 · 실제 ' + interestChart.rangeLabel + ' 관측',
       interestEmptyLabel: interestChart.rangeLabel + ' 내 비교할 관측값이 부족합니다',
-      interestSummaryLabel: '실제 ' + interestChart.rangeLabel + ' 순위 반응형 관심 흐름. 최고 지수 '
+      interestSummaryLabel: (curTrend.showcase ? '시연 ' : '실제 ') + interestChart.rangeLabel + ' 순위 반응형 관심 흐름. 최고 지수 '
         + interestChart.peak + ', 현재 지수 ' + interestChart.current
         + ', ' + interestChart.observationCount + '회 관측',
       periodStartLabel: interestChart.labels[0],

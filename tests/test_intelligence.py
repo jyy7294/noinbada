@@ -157,6 +157,12 @@ def test_aliases_are_normalized_to_events():
     assert canonical_topic("로스앤젤레스 FC 대 케레타로 FC 순위") == canonical_topic(
         "엘에이 FC 대 케레타로"
     )
+    assert canonical_topic("밀란 대 맨유") == "AC 밀란 vs 맨유"
+    assert canonical_topic("milan vs man united") == "AC 밀란 vs 맨유"
+    assert canonical_topic("농구 한일전") == "한국 vs 일본 농구"
+    assert canonical_topic("한국 일본 농구") == "한국 vs 일본 농구"
+    assert canonical_topic("IND vs SL") == "인도 vs 스리랑카"
+    assert canonical_topic("SL v India") == "인도 vs 스리랑카"
 
 
 def test_public_observation_event_is_a_culture_trend_without_a_manual_allowlist():
@@ -315,6 +321,25 @@ def test_single_source_market_term_needs_extra_home_context():
     assert _home_context_gate(cross_source) == (True, "verified_trigger_event")
 
 
+def test_observed_sports_fixture_is_its_own_trigger_event():
+    fixture = {
+        "lane": "main",
+        "category": "sports_participation",
+        "broad_category": "sports",
+        "context_status": "needs_context",
+        "trend_fit": {
+            "labels": ["named_object"],
+            "plain_sports_fixture": True,
+        },
+        "period_sources": ["google_trends"],
+    }
+
+    assert _home_context_gate(fixture) == (
+        True,
+        "specific_observed_sports_fixture",
+    )
+
+
 def test_listing_edge_alone_never_promotes_a_company_to_direct_relation():
     assert _path_relation_tier([{"relation_type": "listed_as"}]) == "adjacent"
     assert _path_relation_tier([
@@ -434,8 +459,8 @@ def test_sports_fixture_variants_merge_and_publish_compact_display_name(tmp_path
 
     assert len(result["unified_ranking"]) == 1
     event = result["unified_ranking"][0]
-    assert event["event_key"] == "로스앤젤레스 대 케레타로"
-    assert event["display_name"] == "로스앤젤레스 대 케레타로"
+    assert event["event_key"] == "로스앤젤레스 vs 케레타로"
+    assert event["display_name"] == "로스앤젤레스 vs 케레타로"
     assert event["display_name_policy"] == "normalized_sports_fixture"
     assert event["latest_source_ranks"] == {"google_trends": 1}
 
@@ -608,9 +633,8 @@ def test_automatic_main_filter_does_not_use_reviewed_brand_or_team_names(tmp_pat
     assert by_topic["티빙"]["broad_category"] == "other"
     assert by_topic["롯데 자이언츠"]["broad_category"] == "other"
     assert by_topic["휴머노이드 로봇"]["broad_category"] == "technology"
-    assert all(by_topic[topic]["lane"] == "main" for topic in (
-        "삼성증권", "휴머노이드 로봇",
-    ))
+    assert by_topic["삼성증권"]["lane"] == "review"
+    assert by_topic["휴머노이드 로봇"]["lane"] == "main"
     assert all(by_topic[topic]["lane"] == "review" for topic in (
         "티빙", "롯데 자이언츠",
     ))
@@ -1015,7 +1039,7 @@ def test_current_position_is_source_normalized_and_cross_bonus_is_explicit(tmp_p
             )
         ), 2)
         assert item["score"] == components["total_points"] == visible_sum
-        assert components["formula_version"] == "spread35_velocity25_breadth20_persistence10_recency10_v2"
+        assert components["formula_version"] == "spread35_velocity25_breadth20_persistence10_recency10_v3"
         assert components["rounding_policy"] == "each_component_2dp_then_sum_2dp"
 
 

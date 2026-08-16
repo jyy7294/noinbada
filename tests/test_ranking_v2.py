@@ -5,6 +5,7 @@ from datetime import UTC, datetime, timedelta
 import pytest
 
 from trzip.ranking_v2 import (
+    build_full_ledger_demo_ranking,
     DEFAULT_RANKING_PERIOD,
     FORMULA_VERSION,
     PERIOD_FORMULA_VERSION,
@@ -51,6 +52,39 @@ def test_source_position_is_comparable_across_different_list_lengths():
     assert normalize_source_position(30, 30) == 0.0
     assert normalize_source_position(200, 200) == 0.0
     assert normalize_source_position(15, 30) == pytest.approx(15 / 29)
+
+
+def test_full_ledger_demo_ranking_has_no_last_seen_or_enrichment_effect():
+    old = AT - timedelta(hours=20)
+    rows = [
+        *_snapshot(old, "x", "old-strong", "filler-x"),
+        *_snapshot(old, "google_trends", "old-strong", "filler-g"),
+        *_snapshot(AT, "x", "recent-weaker", "filler-x2"),
+        *_snapshot(AT, "google_trends", "recent-weaker", "filler-g2"),
+    ]
+
+    result = build_full_ledger_demo_ranking(rows, at=AT)
+    by_key = {row["event_key"]: row for row in result["ranking"]}
+
+    assert result["formula_version"] == "peak25_mean40_persistence20_breadth15_v1"
+    assert by_key["old-strong"]["score"] == by_key["recent-weaker"]["score"]
+    assert by_key["old-strong"]["latest_recency_effect"] == "none"
+    assert by_key["old-strong"]["company_keyword_effect"] == "none"
+
+
+def test_full_ledger_demo_ranking_rewards_observed_persistence_and_breadth():
+    rows = []
+    for offset in range(3):
+        stamp = AT - timedelta(hours=offset)
+        rows.extend(_snapshot(stamp, "x", "persistent", "one-off" if offset == 0 else "x-fill"))
+        rows.extend(_snapshot(stamp, "google_trends", "persistent", "g-fill"))
+
+    result = build_full_ledger_demo_ranking(rows, at=AT)
+    by_key = {row["event_key"]: row for row in result["ranking"]}
+
+    assert by_key["persistent"]["score"] > by_key["one-off"]["score"]
+    assert by_key["persistent"]["observed_sources"] == ["google_trends", "x"]
+    assert by_key["persistent"]["observed_hour_count"] == 3
 
 
 def test_cross_source_advantage_is_exactly_the_visible_five_points():
@@ -418,6 +452,20 @@ def test_period_momentum_requires_three_event_observations_not_only_feed_snapsho
         *_snapshot(AT - timedelta(hours=2), "x", "target", "second filler 2"),
         *_snapshot(AT - timedelta(hours=1), "x", "second filler 1"),
         *_snapshot(AT, "x", "target", "second filler 0"),
+    ]
+
+    item = _event(build_period_ranking_v2(rows, at=AT, window_hours=24))
+
+    assert item["source_metrics"]["momentum_basis"] == {}
+    assert item["signals"]["momentum_delta"] is None
+    assert item["score_components"]["momentum_points"] == 0.0
+    assert item["data_readiness"]["momentum_status"] == "unavailable"
+
+
+def test_period_momentum_does_not_treat_missing_comparison_as_zero_growth():
+    rows = [
+        *sum((_snapshot(AT - timedelta(hours=age), "x", f"first filler {age}") for age in (20, 19, 18)), []),
+        *sum((_snapshot(AT - timedelta(hours=age), "x", "target", f"second filler {age}") for age in (2, 1, 0)), []),
     ]
 
     item = _event(build_period_ranking_v2(rows, at=AT, window_hours=24))

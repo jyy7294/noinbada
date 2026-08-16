@@ -372,6 +372,13 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
         "schema_version": "trzip-presentation-feed-v4", "status": "ready",
         "frontend_default": True, "observed_at": observed_at,
         "selection_policy": "validated_live_home_feed_v1",
+        "final_release_approval": {
+            "required": True,
+            "approved_event_keys": ["test"],
+            "published_event_keys": ["test"],
+            "unapproved_item_count": 0,
+            "ranking_effect": "none",
+        },
         "source_provenance": {
             "ranking_sources": ["x", "google_trends"],
             "collector_versions": {

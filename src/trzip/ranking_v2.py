@@ -22,7 +22,8 @@ from typing import Any, Iterable, Mapping, Sequence
 
 
 FORMULA_VERSION = "current40_momentum20_persistence20_decay15_cross5_v2"
-PERIOD_FORMULA_VERSION = "spread35_velocity25_breadth20_persistence10_recency10_v2"
+PERIOD_FORMULA_VERSION = "spread35_velocity25_breadth20_persistence10_recency10_v3"
+FULL_LEDGER_DEMO_FORMULA_VERSION = "peak25_mean40_persistence20_breadth15_v1"
 DEFAULT_SOURCES = ("x", "google_trends")
 DEFAULT_RANKING_PERIOD = "daily"
 MINIMUM_COMPARISON_SNAPSHOTS = 3
@@ -67,6 +68,130 @@ def normalize_source_position(source_rank: int, snapshot_size: int) -> float:
     if snapshot_size == 1:
         return 1.0
     return 1.0 - ((source_rank - 1) / (snapshot_size - 1))
+
+
+def build_full_ledger_demo_ranking(
+    observations: Iterable[Mapping[str, Any]],
+    *,
+    at: datetime,
+    expected_sources: Sequence[str] = DEFAULT_SOURCES,
+    maximum_ledger_days: int = 60,
+    persistence_maturity_hours: int = 12,
+) -> dict[str, Any]:
+    """Rank every actually observed event without a last-seen penalty.
+
+    This is the explicit showcase view requested by the product owner.  It is
+    intentionally separate from the operational 24-hour ranking: an event is
+    judged by its observed peak, mean position, persistence and source breadth
+    anywhere in the retained ledger.  Companies, keywords, LLM output and
+    recency never contribute points.
+    """
+
+    current_at = _floor_utc_hour(at)
+    if maximum_ledger_days < 1 or persistence_maturity_hours < 1:
+        raise ValueError("full-ledger windows must be positive")
+    sources = _normalise_expected_sources(expected_sources)
+    earliest = current_at - timedelta(days=maximum_ledger_days)
+    rows = _prepare_rows(
+        observations,
+        earliest=earliest,
+        current_at=current_at,
+        sources=sources,
+    )
+    if not rows:
+        return {
+            "formula_version": FULL_LEDGER_DEMO_FORMULA_VERSION,
+            "generated_at": current_at.isoformat(),
+            "window": None,
+            "ranking": [],
+            "parameters": {
+                "latest_recency_effect": "none",
+                "company_keyword_effect": "none",
+                "maximum_ledger_days": maximum_ledger_days,
+            },
+        }
+
+    snapshot_sizes: dict[tuple[datetime, str], int] = {}
+    best_event_rank: dict[tuple[str, str, datetime], int] = {}
+    for row in rows:
+        stamp = row["observed_at"]
+        source = row["source"]
+        event_key = row["event_key"]
+        rank = row["source_rank"]
+        snapshot_sizes[(stamp, source)] = max(
+            snapshot_sizes.get((stamp, source), 0), rank
+        )
+        key = (event_key, source, stamp)
+        best_event_rank[key] = min(best_event_rank.get(key, rank), rank)
+
+    by_event: dict[str, list[tuple[datetime, str, int]]] = defaultdict(list)
+    for (event_key, source, stamp), rank in best_event_rank.items():
+        by_event[event_key].append((stamp, source, rank))
+
+    ranking: list[dict[str, Any]] = []
+    for event_key, event_rows in by_event.items():
+        positions = [
+            normalize_source_position(
+                rank,
+                snapshot_sizes[(stamp, source)],
+            )
+            for stamp, source, rank in event_rows
+        ]
+        observed_hours = {stamp for stamp, _source, _rank in event_rows}
+        observed_sources = {source for _stamp, source, _rank in event_rows}
+        peak = max(positions)
+        mean = sum(positions) / len(positions)
+        persistence = min(
+            len(observed_hours) / persistence_maturity_hours,
+            1.0,
+        )
+        breadth = len(observed_sources) / len(sources)
+        components = {
+            "peak_position_points": round(25.0 * peak, 2),
+            "mean_position_points": round(40.0 * mean, 2),
+            "persistence_points": round(20.0 * persistence, 2),
+            "source_breadth_points": round(15.0 * breadth, 2),
+        }
+        score = round(sum(components.values()), 2)
+        ranking.append({
+            "event_key": event_key,
+            "score": score,
+            "score_components": {**components, "total_points": score},
+            "observed_hour_count": len(observed_hours),
+            "observed_sources": sorted(observed_sources),
+            "best_source_rank": min(rank for _stamp, _source, rank in event_rows),
+            "first_seen_at": min(observed_hours).isoformat(),
+            "last_seen_at": max(observed_hours).isoformat(),
+            "latest_recency_effect": "none",
+            "company_keyword_effect": "none",
+            "ranking_sources": list(sources),
+        })
+    ranking.sort(key=lambda row: (-row["score"], row["event_key"]))
+    for rank, row in enumerate(ranking, 1):
+        row["rank"] = rank
+    observed_stamps = [row["observed_at"] for row in rows]
+    return {
+        "formula_version": FULL_LEDGER_DEMO_FORMULA_VERSION,
+        "generated_at": current_at.isoformat(),
+        "window": {
+            "from": min(observed_stamps).isoformat(),
+            "to": max(observed_stamps).isoformat(),
+            "observed_hour_count": len(set(observed_stamps)),
+        },
+        "ranking": ranking,
+        "parameters": {
+            "weights": {
+                "peak_position": 0.25,
+                "mean_position": 0.40,
+                "persistence": 0.20,
+                "source_breadth": 0.15,
+            },
+            "persistence_maturity_hours": persistence_maturity_hours,
+            "latest_recency_effect": "none",
+            "company_keyword_effect": "none",
+            "maximum_ledger_days": maximum_ledger_days,
+        },
+    }
 
 
 def build_ranking_v2(
@@ -700,6 +825,7 @@ def build_period_ranking_v2(
                 len(current_eligible[source]) >= MINIMUM_COMPARISON_SNAPSHOTS
                 and len(previous_eligible[source]) >= MINIMUM_COMPARISON_SNAPSHOTS
                 and current_event_count >= MINIMUM_COMPARISON_SNAPSHOTS
+                and previous_event_count >= MINIMUM_COMPARISON_SNAPSHOTS
             ):
                 previous_strength = source_strength(
                     event_key, source, previous_eligible[source], previous_end
@@ -730,6 +856,7 @@ def build_period_ranking_v2(
             if (
                 len(first_half) >= MINIMUM_COMPARISON_SNAPSHOTS
                 and len(second_half) >= MINIMUM_COMPARISON_SNAPSHOTS
+                and first_half_event_count >= MINIMUM_COMPARISON_SNAPSHOTS
                 and second_half_event_count >= MINIMUM_COMPARISON_SNAPSHOTS
             ):
                 momentum_deltas[source] = source_strength(

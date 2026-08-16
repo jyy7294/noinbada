@@ -158,6 +158,51 @@ def test_verified_source_snapshot_replaces_rows_and_writes_audit_atomically(tmp_
     }
 
 
+def test_live_x_spam_is_rejected_before_persistence(tmp_path):
+    target = tmp_path / "spam-rejected.sqlite3"
+    stamp = datetime(2026, 8, 12, 4, tzinfo=UTC).isoformat()
+
+    with pytest.raises(ValueError, match="solicitation/contact spam"):
+        store_verified_source_snapshot(
+            [HourlyObservation(
+                stamp, "x", "출장만남 진행중", 1, 100, "observed",
+                collector_version="x_current_session_kr_v1",
+            )],
+            source="x",
+            collector="x_korea_realtime",
+            detail="current Chrome",
+            path=target,
+        )
+
+    assert snapshot(datetime.fromisoformat(stamp), target, live_only=True) == []
+
+
+def test_historical_contaminated_x_hour_is_quarantined_without_reranking(tmp_path):
+    target = tmp_path / "spam-quarantine.sqlite3"
+    at = datetime(2026, 8, 12, 4, tzinfo=UTC)
+    stamp = at.isoformat()
+    with connect(target) as connection:
+        connection.executemany(
+            """INSERT INTO hourly_observations
+               (observed_at,source,topic,source_rank,value,provenance,collector_version)
+               VALUES (?,?,?,?,?,?,?)""",
+            [
+                (stamp, "x", "출장만남 진행중", 1, 100, "observed", "x_current_session_kr_v1"),
+                (stamp, "x", "불꽃축제", 2, 99, "observed", "x_current_session_kr_v1"),
+                (stamp, "google_trends", "코믹월드", 1, 100, "observed", "google_trending_now_kr_v1"),
+            ],
+        )
+
+    quality = source_hour_quality(at, at, target, live_only=True)
+
+    assert next(row for row in quality if row["source"] == "x")["quality_status"] == (
+        "quarantined_source_spam"
+    )
+    assert [row["source"] for row in snapshot(at, target, live_only=True)] == [
+        "google_trends"
+    ]
+
+
 def test_google_web_rows_preserve_source_payload_and_related_terms(monkeypatch):
     from trzip.google_web_collector import GoogleTrend
 

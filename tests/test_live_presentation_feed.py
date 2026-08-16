@@ -278,6 +278,52 @@ def test_live_feed_skips_incomplete_company_then_keeps_exactly_ten_complete_rows
     _validate_presentation_feed(feed)
 
 
+def test_live_feed_publishes_only_explicitly_approved_complete_events():
+    first = _candidate()
+    first["event_key"] = "first-event"
+    first["display_name"] = "첫 번째"
+    second = deepcopy(_candidate())
+    second["event_key"] = "second-event"
+    second["display_name"] = "두 번째"
+    second["rank"] = 2
+    second["observed_rank"] = 2
+    intelligence = {
+        "window": {"to": OBSERVED_AT},
+        "unified_ranking": [first, second],
+        "home_top10": [
+            {"event_key": "first-event"},
+            {"event_key": "second-event"},
+        ],
+    }
+
+    feed = build_presentation_feed(
+        intelligence,
+        approved_event_keys={"second-event"},
+    )
+
+    assert [row["event_key"] for row in feed["items"]] == ["second-event"]
+    assert feed["final_release_approval"] == {
+        "required": True,
+        "approved_event_keys": ["second-event"],
+        "published_event_keys": ["second-event"],
+        "unapproved_item_count": 0,
+        "ranking_effect": "none",
+    }
+    _validate_presentation_feed(feed)
+
+
+def test_live_feed_is_empty_when_no_complete_event_is_approved():
+    feed = build_presentation_feed(
+        _intelligence(_candidate()),
+        approved_event_keys=set(),
+    )
+
+    assert feed["status"] == "empty"
+    assert feed["items"] == []
+    assert feed["final_release_approval"]["required"] is True
+    _validate_presentation_feed(feed)
+
+
 def test_production_v4_never_calls_demo_hash_market_snapshot(monkeypatch):
     def reject_demo_snapshot(*_args, **_kwargs):
         raise AssertionError("production v4 must never call the deterministic demo snapshot")
