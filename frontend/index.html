@@ -1117,6 +1117,9 @@ class Component extends DCLogic {
 
   componentDidMount() {
     this.clearLegacyPortfolioSurfaces();
+    // 밈트폴리오는 실시간 트렌드 결과가 아닌 고정 데모 화면입니다.
+    // 원천 데이터 로딩 실패와 관계없이 홈에서 바로 보여줘야 합니다.
+    this.renderPresentationPortfolios();
     this.startStatusClock();
     setTimeout(() => this.listViewWire(), 200);
     setTimeout(() => this.protoShell(), 40);

@@ -916,10 +916,12 @@ def test_long_home_names_use_two_line_clamp_and_short_name() -> None:
     assert "nameStyle: 'flex:1; min-width:0;" in INDEX
 
 
-def test_portfolio_surfaces_hydrate_from_presentation_feed_before_display() -> None:
+def test_portfolio_surfaces_render_approved_demo_seeds_on_home_start() -> None:
     assert 'data-home-portfolios="1" style="visibility:hidden;' in INDEX
     assert 'data-portfolio-feed="1" style="visibility:hidden;' in INDEX
     assert "clearLegacyPortfolioSurfaces();" in INDEX
+    component_mount = INDEX[INDEX.index("  componentDidMount() {") : INDEX.index("  componentWillUnmount() {")]
+    assert component_mount.index("this.clearLegacyPortfolioSurfaces();") < component_mount.index("this.renderPresentationPortfolios();")
     assert "renderPresentationPortfolios()" in INDEX
     assert "buildPresentationPortfolios()" in INDEX
     assert "document.getElementById('dc-root') || document" in INDEX
