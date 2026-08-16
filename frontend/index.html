@@ -89,7 +89,7 @@
         시작 화면
       </div>
 
-      <div data-zip="frame" role="button" tabindex="0" aria-label="아래로 내려 통합 트렌드 열기" style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden; cursor:grab; touch-action:none; user-select:none;">
+      <div data-zip="frame" role="button" tabindex="0" aria-label="아래로 내려 트렌드 열기" style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden; cursor:grab; touch-action:none; user-select:none;">
         <div style="position:absolute; inset:0; background:linear-gradient(180deg,#FFFFFF 0%,#FAF7FF 46%,#F1EAFF 100%);"></div>
         <div data-zip="glow" style="position:absolute; left:50%; top:56%; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; background:radial-gradient(circle, rgba(123,63,242,0.30) 0%, rgba(123,63,242,0.10) 45%, rgba(123,63,242,0) 70%); opacity:0;"></div>
 
@@ -176,7 +176,7 @@
     <div data-screen-label="01 홈" style="display:flex; flex-direction:column; gap:12px;">
       <div style="display:flex; align-items:center; gap:8px; font-weight:600; font-size:13.5px; color:#3B3D47;">
         <span style="background:#1A1A22; color:#FFFFFF; border-radius:999px; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:11px;">01</span>
-        홈 · 통합 트렌드
+        홈 · 트렌드
       </div>
 
       <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden;">
@@ -194,7 +194,7 @@
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style="display:block; flex:none;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#1A1A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
             <div style="min-width:0;">
               <div style="display:flex; align-items:center; gap:7px;">
-                <span style="white-space:nowrap; font-weight:800; font-size:19px; color:#1A1A22; letter-spacing:-0.03em;">통합 트렌드</span>
+                <span style="white-space:nowrap; font-weight:800; font-size:19px; color:#1A1A22; letter-spacing:-0.03em;">트렌드</span>
                 <sc-if value="{{ showLiveBadge }}" hint-placeholder-val="{{ false }}">
                   <span style="{{ liveBadgeStyle }}">{{ liveStatus }}</span>
                 </sc-if>
@@ -3124,13 +3124,13 @@ class Component extends DCLogic {
   currentSharePayload() {
     const trend = this.trends && this.trends[this.state.trend];
     const name = String((trend && trend.name) || '한국 트렌드');
-    const category = String((trend && trend.cat) || '통합 트렌드');
+    const category = String((trend && trend.cat) || '트렌드');
     const eventKey = String((trend && trend.id) || name);
     const base = new URL(window.location.origin + window.location.pathname);
     base.searchParams.set('trend', eventKey);
     return {
       title: name + ' · TRZIP',
-      text: name + ' — ' + category + ' 트렌드와 관련 기업을 확인해 보세요.',
+      text: name + ' — ' + category + ' 관련 기업을 확인해 보세요.',
       url: base.toString()
     };
   }
@@ -4879,7 +4879,7 @@ class Component extends DCLogic {
           + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:15px;color:#7B3FF2;">' + (index + 1) + '</span>'
           + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">'
           + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;word-break:keep-all;font-weight:800;font-size:14.5px;line-height:1.28;color:#1A1A22;letter-spacing:-0.03em;">' + escape(trend.name) + '</span>'
-          + '<span style="font-weight:500;font-size:11px;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + ' · 통합 트렌드</span></span>'
+          + '<span style="font-weight:500;font-size:11px;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + '</span></span>'
           + '<span aria-label="이전 공개 대비 ' + escape(movementLabel) + '" style="flex:none;font-weight:700;font-size:12px;color:' + movementColor + ';">' + escape(movementLabel) + '</span></button>';
       }).join('');
       list.querySelectorAll('[data-home-topic]').forEach((row) => {

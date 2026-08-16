@@ -1119,13 +1119,14 @@ def test_selection_guide_uses_plain_language_and_human_final_approval() -> None:
 
 
 def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -> None:
-    assert ">통합 트렌드</span>" in INDEX
+    assert ">트렌드</span>" in INDEX
+    assert "통합 트렌드" not in INDEX
     assert ">통합 관심지수</span>" in INDEX
     assert "전체 수집 기간의 흐름을 사건 단위로 통합해" in INDEX
     assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
     assert "전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요" in INDEX
-    assert "+ ' · 통합 트렌드</span>" in INDEX
-    assert "최신 통합 트렌드 수집을 확인했습니다." in DATA
+    assert "+ ' · 통합 트렌드</span>" not in INDEX
+    assert "최신 트렌드 수집을 확인했습니다." in DATA
     assert "integratedTrendCopy(value)" in INDEX
     assert "const definition = this.integratedTrendCopy(item.summary || '')" in INDEX
     assert "const caption = this.integratedTrendCopy(item.raw.why_now || item.summary || '')" in INDEX

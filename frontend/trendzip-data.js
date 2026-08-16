@@ -119,7 +119,7 @@ function dataStatus(payload, metadata, runtimeStatus, { fromCache = false, now =
               ? `마지막 관측 후 ${ageMinutes}분이 지나 다음 수집을 기다리고 있습니다.`
             : partial
               ? '일부 원천 수집이 완료되지 않아 통합 결과를 확인하고 있습니다.'
-              : '최신 통합 트렌드 수집을 확인했습니다.',
+              : '최신 트렌드 수집을 확인했습니다.',
   };
 }
 
