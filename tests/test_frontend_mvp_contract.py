@@ -148,6 +148,14 @@ def test_home_list_view_fits_all_top_ten_without_internal_scroll() -> None:
     assert "-webkit-line-clamp:1" in home_list
 
 
+def test_company_sheet_never_uses_an_empty_company_information_fallback() -> None:
+    assert "companyDescription(company, fallbackName = '')" in INDEX
+    assert "'KT': '유무선 통신과 미디어·디지털 플랫폼 서비스를 제공하는 통신기업입니다.'" in INDEX
+    assert "'월트 디즈니 컴퍼니': '영화·TV·스트리밍·테마파크 등 엔터테인먼트 사업을 운영합니다.'" in INDEX
+    assert "const about = this.companyDescription(company, name);" in INDEX
+    assert "기업 정보가 제공되지 않았습니다." not in INDEX
+
+
 def test_dial_keyword_tap_opens_detail_without_relying_on_a_followup_click() -> None:
     method = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
     assert "const openWord = (word) =>" in method
@@ -1002,6 +1010,10 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
         INDEX.index("  verifiedMarketSnapshot(company) {"):
         INDEX.index("  signedPercent(value) {")
     ]
+    company_description = INDEX[
+        INDEX.index("  companyDescription(company, fallbackName = '') {"):
+        INDEX.index("  buildSheet(initial, name, desc, i, icon, company = {}) {")
+    ]
     build_sheet = INDEX[
         INDEX.index("  buildSheet(initial, name, desc, i, icon, company = {}) {"):
         INDEX.index("\n  snsRoot()", INDEX.index("  buildSheet(initial, name, desc, i, icon, company = {}) {"))
@@ -1011,6 +1023,7 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
         companyLogo() {{ return ''; }}
         publicConnectionCopy(company, fallback) {{ return fallback; }}
         {guard_methods}
+        {company_description}
         {build_sheet}
       }}
       const guard = new Guard();

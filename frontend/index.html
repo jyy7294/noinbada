@@ -5473,12 +5473,49 @@ class Component extends DCLogic {
     vp.addEventListener('pointerleave', release);
   }
 
+  companyDescription(company, fallbackName = '') {
+    const name = String(company && (company.company || company.name) || fallbackName || '').trim();
+    const supplied = String(company && (company.company_description || company.company_summary || company.business_description) || '').trim();
+    if (supplied) return supplied;
+    const profiles = {
+      'NAVER': '검색·광고·커머스·콘텐츠 서비스를 운영하는 국내 디지털 플랫폼 기업입니다.',
+      '카카오': '메신저를 기반으로 콘텐츠·모빌리티·금융 등 다양한 플랫폼 서비스를 운영합니다.',
+      'CJ ENM': '방송·영화·음악·공연 콘텐츠를 제작·유통하는 종합 엔터테인먼트 기업입니다.',
+      '하나투어': '여행 상품 기획과 판매를 중심으로 하는 종합 여행기업입니다.',
+      '모두투어': '국내외 여행 상품을 기획·판매하는 여행 전문기업입니다.',
+      '삼성전자': '반도체·스마트폰·가전 등 전자제품을 개발·제조하는 글로벌 기술기업입니다.',
+      '삼성전기': '적층세라믹콘덴서와 카메라 모듈 등 전자부품을 개발·제조합니다.',
+      'SOOP': '라이브 스트리밍과 디지털 콘텐츠 플랫폼 서비스를 운영합니다.',
+      'KT': '유무선 통신과 미디어·디지털 플랫폼 서비스를 제공하는 통신기업입니다.',
+      'LG유플러스': '이동통신·초고속 인터넷·IPTV 등 통신 서비스를 제공합니다.',
+      '한화': '산업·에너지·금융·서비스 분야의 계열사를 보유한 사업지주회사입니다.',
+      '월트 디즈니 컴퍼니': '영화·TV·스트리밍·테마파크 등 엔터테인먼트 사업을 운영합니다.',
+      'CJ CGV': '국내외 영화관 운영과 영화 콘텐츠 유통 사업을 전개합니다.',
+      '콘텐트리중앙': '드라마·영화 등 영상 콘텐츠를 제작·유통하는 미디어 기업입니다.',
+      '덱스터': '영화·드라마의 시각특수효과와 디지털 콘텐츠 제작을 담당합니다.',
+      'CJ제일제당': '식품과 바이오 제품을 제조·판매하는 종합 식품기업입니다.',
+      '하림': '닭고기 등 축산식품을 생산·유통하는 식품기업입니다.',
+      '대상': '조미료·가공식품·소재식품 등을 제조·판매합니다.',
+      '마니커에프앤지': '육가공과 간편식 제품을 생산·유통하는 식품기업입니다.',
+      '사조대림': '수산·어묵·가공식품을 제조·유통하는 식품기업입니다.',
+      '이마트': '대형마트와 전문점 등 오프라인 유통 사업을 운영합니다.',
+      'GS리테일': '편의점·슈퍼마켓·홈쇼핑 등 생활 유통 서비스를 운영합니다.',
+      '하이브': '음악 제작과 아티스트 매니지먼트·팬 플랫폼 사업을 운영합니다.',
+      'JYP Ent.': '음악 제작과 아티스트 매니지먼트 사업을 운영합니다.',
+      'SM': '음악 제작과 아티스트 매니지먼트·공연 사업을 운영합니다.',
+      '대원미디어': '애니메이션·캐릭터·게임 등 콘텐츠 사업을 전개합니다.',
+      '미스터블루': '웹툰·웹소설 등 디지털 콘텐츠 서비스를 운영합니다.',
+      'SAMG엔터': '애니메이션과 캐릭터 IP를 제작·유통하는 콘텐츠 기업입니다.'
+    };
+    return profiles[name] || (name ? name + '의 사업 분야는 ' + String(company && company.company_role_label || '관련') + '입니다.' : '기업 개요를 준비하고 있습니다.');
+  }
+
   buildSheet(initial, name, desc, i, icon, company = {}) {
     const logo = this.companyLogo(company);
     const ticker = company.stock_code || company.ticker || '종목코드 미제공';
     const market = company.market || company.exchange || '거래소 미제공';
     const reason = this.publicConnectionCopy(company, desc);
-    const about = company.company_description || company.company_summary || '기업 정보가 제공되지 않았습니다.';
+    const about = this.companyDescription(company, name);
     const verifiedSnapshot = this.verifiedMarketSnapshot(company);
     const snapshot = verifiedSnapshot || {};
     const asOf = String(snapshot.as_of || '').trim();
