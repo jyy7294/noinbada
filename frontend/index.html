@@ -367,9 +367,9 @@
                 <div style="display:flex; align-items:flex-start; gap:8px;">
                   <span aria-hidden="true" style="font-size:14px; line-height:1.55;">💡</span>
                   <div style="min-width:0;">
-                    <div style="font-weight:800; font-size:11px; color:#5B21C0; letter-spacing:-0.01em;">무슨 흐름인가요?</div>
+                    <div style="font-weight:800; font-size:11px; color:#5B21C0; letter-spacing:-0.01em;">이 트렌드는 무엇인가요?</div>
                     <div style="margin-top:3px; font-weight:500; font-size:13px; line-height:1.65; color:#3B3D47; text-wrap:pretty;">{{ trendDefinition }}</div>
-                    <div style="margin-top:9px; padding:9px 10px; border-radius:11px; background:rgba(255,255,255,0.62); font-weight:500; font-size:11.5px; line-height:1.6; color:#666270; text-wrap:pretty;">{{ trendContext }}</div>
+                    <div style="margin-top:9px; padding:9px 10px; border-radius:11px; background:rgba(255,255,255,0.62); font-weight:500; font-size:11.5px; line-height:1.6; color:#666270; text-wrap:pretty;"><b style="font-weight:800; color:#4B4D57;">왜 관심을 받나요?</b><br>{{ trendContext }}</div>
                   </div>
                 </div>
               </div>
@@ -5859,18 +5859,36 @@ class Component extends DCLogic {
       : '기업의 주요 사업과 트렌드 연결 맥락을 정리했습니다.');
   }
 
+  trendDetailDefinition(trend = {}) {
+    const name = String(trend.name || '').trim();
+    const definitions = {
+      '대한독립만세': '대한독립만세는 광복과 독립운동의 의미를 되새길 때 쓰는 표현입니다. 기념일과 역사 콘텐츠, 전시·행사 정보가 함께 관심을 받는 생활·문화 키워드예요.',
+      '개기일식': '개기일식은 달이 태양을 완전히 가리는 천문 현상입니다. 관측 가능한 시각과 지역, 안전한 관측 방법을 확인하려는 관심이 모일 수 있어요.',
+      '리센느': '리센느는 신곡·무대·멤버 콘텐츠로 관심을 모으는 K-pop 걸그룹입니다. 새 콘텐츠 공개나 방송 활동이 있을 때 팬덤의 탐색이 늘어나는 유형이에요.',
+      '페르세우스 유성우': '페르세우스 유성우는 매년 8월 무렵 관측 기회가 알려지는 대표적인 별똥별 관측 현상입니다. 시간·장소·날씨와 촬영 정보를 함께 찾는 관심으로 이어집니다.',
+      '한화 vs 삼성': '한화 vs 삼성은 KBO 프로야구 한화 이글스와 삼성 라이온즈의 경기입니다. 경기 일정·중계·선발·직관 정보가 한꺼번에 필요한 스포츠 관람 키워드예요.',
+      '둠스데이': '둠스데이는 마블 스튜디오의 영화 〈어벤져스: 둠스데이〉와 연결해 이야기되는 콘텐츠 키워드입니다. 출연진·개봉 일정·이전 작품을 다시 확인하려는 관심이 붙습니다.',
+      '말복': '말복은 여름 더위가 끝나가는 시기의 절기입니다. 보양식 메뉴, 외식·배달, 간편식처럼 계절 식생활과 바로 맞닿은 정보를 찾는 흐름이에요.',
+      '그래미 어워드': '그래미 어워드는 미국 레코딩 아카데미가 주관하는 음악 시상식입니다. 수상 후보·공연 무대·아티스트와 앨범 정보를 찾아보는 음악 관심으로 이어집니다.',
+      'UFC 330': 'UFC는 종합격투기(MMA) 대회를 여는 글로벌 스포츠 단체입니다. UFC 330은 해당 번호의 대회로, 출전 선수·타이틀전·중계 일정을 확인하려는 관람 관심이 모입니다.',
+      '코믹월드': '코믹월드는 동인지·굿즈·코스프레를 즐기는 국내 서브컬처 행사입니다. 행사 일정과 입장권, 부스·굿즈 정보를 준비하려는 방문 관심이 함께 커집니다.'
+    };
+    return definitions[name] || String(trend.definition || '').trim()
+      || '이 키워드가 무엇을 가리키는지와, 함께 확인되는 정보 흐름을 정리하고 있습니다.';
+  }
+
   trendDetailContext(trend = {}) {
     const name = String(trend.name || '').trim();
     const focused = {
-      '대한독립만세': '기념일을 앞두고 역사 콘텐츠뿐 아니라 전시·행사·기념 장소처럼 직접 참여할 수 있는 정보를 함께 찾아보는 흐름입니다.',
-      '개기일식': '관측 시간과 장소, 촬영 장비처럼 실제 관측 준비에 필요한 정보가 함께 언급될 때 관심이 커지는 유형입니다.',
-      '리센느': '신곡과 무대 영상, 멤버별 콘텐츠처럼 팬덤 안에서 다시 찾아보는 정보가 한 번에 늘어나는 음악 관심 흐름입니다.',
-      '페르세우스 유성우': '관측 가능 시간·장소·날씨와 촬영 팁처럼 바로 행동으로 이어지는 정보가 함께 관심을 받습니다.',
-      '한화 vs 삼성': '경기 일정과 중계, 선발·직관 정보가 한 번에 탐색되며 팬들의 관람 준비 흐름이 만들어집니다.',
-      '둠스데이': '작품의 공개 일정, 등장인물, 이전 시리즈를 다시 보는 수요가 함께 겹치며 콘텐츠 관심이 넓어집니다.',
+      '대한독립만세': '광복절 전후에는 기념 방식과 전시·행사, 방문할 장소처럼 실제 참여에 필요한 정보를 함께 찾아보는 흐름이 나타납니다.',
+      '개기일식': '관측 기회가 화제가 되면 시간과 장소, 촬영 장비처럼 실제 준비에 필요한 정보가 같이 늘어납니다.',
+      '리센느': '신곡과 무대 영상, 멤버별 콘텐츠가 새로 나올 때 팬덤 안에서 다시 찾아보는 정보가 한 번에 늘어납니다.',
+      '페르세우스 유성우': '관측 가능한 시간·장소·날씨와 촬영 팁처럼 바로 행동으로 이어지는 정보가 함께 관심을 받습니다.',
+      '한화 vs 삼성': '경기일이 가까워지면 중계, 선발, 직관 정보가 한 번에 탐색되며 관람 준비 흐름이 만들어집니다.',
+      '둠스데이': '출연진·공개 일정·이전 시리즈를 다시 보는 수요가 겹칠 때 콘텐츠 관심이 넓어집니다.',
       '말복': '보양 메뉴 선택부터 외식·배달·간편식 구매까지 계절 식생활과 맞닿은 정보 탐색이 이어집니다.',
-      '그래미 어워드': '수상 결과와 무대 영상, 아티스트·앨범 정보를 이어서 찾아보는 음악 팬덤의 탐색 흐름입니다.',
-      'UFC 330': '대진표·선수·타이틀전 정보와 중계 시청 방법이 함께 검색되는 경기 관람형 관심사입니다.',
+      '그래미 어워드': '수상 후보와 무대 영상, 아티스트·앨범 정보를 이어서 찾아보는 음악 팬덤의 탐색 흐름입니다.',
+      'UFC 330': '대진표가 알려지고 경기가 가까워질수록 선수·타이틀전·중계 시청 방법을 함께 확인하는 관람 관심이 커집니다.',
       '코믹월드': '행사 일정·입장권·코스프레·굿즈처럼 방문 전 준비에 필요한 정보가 동시에 관심을 받습니다.'
     };
     if (focused[name]) return focused[name];
@@ -6088,9 +6106,9 @@ class Component extends DCLogic {
       trendCat: curTrend.cat,
       trendCore: curTrend.core.split('\n').join(' '),
       trendDay: curTrend.day,
-      trendDefinition: curTrend.definition || '',
+      trendDefinition: this.trendDetailDefinition(curTrend),
       trendContext: this.trendDetailContext(curTrend),
-      hasDefinition: !!curTrend.definition,
+      hasDefinition: !!this.trendDetailDefinition(curTrend),
       trendPhase: curTrend.phase,
       movementLabel: String(movement.label || 'NEW'),
       movementStyle: 'font-weight:800;font-size:15px;color:' + movementColor + ';margin-top:4px;',
