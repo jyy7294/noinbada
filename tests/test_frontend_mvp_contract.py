@@ -245,11 +245,11 @@ def test_home_title_has_a_selection_criteria_help_button() -> None:
     header = INDEX[INDEX.index('data-screen-label="01 홈"') : INDEX.index('data-vd-stage="1"')]
     assert 'data-home-selection-guide="1"' in header
     assert 'aria-label="트렌드 선정 기준 보기"' in header
-    assert 'onClick="{{ openSelectionGuide }}"' in header
+    assert 'href="#home-selection-guide"' in header
+    assert '#home-selection-guide:target { display:flex !important; }' in INDEX
+    assert 'id="home-selection-guide" role="dialog"' in INDEX
+    assert 'aria-label="트렌드 선정 기준 닫기"' in INDEX
     assert '트렌드 선정 기준' in INDEX
-    assert "homeSelectionGuideWire()" in INDEX
-    assert "button.addEventListener('click'" in INDEX
-    assert "this.openSelectionGuide();" in INDEX
 
 
 def test_dial_center_keeps_korean_trend_titles_as_one_readable_line() -> None:
