@@ -251,6 +251,13 @@ def test_dial_center_keeps_korean_trend_titles_as_one_readable_line() -> None:
     assert "label.length >= 18 ? '20px'" in home_projection
 
 
+def test_home_dial_keeps_its_center_title_in_sync_without_overlaying_the_selected_node() -> None:
+    patch = INDEX[INDEX.index("  patchHomeLabels() {") : INDEX.index("  dialGo(label) {")]
+    vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
+    assert "(window.__omPaints || []).forEach((paint) => paint())" in patch
+    assert "dot.style.visibility = isSel ? 'hidden' : 'visible';" in vd
+
+
 def test_home_dial_stays_hidden_until_its_first_published_label_is_ready() -> None:
     dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
     assert 'data-home-ready="false"' in dial_markup

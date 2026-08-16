@@ -4976,6 +4976,9 @@ class Component extends DCLogic {
         row.onclick = () => this.dialGo(row.getAttribute('data-home-topic'));
       });
     }
+    // 데이터 라벨을 바꾼 뒤 다이얼의 현재 선택 상태를 다시 그립니다.
+    // 그렇지 않으면 중앙 제목만 1위 이름으로 되돌아가고, 선택된 말풍선·순위와 어긋날 수 있습니다.
+    requestAnimationFrame(() => (window.__omPaints || []).forEach((paint) => paint()));
   }
 
   dialGo(label) {
@@ -5060,9 +5063,11 @@ class Component extends DCLogic {
           dot.style.marginLeft = isSel ? '-4px' : '0';
           dot.style.background = isSel ? '#7B3FF2' : '#C9BCE8';
           dot.style.boxShadow = isSel ? '0 0 0 5px rgba(255,255,255,0.9)' : 'none';
+          // 선택 항목은 중앙 제목·순위로 이미 표현합니다. 중앙 점까지 남기면 텍스트와 겹칩니다.
+          dot.style.visibility = isSel ? 'hidden' : 'visible';
         }
         const pill = el.querySelector('[data-vd-pill]');
-        if (pill) pill.style.visibility = isSel ? 'hidden' : 'visible';
+      if (pill) pill.style.visibility = isSel ? 'hidden' : 'visible';
       });
       if (best !== active) {
         active = best;
