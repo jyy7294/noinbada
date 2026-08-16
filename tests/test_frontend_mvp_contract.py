@@ -147,6 +147,12 @@ def test_app_enters_home_directly_without_a_zipper_handoff() -> None:
     assert "this.zipWire()" not in mount
 
 
+def test_home_featured_portfolio_returns_to_the_portfolio_list() -> None:
+    handler = INDEX[INDEX.index("  goHomePost = (e) => {") : INDEX.index("  panTo(t) {")]
+    assert "this.pdFrom = 'home';" not in handler
+    assert handler.count("this.pdFrom = 'list';") == 2
+
+
 def test_critical_mobile_controls_have_accessible_touch_targets() -> None:
     assert INDEX.count('data-critical-touch-target="1"') >= 3
     assert "min-width:44px; height:44px" in INDEX

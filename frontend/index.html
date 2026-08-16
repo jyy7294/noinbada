@@ -3662,7 +3662,9 @@ class Component extends DCLogic {
     const portfolioId = row.getAttribute('data-portfolio-id');
     if (portfolioId && this.portfolioById && this.portfolioById.has(portfolioId)) {
       this.renderPortfolioDetail(this.portfolioById.get(portfolioId));
-      this.pdFrom = 'home';
+      // 홈의 추천 카드는 밈트폴리오 목록에서 고른 항목처럼 돌아갑니다.
+      // 상세에서 뒤로 가면 홈이 아니라 밈트폴리오 목록을 보여줍니다.
+      this.pdFrom = 'list';
       this.panTo(document.getElementById('post-detail'));
       return;
     }
@@ -3684,7 +3686,7 @@ class Component extends DCLogic {
       + '<span>' + meta[2] + '</span></div>';
     document.body.appendChild(tmp);
     this.goPostDetail({ currentTarget: tmp });
-    this.pdFrom = 'home';
+    this.pdFrom = 'list';
     setTimeout(() => tmp.remove(), 0);
   };
 
