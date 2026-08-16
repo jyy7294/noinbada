@@ -191,6 +191,15 @@ def test_portfolio_detail_does_not_show_a_top_percentile_badge() -> None:
     assert "TOP 5%" not in INDEX
 
 
+def test_trend_icons_prefer_specific_context_over_generic_categories() -> None:
+    icon_method = INDEX[INDEX.index("  trendIconMeta(name, category = '') {") : INDEX.index("  syncStatusClock(")]
+    assert "/대한독립만세|광복절|독립운동/, '1f1f0-1f1f7'" in icon_method
+    assert "/메츠|브레이브스|한화\\s*(vs|대)\\s*삼성|삼성\\s*(vs|대)\\s*한화|야구/, '26be'" in icon_method
+    assert "/맨유|리즈|데포르티보|레알\\s*마드리드|축구/, '26bd'" in icon_method
+    assert "/UFC|격투기|MMA/, '1f94a'" in icon_method
+    assert "/그래미|음악|콘서트|공연/, '1f3b5'" in icon_method
+
+
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
     dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
