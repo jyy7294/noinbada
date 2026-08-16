@@ -1695,7 +1695,7 @@ class Component extends DCLogic {
       box.setAttribute('data-stocks', companies.map((company) => this.companyName(company)).join('|'));
       box.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;background:#FAF9FE;padding:11px 14px;">'
         + '<span data-pd="count" style="font-weight:600;font-size:12.5px;color:#4B4D57;">구성 종목 ' + companies.length + '</span>'
-        + '<span data-pd="avg" style="font-weight:600;font-size:12.5px;color:#8B8D98;">기업 구성</span></div>'
+        + '</div>'
         + companies.map((company, index) => {
           const name = this.companyName(company);
           return '<button type="button" data-pd-company-row="1" data-pd-company-index="' + index + '" aria-label="' + this.escapeHtml(name) + ' 기업 상세 보기" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;border:0;border-top:1px solid #F5F2FB;background:#FFFFFF;text-align:left;font-family:inherit;cursor:pointer;">'
