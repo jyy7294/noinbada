@@ -69,6 +69,7 @@ def test_user_ui_hides_raw_provider_names_and_source_links() -> None:
     assert "시장 정보 · {{ sheetProviderLabel }}" not in INDEX
     assert 'href="{{ sheetSourceUrl }}"' not in INDEX
     assert "실제 시장 데이터 · {{ sheetAsOf }} 기준" in INDEX
+    assert "시가총액·원화" in INDEX
     assert "vals.sheetProviderLabel" not in INDEX
     assert "vals.sheetSourceUrl" not in INDEX
 
@@ -254,9 +255,10 @@ def test_home_title_has_a_selection_criteria_help_button() -> None:
     assert "guide.style.display = 'flex'" in INDEX
 
 
-def test_dial_center_keeps_korean_trend_titles_as_one_readable_line() -> None:
+def test_dial_keeps_korean_trend_titles_in_the_left_readable_zone() -> None:
     dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
-    assert "left:50%; top:50%; width:300px" in dial_markup
+    assert "left:22px; top:50%; width:214px" in dial_markup
+    assert "text-align:left" in dial_markup
     assert "white-space:nowrap" in dial_markup
     assert "text-overflow:ellipsis" in dial_markup
     assert "overflow-wrap:anywhere" not in dial_markup
@@ -1003,8 +1005,6 @@ def test_company_sheet_renders_financial_numbers_only_with_complete_provenance()
     assert "!/^[A-Z]{3}$/.test(currency)" in INDEX
     assert "const verifiedSnapshot = this.verifiedMarketSnapshot(company)" in INDEX
     assert "const hasProvenance = Boolean(verifiedSnapshot)" in INDEX
-    assert "sheetHasMarketData" in INDEX
-    assert "sheetHasPriceSeries" in INDEX
     assert '<sc-if value="{{ sheetHasMarketData }}"' in INDEX
     assert '<sc-if value="{{ sheetMarketUnavailable }}"' in INDEX
     assert 'data-sheet-market-unavailable="1"' in INDEX
