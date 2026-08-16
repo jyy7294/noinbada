@@ -201,7 +201,6 @@
                   <span style="{{ liveBadgeStyle }}">{{ liveStatus }}</span>
                 </sc-if>
               </div>
-              <div style="font-weight:500; font-size:10px; color:#A9ACB8; margin-top:1px;">{{ liveObservedAt }}</div>
             </div>
           </div>
           <div style="display:flex; align-items:center; gap:14px;">
@@ -5919,10 +5918,11 @@ class Component extends DCLogic {
       vals['pickMeme' + i] = () => this.setState({ meme: i });
     }
     for (let i = 0; i < 3; i++) {
-      vals['range' + i] = this.rangeStyle(this.state.range === i, rangeAvailability[i]);
-      vals['rangeDisabled' + i] = rangeAvailability[i] ? 'false' : 'true';
+      // 기간별 관측이 부족해도 탭은 항상 전환합니다. 선택된 기간의 빈 상태가
+      // "눌리지 않음"보다 현재 데이터 범위를 훨씬 명확히 보여줍니다.
+      vals['range' + i] = this.rangeStyle(this.state.range === i, true);
+      vals['rangeDisabled' + i] = 'false';
       vals['pickRange' + i] = () => {
-        if (!rangeAvailability[i]) return;
         this.setState({ range: i }, () => this.animateInterestRange());
       };
       vals['compTab' + i] = this.compTabStyle(this.state.compTab === i);

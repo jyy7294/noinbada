@@ -200,6 +200,20 @@ def test_trend_icons_prefer_specific_context_over_generic_categories() -> None:
     assert "/그래미|음악|콘서트|공연/, '1f3b5'" in icon_method
 
 
+def test_interest_range_tabs_remain_selectable_when_a_long_period_is_sparse() -> None:
+    render_vals = INDEX[INDEX.index("  renderVals() {") : INDEX.index("    return vals;")]
+    assert "vals['range' + i] = this.rangeStyle(this.state.range === i, true);" in render_vals
+    assert "vals['rangeDisabled' + i] = 'false';" in render_vals
+    assert "if (!rangeAvailability[i]) return;" not in render_vals
+    assert "this.setState({ range: i }, () => this.animateInterestRange());" in render_vals
+
+
+def test_home_shows_the_observed_timestamp_only_once() -> None:
+    header = INDEX[INDEX.index('data-screen-label="01 홈"') : INDEX.index('data-vd-stage="1"')]
+    assert "{{ liveObservedAt }}" not in header
+    assert 'data-home-observed="1"' in header
+
+
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
     dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
