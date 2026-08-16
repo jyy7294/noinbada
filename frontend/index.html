@@ -3085,6 +3085,7 @@ class Component extends DCLogic {
     body.appendChild(intro);
     this.pastTrendCases().forEach((item) => {
       const card = document.createElement('article');
+      card.setAttribute('data-past-trend-case', '1');
       card.style.cssText = 'margin-top:12px;padding:15px;border:1px solid #ECE7F7;border-radius:17px;background:#FFFFFF;';
       const title = document.createElement('div');
       title.style.cssText = 'font-weight:800;font-size:16px;color:#1A1A22;letter-spacing:-.035em;';
@@ -4089,6 +4090,10 @@ class Component extends DCLogic {
       + '@keyframes omUnfold{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}'
       + '@keyframes omSheetBackdrop{from{opacity:0}to{opacity:1}}'
       + '@keyframes omSheetRise{from{transform:translateY(100%)}to{transform:translateY(0)}}'
+      + '@keyframes omListIn{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}'
+      + '@keyframes omCardLift{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}'
+      + '@keyframes omOverlayIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}'
+      + '@keyframes omIconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-2px)}}'
       + '[data-sns="vp"] [data-bar]{transform-origin:bottom;animation:omBarGrow .65s cubic-bezier(.2,.8,.25,1) backwards;}'
       + '[data-sns="vp"] div:nth-child(1)>[data-bar]{animation-delay:.05s}[data-sns="vp"] div:nth-child(2)>[data-bar]{animation-delay:.13s}'
       + '[data-sns="vp"] div:nth-child(3)>[data-bar]{animation-delay:.21s}[data-sns="vp"] div:nth-child(4)>[data-bar]{animation-delay:.29s}'
@@ -4100,8 +4105,15 @@ class Component extends DCLogic {
       + '[data-folder-body]{animation:omUnfold 280ms cubic-bezier(.22,.61,.36,1) both;}'
       + '[data-folder-company]{animation:omUnfold 300ms cubic-bezier(.22,.61,.36,1) backwards;}'
       + '[data-folder-company]:nth-child(1){animation-delay:35ms}[data-folder-company]:nth-child(2){animation-delay:75ms}[data-folder-company]:nth-child(3){animation-delay:115ms}[data-folder-company]:nth-child(4){animation-delay:155ms}'
+      + '[data-list-row]{animation:omListIn 360ms cubic-bezier(.22,.75,.28,1) both;}'
+      + '[data-list-row]:hover{background:#FAF8FF!important;}[data-list-row]:active{transform:scale(.985);}'
+      + '[data-past-trend-case]{animation:omCardLift 420ms cubic-bezier(.22,.75,.28,1) both;}'
+      + '[data-past-trend-case]:nth-of-type(2){animation-delay:70ms}[data-past-trend-case]:nth-of-type(3){animation-delay:140ms}[data-past-trend-case]:nth-of-type(4){animation-delay:210ms}'
+      + '[data-home-overlay]{animation:omOverlayIn 250ms cubic-bezier(.22,.75,.28,1) both;}'
+      + '[data-past-trends-open] span{animation:omIconFloat 1.8s ease-in-out infinite;}'
+      + '[data-past-trends-open]{transition:transform 180ms ease,background 180ms ease,box-shadow 180ms ease;}[data-past-trends-open]:hover{transform:translateY(-1px);background:#F4EEFF!important;box-shadow:0 7px 16px rgba(103,63,195,.12);}'
       + '[data-folder-card]:active,[data-stock-result]:active{transform:scale(.985);}'
-      + '@media (prefers-reduced-motion:reduce){[data-proto-active],[data-sns="vp"] [data-bar],[data-company-sheet-backdrop],[data-company-dialog],[data-folder-body],[data-folder-company]{animation:none!important;}*{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}}';
+      + '@media (prefers-reduced-motion:reduce){[data-proto-active],[data-sns="vp"] [data-bar],[data-company-sheet-backdrop],[data-company-dialog],[data-folder-body],[data-folder-company],[data-list-row],[data-past-trend-case],[data-home-overlay],[data-past-trends-open] span{animation:none!important;}*{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}}';
     document.head.appendChild(st);
 
     const tappable = (el) => {
@@ -5238,11 +5250,10 @@ class Component extends DCLogic {
             : movement.status === 'new' ? '#7B3FF2' : '#8B8D98';
         const divider = index ? '<div style="height:1px;background:#F1EEF9;"></div>' : '';
         return divider + '<button type="button" data-home-topic="' + escape(trend.name)
-          + '" style="width:100%;flex:1;min-height:0;border:0;background:#FFFFFF;display:flex;align-items:center;gap:8px;padding:3px 2px;text-align:left;cursor:pointer;">'
+          + '" data-list-row="1" style="width:100%;flex:1;min-height:0;border:0;background:#FFFFFF;display:flex;align-items:stretch;gap:8px;padding:4px 2px;text-align:left;cursor:pointer;animation-delay:' + (index * 45) + 'ms;">'
           + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:12px;color:#7B3FF2;">' + (index + 1) + '</span>'
-          + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;">'
-          + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden;word-break:keep-all;font-weight:800;font-size:12px;line-height:1.12;color:#1A1A22;letter-spacing:-0.03em;">' + escape(trend.name) + '</span>'
-          + '<span style="font-weight:500;font-size:9px;line-height:1.1;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + '</span></span>'
+          + '<span style="flex:1;min-width:0;align-self:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-weight:800;font-size:13px;line-height:1.16;color:#1A1A22;letter-spacing:-0.035em;word-break:keep-all;">' + escape(trend.name) + '</span>'
+          + '<span style="width:47px;flex:none;display:flex;align-items:center;justify-content:flex-end;text-align:right;font-weight:600;font-size:10px;line-height:1.15;color:#9295A1;word-break:keep-all;">' + escape(trend.cat) + '</span>'
           + '<span aria-label="이전 공개 대비 ' + escape(movementLabel) + '" style="flex:none;font-weight:700;font-size:11px;color:' + movementColor + ';">' + escape(movementLabel) + '</span></button>';
       }).join('');
       list.querySelectorAll('[data-home-topic]').forEach((row) => {

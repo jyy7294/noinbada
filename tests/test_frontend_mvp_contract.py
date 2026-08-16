@@ -147,8 +147,11 @@ def test_home_list_view_fits_all_top_ten_without_internal_scroll() -> None:
     home_list_start = INDEX.rindex("const list = document.querySelector('[data-list-view2]');")
     home_list = INDEX[home_list_start : INDEX.index("  dialGo(label)")]
     assert "flex:1;min-height:0" in home_list
-    assert "padding:3px 2px" in home_list
-    assert "-webkit-line-clamp:1" in home_list
+    assert 'data-list-row="1"' in home_list
+    assert "-webkit-line-clamp:2" in home_list
+    assert "width:47px;flex:none;display:flex;align-items:center;justify-content:flex-end;text-align:right" in home_list
+    assert "padding:4px 2px" in home_list
+    assert "-webkit-line-clamp:2" in home_list
 
 
 def test_company_sheet_never_uses_an_empty_company_information_fallback() -> None:
@@ -2037,6 +2040,9 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert "@keyframes omSheetRise" in INDEX
     assert "[data-company-dialog]{animation:omSheetRise 340ms" in INDEX
     assert "[data-folder-company]:nth-child(4){animation-delay:155ms}" in INDEX
+    assert "@keyframes omListIn" in INDEX
+    assert "[data-list-row]{animation:omListIn" in INDEX
+    assert "[data-home-overlay]{animation:omOverlayIn" in INDEX
     assert "animateTrendSelection()" in INDEX
     assert "prefers-reduced-motion:reduce" in INDEX
 
