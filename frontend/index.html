@@ -1708,12 +1708,21 @@ class Component extends DCLogic {
       box.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;background:#FAF9FE;padding:11px 14px;">'
         + '<span data-pd="count" style="font-weight:600;font-size:12.5px;color:#4B4D57;">구성 종목 ' + companies.length + '</span>'
         + '<span data-pd="avg" style="font-weight:600;font-size:12.5px;color:#8B8D98;">기업 구성</span></div>'
-        + companies.map((company) => {
+        + companies.map((company, index) => {
           const name = this.companyName(company);
-          return '<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid #F5F2FB;">'
+          return '<button type="button" data-pd-company-row="1" data-pd-company-index="' + index + '" aria-label="' + this.escapeHtml(name) + ' 기업 상세 보기" style="width:100%;display:flex;align-items:center;gap:12px;padding:12px 14px;border:0;border-top:1px solid #F5F2FB;background:#FFFFFF;text-align:left;font-family:inherit;cursor:pointer;">'
             + this.portfolioLogoMarkup(company, 34)
-            + '<span title="' + this.escapeHtml(name) + '" style="flex:1;min-width:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;font-weight:700;font-size:14.5px;line-height:1.25;color:#1A1A22;">' + this.escapeHtml(name) + '</span></div>';
+            + '<span title="' + this.escapeHtml(name) + '" style="flex:1;min-width:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;font-weight:700;font-size:14.5px;line-height:1.25;color:#1A1A22;">' + this.escapeHtml(name) + '</span>'
+            + '<span aria-hidden="true" style="flex:none;color:#A9ACB8;font-size:20px;font-weight:400;line-height:1;">›</span></button>';
         }).join('');
+      box.querySelectorAll('[data-pd-company-row]').forEach((row) => {
+        row.onclick = () => {
+          const company = companies[Number(row.getAttribute('data-pd-company-index'))];
+          if (!company) return;
+          const name = this.companyName(company);
+          this.openPortfolioCompanySheet(this.buildSheet(name.slice(0, 1), name, '밈트폴리오 구성 종목', 0, '💜', company), row);
+        };
+      });
     }
     const likes = portfolio ? portfolio.likes : 0;
     if (q('likeCount')) q('likeCount').childNodes[0].nodeValue = likes + '명 ';
@@ -1743,12 +1752,73 @@ class Component extends DCLogic {
       if (url && badge) apply(badge, url, 42);
     });
     // 포트 상세 구성 종목 리스트 (배지 + 종목명 행)
-    document.querySelectorAll('[data-pd="box"] > div').forEach((row) => {
+    document.querySelectorAll('[data-pd-company-row]').forEach((row) => {
       const badge = row.children[0], nameEl = row.children[1];
       if (!badge || !nameEl || badge.tagName !== 'SPAN' || nameEl.tagName !== 'SPAN') return;
       const url = this.logoCache[nameEl.textContent.trim()];
       if (url) apply(badge, url, 40);
     });
+  }
+
+  // 밈트폴리오 안에서도 구성 종목을 누르면 현재 상세 화면 위에서 기업 시트를 엽니다.
+  // 관련 기업 시트와 같은 실제 시장 스냅샷만 사용하며, 자료가 없으면 빈 숫자를 만들지 않습니다.
+  openPortfolioCompanySheet(sheet, trigger) {
+    this.closePortfolioCompanySheet(true);
+    const page = document.getElementById('post-detail');
+    const frame = page && page.querySelector('[data-pd="box"]')?.closest('div[style*="position:relative"]');
+    if (!frame) return;
+    const esc = (value) => this.escapeHtml(String(value == null ? '' : value));
+    const logo = this.companyLogo(sheet.company || {});
+    const root = document.createElement('div');
+    root.setAttribute('data-portfolio-company-sheet-root', '1');
+    root.style.cssText = 'position:absolute;inset:0;z-index:20;';
+    const marketPanel = sheet.hasMarketData
+      ? '<div style="background:#FAF9FE;border:1px solid #EEEBF7;border-radius:16px;padding:13px;margin-top:14px;">'
+        + '<div style="font-weight:500;font-size:10.5px;color:#8B8D98;">최근 가격 · ' + esc(sheet.priceCurrency) + ' · ' + esc(sheet.asOfLabel) + ' 기준</div>'
+        + '<div style="display:flex;align-items:baseline;gap:8px;margin-top:3px;"><strong style="font-size:21px;letter-spacing:-.04em;color:#1A1A22;">' + esc(sheet.price) + '</strong><span style="' + esc(sheet.changeStyle) + '">' + esc(sheet.change) + '</span></div>'
+        + '<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:11px;">'
+        + [['시가총액·원화', sheet.marketCap], ['PER', sheet.per], ['PBR', sheet.pbr], ['ROE', sheet.roe]].map(([label, value]) => '<div style="background:#FFFFFF;border-radius:10px;padding:8px 4px;text-align:center;"><div style="font-size:9px;color:#8B8D98;">' + label + '</div><div style="font-weight:800;font-size:11px;color:#1A1A22;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(value) + '</div></div>').join('')
+        + '</div></div>'
+      : '<div role="status" style="background:#FAF9FE;border:1px solid #EEEBF7;border-radius:16px;padding:14px 13px;margin-top:14px;"><div style="font-weight:700;font-size:12.5px;color:#5C5F6B;">시장 자료를 확인하지 못했습니다</div><div style="font-size:10.5px;line-height:1.55;color:#9A9CAA;margin-top:4px;">검증된 가격·재무 자료가 들어오면 표시됩니다.</div></div>';
+    root.innerHTML = '<button type="button" data-portfolio-company-backdrop="1" aria-label="기업 상세 닫기" style="position:absolute;inset:0;border:0;background:rgba(20,16,34,.42);cursor:pointer;"></button>'
+      + '<section data-portfolio-company-dialog="1" role="dialog" aria-modal="true" aria-labelledby="portfolio-company-title" tabindex="-1" style="position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;max-height:78%;background:#FFFFFF;border-radius:26px 26px 28px 28px;box-shadow:0 -10px 30px rgba(26,26,34,.18);outline:none;">'
+      + '<div style="display:flex;justify-content:center;padding:10px 0 4px;"><span style="width:42px;height:4px;border-radius:999px;background:#E2DEF0;"></span></div>'
+      + '<div style="flex:1;min-height:0;overflow-y:auto;padding:8px 18px 16px;">'
+      + '<div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;height:44px;flex:none;border-radius:14px;background:' + (logo ? '#FFFFFF url(' + esc(logo) + ') center/contain no-repeat;box-shadow:inset 0 0 0 1px rgba(26,26,34,.08)' : '#7B3FF2') + ';display:flex;align-items:center;justify-content:center;font-weight:800;color:#FFFFFF;font-size:17px;">' + (logo ? '' : esc(sheet.initial)) + '</span><div style="flex:1;min-width:0;"><div id="portfolio-company-title" style="font-weight:800;font-size:19px;color:#1A1A22;letter-spacing:-.03em;overflow-wrap:anywhere;">' + esc(sheet.name) + '</div><div style="font-size:11.5px;color:#8B8D98;margin-top:2px;">밈트폴리오 구성 종목</div></div><button type="button" data-portfolio-company-close="1" aria-label="기업 상세 닫기" style="width:40px;height:40px;border:0;border-radius:999px;background:#F3F0FB;color:#6B6E7B;font-size:24px;line-height:1;cursor:pointer;">×</button></div>'
+      + '<div style="display:flex;align-items:baseline;gap:8px;margin-top:14px;"><strong style="font-size:23px;color:#1A1A22;letter-spacing:-.04em;">' + esc(sheet.ticker) + '</strong><span style="font-weight:700;font-size:12px;color:#7B3FF2;">' + esc(sheet.market) + '</span></div>'
+      + marketPanel
+      + '<div style="font-weight:800;font-size:15px;color:#1A1A22;margin-top:16px;">기업 설명</div><p style="font-size:12.5px;line-height:1.7;color:#5C5F6B;margin:6px 0 0;">' + esc(sheet.about) + '</p>'
+      + '</div><div style="flex:none;border-top:1px solid #F1EEF9;padding:12px 16px 16px;background:#FFFFFF;"><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;"><button type="button" data-portfolio-company-watch="1" style="min-height:52px;border:1.5px solid #7B3FF2;border-radius:14px;background:#FFFFFF;font-family:inherit;font-weight:800;font-size:13.5px;color:#5B21C0;cursor:pointer;">관심기업 등록</button><button type="button" data-portfolio-company-kiwoom="1" style="min-height:52px;border:0;border-radius:14px;background:#7B3FF2;font-family:inherit;font-weight:800;font-size:13.5px;color:#FFFFFF;cursor:pointer;">키움 종목홈으로 가기</button></div></div></section>';
+    const close = () => this.closePortfolioCompanySheet(false, trigger);
+    root.querySelector('[data-portfolio-company-backdrop]').onclick = close;
+    root.querySelector('[data-portfolio-company-close]').onclick = close;
+    root.querySelector('[data-portfolio-company-watch]').onclick = () => {
+      this.toggleCompanyWatch(sheet, frame);
+      const button = root.querySelector('[data-portfolio-company-watch]');
+      if (button) button.textContent = this.companyWatchLabel(sheet);
+    };
+    root.querySelector('[data-portfolio-company-kiwoom]').onclick = () => {
+      const domestic = /KRX|KOSPI|KOSDAQ/i.test(sheet.market);
+      window.open(domestic ? 'https://www.kiwoom.com/h/domestic/stock/VStockMainView' : 'https://www.kiwoom.com/h/foreign/fostock/VFostockMainView', '_blank', 'noopener,noreferrer');
+    };
+    root.querySelector('[data-portfolio-company-dialog]').onkeydown = (event) => { if (event.key === 'Escape') { event.preventDefault(); close(); } };
+    frame.appendChild(root);
+    requestAnimationFrame(() => root.querySelector('[data-portfolio-company-dialog]').focus({ preventScroll: true }));
+  }
+
+  closePortfolioCompanySheet(immediate = false, trigger = null) {
+    const root = document.querySelector('[data-portfolio-company-sheet-root]');
+    if (!root) return;
+    const finish = () => {
+      root.remove();
+      if (trigger && trigger.isConnected) trigger.focus({ preventScroll: true });
+    };
+    if (immediate || this.prefersReducedMotion()) { finish(); return; }
+    const dialog = root.querySelector('[data-portfolio-company-dialog]');
+    const backdrop = root.querySelector('[data-portfolio-company-backdrop]');
+    if (dialog) { dialog.style.transition = 'transform 220ms ease-in'; dialog.style.transform = 'translateY(100%)'; }
+    if (backdrop) { backdrop.style.transition = 'opacity 160ms ease-in'; backdrop.style.opacity = '0'; }
+    setTimeout(finish, 230);
   }
 
   patchCompanySheetChart() {

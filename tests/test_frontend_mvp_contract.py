@@ -137,6 +137,16 @@ def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> No
     assert "밈트폴리오 보러가기" in INDEX
 
 
+def test_portfolio_component_rows_open_an_in_place_company_sheet() -> None:
+    detail = INDEX[INDEX.index("  renderPortfolioDetail(portfolio)") : INDEX.index("  // 밈트폴리오 종목 배지")]
+    assert 'data-pd-company-row="1"' in detail
+    assert "this.openPortfolioCompanySheet(this.buildSheet" in detail
+    assert "openPortfolioCompanySheet(sheet, trigger)" in INDEX
+    assert "data-portfolio-company-sheet-root" in INDEX
+    assert "키움 종목홈으로 가기" in INDEX
+    assert "closePortfolioCompanySheet" in INDEX
+
+
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
     dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
