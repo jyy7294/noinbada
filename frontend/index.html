@@ -1094,6 +1094,7 @@ class Component extends DCLogic {
     setTimeout(() => { this.likeWire(); this.stashWire(); this.myTabWire(); this.renderCompanyWatchlist(); this.shareWire(); }, 80);
     setTimeout(() => this.mkWire(), 120);
     setTimeout(() => this.snsWire(), 60);
+    setTimeout(() => this.homeSelectionGuideWire(), 80);
     setTimeout(() => this.dialWire(), 80);
     setTimeout(() => { this.arcWire(); this.hexWire(); this.viewToggleWire(); this.viewToggleWire2(); this.vdWire(); }, 100);
     setTimeout(() => this.motionWire(), 120);
@@ -2897,6 +2898,16 @@ class Component extends DCLogic {
       + '<div><div style="font-weight:800;font-size:14px;color:#1A1A22;">' + name + '</div><div style="margin-top:4px;font-weight:500;font-size:12px;line-height:1.55;color:#6B6E7B;">' + description + '</div></div></div>').join('');
     overlay.appendChild(body);
   };
+
+  homeSelectionGuideWire() {
+    const button = document.querySelector('[data-home-selection-guide]');
+    if (!button || button.__selectionGuideWired) return;
+    button.__selectionGuideWired = true;
+    button.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.openSelectionGuide();
+    });
+  }
 
   setOwnerMode(on) {
     const page = document.querySelector('#post-detail');
@@ -5392,7 +5403,7 @@ class Component extends DCLogic {
     }, dur + 1200);
   }
   componentDidUpdate() {
-    this.snsWire(); this.applySort(); this.patchTrendSwitcherIcons(); this.patchCompanySheetChart(); this.patchInterestChart();
+    this.snsWire(); this.homeSelectionGuideWire(); this.applySort(); this.patchTrendSwitcherIcons(); this.patchCompanySheetChart(); this.patchInterestChart();
     // 재렌더 뒤에도 현재 트렌드명과 로고를 일관되게 다시 주입합니다.
     if (this.publishedView) {
       clearTimeout(this.__livePatchT);

@@ -247,6 +247,9 @@ def test_home_title_has_a_selection_criteria_help_button() -> None:
     assert 'aria-label="트렌드 선정 기준 보기"' in header
     assert 'onClick="{{ openSelectionGuide }}"' in header
     assert '트렌드 선정 기준' in INDEX
+    assert "homeSelectionGuideWire()" in INDEX
+    assert "button.addEventListener('click'" in INDEX
+    assert "this.openSelectionGuide();" in INDEX
 
 
 def test_dial_center_keeps_korean_trend_titles_as_one_readable_line() -> None:
