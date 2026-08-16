@@ -137,14 +137,14 @@ def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> No
     assert "밈트폴리오 보러가기" in INDEX
 
 
-def test_home_list_view_is_scrollable_and_keeps_the_portfolio_summary_in_view() -> None:
-    assert 'data-list-view2="1" style="display:none; margin:6px -16px 0; height:clamp(300px, 42dvh, 370px); overflow-y:auto;' in INDEX
+def test_home_list_view_fits_all_top_ten_without_internal_scroll() -> None:
+    assert 'data-list-view2="1" style="display:none; margin:6px -16px 0; height:clamp(400px, 55dvh, 430px); overflow:hidden;' in INDEX
     assert 'data-home-portfolios="1" style="visibility:hidden; margin:16px -16px 0;' in INDEX
     view_toggle = INDEX[INDEX.index("  viewToggleWire2()") : INDEX.index("  goPostList =")]
     assert "scroller.style.overflowY = 'hidden'" in view_toggle
     home_list_start = INDEX.rindex("const list = document.querySelector('[data-list-view2]');")
     home_list = INDEX[home_list_start : INDEX.index("  dialGo(label)")]
-    assert "padding:8px 2px" in home_list
+    assert "padding:5px 2px" in home_list
     assert "-webkit-line-clamp:1" in home_list
 
 
