@@ -129,7 +129,7 @@ def test_share_surface_uses_native_share_real_clipboard_and_social_metadata() ->
 def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> None:
     method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
     assert "home.querySelectorAll('[data-mp-row],[data-portfolio-loading]')" in method
-    assert "const featured = portfolios[0]" in method
+    assert "const featured = portfolios.slice().sort" in method
     assert "row.setAttribute('data-mp-row', '1')" in method
     assert "home.insertBefore(row, home.lastElementChild)" in method
     assert "featured.companies.length + '개 기업</span>'" in method
@@ -154,6 +154,18 @@ def test_portfolio_list_uses_keyword_chips_without_company_name_summary() -> Non
     assert "background:#F3EEFF" in method
     assert "const companyNames" not in method
     assert "portfolio.companies.slice(0, 5)" not in method
+
+
+def test_portfolio_list_defaults_to_latest_and_home_feature_uses_likes() -> None:
+    method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
+    sorting = INDEX[INDEX.index("  applySort() {") : INDEX.index("  snsWire() {")]
+    assert "최신순</button>" in INDEX
+    assert "좋아요순</button>" in INDEX
+    assert "수익률순</button>" in INDEX
+    assert "가장 많이 반응한 밈트폴리오" in method
+    assert "Number(b.likes || 0) - Number(a.likes || 0)" in method
+    assert 'data-likes="' in method
+    assert "mode === 1 ? b.likes - a.likes : mode === 2 ? b.ret - a.ret : b.date - a.date" in sorting
 
 
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
@@ -998,10 +1010,11 @@ def test_popular_portfolios_keep_the_approved_community_seed_examples() -> None:
     for company in ("원익", "리브스메드", "두산", "바이넥스", "한국콜마", "오리온", "CJ제일제당", "대한제분"):
         assert company in INDEX
     assert "dataMode: 'seed_portfolio'" in INDEX
-    assert "수익률순" not in INDEX
+    assert "좋아요순" in INDEX
+    assert "수익률순" in INDEX
     assert "내 포트 수익률" not in INDEX
-    assert "등락순" in INDEX
-    assert "구성 평균 등락" in INDEX
+    assert "추천순" not in INDEX
+    assert "등락순" not in INDEX
 
 
 def test_seed_meme_portfolios_never_present_invented_stock_prices_or_returns() -> None:

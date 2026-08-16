@@ -685,9 +685,9 @@
         </div>
 
         <div style="display:flex; align-items:center; gap:8px; padding:14px 16px 12px;">
-          <button onClick="{{ pickSort0 }}" style="{{ sort0 }}">추천순</button>
-          <button onClick="{{ pickSort1 }}" style="{{ sort1 }}">등락순</button>
-          <button onClick="{{ pickSort2 }}" style="{{ sort2 }}">최신순</button>
+          <button onClick="{{ pickSort0 }}" style="{{ sort0 }}">최신순</button>
+          <button onClick="{{ pickSort1 }}" style="{{ sort1 }}">좋아요순</button>
+          <button onClick="{{ pickSort2 }}" style="{{ sort2 }}">수익률순</button>
           <button type="button" data-mk="open" aria-label="새 밈트폴리오 만들기" style="flex:none; margin-left:auto; width:44px; height:44px; border:0; border-radius:999px; background:#7B3FF2; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 6px 14px rgba(123,63,242,0.30);">
             <svg width="16" height="16" viewBox="0 0 16 16" style="display:block;"><line x1="8" y1="2.5" x2="8" y2="13.5" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></line><line x1="2.5" y1="8" x2="13.5" y2="8" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"></line></svg>
           </button>
@@ -1635,7 +1635,8 @@ class Component extends DCLogic {
       home.style.visibility = 'visible';
       home.setAttribute('data-hydration', 'ready');
       home.querySelectorAll('[data-mp-row],[data-portfolio-loading]').forEach((row) => row.remove());
-      const featured = portfolios[0];
+      // 홈에서는 지금 가장 많이 반응한 밈트폴리오를 따로 추천합니다.
+      const featured = portfolios.slice().sort((a, b) => Number(b.likes || 0) - Number(a.likes || 0))[0];
       if (featured) {
         const row = document.createElement('button');
         row.type = 'button';
@@ -1659,7 +1660,7 @@ class Component extends DCLogic {
       feed.setAttribute('data-hydration', 'ready');
       feed.innerHTML = portfolios.map((portfolio, index) => {
         const keywordChips = portfolio.keywords.map((keyword) => '<span style="background:#F3EEFF;border-radius:8px;padding:5px 9px;font-weight:700;font-size:11px;color:#5B21C0;white-space:nowrap;">' + this.escapeHtml(keyword) + '</span>').join('');
-        return '<button type="button" data-portfolio-row="1" data-portfolio-id="' + this.escapeHtml(portfolio.id) + '" data-score="' + (100 - portfolio.sourceRank)
+        return '<button type="button" data-portfolio-row="1" data-portfolio-id="' + this.escapeHtml(portfolio.id) + '" data-likes="' + Number(portfolio.likes || 0)
           + '" data-return="' + (portfolio.avgChange == null ? '' : portfolio.avgChange) + '" data-date="' + this.escapeHtml(portfolio.dateLabel)
           + '" aria-label="' + this.escapeHtml(portfolio.title + ' 상세 보기') + '" style="width:100%;border:0;border-top:1px solid #F5F2FB;background:#FFFFFF;display:flex;gap:12px;padding:15px 16px;text-align:left;cursor:pointer;">'
           + '<span style="width:14px;flex:none;font-weight:800;font-size:15px;color:#C0C3CD;text-align:center;padding-top:2px;">' + (index + 1) + '</span>'
@@ -5405,13 +5406,13 @@ class Component extends DCLogic {
     if (!rows.length) return;
     const list = rows[0].parentElement;
     const meta = rows.map((r) => {
-      const score = Number(r.getAttribute('data-score')) || 0;
+      const likes = Number(r.getAttribute('data-likes')) || 0;
       const ret = Number(r.getAttribute('data-return')) || 0;
       const date = Number(String(r.getAttribute('data-date') || '').replace(/\D/g, '')) || 0;
-      return { r, score, ret, date };
+      return { r, likes, ret, date };
     });
     const mode = this.state.sort || 0;
-    meta.sort((a, b) => mode === 1 ? b.ret - a.ret : mode === 2 ? b.date - a.date : b.score - a.score);
+    meta.sort((a, b) => mode === 1 ? b.likes - a.likes : mode === 2 ? b.ret - a.ret : b.date - a.date);
     meta.forEach((m, i) => {
       list.appendChild(m.r);
       const rank = m.r.querySelector('span');
