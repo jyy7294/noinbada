@@ -1296,7 +1296,9 @@ def test_selection_disclosure_and_portfolio_safety_rules_are_visible_and_enforce
     assert "openSelectionGuide" in INDEX
     assert "트렌드 선정 기준" in INDEX
     assert "정치·범죄·재난·사생활·혐오" in INDEX
-    assert "최종 승인된 트렌드만 공개해요" in INDEX
+    assert "사람의 최종 승인을 거친 트렌드만" in INDEX
+    assert "X 대한민국 실시간 트렌드 1~30위와 Google Trending Now 대한민국 전체" in INDEX
+    assert "우선순위 = 40 현재 위치 + 20 전시간 변화 + 20 반복 관측 + 15 최근 이력 + 5 동시 관측" in INDEX
     assert "validatePortfolioContent(input = {})" in DATA
     assert "UNSAFE_PORTFOLIO_TEXT" in DATA
     assert "정치·범죄·혐오·수익 보장 표현은 공개할 수 없습니다." in DATA
@@ -1306,7 +1308,7 @@ def test_selection_disclosure_and_portfolio_safety_rules_are_visible_and_enforce
 
 
 def test_selection_guide_uses_plain_language_and_human_final_approval() -> None:
-    assert "찬희님이 직접 승인한 트렌드만 공개합니다." in INDEX
+    assert "사람의 최종 승인을 거친 트렌드만" in INDEX
     for token in (
         "SelectionScore",
         "35V + 25B + 20A + 10P + 10R",
