@@ -123,10 +123,27 @@ def test_share_surface_uses_native_share_real_clipboard_and_social_metadata() ->
 def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> None:
     method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
     assert "home.querySelectorAll('[data-mp-row],[data-portfolio-loading]')" in method
-    assert method.count("data-mp-row") == 1
-    assert "home.insertBefore(row" not in method
-    assert "row.setAttribute('data-mp-row'" not in method
+    assert "const featured = portfolios[0]" in method
+    assert "row.setAttribute('data-mp-row', '1')" in method
+    assert "home.insertBefore(row, home.lastElementChild)" in method
+    assert "featured.companies.length + '개 기업</span>'" in method
+    assert "featured.companies.slice" not in method
     assert "밈트폴리오 보러가기" in INDEX
+
+
+def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
+    dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
+    vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
+    assert "stage.__selectTrend" not in dial
+    assert "this.dialGo(el.getAttribute('data-label') || el.textContent);" in vd
+    assert "if (bigHit) return;" in vd
+    assert "if (rows.length < 2 || window.__mpRotate) return;" in INDEX
+
+
+def test_zipper_handoff_does_not_pause_on_a_blank_intermediate_screen() -> None:
+    zipper = INDEX[INDEX.index("  zipWire() {") : INDEX.index("  listViewWire() {")]
+    assert "ease(y, MAX, 620, () => this.panTo(root.querySelector('[data-screen-label=\"01 홈\"]')));" in zipper
+    assert "setTimeout(() => this.panTo(root.querySelector('[data-screen-label=\"01 홈\"]')), 240)" not in zipper
 
 
 def test_critical_mobile_controls_have_accessible_touch_targets() -> None:

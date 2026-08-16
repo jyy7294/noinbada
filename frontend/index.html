@@ -1632,6 +1632,22 @@ class Component extends DCLogic {
       home.style.visibility = 'visible';
       home.setAttribute('data-hydration', 'ready');
       home.querySelectorAll('[data-mp-row],[data-portfolio-loading]').forEach((row) => row.remove());
+      const featured = portfolios[0];
+      if (featured) {
+        const row = document.createElement('button');
+        row.type = 'button';
+        row.setAttribute('data-mp-row', '1');
+        row.setAttribute('data-portfolio-id', featured.id);
+        row.setAttribute('aria-label', featured.title + ' 밈트폴리오 보기');
+        row.style.cssText = 'width:100%;border:0;background:#FFFFFF;display:flex;align-items:center;gap:12px;padding:14px 2px 12px;text-align:left;font-family:inherit;cursor:pointer;';
+        row.innerHTML = '<span data-portfolio-avatar="seed-user" role="img" aria-label="' + this.escapeHtml(featured.author + ' 아바타') + '" style="width:42px;height:42px;flex:none;border-radius:999px;background:#F4EDFF;display:flex;align-items:center;justify-content:center;font-size:21px;">' + this.escapeHtml(featured.emoji) + '</span>'
+          + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">'
+          + '<span style="font-weight:800;font-size:15px;line-height:1.3;color:#1A1A22;letter-spacing:-0.03em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + this.escapeHtml(featured.title) + '</span>'
+          + '<span style="font-weight:500;font-size:11px;color:#A9ACB8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + this.escapeHtml(featured.keywords.join(' ')) + '</span></span>'
+          + '<span style="flex:none;font-weight:600;font-size:11.5px;color:#8B8D98;">' + featured.companies.length + '개 기업</span>';
+        row.onclick = (event) => this.goHomePost(event);
+        home.insertBefore(row, home.lastElementChild);
+      }
     }
 
     const feed = root.querySelector('[data-portfolio-feed]');
@@ -4154,7 +4170,7 @@ class Component extends DCLogic {
     const open = () => {
       if (opened) return;
       opened = true;
-      ease(y, MAX, 620, () => setTimeout(() => this.panTo(root.querySelector('[data-screen-label="01 홈"]')), 240));
+      ease(y, MAX, 620, () => this.panTo(root.querySelector('[data-screen-label="01 홈"]')));
     };
     frame.addEventListener('pointerdown', (e) => {
       if (opened) return;
@@ -4885,19 +4901,12 @@ class Component extends DCLogic {
       const target = document.getElementById('trend-detail');
       if (target) this.panTo(target);
     };
-    const activeScreen = document.querySelector('[data-screen-label][data-proto-active]');
-    const stage = activeScreen && activeScreen.querySelector('[data-vd-stage]');
-    if (!this.__trendTransitionPending && stage && stage.offsetParent && typeof stage.__selectTrend === 'function') {
-      this.__trendTransitionPending = true;
-      stage.__selectTrend(trend && trend.name, commit);
-      return;
-    }
     commit();
   }
 
   mpRotateWire() {
     const rows = [...document.querySelectorAll('[data-mp-row]')];
-    if (!rows.length || window.__mpRotate) return;
+    if (rows.length < 2 || window.__mpRotate) return;
     let i = 0;
     window.__mpRotate = setInterval(() => {
       const cur = rows[i];
@@ -5014,10 +5023,9 @@ class Component extends DCLogic {
         const hit = document.elementFromPoint(ev.clientX, ev.clientY);
         const bigHit = hit && hit.closest ? hit.closest('[data-vd-big]') : null;
         const word = hit && hit.closest ? hit.closest('[data-vd]') : null;
-        if (bigHit) { this.dialGo(bigHit.textContent); return; }
+        if (bigHit) return;
         if (word) {
-          const i = words.filter((candidate) => candidate.style.display !== 'none').indexOf(word);
-          if (i >= 0) { animateSelection(i); return; }
+          return;
         }
       }
       const target = Math.round(rot / STEP) * STEP;
@@ -5035,9 +5043,7 @@ class Component extends DCLogic {
     words.forEach((el, i) => {
       el.style.cursor = 'pointer';
       el.addEventListener('click', () => {
-        const activeWords = words.filter((word) => word.style.display !== 'none');
-        const index = activeWords.indexOf(el);
-        if (index >= 0) animateSelection(index);
+        this.dialGo(el.getAttribute('data-label') || el.textContent);
       });
     });
     const bigEl = stage.querySelector('[data-vd-big]');
