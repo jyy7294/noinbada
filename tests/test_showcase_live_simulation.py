@@ -19,7 +19,7 @@ def test_showcase_has_ten_ranked_cards_five_keywords_and_five_to_ten_specific_co
     )
 
     assert payload["mode"] == "showcase_live_simulation"
-    assert payload["display_status"] == "시연 LIVE"
+    assert payload["display_status"] == "NOW"
     assert payload["display_as_of"].endswith("17:00:00+09:00")
     assert len(payload["cards"]) == 10
     validate_showcase_enrichment(payload)
@@ -33,6 +33,12 @@ def test_showcase_has_ten_ranked_cards_five_keywords_and_five_to_ten_specific_co
         assert all(company["relationship_status"] == "reconstructed_demo" for company in card["companies"])
         assert all(company["connection_explanation"] for company in card["companies"])
         assert all("연결 시나리오" not in company["connection_explanation"] for company in card["companies"])
+
+    doomsday = next(card for card in payload["cards"] if card["event_key"] == "둠스데이")
+    assert doomsday["companies"][0]["company"] == "월트 디즈니 컴퍼니"
+    assert doomsday["companies"][0]["stock_code"] == "DIS"
+    assert doomsday["companies"][0]["market"] == "NYSE"
+    assert "마블 스튜디오" in doomsday["companies"][0]["connection_explanation"]
 
 
 def test_showcase_never_changes_observed_rank_or_claims_observed_company_relations():

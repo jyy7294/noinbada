@@ -1163,15 +1163,15 @@ function kstFloorHourIso(now = new Date()) {
 function validateShowcasePayload(payload, manifest) {
   if (!payload || payload.schema_version !== 'trzip-showcase-live-simulation-v1'
     || payload.mode !== 'showcase_live_simulation'
-    || payload.display_status !== '시연 LIVE'
+    || payload.display_status !== 'NOW'
     || payload.display_time_policy !== 'client_kst_floor_hour'
     || payload.source_ranking_mode !== 'actual_full_ledger_no_recency'
     || payload.enrichment_mode !== 'reconstructed_demo') {
-    throw new Error('시연 데이터 계약을 확인할 수 없습니다.');
+    throw new Error('공개 데이터 계약을 확인할 수 없습니다.');
   }
   const cards = Array.isArray(payload.cards) ? payload.cards : [];
   if (cards.length !== 10 || Number(manifest.card_count) !== cards.length) {
-    throw new Error('시연 카드 수가 올바르지 않습니다.');
+    throw new Error('공개 카드 수가 올바르지 않습니다.');
   }
   const eventKeys = new Set();
   const allStockCodes = [];
@@ -1180,7 +1180,9 @@ function validateShowcasePayload(payload, manifest) {
     const companies = Array.isArray(card.companies) ? card.companies : [];
     const keywords = Array.isArray(card.related_keywords) ? card.related_keywords : [];
     const roles = new Set(companies.map((company) => String(company.company_role_category || '')));
-    const stockCodes = new Set(companies.map((company) => String(company.stock_code || '')));
+    const stockCodes = new Set(companies.map((company) => (
+      String(company.market || 'KRX') + ':' + String(company.stock_code || '')
+    )));
     const eventKey = String(card.event_key || '');
     if (!eventKey || eventKeys.has(eventKey)
       || Number(card.presentation_order) !== index + 1
@@ -1197,8 +1199,9 @@ function validateShowcasePayload(payload, manifest) {
         || company.ranking_effect !== 'none'
         || !String(company.connection_explanation || '').trim()
         || !/^https:\/\//.test(String(company.company_identity_url || ''))
+        || !validLiveLogo(company)
         || !validLiveMarketSnapshot(company, payload.source_observed_at))) {
-      throw new Error(`시연 카드 계약 오류: ${eventKey || index + 1}`);
+      throw new Error(`공개 카드 계약 오류: ${eventKey || index + 1}`);
     }
     totalCompanyCount += companies.length;
     allStockCodes.push(...stockCodes);
@@ -1206,7 +1209,7 @@ function validateShowcasePayload(payload, manifest) {
   });
   if (Number(manifest.market_data && manifest.market_data.snapshot_count) !== totalCompanyCount
     || Number(manifest.market_data && manifest.market_data.unique_security_count) !== new Set(allStockCodes).size) {
-    throw new Error('시연 기업 시장 데이터 개수가 일치하지 않습니다.');
+    throw new Error('공개 기업 시장 데이터 개수가 일치하지 않습니다.');
   }
   return cards;
 }
@@ -1219,7 +1222,7 @@ async function loadShowcase() {
   const entry = manifest && manifest.showcase;
   if (manifest.schema_version !== 'trzip-showcase-delivery-v1'
     || manifest.mode !== 'showcase_live_simulation'
-    || manifest.display_status !== '시연 LIVE'
+    || manifest.display_status !== 'NOW'
     || manifest.display_time_policy !== 'client_kst_floor_hour'
     || Number(manifest.card_count) !== 10
     || Number(manifest.approval && manifest.approval.approved_count) !== 10
@@ -1232,15 +1235,20 @@ async function loadShowcase() {
     || manifest.market_data.synthetic !== false
     || manifest.market_data.estimated !== false
     || manifest.market_data.ranking_effect !== 'none'
+    || !manifest.company_logos
+    || manifest.company_logos.status !== 'verified'
+    || Number(manifest.company_logos.image_count) !== Number(manifest.market_data.snapshot_count)
+    || Number(manifest.company_logos.fallback_count) !== 0
+    || manifest.company_logos.source !== 'official_page_asset'
     || !entry || entry.path !== 'showcase.json'
     || !/^[a-f0-9]{64}$/i.test(String(entry.sha256 || ''))) {
-    throw new Error('시연 manifest 계약을 확인할 수 없습니다.');
+    throw new Error('공개 manifest 계약을 확인할 수 없습니다.');
   }
   const payloadResponse = await fetchWithRetry(`./showcase/${entry.path}?t=${nonce}`, { cache: 'no-store' });
   if (!payloadResponse.ok) throw new Error(`TRZIP showcase ${payloadResponse.status}`);
   const payloadText = await payloadResponse.text();
   if ((await sha256Hex(payloadText)) !== String(entry.sha256).toLowerCase()) {
-    throw new Error('시연 데이터 해시가 일치하지 않습니다.');
+    throw new Error('공개 데이터 해시가 일치하지 않습니다.');
   }
   const payload = JSON.parse(payloadText);
   const cards = validateShowcasePayload(payload, manifest);

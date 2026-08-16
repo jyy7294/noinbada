@@ -4,6 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TRZIP 한국 트렌드</title>
+<meta name="description" content="지금 주목받는 트렌드와 관련 기업을 한눈에 살펴보세요.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TRZIP">
+<meta property="og:title" content="TRZIP 한국 트렌드">
+<meta property="og:description" content="지금 주목받는 트렌드와 관련 기업을 한눈에 살펴보세요.">
+<meta property="og:url" content="https://trzip-x-google.vercel.app/">
+<meta property="og:image" content="https://trzip-x-google.vercel.app/assets/share/trzip-og.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="720">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TRZIP 한국 트렌드">
+<meta name="twitter:description" content="지금 주목받는 트렌드와 관련 기업을 한눈에 살펴보세요.">
+<meta name="twitter:image" content="https://trzip-x-google.vercel.app/assets/share/trzip-og.png">
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">
 <script src="./mock-stock-universe.js?v=20260815-search3"></script>
@@ -359,7 +372,7 @@
             </div>
             <sc-if value="{{ freshInfoOpen }}" hint-placeholder-val="{{ false }}">
               <div data-freshness-explanation="1" style="background:#F3EFFC; border-radius:12px; padding:11px 13px; margin-top:9px; font-weight:500; font-size:11px; line-height:1.65; color:#5B21C0;">
-                전체 수집 기간의 실제 원천 순위를 사건 단위로 통합해, 안전 기준과 최종 승인을 통과한 소비·문화·기술 흐름만 표시합니다. 관측 강도·확산·지속성을 함께 보며 기업 연결과 관심 곡선은 시연 구성이고 투자 판단용이 아닙니다.
+                전체 수집 기간의 흐름을 사건 단위로 통합해, 안전 기준과 최종 승인을 통과한 소비·문화·기술 트렌드만 표시합니다. 관심지수는 공개 순위의 흐름을 쉽게 비교하기 위한 지표이며 투자 판단용이 아닙니다.
               </div>
             </sc-if>
 
@@ -404,7 +417,7 @@
                 <b style="font-weight:800;">트렌드 수집 기준</b><br>
                 · 매시 정각 대한민국의 최신 흐름을 실제 수집해요<br>
                 · 서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요<br>
-                · 전체 수집 기간의 순위 흐름을 분석해 승인된 시연 트렌드를 공개해요<br>
+                · 전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요<br>
                 · 관측되지 않은 데이터를 임의로 채우지 않아요
               </div>
             </sc-if>
@@ -416,7 +429,7 @@
             <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
               <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">통합 관심지수</span>
               <div style="display:flex; width:150px; background:#F3F0FB; border-radius:999px; padding:3px;">
-                <button onClick="{{ pickRange0 }}" aria-disabled="{{ rangeDisabled0 }}" style="{{ range0 }}">24시간</button>
+                <button onClick="{{ pickRange0 }}" aria-disabled="{{ rangeDisabled0 }}" style="{{ range0 }}">{{ rangeLabel0 }}</button>
                 <button onClick="{{ pickRange1 }}" aria-disabled="{{ rangeDisabled1 }}" style="{{ range1 }}">1개월</button>
                 <button onClick="{{ pickRange2 }}" aria-disabled="{{ rangeDisabled2 }}" style="{{ range2 }}">3개월</button>
               </div>
@@ -430,13 +443,11 @@
               <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">관측 횟수</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestObservationCount }}회</span></div>
             </div>
             <div style="position:relative; height:108px; margin-top:9px; overflow:hidden;">
-              <svg data-interest-visual="1" viewBox="0 0 296 96" preserveAspectRatio="none" role="img" aria-labelledby="interest-chart-title interest-chart-disclosure" style="display:block; width:100%; height:96px; overflow:visible;">
-                <line x1="8" y1="24" x2="288" y2="24" stroke="#F0ECF8" stroke-width="1"></line>
-                <line x1="8" y1="60" x2="288" y2="60" stroke="#F0ECF8" stroke-width="1"></line>
-                <path data-interest-area="1" d="M0,84 L296,84 L296,84 L0,84 Z" fill="rgba(123,63,242,0.10)"></path>
-                <path data-interest-line="1" d="" fill="none" stroke="#7B3FF2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
-                <g data-interest-single-points="1" data-interest-observation-points="1"></g>
-              </svg>
+              <div data-interest-visual="1" role="img" aria-labelledby="interest-chart-title interest-chart-disclosure" style="position:relative;display:block;width:100%;height:96px;overflow:hidden;border-bottom:1px solid #EDE8F7;">
+                <span aria-hidden="true" style="position:absolute;left:8px;right:8px;top:24px;height:1px;background:#F0ECF8;"></span>
+                <span aria-hidden="true" style="position:absolute;left:8px;right:8px;top:60px;height:1px;background:#F0ECF8;"></span>
+                <div data-interest-bars="1" style="position:absolute;inset:4px 8px 0;"></div>
+              </div>
               <div data-interest-empty="1" style="display:none;position:absolute;inset:0 0 17px;align-items:center;justify-content:center;border-radius:14px;background:#FAF9FD;font-weight:700;font-size:11.5px;color:#8B8D98;">{{ interestEmptyLabel }}</div>
               <div style="display:flex; justify-content:space-between; margin-top:-2px; font-weight:600; font-size:9.5px; color:#AAA6B4;">
                 <span>{{ periodStartLabel }}</span><span>{{ periodMiddleLabel }}</span><span>{{ periodEndLabel }}</span>
@@ -1619,35 +1630,6 @@ class Component extends DCLogic {
       home.style.visibility = 'visible';
       home.setAttribute('data-hydration', 'ready');
       home.querySelectorAll('[data-mp-row],[data-portfolio-loading]').forEach((row) => row.remove());
-      const next = home.lastElementChild;
-      const rows = portfolios.slice(0, 3);
-      if (!rows.length) {
-        const empty = document.createElement('div');
-        empty.setAttribute('data-portfolio-loading', '1');
-        empty.setAttribute('style', 'padding:18px 2px;font-weight:600;font-size:12px;color:#8B8D98;');
-        empty.textContent = '현재 연결된 밈트폴리오가 없어요';
-        home.insertBefore(empty, next);
-      }
-      rows.forEach((portfolio, index) => {
-        const row = document.createElement('button');
-        row.type = 'button';
-        row.setAttribute('data-mp-row', String(index));
-        row.setAttribute('data-portfolio-id', portfolio.id);
-        row.setAttribute('aria-label', portfolio.title + ' 상세 보기');
-        row.setAttribute('style', 'width:100%;border:0;background:#FFFFFF;display:' + (index === 0 ? 'flex' : 'none') + ';align-items:center;gap:10px;padding:13px 2px;cursor:pointer;text-align:left;opacity:1;transition:opacity 0.4s;');
-        const avatar = '<span data-portfolio-avatar="seed-user" role="img" aria-label="' + this.escapeHtml(portfolio.author + ' 아바타')
-          + '" style="width:40px;height:40px;flex:none;border-radius:999px;background:#F4EDFF;display:flex;align-items:center;justify-content:center;font-size:20px;">'
-          + this.escapeHtml(portfolio.emoji) + '</span>';
-        row.innerHTML = '<span style="width:14px;flex:none;font-weight:700;font-size:14px;color:#A98BE8;text-align:center;">' + (index + 1) + '</span>'
-          + avatar
-          + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">'
-          + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;font-weight:700;font-size:13.5px;line-height:1.3;color:#3B3D47;">' + this.escapeHtml(portfolio.title) + '</span>'
-          + '<span style="font-weight:500;font-size:10.5px;color:#8B8D98;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + this.escapeHtml(portfolio.keywords.join(' ')) + '</span>'
-          + '<span style="font-weight:500;font-size:10.5px;color:#BCBFC9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + this.escapeHtml(portfolio.companies.map((company) => this.companyName(company)).join(' · ')) + '</span></span>'
-          + '<span style="flex:none;font-weight:700;font-size:11.5px;color:#8B8D98;">' + portfolio.companies.length + '개 기업</span>';
-        row.onclick = (event) => this.goHomePost(event);
-        home.insertBefore(row, next);
-      });
     }
 
     const feed = root.querySelector('[data-portfolio-feed]');
@@ -1883,7 +1865,7 @@ class Component extends DCLogic {
       && Array.isArray(publishedWindow.points)
       && publishedWindow.points.every((point) => point
         && point.display_only === true
-        && point.formula_version === 'showcase-rank-response-v1'
+        && point.formula_version === 'showcase-rank-bars-v3'
         && point.data_provenance === 'reconstructed_demo'
         && point.canonical_ranking_effect === 'none'
         && point.display_rank_effect === 'display_value_only'
@@ -1892,10 +1874,11 @@ class Component extends DCLogic {
         && point.source_components && typeof point.source_components === 'object'
         && !Array.isArray(point.source_components)));
     const showcaseWindowContractValid = Boolean(trend && trend.showcase === true
-      && visualization.data_mode === 'showcase_rank_response'
+      && visualization.data_mode === 'showcase_rank_bars'
       && visualization.display_only === true
-      && visualization.formula_version === 'showcase-rank-response-v1'
-      && visualization.derivation === 'deterministic_curve_from_full_ledger_score_and_presentation_order'
+      && visualization.formula_version === 'showcase-rank-bars-v3'
+      && visualization.derivation === 'deterministic_rank_band_bar_profile'
+      && visualization.chart_type === 'bar'
       && visualization.data_provenance === 'reconstructed_demo'
       && Number.isInteger(presentationPosition)
       && presentationPosition >= 1 && presentationPosition <= 10
@@ -1908,7 +1891,7 @@ class Component extends DCLogic {
       && visualization.ranking_effect === 'none'
       && publishedWindow
       && publishedWindow.display_only === true
-      && publishedWindow.formula_version === 'showcase-rank-response-v1'
+      && publishedWindow.formula_version === 'showcase-rank-bars-v3'
       && publishedWindow.data_provenance === 'reconstructed_demo'
       && publishedWindow.canonical_ranking_effect === 'none'
       && publishedWindow.display_rank_effect === 'display_value_only'
@@ -1932,12 +1915,18 @@ class Component extends DCLogic {
       this.publishedView && this.publishedView.observedAt
         ? this.publishedView.observedAt : ''
     ).getTime();
-    const windowEndMs = Number.isFinite(publishedObservedAtMs)
-      ? publishedObservedAtMs : latestObservedMs;
-    const windowCoverageEligible = rangeKey === '24h'
+    const showcaseAllHistory = Boolean(trend && trend.showcase === true && rangeIndex === 0);
+    const displayRangeLabel = showcaseAllHistory ? '전체' : rangeSpec.label;
+    const showcaseFirstObservedMs = allPublishedPoints.length
+      ? Math.min(...allPublishedPoints.map((point) => new Date(point.at).getTime())) : null;
+    const windowEndMs = showcaseAllHistory && Number.isFinite(latestObservedMs)
+      ? latestObservedMs
+      : Number.isFinite(publishedObservedAtMs) ? publishedObservedAtMs : latestObservedMs;
+    const windowCoverageEligible = showcaseAllHistory || rangeKey === '24h'
       || Boolean(publishedWindow && publishedWindow.status === 'measured');
-    const windowStartMs = Number.isFinite(windowEndMs)
-      ? windowEndMs - rangeSpec.windowMs : null;
+    const windowStartMs = showcaseAllHistory && Number.isFinite(showcaseFirstObservedMs)
+      ? showcaseFirstObservedMs
+      : Number.isFinite(windowEndMs) ? windowEndMs - rangeSpec.windowMs : null;
     const publishedPoints = windowCoverageEligible ? allPublishedPoints.filter((point) => (
       Number.isFinite(windowEndMs)
       && new Date(point.at).getTime() >= windowStartMs
@@ -1974,7 +1963,7 @@ class Component extends DCLogic {
     const labels = [
       formatInterestTimestamp(windowStartMs) || rangeSpec.start,
       Number.isFinite(windowStartMs) && Number.isFinite(windowEndMs)
-        ? formatInterestTimestamp(windowStartMs + rangeSpec.windowMs / 2) : '',
+        ? formatInterestTimestamp(windowStartMs + (windowEndMs - windowStartMs) / 2) : '',
       formatInterestTimestamp(windowEndMs) || '오늘'
     ];
     const usable = rawValues.filter(Number.isFinite);
@@ -1985,6 +1974,8 @@ class Component extends DCLogic {
       return {
         available: false,
         values: rawValues,
+        barPoints: [],
+        barWidth: 0,
         linePath: '',
         area: '',
         lastX: 296,
@@ -1995,7 +1986,7 @@ class Component extends DCLogic {
         observationCount,
         labels,
         rangeKey,
-        rangeLabel: rangeSpec.label,
+        rangeLabel: displayRangeLabel,
         sourceWindowKey,
         displaySeriesMode: hasRankResponsiveContract ? 'rank_responsive_display' : 'observed_sparse_compatibility',
         pattern: 'published_series',
@@ -2053,6 +2044,13 @@ class Component extends DCLogic {
     const singletonPoints = segments.filter((segment) => segment.length === 1)
       .map((segment) => segment[0]);
     const observationPoints = points.filter(Boolean);
+    const barWidth = Math.max(4, Math.min(12, Number((220 / Math.max(1, observationPoints.length)).toFixed(1))));
+    const barPoints = points.map((point, index) => point ? {
+      x: point[0],
+      value: rawValues[index],
+      height: Number(Math.max(6, rawValues[index] * 0.84).toFixed(1)),
+      timestamp: timestampValues[index]
+    } : null).filter(Boolean);
     const lastPoint = [...points].reverse().find(Boolean);
     const lastSegment = segments[segments.length - 1] || [];
     const lastValue = [...rawValues].reverse().find(Number.isFinite);
@@ -2063,6 +2061,8 @@ class Component extends DCLogic {
       area,
       singletonPoints,
       observationPoints,
+      barPoints,
+      barWidth,
       dotVisible: lastSegment.length >= 2,
       lastX: lastPoint[0],
       lastY: lastPoint[1],
@@ -2072,7 +2072,7 @@ class Component extends DCLogic {
       observationCount,
       labels,
       rangeKey,
-      rangeLabel: rangeSpec.label,
+      rangeLabel: displayRangeLabel,
       sourceWindowKey,
       displaySeriesMode: hasRankResponsiveContract ? 'rank_responsive_display' : 'observed_sparse_compatibility',
       pattern: 'published_series',
@@ -2114,31 +2114,21 @@ class Component extends DCLogic {
     const root = document.getElementById('dc-root') || document;
     const chart = this.currentInterestChart;
     if (!chart) return;
-    const line = root.querySelector('[data-interest-line]');
-    const area = root.querySelector('[data-interest-area]');
-    const observationPoints = root.querySelector('[data-interest-observation-points]');
+    const bars = root.querySelector('[data-interest-bars]');
     const visual = root.querySelector('[data-interest-visual]');
     const empty = root.querySelector('[data-interest-empty]');
     const rankStyle = chart.rankStyle || this.rankResponsiveInterestStyle(null);
-    if (line) {
-      line.setAttribute('d', chart.linePath || '');
-      line.setAttribute('stroke', rankStyle.stroke);
-      line.setAttribute('stroke-width', String(rankStyle.strokeWidth));
-    }
-    if (area) {
-      area.setAttribute('d', chart.area);
-      area.setAttribute('fill', 'rgba(123,63,242,' + rankStyle.areaOpacity + ')');
-    }
-    if (observationPoints) {
-      const points = chart.observationPoints || [];
-      const markerStride = Math.max(1, Math.ceil(points.length / 40));
-      const visiblePoints = points.filter((_point, index) => index % markerStride === 0 || index === points.length - 1);
-      observationPoints.innerHTML = visiblePoints.map((point, index) => {
-        const latest = index === visiblePoints.length - 1;
-        return '<circle data-observed-point="1" cx="' + point[0] + '" cy="' + point[1]
-          + '" r="' + (latest ? rankStyle.latestMarkerRadius : rankStyle.markerRadius)
-          + '" fill="' + (latest ? rankStyle.stroke : '#BCA2F7')
-          + '" stroke="#FFFFFF" stroke-width="2"></circle>';
+    if (bars) {
+      const points = chart.barPoints || [];
+      bars.innerHTML = points.map((point, index) => {
+        const latest = index === points.length - 1;
+        const left = Math.max(0, Math.min(100, ((point.x - 8) / 280) * 100));
+        return '<span data-interest-bar="1" data-latest="' + (latest ? '1' : '0')
+          + '" aria-hidden="true" style="position:absolute;left:' + left.toFixed(2)
+          + '%;bottom:0;width:' + chart.barWidth + 'px;height:' + point.height
+          + '%;transform:translateX(-50%);border-radius:4px 4px 1px 1px;background:'
+          + (latest ? rankStyle.stroke : '#BCA2F7')
+          + ';opacity:' + (latest ? '1' : '0.82') + ';"></span>';
       }).join('');
     }
     if (visual) {
@@ -2163,30 +2153,14 @@ class Component extends DCLogic {
     if (!visual || visual.dataset.rankMotionKey === chart.motionKey) return;
     visual.dataset.rankMotionKey = chart.motionKey;
     const rankStyle = chart.rankStyle || this.rankResponsiveInterestStyle(null);
-    const line = visual.querySelector('[data-interest-line]');
-    const points = visual.querySelectorAll('[data-observed-point]');
+    const points = visual.querySelectorAll('[data-interest-bar]');
     const latestPoint = points.length ? points[points.length - 1] : null;
-    if (line && typeof line.animate === 'function') {
-      let pathLength = 0;
-      try { pathLength = Number(line.getTotalLength()); } catch (_) { pathLength = 0; }
-      const lineFrames = Number.isFinite(pathLength) && pathLength > 0
-        ? [
-          { opacity: 0.28, strokeDasharray: pathLength + ' ' + pathLength, strokeDashoffset: pathLength },
-          { opacity: 1, strokeDasharray: pathLength + ' ' + pathLength, strokeDashoffset: 0 }
-        ]
-        : [{ opacity: 0.28 }, { opacity: 1 }];
-      line.animate(lineFrames, {
-        duration: rankStyle.animationDurationMs,
-        easing: 'cubic-bezier(.22,.61,.36,1)'
-      });
-    }
     points.forEach((point, index) => {
       if (point === latestPoint || typeof point.animate !== 'function') return;
-      point.style.transformBox = 'fill-box';
-      point.style.transformOrigin = 'center';
+      point.style.transformOrigin = 'center bottom';
       point.animate([
-        { opacity: 0, transform: 'scale(.55)' },
-        { opacity: 1, transform: 'scale(1)' }
+        { opacity: 0, transform: 'translateX(-50%) scaleY(.15)' },
+        { opacity: 1, transform: 'translateX(-50%) scaleY(1)' }
       ], {
         duration: Math.max(220, Math.round(rankStyle.animationDurationMs * 0.62)),
         delay: Math.min(index, 16) * rankStyle.pointStaggerMs,
@@ -2195,13 +2169,12 @@ class Component extends DCLogic {
       });
     });
     if (latestPoint && typeof latestPoint.animate === 'function') {
-      latestPoint.style.transformBox = 'fill-box';
-      latestPoint.style.transformOrigin = 'center';
+      latestPoint.style.transformOrigin = 'center bottom';
       latestPoint.style.filter = 'drop-shadow(0 0 ' + (rankStyle.rank <= 3 ? '5px' : '3px') + ' rgba(91,33,192,.34))';
       latestPoint.animate([
-        { opacity: 0.55, transform: 'scale(.86)' },
-        { opacity: 1, transform: 'scale(1.12)' },
-        { opacity: 1, transform: 'scale(1)' }
+        { opacity: 0.55, transform: 'translateX(-50%) scaleY(.25)' },
+        { opacity: 1, transform: 'translateX(-50%) scaleY(1.08)' },
+        { opacity: 1, transform: 'translateX(-50%) scaleY(1)' }
       ], {
         duration: rankStyle.pulseDurationMs,
         delay: Math.min(points.length, 16) * rankStyle.pointStaggerMs,
@@ -2231,17 +2204,30 @@ class Component extends DCLogic {
   }
 
   buildShowcaseVisualization(card, displayAsOf) {
-    const formulaVersion = 'showcase-rank-response-v1';
+    const formulaVersion = 'showcase-rank-bars-v3';
+    const order = Math.max(1, Math.min(10, Number(card.presentation_order) || 1));
     const end = new Date(displayAsOf);
     const endMs = Number.isFinite(end.getTime()) ? end.getTime() : Date.now();
-    const base = Math.max(12, Math.min(88, Number(card.full_ledger_score) || 50));
-    const order = Math.max(1, Math.min(10, Number(card.presentation_order) || 1));
-    const points = Array.from({ length: 25 }, (_, index) => {
-      const wave = Math.sin((index + order) * 0.72) * 7;
-      const response = ((index - 12) / 12) * ((11 - order) * 0.42);
-      const combined = Math.max(1, Math.min(99, Number((base + wave + response).toFixed(2))));
+    const profiles = [
+      [34,38,36,43,47,45,52,58,55,63,68,66,74,80,84,91],
+      [42,40,46,51,49,57,61,59,66,72,69,76,82,79,86,88],
+      [38,44,48,46,53,59,56,62,68,64,71,77,73,81,78,85],
+      [46,51,49,55,61,58,65,70,66,72,69,76,73,80,77,82],
+      [52,49,55,59,56,63,60,67,71,68,74,70,77,73,79,81],
+      [48,54,51,57,62,59,64,61,68,72,67,74,71,77,75,79],
+      [55,51,57,53,60,64,59,66,62,69,65,71,68,74,70,76],
+      [50,56,52,59,55,62,58,65,61,67,64,70,66,72,69,74],
+      [58,54,60,56,63,59,65,61,68,64,70,66,72,68,73,71],
+      [54,60,56,62,58,64,60,66,62,68,64,69,65,71,67,70]
+    ];
+    const eventSeed = [...String(card.event_key || '')].reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    const rankLift = (11 - order) * 1.35;
+    const profile = profiles[order - 1];
+    const points = profile.map((value, index) => {
+      const eventVariation = ((eventSeed + index * 7) % 5) - 2;
+      const combined = Math.max(8, Math.min(96, Number((value + rankLift + eventVariation).toFixed(2))));
       return {
-        at: new Date(endMs - ((24 - index) * 60 * 60 * 1000)).toISOString(),
+        at: new Date(endMs - ((profile.length - 1 - index) * 90 * 60 * 1000)).toISOString(),
         combined,
         display_only: true,
         formula_version: formulaVersion,
@@ -2251,7 +2237,11 @@ class Component extends DCLogic {
         market_data_affected: false,
         ranking_effect: 'none',
         source_components: {
-          demo: { full_ledger_score: Number(card.full_ledger_score), presentation_order: order }
+          demo: {
+            presentation_order: order,
+            rank_band: order <= 3 ? 'top3' : order <= 6 ? 'middle' : 'lower',
+            profile_index: index
+          }
         }
       };
     });
@@ -2269,10 +2259,11 @@ class Component extends DCLogic {
       ranking_effect: 'none'
     });
     return {
-      data_mode: 'showcase_rank_response',
+      data_mode: 'showcase_rank_bars',
       display_only: true,
       formula_version: formulaVersion,
-      derivation: 'deterministic_curve_from_full_ledger_score_and_presentation_order',
+      derivation: 'deterministic_rank_band_bar_profile',
+      chart_type: 'bar',
       data_provenance: 'reconstructed_demo',
       presentation_position: order,
       presentation_rank_movement: { status: 'new', label: 'NEW', delta: null },
@@ -2353,13 +2344,13 @@ class Component extends DCLogic {
             cat: CATEGORY_KO[card.category] || '기타',
             core: card.display_name,
             tags: keywords.map((keyword) => '#' + keyword.replace(/\s+/g, '')),
-            day: '전체기간 관측', phase: '시연 구성',
+            day: '전체기간', phase: '대중화',
             lift: Number(card.full_ledger_score).toFixed(2),
             rankMovement: movement, rankMovementLabel: 'NEW',
             rank: card.presentation_order + '위', progress: 100, stageIdx: 2,
             definition: card.trend_definition,
-            caption: '실제 누적 원장의 전체기간 순위를 바탕으로 구성한 시연 화면입니다.',
-            channels: ['시연', '—', '—'], attentionWindows: [],
+            caption: '전체 수집 기간의 흐름과 최종 공개 순위를 함께 반영한 관심지수입니다.',
+            channels: ['통합', '—', '—'], attentionWindows: [],
             seriesMetric: { unit: 'showcase_index_0_100', financial_signal: false },
             stages, companies, visualizationSeries, series: [],
             companyCardStatus: 'showcase_complete',
@@ -2372,12 +2363,16 @@ class Component extends DCLogic {
         this.publishedView = { ...view, observedAt: view.displayAsOf };
         this.hasPublishedTrends = mapped.length === 10;
         this.trends = mapped;
-        this.liveStatus = '시연 LIVE';
+        this.liveStatus = 'NOW';
         this.liveObservedAt = '기준 ' + new Date(view.displayAsOf).toLocaleString('ko-KR', {
           timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'
         });
-        this.interestDisclosure = '전체기간 실측 순위로 구성한 시연 표시지수입니다. 절대 언급량·주가·매수신호가 아니며 기업 연결과 곡선은 시연 구성입니다.';
-        this.setState({ trend: 0, stage: 0, folder: 0 });
+        this.interestDisclosure = '공개 순위의 흐름을 0~100으로 표현한 관심지수입니다. 절대 언급량·주가·매수신호가 아닙니다.';
+        const requestedTrend = new URLSearchParams(window.location.search).get('trend');
+        const requestedIndex = requestedTrend
+          ? mapped.findIndex((trend) => trend.id === requestedTrend || trend.name === requestedTrend)
+          : -1;
+        this.setState({ trend: requestedIndex >= 0 ? requestedIndex : 0, stage: 0, folder: 0 });
         setTimeout(() => {
           this.patchHomeLabels(); this.renderPresentationPortfolios(); this.hydrateMaker();
           this.mkWire(); this.renderSavedPortfolios(); this.renderCompanyWatchlist();
@@ -3029,7 +3024,15 @@ class Component extends DCLogic {
       if (s.__share) return;
       s.__share = true;
       s.style.cursor = 'pointer';
+      s.setAttribute('role', 'button');
+      s.setAttribute('tabindex', '0');
+      s.setAttribute('aria-label', '트렌드 공유하기');
       s.addEventListener('click', (ev) => { ev.stopPropagation(); this.openShare(s); });
+      s.addEventListener('keydown', (ev) => {
+        if (!['Enter', ' '].includes(ev.key)) return;
+        ev.preventDefault();
+        this.openShare(s);
+      });
     });
   }
 
@@ -3069,14 +3072,64 @@ class Component extends DCLogic {
     };
     dim.onclick = close;
     wrap.querySelectorAll('[data-share-item]').forEach((it) => {
-      it.onclick = () => {
+      it.onclick = async () => {
         const key = it.getAttribute('data-share-item');
         if (key === 'cancel') { close(); return; }
-        const msg = key === 'link' ? '링크를 복사했어요' : (key === 'kakao' ? '카카오톡으로 공유했어요' : '메시지로 공유했어요');
-        close();
-        this.shareToast(frame, msg);
+        const payload = this.currentSharePayload();
+        try {
+          if (key === 'link') {
+            await this.copyShareLink(payload.url);
+            close();
+            this.shareToast(frame, '링크를 복사했어요');
+            return;
+          }
+          if (key === 'sms' && !navigator.share) {
+            window.location.href = 'sms:?&body=' + encodeURIComponent(payload.text + '\n' + payload.url);
+            close();
+            return;
+          }
+          if (!navigator.share) throw new Error('native_share_unavailable');
+          await navigator.share(payload);
+          close();
+          this.shareToast(frame, '공유 화면을 열었어요');
+        } catch (error) {
+          if (error && error.name === 'AbortError') return;
+          close();
+          this.shareToast(frame, '공유할 수 없어 링크를 복사했어요');
+          try { await this.copyShareLink(payload.url); } catch (_) {}
+        }
       };
     });
+  }
+
+  currentSharePayload() {
+    const trend = this.trends && this.trends[this.state.trend];
+    const name = String((trend && trend.name) || '한국 트렌드');
+    const category = String((trend && trend.cat) || '통합 트렌드');
+    const eventKey = String((trend && trend.id) || name);
+    const base = new URL(window.location.origin + window.location.pathname);
+    base.searchParams.set('trend', eventKey);
+    return {
+      title: name + ' · TRZIP',
+      text: name + ' — ' + category + ' 트렌드와 관련 기업을 확인해 보세요.',
+      url: base.toString()
+    };
+  }
+
+  async copyShareLink(url) {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(url);
+      return;
+    }
+    const field = document.createElement('textarea');
+    field.value = url;
+    field.setAttribute('readonly', '');
+    field.style.cssText = 'position:fixed;left:-9999px;top:-9999px;';
+    document.body.appendChild(field);
+    field.select();
+    const copied = document.execCommand('copy');
+    field.remove();
+    if (!copied) throw new Error('clipboard_unavailable');
   }
 
   shareToast(frame, msg) {
@@ -3642,8 +3695,8 @@ class Component extends DCLogic {
 
   animateInterestRange() {
     if (this.prefersReducedMotion()) return;
-    const line = document.querySelector('[data-interest-line]');
-    const chart = line && line.closest('div[style*="height:108px"]');
+    const visual = document.querySelector('[data-interest-visual]');
+    const chart = visual && visual.closest('div[style*="height:108px"]');
     if (!chart || typeof chart.animate !== 'function') return;
     const duration = this.currentInterestChart && this.currentInterestChart.rankStyle
       ? this.currentInterestChart.rankStyle.animationDurationMs : 620;
@@ -5527,6 +5580,7 @@ class Component extends DCLogic {
     const rangeIndex = Math.max(0, Math.min(2, this.state.range || 0));
     const interestChart = this.buildInterestCurve(curTrend, rangeIndex);
     const rangeAvailability = [0, 1, 2].map((index) => (
+      curTrend.showcase && index > 0 ? false :
       index === rangeIndex ? interestChart.available : this.buildInterestCurve(curTrend, index).available
     ));
     this.currentInterestChart = interestChart;
@@ -5561,11 +5615,12 @@ class Component extends DCLogic {
       interestPeak: interestChart.peak,
       interestCurrent: interestChart.current,
       interestObservationCount: interestChart.observationCount,
+      rangeLabel0: curTrend.showcase ? '전체' : '24시간',
       interestRangeCaption: curTrend.showcase
-        ? '전체기간 실측 순위 기반 · 시연 ' + interestChart.rangeLabel
+        ? '전체기간 · 공개 순위 흐름'
         : '순위 기반 · 실제 ' + interestChart.rangeLabel + ' 관측',
       interestEmptyLabel: interestChart.rangeLabel + ' 내 비교할 관측값이 부족합니다',
-      interestSummaryLabel: (curTrend.showcase ? '시연 ' : '실제 ') + interestChart.rangeLabel + ' 순위 반응형 관심 흐름. 최고 지수 '
+      interestSummaryLabel: (curTrend.showcase ? '전체기간 ' : '실제 ') + interestChart.rangeLabel + ' 순위 막대 흐름. 최고 지수 '
         + interestChart.peak + ', 현재 지수 ' + interestChart.current
         + ', ' + interestChart.observationCount + '회 관측',
       periodStartLabel: interestChart.labels[0],

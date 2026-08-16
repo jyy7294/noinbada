@@ -17,7 +17,7 @@ def test_public_showcase_is_hash_pinned_and_has_exact_approved_shape() -> None:
 
     payload_path = ROOT / "frontend" / "showcase" / "showcase.json"
     assert SHOWCASE_MANIFEST["mode"] == "showcase_live_simulation"
-    assert SHOWCASE_MANIFEST["display_status"] == "시연 LIVE"
+    assert SHOWCASE_MANIFEST["display_status"] == "NOW"
     assert SHOWCASE_MANIFEST["display_time_policy"] == "client_kst_floor_hour"
     assert SHOWCASE_MANIFEST["approval"]["approved_count"] == 10
     total_companies = sum(len(card["companies"]) for card in SHOWCASE["cards"])
@@ -59,9 +59,9 @@ def test_frontend_defaults_to_validated_showcase_without_touching_live_contract(
     assert "async function loadShowcase()" in DATA
     assert "validateShowcasePayload(payload, manifest)" in DATA
     assert "sha256Hex(payloadText)" in DATA
-    assert "showcase_rank_response" in INDEX
+    assert "showcase_rank_bars" in INDEX
     assert "data_provenance: 'reconstructed_demo'" in INDEX
-    assert "this.liveStatus = '시연 LIVE'" in INDEX
+    assert "this.liveStatus = 'NOW'" in INDEX
     assert "loadShowcase," in DATA
 
 
@@ -105,6 +105,28 @@ def test_frontend_has_no_demo_or_export_ui_copy() -> None:
     assert "exportPortfoliosCsv" not in DATA
     assert "trzip-export-v1" not in DATA
     assert "은(는)" not in INDEX
+
+
+def test_share_surface_uses_native_share_real_clipboard_and_social_metadata() -> None:
+    for token in (
+        'property="og:title"', 'property="og:description"', 'property="og:image"',
+        'name="twitter:card"', "navigator.share(payload)",
+        "navigator.clipboard.writeText(url)", "document.execCommand('copy')",
+        "currentSharePayload()", "base.searchParams.set('trend', eventKey)",
+        "s.setAttribute('aria-label', '트렌드 공유하기')",
+    ):
+        assert token in INDEX
+    assert "카카오톡으로 공유했어요" not in INDEX
+    assert (ROOT / "frontend" / "assets" / "share" / "trzip-og.png").is_file()
+
+
+def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> None:
+    method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
+    assert "home.querySelectorAll('[data-mp-row],[data-portfolio-loading]')" in method
+    assert method.count("data-mp-row") == 1
+    assert "home.insertBefore(row" not in method
+    assert "row.setAttribute('data-mp-row'" not in method
+    assert "밈트폴리오 보러가기" in INDEX
 
 
 def test_critical_mobile_controls_have_accessible_touch_targets() -> None:
@@ -401,7 +423,7 @@ def test_live_logo_candidate_runtime_honors_initials_and_seed_scope() -> None:
 
 def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> None:
     assert "관심 흐름" in INDEX
-    assert "순위 반응형 관심 흐름" in INDEX
+    assert "통합 관심지수" in INDEX
     assert 'data-interest-range-caption="1"' in INDEX
     assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
     assert "const rangeKey = ['24h', '1m', '3m'][rangeIndex]" in INDEX
@@ -429,8 +451,9 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert "currentTimestamp - previousTimestamp > MAX_CONTIGUOUS_GAP_MS" in INDEX
     assert "segments.filter((segment) => segment.length >= 2).map" in INDEX
     assert "segments.filter((segment) => segment.length === 1)" in INDEX
-    assert 'data-interest-single-points="1"' in INDEX
-    assert 'data-interest-observation-points="1"' in INDEX
+    assert 'data-interest-single-points="1"' not in INDEX
+    assert 'data-interest-observation-points="1"' not in INDEX
+    assert 'data-interest-bars="1"' in INDEX
     assert 'data-interest-summary="1"' in INDEX
     assert "const observationPoints = points.filter(Boolean)" in INDEX
     assert "peak: Math.round(peakValue)" in INDEX
@@ -442,18 +465,17 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert "font-size:10.5px; line-height:1.45; color:#777A86" in INDEX
     assert "Intl.DateTimeFormat('ko-KR'" in INDEX
     assert "else if (activeSegment.length)" in INDEX
-    assert "linePath" in INDEX
+    assert "barPoints" in INDEX
     assert "data-interest-empty=\"1\"" in INDEX
     assert "rangeAvailability" in INDEX
     assert "aria-disabled=\"{{ rangeDisabled0 }}\"" in INDEX
     for synthetic_token in ("event_ramp", "lateBreakout", "middleDip", "lateRebound", "periodProfile"):
         assert synthetic_token not in INDEX
-    assert 'data-interest-line="1"' in INDEX
-    assert 'data-interest-area="1"' in INDEX
+    assert 'data-interest-bars="1"' in INDEX
+    assert 'data-interest-bar="1"' in INDEX
     assert 'aria-labelledby="interest-chart-title interest-chart-disclosure"' in INDEX
-    assert "실제 통합 관측 순위와 현재 공개 순위를 조합한 0~100 표시지수입니다." in INDEX
-    assert "절대 언급량·주가·매수신호가 아니며 결측은 보간하지 않고" in INDEX
-    assert "90분 넘게 빈 구간은 연결하지 않습니다." in INDEX
+    assert "공개 순위의 흐름을 0~100으로 표현한 관심지수입니다." in INDEX
+    assert "절대 언급량·주가·매수신호가 아닙니다." in INDEX
     assert "patchInterestChart()" in INDEX
     assert "sourceSignals" not in INDEX
     assert "sourceLabels" not in INDEX
@@ -490,10 +512,9 @@ def test_interest_chart_rank_response_uses_published_values_and_ranked_motion() 
         "dataset.interestSeriesContract",
         "animateRankResponsiveInterest(root, chart)",
         "this.prefersReducedMotion()",
-        "line.getTotalLength()",
-        "strokeDashoffset",
-        "latestPoint.style.transformBox = 'fill-box'",
-        "latestPoint.style.transformOrigin = 'center'",
+        "data-interest-bar",
+        "scaleY(.15)",
+        "latestPoint.style.transformOrigin = 'center bottom'",
     ):
         assert token in INDEX
 
@@ -548,6 +569,44 @@ def test_interest_chart_rank_response_uses_published_values_and_ranked_motion() 
         || !first.rankStyle.gapsPreserved) {
         throw new Error('rank-responsive presentation policy is not fail-closed');
       }
+    """
+    result = subprocess.run(
+        ["node", "-e", script], cwd=ROOT, text=True, capture_output=True, check=False
+    )
+    assert result.returncode == 0, result.stderr
+
+
+def test_showcase_interest_bars_are_deterministic_rank_specific_and_not_user_labeled_demo() -> None:
+    assert "showcase-rank-bars-v3" in INDEX
+    assert "deterministic_rank_band_bar_profile" in INDEX
+    assert "chart_type: 'bar'" in INDEX
+    assert "Math.sin" not in INDEX[INDEX.index("  buildShowcaseVisualization("):INDEX.index("  async loadPublishedData()")]
+    for exposed_copy in ("시연용 파생 데이터", "시연용 관심지수", "재구성 관심지수"):
+        assert exposed_copy not in INDEX
+
+    script = r"""
+      const fs = require('fs');
+      const html = fs.readFileSync('./frontend/index.html', 'utf8');
+      const match = html.match(/<script[^>]*data-dc-script[^>]*>([\s\S]*?)<\/script>/);
+      const Component = new Function('DCLogic', match[1] + ';return Component;')(
+        class { forceUpdate() {} }
+      );
+      const component = new Component();
+      const at = '2026-08-16T10:00:00+09:00';
+      const rows = Array.from({length: 10}, (_, index) => component.buildShowcaseVisualization({
+        event_key: 'event-' + (index + 1), presentation_order: index + 1
+      }, at));
+      const again = component.buildShowcaseVisualization({event_key: 'event-1', presentation_order: 1}, at);
+      if (JSON.stringify(rows[0]) !== JSON.stringify(again)) throw new Error('showcase bars are not deterministic');
+      if (!rows.every((row) => row.data_mode === 'showcase_rank_bars'
+        && row.chart_type === 'bar' && row['1w'].points.length === 16
+        && row['1w'].points.every((point) => point.combined >= 0 && point.combined <= 100))) {
+        throw new Error('showcase bar contract failed');
+      }
+      const signatures = new Set(rows.map((row) => row['1w'].points.map((point) => point.combined).join(',')));
+      if (signatures.size !== 10) throw new Error('rank-specific bar profiles are duplicated');
+      const current = rows.map((row) => row['1w'].points.at(-1).combined);
+      if (!(current[0] > current[9])) throw new Error('published rank did not affect demo interest level');
     """
     result = subprocess.run(
         ["node", "-e", script], cwd=ROOT, text=True, capture_output=True, check=False
@@ -1015,7 +1074,7 @@ def test_selection_disclosure_and_portfolio_safety_rules_are_visible_and_enforce
     assert "openSelectionGuide" in INDEX
     assert "트렌드 선정 기준" in INDEX
     assert "정치·범죄·재난·사생활·혐오" in INDEX
-    assert "관측 강도·확산·지속성" in INDEX
+    assert "최종 승인된 트렌드만 공개해요" in INDEX
     assert "validatePortfolioContent(input = {})" in DATA
     assert "UNSAFE_PORTFOLIO_TEXT" in DATA
     assert "정치·범죄·혐오·수익 보장 표현은 공개할 수 없습니다." in DATA
@@ -1038,9 +1097,9 @@ def test_selection_guide_uses_plain_language_and_human_final_approval() -> None:
 def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -> None:
     assert ">통합 트렌드</span>" in INDEX
     assert ">통합 관심지수</span>" in INDEX
-    assert "전체 수집 기간의 실제 원천 순위를 사건 단위로 통합해" in INDEX
+    assert "전체 수집 기간의 흐름을 사건 단위로 통합해" in INDEX
     assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
-    assert "전체 수집 기간의 순위 흐름을 분석해 승인된 시연 트렌드를 공개해요" in INDEX
+    assert "전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요" in INDEX
     assert "+ ' · 통합 트렌드</span>" in INDEX
     assert "최신 통합 트렌드 수집을 확인했습니다." in DATA
     assert "integratedTrendCopy(value)" in INDEX
@@ -1712,7 +1771,7 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'background:#FAFAFC; border:1px solid #ECE8F3' in INDEX
     assert 'data-freshness-explanation="1"' in INDEX
     assert 'data-interest-card="1"' in INDEX
-    assert '순위 반응형 관심 흐름' in INDEX
+    assert '통합 관심지수' in INDEX
     assert 'data-company-role-folder="1"' in INDEX
     assert 'data-folder-toggle="1"' in INDEX
     assert 'aria-label="{{ f.title }} {{ f.count }} 기업 목록 열기 또는 접기"' in INDEX

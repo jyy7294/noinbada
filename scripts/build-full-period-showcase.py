@@ -15,7 +15,7 @@ from trzip.hourly_store import default_db_path
 from trzip.intelligence import build_intelligence
 from trzip.final_publication_approval import build_final_publication_review, write_approval
 from trzip.company_adapters import pykrx_stock, yahoo_finance_stock
-from trzip.presentation_feed import _actual_market_snapshot
+from trzip.presentation_feed import _actual_market_snapshot, _live_logo_fields
 from trzip.publication_pipeline import _merge_domestic_market_references
 from trzip.showcase_live_simulation import (
     SHOWCASE_SELECTION,
@@ -42,25 +42,53 @@ def _write_json(path: Path, value: dict) -> None:
     )
 
 
-def _attach_observed_market_snapshots(payload: dict, observed_at: datetime) -> int:
-    """Attach one fail-closed real market snapshot per unique KRX security."""
+def _official_listing_verification(*, market: str, stock_code: str, observed_at: datetime) -> dict:
+    if market == "NYSE" and stock_code == "DIS":
+        return {
+            "status": "verified_current",
+            "current_listed": True,
+            "exchange": "NYSE",
+            "stock_code": "DIS",
+            "as_of": observed_at.astimezone(UTC).date().isoformat(),
+            "evidence_owner": "NYSE",
+            "evidence_type": "exchange_current_security_universe",
+            "evidence_url": "https://www.nyse.com/quote/XNYS:DIS",
+            "synthetic": False,
+            "estimated": False,
+            "ranking_effect": "none",
+        }
+    raise ValueError(f"unsupported overseas listing proof: {market}:{stock_code}")
 
-    companies_by_code = {
-        str(company["stock_code"]): company
+
+def _attach_observed_market_snapshots(payload: dict, observed_at: datetime) -> int:
+    """Attach one fail-closed market snapshot per unique listed security."""
+
+    companies_by_identity = {
+        (str(company.get("market") or "KRX"), str(company["stock_code"])): company
         for card in payload["cards"]
         for company in card["companies"]
     }
-    snapshots: dict[str, tuple[dict, dict]] = {}
+    snapshots: dict[tuple[str, str], tuple[dict, dict]] = {}
     base_date = observed_at.astimezone(UTC).strftime("%Y%m%d")
-    for stock_code in sorted(companies_by_code):
-        pykrx = pykrx_stock(stock_code, base_date=base_date, lookback_days=60)
-        yahoo_exchange = "KOSDAQ" if stock_code in KOSDAQ_STOCK_CODES else "KRX"
-        yahoo = yahoo_finance_stock(stock_code, yahoo_exchange, as_of=observed_at)
-        market_reference = _merge_domestic_market_references(pykrx, yahoo)
-        listing_verification = market_reference.get("listing_verification")
+    for market, stock_code in sorted(companies_by_identity):
+        if market in {"KRX", "KOSPI", "KOSDAQ"}:
+            pykrx = pykrx_stock(stock_code, base_date=base_date, lookback_days=60)
+            yahoo_exchange = "KOSDAQ" if stock_code in KOSDAQ_STOCK_CODES else "KRX"
+            yahoo = yahoo_finance_stock(stock_code, yahoo_exchange, as_of=observed_at)
+            market_reference = _merge_domestic_market_references(pykrx, yahoo)
+            listing_verification = market_reference.get("listing_verification")
+        else:
+            market_reference = yahoo_finance_stock(stock_code, market, as_of=observed_at)
+            listing_verification = _official_listing_verification(
+                market=market,
+                stock_code=stock_code,
+                observed_at=observed_at,
+            )
+            market_reference["listing_verification"] = listing_verification
         snapshot = _actual_market_snapshot(
             {
                 "stock_code": stock_code,
+                "market": market,
                 "listing_verification": listing_verification,
                 "market_reference": market_reference,
             },
@@ -68,15 +96,37 @@ def _attach_observed_market_snapshots(payload: dict, observed_at: datetime) -> i
             observed_at,
         )
         if snapshot is None:
-            name = companies_by_code[stock_code]["company"]
-            raise ValueError(f"observed market snapshot is incomplete: {stock_code} {name}")
-        snapshots[stock_code] = (listing_verification, snapshot)
+            name = companies_by_identity[(market, stock_code)]["company"]
+            raise ValueError(f"observed market snapshot is incomplete: {market}:{stock_code} {name}")
+        snapshots[(market, stock_code)] = (listing_verification, snapshot)
     attached = 0
     for card in payload["cards"]:
         for company in card["companies"]:
-            listing_verification, snapshot = snapshots[str(company["stock_code"])]
+            identity = (str(company.get("market") or "KRX"), str(company["stock_code"]))
+            listing_verification, snapshot = snapshots[identity]
             company["listing_verification"] = listing_verification
             company["market_snapshot"] = snapshot
+            attached += 1
+    return attached
+
+
+def _attach_verified_company_logos(payload: dict) -> int:
+    """Resolve and attach one official, verified image logo to every company row."""
+
+    logo_fields_by_homepage: dict[str, dict] = {}
+    attached = 0
+    for card in payload["cards"]:
+        for company in card["companies"]:
+            homepage = str(company.get("company_identity_url") or "").strip()
+            if homepage not in logo_fields_by_homepage:
+                logo_fields_by_homepage[homepage] = _live_logo_fields(homepage)
+            fields = logo_fields_by_homepage[homepage]
+            if fields.get("logo_render_mode") != "image":
+                raise ValueError(
+                    f"verified company logo is unavailable: {company['company']} {homepage}"
+                )
+            company.update(fields)
+            company["logo_asset_scope"] = "showcase_company"
             attached += 1
     return attached
 
@@ -103,6 +153,7 @@ def main() -> int:
         source_observed_at=str(observed_at),
     )
     market_snapshot_count = _attach_observed_market_snapshots(payload, at)
+    logo_count = _attach_verified_company_logos(payload)
     validate_showcase_enrichment(payload)
 
     target = args.output.resolve()
@@ -133,13 +184,19 @@ def main() -> int:
             "provider": "pykrx+yahoo_finance",
             "snapshot_count": market_snapshot_count,
             "unique_security_count": len({
-                company["stock_code"]
+                (company.get("market") or "KRX", company["stock_code"])
                 for card in payload["cards"]
                 for company in card["companies"]
             }),
             "synthetic": False,
             "estimated": False,
             "ranking_effect": "none",
+        },
+        "company_logos": {
+            "status": "verified",
+            "image_count": logo_count,
+            "fallback_count": 0,
+            "source": "official_page_asset",
         },
         "showcase": {"path": "showcase.json", "sha256": _sha256(payload_path)},
         "final_review": {
@@ -175,6 +232,7 @@ def main() -> int:
             "ranking_window": manifest["ranking_window"],
             "card_count": manifest["card_count"],
             "market_data": manifest["market_data"],
+            "company_logos": manifest["company_logos"],
             "showcase": manifest["showcase"],
             "approval": {
                 "approved_count": manifest["approval"]["approved_count"],

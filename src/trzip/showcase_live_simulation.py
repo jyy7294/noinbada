@@ -97,47 +97,45 @@ COMPANY_CARDS = {
     ),
     "개기일식": (
         ("삼성전자", "005930", "manufacturing_development", "https://www.samsung.com/sec/", "스마트폰 카메라·천체 촬영 기기"),
-        ("LG전자", "066570", "manufacturing_development", "https://www.lge.co.kr/", "관측 영상용 디스플레이·전자기기"),
-        ("LG이노텍", "011070", "raw_materials_components", "https://www.lginnotek.com/", "스마트폰 카메라 모듈·광학부품"),
         ("삼성전기", "009150", "raw_materials_components", "https://www.samsungsem.com/", "카메라 모듈·정밀 광학부품"),
         ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "천문정보·관측 콘텐츠 검색 플랫폼"),
         ("하나투어", "039130", "event_sponsorship", "https://www.hanatourcompany.com/", "천문 현상 관측 목적지 여행 상품"),
+        ("모두투어", "080160", "event_sponsorship", "https://www.modetour.com/", "천문 현상 관측 목적지 여행 상품"),
     ),
     "AC 밀란 vs 맨유": (
         ("CJ ENM", "035760", "content_production", "https://www.cjenm.com/", "스포츠 중계 채널·OTT 콘텐츠 운영"),
-        ("SOOP", "067160", "platform_service", "https://corp.sooplive.co.kr/", "축구·스포츠 라이브 스트리밍"),
+        ("SOOP", "067160", "distribution", "https://corp.sooplive.co.kr/", "축구·스포츠 라이브 스트리밍 유통"),
         ("KT", "030200", "platform_service", "https://corp.kt.com/", "Genie TV 스포츠 채널 유통"),
         ("LG유플러스", "032640", "platform_service", "https://www.lguplus.com/", "U+tv 스포츠 채널 유통"),
-        ("제일기획", "030000", "brand_marketing", "https://www.cheil.com/", "글로벌 스포츠 행사·브랜드 마케팅"),
+        ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "축구 경기 일정·뉴스·팬 콘텐츠 유통"),
     ),
     "페르세우스 유성우": (
         ("삼성전자", "005930", "manufacturing_development", "https://www.samsung.com/sec/", "야간 촬영용 스마트폰 카메라·기기"),
-        ("LG전자", "066570", "manufacturing_development", "https://www.lge.co.kr/", "천체 영상용 디스플레이·전자기기"),
-        ("LG이노텍", "011070", "raw_materials_components", "https://www.lginnotek.com/", "야간 촬영 카메라 모듈·광학부품"),
         ("삼성전기", "009150", "raw_materials_components", "https://www.samsungsem.com/", "카메라 모듈·정밀 광학부품"),
         ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "유성우 일정·관측지 정보 검색 플랫폼"),
         ("하나투어", "039130", "event_sponsorship", "https://www.hanatourcompany.com/", "별 관측 명소 연계 여행 상품"),
+        ("모두투어", "080160", "event_sponsorship", "https://www.modetour.com/", "별 관측 명소 연계 여행 상품"),
     ),
     "한화 vs 삼성": (
         ("한화", "000880", "ownership_investment", "https://www.hanwhacorp.co.kr/", "한화그룹 프로야구 구단 브랜드"),
         ("CJ ENM", "035760", "content_production", "https://www.cjenm.com/", "프로야구 중계·하이라이트 콘텐츠"),
         ("SOOP", "067160", "platform_service", "https://corp.sooplive.co.kr/", "프로야구 라이브 스트리밍·팬 방송"),
         ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "프로야구 일정·기록·팬 콘텐츠"),
-        ("제일기획", "030000", "brand_marketing", "https://www.cheil.com/", "스포츠 구단·브랜드 캠페인 기획"),
+        ("카카오", "035720", "platform_service", "https://www.kakaocorp.com/", "프로야구 뉴스·팬 콘텐츠 유통"),
     ),
     "둠스데이": (
+        ("월트 디즈니 컴퍼니", "DIS", "ownership_investment", "https://thewaltdisneycompany.com/", "마블 스튜디오와 어벤져스 영화 IP를 보유·제작·배급하는 핵심 권리사", "NYSE"),
         ("CJ CGV", "079160", "distribution", "https://corp.cgv.co.kr/", "마블 영화 상영 멀티플렉스 운영"),
         ("콘텐트리중앙", "036420", "distribution", "https://www.jcontentree.com/", "극장·영화 콘텐츠 배급·유통"),
         ("덱스터", "206560", "content_production", "https://dexterstudios.com/", "영화·시리즈 VFX 제작"),
-        ("위지윅스튜디오", "299900", "content_production", "https://www.wswgstudios.com/", "영상 콘텐츠 VFX·후반제작"),
         ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "영화 검색·예고편·팬 콘텐츠 유통"),
     ),
     "말복": (
         ("CJ제일제당", "097950", "manufacturing_development", "https://www.cj.co.kr/", "삼계탕·보양식 HMR 제조"),
         ("하림", "136480", "manufacturing_development", "https://www.harim.com/", "닭고기 가공·삼계탕 제품 제조"),
         ("대상", "001680", "manufacturing_development", "https://www.daesang.com/", "간편식·보양식 제품 제조"),
-        ("마니커에프앤지", "195500", "raw_materials_components", "https://www.mnf.co.kr/", "닭고기 가공·HMR 원료 공급"),
-        ("사조대림", "003960", "distribution", "https://www.sajodaerim.com/", "냉장·냉동 간편식 제조·유통"),
+        ("마니커에프앤지", "195500", "raw_materials_components", "https://www.manikerfng.com/", "닭고기 가공·HMR 원료 공급"),
+        ("사조대림", "003960", "distribution", "https://dr.sajo.co.kr/eng/intro/company_ci.asp", "냉장·냉동 간편식 제조·유통"),
         ("이마트", "139480", "retail_sales", "https://company.emart.com/", "보양식·닭고기 상품 대형마트 판매"),
         ("GS리테일", "007070", "retail_sales", "https://www.gsretail.com/", "편의점·슈퍼 보양식 간편식 판매"),
     ),
@@ -151,10 +149,10 @@ COMPANY_CARDS = {
     ),
     "ufc 330": (
         ("CJ ENM", "035760", "content_production", "https://www.cjenm.com/", "격투기·스포츠 중계 콘텐츠 운영"),
-        ("SOOP", "067160", "platform_service", "https://corp.sooplive.co.kr/", "격투기·스포츠 라이브 스트리밍"),
+        ("SOOP", "067160", "distribution", "https://corp.sooplive.co.kr/", "격투기·스포츠 라이브 스트리밍 유통"),
         ("KT", "030200", "platform_service", "https://corp.kt.com/", "Genie TV 스포츠 채널 유통"),
         ("LG유플러스", "032640", "platform_service", "https://www.lguplus.com/", "U+tv 스포츠 채널 유통"),
-        ("제일기획", "030000", "brand_marketing", "https://www.cheil.com/", "스포츠 행사·브랜드 마케팅"),
+        ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "격투기 경기 일정·뉴스·팬 콘텐츠 유통"),
     ),
     "코믹월드": (
         ("대원미디어", "048910", "content_production", "https://www.daewonmedia.com/", "애니메이션·캐릭터 IP 유통"),
@@ -188,11 +186,13 @@ def build_showcase_enrichment(
             for text in KEYWORDS[event_key]
         ]
         companies = []
-        for company, stock_code, role, homepage, explanation in COMPANY_CARDS[event_key]:
+        for entry in COMPANY_CARDS[event_key]:
+            company, stock_code, role, homepage, explanation, *market_values = entry
+            market = str(market_values[0] if market_values else "KRX")
             companies.append({
                 "company": company,
                 "stock_code": stock_code,
-                "market": "KRX",
+                "market": market,
                 "company_role_category": role,
                 "company_role_label": COMPANY_ROLE_LABELS[role],
                 "relationship_status": "reconstructed_demo",
@@ -223,7 +223,7 @@ def build_showcase_enrichment(
     return {
         "schema_version": SCHEMA_VERSION,
         "mode": MODE,
-        "display_status": "시연 LIVE",
+        "display_status": "NOW",
         "display_time_policy": "client_kst_floor_hour",
         "display_as_of": floor_kst_hour(display_now),
         "source_observed_at": source_observed_at,
