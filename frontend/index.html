@@ -277,8 +277,8 @@
             </div>
           </div>
           <div data-home-hint="1" style="text-align:center; font-weight:500; font-size:11.5px; color:#9A8BC9; margin-top:12px;">키워드를 눌러 자세히 알아보세요</div>
-          <div data-list-view2="1" style="display:none; margin-top:12px; background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:6px 14px;"></div>
-          <div data-home-portfolios="1" style="visibility:hidden; margin:30px -16px 0; padding:22px 18px 2px; border-top:1px solid #EFECF8;">
+          <div data-list-view2="1" style="display:none; margin:6px -16px 0; height:clamp(300px, 42dvh, 370px); overflow-y:auto; overscroll-behavior:contain; background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:4px 14px;"></div>
+          <div data-home-portfolios="1" style="visibility:hidden; margin:16px -16px 0; padding:22px 18px 2px; border-top:1px solid #EFECF8;">
             <div style="padding:0 2px 4px;">
               <div style="font-weight:800; font-size:16.5px; color:#1A1A22; letter-spacing:-0.03em;">인기 밈트폴리오</div>
               <div style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:3px;">트렌드에서 발견한 기업을 한곳에 모았어요</div>
@@ -2812,7 +2812,7 @@ class Component extends DCLogic {
       stage.style.display = isList ? 'none' : 'block';
       if (hint) hint.style.display = isList ? 'none' : 'block';
       list.style.display = isList ? 'block' : 'none';
-      if (scroller) { scroller.style.overflowY = isList ? 'auto' : 'hidden'; scroller.scrollTop = 0; }
+      if (scroller) { scroller.style.overflowY = 'hidden'; scroller.scrollTop = 0; }
       btn.textContent = isList ? 'Dial View' : 'List View';
       btn.setAttribute('aria-label', isList ? '트렌드를 다이얼로 보기' : '트렌드를 목록으로 보기');
       btn.setAttribute('aria-pressed', String(isList));
@@ -4956,11 +4956,11 @@ class Component extends DCLogic {
             : movement.status === 'new' ? '#7B3FF2' : '#8B8D98';
         const divider = index ? '<div style="height:1px;background:#F1EEF9;"></div>' : '';
         return divider + '<button type="button" data-home-topic="' + escape(trend.name)
-          + '" style="width:100%;border:0;background:#FFFFFF;display:flex;align-items:center;gap:12px;padding:12px 2px;text-align:left;cursor:pointer;">'
-          + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:15px;color:#7B3FF2;">' + (index + 1) + '</span>'
-          + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">'
-          + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;word-break:keep-all;font-weight:800;font-size:14.5px;line-height:1.28;color:#1A1A22;letter-spacing:-0.03em;">' + escape(trend.name) + '</span>'
-          + '<span style="font-weight:500;font-size:11px;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + '</span></span>'
+          + '" style="width:100%;border:0;background:#FFFFFF;display:flex;align-items:center;gap:10px;padding:8px 2px;text-align:left;cursor:pointer;">'
+          + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:14px;color:#7B3FF2;">' + (index + 1) + '</span>'
+          + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;">'
+          + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden;word-break:keep-all;font-weight:800;font-size:14px;line-height:1.24;color:#1A1A22;letter-spacing:-0.03em;">' + escape(trend.name) + '</span>'
+          + '<span style="font-weight:500;font-size:10.5px;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + '</span></span>'
           + '<span aria-label="이전 공개 대비 ' + escape(movementLabel) + '" style="flex:none;font-weight:700;font-size:12px;color:' + movementColor + ';">' + escape(movementLabel) + '</span></button>';
       }).join('');
       list.querySelectorAll('[data-home-topic]').forEach((row) => {
