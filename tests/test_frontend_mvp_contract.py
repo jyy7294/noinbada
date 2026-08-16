@@ -291,6 +291,13 @@ def test_home_featured_portfolio_returns_to_the_portfolio_list() -> None:
     assert handler.count("this.pdFrom = 'list';") == 2
 
 
+def test_portfolio_detail_back_always_returns_to_the_portfolio_list() -> None:
+    handler = INDEX[INDEX.index("  pdBack = () => {") : INDEX.index("  goHomePost = (e) => {")]
+    assert "this.pdFrom = 'list';" in handler
+    assert "this.panTo(document.querySelector('#post-list'));" in handler
+    assert "#my-page" not in handler
+
+
 def test_home_header_prioritizes_the_live_trend_title() -> None:
     header = INDEX[INDEX.index('data-screen-label="01 홈"') : INDEX.index('data-vd-stage="1"')]
     assert "실시간 트렌드</div>" in header

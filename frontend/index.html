@@ -3719,8 +3719,10 @@ class Component extends DCLogic {
   };
 
   pdBack = () => {
-    const id = this.pdFrom === 'my' ? '#my-page' : (this.pdFrom === 'home' ? '[data-screen-label="01 홈"]' : '#post-list');
-    this.panTo(document.querySelector(id));
+    // 저장 목록에서 열었더라도 포트 상세의 이전 화면은 항상 밈트폴리오 목록입니다.
+    // 내 페이지는 포트 상세의 소유·관리 화면일 뿐, 탐색 흐름의 상위 화면이 아닙니다.
+    this.pdFrom = 'list';
+    this.panTo(document.querySelector('#post-list'));
   };
 
   goHomePost = (e) => {
