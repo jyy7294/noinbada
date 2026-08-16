@@ -1967,7 +1967,7 @@ class Component extends DCLogic {
         ? this.publishedView.observedAt : ''
     ).getTime();
     const showcaseAllHistory = Boolean(trend && trend.showcase === true && rangeIndex === 0);
-    const displayRangeLabel = showcaseAllHistory ? '전체' : rangeSpec.label;
+    const displayRangeLabel = rangeSpec.label;
     const showcaseFirstObservedMs = allPublishedPoints.length
       ? Math.min(...allPublishedPoints.map((point) => new Date(point.at).getTime())) : null;
     const windowEndMs = showcaseAllHistory && Number.isFinite(latestObservedMs)
@@ -2395,7 +2395,7 @@ class Component extends DCLogic {
             cat: CATEGORY_KO[card.category] || '기타',
             core: card.display_name,
             tags: keywords.map((keyword) => '#' + keyword.replace(/\s+/g, '')),
-            day: '최근 관측', phase: '새로 포착',
+            day: '최근 1일', phase: '새로 포착',
             lift: Number(card.full_ledger_score).toFixed(2),
             rankMovement: movement, rankMovementLabel: 'NEW',
             rank: card.presentation_order + '위', progress: 18, stageIdx: 0,

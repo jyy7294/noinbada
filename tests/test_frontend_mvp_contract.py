@@ -589,6 +589,8 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert 'data-interest-range-caption="1"' in INDEX
     assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
     assert "const rangeKey = ['24h', '1w', '1m'][rangeIndex]" in INDEX
+    assert "const displayRangeLabel = rangeSpec.label;" in INDEX
+    assert "showcaseAllHistory ? '전체'" not in INDEX
     assert "trend.visualizationSeries" in INDEX
     assert "visualization[rangeSpec.sourceKey]" in INDEX
     assert "publishedWindow && publishedWindow.points" in INDEX
