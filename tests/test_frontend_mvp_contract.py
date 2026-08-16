@@ -153,6 +153,12 @@ def test_home_featured_portfolio_returns_to_the_portfolio_list() -> None:
     assert handler.count("this.pdFrom = 'list';") == 2
 
 
+def test_home_back_control_opens_kiwoom_instead_of_a_hidden_previous_screen() -> None:
+    assert 'aria-label="키움증권 열기" onClick="{{ openKiwoomHome }}"' in INDEX
+    assert "openKiwoomHome = () =>" in INDEX
+    assert "window.open('https://www.kiwoom.com/', '_blank', 'noopener,noreferrer');" in INDEX
+
+
 def test_critical_mobile_controls_have_accessible_touch_targets() -> None:
     assert INDEX.count('data-critical-touch-target="1"') >= 3
     assert "min-width:44px; height:44px" in INDEX

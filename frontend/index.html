@@ -191,7 +191,9 @@
 
         <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px 18px;">
           <div style="display:flex; align-items:center; gap:8px;">
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style="display:block; flex:none;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#1A1A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+            <button type="button" aria-label="키움증권 열기" onClick="{{ openKiwoomHome }}" style="width:44px;height:44px;margin:-12px;border:0;background:transparent;padding:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style="display:block;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#1A1A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+            </button>
             <div style="min-width:0;">
               <div style="display:flex; align-items:center; gap:7px;">
                 <span style="white-space:nowrap; font-weight:800; font-size:19px; color:#1A1A22; letter-spacing:-0.03em;">트렌드</span>
@@ -3650,6 +3652,11 @@ class Component extends DCLogic {
   backHome = () => { this.panTo(document.querySelector('[data-screen-label="01 홈"]')); };
   backDetail = () => { this.panTo(document.querySelector('#trend-detail')); };
 
+  openKiwoomHome = () => {
+    this.track('kiwoom_home_open', { surface: 'trend_home' });
+    window.open('https://www.kiwoom.com/', '_blank', 'noopener,noreferrer');
+  };
+
   pdBack = () => {
     const id = this.pdFrom === 'my' ? '#my-page' : (this.pdFrom === 'home' ? '[data-screen-label="01 홈"]' : '#post-list');
     this.panTo(document.querySelector(id));
@@ -5646,6 +5653,7 @@ class Component extends DCLogic {
       pdBack: this.pdBack,
       backHome: this.backHome,
       backDetail: this.backDetail,
+      openKiwoomHome: this.openKiwoomHome,
       goCompanies: this.goCompanies,
       trendRank: curTrend.rank,
       trendCaption: curTrend.caption,
