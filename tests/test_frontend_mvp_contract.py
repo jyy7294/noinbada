@@ -57,6 +57,14 @@ def test_frontend_defaults_to_validated_showcase_without_touching_live_contract(
     assert "loadShowcase," in DATA
 
 
+def test_user_ui_hides_raw_provider_names_and_source_links() -> None:
+    assert "시장 정보 · {{ sheetProviderLabel }}" not in INDEX
+    assert 'href="{{ sheetSourceUrl }}"' not in INDEX
+    assert "실제 시장 데이터 · {{ sheetAsOf }} 기준" in INDEX
+    assert "vals.sheetProviderLabel" not in INDEX
+    assert "vals.sheetSourceUrl" not in INDEX
+
+
 def test_frontend_has_no_demo_or_export_ui_copy() -> None:
     forbidden = (
         "시연용",
