@@ -3070,6 +3070,7 @@ class Component extends DCLogic {
     dim.style.cssText = 'position:absolute; inset:0; background:rgba(20,16,34,0.42); opacity:0; transition:opacity 220ms ease;';
     const sheet = document.createElement('div');
     sheet.style.cssText = 'position:relative; background:#FFFFFF; border-radius:24px 24px 0 0; padding:10px 16px 18px; transform:translateY(100%); transition:transform 340ms cubic-bezier(.22,.9,.28,1); box-shadow:0 -12px 30px rgba(26,26,34,0.16);';
+    const brandIcon = (src, alt) => '<img src="' + src + '" alt="' + alt + '" style="display:block;width:21px;height:21px;object-fit:contain;">';
     const row = (icon, bg, label, key) => '<div data-share-item="' + key + '" style="display:flex; align-items:center; gap:12px; padding:13px 4px; cursor:pointer;">'
       + '<span style="width:38px; height:38px; flex:none; border-radius:12px; background:' + bg + '; display:flex; align-items:center; justify-content:center; font-size:18px;">' + icon + '</span>'
       + '<span style="flex:1; font-weight:800; font-size:14.5px; color:#1A1A22; letter-spacing:-0.02em;">' + label + '</span>'
@@ -3078,9 +3079,9 @@ class Component extends DCLogic {
       + '<div style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em; padding:0 4px 6px;">공유하기</div>'
       + row('🔗', '#F3EEFF', '링크 복사', 'link')
       + '<div style="height:1px; background:#F5F2FB;"></div>'
-      + row('💬', '#FEF3C2', '카카오톡 공유', 'kakao')
+      + row(brandIcon('https://cdn.simpleicons.org/kakaotalk/3C1E1E', '카카오톡'), '#FEE500', '카카오톡 공유', 'kakao')
       + '<div style="height:1px; background:#F5F2FB;"></div>'
-      + row('✉️', '#E4F1FE', '메시지 공유', 'sms')
+      + row(brandIcon('https://cdn.simpleicons.org/instagram/FFFFFF', '인스타그램'), 'linear-gradient(135deg,#833AB4 0%,#FD1D1D 52%,#FCAF45 100%)', '인스타그램 공유', 'instagram')
       + '<div data-share-item="cancel" style="margin-top:12px; text-align:center; padding:13px; border-radius:14px; background:#F7F5FC; font-weight:600; font-size:14px; color:#6B6E7B; cursor:pointer;">취소</div>';
     wrap.appendChild(dim);
     wrap.appendChild(sheet);
@@ -3102,11 +3103,6 @@ class Component extends DCLogic {
             await this.copyShareLink(payload.url);
             close();
             this.shareToast(frame, '링크를 복사했어요');
-            return;
-          }
-          if (key === 'sms' && !navigator.share) {
-            window.location.href = 'sms:?&body=' + encodeURIComponent(payload.text + '\n' + payload.url);
-            close();
             return;
           }
           if (!navigator.share) throw new Error('native_share_unavailable');

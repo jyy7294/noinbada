@@ -117,6 +117,12 @@ def test_share_surface_uses_native_share_real_clipboard_and_social_metadata() ->
     ):
         assert token in INDEX
     assert "카카오톡으로 공유했어요" not in INDEX
+    assert "카카오톡 공유" in INDEX
+    assert "인스타그램 공유" in INDEX
+    assert "메시지 공유" not in INDEX
+    assert "https://cdn.simpleicons.org/kakaotalk/3C1E1E" in INDEX
+    assert "https://cdn.simpleicons.org/instagram/FFFFFF" in INDEX
+    assert "key === 'sms'" not in INDEX
     assert (ROOT / "frontend" / "assets" / "share" / "trzip-og.png").is_file()
 
 
