@@ -2338,39 +2338,26 @@ class Component extends DCLogic {
   }
 
   animateRankResponsiveInterest(root, chart) {
-    if (!chart || !chart.available || this.prefersReducedMotion()) return;
+    if (!chart || !chart.available || chart.rangeKey !== '24h' || this.prefersReducedMotion()) return;
     const visual = root.querySelector('[data-interest-visual]');
     if (!visual || visual.dataset.rankMotionKey === chart.motionKey) return;
     visual.dataset.rankMotionKey = chart.motionKey;
     const rankStyle = chart.rankStyle || this.rankResponsiveInterestStyle(null);
     const points = visual.querySelectorAll('[data-interest-bar]');
-    const latestPoint = points.length ? points[points.length - 1] : null;
     points.forEach((point, index) => {
-      if (point === latestPoint || typeof point.animate !== 'function') return;
+      if (typeof point.animate !== 'function') return;
+      const latest = point.dataset.latest === '1';
       point.style.transformOrigin = 'center bottom';
       point.animate([
-        { opacity: 0, transform: 'translateX(-50%) scaleY(.15)' },
-        { opacity: 1, transform: 'translateX(-50%) scaleY(1)' }
+        { opacity: 0, transform: 'translateX(calc(-50% - 18px)) scaleY(.08)' },
+        { opacity: latest ? 1 : 0.82, transform: 'translateX(-50%) scaleY(1)' }
       ], {
-        duration: Math.max(220, Math.round(rankStyle.animationDurationMs * 0.62)),
-        delay: Math.min(index, 16) * rankStyle.pointStaggerMs,
+        duration: Math.max(260, Math.round(rankStyle.animationDurationMs * 0.7)),
+        delay: Math.min(index * 46, 506),
         easing: 'cubic-bezier(.22,.61,.36,1)',
         fill: 'backwards'
       });
     });
-    if (latestPoint && typeof latestPoint.animate === 'function') {
-      latestPoint.style.transformOrigin = 'center bottom';
-      latestPoint.style.filter = 'drop-shadow(0 0 ' + (rankStyle.rank <= 3 ? '5px' : '3px') + ' rgba(91,33,192,.34))';
-      latestPoint.animate([
-        { opacity: 0.55, transform: 'translateX(-50%) scaleY(.25)' },
-        { opacity: 1, transform: 'translateX(-50%) scaleY(1.08)' },
-        { opacity: 1, transform: 'translateX(-50%) scaleY(1)' }
-      ], {
-        duration: rankStyle.pulseDurationMs,
-        delay: Math.min(points.length, 16) * rankStyle.pointStaggerMs,
-        easing: 'cubic-bezier(.22,.61,.36,1)'
-      });
-    }
   }
 
   analyticsEvents = new Set([
@@ -3911,6 +3898,7 @@ class Component extends DCLogic {
 
   animateInterestRange() {
     if (this.prefersReducedMotion()) return;
+    if (!this.currentInterestChart || this.currentInterestChart.rangeKey !== '24h') return;
     const visual = document.querySelector('[data-interest-visual]');
     const chart = visual && visual.closest('div[style*="height:108px"]');
     if (!chart || typeof chart.animate !== 'function') return;

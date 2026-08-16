@@ -728,8 +728,10 @@ def test_interest_chart_rank_response_uses_published_values_and_ranked_motion() 
         "animateRankResponsiveInterest(root, chart)",
         "this.prefersReducedMotion()",
         "data-interest-bar",
-        "scaleY(.15)",
-        "latestPoint.style.transformOrigin = 'center bottom'",
+        "chart.rangeKey !== '24h'",
+        "translateX(calc(-50% - 18px)) scaleY(.08)",
+        "Math.min(index * 46, 506)",
+        "point.style.transformOrigin = 'center bottom'",
     ):
         assert token in INDEX
 
