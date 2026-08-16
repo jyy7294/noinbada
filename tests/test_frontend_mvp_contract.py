@@ -171,17 +171,24 @@ def test_portfolio_list_defaults_to_latest_and_home_feature_uses_likes() -> None
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
     dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
+    orbit = INDEX[INDEX.index("  dialWire() {") : INDEX.index("  viewToggleWire() {")]
     assert "stage.__selectTrend" not in dial
+    assert "if (!this.trends.length || this.trends[0].emptyState) return;" in dial
     assert "this.dialGo(el.getAttribute('data-label') || el.textContent);" in vd
     assert "if (bigHit) return;" in vd
+    assert "this.dialGo(el.getAttribute('data-label'));" in orbit
+    assert "rot = -(i / N)" not in orbit
     assert "if (rows.length < 2 || window.__mpRotate) return;" in INDEX
 
 
-def test_app_enters_home_directly_without_a_zipper_handoff() -> None:
+def test_app_starts_with_zipper_and_uses_a_single_handoff_to_home() -> None:
     shell = INDEX[INDEX.index("  protoShell() {") : INDEX.index("  componentDidMount() {")]
     mount = INDEX[INDEX.index("  componentDidMount() {") : INDEX.index("  componentWillUnmount() {")]
-    assert "var idx = 1;" in shell
-    assert "this.zipWire()" not in mount
+    zipper = INDEX[INDEX.index("  zipWire() {") : INDEX.index("  listViewWire() {")]
+    assert "var idx = 0;" in shell
+    assert "window.__zipOpening" in shell
+    assert "this.zipWire()" in mount
+    assert "window.__zipOpening = true;" in zipper
 
 
 def test_home_featured_portfolio_returns_to_the_portfolio_list() -> None:

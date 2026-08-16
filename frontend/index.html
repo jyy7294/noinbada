@@ -1026,9 +1026,8 @@ class Component extends DCLogic {
 
   protoShell() {
     (function () {
-      // 지퍼 인트로와 홈을 연달아 전환하면 모바일에서 빈 프레임과
-      // 터치 누락이 생깁니다. 앱은 곧바로 홈을 첫 화면으로 엽니다.
-      var idx = 1;
+      // 지퍼 오프닝은 유지하되, 열린 직후 홈 전환 애니메이션을 겹치지 않습니다.
+      var idx = 0;
       var st = document.createElement('style');
       st.textContent = "::-webkit-scrollbar { width: 0; height: 0; }\n  #dc-root > section { position: fixed !important; inset: 0 !important; margin: 0 !important; padding: 0 !important; display: block !important; gap: 0 !important; min-height: 0 !important; background: #15121F; }\n  [data-screen-label] { position: absolute !important; left: 50% !important; top: 18px !important; display: none !important; transform-box: border-box; transform-origin: top center !important; }\n  [data-screen-label][data-proto-active] { display: flex !important; }\n  [data-screen-label] > div:first-child { display: none !important; }\n  @media (max-width: 600px) { [data-screen-label] { position: fixed !important; inset: 0 !important; left: 0 !important; top: 0 !important; width: 100% !important; height: 100dvh !important; } }\n";
       document.head.appendChild(st);
@@ -1052,7 +1051,11 @@ class Component extends DCLogic {
             (window.__omPaints || []).forEach(function (p) { try { p(); } catch (e) {} });
           });
         };
-        if (!current || next === idx || reducedMotion()) { activate(); return; }
+        if (!current || next === idx || reducedMotion() || window.__zipOpening) {
+          activate();
+          window.__zipOpening = false;
+          return;
+        }
         var outgoing = phone(current);
         if (outgoing) {
           outgoing.style.transition = 'opacity 150ms ease, transform 180ms cubic-bezier(.4,0,1,1)';
@@ -1127,6 +1130,7 @@ class Component extends DCLogic {
     this.startStatusClock();
     setTimeout(() => this.listViewWire(), 200);
     setTimeout(() => this.protoShell(), 40);
+    setTimeout(() => this.zipWire(), 120);
     setTimeout(() => { this.likeWire(); this.stashWire(); this.myTabWire(); this.renderCompanyWatchlist(); this.shareWire(); }, 80);
     setTimeout(() => this.mkWire(), 120);
     setTimeout(() => this.snsWire(), 60);
@@ -2783,11 +2787,9 @@ class Component extends DCLogic {
     stage.addEventListener('pointerup', snap);
     stage.addEventListener('pointercancel', snap);
     stage.addEventListener('pointerleave', snap);
-    sats.forEach((el, i) => {
+    sats.forEach((el) => {
       el.addEventListener('click', () => {
-        if (i === topIdx) { this.dialGo(el.getAttribute('data-label')); return; }
-        rot = -(i / N) * Math.PI * 2;
-        paint();
+        this.dialGo(el.getAttribute('data-label'));
       });
     });
     const center = stage.querySelector('[data-dial-center]');
@@ -4247,7 +4249,10 @@ class Component extends DCLogic {
     const open = () => {
       if (opened) return;
       opened = true;
-      ease(y, MAX, 620, () => this.panTo(root.querySelector('[data-screen-label="01 홈"]')));
+      ease(y, MAX, 620, () => {
+        window.__zipOpening = true;
+        this.panTo(root.querySelector('[data-screen-label="01 홈"]'));
+      });
     };
     frame.addEventListener('pointerdown', (e) => {
       if (opened) return;
@@ -4965,7 +4970,7 @@ class Component extends DCLogic {
   }
 
   dialGo(label) {
-    if (!this.hasPublishedTrends || !this.trends.length || this.trends[0].emptyState) return;
+    if (!this.trends.length || this.trends[0].emptyState) return;
     const key = String(label).replace(/[#\s]/g, '');
     let idx = this.trends.findIndex((t) => t.name.replace(/\s/g, '') === key);
     if (idx < 0) idx = this.trends.findIndex((t) => t.name.replace(/\s/g, '').includes(key) || key.includes(t.name.replace(/\s/g, '')));
@@ -5202,11 +5207,9 @@ class Component extends DCLogic {
     stage.addEventListener('pointerup', snap);
     stage.addEventListener('pointercancel', snap);
     stage.addEventListener('pointerleave', snap);
-    words.forEach((el, i) => {
+    words.forEach((el) => {
       el.addEventListener('click', () => {
-        if (i === active) { this.dialGo(el.getAttribute('data-label')); return; }
-        rot = -i * STEP;
-        paint();
+        this.dialGo(el.getAttribute('data-label'));
       });
     });
   }
