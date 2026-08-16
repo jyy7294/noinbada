@@ -260,7 +260,7 @@ def test_home_title_has_a_selection_criteria_help_button() -> None:
 def test_dial_keeps_korean_trend_titles_in_the_left_readable_zone() -> None:
     dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
     assert 'data-vd-focus-copy="1"' in dial_markup
-    assert "left:22px; top:50%; z-index:20; width:214px" in dial_markup
+    assert "left:52px; top:50%; z-index:20; width:270px" in dial_markup
     assert "text-align:left" in dial_markup
     assert "white-space:nowrap" in dial_markup
     assert "text-overflow:ellipsis" in dial_markup
