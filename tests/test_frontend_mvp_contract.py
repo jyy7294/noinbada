@@ -668,7 +668,7 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert '<img src="{{ opt.optIconUrl }}"' not in INDEX
     assert 'data-trend-icon-src="{{ opt.optIconUrl }}"' in INDEX
     assert "patchTrendSwitcherIcons()" in INDEX
-    assert "font-size:10.5px; line-height:1.45; color:#777A86" in INDEX
+    assert 'id="interest-chart-disclosure"' not in INDEX
     assert "Intl.DateTimeFormat('ko-KR'" in INDEX
     assert "else if (activeSegment.length)" in INDEX
     assert "barPoints" in INDEX
@@ -679,8 +679,8 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
         assert synthetic_token not in INDEX
     assert 'data-interest-bars="1"' in INDEX
     assert 'data-interest-bar="1"' in INDEX
-    assert 'aria-labelledby="interest-chart-title interest-chart-disclosure"' in INDEX
-    assert "선택한 기간의 관심 흐름을 비교해 볼 수 있습니다." in INDEX
+    assert 'aria-labelledby="interest-chart-title"' in INDEX
+    assert "선택한 기간의 관심 흐름을 비교해 볼 수 있습니다." not in INDEX
     assert "0~100 표시지수" not in INDEX
     assert "patchInterestChart()" in INDEX
     assert "sourceSignals" not in INDEX
@@ -1311,7 +1311,8 @@ def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -
     assert ">트렌드</span>" in INDEX
     assert "통합 트렌드" not in INDEX
     assert ">관심 흐름</span>" in INDEX
-    assert "최근 포착 시점·순위 변화·지속 관측을 함께 반영합니다." in INDEX
+    assert "판정 기준" in INDEX
+    assert "포착: 첫 관측 후 3시간 이내 또는 비교 관측 부족" in INDEX
     assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
     assert "전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요" in INDEX
     assert "+ ' · 통합 트렌드</span>" not in INDEX
@@ -1984,8 +1985,12 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'data-freshness-card="1"' in INDEX
     assert 'background:#FAFAFC; border:1px solid #ECE8F3' in INDEX
     assert 'data-freshness-explanation="1"' in INDEX
+    assert '포착: 첫 관측 후 3시간 이내 또는 비교 관측 부족' in INDEX
+    assert '확산: 직전 비교창 대비 관심 위치 12% 이상 상승' in INDEX
+    assert '대중화: 3시간 이상 반복 관측되며 확산 조건은 아닐 때' in INDEX
     assert 'data-interest-card="1"' in INDEX
     assert '관심 흐름' in INDEX
+    assert '선택한 기간의 관심 흐름을 비교해 볼 수 있습니다.' not in INDEX
     assert 'data-company-role-folder="1"' in INDEX
     assert 'data-folder-toggle="1"' in INDEX
     assert 'aria-label="{{ f.title }} {{ f.count }} 기업 목록 열기 또는 접기"' in INDEX
