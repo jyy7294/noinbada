@@ -4825,11 +4825,20 @@ class Component extends DCLogic {
     const list = document.querySelector('[data-my-list="1"]');
     if (!list) return;
     const trendsById = new Map(this.trends.filter((trend) => trend && trend.live).map((trend) => [trend.id, trend]));
+    // 저장 당시에는 이름만 남아 있던 포트도 다시 열면 시드 포트의 기업
+    // 메타데이터(로고·상장 구분·시장 스냅샷)를 복원합니다.
+    const seededByName = new Map((this.presentationPortfolios || this.buildPresentationPortfolios())
+      .flatMap((portfolio) => portfolio.companies || [])
+      .map((company) => [this.companyName(company), company]));
     const portfolios = this.dataApi.listPortfolios();
     const views = portfolios.map((portfolio) => {
       const trend = trendsById.get(portfolio.trendTopic) || null;
       const currentByName = new Map((trend ? trend.companies : []).map((company) => [this.companyName(company), company]));
-      const companies = portfolio.companies.map((company) => currentByName.get(this.companyName(company)) || company).filter(Boolean);
+      const companies = portfolio.companies.map((company) => {
+        const name = this.companyName(company);
+        const reference = currentByName.get(name) || seededByName.get(name);
+        return reference ? { ...company, ...reference } : company;
+      }).filter(Boolean);
       const changes = companies.map((company) => this.companyChange(company)).filter(Number.isFinite);
       const avgChange = changes.length ? changes.reduce((sum, value) => sum + value, 0) / changes.length : null;
       const view = {

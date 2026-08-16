@@ -174,6 +174,14 @@ def test_portfolio_component_rows_open_an_in_place_company_sheet() -> None:
     assert "closePortfolioCompanySheet" in INDEX
 
 
+def test_saved_portfolio_restores_seed_company_metadata_when_reopened() -> None:
+    method = INDEX[INDEX.index("  renderSavedPortfolios() {") : INDEX.index("  patchHomeLabels() {")]
+    assert "const seededByName" in method
+    assert "this.presentationPortfolios || this.buildPresentationPortfolios()" in method
+    assert "currentByName.get(name) || seededByName.get(name)" in method
+    assert "return reference ? { ...company, ...reference } : company;" in method
+
+
 def test_portfolio_list_uses_keyword_chips_without_company_name_summary() -> None:
     method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
     assert "const keywordChips = portfolio.keywords.map" in method
@@ -1139,7 +1147,7 @@ def test_maker_and_saved_portfolios_use_current_trends_and_companies() -> None:
     assert "#dc-root > section { position: fixed !important" in INDEX
     assert "#dc-root section { position: fixed !important" not in INDEX
     assert 'data-trend-id="' in INDEX
-    assert "currentByName.get(this.companyName(company))" in INDEX
+    assert "currentByName.get(name) || seededByName.get(name)" in INDEX
     assert 'data-my-stat="saved"' in INDEX
     assert 'data-my-stat="return"' in INDEX
     assert 'data-my-stat="likes"' in INDEX
