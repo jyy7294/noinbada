@@ -191,7 +191,12 @@
 
         <div style="display:flex; align-items:flex-start; justify-content:space-between; padding:14px 22px 12px;">
           <div style="min-width:0;">
-            <div style="white-space:nowrap; font-weight:800; font-size:23px; line-height:1.14; color:#1A1A22; letter-spacing:-0.04em;">실시간 트렌드</div>
+            <div style="display:flex; align-items:center; gap:7px;">
+              <div style="white-space:nowrap; font-weight:800; font-size:23px; line-height:1.14; color:#1A1A22; letter-spacing:-0.04em;">실시간 트렌드</div>
+              <button data-home-selection-guide="1" type="button" aria-label="트렌드 선정 기준 보기" onClick="{{ openSelectionGuide }}" style="width:28px; height:28px; flex:none; border:0; border-radius:999px; background:transparent; padding:0; display:inline-flex; align-items:center; justify-content:center; cursor:pointer;" title="트렌드 선정 기준">
+                <span aria-hidden="true" style="width:15px; height:15px; border:1.5px solid #A9ACB8; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:10px; line-height:1; color:#8B8D98;">!</span>
+              </button>
+            </div>
             <sc-if value="{{ showLiveBadge }}" hint-placeholder-val="{{ false }}">
               <span style="display:inline-flex; margin-top:10px; {{ liveBadgeStyle }}">{{ liveStatus }}</span>
             </sc-if>

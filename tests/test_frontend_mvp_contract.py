@@ -241,6 +241,14 @@ def test_home_header_uses_a_live_title_and_explicit_dial_list_controls() -> None
     assert "listBtn.addEventListener('click', () => setView(true));" in toggle
 
 
+def test_home_title_has_a_selection_criteria_help_button() -> None:
+    header = INDEX[INDEX.index('data-screen-label="01 홈"') : INDEX.index('data-vd-stage="1"')]
+    assert 'data-home-selection-guide="1"' in header
+    assert 'aria-label="트렌드 선정 기준 보기"' in header
+    assert 'onClick="{{ openSelectionGuide }}"' in header
+    assert '트렌드 선정 기준' in INDEX
+
+
 def test_dial_center_keeps_korean_trend_titles_as_one_readable_line() -> None:
     dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
     assert "left:50%; top:50%; width:300px" in dial_markup
