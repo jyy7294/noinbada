@@ -1118,15 +1118,17 @@ def test_popular_portfolios_keep_the_approved_community_seed_examples() -> None:
     assert "등락순" not in INDEX
 
 
-def test_seed_meme_portfolios_never_present_invented_stock_prices_or_returns() -> None:
+def test_seed_meme_portfolios_use_observed_snapshots_or_an_explicit_unlisted_state() -> None:
     seed_block = INDEX.split("buildPresentationPortfolios()", 1)[1].split(
         "portfolioLogoMarkup", 1
     )[0]
-    assert "market_snapshot" not in seed_block
-    assert "change_percent" not in seed_block
-    assert "last_price" not in seed_block
-    for invented_value in ("17.8", "24.4", "39840", "104500", "267500"):
-        assert invented_value not in seed_block
+    assert "const observedSnapshot" in seed_block
+    assert "status: 'observed'" in seed_block
+    assert "synthetic: false" in seed_block
+    assert "ranking_effect: 'none'" in seed_block
+    assert "price_series" in seed_block
+    assert "listing_status: 'unlisted'" in seed_block
+    assert "비상장 기업이라 거래소 시세와 밸류에이션을 표시하지 않습니다." in INDEX
 
 
 def test_maker_and_saved_portfolios_use_current_trends_and_companies() -> None:

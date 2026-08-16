@@ -1500,11 +1500,40 @@ class Component extends DCLogic {
   }
 
   buildPresentationPortfolios() {
+    const yahooQuote = (symbol) => 'https://finance.yahoo.com/quote/' + encodeURIComponent(symbol);
+    const krxFx = 'https://data.krx.co.kr/contents/MDC/MAIN/main/index.cmd';
+    const observedSnapshot = (symbol, values) => ({
+      status: 'observed', synthetic: false, estimated: false, provider: 'yahoo_finance',
+      source_url: yahooQuote(symbol), price_source_url: yahooQuote(symbol),
+      market_cap_source_url: yahooQuote(symbol), pbr_source_url: yahooQuote(symbol),
+      per_source_url: values.per_status === 'observed' ? yahooQuote(symbol) : undefined,
+      as_of: '2026-08-14', currency: values.currency, last_price: values.last_price,
+      change_percent: values.change_percent, price_series: values.price_series,
+      market_cap_krw: values.market_cap_krw, market_cap_currency: 'KRW',
+      native_market_cap: values.native_market_cap, fx_rate_to_krw: values.fx_rate_to_krw,
+      fx_as_of: '2026-08-16', fx_provider: values.currency === 'KRW' ? 'identity' : 'yahoo_finance',
+      fx_source_url: values.currency === 'KRW' ? krxFx : yahooQuote('KRW=X'),
+      per: values.per, per_status: values.per_status, pbr: values.pbr,
+      display_only: true, ranking_effect: 'none'
+    });
+    const profiles = {
+      '원익': { stock_code: '030530', market: 'KOSDAQ', company_role_label: '반도체·소재', company_description: '원익홀딩스는 반도체·디스플레이 장비와 소재 관련 사업을 전개하는 코스닥 상장사입니다.', market_snapshot: observedSnapshot('030530.KQ', { currency: 'KRW', last_price: 21000, change_percent: 0.9615, market_cap_krw: 1604043105000, native_market_cap: 1604043105000, fx_rate_to_krw: 1, per: 83.004, per_status: 'observed', pbr: 1.6044, price_series: [19020,18760,17880,16400,16960,18790,17600,16890,18580,16790,15540,16230,17100,18510,16400,16960,14920,14160,13400,15280,19860,20400,20900,19720,19050,21000,20300,20100,20800,21000] }) },
+      '리브스메드': { listing_status: 'unlisted', market: '비상장', company_role_label: '의료기기', company_description: '리브스메드는 복강경 수술기구를 개발하는 의료기기 기업입니다.' },
+      '모나미': { stock_code: '005360', market: 'KOSPI', company_role_label: '문구·소비재', company_description: '모나미는 필기구와 사무·미술용품을 제조·유통하는 코스피 상장사입니다.', market_snapshot: observedSnapshot('005360.KS', { currency: 'KRW', last_price: 1680, change_percent: -5.7768, market_cap_krw: 31747475760, native_market_cap: 31747475760, fx_rate_to_krw: 1, per: null, per_status: 'unavailable_loss_making', pbr: 0.4081, price_series: [1324,1318,1310,1369,1707,2145,2040,2650,3445,3730,3730,2615,2090,1977,1755,1718,1590,1445,1453,1517,1508,1615,1647,1610,1602,1618,1929,1863,1783,1680] }) },
+      '메이즈 테라퓨틱스': { stock_code: 'MAZE', market: 'NASDAQ', company_role_label: '바이오', company_description: '메이즈 테라퓨틱스는 대사질환 치료제를 개발하는 나스닥 상장 바이오 기업입니다.', market_snapshot: observedSnapshot('MAZE', { currency: 'USD', last_price: 27.18000030517578, change_percent: -1.7531, market_cap_krw: 2140212534931, native_market_cap: 1510937369, fx_rate_to_krw: 1416.47998046875, per: null, per_status: 'unavailable_loss_making', pbr: 4.4218, price_series: [32.349998,32.840000,31.989999,32.419998,30.569999,29.180000,29.879999,29.389999,27.165000,28.120000,28.370000,29.299999,28.489999,27.690000,27.680000,28.690000,27.879999,27.270000,27.629999,26.920000,27.329999,27.610000,27.809999,28.530000,28.649999,27.280000,27.309999,27.530000,27.665000,27.180000] }) },
+      '제나텍': { listing_status: 'unlisted', market: '비상장', company_role_label: '바이오 소재', company_description: '제나텍은 바이오 소재와 헬스케어 분야의 제품을 개발하는 기업입니다.' },
+      '두산': { stock_code: '000150', market: 'KOSPI', company_role_label: '산업·지주', company_description: '두산은 산업 장비·에너지·전자 소재 계열사를 보유한 코스피 상장 사업지주회사입니다.' },
+      '바이넥스': { stock_code: '053030', market: 'KOSDAQ', company_role_label: '바이오의약품', company_description: '바이넥스는 의약품 생산과 바이오의약품 위탁개발·생산 사업을 하는 코스닥 상장사입니다.' },
+      '한국콜마': { stock_code: '161890', market: 'KOSPI', company_role_label: '화장품 ODM', company_description: '한국콜마는 화장품·제약 제품의 연구개발과 위탁생산을 하는 코스피 상장사입니다.' },
+      '오리온': { stock_code: '271560', market: 'KOSPI', company_role_label: '제과', company_description: '오리온은 스낵·비스킷·초콜릿 등 제과 제품을 생산·판매하는 코스피 상장사입니다.' },
+      '크라운제과': { stock_code: '264900', market: 'KOSPI', company_role_label: '제과', company_description: '크라운제과는 과자·비스킷·스낵류를 제조·판매하는 코스피 상장사입니다.' },
+      '해태제과식품': { stock_code: '101530', market: 'KOSPI', company_role_label: '제과', company_description: '해태제과식품은 과자·빙과·식품을 제조·판매하는 코스피 상장사입니다.' },
+      'CJ제일제당': { stock_code: '097950', market: 'KOSPI', company_role_label: '식품', company_description: 'CJ제일제당은 식품과 바이오 제품을 제조·판매하는 종합 식품기업입니다.' },
+      '대한제분': { stock_code: '001130', market: 'KOSPI', company_role_label: '제분', company_description: '대한제분은 밀가루와 식품 원료를 생산·판매하는 코스피 상장사입니다.' }
+    };
     const company = (name, officialDomain) => ({
-      company: name,
-      name,
-      official_domain: officialDomain,
-      logo_asset_scope: 'seed_meme_portfolio'
+      company: name, name, official_domain: officialDomain,
+      logo_asset_scope: 'seed_meme_portfolio', ...(profiles[name] || {})
     });
     const seeds = [
       {
@@ -1736,10 +1765,11 @@ class Component extends DCLogic {
       ? '<div style="background:#FAF9FE;border:1px solid #EEEBF7;border-radius:16px;padding:13px;margin-top:14px;">'
         + '<div style="font-weight:500;font-size:10.5px;color:#8B8D98;">최근 가격 · ' + esc(sheet.priceCurrency) + ' · ' + esc(sheet.asOfLabel) + ' 기준</div>'
         + '<div style="display:flex;align-items:baseline;gap:8px;margin-top:3px;"><strong style="font-size:21px;letter-spacing:-.04em;color:#1A1A22;">' + esc(sheet.price) + '</strong><span style="' + esc(sheet.changeStyle) + '">' + esc(sheet.change) + '</span></div>'
+        + (sheet.hasPriceSeries ? '<svg viewBox="0 0 296 76" aria-label="최근 30거래일 주가 추이" style="display:block;width:100%;height:72px;margin-top:10px;overflow:visible;"><polyline points="' + esc(sheet.pricePoints) + '" fill="none" stroke="#7B3FF2" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>' : '')
         + '<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;margin-top:11px;">'
         + [['시가총액·원화', sheet.marketCap], ['PER', sheet.per], ['PBR', sheet.pbr], ['ROE', sheet.roe]].map(([label, value]) => '<div style="background:#FFFFFF;border-radius:10px;padding:8px 4px;text-align:center;"><div style="font-size:9px;color:#8B8D98;">' + label + '</div><div style="font-weight:800;font-size:11px;color:#1A1A22;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(value) + '</div></div>').join('')
         + '</div></div>'
-      : '<div role="status" style="background:#FAF9FE;border:1px solid #EEEBF7;border-radius:16px;padding:14px 13px;margin-top:14px;"><div style="font-weight:700;font-size:12.5px;color:#5C5F6B;">시장 자료를 확인하지 못했습니다</div><div style="font-size:10.5px;line-height:1.55;color:#9A9CAA;margin-top:4px;">검증된 가격·재무 자료가 들어오면 표시됩니다.</div></div>';
+      : '<div role="status" style="background:#FAF9FE;border:1px solid #EEEBF7;border-radius:16px;padding:14px 13px;margin-top:14px;"><div style="font-weight:700;font-size:12.5px;color:#5C5F6B;">' + (sheet.isUnlisted ? '비상장 기업' : '시장 자료 확인 중') + '</div><div style="font-size:10.5px;line-height:1.55;color:#9A9CAA;margin-top:4px;">' + esc(sheet.marketUnavailableDetail) + '</div></div>';
     root.innerHTML = '<button type="button" data-portfolio-company-backdrop="1" aria-label="기업 상세 닫기" style="position:absolute;inset:0;border:0;background:rgba(20,16,34,.42);cursor:pointer;"></button>'
       + '<section data-portfolio-company-dialog="1" role="dialog" aria-modal="true" aria-labelledby="portfolio-company-title" tabindex="-1" style="position:absolute;left:0;right:0;bottom:0;display:flex;flex-direction:column;max-height:78%;background:#FFFFFF;border-radius:26px 26px 28px 28px;box-shadow:0 -10px 30px rgba(26,26,34,.18);outline:none;">'
       + '<div style="display:flex;justify-content:center;padding:10px 0 4px;"><span style="width:42px;height:4px;border-radius:999px;background:#E2DEF0;"></span></div>'
@@ -5512,8 +5542,9 @@ class Component extends DCLogic {
 
   buildSheet(initial, name, desc, i, icon, company = {}) {
     const logo = this.companyLogo(company);
-    const ticker = company.stock_code || company.ticker || '종목코드 미제공';
-    const market = company.market || company.exchange || '거래소 미제공';
+    const isUnlisted = company.listing_status === 'unlisted';
+    const ticker = isUnlisted ? '비상장' : (company.stock_code || company.ticker || '종목코드 미제공');
+    const market = isUnlisted ? '비상장' : (company.market || company.exchange || '거래소 미제공');
     const reason = this.publicConnectionCopy(company, desc);
     const about = this.companyDescription(company, name);
     const verifiedSnapshot = this.verifiedMarketSnapshot(company);
@@ -5604,6 +5635,10 @@ class Component extends DCLogic {
       about,
       reason,
       ticker, market,
+      isUnlisted,
+      marketUnavailableDetail: isUnlisted
+        ? '비상장 기업이라 거래소 시세와 밸류에이션을 표시하지 않습니다.'
+        : '검증된 가격·재무 자료가 들어오면 표시됩니다.',
       asOfLabel,
       hasMarketData,
       marketUnavailable: !hasMarketData,
