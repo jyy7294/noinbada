@@ -187,6 +187,10 @@ def test_portfolio_list_defaults_to_latest_and_home_feature_uses_likes() -> None
     assert "mode === 1 ? b.likes - a.likes : mode === 2 ? b.ret - a.ret : b.date - a.date" in sorting
 
 
+def test_portfolio_detail_does_not_show_a_top_percentile_badge() -> None:
+    assert "TOP 5%" not in INDEX
+
+
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
     dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
