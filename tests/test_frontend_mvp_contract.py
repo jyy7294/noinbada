@@ -225,6 +225,16 @@ def test_home_header_uses_a_live_title_and_explicit_dial_list_controls() -> None
     assert "listBtn.addEventListener('click', () => setView(true));" in toggle
 
 
+def test_dial_center_keeps_korean_trend_titles_as_one_readable_line() -> None:
+    dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
+    assert "left:50%; top:50%; width:300px" in dial_markup
+    assert "white-space:nowrap" in dial_markup
+    assert "text-overflow:ellipsis" in dial_markup
+    assert "overflow-wrap:anywhere" not in dial_markup
+    home_projection = INDEX[INDEX.index("if (top) document.querySelectorAll('[data-vd-big]')") : INDEX.index("groups.forEach((els) =>")]
+    assert "label.length >= 18 ? '20px'" in home_projection
+
+
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
     dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
@@ -1045,7 +1055,7 @@ def test_long_home_names_use_two_line_clamp_and_short_name() -> None:
     assert 'title="{{ sheetName }}"' in INDEX
     assert 'data-vd-big="1" title="트렌드"' in INDEX
     assert "el.title = top.name" in INDEX
-    assert "label.length >= 16 ? '24px'" in INDEX
+    assert "label.length >= 18 ? '20px'" in INDEX
     assert 'title="{{ trendName }}"' in INDEX
     assert "nameStyle: 'flex:1; min-width:0;" in INDEX
 
