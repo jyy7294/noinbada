@@ -839,6 +839,7 @@ def test_company_sheet_renders_financial_numbers_only_with_complete_provenance()
     assert "providerLooksSynthetic" in INDEX
     assert "formatKrwMarketCap(marketCapKrw)" in INDEX
     assert "시가총액·원화" in INDEX
+    assert "30일 주가 추이 · {{ sheetPriceCurrency }}" in INDEX
     assert "formatMarketCap(snapshot.market_cap)" not in INDEX
     assert "snapshot.market_cap_label" not in INDEX
 
@@ -877,6 +878,7 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
       const sheet = guard.buildSheet('A', 'Acme', 'desc', 0, '', observed);
       if (!sheet.hasMarketData || sheet.marketUnavailable) process.exit(14);
       if (sheet.per !== 'N/A' || sheet.pbr !== '—' || sheet.roe !== '0.0%') process.exit(15);
+      if (sheet.priceCurrency !== 'USD' || !sheet.price.includes('$')) process.exit(16);
 
       for (const mutation of [
         {{status: 'unavailable'}},
