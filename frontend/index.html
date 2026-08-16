@@ -442,21 +442,33 @@
         <div style="padding:0 16px 14px;">
           <div data-interest-card="1" style="background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:14px 14px 13px;">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
-              <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">관심 흐름</span>
+              <span style="display:inline-flex; align-items:center; gap:4px;">
+                <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">관심 흐름</span>
+                <button type="button" aria-label="관심 흐름 척도 설명 보기" aria-expanded="{{ interestInfoOpen }}" onClick="{{ toggleInterestInfo }}" style="width:28px;height:28px;border:0;background:transparent;padding:7px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#B5B8C2" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#B5B8C2" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#B5B8C2"></circle></svg></button>
+              </span>
               <div style="display:flex; width:108px; background:#F3F0FB; border-radius:999px; padding:3px;">
                 <button onClick="{{ pickRange0 }}" aria-disabled="{{ rangeDisabled0 }}" style="{{ range0 }}">{{ rangeLabel0 }}</button>
                 <button onClick="{{ pickRange1 }}" aria-disabled="{{ rangeDisabled1 }}" style="{{ range1 }}">1주일</button>
               </div>
             </div>
+            <sc-if value="{{ interestInfoOpen }}" hint-placeholder-val="{{ false }}">
+              <div data-interest-scale-explanation="1" style="margin-top:8px; background:#F3EFFC; border-radius:12px; padding:10px 12px; font-weight:500; font-size:10.5px; line-height:1.58; color:#5B21C0;">
+                <b style="font-weight:800;">척도 읽는 법</b><br>{{ interestScaleDescription }}
+              </div>
+            </sc-if>
             <div style="display:flex; align-items:center; justify-content:flex-end; margin-top:10px;">
               <span data-interest-range-caption="1" style="font-weight:700; font-size:10.5px; color:#8B8D98;">{{ interestRangeCaption }}</span>
             </div>
             <div style="position:relative; height:108px; margin-top:9px; overflow:hidden;">
               <div data-interest-visual="1" role="img" aria-labelledby="interest-chart-title" style="position:relative;display:block;width:100%;height:96px;overflow:hidden;border-bottom:1px solid #EDE8F7;">
-                <span aria-hidden="true" style="position:absolute;left:8px;right:8px;top:24px;height:1px;background:#F0ECF8;"></span>
-                <span aria-hidden="true" style="position:absolute;left:8px;right:8px;top:60px;height:1px;background:#F0ECF8;"></span>
+                <span aria-hidden="true" style="position:absolute;left:30px;right:8px;top:12px;height:1px;background:#F0ECF8;"></span>
+                <span aria-hidden="true" style="position:absolute;left:30px;right:8px;top:50px;height:1px;background:#F0ECF8;"></span>
+                <span aria-hidden="true" style="position:absolute;left:30px;right:8px;top:88px;height:1px;background:#F0ECF8;"></span>
+                <span data-interest-scale-max="1" aria-hidden="true" style="position:absolute;left:0;top:5px;width:24px;text-align:right;font-weight:600;font-size:8.5px;color:#AAA6B4;">{{ interestScaleMax }}</span>
+                <span data-interest-scale-mid="1" aria-hidden="true" style="position:absolute;left:0;top:43px;width:24px;text-align:right;font-weight:600;font-size:8.5px;color:#AAA6B4;">{{ interestScaleMid }}</span>
+                <span data-interest-scale-min="1" aria-hidden="true" style="position:absolute;left:0;top:80px;width:24px;text-align:right;font-weight:600;font-size:8.5px;color:#AAA6B4;">0</span>
                 <svg data-interest-flow="1" aria-hidden="true" viewBox="0 0 296 96" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:96px;overflow:visible;pointer-events:none;"></svg>
-                <div data-interest-bars="1" style="position:absolute;inset:4px 8px 0;"></div>
+                <div data-interest-bars="1" style="display:none;"></div>
               </div>
               <div data-interest-empty="1" style="display:none;position:absolute;inset:0 0 17px;align-items:center;justify-content:center;border-radius:14px;background:#FAF9FD;font-weight:700;font-size:11.5px;color:#8B8D98;">{{ interestEmptyLabel }}</div>
               <div style="display:flex; justify-content:space-between; margin-top:-2px; font-weight:600; font-size:9.5px; color:#AAA6B4;">
@@ -2171,6 +2183,9 @@ class Component extends DCLogic {
     const peakValue = usable.length ? Math.max(...usable) : null;
     const currentValue = [...rawValues].reverse().find(Number.isFinite);
     const observationCount = usable.length;
+    const scaleMax = Number.isFinite(peakValue)
+      ? Math.max(10, Math.min(100, Math.ceil(peakValue / 10) * 10)) : 100;
+    const scaleMid = Math.round(scaleMax / 2);
     if (usable.length < 2) {
       return {
         available: false,
@@ -2184,6 +2199,8 @@ class Component extends DCLogic {
         index: Number.isFinite(currentValue) ? Math.round(currentValue) : '—',
         peak: Number.isFinite(peakValue) ? Math.round(peakValue) : '—',
         current: Number.isFinite(currentValue) ? Math.round(currentValue) : '—',
+        scaleMax,
+        scaleMid,
         observationCount,
         labels,
         rangeKey,
@@ -2207,9 +2224,9 @@ class Component extends DCLogic {
       if (!Number.isFinite(value)) return null;
       const timestamp = timestampValues[index];
       const x = useTimestampScale && Number.isFinite(timestamp)
-        ? 8 + (timestamp - firstTimestamp) * 280 / (lastTimestamp - firstTimestamp)
-        : rawValues.length === 1 ? 288 : 8 + index * 280 / (rawValues.length - 1);
-      const y = 88 - value * 0.72;
+        ? 30 + (timestamp - firstTimestamp) * 258 / (lastTimestamp - firstTimestamp)
+        : rawValues.length === 1 ? 288 : 30 + index * 258 / (rawValues.length - 1);
+      const y = 88 - value / scaleMax * 76;
       return [Number(x.toFixed(1)), Number(y.toFixed(1))];
     });
     const segments = [];
@@ -2270,6 +2287,8 @@ class Component extends DCLogic {
       index: Math.round(lastValue),
       peak: Math.round(peakValue),
       current: Math.round(lastValue),
+      scaleMax,
+      scaleMid,
       observationCount,
       labels,
       rangeKey,
@@ -2320,29 +2339,21 @@ class Component extends DCLogic {
     const visual = root.querySelector('[data-interest-visual]');
     const empty = root.querySelector('[data-interest-empty]');
     const rankStyle = chart.rankStyle || this.rankResponsiveInterestStyle(null);
-    if (bars) {
-      const points = chart.barPoints || [];
-      bars.innerHTML = points.map((point, index) => {
-        const latest = index === points.length - 1;
-        const left = Math.max(0, Math.min(100, ((point.x - 8) / 280) * 100));
-        return '<span data-interest-bar="1" data-latest="' + (latest ? '1' : '0')
-          + '" aria-hidden="true" style="position:absolute;left:' + left.toFixed(2)
-          + '%;bottom:0;width:' + chart.barWidth + 'px;height:' + point.height
-          + '%;transform:translateX(-50%);border-radius:4px 4px 1px 1px;background:'
-          + (latest ? rankStyle.stroke : '#BCA2F7')
-          + ';opacity:' + (latest ? '1' : '0.82') + ';"></span>';
-      }).join('');
-    }
+    if (bars) bars.innerHTML = '';
     if (flow) {
       const line = chart.linePath || '';
       const area = chart.area || '';
-      const last = chart.lastX != null && chart.lastY != null
-        ? '<circle data-interest-flow-dot="1" cx="' + chart.lastX + '" cy="' + chart.lastY
-          + '" r="4.5" fill="#FFFFFF" stroke="' + rankStyle.stroke + '" stroke-width="2.5"></circle>' : '';
-      flow.innerHTML = area
-        ? '<path data-interest-flow-area="1" d="' + area + '" fill="' + rankStyle.stroke + '" fill-opacity="0.09"></path>'
-          + '<path data-interest-flow-line="1" d="' + line + '" fill="none" stroke="' + rankStyle.stroke
-          + '" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>' + last
+      const points = chart.observationPoints || [];
+      const dots = points.map((point, index) => {
+        const latest = index === points.length - 1;
+        return '<circle data-interest-flow-dot="1" data-latest="' + (latest ? '1' : '0') + '" cx="' + point[0] + '" cy="' + point[1]
+          + '" r="' + (latest ? '4.5' : '2.8') + '" fill="' + (latest ? '#FFFFFF' : rankStyle.stroke)
+          + '" stroke="' + rankStyle.stroke + '" stroke-width="' + (latest ? '2.5' : '1.2') + '"></circle>';
+      }).join('');
+      flow.innerHTML = (line || dots)
+        ? (area ? '<path data-interest-flow-area="1" d="' + area + '" fill="' + rankStyle.stroke + '" fill-opacity="0.09"></path>' : '')
+          + (line ? '<path data-interest-flow-line="1" d="' + line + '" fill="none" stroke="' + rankStyle.stroke
+            + '" stroke-width="' + rankStyle.strokeWidth + '" stroke-linecap="round" stroke-linejoin="round"></path>' : '') + dots
         : '';
     }
     if (visual) {
@@ -2367,17 +2378,16 @@ class Component extends DCLogic {
     if (!visual || visual.dataset.rankMotionKey === chart.motionKey) return;
     visual.dataset.rankMotionKey = chart.motionKey;
     const rankStyle = chart.rankStyle || this.rankResponsiveInterestStyle(null);
-    const points = visual.querySelectorAll('[data-interest-bar]');
+    const points = visual.querySelectorAll('[data-interest-flow-dot]');
     points.forEach((point, index) => {
       if (typeof point.animate !== 'function') return;
       const latest = point.dataset.latest === '1';
-      point.style.transformOrigin = 'center bottom';
       point.animate([
-        { opacity: 0, transform: 'translateX(calc(-50% - 18px)) scaleY(.08)' },
-        { opacity: latest ? 1 : 0.82, transform: 'translateX(-50%) scaleY(1)' }
+        { opacity: 0, transform: 'scale(.25)' },
+        { opacity: latest ? 1 : 0.78, transform: 'scale(1)' }
       ], {
-        duration: Math.max(260, Math.round(rankStyle.animationDurationMs * 0.7)),
-        delay: Math.min(index * 46, 506),
+        duration: Math.max(220, Math.round(rankStyle.animationDurationMs * 0.48)),
+        delay: Math.min(index * rankStyle.pointStaggerMs, 420),
         easing: 'cubic-bezier(.22,.61,.36,1)',
         fill: 'backwards'
       });
@@ -6089,10 +6099,16 @@ class Component extends DCLogic {
       interestPeak: interestChart.peak,
       interestCurrent: interestChart.current,
       interestObservationCount: interestChart.observationCount,
+      interestScaleMax: interestChart.scaleMax,
+      interestScaleMid: interestChart.scaleMid,
+      interestInfoOpen: !!this.state.interestInfo,
+      toggleInterestInfo: () => this.setState((s) => ({ interestInfo: !s.interestInfo })),
+      interestScaleDescription: '선이 높을수록 같은 기간 안에서 관측된 관심 흐름이 상대적으로 큽니다. 0은 해당 척도의 시작점, '
+        + String(interestChart.scaleMax) + '은 이 차트에서 확인된 최고 구간입니다. 절대 언급량이나 투자 판단을 뜻하지 않습니다.',
       rangeLabel0: '24시간',
       interestRangeCaption: interestChart.rangeLabel + ' 관심 흐름',
       interestEmptyLabel: interestChart.rangeLabel + ' 내 비교할 관측값이 부족합니다',
-      interestSummaryLabel: interestChart.rangeLabel + ' 관심 흐름 막대그래프',
+      interestSummaryLabel: interestChart.rangeLabel + ' 관심 흐름 선그래프, 0부터 ' + interestChart.scaleMax + '까지의 비교 척도',
       periodStartLabel: interestChart.labels[0],
       periodMiddleLabel: interestChart.labels[1],
       periodEndLabel: interestChart.labels[2],

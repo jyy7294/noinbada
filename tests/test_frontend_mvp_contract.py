@@ -672,11 +672,16 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert 'data-interest-single-points="1"' not in INDEX
     assert 'data-interest-observation-points="1"' not in INDEX
     assert 'data-interest-bars="1"' in INDEX
+    assert 'data-interest-scale-explanation="1"' in INDEX
+    assert 'aria-label="관심 흐름 척도 설명 보기"' in INDEX
+    assert "interestScaleDescription" in INDEX
+    assert "scaleMax" in INDEX
+    assert "scaleMid" in INDEX
     assert 'data-interest-summary="1"' not in INDEX
     assert "const observationPoints = points.filter(Boolean)" in INDEX
     assert "peak: Math.round(peakValue)" in INDEX
     assert "observationCount" in INDEX
-    assert "8 + (timestamp - firstTimestamp) * 280" in INDEX
+    assert "30 + (timestamp - firstTimestamp) * 258" in INDEX
     assert '<img src="{{ opt.optIconUrl }}"' not in INDEX
     assert 'data-trend-icon-src="{{ opt.optIconUrl }}"' in INDEX
     assert "patchTrendSwitcherIcons()" in INDEX
@@ -690,7 +695,7 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     for synthetic_token in ("event_ramp", "lateBreakout", "middleDip", "lateRebound", "periodProfile"):
         assert synthetic_token not in INDEX
     assert 'data-interest-bars="1"' in INDEX
-    assert 'data-interest-bar="1"' in INDEX
+    assert 'data-interest-flow-dot="1"' in INDEX
     assert 'aria-labelledby="interest-chart-title"' in INDEX
     assert "선택한 기간의 관심 흐름을 비교해 볼 수 있습니다." not in INDEX
     assert "0~100 표시지수" not in INDEX
@@ -730,11 +735,10 @@ def test_interest_chart_rank_response_uses_published_values_and_ranked_motion() 
         "dataset.interestSeriesContract",
         "animateRankResponsiveInterest(root, chart)",
         "this.prefersReducedMotion()",
-        "data-interest-bar",
+        "data-interest-flow-dot",
         "chart.rangeKey !== '24h'",
-        "translateX(calc(-50% - 18px)) scaleY(.08)",
-        "Math.min(index * 46, 506)",
-        "point.style.transformOrigin = 'center bottom'",
+        "transform: 'scale(.25)'",
+        "Math.min(index * rankStyle.pointStaggerMs, 420)",
         "data-interest-flow",
         "data-interest-flow-line",
         "strokeDasharray",
