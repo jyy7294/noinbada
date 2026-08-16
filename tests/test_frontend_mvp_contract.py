@@ -1283,7 +1283,7 @@ def test_core_touch_targets_use_semantic_buttons() -> None:
     assert '<div data-pd="stashBtn"' not in INDEX
 
 
-def test_past_trend_archive_is_not_exposed_in_the_public_frontend() -> None:
+def test_legacy_unvalidated_archive_is_not_exposed_in_the_public_frontend() -> None:
     for token in (
         "지난 트렌드",
         "data-archive-open",
@@ -1294,6 +1294,16 @@ def test_past_trend_archive_is_not_exposed_in_the_public_frontend() -> None:
     ):
         assert token not in INDEX
         assert token not in DATA
+
+
+def test_past_trend_research_cases_are_explorable_without_recommendation_language() -> None:
+    assert 'data-past-trends-open="1"' in INDEX
+    assert "openPastTrends = () =>" in INDEX
+    assert "당시 함께 살펴본 기업" in INDEX
+    assert "이후 수익이나 투자 성과를 뜻하지 않습니다" in INDEX
+    assert "우베 디저트" in INDEX
+    assert "황치즈 스낵 확산" in INDEX
+    assert "스파이더맨: 브랜드 뉴 데이" in INDEX
 
 
 def test_selection_disclosure_and_portfolio_safety_rules_are_visible_and_enforced() -> None:

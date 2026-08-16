@@ -293,6 +293,9 @@
               밈트폴리오 보러가기
               <svg width="14" height="14" viewBox="0 0 14 14" style="display:block;"><polyline points="5,3.5 9,7 5,10.5" fill="none" stroke="#7B3FF2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
             </button>
+            <button type="button" data-past-trends-open="1" style="width:100%; display:flex; align-items:center; justify-content:center; gap:6px; margin:2px 0 8px; padding:12px 0; border:1px solid #E8E0F8; border-radius:13px; background:#FAF8FF; font-family:inherit; font-weight:700; font-size:12.5px; color:#5B21C0; cursor:pointer;">
+              <span aria-hidden="true">↺</span> 과거 트렌드 다시 보기
+            </button>
           </div>
 
         </div>
@@ -1145,7 +1148,7 @@ class Component extends DCLogic {
     setTimeout(() => { this.likeWire(); this.stashWire(); this.myTabWire(); this.renderCompanyWatchlist(); this.shareWire(); }, 80);
     setTimeout(() => this.mkWire(), 120);
     setTimeout(() => this.snsWire(), 60);
-    setTimeout(() => this.homeSelectionGuideWire(), 80);
+    setTimeout(() => { this.homeSelectionGuideWire(); this.pastTrendWire(); }, 80);
     setTimeout(() => this.dialWire(), 80);
     setTimeout(() => { this.arcWire(); this.hexWire(); this.viewToggleWire(); this.viewToggleWire2(); this.vdWire(); }, 100);
     setTimeout(() => this.motionWire(), 120);
@@ -3047,6 +3050,77 @@ class Component extends DCLogic {
     button.addEventListener('click', (event) => {
       event.preventDefault();
       this.openSelectionGuide();
+    });
+  }
+
+  pastTrendCases() {
+    // 별도 연구 아카이브에서 검토된 사례만 사용합니다. 현재 순위나 매수 추천으로 재사용하지 않습니다.
+    return [
+      {
+        title: '우베 디저트', period: '2026.04.28–04.29', category: '음식/식품',
+        why: '보라색 비주얼의 디저트가 카페·편의점 신제품으로 확산되며 검색과 숏폼 관심이 함께 높아진 사례입니다.',
+        companies: ['롯데웰푸드', '크라운제과', 'BGF리테일']
+      },
+      {
+        title: '황치즈 스낵 확산', period: '2026.06.25', category: '음식/식품',
+        why: '품절과 재판매 화제가 이어진 뒤 편의점·제과·베이커리의 유사 제품 탐색으로 연결된 사례입니다.',
+        companies: ['오리온', 'GS리테일', '크라운제과']
+      },
+      {
+        title: '스파이더맨: 브랜드 뉴 데이', period: '2026.07.27–08.07', category: '콘텐츠',
+        why: '국내 개봉 전후 예매와 프리미엄 포맷 관심이 이어지며 제작 IP와 극장 유통 경로를 함께 살펴본 사례입니다.',
+        companies: ['Sony Group', '월트 디즈니', 'CJ CGV']
+      }
+    ];
+  }
+
+  openPastTrends = () => {
+    const overlay = this.homeOverlay('과거 트렌드', 'past-trends');
+    if (!overlay) return;
+    const body = document.createElement('div');
+    body.style.cssText = 'flex:1;overflow-y:auto;padding:18px 18px 28px;';
+    const intro = document.createElement('div');
+    intro.style.cssText = 'padding:13px 14px;border-radius:14px;background:#F7F4FF;color:#5B4E78;font-size:12px;line-height:1.55;';
+    intro.textContent = '당시 어떤 흐름이었고, 어떤 기업 경로를 함께 살펴봤는지 돌아보는 연구 아카이브입니다.';
+    body.appendChild(intro);
+    this.pastTrendCases().forEach((item) => {
+      const card = document.createElement('article');
+      card.style.cssText = 'margin-top:12px;padding:15px;border:1px solid #ECE7F7;border-radius:17px;background:#FFFFFF;';
+      const title = document.createElement('div');
+      title.style.cssText = 'font-weight:800;font-size:16px;color:#1A1A22;letter-spacing:-.035em;';
+      title.textContent = item.title;
+      const meta = document.createElement('div');
+      meta.style.cssText = 'margin-top:4px;font-size:11px;color:#8B8D98;';
+      meta.textContent = item.period + ' · ' + item.category;
+      const why = document.createElement('p');
+      why.style.cssText = 'margin:10px 0 0;font-size:12px;line-height:1.65;color:#555867;';
+      why.textContent = item.why;
+      const label = document.createElement('div');
+      label.style.cssText = 'margin-top:13px;font-weight:800;font-size:11.5px;color:#5B21C0;';
+      label.textContent = '당시 함께 살펴본 기업';
+      const companies = document.createElement('div');
+      companies.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;';
+      item.companies.forEach((name) => {
+        const chip = document.createElement('span');
+        chip.style.cssText = 'padding:6px 9px;border-radius:999px;background:#F3EEFF;color:#5731B3;font-weight:700;font-size:11px;';
+        chip.textContent = name;
+        companies.appendChild(chip);
+      });
+      card.append(title, meta, why, label, companies);
+      body.appendChild(card);
+    });
+    const note = document.createElement('p');
+    note.style.cssText = 'margin:15px 2px 0;font-size:10.5px;line-height:1.55;color:#9295A1;';
+    note.textContent = '기업 연결은 당시 공개 자료를 바탕으로 한 탐색 경로이며, 이후 수익이나 투자 성과를 뜻하지 않습니다.';
+    body.appendChild(note);
+    overlay.appendChild(body);
+  };
+
+  pastTrendWire() {
+    document.querySelectorAll('[data-past-trends-open]').forEach((button) => {
+      if (button.__pastTrendWired) return;
+      button.__pastTrendWired = true;
+      button.addEventListener('click', () => this.openPastTrends());
     });
   }
 
