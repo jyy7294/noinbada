@@ -42,7 +42,10 @@ def test_public_showcase_is_hash_pinned_and_has_exact_approved_shape() -> None:
     for order, card in enumerate(SHOWCASE["cards"], 1):
         assert card["presentation_order"] == order
         assert len(card["related_keywords"]) == 5
-        assert 5 <= len(card["companies"]) <= 10
+        direct_only = card["companies"] and all(
+            company.get("relation_tier") == "direct" for company in card["companies"]
+        )
+        assert (3 if direct_only else 5) <= len(card["companies"]) <= 10
         assert 3 <= len({company["company_role_category"] for company in card["companies"]}) <= 4
         assert all(company["relationship_status"] == "reconstructed_demo" for company in card["companies"])
         assert all(company["market_snapshot"]["status"] == "observed" for company in card["companies"])

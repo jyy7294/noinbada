@@ -1190,7 +1190,7 @@ function validateShowcasePayload(payload, manifest) {
       || !Number.isFinite(Number(card.full_ledger_score))
       || keywords.length !== 5
       || new Set(keywords.map((keyword) => String(keyword.text || ''))).size !== 5
-      || companies.length < 5 || companies.length > 10
+      || companies.length < (companies.every((company) => company?.relation_tier === 'direct') ? 3 : 5) || companies.length > 10
       || stockCodes.size !== companies.length
       || roles.size < 3 || roles.size > 4
       || card.enrichment_mode !== 'reconstructed_demo'

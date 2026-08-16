@@ -7,7 +7,7 @@
   "card_count": 10,
   "company_logos": {
     "fallback_count": 0,
-    "image_count": 53,
+    "image_count": 51,
     "source": "official_page_asset",
     "status": "verified"
   },
@@ -17,10 +17,10 @@
     "estimated": false,
     "provider": "pykrx+yahoo_finance",
     "ranking_effect": "none",
-    "snapshot_count": 53,
+    "snapshot_count": 51,
     "status": "observed",
     "synthetic": false,
-    "unique_security_count": 28
+    "unique_security_count": 30
   },
   "mode": "showcase_live_simulation",
   "ranking_formula_version": "peak25_mean40_persistence20_breadth15_v1",
@@ -32,7 +32,7 @@
   "schema_version": "trzip-showcase-delivery-v1",
   "showcase": {
     "path": "showcase.json",
-    "sha256": "dd8788b13f72d2e02dbb8a6f3ba51d30c3e716b1ac106193c256002621ef9e7d"
+    "sha256": "dfadc866745938647ef70c6f818c0604e169bfdc6d05b1fd7fc87caeb8181542"
   },
   "source_observed_at": "2026-08-16T00:00:00+00:00"
 }

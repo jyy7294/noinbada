@@ -43,16 +43,25 @@ def _write_json(path: Path, value: dict) -> None:
 
 
 def _official_listing_verification(*, market: str, stock_code: str, observed_at: datetime) -> dict:
-    if market == "NYSE" and stock_code == "DIS":
+    known_us_listings = {
+        ("NYSE", "DIS"): "https://www.nyse.com/quote/XNYS:DIS",
+        ("NYSE", "TKO"): "https://www.nyse.com/quote/XNYS:TKO",
+        ("NYSE", "BUD"): "https://www.nyse.com/quote/XNYS:BUD",
+        ("NASDAQ", "PSKY"): "https://ir.paramount.com/investor-faqs/",
+        ("NASDAQ", "MNST"): "https://www.nasdaq.com/market-activity/stocks/mnst",
+        ("NASDAQ", "DKNG"): "https://www.nasdaq.com/market-activity/stocks/dkng",
+    }
+    evidence_url = known_us_listings.get((market, stock_code))
+    if evidence_url:
         return {
             "status": "verified_current",
             "current_listed": True,
-            "exchange": "NYSE",
-            "stock_code": "DIS",
+            "exchange": market,
+            "stock_code": stock_code,
             "as_of": observed_at.astimezone(UTC).date().isoformat(),
-            "evidence_owner": "NYSE",
+            "evidence_owner": "NYSE" if market == "NYSE" else "Nasdaq",
             "evidence_type": "exchange_current_security_universe",
-            "evidence_url": "https://www.nyse.com/quote/XNYS:DIS",
+            "evidence_url": evidence_url,
             "synthetic": False,
             "estimated": False,
             "ranking_effect": "none",

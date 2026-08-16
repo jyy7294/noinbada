@@ -150,11 +150,11 @@ COMPANY_CARDS = {
         ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "아티스트 라이브·팬 콘텐츠 플랫폼"),
     ),
     "ufc 330": (
-        ("CJ ENM", "035760", "content_production", "https://www.cjenm.com/", "격투기·스포츠 중계 콘텐츠 운영"),
-        ("SOOP", "067160", "distribution", "https://corp.sooplive.co.kr/", "격투기·스포츠 라이브 스트리밍 유통"),
-        ("KT", "030200", "platform_service", "https://corp.kt.com/", "Genie TV 스포츠 채널 유통"),
-        ("LG유플러스", "032640", "platform_service", "https://www.lguplus.com/", "U+tv 스포츠 채널 유통"),
-        ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "격투기 경기 일정·뉴스·팬 콘텐츠 유통"),
+        # Do not substitute generic domestic platforms for rights holders.  These
+        # companies have a documented commercial or media relationship with UFC.
+        ("TKO 그룹 홀딩스", "TKO", "ownership_investment", "https://tkogrp.com/", "UFC를 소유·운영하는 상장 모회사입니다.", "NYSE", "direct", "https://tkogrp.com/"),
+        ("CJ ENM", "035760", "distribution", "https://www.cjenm.com/", "TVING과 tvN SPORTS를 통해 2029년까지 UFC의 국내 독점 중계를 맡는 권리사입니다.", "KRX", "direct", "https://kr.ufc.com/news/cj-enm-ufc-hangug-junggyegwon-gyeyag-yeonjang"),
+        ("AB 인베브", "BUD", "brand_marketing", "https://www.ab-inbev.com/", "UFC의 공식 글로벌 맥주 파트너로서 대회·중계·디지털 콘텐츠에 참여합니다.", "NYSE", "direct", "https://www.ufc.com/news/ufc-and-anheuser-busch-announce-multiyear-partnership"),
     ),
     "코믹월드": (
         ("대원미디어", "048910", "content_production", "https://www.daewonmedia.com/", "애니메이션·캐릭터 IP 유통"),
@@ -191,6 +191,8 @@ def build_showcase_enrichment(
         for entry in COMPANY_CARDS[event_key]:
             company, stock_code, role, homepage, explanation, *market_values = entry
             market = str(market_values[0] if market_values else "KRX")
+            relation_tier = str(market_values[1] if len(market_values) > 1 else "contextual")
+            relationship_evidence_url = str(market_values[2] if len(market_values) > 2 else homepage)
             companies.append({
                 "company": company,
                 "stock_code": stock_code,
@@ -198,6 +200,8 @@ def build_showcase_enrichment(
                 "company_role_category": role,
                 "company_role_label": COMPANY_ROLE_LABELS[role],
                 "relationship_status": "reconstructed_demo",
+                "relation_tier": relation_tier,
+                "relationship_evidence_url": relationship_evidence_url,
                 "connection_explanation": explanation,
                 "relationship_reason": explanation,
                 "company_identity_url": homepage,
@@ -205,7 +209,11 @@ def build_showcase_enrichment(
                 "ranking_effect": "none",
             })
         roles = {row["company_role_category"] for row in companies}
-        if len(keywords) != 5 or not 5 <= len(companies) <= 10 or not 3 <= len(roles) <= 4:
+        # A card may show fewer than five companies only when every displayed
+        # company has a direct, source-backed commercial relationship.  It is
+        # safer than padding the card with generic platforms.
+        minimum_companies = 3 if all(row["relation_tier"] == "direct" for row in companies) else 5
+        if len(keywords) != 5 or not minimum_companies <= len(companies) <= 10 or not 3 <= len(roles) <= 4:
             raise ValueError(f"showcase enrichment contract failed: {event_key}")
         category, trend_definition = SHOWCASE_PRESENTATION[event_key]
         cards.append({
@@ -258,7 +266,8 @@ def validate_showcase_enrichment(payload: dict) -> None:
             raise ValueError("showcase order is invalid")
         if len(keywords) != 5 or len({row.get("text") for row in keywords}) != 5:
             raise ValueError("showcase requires five unique keywords")
-        if not 5 <= len(companies) <= 10 or len(set(stock_codes)) != len(companies):
+        minimum_companies = 3 if companies and all(company.get("relation_tier") == "direct" for company in companies) else 5
+        if not minimum_companies <= len(companies) <= 10 or len(set(stock_codes)) != len(companies):
             raise ValueError("showcase requires five to ten unique listed-company identities")
         if not 3 <= len(roles) <= 4:
             raise ValueError("showcase requires three to four company roles")
