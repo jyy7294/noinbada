@@ -148,6 +148,14 @@ def test_home_list_view_is_scrollable_and_keeps_the_portfolio_summary_in_view() 
     assert "-webkit-line-clamp:1" in home_list
 
 
+def test_dial_keyword_tap_opens_detail_without_relying_on_a_followup_click() -> None:
+    method = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
+    assert "const openWord = (word) =>" in method
+    assert "openWord(word);" in method
+    assert "el.addEventListener('click', () => openWord(el));" in method
+    assert "performance.now() - lastOpenedAt < 450" in method
+
+
 def test_portfolio_component_rows_open_an_in_place_company_sheet() -> None:
     detail = INDEX[INDEX.index("  renderPortfolioDetail(portfolio)") : INDEX.index("  // 밈트폴리오 종목 배지")]
     assert 'data-pd-company-row="1"' in detail
@@ -185,8 +193,9 @@ def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None
     orbit = INDEX[INDEX.index("  dialWire() {") : INDEX.index("  viewToggleWire() {")]
     assert "stage.__selectTrend" not in dial
     assert "if (!this.trends.length || this.trends[0].emptyState) return;" in dial
-    assert "this.dialGo(el.getAttribute('data-label') || el.textContent);" in vd
-    assert "if (bigHit) return;" in vd
+    assert "const openWord = (word) =>" in vd
+    assert "this.dialGo(word.getAttribute('data-label') || word.textContent);" in vd
+    assert "if (bigHit) {" in vd
     assert "this.dialGo(el.getAttribute('data-label'));" in orbit
     assert "rot = -(i / N)" not in orbit
     assert "if (rows.length < 2 || window.__mpRotate) return;" in INDEX

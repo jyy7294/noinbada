@@ -5088,6 +5088,12 @@ class Component extends DCLogic {
       const index = activeWords.findIndex((word) => String(word.getAttribute('data-label') || '').replace(/\s/g, '') === key);
       animateSelection(index >= 0 ? index : 0, done);
     };
+    let lastOpenedAt = 0;
+    const openWord = (word) => {
+      if (!word || performance.now() - lastOpenedAt < 450) return;
+      lastOpenedAt = performance.now();
+      this.dialGo(word.getAttribute('data-label') || word.textContent);
+    };
     let dragging = false, lastY = 0;
     let downY = 0, downX = 0, moved = 0;
     stage.addEventListener('pointerdown', (e) => { dragging = true; lastY = e.clientY; downY = e.clientY; downX = e.clientX; moved = 0; try { stage.setPointerCapture(e.pointerId); } catch (err) {} });
@@ -5105,8 +5111,15 @@ class Component extends DCLogic {
         const hit = document.elementFromPoint(ev.clientX, ev.clientY);
         const bigHit = hit && hit.closest ? hit.closest('[data-vd-big]') : null;
         const word = hit && hit.closest ? hit.closest('[data-vd]') : null;
-        if (bigHit) return;
+        if (bigHit) {
+          if (performance.now() - lastOpenedAt >= 450) {
+            lastOpenedAt = performance.now();
+            this.dialGo(bigHit.textContent);
+          }
+          return;
+        }
         if (word) {
+          openWord(word);
           return;
         }
       }
@@ -5124,15 +5137,17 @@ class Component extends DCLogic {
     stage.addEventListener('pointerleave', snap);
     words.forEach((el, i) => {
       el.style.cursor = 'pointer';
-      el.addEventListener('click', () => {
-        this.dialGo(el.getAttribute('data-label') || el.textContent);
-      });
+      el.addEventListener('click', () => openWord(el));
     });
     const bigEl = stage.querySelector('[data-vd-big]');
     if (bigEl) {
       bigEl.style.cursor = 'pointer';
       bigEl.parentElement.style.pointerEvents = 'auto';
-      bigEl.addEventListener('click', () => this.dialGo(bigEl.textContent));
+      bigEl.addEventListener('click', () => {
+        if (performance.now() - lastOpenedAt < 450) return;
+        lastOpenedAt = performance.now();
+        this.dialGo(bigEl.textContent);
+      });
     }
   }
 
