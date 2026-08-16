@@ -189,19 +189,12 @@
           </div>
         </div>
 
-        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px 18px;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <button type="button" aria-label="키움증권 열기" onClick="{{ openKiwoomHome }}" style="width:44px;height:44px;margin:-12px;border:0;background:transparent;padding:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;">
-              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style="display:block;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#1A1A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
-            </button>
-            <div style="min-width:0;">
-              <div style="display:flex; align-items:center; gap:7px;">
-                <span style="white-space:nowrap; font-weight:800; font-size:19px; color:#1A1A22; letter-spacing:-0.03em;">트렌드</span>
-                <sc-if value="{{ showLiveBadge }}" hint-placeholder-val="{{ false }}">
-                  <span style="{{ liveBadgeStyle }}">{{ liveStatus }}</span>
-                </sc-if>
-              </div>
-            </div>
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; padding:14px 22px 12px;">
+          <div style="min-width:0;">
+            <div style="white-space:nowrap; font-weight:800; font-size:23px; line-height:1.14; color:#1A1A22; letter-spacing:-0.04em;">실시간 트렌드</div>
+            <sc-if value="{{ showLiveBadge }}" hint-placeholder-val="{{ false }}">
+              <span style="display:inline-flex; margin-top:10px; {{ liveBadgeStyle }}">{{ liveStatus }}</span>
+            </sc-if>
           </div>
           <div style="display:flex; align-items:center; gap:14px;">
             <div style="position:relative; display:flex;">
@@ -212,10 +205,12 @@
         </div>
 
         <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:0 16px 8px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin:3px 16px 0;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 6px 0;">
             <span data-home-observed="1" style="font-weight:500; font-size:12px; color:#8B8D98;">기준 시각 확인 중</span>
-            <div style="display:flex; align-items:center; gap:9px; flex:none;">
-              <button data-critical-touch-target="1" data-view-btn2="toggle" type="button" aria-label="트렌드를 목록으로 보기" aria-pressed="false" style="min-width:44px; height:44px; border:0; padding:0 2px; background:none; display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:600; font-size:11px; color:#5B21C0; text-decoration:underline; text-underline-offset:3px; cursor:pointer;">List View</button>
+            <div style="display:flex; align-items:center; gap:7px; flex:none; font-family:inherit; font-size:13px; line-height:1;">
+              <button data-critical-touch-target="1" data-view-btn2="dial" type="button" aria-label="트렌드를 다이얼로 보기" aria-pressed="true" style="min-width:44px; height:44px; border:0; padding:10px 1px; background:none; font-family:inherit; font-weight:800; font-size:13px; color:#1A1A22; cursor:pointer;">Dial</button>
+              <span aria-hidden="true" style="color:#C7C1D4;">|</span>
+              <button data-critical-touch-target="1" data-view-btn2="list" type="button" aria-label="트렌드를 목록으로 보기" aria-pressed="false" style="min-width:44px; height:44px; border:0; padding:10px 1px; background:none; font-family:inherit; font-weight:600; font-size:13px; color:#A9A3B4; cursor:pointer;">List</button>
             </div>
           </div>
 
@@ -2823,26 +2818,33 @@ class Component extends DCLogic {
   }
 
   viewToggleWire2() {
-    const btn = document.querySelector('[data-view-btn2="toggle"]');
+    const dialBtn = document.querySelector('[data-view-btn2="dial"]');
+    const listBtn = document.querySelector('[data-view-btn2="list"]');
     const stage = document.querySelector('[data-vd-stage]');
     const list = document.querySelector('[data-list-view2]');
-    if (!btn || !stage || !list || btn.__wired) return;
-    btn.__wired = true;
+    if (!dialBtn || !listBtn || !stage || !list || dialBtn.__wired || listBtn.__wired) return;
+    dialBtn.__wired = true;
+    listBtn.__wired = true;
     const hint = stage.nextElementSibling;
     let scroller = stage.parentElement;
     while (scroller && getComputedStyle(scroller).overflowY !== 'auto') scroller = scroller.parentElement;
     if (scroller) scroller.style.overflowY = 'hidden';
     let isList = false;
-    btn.addEventListener('click', () => {
-      isList = !isList;
+    const setView = (nextIsList) => {
+      isList = nextIsList;
       stage.style.display = isList ? 'none' : 'block';
       if (hint) hint.style.display = isList ? 'none' : 'block';
       list.style.display = isList ? 'block' : 'none';
-      if (scroller) { scroller.style.overflowY = isList ? 'auto' : 'hidden'; scroller.scrollTop = 0; }
-      btn.textContent = isList ? 'Dial View' : 'List View';
-      btn.setAttribute('aria-label', isList ? '트렌드를 다이얼로 보기' : '트렌드를 목록으로 보기');
-      btn.setAttribute('aria-pressed', String(isList));
-    });
+      if (scroller) { scroller.style.overflowY = 'hidden'; scroller.scrollTop = 0; }
+      dialBtn.setAttribute('aria-pressed', String(!isList));
+      listBtn.setAttribute('aria-pressed', String(isList));
+      dialBtn.style.fontWeight = isList ? '600' : '800';
+      dialBtn.style.color = isList ? '#A9A3B4' : '#1A1A22';
+      listBtn.style.fontWeight = isList ? '800' : '600';
+      listBtn.style.color = isList ? '#1A1A22' : '#A9A3B4';
+    };
+    dialBtn.addEventListener('click', () => setView(false));
+    listBtn.addEventListener('click', () => setView(true));
   }
 
   goPostList = () => {

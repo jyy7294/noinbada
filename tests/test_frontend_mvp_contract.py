@@ -214,6 +214,17 @@ def test_home_shows_the_observed_timestamp_only_once() -> None:
     assert 'data-home-observed="1"' in header
 
 
+def test_home_header_uses_a_live_title_and_explicit_dial_list_controls() -> None:
+    header = INDEX[INDEX.index('data-screen-label="01 홈"') : INDEX.index('data-vd-stage="1"')]
+    assert "실시간 트렌드</div>" in header
+    assert 'data-view-btn2="dial"' in header
+    assert 'data-view-btn2="list"' in header
+    toggle = INDEX[INDEX.index("  viewToggleWire2() {") : INDEX.index("  goPostList =")]
+    assert "const setView = (nextIsList) =>" in toggle
+    assert "dialBtn.addEventListener('click', () => setView(false));" in toggle
+    assert "listBtn.addEventListener('click', () => setView(true));" in toggle
+
+
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
     dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
@@ -244,8 +255,10 @@ def test_home_featured_portfolio_returns_to_the_portfolio_list() -> None:
     assert handler.count("this.pdFrom = 'list';") == 2
 
 
-def test_home_back_control_opens_kiwoom_instead_of_a_hidden_previous_screen() -> None:
-    assert 'aria-label="키움증권 열기" onClick="{{ openKiwoomHome }}"' in INDEX
+def test_home_header_prioritizes_the_live_trend_title() -> None:
+    header = INDEX[INDEX.index('data-screen-label="01 홈"') : INDEX.index('data-vd-stage="1"')]
+    assert "실시간 트렌드</div>" in header
+    assert 'aria-label="키움증권 열기" onClick="{{ openKiwoomHome }}"' not in header
     assert "openKiwoomHome = () =>" in INDEX
     assert "window.open('https://www.kiwoom.com/', '_blank', 'noopener,noreferrer');" in INDEX
 
