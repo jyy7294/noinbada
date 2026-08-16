@@ -902,6 +902,24 @@ def test_production_has_one_phone_screen_without_public_debug_navigation() -> No
     assert "body > x-dc > section > div:first-child { display:none !important; }" in INDEX
 
 
+def test_mobile_production_fills_the_real_viewport_without_a_nested_device_mockup() -> None:
+    assert "@media (max-width: 600px)" in INDEX
+    assert "height:100dvh !important" in INDEX
+    assert 'div[style*="width:393px"][style*="height:852px"]' in INDEX
+    assert "border:0 !important" in INDEX
+    assert "border-radius:0 !important" in INDEX
+    assert "box-shadow:none !important" in INDEX
+    assert 'div[style*="padding:12px 24px 4px"]' in INDEX
+    assert 'div[style*="width:120px"][style*="height:5px"]' in INDEX
+    assert "[data-vd-stage] { height:clamp(300px, 42dvh, 370px) !important; }" in INDEX
+
+
+def test_collapsed_company_folders_keep_company_names_visible() -> None:
+    assert 'title="{{ f.previewNames }}"' in INDEX
+    assert "previewNames: st.companies.slice(0, 3)" in INDEX
+    assert "closed: !open" in INDEX
+
+
 def test_core_touch_targets_use_semantic_buttons() -> None:
     assert '<button type="button" aria-label="첫 번째 트렌드 선택" data-vd="0"' in INDEX
     assert '<button type="button" data-my-entry="1" aria-label="마이페이지 열기"' in INDEX

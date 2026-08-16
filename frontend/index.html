@@ -33,6 +33,26 @@
   [data-screen-label] > div:first-child { display:none !important; }
   [data-critical-touch-target]:focus-visible { outline:3px solid rgba(123,63,242,0.52); outline-offset:2px; border-radius:10px; }
   @keyframes zipBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+  @media (max-width: 600px) {
+    html, body, body > x-dc, #dc-root { width:100%; height:100%; min-height:100%; overflow:hidden; background:#FFFFFF; }
+    #dc-root > section { position:fixed !important; inset:0 !important; width:100% !important; height:100dvh !important; min-height:0 !important; padding:0 !important; background:#FFFFFF !important; }
+    [data-screen-label] { position:fixed !important; inset:0 !important; width:100% !important; height:100dvh !important; transform:none !important; transform-origin:center !important; gap:0 !important; }
+    [data-screen-label] > div[style*="width:393px"][style*="height:852px"] {
+      width:100% !important;
+      height:100dvh !important;
+      min-height:100dvh !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      box-sizing:border-box !important;
+    }
+    [data-screen-label] > div[style*="width:393px"] > div[style*="padding:12px 24px 4px"],
+    [data-screen-label] div[style*="width:120px"][style*="height:5px"] { display:none !important; }
+    [data-vd-stage] { height:clamp(300px, 42dvh, 370px) !important; }
+    #related-companies [data-folder-card] { padding:16px 14px !important; border-radius:6px 16px 16px 16px !important; }
+    #related-companies [data-folder-body] { gap:6px !important; margin-top:10px !important; }
+    #related-companies [data-folder-company] { padding:11px !important; }
+  }
 </style>
 </helmet>
 
@@ -505,11 +525,16 @@
               <div data-folder-card="1" style="{{ f.cardStyle }}">
                 <button data-folder-toggle="1" type="button" aria-label="{{ f.title }} {{ f.count }} 기업 목록 열기 또는 접기" aria-expanded="{{ f.open }}" onClick="{{ f.toggle }}" style="width:100%; border:0; padding:0; background:transparent; font-family:inherit; text-align:left; cursor:pointer;">
                  <div style="display:flex; align-items:center; gap:10px;">
-                  <div style="flex:1; min-width:0; display:flex; align-items:center;">
-                    <sc-for list="{{ f.chips }}" as="ch" hint-placeholder-count="3">
-                      <span style="{{ ch.avatar }}">{{ ch.initial }}</span>
-                    </sc-for>
-                    <span style="font-weight:600; font-size:14.5px; color:#8B8D98; margin-left:10px;">{{ f.count }}</span>
+                  <div style="flex:1; min-width:0;">
+                    <div style="display:flex; align-items:center;">
+                      <sc-for list="{{ f.chips }}" as="ch" hint-placeholder-count="3">
+                        <span style="{{ ch.avatar }}">{{ ch.initial }}</span>
+                      </sc-for>
+                      <span style="font-weight:700; font-size:13px; color:#5B21C0; margin-left:10px;">{{ f.count }}</span>
+                    </div>
+                    <sc-if value="{{ f.closed }}" hint-placeholder-val="{{ true }}">
+                      <div title="{{ f.previewNames }}" style="margin-top:8px; font-weight:600; font-size:12px; line-height:1.4; color:#626470; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ f.previewNames }}</div>
+                    </sc-if>
                   </div>
                    <svg width="19" height="19" viewBox="0 0 16 16" style="{{ f.caretStyle }}"><polyline points="4,6 8,10 12,6" fill="none" stroke="#8B8D98" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
                  </div>
@@ -5565,6 +5590,8 @@ class Component extends DCLogic {
         title: st.title.replace(/\s*관련 기업\s*$/, ''),
         count: st.companies.length + '곳',
         open,
+        closed: !open,
+        previewNames: st.companies.slice(0, 3).map(([, name]) => name).join(' · ') + (st.companies.length > 3 ? ' 외' : ''),
         toggle: (e) => {
           const card = e && e.currentTarget;
           this.setState({ folder: open ? -1 : si }, () => {
