@@ -260,7 +260,7 @@ def test_home_title_has_a_selection_criteria_help_button() -> None:
 def test_dial_keeps_korean_trend_titles_in_the_left_readable_zone() -> None:
     dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
     assert 'data-vd-focus-copy="1"' in dial_markup
-    assert "left:52px; top:50%; z-index:20; width:270px" in dial_markup
+    assert "left:38px; top:50%; z-index:20; width:240px" in dial_markup
     assert "text-align:left" in dial_markup
     assert "white-space:nowrap" in dial_markup
     assert "text-overflow:ellipsis" in dial_markup
@@ -274,6 +274,15 @@ def test_home_dial_keeps_its_center_title_in_sync_without_overlaying_the_selecte
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
     assert "(window.__omPaints || []).forEach((paint) => paint())" in patch
     assert "dot.style.visibility = isSel ? 'hidden' : 'visible';" in vd
+    assert "const nodeX = Math.max(240, Math.min(300, width - 320));" in vd
+    assert "const trendIndex = Number(activeWords[best].dataset.trendIndex);" in vd
+
+
+def test_home_dial_hides_repeated_labels_without_losing_the_matching_trend() -> None:
+    patch = INDEX[INDEX.index("  patchHomeLabels() {") : INDEX.index("  dialGo(label) {")]
+    assert "const seenDialLabels = new Set();" in patch
+    assert "seenDialLabels.has(labelKey)" in patch
+    assert "el.dataset.trendIndex = String(i);" in patch
 
 
 def test_home_dial_stays_hidden_until_its_first_published_label_is_ready() -> None:

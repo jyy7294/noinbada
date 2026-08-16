@@ -221,7 +221,7 @@
           </div>
 
           <div data-vd-stage="1" data-home-ready="false" style="position:relative; margin:6px -16px 0; height:440px; background:linear-gradient(180deg,#FFFFFF 0%,#F7F2FF 14%,#EFE7FD 58%,#F7F3FE 84%,#FFFFFF 100%); overflow:hidden; touch-action:none; user-select:none; opacity:0; pointer-events:none; transition:opacity 180ms ease;">
-            <div data-vd-focus-copy="1" style="position:absolute; left:52px; top:50%; z-index:20; width:270px; padding:0; box-sizing:border-box; text-align:left; transform:translateY(-50%); pointer-events:none;">
+            <div data-vd-focus-copy="1" style="position:absolute; left:38px; top:50%; z-index:20; width:240px; padding:0; box-sizing:border-box; text-align:left; transform:translateY(-50%); pointer-events:none;">
               <div data-vd-rank="1" style="display:inline-block; border:1.5px solid #B79BF2; border-radius:999px; padding:5px 13px; font-weight:600; font-size:12px; color:#5B21C0; background:rgba(255,255,255,0.6);">통합 1위</div>
               <div data-vd-cat="1" style="font-weight:600; font-size:12.5px; color:#8B7BC4; margin-top:10px;">분류 확인 중</div>
               <div data-vd-blob="1" style="position:absolute; left:50%; top:50%; margin:-70px 0 0 -100px; width:200px; height:140px; border-radius:999px; background:#D3C2F7; filter:blur(30px); opacity:0.5;"></div>
@@ -5041,11 +5041,21 @@ class Component extends DCLogic {
     });
     groups.forEach((els) => {
       if (els.length < 3) return;
+      const seenDialLabels = new Set();
       els.forEach((el, i) => {
         const t = this.trends[i];
         if (!el.dataset.trzipBaseDisplay) el.dataset.trzipBaseDisplay = el.style.display || 'flex';
         el.style.display = t ? el.dataset.trzipBaseDisplay : 'none';
         if (!t) return;
+        const labelKey = String(t.name || '').replace(/\s/g, '').toLocaleLowerCase('ko-KR');
+        if (el.hasAttribute('data-vd') && seenDialLabels.has(labelKey)) {
+          el.style.display = 'none';
+          return;
+        }
+        if (el.hasAttribute('data-vd')) {
+          seenDialLabels.add(labelKey);
+          el.dataset.trendIndex = String(i);
+        }
         const old = el.getAttribute('data-label');
         el.setAttribute('data-label', t.name);
         const pill = el.querySelector('[data-vd-pill]');
@@ -5155,8 +5165,8 @@ class Component extends DCLogic {
       const turn = activeWords.length * STEP;
       if (stage.clientHeight > 0) stage.__h = stage.clientHeight;
       const width = stage.clientWidth || 393;
-      // 넓은 화면에서도 선택 키워드와 다이얼이 한 덩어리로 보이도록 축을 가운데로 당깁니다.
-      const nodeX = Math.max(310, width - 200);
+      // 화면 폭이 넓어져도 다이얼 축이 오른쪽으로 밀려나지 않게 고정 범위에 둡니다.
+      const nodeX = Math.max(240, Math.min(300, width - 320));
       const cx = nodeX - R;
       const cy = (stage.clientHeight || stage.__h || parseFloat(stage.style.height) || 250) / 2;
       let best = 0, bd = Infinity;
@@ -5191,7 +5201,8 @@ class Component extends DCLogic {
         active = best;
         const label = activeWords[best].getAttribute('data-label');
         if (big) big.textContent = label;
-        const selectedTrend = this.trends[best];
+        const trendIndex = Number(activeWords[best].dataset.trendIndex);
+        const selectedTrend = this.trends[Number.isInteger(trendIndex) ? trendIndex : best];
         if (rankEl) rankEl.textContent = selectedTrend && selectedTrend.rank !== '—' && selectedTrend.rank !== '–' ? '통합 ' + selectedTrend.rank : '순위 없음';
         if (catEl) catEl.textContent = selectedTrend ? selectedTrend.cat : '';
       }
