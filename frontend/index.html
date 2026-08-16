@@ -214,7 +214,7 @@
             </div>
           </div>
 
-          <div data-vd-stage="1" style="position:relative; margin:6px -16px 0; height:440px; background:linear-gradient(180deg,#FFFFFF 0%,#F7F2FF 14%,#EFE7FD 58%,#F7F3FE 84%,#FFFFFF 100%); overflow:hidden; touch-action:none; user-select:none;">
+          <div data-vd-stage="1" data-home-ready="false" style="position:relative; margin:6px -16px 0; height:440px; background:linear-gradient(180deg,#FFFFFF 0%,#F7F2FF 14%,#EFE7FD 58%,#F7F3FE 84%,#FFFFFF 100%); overflow:hidden; touch-action:none; user-select:none; opacity:0; pointer-events:none; transition:opacity 180ms ease;">
             <div style="position:absolute; left:50%; top:50%; width:300px; padding:0; box-sizing:border-box; text-align:center; transform:translate(-50%,-50%); pointer-events:none;">
               <div data-vd-rank="1" style="display:inline-block; border:1.5px solid #B79BF2; border-radius:999px; padding:5px 13px; font-weight:600; font-size:12px; color:#5B21C0; background:rgba(255,255,255,0.6);">통합 1위</div>
               <div data-vd-cat="1" style="font-weight:600; font-size:12.5px; color:#8B7BC4; margin-top:10px;">분류 확인 중</div>
@@ -4883,6 +4883,12 @@ class Component extends DCLogic {
 
   patchHomeLabels() {
     // 발행된 트렌드명으로 홈 변형들의 data-label 캐리어를 치환합니다.
+    const dialStage = document.querySelector('[data-vd-stage]');
+    if (dialStage && dialStage.dataset.homeReady !== 'true') {
+      dialStage.dataset.homeReady = 'true';
+      dialStage.style.pointerEvents = 'auto';
+      requestAnimationFrame(() => { dialStage.style.opacity = '1'; });
+    }
     const groups = new Map();
     document.querySelectorAll('[data-label]').forEach((el) => {
       const p = el.parentElement;

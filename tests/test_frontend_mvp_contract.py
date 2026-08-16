@@ -235,6 +235,16 @@ def test_dial_center_keeps_korean_trend_titles_as_one_readable_line() -> None:
     assert "label.length >= 18 ? '20px'" in home_projection
 
 
+def test_home_dial_stays_hidden_until_its_first_published_label_is_ready() -> None:
+    dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
+    assert 'data-home-ready="false"' in dial_markup
+    assert "opacity:0; pointer-events:none; transition:opacity 180ms ease" in dial_markup
+    patch = INDEX[INDEX.index("  patchHomeLabels() {") : INDEX.index("  dialGo(label) {")]
+    assert "dialStage.dataset.homeReady = 'true';" in patch
+    assert "dialStage.style.pointerEvents = 'auto';" in patch
+    assert "dialStage.style.opacity = '1';" in patch
+
+
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
     dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
