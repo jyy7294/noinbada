@@ -130,7 +130,7 @@ def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> No
 
 
 def test_critical_mobile_controls_have_accessible_touch_targets() -> None:
-    assert INDEX.count('data-critical-touch-target="1"') >= 4
+    assert INDEX.count('data-critical-touch-target="1"') >= 3
     assert "min-width:44px; height:44px" in INDEX
     assert "width:44px;height:44px;margin:-6px" in INDEX
     assert '[data-critical-touch-target]:focus-visible' in INDEX
@@ -1071,6 +1071,8 @@ def test_past_trend_archive_is_not_exposed_in_the_public_frontend() -> None:
 
 
 def test_selection_disclosure_and_portfolio_safety_rules_are_visible_and_enforced() -> None:
+    home_controls = INDEX[INDEX.index('data-home-observed="1"'):INDEX.index('data-vd-stage="1"')]
+    assert "선정 기준</button>" not in home_controls
     assert "openSelectionGuide" in INDEX
     assert "트렌드 선정 기준" in INDEX
     assert "정치·범죄·재난·사생활·혐오" in INDEX
