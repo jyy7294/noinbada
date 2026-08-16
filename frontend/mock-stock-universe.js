@@ -17,7 +17,7 @@
   // 확인했습니다. 라이브 publication의 기업 로고 계약과는 별도 범위입니다.
   const verifiedMakerLogo = (
     sourcePageUrl, assetUrl, mime, width, height, sha256,
-    candidateKind = 'reviewed_official_asset', assetScope = 'same_official_domain'
+    candidateKind = 'reviewed_official_asset', assetScope = 'same_official_domain', displayMode = 'contain'
   ) => {
     const format = assetFormat(mime);
     const verification = format === 'svg' ? 'verified_safe_svg' : 'verified_raster_min_64px';
@@ -34,6 +34,7 @@
       logo_asset_sha256: sha256,
       logo_source_page_url: sourcePageUrl,
       logo_runtime_probe_required: false,
+      logo_display_mode: displayMode,
       logo_minimum_dimension: 64,
       logo_provenance: Object.freeze({
         source_page_url: sourcePageUrl,
@@ -110,6 +111,11 @@
     'lottewellfood.com': verifiedMakerLogo(
       'https://www.lottewellfood.com/', 'https://www.lottewellfood.com/images/common/m/h1_logo_new.png',
       'image/png', 206, 64, '8c0949e9f129e1f5375ca8d08846e3c29a4d1d55ad337ba1653a077d25bb7aca', 'explicit_logo_image'
+    ),
+    'hanwha.com': verifiedMakerLogo(
+      'https://www.hanwha.com/', 'https://www.hanwha.com/assets/img/common/logo_black.svg',
+      'image/svg+xml', 145, 40, '8b640a433cbe377e601cb6c59427b5703afa79b569ff58970f530a4818b8b2c7',
+      'explicit_logo_image', 'same_official_domain', 'symbol_crop_left'
     ),
     'doosanrobotics.com': verifiedMakerLogo(
       'https://www.doosanrobotics.com/en/', 'https://www.doosanrobotics.com/images/logo.svg',

@@ -221,7 +221,7 @@
           </div>
 
           <div data-vd-stage="1" data-home-ready="false" style="position:relative; margin:6px -16px 0; height:440px; background:linear-gradient(180deg,#FFFFFF 0%,#F7F2FF 14%,#EFE7FD 58%,#F7F3FE 84%,#FFFFFF 100%); overflow:hidden; touch-action:none; user-select:none; opacity:0; pointer-events:none; transition:opacity 180ms ease;">
-            <div style="position:absolute; left:22px; top:50%; width:214px; padding:0; box-sizing:border-box; text-align:left; transform:translateY(-50%); pointer-events:none;">
+            <div data-vd-focus-copy="1" style="position:absolute; left:22px; top:50%; z-index:20; width:214px; padding:0; box-sizing:border-box; text-align:left; transform:translateY(-50%); pointer-events:none;">
               <div data-vd-rank="1" style="display:inline-block; border:1.5px solid #B79BF2; border-radius:999px; padding:5px 13px; font-weight:600; font-size:12px; color:#5B21C0; background:rgba(255,255,255,0.6);">통합 1위</div>
               <div data-vd-cat="1" style="font-weight:600; font-size:12.5px; color:#8B7BC4; margin-top:10px;">분류 확인 중</div>
               <div data-vd-blob="1" style="position:absolute; left:50%; top:50%; margin:-70px 0 0 -100px; width:200px; height:140px; border-radius:999px; background:#D3C2F7; filter:blur(30px); opacity:0.5;"></div>
@@ -380,12 +380,34 @@
 
         <div style="padding:0 16px 14px;">
           <div data-freshness-card="1" style="background:#FAFAFC; border:1px solid #ECE8F3; border-radius:18px; padding:13px 13px 12px;">
-            <div style="font-weight:700; font-size:14px; color:#4B4D57; letter-spacing:-0.02em;">트렌드 신선도</div>
-            <p data-freshness-explanation="1" style="margin:5px 0 0; font-weight:500; font-size:11px; line-height:1.5; color:#777A86;">최근 포착 시점·순위 변화·지속 관측을 함께 반영합니다.</p>
-            <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin-top:11px;">
-              <div style="background:#F7F5FC;border-radius:11px;padding:8px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">관측 상태</span><span style="display:block;margin-top:3px;font-weight:800;font-size:12px;color:#5B21C0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ trendPhase }}</span></div>
-              <div style="background:#F7F5FC;border-radius:11px;padding:8px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">이전 대비</span><span style="display:block;margin-top:3px;{{ movementStyle }}">{{ movementLabel }}</span></div>
-              <div style="background:#F7F5FC;border-radius:11px;padding:8px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">현재 순위</span><span style="display:block;margin-top:3px;font-weight:800;font-size:13px;color:#1A1A22;">{{ trendRank }}</span></div>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-weight:700; font-size:14px; color:#4B4D57; letter-spacing:-0.02em;">트렌드 신선도</span>
+              <button type="button" aria-label="트렌드 신선도 기준 보기" aria-expanded="{{ freshInfoOpen }}" onClick="{{ toggleFreshInfo }}" style="width:28px;height:28px;border:0;background:transparent;padding:7px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#B5B8C2" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#B5B8C2" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#B5B8C2"></circle></svg></button>
+            </div>
+            <sc-if value="{{ freshInfoOpen }}" hint-placeholder-val="{{ false }}">
+              <div data-freshness-explanation="1" style="background:#F3EFFC; border-radius:12px; padding:11px 13px; margin-top:9px; font-weight:500; font-size:11px; line-height:1.65; color:#5B21C0;">최근 포착 시점·순위 변화·지속 관측을 함께 반영합니다.</div>
+            </sc-if>
+            <div style="display:flex; gap:10px; align-items:stretch; margin-top:9px;">
+              <div style="flex:none; width:104px; padding:6px 0 7px; display:flex; align-items:center; justify-content:center;">
+                <div style="flex:1; min-width:0;">
+                  <div style="font-weight:500; font-size:10.5px; color:#8B8D98; white-space:nowrap; text-align:center;">트ZIP 인기차트</div>
+                  <div style="font-weight:700; font-size:13.5px; color:#1A1A22; letter-spacing:-0.02em; white-space:nowrap; text-align:center;">{{ trendDay }}</div>
+                </div>
+              </div>
+              <div style="flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center;">
+                <div style="display:flex; justify-content:space-between; font-weight:500; font-size:10px; color:#9A9DA9;">
+                  <span style="{{ phase0 }}">포착</span><span style="{{ phase1 }}">확산</span><span style="{{ phase2 }}">대중화</span>
+                </div>
+                <div style="position:relative; height:6px; margin-top:7px;">
+                  <div style="position:absolute; inset:0; border-radius:999px; background:#E5E0ED;"></div>
+                  <div style="{{ barFill }}"></div><div style="{{ barKnob }}"></div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; margin-top:11px;">
+                  <div style="flex:1; min-width:0; text-align:center;"><div style="font-weight:500; font-size:10px; color:#8B8D98; white-space:nowrap;">이전 공개 대비</div><div style="{{ movementStyle }}">{{ movementLabel }}</div></div>
+                  <span style="flex:none; width:1px; height:30px; background:#E5E0ED;"></span>
+                  <div style="flex:1; min-width:0; text-align:center;"><div style="font-weight:500; font-size:10px; color:#8B8D98; white-space:nowrap;">현재 순위</div><div style="font-weight:700; font-size:14.5px; color:#1A1A22; margin-top:2px;">{{ trendRank }}</div></div>
+                </div>
+              </div>
             </div>
 
             <sc-if value="{{ collectInfoOpen }}" hint-placeholder-val="{{ false }}">
@@ -404,10 +426,9 @@
           <div data-interest-card="1" style="background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:14px 14px 13px;">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
               <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">관심 흐름</span>
-              <div style="display:flex; width:150px; background:#F3F0FB; border-radius:999px; padding:3px;">
+              <div style="display:flex; width:108px; background:#F3F0FB; border-radius:999px; padding:3px;">
                 <button onClick="{{ pickRange0 }}" aria-disabled="{{ rangeDisabled0 }}" style="{{ range0 }}">{{ rangeLabel0 }}</button>
                 <button onClick="{{ pickRange1 }}" aria-disabled="{{ rangeDisabled1 }}" style="{{ range1 }}">1주일</button>
-                <button onClick="{{ pickRange2 }}" aria-disabled="{{ rangeDisabled2 }}" style="{{ range2 }}">1개월</button>
               </div>
             </div>
             <div style="display:flex; align-items:center; justify-content:flex-end; margin-top:10px;">
@@ -1099,6 +1120,7 @@ class Component extends DCLogic {
     this.clearLegacyPortfolioSurfaces();
     // 밈트폴리오는 실시간 트렌드 결과가 아닌 고정 데모 화면입니다.
     // 원천 데이터 로딩 실패와 관계없이 홈에서 바로 보여줘야 합니다.
+    this.warmCompanyLogos();
     this.renderPresentationPortfolios();
     this.startStatusClock();
     setTimeout(() => this.listViewWire(), 200);
@@ -1124,6 +1146,8 @@ class Component extends DCLogic {
   interestDisclosure = '선택한 기간의 관심 흐름을 비교해 볼 수 있습니다.';
   companyDomains = {};
   logoCache = {};
+  logoFailures = new Set();
+  logoDisplayModes = {};
 
   // Google favicon 프록시에서 누락되는 기업은 검증된 공식 사이트 자산을
   // 먼저 사용합니다. 이 목록은 백엔드 publication 계약과 동일합니다.
@@ -1309,7 +1333,9 @@ class Component extends DCLogic {
       delete this.logoCache[name];
       return;
     }
-    if (this.companyDomains[name] === logoUrl) return;
+    this.logoDisplayModes[name] = String(company.logo_display_mode || 'contain');
+    const failureKey = name + '|' + logoUrl;
+    if (this.logoFailures.has(failureKey) || this.companyDomains[name] === logoUrl) return;
     this.companyDomains[name] = logoUrl;
     delete this.logoCache[name];
     const queue = (this.__logoQueue = this.__logoQueue || []);
@@ -1324,10 +1350,12 @@ class Component extends DCLogic {
 
   pumpLogoQueue() {
     this.__logoBusy = this.__logoBusy || 0;
+    // 동시에 너무 많은 외부 이미지 요청을 열면 모바일 WebView에서 일부가
+    // 취소될 수 있습니다. 화면 진입 전에 선로딩하되 안정적인 4개씩 처리합니다.
     while (this.__logoBusy < 4 && this.__logoQueue && this.__logoQueue.length) {
       const [name, logoUrl, policy] = this.__logoQueue.shift();
       this.__logoBusy++;
-      const done = () => { this.__logoBusy--; this.logoRefresh(); setTimeout(() => this.pumpLogoQueue(), 120); };
+      const done = () => { this.__logoBusy--; this.logoRefresh(); this.pumpLogoQueue(); };
       const img = new Image();
       if (policy.mode === 'maker_stock_search') img.fetchPriority = 'high';
       img.onload = () => {
@@ -1337,7 +1365,11 @@ class Component extends DCLogic {
         if (sharpEnough && this.companyDomains[name] === logoUrl) this.logoCache[name] = logoUrl;
         done();
       };
-      img.onerror = done;
+      img.onerror = () => {
+        this.logoFailures.add(name + '|' + logoUrl);
+        if (this.companyDomains[name] === logoUrl) delete this.logoCache[name];
+        done();
+      };
       img.src = logoUrl;
     }
   }
@@ -1432,10 +1464,47 @@ class Component extends DCLogic {
     const name = this.companyName(company);
     const candidate = this.logoCandidate(company);
     if (!candidate) return '';
+    if (this.logoFailures.has(name + '|' + candidate)) return '';
     this.registerLogo(name, candidate, company, priority);
-    // 네트워크 검증이 끝난 URL만 화면에 사용합니다. 404/차단 URL은
-    // 브라우저의 깨진 이미지 대신 이니셜 아바타로 안전하게 대체됩니다.
-    return this.companyDomains[name] === candidate ? (this.logoCache[name] || '') : '';
+    // 검증된 URL은 즉시 렌더하고, 시작 시 일괄 선로딩해 화면 전환 뒤에
+    // 이니셜이 로고로 바뀌는 현상을 없앱니다. 요청 실패만 이니셜로 대체합니다.
+    return candidate;
+  }
+
+  companyLogoFallback(company, compact = false) {
+    const ticker = String((company && (company.ticker || company.code || company.symbol)) || '')
+      .replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+    if (ticker) return ticker.slice(0, compact ? 1 : 2);
+    const english = String((company && (company.company_en || company.name_en)) || '').trim();
+    if (english) return english.slice(0, compact ? 1 : 2).toUpperCase();
+    const name = this.companyName(company);
+    return name.slice(0, compact ? 1 : 2);
+  }
+
+  companyLogoBackground(companyOrName, logo) {
+    const name = typeof companyOrName === 'string' ? companyOrName : this.companyName(companyOrName);
+    const mode = typeof companyOrName === 'object' && companyOrName
+      ? String(companyOrName.logo_display_mode || 'contain')
+      : String(this.logoDisplayModes[name] || 'contain');
+    const fit = mode === 'symbol_crop_left' ? 'left center/auto 100%' : 'center/contain';
+    return '#FFFFFF url(' + this.escapeHtml(logo) + ') ' + fit + ' no-repeat';
+  }
+
+  warmCompanyLogos() {
+    const companies = [];
+    const add = (company, priority = false) => {
+      const name = this.companyName(company);
+      const candidate = this.logoCandidate(company);
+      if (name && candidate) {
+        this.registerLogo(name, candidate, company, priority);
+        companies.push(name);
+      }
+    };
+    const seedPortfolios = this.buildPresentationPortfolios();
+    seedPortfolios.forEach((portfolio) => (portfolio.companies || []).forEach((company) => add(company, true)));
+    (Array.isArray(window.TRZIP_STOCK_UNIVERSE) ? window.TRZIP_STOCK_UNIVERSE : [])
+      .forEach((company) => add(company, true));
+    return [...new Set(companies)].length;
   }
 
   verifiedMarketSnapshot(company) {
@@ -1609,7 +1678,7 @@ class Component extends DCLogic {
       + '" style="width:' + size + 'px;height:' + size + 'px;flex:none;border-radius:999px;background:#FFFFFF'
       + (logo ? ' url(' + this.escapeHtml(logo) + ') center/contain no-repeat' : '')
       + ';box-shadow:inset 0 0 0 1px rgba(26,26,34,0.10);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;color:#7B3FF2;'
-      + (overlap ? 'margin-left:-8px;' : '') + '">' + (logo ? '' : this.escapeHtml(name.slice(0, 1))) + '</span>';
+      + (overlap ? 'margin-left:-8px;' : '') + '">' + (logo ? '' : this.escapeHtml(this.companyLogoFallback(company, true))) + '</span>';
   }
 
   clearLegacyPortfolioSurfaces() {
@@ -1754,21 +1823,21 @@ class Component extends DCLogic {
       badge.style.width = size + 'px';
       badge.style.height = size + 'px';
       badge.style.borderRadius = '999px';
-      badge.style.background = '#FFFFFF url(' + url + ') center/contain no-repeat';
+      badge.style.background = this.companyLogoBackground(badge.getAttribute('data-logo-company') || '', url);
       badge.style.boxShadow = 'inset 0 0 0 1px rgba(26,26,34,0.08)';
     };
     // 만들기 화면 종목 담기 리스트
     document.querySelectorAll('[data-mk-stock]').forEach((row) => {
       const url = this.logoCache[row.getAttribute('data-mk-stock')];
       const badge = row.querySelector('span');
-      if (url && badge) apply(badge, url, 42);
+      if (url && badge) { badge.setAttribute('data-logo-company', row.getAttribute('data-mk-stock') || ''); apply(badge, url, 42); }
     });
     // 포트 상세 구성 종목 리스트 (배지 + 종목명 행)
     document.querySelectorAll('[data-pd-company-row]').forEach((row) => {
       const badge = row.children[0], nameEl = row.children[1];
       if (!badge || !nameEl || badge.tagName !== 'SPAN' || nameEl.tagName !== 'SPAN') return;
       const url = this.logoCache[nameEl.textContent.trim()];
-      if (url) apply(badge, url, 40);
+      if (url) { badge.setAttribute('data-logo-company', nameEl.textContent.trim()); apply(badge, url, 40); }
     });
   }
 
@@ -1848,11 +1917,10 @@ class Component extends DCLogic {
 
   buildInterestCurve(trend, rangeIndex = 0) {
     const MAX_CONTIGUOUS_GAP_MS = 90 * 60 * 1000;
-    const rangeKey = ['24h', '1w', '1m'][rangeIndex] || '24h';
+    const rangeKey = ['24h', '1w'][Math.max(0, Math.min(1, rangeIndex))] || '24h';
     const rangeSpecs = {
       '24h': { sourceKey: '1w', windowMs: 24 * 60 * 60 * 1000, label: '24시간', start: '24시간 전' },
       '1w': { sourceKey: '1w', windowMs: 7 * 24 * 60 * 60 * 1000, label: '1주일', start: '1주일 전' },
-      '1m': { sourceKey: '1m', windowMs: 30 * 24 * 60 * 60 * 1000, label: '1개월', start: '한 달 전' },
     };
     const rangeSpec = rangeSpecs[rangeKey];
     const rankStyle = this.rankResponsiveInterestStyle(trend);
@@ -2038,7 +2106,16 @@ class Component extends DCLogic {
       && new Date(point.at).getTime() >= windowStartMs
       && new Date(point.at).getTime() <= windowEndMs
     )) : [];
-    const combinedSeries = publishedPoints.map((point) => point.combined);
+    const earliestPublishedPointMs = publishedPoints.length
+      ? new Date(publishedPoints[0].at).getTime() : null;
+    const observedSpanMs = Number.isFinite(earliestPublishedPointMs) && Number.isFinite(windowEndMs)
+      ? Math.max(0, windowEndMs - earliestPublishedPointMs) : 0;
+    // 24시간은 희소 관측도 보여 주되, 1주일은 충분한 관측 구간이 있을 때만 보여 줍니다.
+    const requiredObservedSpanMs = rangeKey === '1w' ? 36 * 60 * 60 * 1000 : 0;
+    const enoughRangeHistory = showcaseAllHistory || rangeKey === '24h'
+      || observedSpanMs >= requiredObservedSpanMs;
+    const chartPoints = enoughRangeHistory ? publishedPoints : [];
+    const combinedSeries = chartPoints.map((point) => point.combined);
     const rawValues = combinedSeries.map((value) => {
         if (value === null || value === undefined || value === '') return null;
         const numeric = Number(value);
@@ -2057,10 +2134,10 @@ class Component extends DCLogic {
       }, {});
       return parts.month + '.' + parts.day + '. ' + parts.hour + ':' + parts.minute;
     };
-    const timestampLabels = publishedPoints.map((point) => (
+    const timestampLabels = chartPoints.map((point) => (
       formatInterestTimestamp(point && (point.timestamp || point.at))
     ));
-    const timestampValues = publishedPoints.map((point) => {
+    const timestampValues = chartPoints.map((point) => {
       const raw = point && (point.timestamp || point.at);
       if (!raw) return null;
       const value = new Date(raw).getTime();
@@ -2846,7 +2923,9 @@ class Component extends DCLogic {
       isList = nextIsList;
       stage.style.display = isList ? 'none' : 'block';
       if (hint) hint.style.display = isList ? 'none' : 'block';
-      list.style.display = isList ? 'block' : 'none';
+      // 10개 행이 고정 목록 높이를 균등하게 채워 바로 아래 밈트폴리오와
+      // 자연스럽게 이어집니다. 빈 카드 영역이나 내부 스크롤을 만들지 않습니다.
+      list.style.display = isList ? 'flex' : 'none';
       if (scroller) { scroller.style.overflowY = 'hidden'; scroller.scrollTop = 0; }
       dialBtn.setAttribute('aria-pressed', String(!isList));
       listBtn.setAttribute('aria-pressed', String(isList));
@@ -4619,9 +4698,9 @@ class Component extends DCLogic {
         + '" data-on="1" aria-label="' + this.escapeHtml(name + ' 선택 해제')
         + '" style="width:100%;border:0;border-bottom:1px solid #F4F2FA;background:#FFFFFF;display:flex;align-items:center;gap:11px;padding:12px 2px;text-align:left;cursor:pointer;">'
         + '<span role="img" aria-label="' + this.escapeHtml(name + ' 로고') + '" style="width:38px;height:38px;flex:none;border-radius:999px;background:'
-        + (logo ? '#FFFFFF url(' + this.escapeHtml(logo) + ') center/contain no-repeat' : '#EFE6FF')
+        + (logo ? this.companyLogoBackground(company, logo) : '#EFE6FF')
         + ';display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;color:#5B21C0;box-shadow:inset 0 0 0 1px rgba(26,26,34,0.08);">'
-        + (logo ? '' : this.escapeHtml(name.slice(0, 2))) + '</span>'
+        + (logo ? '' : this.escapeHtml(this.companyLogoFallback(company))) + '</span>'
         + '<span style="flex:1;min-width:0;"><span title="' + this.escapeHtml(name) + '" style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;font-size:13.5px;color:#1A1A22;">'
         + this.escapeHtml(name) + '</span><span style="display:block;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;font-size:10.5px;color:#9A9DA8;">'
         + this.escapeHtml([ticker, market, desc].filter(Boolean).join(' · ')) + '</span></span>'
@@ -4707,9 +4786,9 @@ class Component extends DCLogic {
       const name = this.companyName(company);
       const logo = this.companyLogo(company, true);
       return '<span data-stock-logo-name="' + this.escapeHtml(name) + '" role="img" aria-label="' + this.escapeHtml(name + ' 로고')
-        + '" style="width:42px;height:42px;flex:none;border-radius:999px;background:' + (logo ? '#FFFFFF url(' + this.escapeHtml(logo) + ') center/contain no-repeat' : '#F1EBFF')
+        + '" style="width:42px;height:42px;flex:none;border-radius:999px;background:' + (logo ? this.companyLogoBackground(company, logo) : '#F1EBFF')
         + ';box-shadow:inset 0 0 0 1px rgba(26,26,34,0.08);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;color:#5B21C0;">'
-        + (logo ? '' : this.escapeHtml(name.slice(0, 2))) + '</span>';
+        + (logo ? '' : this.escapeHtml(this.companyLogoFallback(company))) + '</span>';
     };
     const rowMarkup = (company) => {
       const id = String(company.id);
@@ -4817,7 +4896,7 @@ class Component extends DCLogic {
       const url = this.logoCache[badge.getAttribute('data-stock-logo-name')];
       if (!url) return;
       badge.textContent = '';
-      badge.style.background = '#FFFFFF url(' + url + ') center/contain no-repeat';
+      badge.style.background = this.companyLogoBackground(badge.getAttribute('data-stock-logo-name') || '', url);
     });
   }
 
@@ -5002,7 +5081,7 @@ class Component extends DCLogic {
             : movement.status === 'new' ? '#7B3FF2' : '#8B8D98';
         const divider = index ? '<div style="height:1px;background:#F1EEF9;"></div>' : '';
         return divider + '<button type="button" data-home-topic="' + escape(trend.name)
-          + '" style="width:100%;border:0;background:#FFFFFF;display:flex;align-items:center;gap:8px;padding:3px 2px;text-align:left;cursor:pointer;">'
+          + '" style="width:100%;flex:1;min-height:0;border:0;background:#FFFFFF;display:flex;align-items:center;gap:8px;padding:3px 2px;text-align:left;cursor:pointer;">'
           + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:12px;color:#7B3FF2;">' + (index + 1) + '</span>'
           + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px;">'
           + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:1;overflow:hidden;word-break:keep-all;font-weight:800;font-size:12px;line-height:1.12;color:#1A1A22;letter-spacing:-0.03em;">' + escape(trend.name) + '</span>'
@@ -5059,8 +5138,8 @@ class Component extends DCLogic {
     stage.__vdWired = true;
     const words = [...stage.querySelectorAll('[data-vd]')];
     const R = 420, STEP = 0.112;
-    // 중앙 키워드는 좌측 정보 영역에 고정하고, 다이얼 칩은 우측 축만 사용합니다.
-    const NODE_X = 180;
+    // 키워드·순위·분류는 왼쪽 정보 영역에 고정하고, 다이얼 칩은 오른쪽
+    // 세로 축만 사용합니다. 두 영역이 같은 좌표를 쓰면 긴 키워드가 겹칩니다.
     let rot = 0, active = -1;
     const big = stage.querySelector('[data-vd-big]');
     const rankEl = stage.querySelector('[data-vd-rank]');
@@ -5077,7 +5156,9 @@ class Component extends DCLogic {
       if (!activeWords.length) return;
       const turn = activeWords.length * STEP;
       if (stage.clientHeight > 0) stage.__h = stage.clientHeight;
-      const cx = NODE_X - R;
+      const width = stage.clientWidth || 393;
+      const nodeX = Math.max(250, width - 110);
+      const cx = nodeX - R;
       const cy = (stage.clientHeight || stage.__h || parseFloat(stage.style.height) || 250) / 2;
       let best = 0, bd = Infinity;
       activeWords.forEach((el, i) => {
@@ -5779,9 +5860,9 @@ class Component extends DCLogic {
     const sns = this.state.sns || 0;
     const ti = Math.min(this.state.trend || 0, this.trends.length - 1);
     const curTrend = this.trends[ti];
-    const rangeIndex = Math.max(0, Math.min(2, this.state.range || 0));
+    const rangeIndex = Math.max(0, Math.min(1, this.state.range || 0));
     const interestChart = this.buildInterestCurve(curTrend, rangeIndex);
-    const rangeAvailability = [0, 1, 2].map((index) => (
+    const rangeAvailability = [0, 1].map((index) => (
       curTrend.showcase && index > 0 ? false :
       index === rangeIndex ? interestChart.available : this.buildInterestCurve(curTrend, index).available
     ));

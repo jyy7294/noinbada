@@ -143,8 +143,10 @@ def test_home_list_view_fits_all_top_ten_without_internal_scroll() -> None:
     assert 'data-home-portfolios="1" style="visibility:hidden; margin:16px -16px 0;' in INDEX
     view_toggle = INDEX[INDEX.index("  viewToggleWire2()") : INDEX.index("  goPostList =")]
     assert "scroller.style.overflowY = 'hidden'" in view_toggle
+    assert "list.style.display = isList ? 'flex' : 'none'" in view_toggle
     home_list_start = INDEX.rindex("const list = document.querySelector('[data-list-view2]');")
     home_list = INDEX[home_list_start : INDEX.index("  dialGo(label)")]
+    assert "flex:1;min-height:0" in home_list
     assert "padding:3px 2px" in home_list
     assert "-webkit-line-clamp:1" in home_list
 
@@ -257,7 +259,8 @@ def test_home_title_has_a_selection_criteria_help_button() -> None:
 
 def test_dial_keeps_korean_trend_titles_in_the_left_readable_zone() -> None:
     dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
-    assert "left:22px; top:50%; width:214px" in dial_markup
+    assert 'data-vd-focus-copy="1"' in dial_markup
+    assert "left:22px; top:50%; z-index:20; width:214px" in dial_markup
     assert "text-align:left" in dial_markup
     assert "white-space:nowrap" in dial_markup
     assert "text-overflow:ellipsis" in dial_markup
@@ -357,7 +360,9 @@ def test_company_logos_are_used_across_company_and_portfolio_surfaces() -> None:
     assert "initialsOnlyLogoDomains = new Set" in INDEX
     assert "initialsOnlyLogoDomains = new Set([])" in INDEX
     assert "if (!candidate) return '';" in INDEX
-    assert "this.companyDomains[name] === candidate ? (this.logoCache[name] || '') : ''" in INDEX
+    assert "this.logoFailures.has(name + '|' + candidate)" in INDEX
+    assert "return candidate;" in INDEX
+    assert "warmCompanyLogos()" in INDEX
     assert "const logo = company.logo_url ||" not in INDEX
     assert 'data-my-stash-companies="1"' in INDEX
     assert "this.activePortfolio.companies.slice(0, 5)" in INDEX
@@ -423,7 +428,7 @@ def test_known_company_logo_assets_are_confined_to_seed_meme_portfolios() -> Non
         assert f"'{domain}': 'https://" in INDEX
     assert "return this.isVerifiedPublishedLogo(company) ? String(company.logo_url || '') : '';" in INDEX
     assert "https://www.google.com/s2/favicons" not in INDEX
-    assert "if (this.companyDomains[name] === logoUrl) return;" in INDEX
+    assert "if (this.logoFailures.has(failureKey) || this.companyDomains[name] === logoUrl) return;" in INDEX
     assert "this.companyDomains[name] === logoUrl" in INDEX
     assert '<link rel="icon" href="data:,">' in INDEX
 
@@ -625,13 +630,13 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert "관심 흐름" in INDEX
     assert 'data-interest-range-caption="1"' in INDEX
     assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
-    assert "const rangeKey = ['24h', '1w', '1m'][rangeIndex]" in INDEX
+    assert "const rangeKey = ['24h', '1w'][Math.max(0, Math.min(1, rangeIndex))]" in INDEX
     assert "const displayRangeLabel = rangeSpec.label;" in INDEX
     assert "showcaseAllHistory ? '전체'" not in INDEX
     assert "trend.visualizationSeries" in INDEX
     assert "visualization[rangeSpec.sourceKey]" in INDEX
     assert "publishedWindow && publishedWindow.points" in INDEX
-    assert "publishedPoints.map((point) => point.combined)" in INDEX
+    assert "chartPoints.map((point) => point.combined)" in INDEX
     assert "visualization.data_mode === 'rank_responsive_display'" in INDEX
     assert "const formulaVersion = 'observed-rank-response-v2'" in INDEX
     assert "visualization.formula_version === formulaVersion" in INDEX
@@ -815,7 +820,7 @@ def test_showcase_interest_bars_are_deterministic_rank_specific_and_not_user_lab
     assert result.returncode == 0, result.stderr
 
 
-def test_interest_chart_prefers_rank_responsive_backend_windows_for_all_ranges() -> None:
+def test_interest_chart_prefers_rank_responsive_backend_windows_for_available_ranges() -> None:
     script = r"""
       const fs = require('fs');
       const html = fs.readFileSync('./frontend/index.html', 'utf8');
@@ -871,22 +876,20 @@ def test_interest_chart_prefers_rank_responsive_backend_windows_for_all_ranges()
         derivation, presentation_position: 2, presentation_rank_movement: rankMovement,
         canonical_ranking_effect: 'none', display_rank_effect: 'display_value_only',
         market_data_affected: false, ranking_effect: 'none',
-        '1w': windowFor(points([15, 40, 80], 13)),
-        '1m': windowFor(points([30, 50, 70], 12)),
-        '3m': windowFor(points([10, 20, 30, 40], 24))
+        '1w': windowFor(points([15, 40, 80], 20))
       };
       const trend = {
         rank: 2, rankMovement, visualizationSeries,
         series: [{at: new Date(base).toISOString(), value: 99, source: 'x', provenance: 'observed'}]
       };
-      const charts = [0, 1, 2].map((range) => component.buildInterestCurve(trend, range));
-      if (charts.map((chart) => chart.current).join(',') !== '80,80,70') {
+      const charts = [0, 1].map((range) => component.buildInterestCurve(trend, range));
+      if (charts.map((chart) => chart.current).join(',') !== '80,80') {
         throw new Error('frontend did not consume each published display window directly');
       }
-      if (charts.map((chart) => chart.observationCount).join(',') !== '2,3,3') {
+      if (charts.map((chart) => chart.observationCount).join(',') !== '2,3') {
         throw new Error('display window point counts were recomputed from raw series');
       }
-      if (charts.map((chart) => chart.sourceWindowKey).join(',') !== '1w,1w,1m') {
+      if (charts.map((chart) => chart.sourceWindowKey).join(',') !== '1w,1w') {
         throw new Error('rank-responsive windows did not take precedence');
       }
       if (charts.some((chart) => chart.displaySeriesMode !== 'rank_responsive_display')) {
@@ -914,13 +917,11 @@ def test_interest_chart_prefers_rank_responsive_backend_windows_for_all_ranges()
         throw new Error('feed observed_at did not preserve the trailing unobserved gap');
       }
       component.publishedView = null;
-      const insufficientSeries = JSON.parse(JSON.stringify(visualizationSeries));
-      insufficientSeries['1m'].status = 'insufficient_observed_history';
-      const insufficientTrend = {rank: 2, rankMovement, visualizationSeries: insufficientSeries};
-      if (!component.buildInterestCurve(insufficientTrend, 0).available
-        || !component.buildInterestCurve(insufficientTrend, 1).available
-        || component.buildInterestCurve(insufficientTrend, 2).available) {
-        throw new Error('incomplete 1개월 history was stretched into a measured period');
+      const recentOnlySeries = JSON.parse(JSON.stringify(visualizationSeries));
+      recentOnlySeries['1w'] = windowFor(points([60, 70, 80], 2));
+      const recentOnlyTrend = {rank: 2, rankMovement, visualizationSeries: recentOnlySeries};
+      if (component.buildInterestCurve(recentOnlyTrend, 1).available) {
+        throw new Error('recent-only points were presented as a one-week trend');
       }
     """
     result = subprocess.run(
