@@ -1658,7 +1658,7 @@ class Component extends DCLogic {
       feed.style.visibility = 'visible';
       feed.setAttribute('data-hydration', 'ready');
       feed.innerHTML = portfolios.map((portfolio, index) => {
-        const companyNames = portfolio.companies.slice(0, 5).map((company) => this.companyName(company)).join(' · ');
+        const keywordChips = portfolio.keywords.map((keyword) => '<span style="background:#F3EEFF;border-radius:8px;padding:5px 9px;font-weight:700;font-size:11px;color:#5B21C0;white-space:nowrap;">' + this.escapeHtml(keyword) + '</span>').join('');
         return '<button type="button" data-portfolio-row="1" data-portfolio-id="' + this.escapeHtml(portfolio.id) + '" data-score="' + (100 - portfolio.sourceRank)
           + '" data-return="' + (portfolio.avgChange == null ? '' : portfolio.avgChange) + '" data-date="' + this.escapeHtml(portfolio.dateLabel)
           + '" aria-label="' + this.escapeHtml(portfolio.title + ' 상세 보기') + '" style="width:100%;border:0;border-top:1px solid #F5F2FB;background:#FFFFFF;display:flex;gap:12px;padding:15px 16px;text-align:left;cursor:pointer;">'
@@ -1667,8 +1667,7 @@ class Component extends DCLogic {
           + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;">'
           + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;font-weight:800;font-size:15.5px;line-height:1.3;color:#1A1A22;letter-spacing:-0.03em;">' + this.escapeHtml(portfolio.title) + '</span>'
           + '<span style="display:flex;align-items:center;gap:7px;margin-top:8px;font-weight:600;font-size:12px;color:#4B4D57;">' + this.escapeHtml(portfolio.author) + '<span style="font-weight:500;font-size:11px;color:#A9ACB8;">' + this.escapeHtml(portfolio.dateLabel) + '</span></span>'
-          + '<span style="font-weight:500;font-size:11.5px;color:#8B8D98;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + this.escapeHtml(portfolio.keywords.join(' ')) + '</span>'
-          + '<span style="font-weight:500;font-size:10.5px;color:#BCBFC9;margin-top:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + this.escapeHtml(companyNames) + '</span>'
+          + '<span data-portfolio-keywords="1" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;">' + keywordChips + '</span>'
           + '<span style="display:flex;align-items:center;gap:8px;margin-top:10px;font-weight:600;font-size:11.5px;color:#8B8D98;">구성 기업 ' + portfolio.companies.length + '개</span></span></button>';
       }).join('') || '<div style="padding:34px 18px;text-align:center;font-weight:600;font-size:12px;color:#8B8D98;">현재 연결된 밈트폴리오가 없어요</div>';
       feed.querySelectorAll('[data-portfolio-row]').forEach((row) => { row.onclick = (event) => this.goPostDetail(event); });

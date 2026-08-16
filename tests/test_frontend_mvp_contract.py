@@ -147,6 +147,15 @@ def test_portfolio_component_rows_open_an_in_place_company_sheet() -> None:
     assert "closePortfolioCompanySheet" in INDEX
 
 
+def test_portfolio_list_uses_keyword_chips_without_company_name_summary() -> None:
+    method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
+    assert "const keywordChips = portfolio.keywords.map" in method
+    assert 'data-portfolio-keywords="1"' in method
+    assert "background:#F3EEFF" in method
+    assert "const companyNames" not in method
+    assert "portfolio.companies.slice(0, 5)" not in method
+
+
 def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None:
     dial = INDEX[INDEX.index("  dialGo(label) {") : INDEX.index("  mpRotateWire() {")]
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
