@@ -360,11 +360,15 @@
               <svg width="17" height="17" viewBox="0 0 14 14" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#5B21C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
             </button>
             <sc-if value="{{ hasDefinition }}" hint-placeholder-val="{{ false }}">
-              <div style="padding:0 16px 17px;">
+              <div style="padding:0 16px 18px;">
                 <div style="height:1px; background:rgba(91,33,192,0.10); margin-bottom:10px;"></div>
-                <div style="display:flex; align-items:flex-start; gap:7px;">
+                <div style="display:flex; align-items:flex-start; gap:8px;">
                   <span aria-hidden="true" style="font-size:14px; line-height:1.55;">💡</span>
-                  <div style="font-weight:500; font-size:12.5px; line-height:1.6; color:#3B3D47; text-wrap:pretty;">{{ trendDefinition }}</div>
+                  <div style="min-width:0;">
+                    <div style="font-weight:800; font-size:11px; color:#5B21C0; letter-spacing:-0.01em;">무슨 흐름인가요?</div>
+                    <div style="margin-top:3px; font-weight:500; font-size:13px; line-height:1.65; color:#3B3D47; text-wrap:pretty;">{{ trendDefinition }}</div>
+                    <div style="margin-top:9px; padding:9px 10px; border-radius:11px; background:rgba(255,255,255,0.62); font-weight:500; font-size:11.5px; line-height:1.6; color:#666270; text-wrap:pretty;">{{ trendContext }}</div>
+                  </div>
                 </div>
               </div>
             </sc-if>
@@ -640,10 +644,13 @@
                   </div>
                 </sc-if>
 
-                <div style="font-weight:800; font-size:15px; color:#1A1A22; letter-spacing:-0.03em; margin-top:16px;">기업 설명</div>
-                <div style="font-weight:500; font-size:12.5px; line-height:1.7; color:#5C5F6B; margin-top:6px; text-wrap:pretty;">{{ sheetAbout }}</div>
-                <div style="font-weight:800; font-size:15px; color:#1A1A22; letter-spacing:-0.03em; margin-top:16px;">트렌드와 연결된 이유</div>
-                <div style="font-weight:500; font-size:12.5px; line-height:1.7; color:#5C5F6B; margin-top:6px; text-wrap:pretty;">{{ sheetReason }}</div>
+                <div style="font-weight:800; font-size:15px; color:#1A1A22; letter-spacing:-0.03em; margin-top:16px;">이 회사는 무엇을 하나요?</div>
+                <div style="display:inline-flex; margin-top:7px; border-radius:999px; padding:4px 8px; background:#F3EFFC; color:#5B21C0; font-weight:800; font-size:10.5px;">{{ sheetSector }}</div>
+                <div style="font-weight:500; font-size:12.5px; line-height:1.75; color:#5C5F6B; margin-top:7px; text-wrap:pretty;">{{ sheetAbout }}</div>
+                <div style="margin-top:16px; padding:12px 13px; border-radius:14px; background:#FAF8FF; border:1px solid #EEE8FA;">
+                  <div style="font-weight:800; font-size:13.5px; color:#3A1D80; letter-spacing:-0.02em;">이번 트렌드와 만나는 지점</div>
+                  <div style="font-weight:500; font-size:12.5px; line-height:1.75; color:#5C5F6B; margin-top:5px; text-wrap:pretty;">{{ sheetReason }}</div>
+                </div>
               </div>
 
               <div style="flex:none; border-top:1px solid #F1EEF9; padding:12px 16px 16px; background:#FFFFFF;">
@@ -1878,8 +1885,8 @@ class Component extends DCLogic {
       + '<div style="display:flex;align-items:center;gap:12px;"><span style="width:44px;height:44px;flex:none;border-radius:14px;background:' + (logo ? '#FFFFFF url(' + esc(logo) + ') center/contain no-repeat;box-shadow:inset 0 0 0 1px rgba(26,26,34,.08)' : '#7B3FF2') + ';display:flex;align-items:center;justify-content:center;font-weight:800;color:#FFFFFF;font-size:17px;">' + (logo ? '' : esc(sheet.initial)) + '</span><div style="flex:1;min-width:0;"><div id="portfolio-company-title" style="font-weight:800;font-size:19px;color:#1A1A22;letter-spacing:-.03em;overflow-wrap:anywhere;">' + esc(sheet.name) + '</div><div style="font-size:11.5px;color:#8B8D98;margin-top:2px;">밈트폴리오 구성 종목</div></div><button type="button" data-portfolio-company-close="1" aria-label="기업 상세 닫기" style="width:40px;height:40px;border:0;border-radius:999px;background:#F3F0FB;color:#6B6E7B;font-size:24px;line-height:1;cursor:pointer;">×</button></div>'
       + '<div style="display:flex;align-items:baseline;gap:8px;margin-top:14px;"><strong style="font-size:23px;color:#1A1A22;letter-spacing:-.04em;">' + esc(sheet.ticker) + '</strong><span style="font-weight:700;font-size:12px;color:#7B3FF2;">' + esc(sheet.market) + '</span></div>'
       + marketPanel
-      + '<div style="font-weight:800;font-size:15px;color:#1A1A22;margin-top:16px;">기업 설명</div><p style="font-size:12.5px;line-height:1.7;color:#5C5F6B;margin:6px 0 0;">' + esc(sheet.about) + '</p>'
-      + '<div style="font-weight:800;font-size:15px;color:#1A1A22;margin-top:16px;">트렌드와 연결된 이유</div><p style="font-size:12.5px;line-height:1.7;color:#5C5F6B;margin:6px 0 0;">' + esc(sheet.reason) + '</p>'
+      + '<div style="font-weight:800;font-size:15px;color:#1A1A22;margin-top:16px;">이 회사는 무엇을 하나요?</div><span style="display:inline-flex;margin-top:7px;border-radius:999px;padding:4px 8px;background:#F3EFFC;color:#5B21C0;font-weight:800;font-size:10.5px;">' + esc(sheet.sector) + '</span><p style="font-size:12.5px;line-height:1.75;color:#5C5F6B;margin:7px 0 0;">' + esc(sheet.about) + '</p>'
+      + '<div style="margin-top:16px;padding:12px 13px;border-radius:14px;background:#FAF8FF;border:1px solid #EEE8FA;"><div style="font-weight:800;font-size:13.5px;color:#3A1D80;">이번 밈트폴리오와 만나는 지점</div><p style="font-size:12.5px;line-height:1.75;color:#5C5F6B;margin:5px 0 0;">' + esc(sheet.reason) + '</p></div>'
       + '</div><div style="flex:none;border-top:1px solid #F1EEF9;padding:12px 16px 16px;background:#FFFFFF;"><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;"><button type="button" data-portfolio-company-watch="1" style="min-height:52px;border:1.5px solid #7B3FF2;border-radius:14px;background:#FFFFFF;font-family:inherit;font-weight:800;font-size:13.5px;color:#5B21C0;cursor:pointer;">관심기업 등록</button><button type="button" data-portfolio-company-kiwoom="1" style="min-height:52px;border:0;border-radius:14px;background:#7B3FF2;font-family:inherit;font-weight:800;font-size:13.5px;color:#FFFFFF;cursor:pointer;">키움 종목홈으로 가기</button></div></div></section>';
     const close = () => this.closePortfolioCompanySheet(false, trigger);
     root.querySelector('[data-portfolio-company-backdrop]').onclick = close;
@@ -5761,6 +5768,27 @@ class Component extends DCLogic {
       : '기업의 주요 사업과 트렌드 연결 맥락을 정리했습니다.');
   }
 
+  trendDetailContext(trend = {}) {
+    const name = String(trend.name || '').trim();
+    const focused = {
+      '대한독립만세': '기념일을 앞두고 역사 콘텐츠뿐 아니라 전시·행사·기념 장소처럼 직접 참여할 수 있는 정보를 함께 찾아보는 흐름입니다.',
+      '개기일식': '관측 시간과 장소, 촬영 장비처럼 실제 관측 준비에 필요한 정보가 함께 언급될 때 관심이 커지는 유형입니다.',
+      'AC 밀란 vs 맨유': '경기 전에는 대진·중계·선발 정보, 경기 뒤에는 하이라이트와 결과를 찾는 흐름이 이어집니다.',
+      '페르세우스 유성우': '관측 가능 시간·장소·날씨와 촬영 팁처럼 바로 행동으로 이어지는 정보가 함께 관심을 받습니다.',
+      '한화 vs 삼성': '경기 일정과 중계, 선발·직관 정보가 한 번에 탐색되며 팬들의 관람 준비 흐름이 만들어집니다.',
+      '둠스데이': '작품의 공개 일정, 등장인물, 이전 시리즈를 다시 보는 수요가 함께 겹치며 콘텐츠 관심이 넓어집니다.',
+      '말복': '보양 메뉴 선택부터 외식·배달·간편식 구매까지 계절 식생활과 맞닿은 정보 탐색이 이어집니다.',
+      '그래미 어워드': '수상 결과와 무대 영상, 아티스트·앨범 정보를 이어서 찾아보는 음악 팬덤의 탐색 흐름입니다.',
+      'UFC 330': '대진표·선수·타이틀전 정보와 중계 시청 방법이 함께 검색되는 경기 관람형 관심사입니다.',
+      '코믹월드': '행사 일정·입장권·코스프레·굿즈처럼 방문 전 준비에 필요한 정보가 동시에 관심을 받습니다.'
+    };
+    if (focused[name]) return focused[name];
+    const tags = Array.isArray(trend.tags) ? trend.tags.map((tag) => String(tag).replace(/^#/, '').trim()).filter(Boolean).slice(0, 3) : [];
+    return tags.length
+      ? '함께 언급된 ' + tags.join(' · ') + ' 정보를 중심으로, 실제로 무엇을 보고·찾고·참여하는지 살펴보는 흐름입니다.'
+      : '이 주제와 함께 어떤 정보가 반복해서 언급되는지 확인해, 단순 화제와 실제 관심 흐름을 구분합니다.';
+  }
+
   buildSheet(initial, name, desc, i, icon, company = {}) {
     const logo = this.companyLogo(company);
     const isUnlisted = company.listing_status === 'unlisted';
@@ -5970,6 +5998,7 @@ class Component extends DCLogic {
       trendCore: curTrend.core.split('\n').join(' '),
       trendDay: curTrend.day,
       trendDefinition: curTrend.definition || '',
+      trendContext: this.trendDetailContext(curTrend),
       hasDefinition: !!curTrend.definition,
       trendPhase: curTrend.phase,
       movementLabel: String(movement.label || 'NEW'),

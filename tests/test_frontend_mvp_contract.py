@@ -1035,7 +1035,7 @@ def test_company_sheet_renders_financial_numbers_only_with_complete_provenance()
     assert "관계 등급" not in INDEX
     assert "근거 상태" not in INDEX
     assert "기업 연결 근거 보기" not in INDEX
-    assert "트렌드와 연결된 이유" in INDEX
+    assert "이번 트렌드와 만나는 지점" in INDEX
     assert "{{ sheetReason }}" in INDEX
     assert "관심기업 등록" in INDEX
     assert "키움 종목홈으로 가기" in INDEX
@@ -1999,6 +1999,10 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert "['Enter', ' ', 'ArrowDown', 'PageDown']" in INDEX
     assert 'data-trend-summary-card="1"' in INDEX
     assert 'background:#F3EFFC; border-radius:22px' in INDEX
+    assert '무슨 흐름인가요?' in INDEX
+    assert 'trendDetailContext(trend = {})' in INDEX
+    assert '이번 트렌드와 만나는 지점' in INDEX
+    assert '이번 밈트폴리오와 만나는 지점' in INDEX
     assert 'data-freshness-card="1"' in INDEX
     assert 'background:#FAFAFC; border:1px solid #ECE8F3' in INDEX
     assert 'data-freshness-explanation="1"' in INDEX
