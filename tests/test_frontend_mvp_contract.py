@@ -732,6 +732,10 @@ def test_interest_chart_rank_response_uses_published_values_and_ranked_motion() 
         "translateX(calc(-50% - 18px)) scaleY(.08)",
         "Math.min(index * 46, 506)",
         "point.style.transformOrigin = 'center bottom'",
+        "data-interest-flow",
+        "data-interest-flow-line",
+        "strokeDasharray",
+        "getTotalLength",
     ):
         assert token in INDEX
 

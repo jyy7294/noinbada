@@ -449,6 +449,7 @@
               <div data-interest-visual="1" role="img" aria-labelledby="interest-chart-title" style="position:relative;display:block;width:100%;height:96px;overflow:hidden;border-bottom:1px solid #EDE8F7;">
                 <span aria-hidden="true" style="position:absolute;left:8px;right:8px;top:24px;height:1px;background:#F0ECF8;"></span>
                 <span aria-hidden="true" style="position:absolute;left:8px;right:8px;top:60px;height:1px;background:#F0ECF8;"></span>
+                <svg data-interest-flow="1" aria-hidden="true" viewBox="0 0 296 96" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:96px;overflow:visible;pointer-events:none;"></svg>
                 <div data-interest-bars="1" style="position:absolute;inset:4px 8px 0;"></div>
               </div>
               <div data-interest-empty="1" style="display:none;position:absolute;inset:0 0 17px;align-items:center;justify-content:center;border-radius:14px;background:#FAF9FD;font-weight:700;font-size:11.5px;color:#8B8D98;">{{ interestEmptyLabel }}</div>
@@ -2305,6 +2306,7 @@ class Component extends DCLogic {
     const chart = this.currentInterestChart;
     if (!chart) return;
     const bars = root.querySelector('[data-interest-bars]');
+    const flow = root.querySelector('[data-interest-flow]');
     const visual = root.querySelector('[data-interest-visual]');
     const empty = root.querySelector('[data-interest-empty]');
     const rankStyle = chart.rankStyle || this.rankResponsiveInterestStyle(null);
@@ -2320,6 +2322,18 @@ class Component extends DCLogic {
           + (latest ? rankStyle.stroke : '#BCA2F7')
           + ';opacity:' + (latest ? '1' : '0.82') + ';"></span>';
       }).join('');
+    }
+    if (flow) {
+      const line = chart.linePath || '';
+      const area = chart.area || '';
+      const last = chart.lastX != null && chart.lastY != null
+        ? '<circle data-interest-flow-dot="1" cx="' + chart.lastX + '" cy="' + chart.lastY
+          + '" r="4.5" fill="#FFFFFF" stroke="' + rankStyle.stroke + '" stroke-width="2.5"></circle>' : '';
+      flow.innerHTML = area
+        ? '<path data-interest-flow-area="1" d="' + area + '" fill="' + rankStyle.stroke + '" fill-opacity="0.09"></path>'
+          + '<path data-interest-flow-line="1" d="' + line + '" fill="none" stroke="' + rankStyle.stroke
+          + '" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"></path>' + last
+        : '';
     }
     if (visual) {
       visual.dataset.rankDisplayPolicy = rankStyle.policyVersion;
@@ -2358,6 +2372,34 @@ class Component extends DCLogic {
         fill: 'backwards'
       });
     });
+    const flowLine = visual.querySelector('[data-interest-flow-line]');
+    const flowArea = visual.querySelector('[data-interest-flow-area]');
+    const flowDot = visual.querySelector('[data-interest-flow-dot]');
+    if (flowLine && typeof flowLine.getTotalLength === 'function') {
+      const length = Math.max(1, Math.ceil(flowLine.getTotalLength()));
+      flowLine.style.strokeDasharray = String(length);
+      flowLine.style.strokeDashoffset = String(length);
+      flowLine.animate([
+        { strokeDashoffset: length, opacity: 0.25 },
+        { strokeDashoffset: 0, opacity: 1 }
+      ], {
+        duration: Math.max(680, rankStyle.animationDurationMs + 260),
+        easing: 'cubic-bezier(.16,.82,.24,1)', fill: 'forwards'
+      });
+    }
+    if (flowArea && typeof flowArea.animate === 'function') {
+      flowArea.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: Math.max(520, rankStyle.animationDurationMs), delay: 160,
+        easing: 'ease-out', fill: 'forwards'
+      });
+    }
+    if (flowDot && typeof flowDot.animate === 'function') {
+      flowDot.animate([
+        { transform: 'scale(.4)', opacity: 0 },
+        { transform: 'scale(1)', opacity: 1 },
+        { transform: 'scale(.78)', opacity: 0.82 }
+      ], { duration: 760, delay: Math.max(220, rankStyle.animationDurationMs - 80), easing: 'ease-out', fill: 'forwards' });
+    }
   }
 
   analyticsEvents = new Set([
