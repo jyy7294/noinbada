@@ -6021,5 +6021,24 @@ class Component extends DCLogic {
   }
 }
 </script>
+<script>
+  // 홈 헤더는 라이브 데이터 반영 때 다시 그려질 수 있어, 안내 버튼은 문서 수준에서 처리합니다.
+  // 이 연결은 템플릿 이벤트 바인딩과 독립적으로 유지됩니다.
+  document.addEventListener('click', function (event) {
+    var open = event.target && event.target.closest && event.target.closest('[data-home-selection-guide]');
+    if (open) {
+      event.preventDefault();
+      var guide = document.getElementById('home-selection-guide');
+      if (guide) guide.style.display = 'flex';
+      return;
+    }
+    var close = event.target && event.target.closest && event.target.closest('[aria-label="트렌드 선정 기준 닫기"]');
+    if (close) {
+      event.preventDefault();
+      var panel = document.getElementById('home-selection-guide');
+      if (panel) panel.style.display = 'none';
+    }
+  });
+</script>
 </body>
 </html>

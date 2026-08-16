@@ -250,6 +250,8 @@ def test_home_title_has_a_selection_criteria_help_button() -> None:
     assert 'id="home-selection-guide" role="dialog"' in INDEX
     assert 'aria-label="트렌드 선정 기준 닫기"' in INDEX
     assert '트렌드 선정 기준' in INDEX
+    assert "document.addEventListener('click'" in INDEX
+    assert "guide.style.display = 'flex'" in INDEX
 
 
 def test_dial_center_keeps_korean_trend_titles_as_one_readable_line() -> None:
