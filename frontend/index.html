@@ -1765,7 +1765,8 @@ class Component extends DCLogic {
   openPortfolioCompanySheet(sheet, trigger) {
     this.closePortfolioCompanySheet(true);
     const page = document.getElementById('post-detail');
-    const frame = page && page.querySelector('[data-pd="box"]')?.closest('div[style*="position:relative"]');
+    let frame = page && page.querySelector('[data-pd="box"]');
+    while (frame && getComputedStyle(frame).position !== 'relative') frame = frame.parentElement;
     if (!frame) return;
     const esc = (value) => this.escapeHtml(String(value == null ? '' : value));
     const logo = this.companyLogo(sheet.company || {});
