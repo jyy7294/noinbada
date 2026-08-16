@@ -31829,13 +31829,13 @@
       "trend": 298
     },
     "publication_gate": {
+      "frontend_maximum_company_role_categories": 4,
+      "frontend_minimum_company_role_categories": 3,
+      "frontend_minimum_unique_evidence_backed_companies": 10,
       "insufficient_status": "ontology_incomplete",
       "minimum_unique_evidence_backed_companies": 3,
-      "scope": "graph_candidate_lookup_only",
-      "frontend_minimum_unique_evidence_backed_companies": 10,
-      "frontend_minimum_company_role_categories": 2,
-      "frontend_maximum_company_role_categories": 4,
-      "padding_forbidden": true
+      "padding_forbidden": true,
+      "scope": "graph_candidate_lookup_only"
     },
     "source_workbooks": [
       "trend-meme-stock-cases (2).xlsx",

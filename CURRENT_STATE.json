@@ -1,212 +1,99 @@
 {
-    "schema_version":  "trzip-current-state-v1",
-    "updated_at":  "2026-08-15T19:33:47.7373663+00:00",
-    "project":  {
-                    "repository":  "jyy7294/noinbada",
-                    "code_branch":  "main",
-                    "data_branch":  "live-data"
-                },
-    "checkpoint":  {
-                       "describes_commit":  "self",
-                       "base_remote_main_sha":  "fe6a4b75a6cde7023e5d067a6b04d07e37e9d67e",
-                       "validation_target":  "staged_tree",
-                       "changed_paths":  [
-                                             "config/codex-automation/trzip-prompt.ko.txt",
-                                             "CURRENT_STATE.json",
-                                             "design-qa.md",
-                                             "docs/BACKEND_TEAM_HANDOFF.md",
-                                             "docs/BACKEND_TEAM_PROMPT.md",
-                                             "docs/CODEX_CONTINUITY.md",
-                                             "docs/COMPANY_RELATION_POLICY.md",
-                                             "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-                                             "docs/FRONTEND_COMPLETION_CONTRACT.md",
-                                             "docs/HOME_FEED_CONTRACT_V1.md",
-                                             "docs/MENTOR_FEEDBACK_ACTION_MAP.md",
-                                             "docs/PRODUCT_AND_DATA_FLOW.md",
-                                             "docs/PRODUCT_DIRECTION_TRANSCRIPT.md",
-                                             "docs/PRODUCT_POLICY.md",
-                                             "docs/RECONSTRUCTED_DATA_POLICY.md",
-                                             "docs/TREND_AND_STOCK_IMPACT_POLICY.md",
-                                             "docs/YOUTUBE_CONTENT_RANKING.md",
-                                             "frontend/index.html",
-                                             "frontend/mock-stock-universe.js",
-                                             "frontend/trendzip-data.js",
-                                             "README.md",
-                                             "schemas/intelligence-v3.schema.json",
-                                             "schemas/metadata-v3.schema.json",
-                                             "schemas/status-v1.schema.json",
-                                             "scripts/build_ontology_seed.py",
-                                             "scripts/collect-hourly.ps1",
-                                             "src/trzip/archive_feed.py",
-                                             "src/trzip/company_adapters.py",
-                                             "src/trzip/company_logo_assets.py",
-                                             "src/trzip/company_roles.py",
-                                             "src/trzip/editorial_review.py",
-                                             "src/trzip/enrichment_handoff.py",
-                                             "src/trzip/enrichment_queue.py",
-                                             "src/trzip/hourly_store.py",
-                                             "src/trzip/intelligence.py",
-                                             "src/trzip/presentation_feed.py",
-                                             "src/trzip/processing_cycle.py",
-                                             "src/trzip/provider_verification.py",
-                                             "src/trzip/public_company_contract.py",
-                                             "src/trzip/public_copy.py",
-                                             "src/trzip/publication_pipeline.py",
-                                             "src/trzip/reconstructed_workbook.py",
-                                             "src/trzip/result_quality.py",
-                                             "src/trzip/runtime_audit.py",
-                                             "src/trzip/semantic_adjudication.py",
-                                             "tests/test_category_ontology.py",
-                                             "tests/test_company_adapters.py",
-                                             "tests/test_company_logo_assets.py",
-                                             "tests/test_company_market_adapter.py",
-                                             "tests/test_editorial_review.py",
-                                             "tests/test_enrichment_handoff.py",
-                                             "tests/test_frontend_mvp_contract.py",
-                                             "tests/test_home_feed.py",
-                                             "tests/test_intelligence.py",
-                                             "tests/test_live_presentation_feed.py",
-                                             "tests/test_local_runtime_contract.py",
-                                             "tests/test_presentation_feed.py",
-                                             "tests/test_processing_cycle.py",
-                                             "tests/test_provider_verification.py",
-                                             "tests/test_public_company_link_contract.py",
-                                             "tests/test_public_contract_schema.py",
-                                             "tests/test_public_copy.py",
-                                             "tests/test_publication_pipeline.py",
-                                             "tests/test_publication_receipts.py",
-                                             "tests/test_result_quality.py",
-                                             "tests/test_runtime_audit.py"
-                                         ],
-                       "changed_file_digests":  {
-                                                    "config/codex-automation/trzip-prompt.ko.txt":  "6ecbaf3214d2a5d503babd18ac41e3707b7703103272c2f9d9e9e75715270a16",
-                                                    "design-qa.md":  "342ec8908257807df19d18eabb14bf94de2593abe1f20c19c78408e66c16aefd",
-                                                    "docs/BACKEND_TEAM_HANDOFF.md":  "79391c2adf48f4091f0df80fb34318ffe22ecd8f61006d95c84a6d39b74c552a",
-                                                    "docs/BACKEND_TEAM_PROMPT.md":  "db665633e2518a0034e92968fce5f048fb013ca1d6a7c96b50e9d0079bd3f7fb",
-                                                    "docs/CODEX_CONTINUITY.md":  "d19c66e2ebcdc74682f8cd1c6fd217685b22a2b9017ece4041e6f4f8a872b8f9",
-                                                    "docs/COMPANY_RELATION_POLICY.md":  "a8ba1bc0c4df523b1b8c37986d8971957f51633cf491b1e938f957bb5fbd29e6",
-                                                    "docs/FRONTEND_BACKEND_CONTRACT_V3.md":  "1fd17299e80349db7d1b401ba3a358ec5d26f31ba80f61bd92bdc264c5e12836",
-                                                    "docs/FRONTEND_COMPLETION_CONTRACT.md":  "e232e67b235e77756621975cb62307f323e133356143df812279331332f03fcb",
-                                                    "docs/HOME_FEED_CONTRACT_V1.md":  "82dbdefe45aa918319b453ac87e9fe7977dcfb9fb07fe8728de5e4c1245be87e",
-                                                    "docs/MENTOR_FEEDBACK_ACTION_MAP.md":  "857f252489f3530a706c49a8f38fbc9bee8fdcd0ee17b52b1eac09b490ef9d4e",
-                                                    "docs/PRODUCT_AND_DATA_FLOW.md":  "64559b1de944b907348e1d5291d07b4f365afd132280f369b695ee1f142efe48",
-                                                    "docs/PRODUCT_DIRECTION_TRANSCRIPT.md":  "12967bff85ca2dace40c33a0941e266e304b9ff8bab0d22197b7ed40cccc79d2",
-                                                    "docs/PRODUCT_POLICY.md":  "47fd937245c9b4e4d4acff55c4b14f116df539f3539b46e5272a9ed23ffe8f72",
-                                                    "docs/RECONSTRUCTED_DATA_POLICY.md":  "a488a5feff383e88fc19f2d9df812ca706f69339a60b3dc0f5f8d5a1f24a5f8b",
-                                                    "docs/TREND_AND_STOCK_IMPACT_POLICY.md":  "cfb10a61fba9c8c1b6860d7b838845a8e7869cdbf16c534ac653842944d07309",
-                                                    "docs/YOUTUBE_CONTENT_RANKING.md":  "552bfbead64a04a85c1ac1701d35f3c66a2bb67cb0143271db8c4ad2e90e8a3d",
-                                                    "frontend/index.html":  "b0181cbdde0179b7d4cdff65813a38c9b18c5ddfd589edbe14ff47f30980442b",
-                                                    "frontend/mock-stock-universe.js":  "4659b4a5790797a50e4f2adeaeb880d8cebabfccb2e78065d8c111c57a76c46b",
-                                                    "frontend/trendzip-data.js":  "6f6589cd88125f6f69b2422152e9b9bddaf4ee479d884d081472ce0581345d2f",
-                                                    "README.md":  "011c8626215ea46cc96d45308b61417402eff53ffde88e8b23bded4596b92d30",
-                                                    "schemas/intelligence-v3.schema.json":  "dbe683f5ed585d0025b80151659bca7b6bf885d479877eea383d3bc814932205",
-                                                    "schemas/metadata-v3.schema.json":  "63ef44c56651db60a469df7b7e03d3bb4fffacf9705039bd9fa24c96b7adec2f",
-                                                    "schemas/status-v1.schema.json":  "5d2aab3f46b5bc3f5d4f008f9b45566668513092595c87c986b5fe187379829a",
-                                                    "scripts/build_ontology_seed.py":  "b41f3aa31764a2621caeded0d9def6858b75b2153ca0ba732711f964640411da",
-                                                    "scripts/collect-hourly.ps1":  "3e512c8fc00bf7599cb609b030a5f39074ec05106d82f212fd53e4eab05a034e",
-                                                    "src/trzip/archive_feed.py":  "e4e49df1bf1e26b253ca4a2043bc63e92f334080bd5330bf73dbf2945659ecb6",
-                                                    "src/trzip/company_adapters.py":  "2125228a59f33522fc99a29afa490bd8398561d337f1f5a5fc930024a418a798",
-                                                    "src/trzip/company_logo_assets.py":  "a1112af146e2020c4b5b19dc5c879211d1f0546818f00f5c2a736a1f4c77ad8c",
-                                                    "src/trzip/company_roles.py":  "163e85dff78749e01c67f7099119fb413f14148fab469c4368dde48463965af9",
-                                                    "src/trzip/editorial_review.py":  "a3f0c1bab9927c40e1199a1475eba253ee66aa44eda05776a6fd4046b55ced35",
-                                                    "src/trzip/enrichment_handoff.py":  "9eaff9e9237e7068053c848d65db75b47f9322e01ae8944bee49504f111925df",
-                                                    "src/trzip/enrichment_queue.py":  "b9c115bfb2ed33d2dafd4b08b0b56067dbdd1fe1b11f5f217f5ff01dfdc5c3ef",
-                                                    "src/trzip/hourly_store.py":  "70a4b89b21967bc0292d85a283b14f1d56a40e87a0721aa5d741d0ce4f751d8a",
-                                                    "src/trzip/intelligence.py":  "5ec85416ccaf6948136e16e5ebd0c86189674cc762f7b7736cb79cae0dd63f31",
-                                                    "src/trzip/presentation_feed.py":  "98b59423fb03b3511e956ca16d8078246a8d70e9cdd26aaf6e4352decfcfdda2",
-                                                    "src/trzip/processing_cycle.py":  "80dc8627822d71484fd0d9bbfa71e2e4a74c76a4fca277432dae57dd15da7c56",
-                                                    "src/trzip/provider_verification.py":  "5b12f4763516f9028657ae38224acc43a88f3e9ee9ac3e1d4ee1608a35ecb9c9",
-                                                    "src/trzip/public_company_contract.py":  "c185d62d43883527f19760622bc25ea2b2fcead9b1844a4c587a25cbeda5f968",
-                                                    "src/trzip/public_copy.py":  "71740a038daaeacf8a4a263b6774b3efcee6b7a7ce931fbc59676a7918a7c40d",
-                                                    "src/trzip/publication_pipeline.py":  "278db88af9b6a569fc91b18cb09374fc8abf68fa340fa34c19af775109923d48",
-                                                    "src/trzip/reconstructed_workbook.py":  "4d0e847ebf64e79387c7161c5b0c0abcb99b6364be4b8ea56f5d8a02964d8b13",
-                                                    "src/trzip/result_quality.py":  "caeb066b4f4a51615fe838d9223419617334092b4d59f2f1da6af9c1ac0a1dfd",
-                                                    "src/trzip/runtime_audit.py":  "7f2c36c3ca707b6932df0aa08c05a4f202d9c077e3a30ed9387106a7161b84e5",
-                                                    "src/trzip/semantic_adjudication.py":  "b088e7ec29927e3e5e3d26dad20ad202e276d1fec36905fbcf817fcbef75fe94",
-                                                    "tests/test_category_ontology.py":  "3c08298519b7a3d5b66d3f26a578e5f21e934de45640a8356f7586a51cfbae1e",
-                                                    "tests/test_company_adapters.py":  "3f6347d8f4721ac595ba6f73748391a70d34e2217a4e7831c63e2a92a44158cb",
-                                                    "tests/test_company_logo_assets.py":  "f38ce1d0950504e3952bb6caae3c788bfdd1c28bdb3fb44e1c1223fabf13c4e7",
-                                                    "tests/test_company_market_adapter.py":  "5478790dd97adfdf7a15a2b9a0b03413814e6ec6bd0cae56eea48c894656e127",
-                                                    "tests/test_editorial_review.py":  "4c9eaf171a4c398627653bd33a2c81a5d76d3c10a1a2ed231185f96331b34242",
-                                                    "tests/test_enrichment_handoff.py":  "3eb8488ef9a3c042f8e51aba4f2a356e74b36a7e3b264ef0357feb7f219c02f1",
-                                                    "tests/test_frontend_mvp_contract.py":  "571dc36472e82692168df47fd775d743c038ab0bab81e5d1e22e807838aa151a",
-                                                    "tests/test_home_feed.py":  "3d8c3cc8e1aec190c448732115321208f18a3df4feb1daf61ec6ecf97487cf84",
-                                                    "tests/test_intelligence.py":  "6a58303d8d0768b7ad548c56da3f8a460874f2732df585c889fe8e865ad0ce7c",
-                                                    "tests/test_live_presentation_feed.py":  "79e57af538c2bbfdad9cddfce67a3f0ef6722ecefecd9038ab8fef497ef78af8",
-                                                    "tests/test_local_runtime_contract.py":  "c5be6dad398435aad57b7815a4a19d4d86558c9dec5cd3e011313e919a665469",
-                                                    "tests/test_presentation_feed.py":  "ad58969f597415c36b578c6dd99615297f7b0bd944f4be7f281615b2a6b7e646",
-                                                    "tests/test_processing_cycle.py":  "da1b104087f03bc8aa45c1342821491c5f9ca0524e86496ab8241e7d1ac32aba",
-                                                    "tests/test_provider_verification.py":  "0f767d14fd23e865e65412a684e410205638ec358d9ce96069daea4971cbe6f1",
-                                                    "tests/test_public_company_link_contract.py":  "e2bb56745b2258efa4cd52ea6c40d83477cb1021c815b13472e00375fa7d6845",
-                                                    "tests/test_public_contract_schema.py":  "70d2c05437ed52eabdf59d33e8689b53e095e7e9e4f60f3ee192876bd782df1e",
-                                                    "tests/test_public_copy.py":  "b0ec2007578c54256f22994dc087acec8bfadaa30934d17fe19af806376947a4",
-                                                    "tests/test_publication_pipeline.py":  "fe15e6f04c437478ed3f83fac958bd8a47823cf4aa5d682c30d5f41eb323a93a",
-                                                    "tests/test_publication_receipts.py":  "429d15b67c5cbd9425776978e738662b6b4bab67bad8f99cb73a670220da0af3",
-                                                    "tests/test_result_quality.py":  "d02d195ea77b889281a00eca163a0e5f83dd1ac46bff527a6df3808238315bf3",
-                                                    "tests/test_runtime_audit.py":  "2ce0e896198a8be86bab8125037d87fbcdd6ed9c1d2883332474665bffd07e04"
-                                                },
-                       "commit_message":  "feat: complete actual-only TRZIP release contracts",
-                       "validation_status":  "passed"
-                   },
-    "validation":  {
-                       "pytest":  {
-                                      "status":  "passed",
-                                      "count":  545
-                                  },
-                       "compileall":  {
-                                          "status":  "passed"
-                                      },
-                       "powershell_parse":  {
-                                                "status":  "passed"
-                                            },
-                       "diff_check":  {
-                                          "status":  "passed"
-                                      },
-                       "secret_scan":  {
-                                           "status":  "passed"
-                                       },
-                       "local_path_scan":  {
-                                               "status":  "passed"
-                                           },
-                       "state_schema":  {
-                                            "status":  "passed"
-                                        }
-                   },
-    "handoff":  {
-                    "objective":  "X·Google 실제 관측만으로 선정하고 검수된 키워드·상장기업·시장정보를 연결하는 TRZIP MVP를 안전하게 배포한다.",
-                    "completed":  [
-                                      "고정 Top10과 합성 시장·관심 데이터를 제거하고 최근 24시간 actual-only v4 공개를 0~10개 fail-closed로 전환",
-                                      "키워드 정확히 5개·현재 상장기업 정확히 10곳·역할 3~4개·기업 10/10 링크와 URL 근거를 공개 계약으로 강제",
-                                      "기업 10곳의 공식 고화질 이미지 로고·실제 30거래일 시세·원화 시가총액·신선한 PER/PBR/ROE provenance 검증",
-                                      "4시간 보강 체크포인트·04:45 KST 리뷰 하드컷·NAVER 뉴스 context-only·선택 LLM 비활성 상태의 정직한 감사 구현",
-                                      "실시간 KST 시계·직전 발행 대비 순위이동·통일된 실제 아이콘·사용자 이모지 밈트폴리오·종목검색·기업 시트 CTA와 모션 구현",
-                                      "2026-08-16 04:00 KST X 30개·Google 189개 실제 수집, 체크포인트·스키마·delivery·runtime audit·preflight 통과"
-                                  ],
-                    "next_actions":  [
-                                         "2026-08-16 05:00 KST 실제 수집 후 검증된 feature SHA를 main과 안정 실행 checkout에 fast-forward하고 Vercel 프론트를 검증·승격",
-                                         "2026-08-16 06:00 KST 실제 X 30개와 Google 전체 수집 성공 시에만 live-data 불변 publication 게시 및 운영 Chrome 모바일 positive E2E",
-                                         "2026-08-18 23:00 KST까지 매시 실제 수집을 지속하고 마지막 정각에 최종 publication 게시·영수증 검증 후 자동화 종료"
-                                     ],
-                    "blockers":  [
-
-                                 ],
-                    "known_limitations":  [
-                                              "최근 24시간 실제 관측은 8/24시간이며 16시간 결측을 이전값 재사용·보간·생성 없이 유지한다.",
-                                              "완성 공개 카드는 현재 삼계탕 1건이고 미완성 후보 435건은 공개에서 제외된다.",
-                                              "semantic LLM은 disabled_missing_config 상태이지만 선택 보강 요소라 순위·발행 계약에는 영향을 주지 않는다.",
-                                              "운영 이력은 36시간으로 48시간 목표 전이며 과거 provider 중복 경고가 남지만 최신 중복은 0건이다.",
-                                              "1주·1개월·3개월 관심 변화율은 관측기간이 부족해 비노출이며 프런트는 실제 24시간 흐름만 표시한다."
-                                          ]
-                },
-    "runtime_contract":  {
-                             "checkout":  "%USERPROFILE%\\Documents\\Codex\\noinbada-runtime",
-                             "runtime_root":  "%LOCALAPPDATA%\\TRZIP",
-                             "scheduler":  "codex_hourly_automation",
-                             "required_branch":  "main"
-                         },
-    "live_state_pointer":  {
-                               "branch":  "live-data",
-                               "status_file":  "latest/status.json",
-                               "run_history_file":  "monitoring/run_history.json"
-                           }
+  "schema_version": "trzip-current-state-v1",
+  "updated_at": "2026-08-16T03:09:16.4059661+00:00",
+  "project": {
+    "repository": "jyy7294/noinbada",
+    "code_branch": "main",
+    "data_branch": "live-data"
+  },
+  "checkpoint": {
+    "describes_commit": "self",
+    "base_remote_main_sha": "6e7e440f4cd988e79b559e409348df1e8a33aae8",
+    "validation_target": "staged_tree",
+    "changed_paths": [
+      "CURRENT_STATE.json",
+      "data/ontology_seed.json",
+      "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
+      "docs/PRODUCT_AND_DATA_FLOW.md",
+      "frontend/index.html",
+      "frontend/trendzip-data.js",
+      "schemas/intelligence-v3.schema.json",
+      "src/trzip/presentation_feed.py",
+      "src/trzip/publication_pipeline.py",
+      "src/trzip/result_quality.py",
+      "tests/test_frontend_mvp_contract.py",
+      "tests/test_live_presentation_feed.py",
+      "tests/test_public_contract_schema.py"
+    ],
+    "changed_file_digests": {
+      "data/ontology_seed.json": "1f5ccc995e0567e8f121a39faf37801cf26cb914e05e8e773fa4222f7ac36e20",
+      "docs/FRONTEND_BACKEND_CONTRACT_V3.md": "3656453389c8a2ed5908096f027f2a7b43279c7f9ec92b1b600a4fc4df0659c2",
+      "docs/PRODUCT_AND_DATA_FLOW.md": "ef981f6e8bdb6a121ed31996b4893e116b0a5f1b9695e0623c8642e3b252f2b0",
+      "frontend/index.html": "41a1797408e3a6e37e3c18af66bd15b0d00438cad8d8fc698bfb271dd1ab4fb6",
+      "frontend/trendzip-data.js": "67c26c96b54ae9216c112b220dce52fbb95154a2d257cf91952f23456808fbed",
+      "schemas/intelligence-v3.schema.json": "b6ae17afd2a0927c0da04c003d0e62a1bc5f8b92ab909a93f02307f1bdd01b0b",
+      "src/trzip/presentation_feed.py": "163f62e410efe7b026074a3536a519d372a453031444f9d1c036d3fe62812bed",
+      "src/trzip/publication_pipeline.py": "1122cc77b368d5edb3e7c0fe463fcefa7ce9eabbd0c9f8208734c353bab8b040",
+      "src/trzip/result_quality.py": "b476233f566197bfecb8d4b23d316bb93695739eae0828c5be6b496483eff356",
+      "tests/test_frontend_mvp_contract.py": "f8011ff0b9340680caa4d8f3e065964d51e97005da55f02a909b43171741dcae",
+      "tests/test_live_presentation_feed.py": "ab48005c60f8a89712daa247ea6df7dc5eb6f283f3a505ffb1978c7b07558ed1",
+      "tests/test_public_contract_schema.py": "17c2a0c8763eb05328522c43941e9f5463eb28abf03dfb195e3a8fd7b8f72a8f"
+    },
+    "commit_message": "feat: add rank-responsive integrated trend display",
+    "validation_status": "passed"
+  },
+  "validation": {
+    "pytest": {
+      "status": "passed",
+      "count": 565
+    },
+    "compileall": {
+      "status": "passed"
+    },
+    "powershell_parse": {
+      "status": "passed"
+    },
+    "diff_check": {
+      "status": "passed"
+    },
+    "secret_scan": {
+      "status": "passed"
+    },
+    "local_path_scan": {
+      "status": "passed"
+    },
+    "state_schema": {
+      "status": "passed"
+    }
+  },
+  "handoff": {
+    "objective": "실측 순위에 반응하는 통합 트렌드 표시지수를 제공하되 원본 순위·시장값·출처 감사 계약은 변경하지 않는다.",
+    "completed": [
+      "순위·순위변화·관측지속성·최종 표시위치를 반영한 결정론적 0~100 표시지수 v2 구현",
+      "공급자명은 사용자 화면에서 통합 트렌드로 숨기고 내부 X·Google provenance 검증은 유지",
+      "백엔드·공개 스키마·프런트 로더가 산식과 원천 series를 독립 재검증하도록 fail-closed 강화",
+      "24시간·1개월·3개월 관측기간 gate와 고정 시간축·결측 무보간·90분 단절 UI 적용"
+    ],
+    "next_actions": [
+      "안정 실행 checkout을 새 main SHA로 복구·검증",
+      "다음 실제 정각 수집에서 rank-responsive v2 publication 생성 및 로컬 preflight 검증",
+      "허용된 게시 시각에만 live-data 승격 후 모바일 positive E2E 수행"
+    ],
+    "blockers": [],
+    "known_limitations": [
+      "현재 원격 live-data의 06시 발행본은 observed_sparse 호환 publication이며 새 v2 실데이터 발행 전이다.",
+      "인수인계 문서와 복구 패치는 로컬 전용 미추적 파일로 유지한다."
+    ]
+  },
+  "runtime_contract": {
+    "checkout": "%USERPROFILE%\\Documents\\Codex\\noinbada-runtime",
+    "runtime_root": "%LOCALAPPDATA%\\TRZIP",
+    "scheduler": "codex_hourly_automation",
+    "required_branch": "main"
+  },
+  "live_state_pointer": {
+    "branch": "live-data",
+    "status_file": "latest/status.json",
+    "run_history_file": "monitoring/run_history.json"
+  }
 }

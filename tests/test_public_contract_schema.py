@@ -204,10 +204,39 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
     ]
     sparse_point = {
         "at": observed_at,
-        "x": 80,
+        "x": 73.5,
         "google_trends": None,
-        "combined": 80,
+        "combined": 73.5,
         "observed_sources": ["x"],
+        "source_components": {
+            "x": {
+                "rank": 21,
+                "snapshot_size": 100,
+                "position_index": 80,
+                "rank_basis": "legacy_101_minus_rank_proxy",
+                "previous_rank": None,
+                "rank_change": None,
+                "rank_change_index": 50.0,
+                "source_rank_change_index": 50.0,
+                "public_rank_change_index": 50.0,
+                "rank_change_basis": [
+                    "neutral_unavailable_source_rank_change",
+                    "neutral_unavailable_public_rank_change",
+                ],
+                "observation_persistence_index": 50,
+                "presentation_position": 1,
+                "presentation_position_index": 100.0,
+                "presentation_rank_change": None,
+                "display_index": 73.5,
+            }
+        },
+        "observation_density": 0.5,
+        "formula_version": "observed-rank-response-v2",
+        "display_only": True,
+        "canonical_ranking_effect": "none",
+        "display_rank_effect": "display_value_only",
+        "market_data_affected": False,
+        "ranking_effect": "none",
     }
     def sparse_window(hours):
         return {
@@ -223,12 +252,22 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
             "minimum_span_hours": round(hours * 0.8, 2),
             "minimum_observed_hours": max(2, int(hours * 0.2 + 0.999999)),
             "basis": "observed_x_google_hourly_points_only",
+            "formula_version": "observed-rank-response-v2",
+            "display_only": True,
+            "canonical_ranking_effect": "none",
+            "display_rank_effect": "display_value_only",
+            "market_data_affected": False,
             "interpolation": "none",
             "missing_point_policy": "preserve_sparse_null_no_reuse",
             "ranking_effect": "none",
         }
     item = {
         "presentation_position": 1,
+        "rank_movement": {
+            "current_rank": 1, "previous_rank": None, "delta": None,
+            "status": "new", "label": "NEW",
+            "basis": "previous_published_presentation_feed",
+        },
         "selection_origin": "canonical_validated_home_feed",
         "lane": "main",
         "display_name": "테스트", "event_key": "test",
@@ -247,8 +286,47 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
         ],
         "visualization_series": {
             "metric": "normalized_attention_index",
+            "formula_version": "observed-rank-response-v2",
+            "formula_weights": {
+                "source_rank_position": 0.45,
+                "rank_change": 0.20,
+                "observation_persistence": 0.15,
+                "presentation_position": 0.20,
+            },
+            "derivation": {
+                "formula": (
+                    "mean_by_observed_source(weighted_sum("
+                    "source_rank_position,rank_change,observation_persistence,"
+                    "presentation_position))"
+                ),
+                "input_fields": [
+                    "observed_source_rank", "observed_source_rank_change",
+                    "observation_persistence", "presentation_position",
+                    "previous_published_presentation_position",
+                ],
+                "missing_component_policy": "neutral_50_for_unavailable_rank_change",
+                "neutral_rank_change_index": 50.0,
+                "formula_weight_sum": 1.0,
+                "display_only": True,
+                "canonical_ranking_effect": "none",
+                "display_rank_effect": "display_value_only",
+                "market_data_affected": False,
+                "canonical_series_unchanged": True,
+                "missing_point_policy": "preserve_sparse_null_no_reuse",
+            },
+            "presentation_position": 1,
+            "presentation_rank_movement": {
+                "current_rank": 1, "previous_rank": None, "delta": None,
+                "status": "new", "label": "NEW",
+                "basis": "previous_published_presentation_feed",
+            },
             "canonical_series_unchanged": True,
-            "data_mode": "observed_sparse", "interpolation": "none",
+            "data_mode": "rank_responsive_display",
+            "display_only": True,
+            "canonical_ranking_effect": "none",
+            "display_rank_effect": "display_value_only",
+            "market_data_affected": False,
+            "interpolation": "none",
             "ranking_effect": "none",
             "1w": sparse_window(168), "1m": sparse_window(720),
             "3m": sparse_window(2160),
@@ -365,6 +443,21 @@ def test_presentation_schema_accepts_only_live_v4_exact_ten_company_cards():
     ranking_affected = json.loads(json.dumps(feed))
     ranking_affected["transition"]["canonical_ranking_affected"] = True
     assert list(validator.iter_errors(ranking_affected))
+    legacy_visualization_mode = json.loads(json.dumps(feed))
+    legacy_visualization_mode["items"][0]["visualization_series"][
+        "data_mode"
+    ] = "observed_sparse"
+    assert list(validator.iter_errors(legacy_visualization_mode))
+    market_affected = json.loads(json.dumps(feed))
+    market_affected["items"][0]["visualization_series"]["derivation"][
+        "market_data_affected"
+    ] = True
+    assert list(validator.iter_errors(market_affected))
+    stale_formula = json.loads(json.dumps(feed))
+    stale_formula["items"][0]["visualization_series"]["1w"][
+        "formula_version"
+    ] = "stale"
+    assert list(validator.iter_errors(stale_formula))
 
     valid_market = json.loads(json.dumps(feed))
     validator.validate(valid_market)

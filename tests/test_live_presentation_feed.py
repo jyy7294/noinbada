@@ -5,7 +5,7 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
-from trzip.presentation_feed import build_presentation_feed
+from trzip.presentation_feed import _observed_sparse_series, build_presentation_feed
 from trzip.publication_pipeline import _validate_presentation_feed
 from trzip.result_quality import evaluate_presentation_feed_quality
 
@@ -314,9 +314,25 @@ def test_live_feed_is_sparse_and_never_reuses_previous_feed_when_current_is_empt
 
     points = previous["items"][0]["visualization_series"]["1w"]["points"]
     assert len(points) == 2
-    assert points[0]["combined"] == 50.0
+    assert points[0]["combined"] == 60.0
     assert points[1]["google_trends"] is None
     card = previous["items"][0]
+    visualization = card["visualization_series"]
+    assert visualization["formula_version"] == "observed-rank-response-v2"
+    assert visualization["data_mode"] == "rank_responsive_display"
+    assert visualization["presentation_position"] == 1
+    assert visualization["display_only"] is True
+    assert visualization["canonical_ranking_effect"] == "none"
+    assert visualization["display_rank_effect"] == "display_value_only"
+    assert visualization["market_data_affected"] is False
+    assert visualization["derivation"]["input_fields"] == [
+        "observed_source_rank",
+        "observed_source_rank_change",
+        "observation_persistence",
+        "presentation_position",
+        "previous_published_presentation_position",
+    ]
+    assert all(point["display_only"] is True for point in points)
     assert all(
         card["visualization_series"][key]["status"]
         == "insufficient_observed_history"
@@ -359,7 +375,7 @@ def test_only_window_with_qualified_actual_span_and_coverage_is_measured():
         "label": "1주",
         "metric": "normalized_attention_index_change",
         "status": "measured",
-        "percent": 68.0,
+        "percent": 21.3,
         "basis": "first_and_last_qualified_observed_point",
         "is_absolute_mention_count": False,
         "ranking_effect": "none",
@@ -370,6 +386,322 @@ def test_only_window_with_qualified_actual_span_and_coverage_is_measured():
         for row in card["attention_windows"][1:]
     )
     _validate_presentation_feed(feed)
+
+
+def _rank_responsive_candidate(*, ranks: list[int], hours: list[int]) -> dict:
+    return {
+        "persistence": 0.5,
+        "series": [
+            {
+                "at": (
+                    datetime.fromisoformat(OBSERVED_AT).astimezone(UTC)
+                    - timedelta(hours=hour)
+                ).isoformat(),
+                "source": "x",
+                "rank": rank,
+                "value": 101 - rank,
+                "provenance": "observed",
+                "source_payload_json": '{"row_count": 30}',
+            }
+            for rank, hour in zip(ranks, hours, strict=True)
+        ],
+    }
+
+
+def _rank_responsive_projection(
+    candidate: dict,
+    *,
+    position: int = 1,
+    delta: int | None = None,
+) -> dict:
+    return _observed_sparse_series(
+        candidate,
+        datetime.fromisoformat(OBSERVED_AT).astimezone(UTC),
+        presentation_position=position,
+        presentation_rank_movement={
+            "current_rank": position,
+            "previous_rank": position + delta if delta is not None else None,
+            "delta": delta,
+            "status": "new" if delta is None else "up" if delta > 0 else "unchanged",
+        },
+    )
+
+
+def test_display_index_is_deterministic_and_reacts_to_rank_change_and_persistence():
+    rising = _rank_responsive_candidate(ranks=[20, 15, 10], hours=[2, 1, 0])
+    falling = _rank_responsive_candidate(ranks=[10, 15, 20], hours=[2, 1, 0])
+    sparse = _rank_responsive_candidate(ranks=[20, 15, 10], hours=[23, 12, 0])
+
+    first = _rank_responsive_projection(rising)
+    second = _rank_responsive_projection(deepcopy(rising))
+    tenth = _rank_responsive_projection(rising, position=10)
+    falling_projection = _rank_responsive_projection(falling)
+    sparse_projection = _rank_responsive_projection(sparse)
+
+    assert first == second
+    assert first["1w"]["points"][-1]["combined"] > tenth["1w"]["points"][-1]["combined"]
+    assert first["1w"]["points"][-1]["combined"] > falling_projection["1w"]["points"][-1]["combined"]
+    assert first["1w"]["points"][-1]["combined"] > sparse_projection["1w"]["points"][-1]["combined"]
+    assert [point["at"] for point in sparse_projection["1w"]["points"]] == [
+        row["at"] for row in sparse["series"]
+    ]
+    assert first["canonical_series_unchanged"] is True
+    assert first["data_mode"] == "rank_responsive_display"
+    assert first["display_only"] is True
+    assert first["canonical_ranking_effect"] == "none"
+    assert first["display_rank_effect"] == "display_value_only"
+    assert first["market_data_affected"] is False
+    assert first["ranking_effect"] == "none"
+    assert first["formula_weights"] == {
+        "source_rank_position": 0.45,
+        "rank_change": 0.20,
+        "observation_persistence": 0.15,
+        "presentation_position": 0.20,
+    }
+    assert first["derivation"]["display_only"] is True
+    assert first["derivation"]["canonical_ranking_effect"] == "none"
+    assert first["derivation"]["display_rank_effect"] == "display_value_only"
+    assert first["derivation"]["market_data_affected"] is False
+    assert first["derivation"]["missing_component_policy"] == (
+        "neutral_50_for_unavailable_rank_change"
+    )
+    assert first["derivation"]["neutral_rank_change_index"] == 50.0
+    assert first["derivation"]["formula_weight_sum"] == 1.0
+    assert first["1w"]["display_only"] is True
+    assert first["1w"]["formula_version"] == first["formula_version"]
+    assert first["1w"]["canonical_ranking_effect"] == "none"
+    assert first["1w"]["display_rank_effect"] == "display_value_only"
+    assert first["1w"]["market_data_affected"] is False
+    assert first["1w"]["interpolation"] == "none"
+    assert first["1w"]["missing_point_policy"] == "preserve_sparse_null_no_reuse"
+    assert all(
+        point["formula_version"] == "observed-rank-response-v2"
+        and point["display_only"] is True
+        and point["canonical_ranking_effect"] == "none"
+        and point["display_rank_effect"] == "display_value_only"
+        and point["market_data_affected"] is False
+        and point["ranking_effect"] == "none"
+        and 0 <= point["combined"] <= 100
+        for point in first["1w"]["points"]
+    )
+
+
+def test_first_observation_uses_neutral_movement_without_weight_switch_kink():
+    same_rank = _rank_responsive_candidate(ranks=[10, 10], hours=[1, 0])
+
+    projection = _rank_responsive_projection(same_rank)
+    points = projection["1w"]["points"]
+    first = points[0]["source_components"]["x"]
+    second = points[1]["source_components"]["x"]
+
+    assert first["rank_change"] is None
+    assert second["rank_change"] == 0
+    assert first["source_rank_change_index"] == 50.0
+    assert second["source_rank_change_index"] == 50.0
+    assert first["public_rank_change_index"] == 50.0
+    assert second["public_rank_change_index"] == 50.0
+    assert first["rank_change_index"] == second["rank_change_index"] == 50.0
+    assert first["rank_change_basis"] == [
+        "neutral_unavailable_source_rank_change",
+        "neutral_public_change_not_latest_point",
+    ]
+    assert second["rank_change_basis"] == [
+        "previous_observed_source_rank",
+        "neutral_unavailable_public_rank_change",
+    ]
+    expected_delta = round(
+        0.15
+        * (
+            second["observation_persistence_index"]
+            - first["observation_persistence_index"]
+        ),
+        2,
+    )
+    assert round(second["display_index"] - first["display_index"], 2) == (
+        expected_delta
+    )
+
+
+def test_display_index_uses_final_presentation_position_not_observed_rank():
+    candidate = _candidate()
+    candidate["observed_rank"] = 99
+    candidate["rank"] = 99
+    candidate["series"] = _rank_responsive_candidate(
+        ranks=[20, 10], hours=[1, 0]
+    )["series"]
+    before = deepcopy(candidate)
+    original_score = candidate["score"]
+    original_rank = candidate["rank"]
+    original_market_references = deepcopy([
+        company.get("market_reference") for company in candidate["companies"]
+    ])
+
+    feed = build_presentation_feed(_intelligence(candidate))
+    card = feed["items"][0]
+    visualization = card["visualization_series"]
+
+    assert candidate == before
+    assert candidate["score"] == original_score
+    assert candidate["rank"] == original_rank
+    assert [
+        company.get("market_reference") for company in candidate["companies"]
+    ] == original_market_references
+    assert card["series"] == before["series"]
+    assert card["presentation_position"] == 1
+    assert visualization["presentation_position"] == 1
+    assert all(
+        components["presentation_position"] == 1
+        and components["presentation_position_index"] == 100.0
+        for point in visualization["1w"]["points"]
+        for components in point["source_components"].values()
+    )
+    assert "score" not in card and "observed_rank" not in card and "rank" not in card
+    _validate_presentation_feed(feed)
+
+
+@pytest.mark.parametrize(
+    ("mutate", "message"),
+    [
+        (
+            lambda visualization: visualization.__setitem__(
+                "data_mode", "observed_sparse"
+            ),
+            "rank-responsive display projection",
+        ),
+        (
+            lambda visualization: visualization["derivation"].__setitem__(
+                "market_data_affected", True
+            ),
+            "rank-responsive display projection",
+        ),
+        (
+            lambda visualization: visualization["1w"].__setitem__(
+                "formula_version", "tampered"
+            ),
+            "window cannot interpolate or reuse observations",
+        ),
+        (
+            lambda visualization: visualization["1w"]["points"][0].__setitem__(
+                "display_rank_effect", "canonical_rank"
+            ),
+            "point formula receipt is invalid",
+        ),
+        (
+            lambda visualization: visualization["1w"]["points"][0][
+                "source_components"
+            ]["x"].__setitem__("rank_change_index", None),
+            "source-rank derivation is invalid",
+        ),
+        (
+            lambda visualization: visualization["1w"]["points"][0][
+                "source_components"
+            ]["x"].__setitem__("rank_change_index", 51.0),
+            "source-rank derivation is invalid",
+        ),
+        (
+            lambda visualization: visualization["1w"]["points"][0][
+                "source_components"
+            ]["x"].__setitem__("position_index", 1.0),
+            "source-rank derivation is invalid",
+        ),
+        (
+            lambda visualization: visualization["1w"]["points"][0][
+                "source_components"
+            ]["x"].__setitem__("source_rank_change_index", 51.0),
+            "source-rank derivation is invalid",
+        ),
+        (
+            lambda visualization: visualization["1w"]["points"][0][
+                "source_components"
+            ]["x"].__setitem__("public_rank_change_index", 51.0),
+            "source-rank derivation is invalid",
+        ),
+        (
+            lambda visualization: visualization["1w"]["points"][0][
+                "source_components"
+            ]["x"].__setitem__("display_index", 1.0),
+            "source-rank derivation is invalid",
+        ),
+    ],
+)
+def test_live_validator_rejects_tampered_display_derivation(mutate, message):
+    feed = build_presentation_feed(_intelligence(_candidate()))
+    mutate(feed["items"][0]["visualization_series"])
+
+    with pytest.raises(ValueError, match=message):
+        _validate_presentation_feed(feed)
+
+
+def test_result_quality_reports_rank_responsive_contract_tampering():
+    feed = build_presentation_feed(_intelligence(_candidate()))
+    feed["items"][0]["visualization_series"]["derivation"][
+        "market_data_affected"
+    ] = True
+
+    quality = evaluate_presentation_feed_quality(feed)
+
+    assert quality["passed"] is False
+    assert any(
+        "rank_responsive_visualization_contract_invalid" in failure
+        for failure in quality["failures"]
+    )
+
+
+def test_live_validator_cross_checks_component_rank_against_observed_series():
+    feed = build_presentation_feed(_intelligence(_candidate()))
+    visualization = feed["items"][0]["visualization_series"]
+    first_point = visualization["1w"]["points"][0]
+    component = first_point["source_components"]["x"]
+
+    component["rank"] += 1
+    component["position_index"] = round(101.0 - component["rank"], 2)
+    component["source_rank_change_index"] = 50.0
+    component["public_rank_change_index"] = 50.0
+    component["rank_change_index"] = 50.0
+    component["display_index"] = round(
+        0.45 * component["position_index"]
+        + 0.20 * component["rank_change_index"]
+        + 0.15 * component["observation_persistence_index"]
+        + 0.20 * component["presentation_position_index"],
+        2,
+    )
+    first_point["x"] = component["display_index"]
+    first_point["combined"] = round(
+        (
+            first_point["x"]
+            + first_point["google_trends"]
+        )
+        / 2,
+        2,
+    )
+
+    with pytest.raises(ValueError, match="source-rank derivation is invalid"):
+        _validate_presentation_feed(feed)
+
+
+def test_previous_presentation_rank_change_only_lifts_the_latest_actual_point():
+    candidate = _candidate()
+    candidate["series"] = _rank_responsive_candidate(
+        ranks=[20, 15], hours=[1, 0]
+    )["series"]
+    intelligence = _intelligence(candidate)
+    new_feed = build_presentation_feed(intelligence)
+    promoted_feed = build_presentation_feed(
+        intelligence,
+        previous_feed={
+            "items": [{
+                "event_key": candidate["event_key"],
+                "presentation_position": 2,
+                "current_rank": 2,
+            }],
+        },
+    )
+
+    new_points = new_feed["items"][0]["visualization_series"]["1w"]["points"]
+    promoted_points = promoted_feed["items"][0]["visualization_series"]["1w"]["points"]
+    assert new_points[0]["combined"] == promoted_points[0]["combined"]
+    assert promoted_points[-1]["combined"] > new_points[-1]["combined"]
+    assert promoted_feed["items"][0]["rank_movement"]["delta"] == 1
 
 
 def test_live_market_snapshot_requires_public_source_url():

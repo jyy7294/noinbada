@@ -53,7 +53,7 @@
         시작 화면
       </div>
 
-      <div data-zip="frame" role="button" tabindex="0" aria-label="아래로 내려 실시간 트렌드 열기" style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden; cursor:grab; touch-action:none; user-select:none;">
+      <div data-zip="frame" role="button" tabindex="0" aria-label="아래로 내려 통합 트렌드 열기" style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden; cursor:grab; touch-action:none; user-select:none;">
         <div style="position:absolute; inset:0; background:linear-gradient(180deg,#FFFFFF 0%,#FAF7FF 46%,#F1EAFF 100%);"></div>
         <div data-zip="glow" style="position:absolute; left:50%; top:56%; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; background:radial-gradient(circle, rgba(123,63,242,0.30) 0%, rgba(123,63,242,0.10) 45%, rgba(123,63,242,0) 70%); opacity:0;"></div>
 
@@ -140,7 +140,7 @@
     <div data-screen-label="01 홈" style="display:flex; flex-direction:column; gap:12px;">
       <div style="display:flex; align-items:center; gap:8px; font-weight:600; font-size:13.5px; color:#3B3D47;">
         <span style="background:#1A1A22; color:#FFFFFF; border-radius:999px; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-size:11px;">01</span>
-        홈 · 실시간 트렌드
+        홈 · 통합 트렌드
       </div>
 
       <div style="position:relative; width:393px; height:852px; display:flex; flex-direction:column; background:#FFFFFF; border-radius:40px; border:11px solid #14141C; box-sizing:content-box; box-shadow:0 16px 40px rgba(26,26,34,0.24); overflow:hidden;">
@@ -158,7 +158,7 @@
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style="display:block; flex:none;"><polyline points="12,4 6,10 12,16" fill="none" stroke="#1A1A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
             <div style="min-width:0;">
               <div style="display:flex; align-items:center; gap:7px;">
-                <span style="white-space:nowrap; font-weight:800; font-size:19px; color:#1A1A22; letter-spacing:-0.03em;">실시간 트렌드</span>
+                <span style="white-space:nowrap; font-weight:800; font-size:19px; color:#1A1A22; letter-spacing:-0.03em;">통합 트렌드</span>
                 <sc-if value="{{ showLiveBadge }}" hint-placeholder-val="{{ false }}">
                   <span style="{{ liveBadgeStyle }}">{{ liveStatus }}</span>
                 </sc-if>
@@ -186,7 +186,7 @@
 
           <div data-vd-stage="1" style="position:relative; margin:6px -16px 0; height:440px; background:linear-gradient(180deg,#FFFFFF 0%,#F7F2FF 14%,#EFE7FD 58%,#F7F3FE 84%,#FFFFFF 100%); overflow:hidden; touch-action:none; user-select:none;">
             <div style="position:absolute; left:0; top:50%; width:206px; padding:0 16px; box-sizing:border-box; text-align:center; transform:translateY(-50%); pointer-events:none;">
-              <div data-vd-rank="1" style="display:inline-block; border:1.5px solid #B79BF2; border-radius:999px; padding:5px 13px; font-weight:600; font-size:12px; color:#5B21C0; background:rgba(255,255,255,0.6);">실시간 1위</div>
+              <div data-vd-rank="1" style="display:inline-block; border:1.5px solid #B79BF2; border-radius:999px; padding:5px 13px; font-weight:600; font-size:12px; color:#5B21C0; background:rgba(255,255,255,0.6);">통합 1위</div>
               <div data-vd-cat="1" style="font-weight:600; font-size:12.5px; color:#8B7BC4; margin-top:10px;">분류 확인 중</div>
               <div data-vd-blob="1" style="position:absolute; left:50%; top:50%; margin:-70px 0 0 -100px; width:200px; height:140px; border-radius:999px; background:#D3C2F7; filter:blur(30px); opacity:0.5;"></div>
               <div style="position:relative; margin-top:12px;">
@@ -318,7 +318,7 @@
               <sc-for list="{{ trendOptions }}" as="opt" hint-placeholder-count="5">
                 <button type="button" onClick="{{ opt.pick }}" style="{{ opt.row }}; width:100%; border:0; font-family:inherit; text-align:left;">
                   <span style="width:30px; height:30px; flex:none; border-radius:999px; background:#F3F0FB; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.04);">
-                    <img src="{{ opt.optIconUrl }}" alt="{{ opt.optIconAlt }}" width="20" height="20" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:20px; height:20px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-trend-icon-src="{{ opt.optIconUrl }}" alt="{{ opt.optIconAlt }}" width="20" height="20" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:20px; height:20px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                     <span role="img" aria-label="{{ opt.optIconAlt }}" style="width:20px; height:20px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:9px; line-height:1;">{{ opt.optIconFallback }}</span>
                   </span>
                   <span style="{{ opt.nameStyle }}">{{ opt.optName }}</span>
@@ -337,7 +337,7 @@
             </div>
             <sc-if value="{{ freshInfoOpen }}" hint-placeholder-val="{{ false }}">
               <div data-freshness-explanation="1" style="background:#F3EFFC; border-radius:12px; padding:11px 13px; margin-top:9px; font-weight:500; font-size:11px; line-height:1.65; color:#5B21C0;">
-                X·Google에서 최근 24시간 반복 관측되고, 정치·범죄·재난·사생활을 제외한 소비·문화·기술 흐름만 표시합니다. 관측 강도·교차 확산·지속성을 함께 보며 기업 연결은 정보 탐색용입니다.
+                최근 24시간의 실제 관측을 사건 단위로 통합해, 안전 기준을 통과한 소비·문화·기술 흐름만 표시합니다. 관측 강도·확산·지속성을 함께 보며 기업 연결은 정보 탐색용입니다.
               </div>
             </sc-if>
 
@@ -380,8 +380,8 @@
             <sc-if value="{{ collectInfoOpen }}" hint-placeholder-val="{{ false }}">
               <div style="background:#F7F4FF; border-radius:12px; padding:11px 13px; margin-top:9px; font-weight:500; font-size:11px; line-height:1.65; color:#5B21C0;">
                 <b style="font-weight:800;">트렌드 수집 기준</b><br>
-                · 매시 정각 X 대한민국 실시간 트렌드 30개 + Google Trending Now 전체를 실측 수집해요<br>
-                · 순위 입력은 X와 Google 두 출처만 사용하고, NAVER 뉴스는 맥락 근거로만 사용해요<br>
+                · 매시 정각 대한민국의 최신 흐름을 실제 수집해요<br>
+                · 서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요<br>
                 · 최근 24시간 확산 흐름을 분석해 매일 오전 6시에 한 번 공개해요<br>
                 · 관측되지 않은 데이터를 임의로 채우지 않아요
               </div>
@@ -391,25 +391,21 @@
 
         <div style="padding:0 16px 14px;">
           <div data-interest-card="1" style="background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:14px 14px 13px;">
-            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-              <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">언급량 추이 · 관심지수</span>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+              <span id="interest-chart-title" style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em;">통합 관심지수</span>
               <div style="display:flex; width:150px; background:#F3F0FB; border-radius:999px; padding:3px;">
                 <button onClick="{{ pickRange0 }}" aria-disabled="{{ rangeDisabled0 }}" style="{{ range0 }}">24시간</button>
                 <button onClick="{{ pickRange1 }}" aria-disabled="{{ rangeDisabled1 }}" style="{{ range1 }}">1개월</button>
                 <button onClick="{{ pickRange2 }}" aria-disabled="{{ rangeDisabled2 }}" style="{{ range2 }}">3개월</button>
               </div>
             </div>
-            <div style="display:flex; align-items:center; gap:7px; margin-top:10px;">
-              <sc-for list="{{ sourceSignals }}" as="ss" hint-placeholder-count="2">
-                <span style="{{ ss.style }}">{{ ss.label }}</span>
-              </sc-for>
-              <span style="flex:1;"></span>
-              <span style="font-weight:700; font-size:10.5px; color:#8B8D98;">실제 24시간 관측</span>
+            <div style="display:flex; align-items:center; justify-content:flex-end; margin-top:10px;">
+              <span data-interest-range-caption="1" style="font-weight:700; font-size:10.5px; color:#8B8D98;">{{ interestRangeCaption }}</span>
             </div>
             <div data-interest-summary="1" role="group" aria-label="{{ interestSummaryLabel }}" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin-top:9px;">
-              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">최고</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestPeak }}</span></div>
-              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">현재</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestCurrent }}</span></div>
-              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">포착</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestObservationCount }}회</span></div>
+              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">최고 지수</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestPeak }}</span></div>
+              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">현재 지수</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestCurrent }}</span></div>
+              <div style="background:#FAF9FE;border-radius:10px;padding:7px 6px;text-align:center;"><span style="display:block;font-weight:600;font-size:9.5px;color:#9A96A6;">관측 횟수</span><span style="display:block;margin-top:2px;font-weight:800;font-size:13px;color:#5B21C0;">{{ interestObservationCount }}회</span></div>
             </div>
             <div style="position:relative; height:108px; margin-top:9px; overflow:hidden;">
               <svg data-interest-visual="1" viewBox="0 0 296 96" preserveAspectRatio="none" role="img" aria-labelledby="interest-chart-title interest-chart-disclosure" style="display:block; width:100%; height:96px; overflow:visible;">
@@ -419,13 +415,13 @@
                 <path data-interest-line="1" d="" fill="none" stroke="#7B3FF2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
                 <g data-interest-single-points="1" data-interest-observation-points="1"></g>
               </svg>
-              <div data-interest-empty="1" style="display:none;position:absolute;inset:0 0 17px;align-items:center;justify-content:center;border-radius:14px;background:#FAF9FD;font-weight:700;font-size:11.5px;color:#8B8D98;">24시간 내 비교할 관측값이 부족합니다</div>
+              <div data-interest-empty="1" style="display:none;position:absolute;inset:0 0 17px;align-items:center;justify-content:center;border-radius:14px;background:#FAF9FD;font-weight:700;font-size:11.5px;color:#8B8D98;">{{ interestEmptyLabel }}</div>
               <div style="display:flex; justify-content:space-between; margin-top:-2px; font-weight:600; font-size:9.5px; color:#AAA6B4;">
                 <span>{{ periodStartLabel }}</span><span>{{ periodMiddleLabel }}</span><span>{{ periodEndLabel }}</span>
               </div>
             </div>
-            <p id="interest-chart-disclosure" style="margin:4px 0 0; font-weight:600; font-size:9.5px; line-height:1.45; color:#9A96A6;">
-              점은 실제 관측, 선은 90분 이내 이어진 관측만 연결합니다. 비어 있는 구간은 보간하지 않습니다.
+            <p id="interest-chart-disclosure" style="margin:5px 0 0; font-weight:650; font-size:10.5px; line-height:1.45; color:#777A86;">
+              실제 통합 관측 순위와 현재 공개 순위를 조합한 0~100 표시지수입니다. 절대 언급량·주가·매수신호가 아니며 결측은 보간하지 않고 90분 넘게 빈 구간은 연결하지 않습니다.
             </p>
           </div>
         </div>
@@ -1332,6 +1328,17 @@ class Component extends DCLogic {
     })[char]);
   }
 
+  integratedTrendCopy(value) {
+    return String(value == null ? '' : value)
+      .replace(/X 대한민국 실시간 트렌드와 Google Trending Now 대한민국 관측/g, '통합 실시간 트렌드 관측')
+      .replace(/X와\s+Google(?: Trends| Trending Now)?\s+대한민국\s+관측/g, '통합 실시간 트렌드 관측')
+      .replace(/X(?:·|와\s+|\s*\+\s*)Google(?: Trends| Trending Now)?(?: 대한민국)?(?: 실제)? 관측/g, '통합 관측')
+      .replace(/Google(?: Trends| Trending Now)? 대한민국 관측/g, '통합 실시간 트렌드 관측')
+      .replace(/X 대한민국(?: 실시간 트렌드)? 관측/g, '통합 실시간 트렌드 관측')
+      .replace(/X(?:·|\s*\+\s*)Google 실측 순위/g, '통합 실측 순위')
+      .replace(/X와 유튜브·브랜드 콘텐츠/g, '공개 콘텐츠와 브랜드 콘텐츠');
+  }
+
   companyName(company) {
     return String((company && (company.company || company.name)) || '').trim();
   }
@@ -1718,38 +1725,156 @@ class Component extends DCLogic {
   buildInterestCurve(trend, rangeIndex = 0) {
     const MAX_CONTIGUOUS_GAP_MS = 90 * 60 * 1000;
     const rangeKey = ['24h', '1m', '3m'][rangeIndex] || '24h';
-    const canonicalRows = rangeIndex === 0 && trend && Array.isArray(trend.series)
-      ? trend.series.filter((point) => point
-        && point.provenance === 'observed'
-        && ['x', 'google_trends'].includes(point.source)
-        && Number.isFinite(Number(point.value))
-        && Number(point.value) >= 0 && Number(point.value) <= 100
-        && !Number.isNaN(new Date(point.at).getTime())) : [];
-    const latestObservedMs = canonicalRows.length
-      ? Math.max(...canonicalRows.map((point) => new Date(point.at).getTime())) : null;
-    const groupedObserved = new Map();
-    canonicalRows.forEach((point) => {
-      const atMs = new Date(point.at).getTime();
-      if (latestObservedMs - atMs > 24 * 60 * 60 * 1000) return;
-      const key = new Date(atMs).toISOString();
-      const bucket = groupedObserved.get(key) || [];
-      bucket.push(Number(point.value));
-      groupedObserved.set(key, bucket);
-    });
-    const publishedPoints = [...groupedObserved.entries()]
-      .sort((a, b) => new Date(a[0]) - new Date(b[0]))
-      .map(([at, values]) => ({ at, combined: Math.round((values.reduce((sum, value) => sum + value, 0) / values.length) * 100) / 100 }));
-    const publishedWindow = rangeIndex === 0 ? { points: publishedPoints, ranking_effect: 'none' } : null;
-    const combinedSeries = publishedPoints.length
-      ? publishedPoints.map((point) => point && point.combined)
-      : publishedWindow && Array.isArray(publishedWindow.combined) ? publishedWindow.combined : [];
+    const rangeSpecs = {
+      '24h': { sourceKey: '1w', windowMs: 24 * 60 * 60 * 1000, label: '24시간', start: '24시간 전' },
+      '1m': { sourceKey: '1m', windowMs: 30 * 24 * 60 * 60 * 1000, label: '1개월', start: '한 달 전' },
+      '3m': { sourceKey: '3m', windowMs: 90 * 24 * 60 * 60 * 1000, label: '3개월', start: '3개월 전' }
+    };
+    const rangeSpec = rangeSpecs[rangeKey];
+    const rankStyle = this.rankResponsiveInterestStyle(trend);
+    const motionTrendKey = String(trend && (trend.id || trend.topic || trend.displayName) || 'unknown');
+    const visualization = trend && trend.visualizationSeries && typeof trend.visualizationSeries === 'object'
+      ? trend.visualizationSeries : {};
+    const formulaVersion = 'observed-rank-response-v2';
+    const expectedFormulaWeights = {
+      source_rank_position: 0.45,
+      rank_change: 0.20,
+      observation_persistence: 0.15,
+      presentation_position: 0.20
+    };
+    const expectedDerivation = {
+      formula: 'mean_by_observed_source(weighted_sum(source_rank_position,rank_change,observation_persistence,presentation_position))',
+      input_fields: [
+        'observed_source_rank', 'observed_source_rank_change', 'observation_persistence',
+        'presentation_position', 'previous_published_presentation_position'
+      ],
+      missing_component_policy: 'neutral_50_for_unavailable_rank_change',
+      neutral_rank_change_index: 50.0,
+      formula_weight_sum: 1.0,
+      display_only: true,
+      canonical_ranking_effect: 'none',
+      display_rank_effect: 'display_value_only',
+      market_data_affected: false,
+      canonical_series_unchanged: true,
+      missing_point_policy: 'preserve_sparse_null_no_reuse'
+    };
+    const sameContractValue = (left, right) => {
+      if (left === right) return true;
+      if (Array.isArray(left) || Array.isArray(right)) {
+        return Array.isArray(left) && Array.isArray(right)
+          && left.length === right.length
+          && left.every((value, index) => sameContractValue(value, right[index]));
+      }
+      if (!left || !right || typeof left !== 'object' || typeof right !== 'object') return false;
+      const leftKeys = Object.keys(left).sort();
+      const rightKeys = Object.keys(right).sort();
+      return leftKeys.join('|') === rightKeys.join('|')
+        && leftKeys.every((key) => sameContractValue(left[key], right[key]));
+    };
+    const formulaWeights = visualization.formula_weights;
+    const formulaWeightKeys = Object.keys(expectedFormulaWeights);
+    const formulaWeightsValid = Boolean(formulaWeights && typeof formulaWeights === 'object'
+      && !Array.isArray(formulaWeights)
+      && Object.keys(formulaWeights).sort().join('|') === formulaWeightKeys.slice().sort().join('|')
+      && formulaWeightKeys.every((key) => Number(formulaWeights[key]) === expectedFormulaWeights[key]));
+    const presentationPosition = Number(visualization.presentation_position);
+    const visibleRankMatch = String(trend && trend.rank != null ? trend.rank : '').match(/\d+/);
+    const visibleRank = visibleRankMatch ? Number(visibleRankMatch[0]) : null;
+    const hasRankResponsiveMetadata = visualization.data_mode === 'rank_responsive_display'
+      || visualization.display_only != null
+      || visualization.formula_version != null
+      || visualization.formula_weights != null
+      || visualization.derivation != null
+      || visualization.presentation_position != null
+      || visualization.presentation_rank_movement != null
+      || visualization.canonical_ranking_effect != null
+      || visualization.display_rank_effect != null
+      || visualization.market_data_affected != null;
+    const visibleRankMovement = trend && trend.raw && trend.raw.rank_movement
+      ? trend.raw.rank_movement : trend && trend.rankMovement;
+    const hasRankResponsiveContract = visualization.data_mode === 'rank_responsive_display'
+      && visualization.display_only === true
+      && visualization.formula_version === formulaVersion
+      && formulaWeightsValid
+      && visualization.metric === 'normalized_attention_index'
+      && sameContractValue(visualization.derivation, expectedDerivation)
+      && Number.isInteger(presentationPosition)
+      && presentationPosition >= 1 && presentationPosition <= 10
+      && (!Number.isInteger(visibleRank) || visibleRank === presentationPosition)
+      && sameContractValue(visualization.presentation_rank_movement, visibleRankMovement)
+      && visualization.canonical_series_unchanged === true
+      && visualization.canonical_ranking_effect === 'none'
+      && visualization.display_rank_effect === 'display_value_only'
+      && visualization.market_data_affected === false
+      && visualization.interpolation === 'none'
+      && visualization.ranking_effect === 'none';
+    const publishedWindow = visualization[rangeSpec.sourceKey];
+    const sourceWindowKey = rangeSpec.sourceKey;
+    const sharedWindowContractValid = Boolean(publishedWindow
+      && visualization.data_mode === 'observed_sparse'
+      && visualization.interpolation === 'none'
+      && visualization.canonical_series_unchanged === true
+      && visualization.ranking_effect === 'none'
+      && publishedWindow.interpolation === 'none'
+      && publishedWindow.missing_point_policy === 'preserve_sparse_null_no_reuse'
+      && publishedWindow.ranking_effect === 'none');
+    const rankResponsivePointContractValid = Boolean(publishedWindow
+      && Array.isArray(publishedWindow.points)
+      && publishedWindow.points.every((point) => point
+        && point.display_only === true
+        && point.formula_version === formulaVersion
+        && point.canonical_ranking_effect === 'none'
+        && point.display_rank_effect === 'display_value_only'
+        && point.market_data_affected === false
+        && point.ranking_effect === 'none'
+        && point.source_components && typeof point.source_components === 'object'
+        && !Array.isArray(point.source_components)));
+    const rankResponsiveWindowContractValid = Boolean(hasRankResponsiveContract
+      && publishedWindow
+      && visualization.interpolation === 'none'
+      && visualization.canonical_series_unchanged === true
+      && visualization.ranking_effect === 'none'
+      && publishedWindow.display_only === true
+      && publishedWindow.formula_version === formulaVersion
+      && publishedWindow.canonical_ranking_effect === 'none'
+      && publishedWindow.display_rank_effect === 'display_value_only'
+      && publishedWindow.market_data_affected === false
+      && publishedWindow.interpolation === 'none'
+      && publishedWindow.missing_point_policy === 'preserve_sparse_null_no_reuse'
+      && publishedWindow.ranking_effect === 'none'
+      && rankResponsivePointContractValid);
+    const legacyWindowContractValid = !hasRankResponsiveMetadata && sharedWindowContractValid;
+    const windowContractValid = rankResponsiveWindowContractValid || legacyWindowContractValid;
+    const allPublishedPoints = windowContractValid && Array.isArray(publishedWindow && publishedWindow.points)
+      ? publishedWindow.points.filter((point) => {
+        const atMs = new Date(point && point.at).getTime();
+        const combined = Number(point && point.combined);
+        return Number.isFinite(atMs) && Number.isFinite(combined) && combined >= 0 && combined <= 100;
+      }).slice().sort((left, right) => new Date(left.at) - new Date(right.at)) : [];
+    const latestObservedMs = allPublishedPoints.length
+      ? Math.max(...allPublishedPoints.map((point) => new Date(point.at).getTime())) : null;
+    const publishedObservedAtMs = new Date(
+      this.publishedView && this.publishedView.observedAt
+        ? this.publishedView.observedAt : ''
+    ).getTime();
+    const windowEndMs = Number.isFinite(publishedObservedAtMs)
+      ? publishedObservedAtMs : latestObservedMs;
+    const windowCoverageEligible = rangeKey === '24h'
+      || Boolean(publishedWindow && publishedWindow.status === 'measured');
+    const windowStartMs = Number.isFinite(windowEndMs)
+      ? windowEndMs - rangeSpec.windowMs : null;
+    const publishedPoints = windowCoverageEligible ? allPublishedPoints.filter((point) => (
+      Number.isFinite(windowEndMs)
+      && new Date(point.at).getTime() >= windowStartMs
+      && new Date(point.at).getTime() <= windowEndMs
+    )) : [];
+    const combinedSeries = publishedPoints.map((point) => point.combined);
     const rawValues = combinedSeries.map((value) => {
         if (value === null || value === undefined || value === '') return null;
         const numeric = Number(value);
         return Number.isFinite(numeric) ? Math.max(0, Math.min(100, numeric)) : null;
       });
-    const timestampLabels = publishedPoints.map((point) => {
-      const raw = point && (point.timestamp || point.at);
+    const formatInterestTimestamp = (raw) => {
       if (!raw) return '';
       const date = new Date(raw);
       if (Number.isNaN(date.getTime())) return '';
@@ -1761,22 +1886,21 @@ class Component extends DCLogic {
         return result;
       }, {});
       return parts.month + '.' + parts.day + '. ' + parts.hour + ':' + parts.minute;
-    });
+    };
+    const timestampLabels = publishedPoints.map((point) => (
+      formatInterestTimestamp(point && (point.timestamp || point.at))
+    ));
     const timestampValues = publishedPoints.map((point) => {
       const raw = point && (point.timestamp || point.at);
       if (!raw) return null;
       const value = new Date(raw).getTime();
       return Number.isFinite(value) ? value : null;
     });
-    const sourceLabels = publishedWindow && Array.isArray(publishedWindow.labels)
-      ? publishedWindow.labels.map((label) => String(label || ''))
-      : timestampLabels;
     const labels = [
-      sourceLabels[0] || (rangeIndex === 0 ? '24시간 전' : rangeIndex === 1 ? '한 달 전' : '3개월 전'),
-      sourceLabels.length >= 3
-        ? sourceLabels[Math.floor((sourceLabels.length - 1) / 2)]
-        : '',
-      sourceLabels[sourceLabels.length - 1] || '오늘'
+      formatInterestTimestamp(windowStartMs) || rangeSpec.start,
+      Number.isFinite(windowStartMs) && Number.isFinite(windowEndMs)
+        ? formatInterestTimestamp(windowStartMs + rangeSpec.windowMs / 2) : '',
+      formatInterestTimestamp(windowEndMs) || '오늘'
     ];
     const usable = rawValues.filter(Number.isFinite);
     const peakValue = usable.length ? Math.max(...usable) : null;
@@ -1795,15 +1919,21 @@ class Component extends DCLogic {
         current: Number.isFinite(currentValue) ? Math.round(currentValue) : '—',
         observationCount,
         labels,
+        rangeKey,
+        rangeLabel: rangeSpec.label,
+        sourceWindowKey,
+        displaySeriesMode: hasRankResponsiveContract ? 'rank_responsive_display' : 'observed_sparse_compatibility',
         pattern: 'published_series',
+        rankStyle,
+        motionKey: motionTrendKey + ':' + rankStyle.rank + ':' + rangeKey + ':'
+          + sourceWindowKey + ':' + observationCount + ':' + String(timestampLabels.at(-1) || ''),
         rankingEffect: publishedWindow && publishedWindow.ranking_effect
           ? publishedWindow.ranking_effect : 'none'
       };
     }
 
-    const validTimestamps = timestampValues.filter(Number.isFinite);
-    const firstTimestamp = validTimestamps.length ? Math.min(...validTimestamps) : null;
-    const lastTimestamp = validTimestamps.length ? Math.max(...validTimestamps) : null;
+    const firstTimestamp = windowStartMs;
+    const lastTimestamp = windowEndMs;
     const useTimestampScale = Number.isFinite(firstTimestamp)
       && Number.isFinite(lastTimestamp) && lastTimestamp > firstTimestamp;
     const points = rawValues.map((value, index) => {
@@ -1866,8 +1996,42 @@ class Component extends DCLogic {
       current: Math.round(lastValue),
       observationCount,
       labels,
+      rangeKey,
+      rangeLabel: rangeSpec.label,
+      sourceWindowKey,
+      displaySeriesMode: hasRankResponsiveContract ? 'rank_responsive_display' : 'observed_sparse_compatibility',
       pattern: 'published_series',
+      rankStyle,
+      motionKey: motionTrendKey + ':' + rankStyle.rank + ':' + rangeKey + ':'
+        + sourceWindowKey + ':' + observationCount + ':' + String(timestampLabels.at(-1) || ''),
       rankingEffect: publishedWindow.ranking_effect || 'none'
+    };
+  }
+
+  rankResponsiveInterestStyle(trend) {
+    const rankMatch = String(trend && trend.rank != null ? trend.rank : '').match(/\d+/);
+    const rawRank = rankMatch ? Number(rankMatch[0]) : NaN;
+    const rank = Number.isInteger(rawRank) && rawRank > 0 ? Math.min(rawRank, 100) : 100;
+    const topTenStrength = Math.max(0, Math.min(1, (11 - Math.min(rank, 11)) / 10));
+    const rankBand = rank <= 3 ? 'top3' : rank <= 5 ? 'top5' : rank <= 10 ? 'top10' : 'other';
+    return {
+      policyVersion: 'rank-responsive-presentation-v2',
+      seriesContract: 'backend_rank_responsive_display',
+      frontendValueTransform: 'none',
+      publishedValuesConsumedDirectly: true,
+      rankStyleAffected: true,
+      rankMotionAffected: true,
+      gapsPreserved: true,
+      rank,
+      rankBand,
+      stroke: rank <= 3 ? '#5B21C0' : rank <= 5 ? '#6C2FF2' : '#7B3FF2',
+      strokeWidth: Number((2.9 + topTenStrength * 1.7).toFixed(2)),
+      markerRadius: Number((3.2 + topTenStrength * 1.4).toFixed(2)),
+      latestMarkerRadius: Number((4.6 + topTenStrength * 1.7).toFixed(2)),
+      areaOpacity: Number((0.07 + topTenStrength * 0.11).toFixed(3)),
+      animationDurationMs: Math.round(820 - topTenStrength * 360),
+      pointStaggerMs: Math.round(34 - topTenStrength * 14),
+      pulseDurationMs: Math.round(1380 - topTenStrength * 360)
     };
   }
 
@@ -1880,19 +2044,95 @@ class Component extends DCLogic {
     const observationPoints = root.querySelector('[data-interest-observation-points]');
     const visual = root.querySelector('[data-interest-visual]');
     const empty = root.querySelector('[data-interest-empty]');
-    if (line) line.setAttribute('d', chart.linePath || '');
-    if (area) area.setAttribute('d', chart.area);
+    const rankStyle = chart.rankStyle || this.rankResponsiveInterestStyle(null);
+    if (line) {
+      line.setAttribute('d', chart.linePath || '');
+      line.setAttribute('stroke', rankStyle.stroke);
+      line.setAttribute('stroke-width', String(rankStyle.strokeWidth));
+    }
+    if (area) {
+      area.setAttribute('d', chart.area);
+      area.setAttribute('fill', 'rgba(123,63,242,' + rankStyle.areaOpacity + ')');
+    }
     if (observationPoints) {
       const points = chart.observationPoints || [];
-      observationPoints.innerHTML = points.map((point, index) => {
-        const latest = index === points.length - 1;
+      const markerStride = Math.max(1, Math.ceil(points.length / 40));
+      const visiblePoints = points.filter((_point, index) => index % markerStride === 0 || index === points.length - 1);
+      observationPoints.innerHTML = visiblePoints.map((point, index) => {
+        const latest = index === visiblePoints.length - 1;
         return '<circle data-observed-point="1" cx="' + point[0] + '" cy="' + point[1]
-          + '" r="' + (latest ? '4.8' : '3.7') + '" fill="' + (latest ? '#7B3FF2' : '#BCA2F7')
+          + '" r="' + (latest ? rankStyle.latestMarkerRadius : rankStyle.markerRadius)
+          + '" fill="' + (latest ? rankStyle.stroke : '#BCA2F7')
           + '" stroke="#FFFFFF" stroke-width="2"></circle>';
       }).join('');
     }
+    if (visual) {
+      visual.dataset.rankDisplayPolicy = rankStyle.policyVersion;
+      visual.dataset.interestSeriesContract = rankStyle.seriesContract;
+      visual.dataset.interestFrontendValueTransform = rankStyle.frontendValueTransform;
+      visual.dataset.interestPublishedValuesDirect = String(rankStyle.publishedValuesConsumedDirectly);
+      visual.dataset.rankValue = String(rankStyle.rank);
+      visual.dataset.rankBand = rankStyle.rankBand;
+      visual.dataset.interestRange = chart.rangeKey || '24h';
+      visual.dataset.interestSourceWindow = chart.sourceWindowKey || '';
+      visual.dataset.interestSeriesMode = chart.displaySeriesMode || '';
+    }
     if (visual) visual.style.visibility = chart.available ? 'visible' : 'hidden';
     if (empty) empty.style.display = chart.available ? 'none' : 'flex';
+    this.animateRankResponsiveInterest(root, chart);
+  }
+
+  animateRankResponsiveInterest(root, chart) {
+    if (!chart || !chart.available || this.prefersReducedMotion()) return;
+    const visual = root.querySelector('[data-interest-visual]');
+    if (!visual || visual.dataset.rankMotionKey === chart.motionKey) return;
+    visual.dataset.rankMotionKey = chart.motionKey;
+    const rankStyle = chart.rankStyle || this.rankResponsiveInterestStyle(null);
+    const line = visual.querySelector('[data-interest-line]');
+    const points = visual.querySelectorAll('[data-observed-point]');
+    const latestPoint = points.length ? points[points.length - 1] : null;
+    if (line && typeof line.animate === 'function') {
+      let pathLength = 0;
+      try { pathLength = Number(line.getTotalLength()); } catch (_) { pathLength = 0; }
+      const lineFrames = Number.isFinite(pathLength) && pathLength > 0
+        ? [
+          { opacity: 0.28, strokeDasharray: pathLength + ' ' + pathLength, strokeDashoffset: pathLength },
+          { opacity: 1, strokeDasharray: pathLength + ' ' + pathLength, strokeDashoffset: 0 }
+        ]
+        : [{ opacity: 0.28 }, { opacity: 1 }];
+      line.animate(lineFrames, {
+        duration: rankStyle.animationDurationMs,
+        easing: 'cubic-bezier(.22,.61,.36,1)'
+      });
+    }
+    points.forEach((point, index) => {
+      if (point === latestPoint || typeof point.animate !== 'function') return;
+      point.style.transformBox = 'fill-box';
+      point.style.transformOrigin = 'center';
+      point.animate([
+        { opacity: 0, transform: 'scale(.55)' },
+        { opacity: 1, transform: 'scale(1)' }
+      ], {
+        duration: Math.max(220, Math.round(rankStyle.animationDurationMs * 0.62)),
+        delay: Math.min(index, 16) * rankStyle.pointStaggerMs,
+        easing: 'cubic-bezier(.22,.61,.36,1)',
+        fill: 'backwards'
+      });
+    });
+    if (latestPoint && typeof latestPoint.animate === 'function') {
+      latestPoint.style.transformBox = 'fill-box';
+      latestPoint.style.transformOrigin = 'center';
+      latestPoint.style.filter = 'drop-shadow(0 0 ' + (rankStyle.rank <= 3 ? '5px' : '3px') + ' rgba(91,33,192,.34))';
+      latestPoint.animate([
+        { opacity: 0.55, transform: 'scale(.86)' },
+        { opacity: 1, transform: 'scale(1.12)' },
+        { opacity: 1, transform: 'scale(1)' }
+      ], {
+        duration: rankStyle.pulseDurationMs,
+        delay: Math.min(points.length, 16) * rankStyle.pointStaggerMs,
+        easing: 'cubic-bezier(.22,.61,.36,1)'
+      });
+    }
   }
 
   analyticsEvents = new Set([
@@ -1995,7 +2235,8 @@ class Component extends DCLogic {
         }));
         const keywords = item.keywords.map((keyword) => String(keyword.text || keyword.term || keyword)).filter(Boolean);
         const windows = item.attentionWindows || [];
-        const sourceLabel = item.sourceBadge || item.sourceList.join(' + ') || '출처 확인 중';
+        const definition = this.integratedTrendCopy(item.summary || '');
+        const caption = this.integratedTrendCopy(item.raw.why_now || item.summary || '');
         return {
           emoji: String(item.displayName || '트').slice(0, 1), icon: this.trendIconMeta(item.displayName, item.categoryKo),
           name: item.displayName, shortName: item.shortDisplayName, cat: item.categoryKo,
@@ -2005,14 +2246,14 @@ class Component extends DCLogic {
           rankMovement: item.rankMovement || { status: 'new', label: 'NEW', delta: null },
           rankMovementLabel: (item.rankMovement && item.rankMovement.label) || 'NEW',
           rank: item.rank + '위', progress: stage.progress, stageIdx: stage.index,
-          definition: item.summary || '', caption: item.raw.why_now || item.summary || '',
+          definition, caption,
           channels: ['1주', '1개월', '3개월'].map((label, index) => {
             const found = windows.find((window) => window.label === label) || windows[index];
             return windowLabel(found);
           }),
           attentionWindows: windows, seriesMetric: item.seriesMetric, stages, companies: item.companies,
           companyCardStatus: item.companyCardStatus, companyResolution: item.companyResolution,
-          sourceLabel, sourceList: item.sourceList, live: true, crossSource: item.sourceCount >= 2,
+          sourceLabel: '통합 관측', sourceList: item.sourceList, live: true, crossSource: item.sourceCount >= 2,
           series: item.series || [], visualizationSeries: item.visualizationSeries || {}, raw: item.raw, id: item.id
         };
       });
@@ -2164,10 +2405,10 @@ class Component extends DCLogic {
           progress: life[1], stageIdx: life[2],
           definition: it.trend_definition || '',
           caption: (function () {
-            const REASON_KO = { repeated_observation: '반복 관측으로 지속성이 확인된 트렌드예요.', first_observation: '처음 포착된 신규 트렌드예요.', cross_source: 'X와 Google 양쪽에서 함께 관측되고 있어요.', single_source: '단일 출처에서 관측 중인 잠정 트렌드예요.' };
+            const REASON_KO = { repeated_observation: '반복 관측으로 지속성이 확인된 트렌드예요.', first_observation: '처음 포착된 신규 트렌드예요.', cross_source: '여러 관측 흐름이 하나의 트렌드로 함께 확인되고 있어요.', single_source: '통합 관측이 아직 충분하지 않아 잠정 상태예요.' };
             const sum = it.phenomenon_summary;
             if (sum && /[가-힣]/.test(sum)) return sum;
-            return REASON_KO[it.lifecycle_reason] || 'X·Google 실측 순위 기반 트렌드예요.';
+            return REASON_KO[it.lifecycle_reason] || '실측 통합 순위 기반 트렌드예요.';
           })(),
           channels: [lift, lift, lift], stages, live: true, crossSource,
           series: Array.isArray(it.series) ? it.series : [] };
@@ -2357,7 +2598,7 @@ class Component extends DCLogic {
     const body = document.createElement('div');
     body.style.cssText = 'flex:1;overflow-y:auto;padding:18px 18px 28px;';
     body.innerHTML = [
-      ['1', '원천 관측', '순위 입력은 X 대한민국 실시간 트렌드와 Google Trending Now만 사용합니다.'],
+      ['1', '원천 관측', '매시 수집한 실제 관측 순위만 사용합니다.'],
       ['2', '사건 단위 병합', '표현이 달라도 같은 사건·제품·콘텐츠를 가리키면 하나의 흐름으로 묶습니다.'],
       ['3', '안전 필터', '정치·범죄·재난·사생활·혐오와 맥락이 불명확한 표현은 공개 대상에서 제외합니다.'],
       ['4', '홈 후보 내부 정렬', '상승 속도 V 35% + 교차 확산 B 25% + 현재 관심 A 20% + 반복 관측 P 10% + 최신성 R 10%로 공개 후보끼리 비교합니다.'],
@@ -2365,7 +2606,7 @@ class Component extends DCLogic {
     ].map(([number, name, description]) => '<div style="display:flex;gap:12px;padding:15px 0;border-bottom:1px solid #F0EDF7;">'
       + '<span style="width:28px;height:28px;flex:none;border-radius:999px;background:#7B3FF2;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;">' + number + '</span>'
       + '<div><div style="font-weight:800;font-size:14px;color:#1A1A22;">' + name + '</div><div style="margin-top:4px;font-weight:500;font-size:12px;line-height:1.55;color:#6B6E7B;">' + description + '</div></div></div>').join('')
-      + '<div style="margin-top:18px;padding:14px;border-radius:16px;background:#F7F4FF;font-weight:600;font-size:11.5px;line-height:1.6;color:#5B21C0;"><b style="font-weight:800;">SelectionScore = 35V + 25B + 20A + 10P + 10R</b><br>이 식은 원천 관측 순위가 아니라 홈 공개 후보의 내부 정렬식입니다. X·Google 원천 관측 점수는 별도 Python 산식으로 계산합니다. LLM 문구, 관련 키워드 수, 기업 수는 어느 점수에도 가점으로 반영하지 않습니다.</div>';
+      + '<div style="margin-top:18px;padding:14px;border-radius:16px;background:#F7F4FF;font-weight:600;font-size:11.5px;line-height:1.6;color:#5B21C0;"><b style="font-weight:800;">SelectionScore = 35V + 25B + 20A + 10P + 10R</b><br>이 식은 원천 관측 순위가 아니라 홈 공개 후보의 내부 정렬식입니다. 실측 원천 점수는 별도 Python 산식으로 계산합니다. LLM 문구, 관련 키워드 수, 기업 수는 어느 점수에도 가점으로 반영하지 않습니다.</div>';
     overlay.appendChild(body);
   };
 
@@ -2385,7 +2626,7 @@ class Component extends DCLogic {
       const intro = document.createElement('div');
       intro.style.cssText = 'padding:14px 18px 11px;';
       intro.innerHTML = '<div style="font-weight:800;font-size:14px;color:#1A1A22;">검수된 과거 트렌드 ' + archive.item_count + '건</div>'
-        + '<div style="margin-top:4px;font-weight:500;font-size:11px;line-height:1.5;color:#8B8D98;">과거 조사 자료를 날짜순으로 정리했습니다. 실시간 순위에는 반영하지 않습니다.</div>';
+        + '<div style="margin-top:4px;font-weight:500;font-size:11px;line-height:1.5;color:#8B8D98;">과거 조사 자료를 날짜순으로 정리했습니다. 통합 순위에는 반영하지 않습니다.</div>';
       const filters = document.createElement('div');
       filters.style.cssText = 'display:flex;gap:7px;overflow-x:auto;padding:0 18px 12px;scrollbar-width:none;';
       const list = document.createElement('div');
@@ -2404,7 +2645,7 @@ class Component extends DCLogic {
           return '<article data-archive-case="' + escape(item.id) + '" style="margin-top:10px;padding:15px;border:1px solid #ECE7F8;border-radius:18px;background:#FFFFFF;">'
             + '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;"><span style="font-weight:800;font-size:10.5px;color:#7B3FF2;">' + escape(item.category_label) + '</span><time style="font-weight:600;font-size:10px;color:#A1A3AD;">' + escape(date) + '</time></div>'
             + '<h3 style="margin:7px 0 0;font-size:16px;line-height:1.3;color:#1A1A22;letter-spacing:-0.03em;">' + escape(item.display_name) + '</h3>'
-            + '<p style="margin:7px 0 0;font-weight:500;font-size:11.5px;line-height:1.55;color:#555864;">' + escape(item.why_now) + '</p>'
+            + '<p style="margin:7px 0 0;font-weight:500;font-size:11.5px;line-height:1.55;color:#555864;">' + escape(this.integratedTrendCopy(item.why_now)) + '</p>'
             + '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">' + keywords + '</div>'
             + '<div style="margin-top:11px;font-weight:600;font-size:10.5px;line-height:1.45;color:#8B8D98;">함께 살펴본 기업 · ' + companyNames + '</div>'
             + '<details style="margin-top:10px;"><summary style="cursor:pointer;font-weight:800;font-size:11px;color:#5B21C0;">기업 연결 맥락 보기</summary><div style="margin-top:8px;">' + companyDetails + '</div></details>'
@@ -3268,10 +3509,12 @@ class Component extends DCLogic {
     const line = document.querySelector('[data-interest-line]');
     const chart = line && line.closest('div[style*="height:108px"]');
     if (!chart || typeof chart.animate !== 'function') return;
+    const duration = this.currentInterestChart && this.currentInterestChart.rankStyle
+      ? this.currentInterestChart.rankStyle.animationDurationMs : 620;
     chart.animate([
       { opacity: 0.25, transform: 'translateX(10px)' },
       { opacity: 1, transform: 'translateX(0)' }
-    ], { duration: 320, easing: 'cubic-bezier(.22,.61,.36,1)' });
+    ], { duration, easing: 'cubic-bezier(.22,.61,.36,1)' });
   }
 
   animateTrendSelection() {
@@ -4428,7 +4671,7 @@ class Component extends DCLogic {
           + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:15px;color:#7B3FF2;">' + (index + 1) + '</span>'
           + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">'
           + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;word-break:keep-all;font-weight:800;font-size:14.5px;line-height:1.28;color:#1A1A22;letter-spacing:-0.03em;">' + escape(trend.name) + '</span>'
-          + '<span style="font-weight:500;font-size:11px;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + ' · ' + escape((trend.sourceList || []).map((source) => String(source).toLowerCase().includes('google') ? 'Google' : String(source).toLowerCase() === 'x' ? 'X' : String(source)).join(' + ')) + '</span></span>'
+          + '<span style="font-weight:500;font-size:11px;color:#9A9DA8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(trend.cat) + ' · 통합 트렌드</span></span>'
           + '<span aria-label="이전 공개 대비 ' + escape(movementLabel) + '" style="flex:none;font-weight:700;font-size:12px;color:' + movementColor + ';">' + escape(movementLabel) + '</span></button>';
       }).join('');
       list.querySelectorAll('[data-home-topic]').forEach((row) => {
@@ -4535,7 +4778,7 @@ class Component extends DCLogic {
         const label = activeWords[best].getAttribute('data-label');
         if (big) big.textContent = label;
         const selectedTrend = this.trends[best];
-        if (rankEl) rankEl.textContent = selectedTrend && selectedTrend.rank !== '—' && selectedTrend.rank !== '–' ? '실시간 ' + selectedTrend.rank : '순위 없음';
+        if (rankEl) rankEl.textContent = selectedTrend && selectedTrend.rank !== '—' && selectedTrend.rank !== '–' ? '통합 ' + selectedTrend.rank : '순위 없음';
         if (catEl) catEl.textContent = selectedTrend ? selectedTrend.cat : '';
       }
     };
@@ -4838,7 +5081,7 @@ class Component extends DCLogic {
     }, dur + 1200);
   }
   componentDidUpdate() {
-    this.snsWire(); this.applySort(); this.patchCompanySheetChart(); this.patchInterestChart();
+    this.snsWire(); this.applySort(); this.patchTrendSwitcherIcons(); this.patchCompanySheetChart(); this.patchInterestChart();
     // 재렌더 뒤에도 현재 트렌드명과 로고를 일관되게 다시 주입합니다.
     if (this.publishedView) {
       clearTimeout(this.__livePatchT);
@@ -4847,11 +5090,39 @@ class Component extends DCLogic {
         this.renderPresentationPortfolios();
         this.hydrateMaker(this.makerTrendId);
         this.renderSavedPortfolios();
+        this.patchTrendSwitcherIcons();
         this.patchStockLogos();
         this.patchCompanySheetChart();
         this.patchInterestChart();
       }, 250);
     }
+  }
+
+  patchTrendSwitcherIcons() {
+    document.querySelectorAll('img[data-trend-icon-src]').forEach((image) => {
+      const raw = String(image.getAttribute('data-trend-icon-src') || '').trim();
+      let safeUrl = '';
+      try {
+        const parsed = new URL(raw, window.location.href);
+        if (parsed.protocol === 'https:' || parsed.protocol === 'data:') safeUrl = parsed.href;
+      } catch (_) {}
+      if (!safeUrl) {
+        image.style.display = 'none';
+        if (image.nextElementSibling) image.nextElementSibling.style.display = 'flex';
+        return;
+      }
+      if (image.getAttribute('src') !== safeUrl) {
+        image.setAttribute('src', safeUrl);
+        return;
+      }
+      if (image.complete && image.naturalWidth === 0) {
+        image.style.display = 'none';
+        if (image.nextElementSibling) image.nextElementSibling.style.display = 'flex';
+        return;
+      }
+      image.style.display = 'block';
+      if (image.nextElementSibling) image.nextElementSibling.style.display = 'none';
+    });
   }
 
   applySort() {
@@ -5129,20 +5400,6 @@ class Component extends DCLogic {
     const movementColor = movement.status === 'up' ? '#E5395F'
       : movement.status === 'down' ? '#2E6BE6'
         : movement.status === 'new' ? '#7B3FF2' : '#1A1A22';
-    const rawSources = Array.isArray(curTrend.sourceList) ? curTrend.sourceList : [];
-    const sourceLabels = [...new Set(rawSources.map((source) => {
-      const value = String(source || '').toLowerCase();
-      if (value === 'x') return 'X';
-      if (value.includes('google')) return 'Google';
-      return String(source || '').trim();
-    }).filter(Boolean))];
-    const sourceSignals = sourceLabels.map((label) => ({
-      label: label + ' 포착',
-      style: 'display:inline-flex;align-items:center;border-radius:999px;padding:6px 10px;background:'
-        + (label === 'X' ? '#F4F3F8' : '#F1F7FF') + ';font-weight:800;font-size:10.5px;color:'
-        + (label === 'X' ? '#25252D' : '#2E63C7') + ';'
-    }));
-
     const nodePos = [[74, 52], [272, 48], [52, 168], [180, 196], [288, 164]];
     const chipPos = [
       'right:225.7px; top:46.9px; max-width:120px;', 'left:224.7px; top:46.9px; max-width:120px;',
@@ -5165,15 +5422,15 @@ class Component extends DCLogic {
       movementLabel: String(movement.label || 'NEW'),
       movementStyle: 'font-weight:800;font-size:15px;color:' + movementColor + ';margin-top:4px;',
       currentPhase: curTrend.phase,
-      sourceSignals,
-      sourceCoverage: sourceSignals.length > 1 ? '교차 포착'
-        : sourceSignals.length === 1 ? '단일 포착' : '출처 미확인',
       interestIndex: interestChart.index,
       interestPeak: interestChart.peak,
       interestCurrent: interestChart.current,
       interestObservationCount: interestChart.observationCount,
-      interestSummaryLabel: '실제 24시간 관심 흐름. 최고 ' + interestChart.peak
-        + ', 현재 ' + interestChart.current + ', ' + interestChart.observationCount + '회 포착',
+      interestRangeCaption: '순위 기반 · 실제 ' + interestChart.rangeLabel + ' 관측',
+      interestEmptyLabel: interestChart.rangeLabel + ' 내 비교할 관측값이 부족합니다',
+      interestSummaryLabel: '실제 ' + interestChart.rangeLabel + ' 순위 반응형 관심 흐름. 최고 지수 '
+        + interestChart.peak + ', 현재 지수 ' + interestChart.current
+        + ', ' + interestChart.observationCount + '회 관측',
       periodStartLabel: interestChart.labels[0],
       periodMiddleLabel: interestChart.labels[1],
       periodEndLabel: interestChart.labels[2],
@@ -5191,7 +5448,7 @@ class Component extends DCLogic {
       trendCaption: curTrend.caption,
       barFill: 'position:absolute; left:0; top:0; bottom:0; border-radius:999px; background:#7B3FF2; width:' + [8, 50, 100][curTrend.stageIdx] + '%;',
       barKnob: 'position:absolute; top:-4px; width:14px; height:14px; margin-left:-7px; border-radius:999px; background:#7B3FF2; border:2.5px solid #FFFFFF; box-shadow:0 1px 4px rgba(91,33,192,0.35); left:' + [8, 50, 100][curTrend.stageIdx] + '%;',
-      scoreMix: (curTrend.sourceLabel || curTrend.sourceList.join(' + ') || '원천 확인 중') + ' · 현재 순서',
+      scoreMix: '통합 관측 · 현재 순서',
       freshInfoOpen: !!this.state.freshInfo,
       toggleFreshInfo: () => this.setState((s) => ({ freshInfo: !s.freshInfo })),
       collectInfoOpen: !!this.state.collectInfo,

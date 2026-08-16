@@ -619,9 +619,56 @@
         "provenance": {"const": "observed"}
       }
     },
+    "liveRankResponsiveSourceComponent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rank", "snapshot_size", "position_index", "rank_basis",
+        "previous_rank", "rank_change", "rank_change_index",
+        "source_rank_change_index", "public_rank_change_index",
+        "rank_change_basis", "observation_persistence_index",
+        "presentation_position", "presentation_position_index",
+        "presentation_rank_change", "display_index"
+      ],
+      "properties": {
+        "rank": {"type": "integer", "minimum": 1},
+        "snapshot_size": {"type": "integer", "minimum": 1},
+        "position_index": {"type": "number", "minimum": 0, "maximum": 100},
+        "rank_basis": {
+          "enum": ["explicit_observed_source_rank", "legacy_101_minus_rank_proxy"]
+        },
+        "previous_rank": {"type": ["integer", "null"], "minimum": 1},
+        "rank_change": {"type": ["integer", "null"]},
+        "rank_change_index": {"type": "number", "minimum": 0, "maximum": 100},
+        "source_rank_change_index": {"type": "number", "minimum": 0, "maximum": 100},
+        "public_rank_change_index": {"type": "number", "minimum": 0, "maximum": 100},
+        "rank_change_basis": {
+          "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true,
+          "items": {
+            "enum": [
+              "previous_observed_source_rank",
+              "neutral_unavailable_source_rank_change",
+              "previous_published_presentation_position",
+              "neutral_unavailable_public_rank_change",
+              "neutral_public_change_not_latest_point"
+            ]
+          }
+        },
+        "observation_persistence_index": {"type": "number", "minimum": 0, "maximum": 100},
+        "presentation_position": {"type": "integer", "minimum": 1, "maximum": 10},
+        "presentation_position_index": {"type": "number", "minimum": 0, "maximum": 100},
+        "presentation_rank_change": {"type": ["integer", "null"], "minimum": -9, "maximum": 9},
+        "display_index": {"type": "number", "minimum": 0, "maximum": 100}
+      }
+    },
     "liveSparsePoint": {
       "type": "object",
-      "required": ["at", "x", "google_trends", "combined", "observed_sources"],
+      "required": [
+        "at", "x", "google_trends", "combined", "observed_sources",
+        "source_components", "observation_density",
+        "formula_version", "display_only", "canonical_ranking_effect",
+        "display_rank_effect", "market_data_affected", "ranking_effect"
+      ],
       "properties": {
         "at": {"type": "string", "format": "date-time"},
         "x": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
@@ -630,7 +677,22 @@
         "observed_sources": {
           "type": "array", "minItems": 1, "maxItems": 2, "uniqueItems": true,
           "items": {"enum": ["x", "google_trends"]}
-        }
+        },
+        "source_components": {
+          "type": "object", "additionalProperties": false,
+          "minProperties": 1, "maxProperties": 2,
+          "properties": {
+            "x": {"$ref": "#/$defs/liveRankResponsiveSourceComponent"},
+            "google_trends": {"$ref": "#/$defs/liveRankResponsiveSourceComponent"}
+          }
+        },
+        "observation_density": {"type": "number", "minimum": 0, "maximum": 1},
+        "formula_version": {"const": "observed-rank-response-v2"},
+        "display_only": {"const": true},
+        "canonical_ranking_effect": {"const": "none"},
+        "display_rank_effect": {"const": "display_value_only"},
+        "market_data_affected": {"const": false},
+        "ranking_effect": {"const": "none"}
       },
       "anyOf": [
         {"properties": {"x": {"type": "number"}}},
@@ -643,7 +705,9 @@
         "status", "points", "available_point_count", "available_from", "available_to",
         "expected_window_hours", "observed_span_hours", "observed_hour_count",
         "coverage_ratio", "minimum_span_hours", "minimum_observed_hours",
-        "basis", "interpolation", "missing_point_policy", "ranking_effect"
+        "basis", "formula_version", "display_only", "canonical_ranking_effect",
+        "display_rank_effect", "market_data_affected", "interpolation",
+        "missing_point_policy", "ranking_effect"
       ],
       "properties": {
         "status": {"enum": ["measured", "insufficient_observed_history"]},
@@ -658,18 +722,82 @@
         "minimum_span_hours": {"type": "number", "exclusiveMinimum": 0},
         "minimum_observed_hours": {"type": "integer", "minimum": 2},
         "basis": {"const": "observed_x_google_hourly_points_only"},
+        "formula_version": {"const": "observed-rank-response-v2"},
+        "display_only": {"const": true},
+        "canonical_ranking_effect": {"const": "none"},
+        "display_rank_effect": {"const": "display_value_only"},
+        "market_data_affected": {"const": false},
         "interpolation": {"const": "none"},
         "missing_point_policy": {"const": "preserve_sparse_null_no_reuse"},
         "ranking_effect": {"const": "none"}
       }
     },
+    "liveRankResponsiveDerivation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "formula", "input_fields", "missing_component_policy", "display_only",
+        "neutral_rank_change_index", "formula_weight_sum",
+        "canonical_ranking_effect", "display_rank_effect", "market_data_affected",
+        "canonical_series_unchanged", "missing_point_policy"
+      ],
+      "properties": {
+        "formula": {
+          "const": "mean_by_observed_source(weighted_sum(source_rank_position,rank_change,observation_persistence,presentation_position))"
+        },
+        "input_fields": {
+          "const": [
+            "observed_source_rank", "observed_source_rank_change",
+            "observation_persistence", "presentation_position",
+            "previous_published_presentation_position"
+          ]
+        },
+        "missing_component_policy": {"const": "neutral_50_for_unavailable_rank_change"},
+        "neutral_rank_change_index": {"const": 50.0},
+        "formula_weight_sum": {"const": 1.0},
+        "display_only": {"const": true},
+        "canonical_ranking_effect": {"const": "none"},
+        "display_rank_effect": {"const": "display_value_only"},
+        "market_data_affected": {"const": false},
+        "canonical_series_unchanged": {"const": true},
+        "missing_point_policy": {"const": "preserve_sparse_null_no_reuse"}
+      }
+    },
     "liveSparseVisualization": {
       "type": "object",
-      "required": ["metric", "canonical_series_unchanged", "data_mode", "interpolation", "ranking_effect", "1w", "1m", "3m"],
+      "required": [
+        "metric", "formula_version", "formula_weights", "derivation",
+        "presentation_position", "presentation_rank_movement",
+        "canonical_series_unchanged", "data_mode", "display_only",
+        "canonical_ranking_effect", "display_rank_effect", "market_data_affected",
+        "interpolation", "ranking_effect", "1w", "1m", "3m"
+      ],
       "properties": {
         "metric": {"const": "normalized_attention_index"},
+        "formula_version": {"const": "observed-rank-response-v2"},
+        "formula_weights": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_rank_position", "rank_change", "observation_persistence",
+            "presentation_position"
+          ],
+          "properties": {
+            "source_rank_position": {"const": 0.45},
+            "rank_change": {"const": 0.2},
+            "observation_persistence": {"const": 0.15},
+            "presentation_position": {"const": 0.2}
+          }
+        },
+        "derivation": {"$ref": "#/$defs/liveRankResponsiveDerivation"},
+        "presentation_position": {"type": "integer", "minimum": 1, "maximum": 10},
+        "presentation_rank_movement": {"type": "object"},
         "canonical_series_unchanged": {"const": true},
-        "data_mode": {"const": "observed_sparse"},
+        "data_mode": {"const": "rank_responsive_display"},
+        "display_only": {"const": true},
+        "canonical_ranking_effect": {"const": "none"},
+        "display_rank_effect": {"const": "display_value_only"},
+        "market_data_affected": {"const": false},
         "interpolation": {"const": "none"},
         "ranking_effect": {"const": "none"},
         "1w": {"$ref": "#/$defs/liveSparseWindow"},

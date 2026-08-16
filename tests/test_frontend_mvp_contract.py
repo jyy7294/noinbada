@@ -1,4 +1,6 @@
+import json
 from pathlib import Path
+import re
 import subprocess
 
 
@@ -334,23 +336,33 @@ def test_live_logo_candidate_runtime_honors_initials_and_seed_scope() -> None:
     assert result.returncode == 0, result.stderr
 
 
-def test_interest_chart_uses_only_observed_24h_series_and_preserves_gaps() -> None:
+def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> None:
     assert "관심 흐름" in INDEX
-    assert "언급량 추이 · 관심지수" in INDEX
+    assert "순위 반응형 관심 흐름" in INDEX
+    assert 'data-interest-range-caption="1"' in INDEX
     assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
     assert "const rangeKey = ['24h', '1m', '3m'][rangeIndex]" in INDEX
-    assert "point.provenance === 'observed'" in INDEX
-    assert "['x', 'google_trends'].includes(point.source)" in INDEX
-    assert "latestObservedMs - atMs > 24 * 60 * 60 * 1000" in INDEX
-    assert "const groupedObserved = new Map()" in INDEX
-    assert "point.timestamp || point.at" in INDEX
-    assert "point && point.combined" in INDEX
-    assert "publishedWindow.combined" in INDEX
+    assert "trend.visualizationSeries" in INDEX
+    assert "visualization[rangeSpec.sourceKey]" in INDEX
+    assert "publishedWindow && publishedWindow.points" in INDEX
+    assert "publishedPoints.map((point) => point.combined)" in INDEX
+    assert "visualization.data_mode === 'rank_responsive_display'" in INDEX
+    assert "const formulaVersion = 'observed-rank-response-v2'" in INDEX
+    assert "visualization.formula_version === formulaVersion" in INDEX
+    assert "visualization.display_only === true" in INDEX
+    assert "sameContractValue(visualization.derivation, expectedDerivation)" in INDEX
+    assert "sameContractValue(visualization.presentation_rank_movement, visibleRankMovement)" in INDEX
+    assert "'24h': { sourceKey: '1w'" in INDEX
     assert "pattern: 'published_series'" in INDEX
     assert "const usable = rawValues.filter(Number.isFinite)" in INDEX
     assert "if (usable.length < 2)" in INDEX
     assert "available: false" in INDEX
     assert "const MAX_CONTIGUOUS_GAP_MS = 90 * 60 * 1000" in INDEX
+    assert "rangeKey === '24h'" in INDEX
+    assert "publishedWindow && publishedWindow.status === 'measured'" in INDEX
+    assert "this.publishedView && this.publishedView.observedAt" in INDEX
+    assert "const firstTimestamp = windowStartMs" in INDEX
+    assert "const lastTimestamp = windowEndMs" in INDEX
     assert "currentTimestamp - previousTimestamp > MAX_CONTIGUOUS_GAP_MS" in INDEX
     assert "segments.filter((segment) => segment.length >= 2).map" in INDEX
     assert "segments.filter((segment) => segment.length === 1)" in INDEX
@@ -361,6 +373,10 @@ def test_interest_chart_uses_only_observed_24h_series_and_preserves_gaps() -> No
     assert "peak: Math.round(peakValue)" in INDEX
     assert "observationCount" in INDEX
     assert "8 + (timestamp - firstTimestamp) * 280" in INDEX
+    assert '<img src="{{ opt.optIconUrl }}"' not in INDEX
+    assert 'data-trend-icon-src="{{ opt.optIconUrl }}"' in INDEX
+    assert "patchTrendSwitcherIcons()" in INDEX
+    assert "font-size:10.5px; line-height:1.45; color:#777A86" in INDEX
     assert "Intl.DateTimeFormat('ko-KR'" in INDEX
     assert "else if (activeSegment.length)" in INDEX
     assert "linePath" in INDEX
@@ -372,23 +388,223 @@ def test_interest_chart_uses_only_observed_24h_series_and_preserves_gaps() -> No
     assert 'data-interest-line="1"' in INDEX
     assert 'data-interest-area="1"' in INDEX
     assert 'aria-labelledby="interest-chart-title interest-chart-disclosure"' in INDEX
-    assert "점은 실제 관측, 선은 90분 이내 이어진 관측만 연결합니다." in INDEX
-    assert "비어 있는 구간은 보간하지 않습니다." in INDEX
+    assert "실제 통합 관측 순위와 현재 공개 순위를 조합한 0~100 표시지수입니다." in INDEX
+    assert "절대 언급량·주가·매수신호가 아니며 결측은 보간하지 않고" in INDEX
+    assert "90분 넘게 빈 구간은 연결하지 않습니다." in INDEX
     assert "patchInterestChart()" in INDEX
-    assert "sourceSignals" in INDEX
-    assert "sourceLabels.length ? sourceLabels : ['X']" not in INDEX
+    assert "sourceSignals" not in INDEX
+    assert "sourceLabels" not in INDEX
     assert "if (!window || window.percent == null) return '—';" in INDEX
     assert "if (!Number.isFinite(value)) return '—';" in INDEX
     assert "item.attentionLift && item.attentionLift.label ? item.attentionLift.label : '—'" in INDEX
     assert "return '0.0%'" not in INDEX
-    assert "출처 미확인" in INDEX
+    assert "출처 미확인" not in INDEX
     assert "displayOnly: true" not in INDEX
-    chart_surface = INDEX[INDEX.index("관심 흐름"): INDEX.index("함께 언급된 키워드")]
+    chart_surface = INDEX[INDEX.index("통합 관심지수"): INDEX.index("함께 언급된 키워드")]
     assert "chartPanels" not in chart_surface
     assert "전체 채널" not in chart_surface
     assert "채널 추가하기" not in chart_surface
     assert "buildChartPanels(" not in INDEX
     assert "chartRevealWire()" not in INDEX
+    chart_builder = INDEX[INDEX.index("  buildInterestCurve(trend, rangeIndex = 0)"):INDEX.index("  rankResponsiveInterestStyle(trend)")]
+    assert "trend.series" not in chart_builder
+    assert "market_snapshot" not in chart_builder
+    assert "marketSnapshot" not in chart_builder
+    assert "marketCap" not in chart_builder
+    assert "presentationPortfolios" not in chart_builder
+    assert "seed_meme_portfolio" not in chart_builder
+
+
+def test_interest_chart_rank_response_uses_published_values_and_ranked_motion() -> None:
+    for token in (
+        "rank-responsive-presentation-v2",
+        "seriesContract: 'backend_rank_responsive_display'",
+        "frontendValueTransform: 'none'",
+        "publishedValuesConsumedDirectly: true",
+        "rankStyleAffected: true",
+        "rankMotionAffected: true",
+        "gapsPreserved: true",
+        "dataset.interestSeriesContract",
+        "animateRankResponsiveInterest(root, chart)",
+        "this.prefersReducedMotion()",
+        "line.getTotalLength()",
+        "strokeDashoffset",
+        "latestPoint.style.transformBox = 'fill-box'",
+        "latestPoint.style.transformOrigin = 'center'",
+    ):
+        assert token in INDEX
+
+    script = r"""
+      const fs = require('fs');
+      const html = fs.readFileSync('./frontend/index.html', 'utf8');
+      const match = html.match(/<script[^>]*data-dc-script[^>]*>([\s\S]*?)<\/script>/);
+      const Component = new Function('DCLogic', match[1] + ';return Component;')(
+        class { forceUpdate() {} }
+      );
+      const component = new Component();
+      const points = [0, 30, 60].map((minute, index) => ({
+        at: new Date(Date.UTC(2026, 7, 15, 0, minute)).toISOString(),
+        x: null, google_trends: [70, 83, 91][index], combined: [70, 83, 91][index],
+        observed_sources: ['google_trends']
+      }));
+      const windowFor = (rows) => ({
+        points: rows, interpolation: 'none',
+        missing_point_policy: 'preserve_sparse_null_no_reuse', ranking_effect: 'none'
+      });
+      const visualizationSeries = {
+        data_mode: 'observed_sparse', interpolation: 'none',
+        canonical_series_unchanged: true, ranking_effect: 'none',
+        '1w': windowFor(points), '1m': windowFor(points), '3m': windowFor(points)
+      };
+      const first = component.buildInterestCurve({rank: 1, visualizationSeries}, 0);
+      const firstLabel = component.buildInterestCurve({rank: '1위', visualizationSeries}, 0);
+      const tenth = component.buildInterestCurve({rank: 10, visualizationSeries}, 0);
+      const geometry = (chart) => JSON.stringify({
+        values: chart.values,
+        linePath: chart.linePath,
+        area: chart.area,
+        points: chart.observationPoints,
+        labels: chart.labels
+      });
+      if (geometry(first) !== geometry(tenth)) {
+        throw new Error('rank changed chart values, timestamps, or geometry');
+      }
+      if (!(first.rankStyle.strokeWidth > tenth.rankStyle.strokeWidth)
+        || !(first.rankStyle.latestMarkerRadius > tenth.rankStyle.latestMarkerRadius)
+        || !(first.rankStyle.animationDurationMs < tenth.rankStyle.animationDurationMs)) {
+        throw new Error('rank did not change visual response monotonically');
+      }
+      if (JSON.stringify(first.rankStyle) !== JSON.stringify(firstLabel.rankStyle)) {
+        throw new Error('rendered rank label did not resolve to the same responsive style');
+      }
+      if (first.rankStyle.seriesContract !== 'backend_rank_responsive_display'
+        || first.rankStyle.frontendValueTransform !== 'none'
+        || !first.rankStyle.publishedValuesConsumedDirectly
+        || !first.rankStyle.rankStyleAffected
+        || !first.rankStyle.rankMotionAffected
+        || !first.rankStyle.gapsPreserved) {
+        throw new Error('rank-responsive presentation policy is not fail-closed');
+      }
+    """
+    result = subprocess.run(
+        ["node", "-e", script], cwd=ROOT, text=True, capture_output=True, check=False
+    )
+    assert result.returncode == 0, result.stderr
+
+
+def test_interest_chart_prefers_rank_responsive_backend_windows_for_all_ranges() -> None:
+    script = r"""
+      const fs = require('fs');
+      const html = fs.readFileSync('./frontend/index.html', 'utf8');
+      const match = html.match(/<script[^>]*data-dc-script[^>]*>([\s\S]*?)<\/script>/);
+      const Component = new Function('DCLogic', match[1] + ';return Component;')(
+        class { forceUpdate() {} }
+      );
+      const component = new Component();
+      const base = Date.UTC(2026, 7, 15, 5);
+      const rankMovement = {
+        current_rank: 2, previous_rank: 4, delta: 2,
+        status: 'up', label: '▲2', basis: 'previous_published_presentation_feed'
+      };
+      const derivation = {
+        formula: 'mean_by_observed_source(weighted_sum(source_rank_position,rank_change,observation_persistence,presentation_position))',
+        input_fields: [
+          'observed_source_rank', 'observed_source_rank_change',
+          'observation_persistence', 'presentation_position',
+          'previous_published_presentation_position'
+        ],
+        missing_component_policy: 'neutral_50_for_unavailable_rank_change',
+        neutral_rank_change_index: 50.0, formula_weight_sum: 1.0,
+        display_only: true, canonical_ranking_effect: 'none',
+        display_rank_effect: 'display_value_only', market_data_affected: false,
+        canonical_series_unchanged: true,
+        missing_point_policy: 'preserve_sparse_null_no_reuse'
+      };
+      const points = (values, stepHours) => values.map((combined, index) => ({
+        at: new Date(base - ((values.length - 1 - index) * stepHours * 3600000)).toISOString(),
+        x: combined, google_trends: null, combined, observed_sources: ['x'],
+        source_components: {x: {display_index: combined}},
+        observation_density: 0.5, formula_version: 'observed-rank-response-v2',
+        display_only: true, canonical_ranking_effect: 'none',
+        display_rank_effect: 'display_value_only', market_data_affected: false,
+        ranking_effect: 'none'
+      }));
+      const windowFor = (rows) => ({
+        status: 'measured', points: rows, display_only: true,
+        formula_version: 'observed-rank-response-v2', canonical_ranking_effect: 'none',
+        display_rank_effect: 'display_value_only', market_data_affected: false,
+        interpolation: 'none', missing_point_policy: 'preserve_sparse_null_no_reuse',
+        ranking_effect: 'none'
+      });
+      const visualizationSeries = {
+        metric: 'normalized_attention_index',
+        data_mode: 'rank_responsive_display', interpolation: 'none',
+        canonical_series_unchanged: true, display_only: true,
+        formula_version: 'observed-rank-response-v2',
+        formula_weights: {
+          source_rank_position: 0.45, rank_change: 0.20,
+          observation_persistence: 0.15, presentation_position: 0.20
+        },
+        derivation, presentation_position: 2, presentation_rank_movement: rankMovement,
+        canonical_ranking_effect: 'none', display_rank_effect: 'display_value_only',
+        market_data_affected: false, ranking_effect: 'none',
+        '1w': windowFor(points([15, 40, 80], 13)),
+        '1m': windowFor(points([30, 50, 70], 12)),
+        '3m': windowFor(points([10, 20, 30, 40], 24))
+      };
+      const trend = {
+        rank: 2, rankMovement, visualizationSeries,
+        series: [{at: new Date(base).toISOString(), value: 99, source: 'x', provenance: 'observed'}]
+      };
+      const charts = [0, 1, 2].map((range) => component.buildInterestCurve(trend, range));
+      if (charts.map((chart) => chart.current).join(',') !== '80,70,40') {
+        throw new Error('frontend did not consume each published display window directly');
+      }
+      if (charts.map((chart) => chart.observationCount).join(',') !== '2,3,4') {
+        throw new Error('display window point counts were recomputed from raw series');
+      }
+      if (charts.map((chart) => chart.sourceWindowKey).join(',') !== '1w,1m,3m') {
+        throw new Error('rank-responsive windows did not take precedence');
+      }
+      if (charts.some((chart) => chart.displaySeriesMode !== 'rank_responsive_display')) {
+        throw new Error('rank-responsive display contract was not retained');
+      }
+      if (charts[0].values.join(',') !== '40,80') {
+        throw new Error('24-hour tab did not filter the published 1w observations');
+      }
+      if (!(charts[0].observationPoints[0][0] > 8)) {
+        throw new Error('24-hour time axis stretched sparse points to the full chart width');
+      }
+      if (Object.hasOwn(visualizationSeries, '24h')) {
+        throw new Error('frontend fixture reintroduced a backend 24h window');
+      }
+      const anchoredSeries = JSON.parse(JSON.stringify(visualizationSeries));
+      anchoredSeries['1w'] = windowFor(points([60, 80], 2));
+      component.publishedView = {
+        observedAt: new Date(base + 19 * 3600000).toISOString()
+      };
+      const anchoredChart = component.buildInterestCurve({
+        rank: 2, rankMovement, visualizationSeries: anchoredSeries
+      }, 0);
+      if (!anchoredChart.available || anchoredChart.values.join(',') !== '60,80'
+        || !(anchoredChart.lastX < 100)) {
+        throw new Error('feed observed_at did not preserve the trailing unobserved gap');
+      }
+      component.publishedView = null;
+      const insufficientSeries = JSON.parse(JSON.stringify(visualizationSeries));
+      insufficientSeries['1m'].status = 'insufficient_observed_history';
+      insufficientSeries['3m'].status = 'insufficient_observed_history';
+      const insufficientTrend = {rank: 2, rankMovement, visualizationSeries: insufficientSeries};
+      if (!component.buildInterestCurve(insufficientTrend, 0).available
+        || component.buildInterestCurve(insufficientTrend, 1).available
+        || component.buildInterestCurve(insufficientTrend, 2).available) {
+        throw new Error('incomplete 1m/3m history was stretched into a measured period');
+      }
+    """
+    result = subprocess.run(
+        ["node", "-e", script], cwd=ROOT, text=True, capture_output=True, check=False
+    )
+    assert result.returncode == 0, result.stderr
 
 
 def test_public_copy_and_observed_timeline_javascript_regression() -> None:
@@ -415,11 +631,21 @@ def test_public_copy_and_observed_timeline_javascript_regression() -> None:
       if (!factual.includes('납품 재개를 검토 중')) throw new Error('factual review wording was removed');
 
       const values = [45, 2, 3, 4, 1, 1, 1];
-      const series = values.map((value, index) => ({
+      const points = values.map((value, index) => ({
         at: new Date(Date.UTC(2026, 7, 15, index * 4)).toISOString(),
-        value, source: 'google_trends', provenance: 'observed'
+        x: null, google_trends: value, combined: value,
+        observed_sources: ['google_trends']
       }));
-      const chart = component.buildInterestCurve({series}, 0);
+      const windowFor = () => ({
+        points, interpolation: 'none',
+        missing_point_policy: 'preserve_sparse_null_no_reuse', ranking_effect: 'none'
+      });
+      const visualizationSeries = {
+        data_mode: 'observed_sparse', interpolation: 'none',
+        canonical_series_unchanged: true, ranking_effect: 'none',
+        '1w': windowFor(), '1m': windowFor(), '3m': windowFor()
+      };
+      const chart = component.buildInterestCurve({visualizationSeries}, 0);
       if (!chart.available || chart.peak !== 45 || chart.current !== 1
         || chart.observationCount !== 7 || chart.observationPoints.length !== 7) {
         throw new Error('observed timeline summary is incorrect');
@@ -701,17 +927,17 @@ def test_reviewed_archive_is_loaded_separately_from_live_ranking() -> None:
     assert 'data-archive-open="1"' in INDEX
     assert "openArchive = async () =>" in INDEX
     assert "검수된 과거 트렌드" in INDEX
-    assert "실시간 순위에는 반영하지 않습니다." in INDEX
+    assert "통합 순위에는 반영하지 않습니다." in INDEX
     assert "기업 연결 맥락 보기" in INDEX
     assert "data-archive-case" in INDEX
-    assert "순위" not in INDEX[INDEX.index("openArchive = async () =>"):INDEX.index("  setOwnerMode(on)")].replace("실시간 순위에는 반영하지 않습니다.", "")
+    assert "순위" not in INDEX[INDEX.index("openArchive = async () =>"):INDEX.index("  setOwnerMode(on)")].replace("통합 순위에는 반영하지 않습니다.", "")
 
 
 def test_selection_disclosure_and_portfolio_safety_rules_are_visible_and_enforced() -> None:
     assert "openSelectionGuide" in INDEX
     assert "트렌드 선정 기준" in INDEX
     assert "정치·범죄·재난·사생활·혐오" in INDEX
-    assert "관측 강도·교차 확산·지속성" in INDEX
+    assert "관측 강도·확산·지속성" in INDEX
     assert "validatePortfolioContent(input = {})" in DATA
     assert "UNSAFE_PORTFOLIO_TEXT" in DATA
     assert "정치·범죄·혐오·수익 보장 표현은 공개할 수 없습니다." in DATA
@@ -725,10 +951,71 @@ def test_selection_disclosure_distinguishes_source_rank_from_home_candidate_orde
     for component in ("상승 속도", "교차 확산", "현재 관심", "반복 관측", "최신성"):
         assert component in INDEX
     assert "원천 관측 순위가 아니라 홈 공개 후보의 내부 정렬식" in INDEX
-    assert "X·Google 원천 관측 점수는 별도 Python 산식" in INDEX
+    assert "실측 원천 점수는 별도 Python 산식" in INDEX
     assert "LLM 문구, 관련 키워드 수, 기업 수는 어느 점수에도 가점으로 반영하지 않습니다." in INDEX
     assert "4시간 단위" in INDEX
     assert "원천 순위와 홈 후보 내부 점수를 바꾸지 않습니다." in INDEX
+
+
+def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -> None:
+    assert ">통합 트렌드</span>" in INDEX
+    assert ">통합 관심지수</span>" in INDEX
+    assert "최근 24시간의 실제 관측을 사건 단위로 통합해" in INDEX
+    assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
+    assert "매시 수집한 실제 관측 순위만 사용합니다." in INDEX
+    assert "+ ' · 통합 트렌드</span>" in INDEX
+    assert "최신 통합 트렌드 수집을 확인했습니다." in DATA
+    assert "integratedTrendCopy(value)" in INDEX
+    assert "const definition = this.integratedTrendCopy(item.summary || '')" in INDEX
+    assert "const caption = this.integratedTrendCopy(item.raw.why_now || item.summary || '')" in INDEX
+    for source_phrase in (
+        "X 대한민국 실시간 트렌드 30개 + Google Trending Now 전체",
+        "X와 Google 두 출처만 사용",
+        "X·Google 실제 관측 순위",
+        "Google 포착",
+        "X 포착",
+        "X·Google 원천 관측 점수",
+    ):
+        assert source_phrase not in INDEX
+    assert "X와 Google Trends 최신 수집을 모두 확인했습니다." not in DATA
+    assert "일부 원천 수집이 완료되지 않아 통합 결과를 확인하고 있습니다." in DATA
+    # 원천별 값과 provenance는 UI에서 숨길 뿐 클라이언트 검증에는 남겨 둡니다.
+    assert "['x', 'google_trends'].includes(point?.source)" in DATA
+    assert "item.sources.every((source) => ['x', 'google_trends'].includes(source))" in DATA
+
+
+def test_integrated_trend_copy_hides_source_brands_for_every_published_phrase() -> None:
+    method = re.search(
+        r"  integratedTrendCopy\(value\) \{\r?\n(?P<body>.*?)\r?\n  \}\r?\n\r?\n  companyName",
+        INDEX,
+        re.DOTALL,
+    )
+    assert method is not None
+    samples = (
+        "X와 Google 대한민국 관측에서 확인된 맥락입니다.",
+        "Google Trending Now 대한민국 관측에서 확인된 맥락입니다.",
+        "X 대한민국 실시간 트렌드 관측에서 확인된 맥락입니다.",
+        "X 대한민국 관측에서 확인된 맥락입니다.",
+        "X·Google 대한민국 관측에서 확인된 맥락입니다.",
+        "X와 유튜브·브랜드 콘텐츠로 확산됐습니다.",
+    )
+    script = (
+        "function integratedTrendCopy(value) {\n"
+        + method.group("body")
+        + "\n}\n"
+        + f"const samples = {json.dumps(samples, ensure_ascii=False)};\n"
+        + "process.stdout.write(JSON.stringify(samples.map(integratedTrendCopy)));\n"
+    )
+    completed = subprocess.run(
+        ["node", "-e", script],
+        check=True,
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+    )
+    rendered = json.loads(completed.stdout)
+    assert all("X" not in value and "Google" not in value for value in rendered)
+    assert all("통합" in value or "공개 콘텐츠" in value for value in rendered)
 
 
 def test_live_home_accepts_only_v4_validated_non_synthetic_feed_and_allows_zero_to_ten() -> None:
@@ -745,6 +1032,25 @@ def test_live_home_accepts_only_v4_validated_non_synthetic_feed_and_allows_zero_
     assert "item?.observed_within_24h === true" in DATA
     assert "validObservedSeries(item, observedAt)" in DATA
     assert "validSparseVisualization(item)" in DATA
+    assert "LIVE_RANK_RESPONSIVE_FORMULA_VERSION = 'observed-rank-response-v2'" in DATA
+    assert "LIVE_RANK_RESPONSIVE_FORMULA_WEIGHTS" in DATA
+    assert "LIVE_RANK_RESPONSIVE_DERIVATION" in DATA
+    assert "neutral_50_for_unavailable_rank_change" in DATA
+    assert "neutral_rank_change_index: 50.0" in DATA
+    assert "formula_weight_sum: 1.0" in DATA
+    assert "validRankResponsiveFormulaWeights(visualization.formula_weights)" in DATA
+    assert "validRankResponsiveDerivation(visualization.derivation)" in DATA
+    assert "sameContractValue(visualization.presentation_rank_movement, item?.rank_movement)" in DATA
+    assert "validRankResponsiveSourceComponent(" in DATA
+    assert "validNormalizedIndex(component.source_rank_change_index)" in DATA
+    assert "validNormalizedIndex(component.public_rank_change_index)" in DATA
+    assert "rankChangeBasis.length === 2" in DATA
+    assert "visualization.data_mode === 'rank_responsive_display'" in DATA
+    assert "visualization.display_only === true" in DATA
+    assert "visualization.canonical_ranking_effect !== 'none'" in DATA
+    assert "visualization.display_rank_effect !== 'display_value_only'" in DATA
+    assert "visualization.market_data_affected !== false" in DATA
+    assert "Object.hasOwn(visualization, '24h')" not in DATA
     assert "keywords.length === 5" in DATA
     assert "keywordTexts.every(keywordFitsPublicLabel)" in DATA
     assert "companies.length === 10" in DATA
@@ -969,6 +1275,119 @@ def test_v4_live_home_fixtures_cover_zero_to_ten_and_fail_closed_fields() -> Non
           if (stale.eligible || stale.items.length !== 0) process.exit(25 + count);
         }
       }
+      const responsiveCard = completeCard(0);
+      const responsiveRankMovement = {
+        current_rank: 1, previous_rank: null, delta: null,
+        status: 'new', label: 'NEW', basis: 'previous_published_presentation_feed',
+      };
+      const responsiveDerivation = {
+        formula: 'mean_by_observed_source(weighted_sum(source_rank_position,rank_change,observation_persistence,presentation_position))',
+        input_fields: [
+          'observed_source_rank', 'observed_source_rank_change',
+          'observation_persistence', 'presentation_position',
+          'previous_published_presentation_position',
+        ],
+        missing_component_policy: 'neutral_50_for_unavailable_rank_change',
+        neutral_rank_change_index: 50.0, formula_weight_sum: 1.0,
+        display_only: true, canonical_ranking_effect: 'none',
+        display_rank_effect: 'display_value_only', market_data_affected: false,
+        canonical_series_unchanged: true,
+        missing_point_policy: 'preserve_sparse_null_no_reuse',
+      };
+      responsiveCard.rank_movement = responsiveRankMovement;
+      const responsivePoint = () => ({
+        ...sparsePoint(), observation_density: 1,
+        formula_version: 'observed-rank-response-v2', display_only: true,
+        canonical_ranking_effect: 'none', display_rank_effect: 'display_value_only',
+        market_data_affected: false,
+        ranking_effect: 'none',
+        source_components: {x: {
+          rank: 1, snapshot_size: 30, position_index: 100,
+          rank_basis: 'explicit_observed_source_rank', previous_rank: null,
+          rank_change: null, rank_change_index: 50,
+          source_rank_change_index: 50, public_rank_change_index: 50,
+          rank_change_basis: [
+            'neutral_unavailable_source_rank_change',
+            'neutral_unavailable_public_rank_change',
+          ],
+          observation_persistence_index: 100,
+          presentation_position: 1, presentation_position_index: 100,
+          presentation_rank_change: null, display_index: 80,
+        }},
+      });
+      const responsiveWindow = (hours) => ({
+        ...sparseWindow(hours), points: [responsivePoint()],
+        formula_version: 'observed-rank-response-v2', display_only: true,
+        canonical_ranking_effect: 'none', display_rank_effect: 'display_value_only',
+        market_data_affected: false,
+      });
+      responsiveCard.visualization_series = {
+        metric: 'normalized_attention_index', canonical_series_unchanged: true,
+        data_mode: 'rank_responsive_display', interpolation: 'none',
+        formula_version: 'observed-rank-response-v2', display_only: true,
+        formula_weights: {
+          source_rank_position: 0.45, rank_change: 0.20,
+          observation_persistence: 0.15, presentation_position: 0.20,
+        },
+        derivation: responsiveDerivation,
+        presentation_position: 1, presentation_rank_movement: responsiveRankMovement,
+        canonical_ranking_effect: 'none', display_rank_effect: 'display_value_only',
+        market_data_affected: false, ranking_effect: 'none',
+        '1w': responsiveWindow(168), '1m': responsiveWindow(720),
+        '3m': responsiveWindow(2160),
+      };
+      if (!api.selectLiveHomeRows({presentation_feed: feedFor([responsiveCard])}).eligible) process.exit(63);
+      const responsiveNotDisplayOnly = clone(responsiveCard);
+      responsiveNotDisplayOnly.visualization_series.display_only = false;
+      reject(feedFor([responsiveNotDisplayOnly]), 64);
+      const responsiveWithoutFormula = clone(responsiveCard);
+      delete responsiveWithoutFormula.visualization_series.formula_version;
+      reject(feedFor([responsiveWithoutFormula]), 65);
+      const responsiveWithChangedWeight = clone(responsiveCard);
+      responsiveWithChangedWeight.visualization_series.formula_weights.presentation_position = 0.25;
+      reject(feedFor([responsiveWithChangedWeight]), 66);
+      const responsivePointNotDisplayOnly = clone(responsiveCard);
+      responsivePointNotDisplayOnly.visualization_series['1w'].points[0].display_only = false;
+      reject(feedFor([responsivePointNotDisplayOnly]), 67);
+      const responsiveComponentMismatch = clone(responsiveCard);
+      responsiveComponentMismatch.visualization_series['1w'].points[0].source_components.x.display_index = 79;
+      reject(feedFor([responsiveComponentMismatch]), 68);
+      const responsiveTamperCases = [
+        (value) => { value.derivation.formula = 'weighted_sum'; },
+        (value) => { value.derivation.input_fields.reverse(); },
+        (value) => { value.derivation.missing_component_policy = 'renormalize_available_components'; },
+        (value) => { value.derivation.neutral_rank_change_index = 49; },
+        (value) => { value.derivation.formula_weight_sum = 0.8; },
+        (value) => { value.derivation.display_only = false; },
+        (value) => { value.derivation.canonical_ranking_effect = 'display'; },
+        (value) => { value.derivation.display_rank_effect = 'canonical_rank'; },
+        (value) => { value.derivation.market_data_affected = true; },
+        (value) => { value.derivation.canonical_series_unchanged = false; },
+        (value) => { value.derivation.missing_point_policy = 'carry_forward'; },
+        (value) => { value.presentation_rank_movement.status = 'unchanged'; },
+        (value) => { value.canonical_ranking_effect = 'display'; },
+        (value) => { value.display_rank_effect = 'canonical_rank'; },
+        (value) => { value.market_data_affected = true; },
+        (value) => { value['1w'].formula_version = 'observed-rank-response-v1'; },
+        (value) => { value['1w'].canonical_ranking_effect = 'display'; },
+        (value) => { value['1w'].display_rank_effect = 'canonical_rank'; },
+        (value) => { value['1w'].market_data_affected = true; },
+        (value) => { value['1w'].points[0].canonical_ranking_effect = 'display'; },
+        (value) => { value['1w'].points[0].display_rank_effect = 'canonical_rank'; },
+        (value) => { value['1w'].points[0].market_data_affected = true; },
+        (value) => { value['1w'].points[0].source_components.x.rank_change_index = null; },
+        (value) => { value['1w'].points[0].source_components.x.rank = true; },
+        (value) => { value['1w'].points[0].source_components.x.presentation_rank_change = false; },
+        (value) => { value['1w'].points[0].source_components.x.rank_change_index = 49; },
+        (value) => { value['1w'].points[0].source_components.x.source_rank_change_index = 49; },
+        (value) => { value['1w'].points[0].source_components.x.public_rank_change_index = 49; },
+        (value) => { value['1w'].points[0].source_components.x.rank_change_basis.pop(); },
+      ];
+      responsiveTamperCases.forEach((mutate, index) => {
+        const tampered = clone(responsiveCard);
+        mutate(tampered.visualization_series);
+        reject(feedFor([tampered]), 69 + index);
+      });
       const legacy = api.selectLiveHomeRows({presentation_feed: {
         schema_version: 'trzip-presentation-feed-v3',
         status: 'ready',
@@ -1215,7 +1634,7 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'background:#FAFAFC; border:1px solid #ECE8F3' in INDEX
     assert 'data-freshness-explanation="1"' in INDEX
     assert 'data-interest-card="1"' in INDEX
-    assert '언급량 추이 · 관심지수' in INDEX
+    assert '순위 반응형 관심 흐름' in INDEX
     assert 'data-company-role-folder="1"' in INDEX
     assert 'data-folder-toggle="1"' in INDEX
     assert 'aria-label="{{ f.title }} {{ f.count }} 기업 목록 열기 또는 접기"' in INDEX
@@ -1266,7 +1685,8 @@ def test_maker_controls_are_keyboard_reachable_and_hashtags_follow_six_character
 def test_trend_selector_uses_consistent_vector_images_instead_of_unicode_emoji() -> None:
     assert "const TWEMOJI_SVG_BASE = 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/svg/'" in INDEX
     assert '<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin="anonymous">' in INDEX
-    assert 'src="{{ opt.optIconUrl }}"' in INDEX
+    assert 'data-trend-icon-src="{{ opt.optIconUrl }}"' in INDEX
+    assert '<img src="{{ opt.optIconUrl }}"' not in INDEX
     assert 'alt="{{ opt.optIconAlt }}"' in INDEX
     assert 'object-fit:contain' in INDEX
     assert 'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';"' in INDEX

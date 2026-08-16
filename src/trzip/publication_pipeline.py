@@ -39,6 +39,11 @@ from .keyword_policy import keyword_fits_public_label
 from .normalization_evaluation import evaluate_regression_set
 from .presentation_feed import (
     _calculated_roe_provenance_is_valid,
+    _rank_change_index,
+    _source_rank_record,
+    ATTENTION_INDEX_DERIVATION,
+    ATTENTION_INDEX_FORMULA_VERSION,
+    ATTENTION_INDEX_WEIGHTS,
     LOGO_ASSET_VERIFICATION,
     LOGO_MINIMUM_DIMENSION,
     LOGO_QUALITY_POLICY,
@@ -1093,13 +1098,48 @@ def _validate_live_presentation_feed(feed: dict) -> None:
                 "live presentation company role count must match projected companies"
             )
         visualization = item.get("visualization_series") or {}
+        derivation = visualization.get("derivation") or {}
         if (
-            visualization.get("data_mode") != "observed_sparse"
+            visualization.get("data_mode") != "rank_responsive_display"
             or visualization.get("interpolation") != "none"
             or visualization.get("canonical_series_unchanged") is not True
+            or visualization.get("display_only") is not True
             or visualization.get("ranking_effect") != "none"
+            or visualization.get("canonical_ranking_effect") != "none"
+            or visualization.get("display_rank_effect") != "display_value_only"
+            or visualization.get("market_data_affected") is not False
+            or visualization.get("formula_version") != ATTENTION_INDEX_FORMULA_VERSION
+            or visualization.get("formula_weights") != ATTENTION_INDEX_WEIGHTS
+            or derivation != ATTENTION_INDEX_DERIVATION
+            or visualization.get("presentation_position")
+            != item.get("presentation_position")
+            or visualization.get("presentation_rank_movement")
+            != item.get("rank_movement")
         ):
-            raise ValueError("live visualization must preserve sparse observed points")
+            raise ValueError(
+                "live visualization must be an explicit rank-responsive display projection"
+            )
+        observed_series_ranks: dict[tuple[str, str], int] = {}
+        for series_row in item.get("series") or []:
+            source = str(series_row.get("source") or "")
+            if (
+                source not in {"x", "google_trends"}
+                or series_row.get("provenance") != "observed"
+            ):
+                continue
+            try:
+                series_stamp = datetime.fromisoformat(
+                    str(series_row.get("at") or "")
+                ).astimezone(UTC).isoformat()
+            except (TypeError, ValueError):
+                continue
+            source_rank = _source_rank_record(series_row, source)
+            if source_rank is None:
+                continue
+            key = (series_stamp, source)
+            existing_rank = observed_series_ranks.get(key)
+            if existing_rank is None or source_rank["rank"] < existing_rank:
+                observed_series_ranks[key] = source_rank["rank"]
         attention_windows = list(item.get("attention_windows") or [])
         window_specs = {
             "1w": (168, "1주"),
@@ -1115,11 +1155,17 @@ def _validate_live_presentation_feed(feed: dict) -> None:
             if (
                 window.get("interpolation") != "none"
                 or window.get("missing_point_policy") != "preserve_sparse_null_no_reuse"
+                or window.get("formula_version") != ATTENTION_INDEX_FORMULA_VERSION
+                or window.get("display_only") is not True
                 or window.get("ranking_effect") != "none"
+                or window.get("canonical_ranking_effect") != "none"
+                or window.get("display_rank_effect") != "display_value_only"
+                or window.get("market_data_affected") is not False
             ):
                 raise ValueError("live visualization window cannot interpolate or reuse observations")
             stamps = []
-            for point in window.get("points") or []:
+            window_points = list(window.get("points") or [])
+            for point_index, point in enumerate(window_points):
                 stamp = datetime.fromisoformat(str(point.get("at") or "")).astimezone(UTC)
                 stamps.append(stamp)
                 observed_sources = set(point.get("observed_sources") or [])
@@ -1130,6 +1176,221 @@ def _validate_live_presentation_feed(feed: dict) -> None:
                     raise ValueError("live visualization point values are invalid")
                 if round(sum(values) / len(values), 2) != point.get("combined"):
                     raise ValueError("live visualization combined value is not source-derived")
+                if (
+                    point.get("formula_version") != ATTENTION_INDEX_FORMULA_VERSION
+                    or point.get("display_only") is not True
+                    or point.get("ranking_effect") != "none"
+                    or point.get("canonical_ranking_effect") != "none"
+                    or point.get("display_rank_effect") != "display_value_only"
+                    or point.get("market_data_affected") is not False
+                ):
+                    raise ValueError(
+                        "live visualization point formula receipt is invalid"
+                    )
+                source_components = point.get("source_components") or {}
+                if set(source_components) != observed_sources:
+                    raise ValueError(
+                        "live visualization point components do not match observed sources"
+                    )
+                for source in observed_sources:
+                    component = source_components.get(source) or {}
+                    rank = component.get("rank")
+                    snapshot_size = component.get("snapshot_size")
+                    rank_basis = component.get("rank_basis")
+                    previous_rank = component.get("previous_rank")
+                    previous_rank_is_valid = (
+                        previous_rank is None
+                        or (
+                            isinstance(previous_rank, int)
+                            and not isinstance(previous_rank, bool)
+                            and previous_rank >= 1
+                        )
+                    )
+                    position_index = component.get("position_index")
+                    source_change_index = component.get(
+                        "source_rank_change_index"
+                    )
+                    public_change_index = component.get(
+                        "public_rank_change_index"
+                    )
+                    movement_index = component.get("rank_change_index")
+                    persistence_index = component.get(
+                        "observation_persistence_index"
+                    )
+                    presentation_index = component.get(
+                        "presentation_position_index"
+                    )
+                    expected_position_index = None
+                    if (
+                        isinstance(rank, int)
+                        and not isinstance(rank, bool)
+                        and isinstance(snapshot_size, int)
+                        and not isinstance(snapshot_size, bool)
+                        and 1 <= rank <= snapshot_size
+                    ):
+                        if rank_basis == "explicit_observed_source_rank":
+                            expected_position_index = round(
+                                100.0
+                                if snapshot_size == 1
+                                else 100.0
+                                * (snapshot_size - rank)
+                                / (snapshot_size - 1),
+                                2,
+                            )
+                        elif (
+                            rank_basis == "legacy_101_minus_rank_proxy"
+                            and snapshot_size == 100
+                        ):
+                            expected_position_index = round(101.0 - rank, 2)
+                    expected_source_change_index = (
+                        _rank_change_index(
+                            previous_rank - rank,
+                            snapshot_size,
+                        )
+                        if previous_rank is not None
+                        and isinstance(rank, int)
+                        and not isinstance(rank, bool)
+                        and isinstance(snapshot_size, int)
+                        and not isinstance(snapshot_size, bool)
+                        else 50.0
+                    )
+                    public_delta = (item.get("rank_movement") or {}).get("delta")
+                    expected_public_change_index = (
+                        _rank_change_index(public_delta, 10)
+                        if point_index == len(window_points) - 1
+                        and public_delta is not None
+                        else 50.0
+                    )
+                    if expected_public_change_index is None:
+                        expected_public_change_index = 50.0
+                    expected_movement_basis = [
+                        (
+                            "previous_observed_source_rank"
+                            if previous_rank is not None
+                            else "neutral_unavailable_source_rank_change"
+                        ),
+                        (
+                            "neutral_public_change_not_latest_point"
+                            if point_index != len(window_points) - 1
+                            else "previous_published_presentation_position"
+                            if public_delta is not None
+                            else "neutral_unavailable_public_rank_change"
+                        ),
+                    ]
+                    bounded_indexes = (
+                        position_index,
+                        source_change_index,
+                        public_change_index,
+                        movement_index,
+                        persistence_index,
+                        presentation_index,
+                    )
+                    indexes_are_valid = all(
+                        isinstance(value, (int, float))
+                        and not isinstance(value, bool)
+                        and math.isfinite(float(value))
+                        and 0 <= value <= 100
+                        for value in bounded_indexes
+                    )
+                    movement_basis = component.get("rank_change_basis") or []
+                    basis_is_valid = (
+                        isinstance(movement_basis, list)
+                        and len(movement_basis) == 2
+                        and movement_basis[0] in {
+                            "previous_observed_source_rank",
+                            "neutral_unavailable_source_rank_change",
+                        }
+                        and movement_basis[1] in {
+                            "previous_published_presentation_position",
+                            "neutral_unavailable_public_rank_change",
+                            "neutral_public_change_not_latest_point",
+                        }
+                        and (
+                            not str(movement_basis[0]).startswith("neutral_")
+                            or source_change_index == 50.0
+                        )
+                        and (
+                            not str(movement_basis[1]).startswith("neutral_")
+                            or public_change_index == 50.0
+                        )
+                        and movement_basis == expected_movement_basis
+                    )
+                    expected_display_index = (
+                        round(
+                            ATTENTION_INDEX_WEIGHTS["source_rank_position"]
+                            * position_index
+                            + ATTENTION_INDEX_WEIGHTS["rank_change"]
+                            * movement_index
+                            + ATTENTION_INDEX_WEIGHTS[
+                                "observation_persistence"
+                            ]
+                            * persistence_index
+                            + ATTENTION_INDEX_WEIGHTS["presentation_position"]
+                            * presentation_index,
+                            2,
+                        )
+                        if indexes_are_valid
+                        else None
+                    )
+                    expected_movement_index = (
+                        round(
+                            max(
+                                0.0,
+                                min(
+                                    100.0,
+                                    source_change_index
+                                    + 0.35 * (public_change_index - 50.0),
+                                ),
+                            ),
+                            2,
+                        )
+                        if indexes_are_valid
+                        else None
+                    )
+                    series_rank = observed_series_ranks.get(
+                        (stamp.isoformat(), source)
+                    )
+                    if (
+                        isinstance(rank, bool)
+                        or not isinstance(rank, int)
+                        or isinstance(snapshot_size, bool)
+                        or not isinstance(snapshot_size, int)
+                        or not 1 <= rank <= snapshot_size
+                        or not previous_rank_is_valid
+                        or position_index != expected_position_index
+                        or source_change_index
+                        != expected_source_change_index
+                        or public_change_index
+                        != expected_public_change_index
+                        or component.get("rank_change")
+                        != (
+                            previous_rank - rank
+                            if previous_rank is not None
+                            else None
+                        )
+                        or component.get("presentation_position")
+                        != item.get("presentation_position")
+                        or presentation_index
+                        != round(
+                            100.0
+                            * (10 - int(item.get("presentation_position")))
+                            / 9.0,
+                            2,
+                        )
+                        or not indexes_are_valid
+                        or not basis_is_valid
+                        or movement_index != expected_movement_index
+                        or (
+                            observed_series_ranks
+                            and series_rank != rank
+                        )
+                        or component.get("display_index")
+                        != expected_display_index
+                        or component.get("display_index") != point.get(source)
+                    ):
+                        raise ValueError(
+                            "live visualization source-rank derivation is invalid"
+                        )
             if stamps != sorted(set(stamps)):
                 raise ValueError("live visualization points must be unique and chronological")
             if not stamps:

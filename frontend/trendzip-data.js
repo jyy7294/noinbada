@@ -118,8 +118,8 @@ function dataStatus(payload, metadata, runtimeStatus, { fromCache = false, now =
             : delayed
               ? `마지막 관측 후 ${ageMinutes}분이 지나 다음 수집을 기다리고 있습니다.`
             : partial
-              ? `${unavailableSources.join(', ')} 수집이 완료되지 않았습니다.`
-              : 'X와 Google Trends 최신 수집을 모두 확인했습니다.',
+              ? '일부 원천 수집이 완료되지 않아 통합 결과를 확인하고 있습니다.'
+              : '최신 통합 트렌드 수집을 확인했습니다.',
   };
 }
 
@@ -234,7 +234,7 @@ function normalizeTrend(item) {
     attentionWindows: item.attention_windows || item.trend_story?.diffusion?.attention_windows || [],
     seriesMetric: item.series_metric || {
       key: 'normalized_attention_index',
-      label: '언급량 추이 · 관심지수',
+      label: '관심지수 추이',
       is_absolute_mention_count: false,
     },
     firstSeenAt: item.first_seen_at,
@@ -448,6 +448,32 @@ const LIVE_ATTENTION_WINDOW_SPECS = Object.freeze({
   '1w': { hours: 168, label: '1주' },
   '1m': { hours: 720, label: '1개월' },
   '3m': { hours: 2160, label: '3개월' },
+});
+const LIVE_RANK_RESPONSIVE_FORMULA_VERSION = 'observed-rank-response-v2';
+const LIVE_RANK_RESPONSIVE_FORMULA_WEIGHTS = Object.freeze({
+  source_rank_position: 0.45,
+  rank_change: 0.20,
+  observation_persistence: 0.15,
+  presentation_position: 0.20,
+});
+const LIVE_RANK_RESPONSIVE_DERIVATION = Object.freeze({
+  formula: 'mean_by_observed_source(weighted_sum(source_rank_position,rank_change,observation_persistence,presentation_position))',
+  input_fields: Object.freeze([
+    'observed_source_rank',
+    'observed_source_rank_change',
+    'observation_persistence',
+    'presentation_position',
+    'previous_published_presentation_position',
+  ]),
+  missing_component_policy: 'neutral_50_for_unavailable_rank_change',
+  neutral_rank_change_index: 50.0,
+  formula_weight_sum: 1.0,
+  display_only: true,
+  canonical_ranking_effect: 'none',
+  display_rank_effect: 'display_value_only',
+  market_data_affected: false,
+  canonical_series_unchanged: true,
+  missing_point_policy: 'preserve_sparse_null_no_reuse',
 });
 
 function publicHttpUrl(value, { httpsOnly = false } = {}) {
@@ -686,13 +712,135 @@ function validObservedSeries(item, observedAt) {
   });
 }
 
+function validNormalizedIndex(value) {
+  if (value == null || value === '' || typeof value === 'boolean') return false;
+  const numeric = Number(value);
+  return Number.isFinite(numeric) && numeric >= 0 && numeric <= 100;
+}
+
+function validRankResponsiveFormulaWeights(value) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+  const keys = Object.keys(LIVE_RANK_RESPONSIVE_FORMULA_WEIGHTS);
+  return Object.keys(value).sort().join('|') === keys.slice().sort().join('|')
+    && keys.every((key) => Number(value[key]) === LIVE_RANK_RESPONSIVE_FORMULA_WEIGHTS[key]);
+}
+
+function sameContractValue(left, right) {
+  if (left === right) return true;
+  if (Array.isArray(left) || Array.isArray(right)) {
+    return Array.isArray(left) && Array.isArray(right)
+      && left.length === right.length
+      && left.every((value, index) => sameContractValue(value, right[index]));
+  }
+  if (!left || !right || typeof left !== 'object' || typeof right !== 'object') return false;
+  const leftKeys = Object.keys(left).sort();
+  const rightKeys = Object.keys(right).sort();
+  return leftKeys.join('|') === rightKeys.join('|')
+    && leftKeys.every((key) => sameContractValue(left[key], right[key]));
+}
+
+function validRankResponsiveDerivation(value) {
+  return Boolean(value && typeof value === 'object' && !Array.isArray(value))
+    && sameContractValue(value, LIVE_RANK_RESPONSIVE_DERIVATION);
+}
+
+function validRankResponsiveSourceComponent(component, pointValue, presentationPosition) {
+  if (!component || typeof component !== 'object' || Array.isArray(component)) return false;
+  const integerValue = (value) => value !== ''
+    && typeof value !== 'boolean'
+    && Number.isInteger(Number(value));
+  const positiveInteger = (value) => integerValue(value) && Number(value) > 0;
+  const optionalInteger = (value) => value == null || integerValue(value);
+  const componentKeys = [
+    'rank', 'snapshot_size', 'position_index', 'rank_basis', 'previous_rank',
+    'rank_change', 'rank_change_index', 'source_rank_change_index',
+    'public_rank_change_index', 'rank_change_basis',
+    'observation_persistence_index', 'presentation_position',
+    'presentation_position_index', 'presentation_rank_change', 'display_index',
+  ];
+  const rankChangeBasis = Array.isArray(component.rank_change_basis)
+    ? component.rank_change_basis : [];
+  const sourceBasis = rankChangeBasis[0];
+  const publicBasis = rankChangeBasis[1];
+  const sourceBasisValid = ['previous_observed_source_rank', 'neutral_unavailable_source_rank_change']
+    .includes(sourceBasis);
+  const publicBasisValid = [
+    'previous_published_presentation_position',
+    'neutral_unavailable_public_rank_change',
+    'neutral_public_change_not_latest_point',
+  ].includes(publicBasis);
+  return Object.keys(component).sort().join('|') === componentKeys.slice().sort().join('|')
+    && positiveInteger(component.rank)
+    && positiveInteger(component.snapshot_size)
+    && Number(component.snapshot_size) >= Number(component.rank)
+    && validNormalizedIndex(component.position_index)
+    && ['explicit_observed_source_rank', 'legacy_101_minus_rank_proxy']
+      .includes(component.rank_basis)
+    && (component.previous_rank == null || positiveInteger(component.previous_rank))
+    && optionalInteger(component.rank_change)
+    && validNormalizedIndex(component.rank_change_index)
+    && validNormalizedIndex(component.source_rank_change_index)
+    && validNormalizedIndex(component.public_rank_change_index)
+    && rankChangeBasis.length === 2
+    && new Set(rankChangeBasis).size === 2
+    && sourceBasisValid
+    && publicBasisValid
+    && (sourceBasis !== 'neutral_unavailable_source_rank_change'
+      || Number(component.source_rank_change_index) === 50)
+    && (!publicBasis.startsWith('neutral_')
+      || Number(component.public_rank_change_index) === 50)
+    && (!(sourceBasis === 'neutral_unavailable_source_rank_change'
+      && publicBasis.startsWith('neutral_'))
+      || Number(component.rank_change_index) === 50)
+    && validNormalizedIndex(component.observation_persistence_index)
+    && Number(component.presentation_position) === presentationPosition
+    && Number.isInteger(Number(component.presentation_position))
+    && presentationPosition >= 1 && presentationPosition <= 10
+    && validNormalizedIndex(component.presentation_position_index)
+    && optionalInteger(component.presentation_rank_change)
+    && (component.presentation_rank_change == null
+      || (Number(component.presentation_rank_change) >= -9
+        && Number(component.presentation_rank_change) <= 9))
+    && validNormalizedIndex(component.display_index)
+    && Number(component.display_index) === Number(pointValue);
+}
+
 function validSparseVisualization(item) {
   const visualization = item?.visualization_series || {};
+  const hasRankResponsiveMetadata = visualization.data_mode === 'rank_responsive_display'
+    || visualization.display_only != null
+    || visualization.formula_version != null
+    || visualization.formula_weights != null
+    || visualization.derivation != null
+    || visualization.presentation_position != null
+    || visualization.presentation_rank_movement != null
+    || visualization.canonical_ranking_effect != null
+    || visualization.display_rank_effect != null
+    || visualization.market_data_affected != null;
+  const rankResponsive = visualization.data_mode === 'rank_responsive_display'
+    && visualization.display_only === true
+    && visualization.formula_version === LIVE_RANK_RESPONSIVE_FORMULA_VERSION;
+  const presentationPosition = Number(visualization.presentation_position);
   if (
-    visualization.data_mode !== 'observed_sparse'
+    visualization.data_mode !== (rankResponsive ? 'rank_responsive_display' : 'observed_sparse')
     || visualization.interpolation !== 'none'
     || visualization.canonical_series_unchanged !== true
     || visualization.ranking_effect !== 'none'
+  ) return false;
+  if (
+    hasRankResponsiveMetadata
+    && (!rankResponsive
+      || !validRankResponsiveFormulaWeights(visualization.formula_weights)
+      || visualization.metric !== 'normalized_attention_index'
+      || !validRankResponsiveDerivation(visualization.derivation)
+      || !Number.isInteger(presentationPosition)
+      || presentationPosition < 1
+      || presentationPosition > 10
+      || presentationPosition !== Number(item?.presentation_position)
+      || !sameContractValue(visualization.presentation_rank_movement, item?.rank_movement)
+      || visualization.canonical_ranking_effect !== 'none'
+      || visualization.display_rank_effect !== 'display_value_only'
+      || visualization.market_data_affected !== false)
   ) return false;
   const attention = Array.isArray(item?.attention_windows) ? item.attention_windows : [];
   if (
@@ -705,6 +853,13 @@ function validSparseVisualization(item) {
       window.interpolation !== 'none'
       || window.missing_point_policy !== 'preserve_sparse_null_no_reuse'
       || window.ranking_effect !== 'none'
+      || (rankResponsive && (
+        window.display_only !== true
+        || window.formula_version !== LIVE_RANK_RESPONSIVE_FORMULA_VERSION
+        || window.canonical_ranking_effect !== 'none'
+        || window.display_rank_effect !== 'display_value_only'
+        || window.market_data_affected !== false
+      ))
       || !Array.isArray(window.points)
       || window.points.length === 0
       || window.available_point_count !== window.points.length
@@ -721,6 +876,24 @@ function validSparseVisualization(item) {
       const combined = values.length
         ? Math.round((values.reduce((sum, value) => sum + value, 0) / values.length) * 100) / 100
         : null;
+      const sourceComponents = point?.source_components;
+      const rankResponsivePointValid = !rankResponsive || (
+        point?.display_only === true
+        && point?.formula_version === LIVE_RANK_RESPONSIVE_FORMULA_VERSION
+        && point?.canonical_ranking_effect === 'none'
+        && point?.display_rank_effect === 'display_value_only'
+        && point?.market_data_affected === false
+        && point?.ranking_effect === 'none'
+        && Number.isFinite(Number(point?.observation_density))
+        && Number(point.observation_density) >= 0
+        && Number(point.observation_density) <= 1
+        && sourceComponents && typeof sourceComponents === 'object'
+        && !Array.isArray(sourceComponents)
+        && Object.keys(sourceComponents).sort().join('|') === sources.slice().sort().join('|')
+        && sources.every((source) => validRankResponsiveSourceComponent(
+          sourceComponents[source], point[source], presentationPosition,
+        ))
+      );
       const valid = Number.isFinite(atMs)
         && atMs >= previousAt
         && !seen.has(atMs)
@@ -731,7 +904,8 @@ function validSparseVisualization(item) {
         && valueSources.every((source) => sources.includes(source))
         && values.length > 0
         && values.every((value) => Number.isFinite(value) && value >= 0 && value <= 100)
-        && combined === Number(point?.combined);
+        && combined === Number(point?.combined)
+        && rankResponsivePointValid;
       if (valid) {
         previousAt = atMs;
         seen.add(atMs);

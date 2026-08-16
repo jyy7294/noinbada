@@ -13,6 +13,9 @@ from .hourly_store import LIVE_COLLECTOR_SQL
 from .keyword_policy import keyword_fits_public_label
 from .ontology import MINIMUM_FRONTEND_COMPANIES
 from .presentation_feed import (
+    ATTENTION_INDEX_DERIVATION,
+    ATTENTION_INDEX_FORMULA_VERSION,
+    ATTENTION_INDEX_WEIGHTS,
     LOGO_ASSET_VERIFICATION,
     LOGO_QUALITY_POLICY,
     live_public_image_logo_contract_is_valid,
@@ -1148,6 +1151,55 @@ def evaluate_presentation_feed_quality(feed: dict) -> dict:
                 ):
                     item_failures.append(
                         f"market_snapshot_incomplete:{company_name}"
+                    )
+            visualization = item.get("visualization_series") or {}
+            if (
+                visualization.get("data_mode") != "rank_responsive_display"
+                or visualization.get("display_only") is not True
+                or visualization.get("ranking_effect") != "none"
+                or visualization.get("canonical_ranking_effect") != "none"
+                or visualization.get("display_rank_effect")
+                != "display_value_only"
+                or visualization.get("market_data_affected") is not False
+                or visualization.get("canonical_series_unchanged") is not True
+                or visualization.get("formula_version")
+                != ATTENTION_INDEX_FORMULA_VERSION
+                or visualization.get("formula_weights")
+                != ATTENTION_INDEX_WEIGHTS
+                or visualization.get("derivation")
+                != ATTENTION_INDEX_DERIVATION
+                or visualization.get("presentation_position")
+                != item.get("presentation_position")
+                or visualization.get("presentation_rank_movement")
+                != item.get("rank_movement")
+            ):
+                item_failures.append(
+                    "rank_responsive_visualization_contract_invalid"
+                )
+            for window_key in ("1w", "1m", "3m"):
+                window = visualization.get(window_key) or {}
+                points = list(window.get("points") or [])
+                if (
+                    window.get("formula_version")
+                    != ATTENTION_INDEX_FORMULA_VERSION
+                    or window.get("display_only") is not True
+                    or window.get("canonical_ranking_effect") != "none"
+                    or window.get("display_rank_effect")
+                    != "display_value_only"
+                    or window.get("market_data_affected") is not False
+                    or any(
+                        point.get("formula_version")
+                        != ATTENTION_INDEX_FORMULA_VERSION
+                        or point.get("display_only") is not True
+                        or point.get("canonical_ranking_effect") != "none"
+                        or point.get("display_rank_effect")
+                        != "display_value_only"
+                        or point.get("market_data_affected") is not False
+                        for point in points
+                    )
+                ):
+                    item_failures.append(
+                        f"rank_responsive_formula_receipt_invalid:{window_key}"
                     )
             attention_rows = list(item.get("attention_windows") or [])
             attention_statuses = {

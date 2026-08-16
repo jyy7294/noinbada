@@ -8,6 +8,7 @@ ranking.  Reference enrichment is allowed to improve display detail only.
 from __future__ import annotations
 
 import hashlib
+import json
 import math
 from collections import defaultdict
 from datetime import UTC, datetime, timedelta
@@ -37,6 +38,36 @@ LIVE_LOGO_ASSET_VERIFICATIONS = frozenset({
     "verified_raster_min_64px",
     "initials_fallback",
 })
+ATTENTION_INDEX_FORMULA_VERSION = "observed-rank-response-v2"
+ATTENTION_INDEX_WEIGHTS = {
+    "source_rank_position": 0.45,
+    "rank_change": 0.20,
+    "observation_persistence": 0.15,
+    "presentation_position": 0.20,
+}
+ATTENTION_INDEX_DERIVATION = {
+    "formula": (
+        "mean_by_observed_source(weighted_sum("
+        "source_rank_position,rank_change,observation_persistence,"
+        "presentation_position))"
+    ),
+    "input_fields": [
+        "observed_source_rank",
+        "observed_source_rank_change",
+        "observation_persistence",
+        "presentation_position",
+        "previous_published_presentation_position",
+    ],
+    "missing_component_policy": "neutral_50_for_unavailable_rank_change",
+    "neutral_rank_change_index": 50.0,
+    "formula_weight_sum": 1.0,
+    "display_only": True,
+    "canonical_ranking_effect": "none",
+    "display_rank_effect": "display_value_only",
+    "market_data_affected": False,
+    "canonical_series_unchanged": True,
+    "missing_point_policy": "preserve_sparse_null_no_reuse",
+}
 
 
 def _finite_market_number(value: object, *, positive: bool = False) -> bool:
@@ -1241,7 +1272,7 @@ def _reference_card(reference: dict, candidates: list[dict]) -> dict:
         "visualization_series": visualization,
         "series_metric": {
             "key": "normalized_attention_index",
-            "label": "언급량 추이 · 관심지수",
+            "label": "관심지수 추이",
             "is_absolute_mention_count": False,
         },
         "keywords": keywords,
@@ -1368,42 +1399,288 @@ def _parse_observed_at(value: object) -> datetime | None:
         return None
 
 
-def _observed_sparse_series(candidate: dict, observed_at: datetime) -> dict:
-    """Return only actual X/Google observations; never interpolate or pad."""
+def _positive_int(value: object) -> int | None:
+    if isinstance(value, bool):
+        return None
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    if not math.isfinite(number) or number < 1 or not number.is_integer():
+        return None
+    return int(number)
 
-    rows_by_at: dict[str, dict[str, float]] = defaultdict(dict)
-    for row in candidate.get("series") or []:
-        source = str(row.get("source") or "")
-        stamp = _parse_observed_at(row.get("at"))
+
+def _source_rank_record(row: dict, source: str) -> dict | None:
+    """Resolve one actual source rank without changing the canonical row."""
+
+    rank = _positive_int(row.get("rank") or row.get("source_rank"))
+    payload = row.get("source_payload_json")
+    if isinstance(payload, str) and payload.strip():
+        try:
+            payload = json.loads(payload)
+        except (TypeError, ValueError, json.JSONDecodeError):
+            payload = {}
+    if not isinstance(payload, dict):
+        payload = {}
+
+    if rank is None:
+        # Compatibility for already-persisted rows whose value was the exact
+        # 101-rank proxy. Production v4 rows carry ``rank`` explicitly. The
+        # proxy is never written back to the canonical series.
+        try:
+            legacy_position = float(row.get("value"))
+        except (TypeError, ValueError):
+            return None
+        if not math.isfinite(legacy_position) or not 0 <= legacy_position <= 100:
+            return None
+        return {
+            "rank": max(1, min(100, int(round(101.0 - legacy_position)))),
+            "snapshot_size": 100,
+            "position_index": round(legacy_position, 2),
+            "rank_basis": "legacy_101_minus_rank_proxy",
+        }
+
+    declared_sizes = [
+        _positive_int(payload.get(key))
+        for key in (
+            "collection_declared_total",
+            "declared_total",
+            "collection_row_count",
+            "row_count",
+        )
+    ]
+    declared_size = next(
+        (size for size in declared_sizes if size is not None and size >= rank),
+        None,
+    )
+    default_size = 30 if source == "x" else 100
+    snapshot_size = max(rank, declared_size or default_size)
+    position = (
+        100.0
+        if snapshot_size == 1
+        else 100.0 * (snapshot_size - rank) / (snapshot_size - 1)
+    )
+    return {
+        "rank": rank,
+        "snapshot_size": snapshot_size,
+        "position_index": round(max(0.0, min(100.0, position)), 2),
+        "rank_basis": "explicit_observed_source_rank",
+    }
+
+
+def _rank_change_index(delta: object, population_size: int) -> float | None:
+    if isinstance(delta, bool) or not isinstance(delta, (int, float)):
+        return None
+    if not math.isfinite(float(delta)):
+        return None
+    scale = max(1.0, float(population_size) * 0.08)
+    return round(max(0.0, min(100.0, 50.0 + 50.0 * math.tanh(float(delta) / scale))), 2)
+
+
+def _presentation_position_index(position: int) -> float:
+    bounded = max(1, min(10, int(position)))
+    return round(100.0 * (10 - bounded) / 9.0, 2)
+
+
+def _observed_sparse_series(
+    candidate: dict,
+    observed_at: datetime,
+    *,
+    presentation_position: int,
+    presentation_rank_movement: dict,
+) -> dict:
+    """Build a rank-responsive display index from actual sparse observations.
+
+    Canonical ``series``, score and ranking fields are read-only. Missing hours
+    stay missing: this projection never interpolates, carries forward or pads.
+    """
+
+    selected_rows: dict[str, dict[str, dict]] = defaultdict(dict)
+    for source_row in candidate.get("series") or []:
+        source = str(source_row.get("source") or "")
+        stamp = _parse_observed_at(source_row.get("at"))
         if source not in {"x", "google_trends"} or stamp is None:
             continue
-        if row.get("provenance") != "observed" or stamp > observed_at:
+        if source_row.get("provenance") != "observed" or stamp > observed_at:
             continue
-        try:
-            value = float(row.get("value"))
-        except (TypeError, ValueError):
+        rank_record = _source_rank_record(source_row, source)
+        if rank_record is None:
             continue
-        rows_by_at[stamp.isoformat()][source] = round(max(0.0, min(100.0, value)), 2)
+        stamp_key = stamp.isoformat()
+        current = selected_rows[stamp_key].get(source)
+        if current is None or rank_record["rank"] < current["rank"]:
+            selected_rows[stamp_key][source] = rank_record
+
+    ordered_stamps = [
+        _parse_observed_at(stamp)
+        for stamp in sorted(selected_rows)
+    ]
+    ordered_stamps = [stamp for stamp in ordered_stamps if stamp is not None]
+    earliest_stamp = ordered_stamps[0] if ordered_stamps else None
+    latest_stamp = ordered_stamps[-1] if ordered_stamps else None
+    previous_rank_by_source: dict[str, int] = {}
+    public_position_index = _presentation_position_index(presentation_position)
+    public_delta = presentation_rank_movement.get("delta")
+    public_change_index = _rank_change_index(public_delta, 10)
+    candidate_persistence = candidate.get("persistence")
+    if (
+        isinstance(candidate_persistence, bool)
+        or not isinstance(candidate_persistence, (int, float))
+        or not math.isfinite(float(candidate_persistence))
+    ):
+        candidate_persistence = None
+    elif float(candidate_persistence) > 1.0:
+        candidate_persistence = float(candidate_persistence) / 100.0
+    if candidate_persistence is not None:
+        candidate_persistence = max(0.0, min(1.0, float(candidate_persistence)))
+
+    responsive_points: dict[str, dict] = {}
+    for stamp_key in sorted(selected_rows):
+        stamp = _parse_observed_at(stamp_key)
+        if stamp is None:
+            continue
+        trailing_start = stamp - timedelta(hours=23)
+        density_start = max(trailing_start, earliest_stamp or trailing_start)
+        elapsed_slots = max(
+            2,
+            min(24, int((stamp - density_start).total_seconds() // 3600) + 1),
+        )
+        observed_slots = sum(
+            density_start <= observed_stamp <= stamp
+            for observed_stamp in ordered_stamps
+        )
+        local_density = max(0.0, min(1.0, observed_slots / elapsed_slots))
+        persistence = (
+            0.7 * candidate_persistence + 0.3 * local_density
+            if candidate_persistence is not None
+            else local_density
+        )
+        persistence_index = round(persistence * 100.0, 2)
+
+        source_indices: dict[str, float] = {}
+        source_components: dict[str, dict] = {}
+        for source in ("x", "google_trends"):
+            rank_record = selected_rows[stamp_key].get(source)
+            if rank_record is None:
+                continue
+            previous_rank = previous_rank_by_source.get(source)
+            source_delta = (
+                previous_rank - rank_record["rank"]
+                if previous_rank is not None
+                else None
+            )
+            measured_source_change_index = _rank_change_index(
+                source_delta,
+                rank_record["snapshot_size"],
+            )
+            source_change_index = (
+                measured_source_change_index
+                if measured_source_change_index is not None
+                else 50.0
+            )
+            source_change_basis = (
+                "previous_observed_source_rank"
+                if measured_source_change_index is not None
+                else "neutral_unavailable_source_rank_change"
+            )
+            if stamp != latest_stamp:
+                point_public_change_index = 50.0
+                public_change_basis = "neutral_public_change_not_latest_point"
+            elif public_change_index is None:
+                point_public_change_index = 50.0
+                public_change_basis = "neutral_unavailable_public_rank_change"
+            else:
+                point_public_change_index = public_change_index
+                public_change_basis = "previous_published_presentation_position"
+
+            # Source movement owns the neutral midpoint.  The latest public
+            # rank movement is a bounded endpoint adjustment; unavailable
+            # source/public movement is always the same neutral 50.  This
+            # keeps all four documented weights active on every point.
+            movement_index = round(max(
+                0.0,
+                min(
+                    100.0,
+                    source_change_index
+                    + 0.35 * (point_public_change_index - 50.0),
+                ),
+            ), 2)
+
+            weighted_components = [
+                (
+                    ATTENTION_INDEX_WEIGHTS["source_rank_position"],
+                    rank_record["position_index"],
+                ),
+                (
+                    ATTENTION_INDEX_WEIGHTS["observation_persistence"],
+                    persistence_index,
+                ),
+                (
+                    ATTENTION_INDEX_WEIGHTS["presentation_position"],
+                    public_position_index,
+                ),
+            ]
+            weighted_components.append((
+                ATTENTION_INDEX_WEIGHTS["rank_change"],
+                movement_index,
+            ))
+            weight_sum = sum(weight for weight, _value in weighted_components)
+            display_index = round(
+                sum(weight * value for weight, value in weighted_components)
+                / weight_sum,
+                2,
+            )
+            source_indices[source] = max(0.0, min(100.0, display_index))
+            source_components[source] = {
+                **rank_record,
+                "previous_rank": previous_rank,
+                "rank_change": source_delta,
+                "rank_change_index": movement_index,
+                "source_rank_change_index": source_change_index,
+                "public_rank_change_index": point_public_change_index,
+                "rank_change_basis": [
+                    source_change_basis,
+                    public_change_basis,
+                ],
+                "observation_persistence_index": persistence_index,
+                "presentation_position": presentation_position,
+                "presentation_position_index": public_position_index,
+                "presentation_rank_change": public_delta,
+                "display_index": source_indices[source],
+            }
+            previous_rank_by_source[source] = rank_record["rank"]
+
+        values = list(source_indices.values())
+        if not values:
+            continue
+        responsive_points[stamp_key] = {
+            "at": stamp_key,
+            "x": source_indices.get("x"),
+            "google_trends": source_indices.get("google_trends"),
+            "combined": round(sum(values) / len(values), 2),
+            "observed_sources": sorted(source_indices),
+            "source_components": source_components,
+            "observation_density": round(local_density, 6),
+            "formula_version": ATTENTION_INDEX_FORMULA_VERSION,
+            "display_only": True,
+            "canonical_ranking_effect": "none",
+            "display_rank_effect": "display_value_only",
+            "market_data_affected": False,
+            "ranking_effect": "none",
+        }
 
     windows = {}
     attention = []
     for key, label, days in (("1w", "1주", 7), ("1m", "1개월", 30), ("3m", "3개월", 90)):
-        threshold = observed_at - timedelta(days=days)
-        points = []
-        for stamp, sources in sorted(rows_by_at.items()):
-            parsed = _parse_observed_at(stamp)
-            if parsed is None or parsed < threshold:
-                continue
-            values = list(sources.values())
-            points.append({
-                "at": stamp,
-                "x": sources.get("x"),
-                "google_trends": sources.get("google_trends"),
-                "combined": round(sum(values) / len(values), 2),
-                "observed_sources": sorted(sources),
-            })
-        combined = [point["combined"] for point in points]
         expected_hours = days * 24
+        # Inclusive hourly observations contain exactly expected_hours slots.
+        threshold = observed_at - timedelta(hours=expected_hours - 1)
+        points = [
+            point for stamp, point in sorted(responsive_points.items())
+            if (_parse_observed_at(stamp) or observed_at) >= threshold
+        ]
+        combined = [point["combined"] for point in points]
         observed_hours = len(points)
         first_stamp = _parse_observed_at(points[0]["at"]) if points else None
         last_stamp = _parse_observed_at(points[-1]["at"]) if points else None
@@ -1414,7 +1691,7 @@ def _observed_sparse_series(candidate: dict, observed_at: datetime) -> dict:
         )
         minimum_span_hours = round(expected_hours * 0.8, 2)
         minimum_observed_hours = max(2, math.ceil(expected_hours * 0.2))
-        coverage_ratio = round(observed_hours / expected_hours, 4)
+        coverage_ratio = round(min(1.0, observed_hours / expected_hours), 4)
         measurement_ready = bool(
             observed_span_hours >= minimum_span_hours
             and observed_hours >= minimum_observed_hours
@@ -1443,6 +1720,11 @@ def _observed_sparse_series(candidate: dict, observed_at: datetime) -> dict:
             "minimum_span_hours": minimum_span_hours,
             "minimum_observed_hours": minimum_observed_hours,
             "basis": "observed_x_google_hourly_points_only",
+            "formula_version": ATTENTION_INDEX_FORMULA_VERSION,
+            "display_only": True,
+            "canonical_ranking_effect": "none",
+            "display_rank_effect": "display_value_only",
+            "market_data_affected": False,
             "interpolation": "none",
             "missing_point_policy": "preserve_sparse_null_no_reuse",
             "ranking_effect": "none",
@@ -1465,8 +1747,20 @@ def _observed_sparse_series(candidate: dict, observed_at: datetime) -> dict:
         })
     return {
         "metric": "normalized_attention_index",
+        "formula_version": ATTENTION_INDEX_FORMULA_VERSION,
+        "formula_weights": dict(ATTENTION_INDEX_WEIGHTS),
+        "derivation": {
+            **ATTENTION_INDEX_DERIVATION,
+            "input_fields": list(ATTENTION_INDEX_DERIVATION["input_fields"]),
+        },
+        "presentation_position": presentation_position,
+        "presentation_rank_movement": dict(presentation_rank_movement),
         "canonical_series_unchanged": True,
-        "data_mode": "observed_sparse",
+        "data_mode": "rank_responsive_display",
+        "display_only": True,
+        "canonical_ranking_effect": "none",
+        "display_rank_effect": "display_value_only",
+        "market_data_affected": False,
         "interpolation": "none",
         "ranking_effect": "none",
         "attention_windows": attention,
@@ -1947,7 +2241,6 @@ def _live_card(candidate: dict, observed_at: datetime) -> dict:
         links=links,
         require_link_metadata=True,
     )
-    sparse = _observed_sparse_series(candidate, observed_at)
     story = candidate.get("trend_story") or {}
     diffusion = story.get("diffusion") or {}
     stage = diffusion.get("trend_stage") or {"key": "detected", "label": "포착", "index": 1}
@@ -1986,13 +2279,6 @@ def _live_card(candidate: dict, observed_at: datetime) -> dict:
         "why_now": str(context.get("why_now") or "").strip(),
         "evidence_urls": evidence_urls,
         "trend_stage": stage,
-        "attention_windows": sparse.pop("attention_windows"),
-        "visualization_series": sparse,
-        "series_metric": {
-            "key": "normalized_attention_index",
-            "label": "언급량 추이 · 관심지수",
-            "is_absolute_mention_count": False,
-        },
         "keywords": keywords,
         "related_keywords": keywords,
         "keyword_status": "ready",
@@ -2084,11 +2370,26 @@ def build_presentation_feed(
         item["presentation_position"] = position
         item["presentation_rank"] = position
         item["current_rank"] = position
-        item["rank_movement"] = _presentation_movement(
+        rank_movement = _presentation_movement(
             item,
             position,
             previous_items,
         )
+        item["rank_movement"] = rank_movement
+        candidate = by_key[str(item.get("event_key") or "")]
+        sparse = _observed_sparse_series(
+            candidate,
+            observed_at,
+            presentation_position=position,
+            presentation_rank_movement=rank_movement,
+        )
+        item["attention_windows"] = sparse.pop("attention_windows")
+        item["visualization_series"] = sparse
+        item["series_metric"] = {
+            "key": "normalized_attention_index",
+            "label": "관심지수 추이",
+            "is_absolute_mention_count": False,
+        }
     return {
         "schema_version": "trzip-presentation-feed-v4",
         "observed_at": observed_at.isoformat(),
