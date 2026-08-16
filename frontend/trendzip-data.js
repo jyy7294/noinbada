@@ -14,7 +14,6 @@ const STATUS_URL = `${LIVE_DATA_BASE}/status.json`;
 const METADATA_URL = `${LIVE_DATA_BASE}/metadata.json`;
 const CACHE_KEY = 'trzip:latest-intelligence:v3';
 const PORTFOLIO_KEY = 'trzip:portfolios:v1';
-const ARCHIVE_URL = './trend-archive.json';
 const SHOWCASE_MANIFEST_URL = './showcase/manifest.json';
 // The public home feed is an immutable daily publication created at 06:00 KST,
 // not an hourly endpoint. Keep a successful publication current until the next
@@ -350,42 +349,6 @@ async function fetchWithRetry(url, options = {}) {
     await new Promise((resolve) => setTimeout(resolve, 250 * (attempt + 1)));
   }
   throw lastError || new Error('TRZIP request failed');
-}
-
-function validatedArchive(payload) {
-  if (
-    payload?.schema_version !== 'trzip-archive-feed-v1'
-    || payload?.data_mode !== 'reconstructed_reference'
-    || payload?.display_mode !== 'historical_research_archive'
-    || payload?.live_eligible !== false
-    || payload?.ranking_eligible !== false
-    || payload?.ranking_effect !== 'none'
-    || !Array.isArray(payload?.items)
-    || payload.items.length !== Number(payload.item_count)
-  ) {
-    throw new Error('지난 트렌드 자료의 데이터 계약이 올바르지 않습니다.');
-  }
-  for (const item of payload.items) {
-    if (
-      !item?.id
-      || !item?.display_name
-      || !item?.why_now
-      || !Array.isArray(item?.evidence_urls)
-      || !item.evidence_urls.some((url) => /^https?:\/\//.test(String(url)))
-      || !Array.isArray(item?.companies)
-      || item.companies.length < 1
-      || Object.hasOwn(item, 'rank')
-    ) {
-      throw new Error('지난 트렌드 항목의 필수 근거가 누락되었습니다.');
-    }
-  }
-  return payload;
-}
-
-async function loadArchive() {
-  const response = await fetchWithRetry(`${ARCHIVE_URL}?t=${Date.now()}`, { cache: 'no-store' });
-  if (!response.ok) throw new Error(`TRZIP archive ${response.status}`);
-  return validatedArchive(await response.json());
 }
 
 async function fetchManifestRankings(nonce) {
@@ -1378,7 +1341,6 @@ const dataContract = Object.freeze({
   intelligence: INTELLIGENCE_URL,
   status: STATUS_URL,
   metadata: METADATA_URL,
-  archive: ARCHIVE_URL,
   showcase: SHOWCASE_MANIFEST_URL,
   cache: CACHE_KEY,
   portfolios: PORTFOLIO_KEY,
@@ -1390,8 +1352,6 @@ globalThis.TRZIP_DATA_API = Object.freeze({
   validatedBundle,
   loadTrends,
   loadShowcase,
-  loadArchive,
-  validatedArchive,
   sortTrends,
   listPortfolios,
   getPortfolio,

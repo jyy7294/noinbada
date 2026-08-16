@@ -199,7 +199,6 @@
             <span data-home-observed="1" style="font-weight:500; font-size:12px; color:#8B8D98;">기준 시각 확인 중</span>
             <div style="display:flex; align-items:center; gap:9px; flex:none;">
               <button data-critical-touch-target="1" onClick="{{ openSelectionGuide }}" type="button" aria-haspopup="dialog" style="min-width:44px; height:44px; border:0; padding:0 2px; background:none; display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:700; font-size:11px; color:#8B6FD6; cursor:pointer;">선정 기준</button>
-              <button data-critical-touch-target="1" onClick="{{ openArchive }}" data-archive-open="1" type="button" aria-haspopup="dialog" style="min-width:44px; height:44px; border:0; padding:0 2px; background:none; display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:700; font-size:11px; color:#5B21C0; cursor:pointer;">지난 트렌드</button>
               <button data-critical-touch-target="1" data-view-btn2="toggle" type="button" aria-label="트렌드를 목록으로 보기" aria-pressed="false" style="min-width:44px; height:44px; border:0; padding:0 2px; background:none; display:inline-flex; align-items:center; justify-content:center; font-family:inherit; font-weight:600; font-size:11px; color:#5B21C0; text-decoration:underline; text-underline-offset:3px; cursor:pointer;">List View</button>
             </div>
           </div>
@@ -2203,7 +2202,7 @@ class Component extends DCLogic {
   analyticsEvents = new Set([
     'trend_card_impression', 'trend_detail_view', 'company_card_click',
     'company_evidence_view', 'kiwoom_symbol_open', 'company_watch_toggle',
-    'archive_open', 'archive_filter', 'archive_case_open', 'selection_guide_open',
+    'selection_guide_open',
     'portfolio_create', 'portfolio_create_blocked'
   ]);
 
@@ -2792,82 +2791,14 @@ class Component extends DCLogic {
     const body = document.createElement('div');
     body.style.cssText = 'flex:1;overflow-y:auto;padding:18px 18px 28px;';
     body.innerHTML = [
-      ['1', '원천 관측', '매시 수집한 실제 관측 순위만 사용합니다.'],
-      ['2', '사건 단위 병합', '표현이 달라도 같은 사건·제품·콘텐츠를 가리키면 하나의 흐름으로 묶습니다.'],
-      ['3', '안전 필터', '정치·범죄·재난·사생활·혐오와 맥락이 불명확한 표현은 공개 대상에서 제외합니다.'],
-      ['4', '홈 후보 내부 정렬', '상승 속도 V 35% + 교차 확산 B 25% + 현재 관심 A 20% + 반복 관측 P 10% + 최신성 R 10%로 공개 후보끼리 비교합니다.'],
-      ['5', '완성도 보강', '수집분은 4시간 단위로 묶어 맥락·관련 키워드·기업 연결을 보강합니다. 이 단계는 원천 순위와 홈 후보 내부 점수를 바꾸지 않습니다.']
+      ['1', '실제 흐름 확인', '매시 모인 실제 관심 흐름을 확인합니다.'],
+      ['2', '같은 사건 묶기', '표현이 달라도 같은 사건·제품·콘텐츠라면 하나의 트렌드로 정리합니다.'],
+      ['3', '안전 기준 적용', '정치·범죄·재난·사생활·혐오와 의미가 불명확한 표현은 공개하지 않습니다.'],
+      ['4', '최종 선택', '자동 검토 결과를 확인한 뒤 찬희님이 직접 승인한 트렌드만 공개합니다.']
     ].map(([number, name, description]) => '<div style="display:flex;gap:12px;padding:15px 0;border-bottom:1px solid #F0EDF7;">'
       + '<span style="width:28px;height:28px;flex:none;border-radius:999px;background:#7B3FF2;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;">' + number + '</span>'
-      + '<div><div style="font-weight:800;font-size:14px;color:#1A1A22;">' + name + '</div><div style="margin-top:4px;font-weight:500;font-size:12px;line-height:1.55;color:#6B6E7B;">' + description + '</div></div></div>').join('')
-      + '<div style="margin-top:18px;padding:14px;border-radius:16px;background:#F7F4FF;font-weight:600;font-size:11.5px;line-height:1.6;color:#5B21C0;"><b style="font-weight:800;">SelectionScore = 35V + 25B + 20A + 10P + 10R</b><br>이 식은 원천 관측 순위가 아니라 홈 공개 후보의 내부 정렬식입니다. 실측 원천 점수는 별도 Python 산식으로 계산합니다. LLM 문구, 관련 키워드 수, 기업 수는 어느 점수에도 가점으로 반영하지 않습니다.</div>';
+      + '<div><div style="font-weight:800;font-size:14px;color:#1A1A22;">' + name + '</div><div style="margin-top:4px;font-weight:500;font-size:12px;line-height:1.55;color:#6B6E7B;">' + description + '</div></div></div>').join('');
     overlay.appendChild(body);
-  };
-
-  openArchive = async () => {
-    const overlay = this.homeOverlay('지난 트렌드', 'trend-archive');
-    if (!overlay) return;
-    this.track('archive_open');
-    const loading = document.createElement('div');
-    loading.style.cssText = 'padding:28px 20px;font-weight:700;font-size:13px;color:#8B8D98;';
-    loading.textContent = '검수된 기록을 불러오고 있어요';
-    overlay.appendChild(loading);
-    try {
-      const api = this.dataApi || window.TRZIP_DATA_API;
-      if (!api || typeof api.loadArchive !== 'function') throw new Error('지난 트렌드 자료를 연결하지 못했습니다.');
-      const archive = await api.loadArchive();
-      loading.remove();
-      const intro = document.createElement('div');
-      intro.style.cssText = 'padding:14px 18px 11px;';
-      intro.innerHTML = '<div style="font-weight:800;font-size:14px;color:#1A1A22;">검수된 과거 트렌드 ' + archive.item_count + '건</div>'
-        + '<div style="margin-top:4px;font-weight:500;font-size:11px;line-height:1.5;color:#8B8D98;">과거 조사 자료를 날짜순으로 정리했습니다. 통합 순위에는 반영하지 않습니다.</div>';
-      const filters = document.createElement('div');
-      filters.style.cssText = 'display:flex;gap:7px;overflow-x:auto;padding:0 18px 12px;scrollbar-width:none;';
-      const list = document.createElement('div');
-      list.setAttribute('data-archive-list', '1');
-      list.style.cssText = 'flex:1;overflow-y:auto;padding:0 16px 28px;';
-      const escape = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-      })[char]);
-      const render = (category = 'all') => {
-        const items = archive.items.filter((item) => category === 'all' || item.category === category);
-        list.innerHTML = items.map((item) => {
-          const date = String(item.peak_hint || item.active_to || '').replace(/^(\d{4})-(\d{2})-(\d{2})$/, '$1.$2.$3');
-          const keywords = (item.keywords || []).slice(0, 5).map((keyword) => '<span style="padding:5px 8px;border-radius:999px;background:#F7F4FF;color:#5B21C0;font-weight:700;font-size:10px;">#' + escape(keyword) + '</span>').join('');
-          const companyNames = (item.companies || []).map((company) => escape(company.name)).join(' · ');
-          const companyDetails = (item.companies || []).map((company) => '<div style="padding:10px 0;border-top:1px solid #F0EDF7;"><div style="font-weight:800;font-size:12px;color:#1A1A22;">' + escape(company.name) + ' <span style="font-weight:600;color:#8B6FD6;">' + escape(company.role) + '</span></div><div style="margin-top:4px;font-weight:500;font-size:10.5px;line-height:1.5;color:#6B6E7B;">' + escape(this.publicConnectionCopy({ ...company, company: company.name, company_role_label: company.role, connection_explanation: company.connection_context })) + '</div></div>').join('');
-          return '<article data-archive-case="' + escape(item.id) + '" style="margin-top:10px;padding:15px;border:1px solid #ECE7F8;border-radius:18px;background:#FFFFFF;">'
-            + '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;"><span style="font-weight:800;font-size:10.5px;color:#7B3FF2;">' + escape(item.category_label) + '</span><time style="font-weight:600;font-size:10px;color:#A1A3AD;">' + escape(date) + '</time></div>'
-            + '<h3 style="margin:7px 0 0;font-size:16px;line-height:1.3;color:#1A1A22;letter-spacing:-0.03em;">' + escape(item.display_name) + '</h3>'
-            + '<p style="margin:7px 0 0;font-weight:500;font-size:11.5px;line-height:1.55;color:#555864;">' + escape(this.integratedTrendCopy(item.why_now)) + '</p>'
-            + '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">' + keywords + '</div>'
-            + '<div style="margin-top:11px;font-weight:600;font-size:10.5px;line-height:1.45;color:#8B8D98;">함께 살펴본 기업 · ' + companyNames + '</div>'
-            + '<details style="margin-top:10px;"><summary style="cursor:pointer;font-weight:800;font-size:11px;color:#5B21C0;">기업 연결 맥락 보기</summary><div style="margin-top:8px;">' + companyDetails + '</div></details>'
-            + '</article>';
-        }).join('');
-        list.querySelectorAll('details').forEach((details) => details.addEventListener('toggle', () => {
-          if (details.open) this.track('archive_case_open', { archive_id: details.closest('[data-archive-case]')?.getAttribute('data-archive-case') });
-        }));
-      };
-      const filterRows = [{ key: 'all', label: '전체', count: archive.item_count }, ...(archive.categories || [])];
-      filterRows.forEach((row, index) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.textContent = row.label + ' ' + row.count;
-        button.style.cssText = 'flex:none;border:1px solid ' + (index === 0 ? '#7B3FF2' : '#E6E0F3') + ';border-radius:999px;padding:7px 11px;background:' + (index === 0 ? '#7B3FF2' : '#FFFFFF') + ';color:' + (index === 0 ? '#FFFFFF' : '#6B6E7B') + ';font:700 10.5px Pretendard,system-ui;cursor:pointer;';
-        button.onclick = () => {
-          filters.querySelectorAll('button').forEach((chip) => { chip.style.background = '#FFFFFF'; chip.style.color = '#6B6E7B'; chip.style.borderColor = '#E6E0F3'; });
-          button.style.background = '#7B3FF2'; button.style.color = '#FFFFFF'; button.style.borderColor = '#7B3FF2';
-          render(row.key);
-          this.track('archive_filter', { category: row.key });
-        };
-        filters.appendChild(button);
-      });
-      overlay.append(intro, filters, list);
-      render('all');
-    } catch (error) {
-      loading.textContent = error.message || '지난 트렌드 기록을 불러오지 못했어요.';
-    }
   };
 
   setOwnerMode(on) {
@@ -5630,7 +5561,6 @@ class Component extends DCLogic {
       periodMiddleLabel: interestChart.labels[1],
       periodEndLabel: interestChart.labels[2],
       goPostList: this.goPostList,
-      openArchive: this.openArchive,
       openSelectionGuide: this.openSelectionGuide,
       goPostDetail: this.goPostDetail,
       myBack: this.myBack,

@@ -17,7 +17,7 @@ def main() -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("frontend/trend-archive.json"),
+        default=Path("data/reconstructed/trzip-final-50-20260814/archive-feed.json"),
     )
     args = parser.parse_args()
     feed = write_archive_feed(

@@ -100,7 +100,7 @@ def test_frontend_has_no_demo_or_export_ui_copy() -> None:
 
 
 def test_critical_mobile_controls_have_accessible_touch_targets() -> None:
-    assert INDEX.count('data-critical-touch-target="1"') >= 5
+    assert INDEX.count('data-critical-touch-target="1"') >= 4
     assert "min-width:44px; height:44px" in INDEX
     assert "width:44px;height:44px;margin:-6px" in INDEX
     assert '[data-critical-touch-target]:focus-visible' in INDEX
@@ -987,23 +987,17 @@ def test_core_touch_targets_use_semantic_buttons() -> None:
     assert '<div data-pd="stashBtn"' not in INDEX
 
 
-def test_reviewed_archive_is_loaded_separately_from_live_ranking() -> None:
+def test_past_trend_archive_is_not_exposed_in_the_public_frontend() -> None:
     for token in (
-        "ARCHIVE_URL = './trend-archive.json'",
-        "validatedArchive(payload)",
-        "async function loadArchive()",
-        "data_mode !== 'reconstructed_reference'",
-        "ranking_eligible !== false",
-        "ranking_effect !== 'none'",
+        "지난 트렌드",
+        "data-archive-open",
+        "openArchive = async () =>",
+        "ARCHIVE_URL",
+        "loadArchive",
+        "validatedArchive",
     ):
-        assert token in DATA
-    assert 'data-archive-open="1"' in INDEX
-    assert "openArchive = async () =>" in INDEX
-    assert "검수된 과거 트렌드" in INDEX
-    assert "통합 순위에는 반영하지 않습니다." in INDEX
-    assert "기업 연결 맥락 보기" in INDEX
-    assert "data-archive-case" in INDEX
-    assert "순위" not in INDEX[INDEX.index("openArchive = async () =>"):INDEX.index("  setOwnerMode(on)")].replace("통합 순위에는 반영하지 않습니다.", "")
+        assert token not in INDEX
+        assert token not in DATA
 
 
 def test_selection_disclosure_and_portfolio_safety_rules_are_visible_and_enforced() -> None:
@@ -1019,15 +1013,15 @@ def test_selection_disclosure_and_portfolio_safety_rules_are_visible_and_enforce
     assert "deletePortfolio(id)" in DATA
 
 
-def test_selection_disclosure_distinguishes_source_rank_from_home_candidate_order() -> None:
-    assert "SelectionScore = 35V + 25B + 20A + 10P + 10R" in INDEX
-    for component in ("상승 속도", "교차 확산", "현재 관심", "반복 관측", "최신성"):
-        assert component in INDEX
-    assert "원천 관측 순위가 아니라 홈 공개 후보의 내부 정렬식" in INDEX
-    assert "실측 원천 점수는 별도 Python 산식" in INDEX
-    assert "LLM 문구, 관련 키워드 수, 기업 수는 어느 점수에도 가점으로 반영하지 않습니다." in INDEX
-    assert "4시간 단위" in INDEX
-    assert "원천 순위와 홈 후보 내부 점수를 바꾸지 않습니다." in INDEX
+def test_selection_guide_uses_plain_language_and_human_final_approval() -> None:
+    assert "찬희님이 직접 승인한 트렌드만 공개합니다." in INDEX
+    for token in (
+        "SelectionScore",
+        "35V + 25B + 20A + 10P + 10R",
+        "원천 관측 순위가 아니라 홈 공개 후보의 내부 정렬식",
+        "실측 원천 점수는 별도 Python 산식",
+    ):
+        assert token not in INDEX
 
 
 def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -> None:
@@ -1035,7 +1029,7 @@ def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -
     assert ">통합 관심지수</span>" in INDEX
     assert "전체 수집 기간의 실제 원천 순위를 사건 단위로 통합해" in INDEX
     assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
-    assert "매시 수집한 실제 관측 순위만 사용합니다." in INDEX
+    assert "전체 수집 기간의 순위 흐름을 분석해 승인된 시연 트렌드를 공개해요" in INDEX
     assert "+ ' · 통합 트렌드</span>" in INDEX
     assert "최신 통합 트렌드 수집을 확인했습니다." in DATA
     assert "integratedTrendCopy(value)" in INDEX

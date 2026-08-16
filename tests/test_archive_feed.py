@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from trzip.archive_feed import load_archive_source
@@ -8,7 +7,6 @@ from trzip.archive_feed import load_archive_source
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "data" / "reconstructed" / "trzip-final-50-20260814"
-FRONTEND_FEED = ROOT / "frontend" / "trend-archive.json"
 
 
 def _non_whitespace_length(value: str) -> int:
@@ -32,9 +30,3 @@ def test_archive_is_a_non_ranking_projection_of_the_reviewed_fifty() -> None:
         for item in feed["items"]
         for keyword in item["keywords"]
     )
-
-
-def test_committed_frontend_archive_matches_the_builder() -> None:
-    expected = load_archive_source(SOURCE / "events.ndjson", SOURCE / "manifest.json")
-    actual = json.loads(FRONTEND_FEED.read_text(encoding="utf-8"))
-    assert actual == expected
