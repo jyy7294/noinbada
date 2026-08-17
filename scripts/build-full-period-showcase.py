@@ -47,6 +47,11 @@ def _official_listing_verification(*, market: str, stock_code: str, observed_at:
         ("NASDAQ", "PSKY"): "https://ir.paramount.com/investor-faqs/",
         ("NASDAQ", "MNST"): "https://www.nasdaq.com/market-activity/stocks/mnst",
         ("NASDAQ", "DKNG"): "https://www.nasdaq.com/market-activity/stocks/dkng",
+        ("NASDAQ", "GOOGL"): "https://www.nasdaq.com/market-activity/stocks/googl",
+        ("NASDAQ", "META"): "https://www.nasdaq.com/market-activity/stocks/meta",
+        ("NASDAQ", "AAPL"): "https://www.nasdaq.com/market-activity/stocks/aapl",
+        ("NASDAQ", "SPCX"): "https://www.nasdaq.com/market-activity/stocks/spcx",
+        ("NYSE", "TDY"): "https://www.nyse.com/quote/XNYS:TDY",
     }
     evidence_url = known_us_listings.get((market, stock_code))
     if evidence_url:

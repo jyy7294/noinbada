@@ -45,6 +45,21 @@ def test_showcase_has_ten_ranked_cards_five_keywords_and_five_to_ten_specific_co
     assert doomsday["companies"][0]["market"] == "NYSE"
     assert "마블 스튜디오" in doomsday["companies"][0]["connection_explanation"]
 
+    perseids = next(card for card in payload["cards"] if card["event_key"] == "페르세우스 유성우")
+    assert len(perseids["companies"]) == 10
+    assert {company["company_role_category"] for company in perseids["companies"]} == {
+        "manufacturing_development",
+        "raw_materials_components",
+        "platform_service",
+        "event_sponsorship",
+    }
+    companies = {company["company"] for company in perseids["companies"]}
+    assert {"SpaceX", "Alphabet", "Meta Platforms", "Apple", "LG이노텍"} <= companies
+    assert "NAVER" not in companies
+    spacex = next(company for company in perseids["companies"] if company["company"] == "SpaceX")
+    assert spacex["corporate_relation_path"] == ["X", "xAI", "SpaceX"]
+    assert spacex["stock_code"] == "SPCX"
+
 
 def test_showcase_never_changes_observed_rank_or_claims_observed_company_relations():
     ranking = [

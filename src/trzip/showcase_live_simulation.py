@@ -12,6 +12,7 @@ from datetime import UTC, datetime, timedelta, timezone
 from typing import Iterable
 
 from .company_roles import COMPANY_ROLE_LABELS
+from .company_relation_graph import resolve_listed_parent
 
 
 SCHEMA_VERSION = "trzip-showcase-live-simulation-v1"
@@ -162,6 +163,36 @@ KEYWORDS = {
     "코믹월드": ("코스프레", "동인행사", "굿즈", "일러스트", "행사티켓"),
 }
 
+
+def _listed_parent_card(
+    entity: str,
+    *,
+    role: str,
+    homepage: str,
+    explanation: str,
+) -> tuple:
+    """Create a display row from the sourced corporate-relation graph.
+
+    This prevents a future card author from treating a platform's founder,
+    search visibility, or similarly named company as a listed parent.
+    """
+
+    resolution = resolve_listed_parent(entity)
+    if resolution.get("status") != "resolved":
+        raise ValueError(f"listed parent could not be resolved for {entity}")
+    return (
+        str(resolution["company"]),
+        str(resolution["ticker"]),
+        role,
+        homepage,
+        explanation,
+        str(resolution["market"]),
+        "direct",
+        str(resolution["evidence_urls"][-1]),
+        resolution,
+    )
+
+
 COMPANY_CARDS = {
     "대한민국 광복절": (
         # 광복절은 특정 한 기업의 수혜를 단정할 수 없는 기념일입니다. 따라서
@@ -193,11 +224,26 @@ COMPANY_CARDS = {
         ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "아티스트 검색·클립·팬 콘텐츠 탐색 플랫폼"),
     ),
     "페르세우스 유성우": (
-        ("삼성전자", "005930", "manufacturing_development", "https://www.samsung.com/sec/", "야간 촬영용 스마트폰 카메라·기기"),
-        ("삼성전기", "009150", "raw_materials_components", "https://www.samsungsem.com/", "카메라 모듈·정밀 광학부품"),
-        ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "유성우 일정·관측지 정보 검색 플랫폼"),
-        ("하나투어", "039130", "event_sponsorship", "https://www.hanatourcompany.com/", "별 관측 명소 연계 여행 상품"),
-        ("모두투어", "080160", "event_sponsorship", "https://www.modetour.com/", "별 관측 명소 연계 여행 상품"),
+        # A meteor shower is an observation and shooting journey.  Search is
+        # not a sufficient relationship by itself, so Naver is intentionally
+        # excluded.  X is represented by its current listed parent SpaceX,
+        # which also owns xAI; it is not substituted with an unrelated search
+        # portal or with Tesla merely because it shares a founder.
+        ("삼성전자", "005930", "manufacturing_development", "https://www.samsung.com/sec/", "야간 모드·장노출을 지원하는 스마트폰 카메라로 별똥별 촬영 수요와 맞닿아 있습니다."),
+        ("LG이노텍", "011070", "raw_materials_components", "https://www.lginnotek.com/", "스마트폰용 카메라 모듈과 광학부품을 개발·공급하는 국내 상장기업입니다."),
+        ("삼성전기", "009150", "raw_materials_components", "https://www.samsungsem.com/", "카메라 모듈에 쓰이는 정밀 기판·부품 공급망으로 연결됩니다."),
+        ("Apple", "AAPL", "manufacturing_development", "https://www.apple.com/", "야간 모드·장노출 촬영 기능을 제공하는 스마트폰 카메라 기기로 관측 기록 수요와 맞닿아 있습니다.", "NASDAQ", "adjacent", "https://support.apple.com/guide/iphone/take-night-mode-photos-iph1a3c5b3f/ios"),
+        ("Teledyne Technologies", "TDY", "raw_materials_components", "https://www.teledyne.com/", "저조도 과학·산업 이미징에 쓰이는 센서와 카메라 기술을 제공하는 상장기업입니다.", "NYSE", "adjacent", "https://www.teledynevisionsolutions.com/"),
+        _listed_parent_card(
+            "X",
+            role="platform_service",
+            homepage="https://www.spacex.com/",
+            explanation="X → xAI → SpaceX의 소유 경로를 따라 확인한 상장 모회사입니다. 유성우 관측 정보가 X에서 실시간으로 대화·확산되는 플랫폼 축으로 연결됩니다.",
+        ),
+        ("Alphabet", "GOOGL", "platform_service", "https://abc.xyz/", "YouTube를 통해 관측 시간·촬영법·실시간 영상을 소비하는 영상 플랫폼 축입니다.", "NASDAQ", "contextual", "https://about.youtube/"),
+        ("Meta Platforms", "META", "platform_service", "https://about.meta.com/", "Instagram에서 관측 사진과 릴스가 공유·확산되는 소셜 플랫폼 축입니다.", "NASDAQ", "contextual", "https://about.meta.com/technologies/instagram/"),
+        ("하나투어", "039130", "event_sponsorship", "https://www.hanatourcompany.com/", "별 관측 명소를 찾고 이동하는 관측 여행 수요와 연결됩니다."),
+        ("모두투어", "080160", "event_sponsorship", "https://www.modetour.com/", "야간 관측 명소·체험형 여행을 탐색하는 수요의 인접 여행사입니다."),
     ),
     "한화 vs 삼성": (
         ("한화", "000880", "ownership_investment", "https://www.hanwhacorp.co.kr/", "한화그룹 프로야구 구단 브랜드"),
@@ -278,7 +324,8 @@ def build_showcase_enrichment(
             )
             relation_tier = str(market_values[1] if len(market_values) > 1 else "contextual")
             relationship_evidence_url = str(market_values[2] if len(market_values) > 2 else homepage)
-            companies.append({
+            resolution = market_values[3] if len(market_values) > 3 else None
+            company_row = {
                 "company": company,
                 "stock_code": stock_code,
                 "market": market,
@@ -292,7 +339,13 @@ def build_showcase_enrichment(
                 "company_identity_url": homepage,
                 "evidence_scope": "company_identity_only_not_observed_trend_relation",
                 "ranking_effect": "none",
-            })
+            }
+            if isinstance(resolution, dict):
+                company_row["corporate_relation_path"] = list(resolution["path"])
+                company_row["corporate_relation_types"] = list(resolution["relation_types"])
+                company_row["corporate_relation_evidence_urls"] = list(resolution["evidence_urls"])
+                company_row["listing_evidence_url"] = str(resolution["listing_evidence_url"])
+            companies.append(company_row)
         roles = {row["company_role_category"] for row in companies}
         # A card may show fewer than five companies only when every displayed
         # company has a direct, source-backed commercial relationship.  It is
