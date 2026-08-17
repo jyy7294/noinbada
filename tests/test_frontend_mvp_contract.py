@@ -2125,6 +2125,10 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'data-trend-description-toggle="1"' in INDEX
     assert 'data-trend-description-body="1"' in INDEX
     assert '트렌드 설명 보기' in INDEX
+    assert 'interestPoint: null, trendDescriptionOpen: true' in INDEX
+    assert 'trend: next, trendDescriptionOpen: true' in INDEX
+    assert 'trend: i, trendOpen: false, trendDescriptionOpen: true' in INDEX
+    assert 'trend: i, trendOpen: false, trendDescriptionOpen: false' not in INDEX
     assert 'data-trend-icon-src="{{ trendIconUrl }}"' in INDEX
     assert '{{ trendIconFallback }}</span>' in INDEX
     assert 'background:#F3EFFC; border-radius:22px' in INDEX
