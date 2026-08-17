@@ -457,7 +457,7 @@
           <button type="button" data-related-company-cta="1" aria-label="{{ relatedCompaniesAriaLabel }}" onClick="{{ goCompanies }}" style="width:100%; min-height:88px; border:1px solid #DDCEF9; display:flex; align-items:center; gap:13px; background:linear-gradient(135deg,#FCFAFF 0%,#F1E9FF 100%); border-radius:20px; padding:14px 15px; font-family:inherit; text-align:left; cursor:pointer; box-shadow:0 10px 22px rgba(101,34,220,0.11);">
             <div aria-hidden="true" style="display:flex; align-items:center; min-width:94px; padding-left:1px;">
               <sc-for list="{{ relatedCompanyPreview }}" as="company" hint-placeholder-count="3">
-                <span title="{{ company.name }}" data-related-company-logo="{{ company.logoName }}" data-related-company-logo-size="40" style="{{ company.logoStyle }}">{{ company.initial }}</span>
+                <span title="{{ company.name }}" data-related-company-logo="{{ company.logoName }}" data-related-company-logo-url="{{ company.logoUrl }}" data-related-company-logo-size="40" style="{{ company.logoStyle }}">{{ company.initial }}</span>
               </sc-for>
             </div>
             <div style="flex:1; min-width:0;">
@@ -543,7 +543,7 @@
                   <div style="flex:1; min-width:0;">
                     <div style="display:flex; align-items:center;">
                       <sc-for list="{{ f.chips }}" as="ch" hint-placeholder-count="3">
-                        <span data-related-company-logo="{{ ch.logoName }}" data-related-company-logo-size="46" style="{{ ch.avatar }}">{{ ch.initial }}</span>
+                        <span data-related-company-logo="{{ ch.logoName }}" data-related-company-logo-url="{{ ch.logoUrl }}" data-related-company-logo-size="46" style="{{ ch.avatar }}">{{ ch.initial }}</span>
                       </sc-for>
                       <span style="font-weight:700; font-size:13px; color:#5B21C0; margin-left:10px;">{{ f.count }}</span>
                     </div>
@@ -558,7 +558,7 @@
                   <div data-folder-body="1" style="display:flex; flex-direction:column; gap:8px; margin-top:12px;">
                     <sc-for list="{{ f.companies }}" as="c" hint-placeholder-count="2">
                       <button data-folder-company="1" type="button" onClick="{{ c.open }}" style="width:100%; background:#FAF9FE; border:1px solid #EEEBF7; border-radius:14px; padding:12px 13px; display:flex; align-items:center; gap:11px; font-family:inherit; text-align:left; cursor:pointer;">
-                        <span data-related-company-logo="{{ c.logoName }}" data-related-company-logo-size="44" style="{{ c.avatar }}">{{ c.initial }}</span>
+                        <span data-related-company-logo="{{ c.logoName }}" data-related-company-logo-url="{{ c.logoUrl }}" data-related-company-logo-size="44" style="{{ c.avatar }}">{{ c.initial }}</span>
                         <div style="flex:1; min-width:0;">
                           <div title="{{ c.name }}" style="font-weight:700; font-size:15px; line-height:1.25; color:#1A1A22; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;">{{ c.name }}</div>
                           <div style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ c.desc }}</div>
@@ -1932,7 +1932,11 @@ class Component extends DCLogic {
     // 관련기업 카드·미리보기는 렌더 뒤 동일한 검증 로고 캐시로 주입합니다.
     document.querySelectorAll('[data-related-company-logo]').forEach((badge) => {
       const name = String(badge.getAttribute('data-related-company-logo') || '').trim();
-      const url = name && this.logoCache[name];
+      const rawUrl = String(badge.getAttribute('data-related-company-logo-url') || '').trim();
+      let url = rawUrl || (name && this.logoCache[name]);
+      try {
+        url = url && new URL(url, window.location.href).protocol === 'https:' ? url : '';
+      } catch (_) { url = ''; }
       if (!url) return;
       badge.setAttribute('data-logo-company', name);
       apply(badge, url, Number(badge.getAttribute('data-related-company-logo-size')) || 40);
@@ -6518,6 +6522,7 @@ class Component extends DCLogic {
       return {
         name,
         logoName: logo ? name : '',
+        logoUrl: logo || '',
         initial: logo ? '' : String(initial || name || '?').slice(0, 1),
         logoStyle: 'width:40px; height:40px; flex:none; border-radius:999px; display:flex; align-items:center; justify-content:center; overflow:hidden; box-sizing:border-box; background:'
           + (logo ? '#FFFFFF' : shades[index % shades.length])
@@ -6625,6 +6630,7 @@ class Component extends DCLogic {
           const logo = this.companyLogo(company);
           return {
           logoName: logo ? cname : '',
+          logoUrl: logo || '',
           initial: logo ? '' : initial,
           avatar: 'width:46px; height:46px; flex:none; border-radius:999px; background:'
             + (logo ? '#FFFFFF' : shades[ci % shades.length])
@@ -6637,6 +6643,7 @@ class Component extends DCLogic {
           const logo = this.companyLogo(company);
           return {
           logoName: logo ? name : '',
+          logoUrl: logo || '',
           initial: logo ? '' : initial, name, desc,
           open: (e) => {
             if (e && e.stopPropagation) e.stopPropagation();
