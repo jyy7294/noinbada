@@ -812,7 +812,6 @@
             <div style="flex:1; min-width:0;">
               <div style="display:flex; align-items:center; gap:6px;">
                 <span data-profile="name" style="font-weight:800; font-size:17px; color:#1A1A22; letter-spacing:-0.03em;">@나</span>
-                <span data-profile="badge" style="flex:none; background:#F3EEFF; border-radius:6px; padding:2px 7px; font-weight:600; font-size:10px; color:#5B21C0; white-space:nowrap;">밈 수집가</span>
               </div>
               <div data-profile="bio" style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:3px;">트렌드에서 기업을 발견하는 사람</div>
             </div>
@@ -3811,7 +3810,7 @@ class Component extends DCLogic {
   };
 
   profileDefaults() {
-    return { name: '@나', badge: '밈 수집가', bio: '트렌드에서 기업을 발견하는 사람', emoji: '🧢' };
+    return { name: '@나', bio: '트렌드에서 기업을 발견하는 사람', emoji: '🧢' };
   }
 
   profileData() {
@@ -3821,7 +3820,6 @@ class Component extends DCLogic {
       if (!saved || typeof saved !== 'object') return defaults;
       return {
         name: String(saved.name || defaults.name).slice(0, 18),
-        badge: String(saved.badge || defaults.badge).slice(0, 12),
         bio: String(saved.bio || defaults.bio).slice(0, 48),
         emoji: ['🧢', '💜', '🔎', '📈', '✨', '🎧'].includes(saved.emoji) ? saved.emoji : defaults.emoji
       };
@@ -3855,7 +3853,6 @@ class Component extends DCLogic {
       + '<div style="margin-top:16px;font-weight:800;font-size:13px;color:#1A1A22;">프로필 아이콘</div><div data-profile-emojis="1" style="display:flex;gap:8px;margin-top:9px;"></div>'
       + field('닉네임', 'name', profile.name.replace(/^@/, ''), 16, '@는 자동으로 붙습니다.')
       + field('한 줄 소개', 'bio', profile.bio, 48, '나를 소개하는 문장을 적어주세요.')
-      + field('프로필 태그', 'badge', profile.badge, 12, '예: 밈 수집가, 트렌드 탐험가')
       + '<button type="submit" style="width:100%;height:48px;margin-top:18px;border:0;border-radius:14px;background:#7B3FF2;color:#FFFFFF;font:800 15px inherit;cursor:pointer;">저장하기</button>';
     const emojiBox = sheet.querySelector('[data-profile-emojis]');
     const icons = ['🧢', '💜', '🔎', '📈', '✨', '🎧'];
@@ -3873,14 +3870,13 @@ class Component extends DCLogic {
     sheet.onsubmit = (event) => {
       event.preventDefault();
       const read = (key) => String((sheet.querySelector('[data-profile-field="' + key + '"]') || {}).value || '').trim();
-      const next = { name: read('name').replace(/^@+/, '').slice(0, 16), bio: read('bio').slice(0, 48), badge: read('badge').slice(0, 12), emoji: picked };
+      const next = { name: read('name').replace(/^@+/, '').slice(0, 16), bio: read('bio').slice(0, 48), emoji: picked };
       if (!next.name) { this.shareToast(page, '닉네임을 입력해 주세요'); return; }
       if (!next.bio) next.bio = this.profileDefaults().bio;
-      if (!next.badge) next.badge = this.profileDefaults().badge;
       next.name = '@' + next.name;
       try { localStorage.setItem('trzip_my_profile_v1', JSON.stringify(next)); } catch (_) {}
       this.renderMyProfile();
-      this.track('profile_update', { has_bio: Boolean(next.bio), has_badge: Boolean(next.badge) });
+      this.track('profile_update', { has_bio: Boolean(next.bio) });
       close();
       this.shareToast(page, '프로필을 저장했어요');
     };

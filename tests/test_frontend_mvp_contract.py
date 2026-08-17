@@ -154,6 +154,14 @@ def test_each_portfolio_detail_has_an_accessible_share_action_with_its_own_paylo
     assert "this.renderPortfolioDetail(sharedPortfolio);" in portfolio_render
 
 
+def test_profile_editor_uses_nickname_bio_and_icon_without_a_redundant_profile_tag() -> None:
+    assert 'data-profile="badge"' not in INDEX
+    assert "프로필 태그" not in INDEX
+    profile_methods = INDEX[INDEX.index("  profileDefaults() {") : INDEX.index("  myStats() {")]
+    assert "badge:" not in profile_methods
+    assert "has_badge" not in profile_methods
+
+
 def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> None:
     method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
     assert "home.querySelectorAll('[data-mp-row],[data-portfolio-loading]')" in method
