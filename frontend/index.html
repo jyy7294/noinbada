@@ -1786,7 +1786,10 @@ class Component extends DCLogic {
   }
 
   renderPresentationPortfolios() {
-    const portfolios = this.buildPresentationPortfolios();
+    const seededPortfolios = this.buildPresentationPortfolios();
+    // 사용자가 만든 포트도 마이페이지의 사본이 아니라 전체 밈트폴리오 피드의
+    // 같은 레코드입니다. 저장 직후 두 화면이 같은 목록을 다시 그립니다.
+    const portfolios = [...this.buildSavedPortfolioViews(seededPortfolios), ...seededPortfolios];
     this.presentationPortfolios = portfolios;
     this.portfolioById = new Map(portfolios.map((portfolio) => [portfolio.id, portfolio]));
     const root = document.getElementById('dc-root') || document;
@@ -3291,6 +3294,7 @@ class Component extends DCLogic {
         if (savedId && this.dataApi && this.dataApi.deletePortfolio) {
           this.dataApi.deletePortfolio(savedId);
           this.activePortfolio = null;
+          this.renderPresentationPortfolios();
           this.renderSavedPortfolios();
         }
       } catch (error) {
@@ -4251,10 +4255,11 @@ class Component extends DCLogic {
   };
 
   pdBack = () => {
-    // 저장 목록에서 열었더라도 포트 상세의 이전 화면은 항상 밈트폴리오 목록입니다.
-    // 내 페이지는 포트 상세의 소유·관리 화면일 뿐, 탐색 흐름의 상위 화면이 아닙니다.
-    this.pdFrom = 'list';
-    this.panTo(document.querySelector('#post-list'));
+    // 상세 화면은 "어디에서 들어왔는지"를 보존합니다.
+    // 마이페이지에서 내 포트를 열었다면 다시 마이페이지로, 목록/홈에서 열었다면
+    // 전체 밈트폴리오 목록으로 돌아가야 탐색 흐름이 끊기지 않습니다.
+    const returnToMyPage = this.pdFrom === 'my';
+    this.panTo(document.querySelector(returnToMyPage ? '#my-page' : '#post-list'));
   };
 
   goHomePost = (e) => {
@@ -5023,6 +5028,7 @@ class Component extends DCLogic {
               companies: saved.companies
             };
             this.renderPortfolioDetail(this.activePortfolio);
+            this.renderPresentationPortfolios();
             this.renderSavedPortfolios();
           }
         }
@@ -5072,6 +5078,7 @@ class Component extends DCLogic {
             emoji: String(emoji || '💜').trim(),
             keywords: tags.map((tag) => tag.replace(/^#/, '')), companies
           });
+          this.renderPresentationPortfolios();
           this.renderSavedPortfolios();
         } catch (error) {
           this.track('portfolio_create_blocked', { reason: error.message });
@@ -5391,18 +5398,16 @@ class Component extends DCLogic {
     this.renderMakerSelectedStocks();
   }
 
-  renderSavedPortfolios() {
-    if (!this.dataApi) return;
-    const list = document.querySelector('[data-my-list="1"]');
-    if (!list) return;
+  buildSavedPortfolioViews(seededPortfolios = this.presentationPortfolios || this.buildPresentationPortfolios()) {
+    if (!this.dataApi) return [];
     const trendsById = new Map(this.trends.filter((trend) => trend && trend.live).map((trend) => [trend.id, trend]));
     // 저장 당시에는 이름만 남아 있던 포트도 다시 열면 시드 포트의 기업
     // 메타데이터(로고·상장 구분·시장 스냅샷)를 복원합니다.
-    const seededByName = new Map((this.presentationPortfolios || this.buildPresentationPortfolios())
+    const seededByName = new Map(seededPortfolios
       .flatMap((portfolio) => portfolio.companies || [])
       .map((company) => [this.companyName(company), company]));
     const portfolios = this.dataApi.listPortfolios();
-    const views = portfolios.map((portfolio) => {
+    return portfolios.map((portfolio) => {
       const trend = trendsById.get(portfolio.trendTopic) || null;
       const currentByName = new Map((trend ? trend.companies : []).map((company) => [this.companyName(company), company]));
       const companies = portfolio.companies.map((company) => {
@@ -5419,9 +5424,17 @@ class Component extends DCLogic {
         keywords: portfolio.keywords.map((keyword) => String(keyword || '').replace(/^#+/, '')).slice(0, 6), companies,
         avgChange, likes: 0, sourceRank: Number(String((trend && trend.rank) || '').replace(/\D/g, '')) || 0
       };
-      this.portfolioById.set(view.id, view);
       return view;
     });
+  }
+
+  renderSavedPortfolios() {
+    if (!this.dataApi) return;
+    const list = document.querySelector('[data-my-list="1"]');
+    if (!list) return;
+    this.portfolioById = this.portfolioById || new Map();
+    const views = this.buildSavedPortfolioViews(this.presentationPortfolios || this.buildPresentationPortfolios());
+    views.forEach((view) => this.portfolioById.set(view.id, view));
     const cards = views.map((portfolio) => {
       return '<button type="button" data-my-card="1" data-portfolio-id="' + this.escapeHtml(portfolio.id) + '" aria-label="' + this.escapeHtml(portfolio.title + ' 상세 보기')
       + '" style="width:100%;border:1px solid #EEEBF7;background:#FFFFFF;border-radius:18px;padding:14px;text-align:left;cursor:pointer;display:flex;gap:11px;align-items:flex-start;">'
