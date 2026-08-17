@@ -905,8 +905,13 @@
             </div>
           </div>
 
-          <div style="font-weight:600; font-size:13px; color:#1A1A22; margin-top:22px;">어떤 트렌드에서 왔나요?</div>
-          <div data-mk="trendchips" style="visibility:hidden; display:flex; flex-wrap:wrap; gap:7px; margin-top:10px;"></div>
+          <div style="font-weight:700; font-size:13px; color:#1A1A22; margin-top:22px;">연결한 트렌드</div>
+          <div style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:4px;">이 밈트폴리오가 시작된 흐름을 선택해요</div>
+          <div style="position:relative; display:flex; align-items:center; gap:10px; min-height:52px; margin-top:10px; padding:0 13px; border:1.5px solid #E7DDFB; border-radius:15px; background:#FBF9FF;">
+            <span aria-hidden="true" style="width:28px; height:28px; flex:none; display:flex; align-items:center; justify-content:center; border-radius:10px; background:#EEE6FF; color:#6C32DD; font-size:15px;">↗</span>
+            <select data-mk="trendselect" aria-label="연결한 트렌드 선택" style="width:100%; min-width:0; appearance:none; border:0; outline:0; background:transparent; padding:0 26px 0 0; font-family:inherit; font-weight:800; font-size:14px; letter-spacing:-0.02em; color:#2B185B; cursor:pointer;"></select>
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" style="position:absolute; right:14px; pointer-events:none;"><path d="M3.5 6 8 10.5 12.5 6" fill="none" stroke="#6C32DD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </div>
 
           <div style="font-weight:600; font-size:13px; color:#1A1A22; margin-top:22px;">해시태그</div>
           <div style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:4px;">설명 대신 해시태그로 이 포트를 소개해요</div>
@@ -1749,8 +1754,8 @@ class Component extends DCLogic {
     }
     const feed = root.querySelector('[data-portfolio-feed]');
     if (feed) feed.innerHTML = '<div style="padding:34px 18px;text-align:center;font-weight:600;font-size:12px;color:#8B8D98;">최신 밈트폴리오를 불러오고 있어요</div>';
-    const chips = root.querySelector('[data-mk="trendchips"]');
-    if (chips) chips.innerHTML = '';
+    const trendSelect = root.querySelector('[data-mk="trendselect"]');
+    if (trendSelect) trendSelect.innerHTML = '';
     const stocks = root.querySelector('[data-mk="stocklist"]');
     if (stocks) stocks.innerHTML = '';
     root.querySelectorAll('[data-my-list="0"],[data-my-list="1"]').forEach((list) => {
@@ -3934,17 +3939,14 @@ class Component extends DCLogic {
     const hashWrap = mk.querySelector('[data-mk="hashwrap"]');
     if (hashWrap) hashWrap.innerHTML = '';
     tags.forEach((tg) => this.mkAddHash(tg));
-    const chips = [...mk.querySelectorAll('[data-mk-tag]')];
+    const trendSelect = mk.querySelector('[data-mk="trendselect"]');
     const norm = (x) => String(x).replace(/[#\s]/g, '');
-    let trendChip = chips.find((c) => tags.some((tg) => norm(tg) === norm(c.getAttribute('data-mk-tag'))));
-    if (!trendChip) trendChip = chips.find((c) => norm(name).indexOf(norm(c.getAttribute('data-mk-tag'))) >= 0);
-    if (trendChip) {
-      chips.forEach((c) => {
-        const sel = c === trendChip;
-        c.setAttribute('data-on', sel ? '1' : '0');
-        c.style.background = sel ? '#7B3FF2' : '#F7F4FF';
-        c.style.color = sel ? '#FFFFFF' : '#5B21C0';
-      });
+    const trendOptions = [...(trendSelect ? trendSelect.options : [])];
+    let trendOption = trendOptions.find((option) => tags.some((tg) => norm(tg) === norm(option.textContent)));
+    if (!trendOption) trendOption = trendOptions.find((option) => norm(name).indexOf(norm(option.textContent)) >= 0);
+    if (trendSelect && trendOption) {
+      trendSelect.value = trendOption.value;
+      this.hydrateMaker(trendOption.value);
     }
 
     const sourceCompanies = (this.activePortfolio && this.activePortfolio.companies) || [];
@@ -4021,18 +4023,13 @@ class Component extends DCLogic {
         submit.style.color = n ? '#FFFFFF' : '#A9ACB8';
       }
     };
-    page.querySelectorAll('[data-mk-tag]').forEach((t) => {
-      t.onclick = () => {
-        page.querySelectorAll('[data-mk-tag]').forEach((o) => {
-          const sel = o === t;
-          o.setAttribute('data-on', sel ? '1' : '0');
-          o.style.background = sel ? '#7B3FF2' : '#F7F4FF';
-          o.style.color = sel ? '#FFFFFF' : '#5B21C0';
-        });
-        const trendId = t.getAttribute('data-trend-id');
+    const trendSelect = page.querySelector('[data-mk="trendselect"]');
+    if (trendSelect) {
+      trendSelect.onchange = () => {
+        const trendId = trendSelect.value;
         if (trendId && trendId !== this.makerTrendId) this.hydrateMaker(trendId);
       };
-    });
+    }
     this.mkHashWire();
     page.querySelectorAll('[data-mk-stock]').forEach((row) => {
       row.onclick = () => {
@@ -4808,16 +4805,13 @@ class Component extends DCLogic {
         submit.style.color = n ? '#FFFFFF' : '#A9ACB8';
       }
     };
-    page.querySelectorAll('[data-mk-tag]').forEach((t) => {
-      t.onclick = () => {
-        page.querySelectorAll('[data-mk-tag]').forEach((o) => {
-          const sel = o === t;
-          o.setAttribute('data-on', sel ? '1' : '0');
-          o.style.background = sel ? '#7B3FF2' : '#F7F4FF';
-          o.style.color = sel ? '#FFFFFF' : '#5B21C0';
-        });
+    const trendSelect = page.querySelector('[data-mk="trendselect"]');
+    if (trendSelect) {
+      trendSelect.onchange = () => {
+        const trendId = trendSelect.value;
+        if (trendId && trendId !== this.makerTrendId) this.hydrateMaker(trendId);
       };
-    });
+    }
     this.mkHashWire();
     const stockOpen = page.querySelector('[data-mk="stockopen"]');
     if (stockOpen) stockOpen.onclick = () => this.openStockSearch();
@@ -4972,8 +4966,10 @@ class Component extends DCLogic {
       const emoji = (page.querySelector('[data-mk="emoji"]') || {}).textContent || '💜';
       const stocks = [...page.querySelectorAll('[data-mk-stock][data-on="1"]')].map((s) => s.getAttribute('data-mk-stock') || s.textContent.trim().split('\n')[0].trim());
       const hashes = [...page.querySelectorAll('[data-mk-hash]')].map((s) => s.getAttribute('data-mk-hash'));
-      const trend = [...page.querySelectorAll('[data-mk-tag][data-on="1"]')].map((s) => s.textContent.trim());
-      const tags = hashes.length ? hashes : trend.map((t) => '#' + t.replace(/^#/, ''));
+      const selectedTrend = page.querySelector('[data-mk="trendselect"]');
+      const selectedTrendLabel = selectedTrend && selectedTrend.selectedOptions[0]
+        ? selectedTrend.selectedOptions[0].textContent.trim() : '';
+      const tags = hashes.length ? hashes : (selectedTrendLabel ? ['#' + selectedTrendLabel.replace(/^#/, '')] : []);
       try {
         const api = this.dataApi || window.TRZIP_DATA_API;
         if (api && api.validatePortfolioContent) {
@@ -4985,8 +4981,7 @@ class Component extends DCLogic {
         return;
       }
       if (this.dataApi && this.publishedView) {
-        const selectedTag = page.querySelector('[data-mk-tag][data-on="1"]');
-        const selectedTrendId = selectedTag && selectedTag.getAttribute('data-trend-id');
+        const selectedTrendId = selectedTrend && selectedTrend.value;
         const current = this.trends.find((trend) => trend.id === selectedTrendId)
           || this.trends[Math.min(this.state.trend || 0, this.trends.length - 1)];
         const companies = [...(this.makerSelectedCompanies || new Map()).values()].slice(0, 10);
@@ -5292,16 +5287,14 @@ class Component extends DCLogic {
     const escape = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     })[char]);
-    const trendChips = page.querySelector('[data-mk="trendchips"]');
-    if (trendChips) {
-      trendChips.style.visibility = 'visible';
-      trendChips.innerHTML = this.trends.filter((item) => item && item.live).map((item) => {
-        const selected = item.id === trend.id;
-        return '<button type="button" data-mk-tag="' + escape(item.shortName || item.name) + '" data-trend-id="' + escape(item.id)
-          + '" data-on="' + (selected ? '1' : '0') + '" title="' + escape(item.name) + '" style="max-width:150px;overflow:hidden;text-overflow:ellipsis;background:' + (selected ? '#7B3FF2' : '#F7F4FF')
-          + ';border:0;border-radius:999px;padding:8px 13px;font-family:inherit;font-weight:600;font-size:12px;color:' + (selected ? '#FFFFFF' : '#5B21C0')
-          + ';cursor:pointer;white-space:nowrap;">' + escape(item.shortName || item.name) + '</button>';
+    const trendSelect = page.querySelector('[data-mk="trendselect"]');
+    if (trendSelect) {
+      trendSelect.innerHTML = this.trends.filter((item) => item && item.live).map((item) => {
+        const label = item.shortName || item.name;
+        return '<option value="' + escape(item.id) + '"' + (item.id === trend.id ? ' selected' : '') + '>'
+          + escape(label) + '</option>';
       }).join('');
+      trendSelect.value = trend.id;
     }
     const universe = this.makerUniverse(trend);
     if (changedTrend || !(this.makerSelectedCompanies instanceof Map)) {

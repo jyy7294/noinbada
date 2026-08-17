@@ -1233,7 +1233,8 @@ def test_maker_and_saved_portfolios_use_current_trends_and_companies() -> None:
     assert "if (!page || page.__mk) return;" not in INDEX
     assert "#dc-root > section { position: fixed !important" in INDEX
     assert "#dc-root section { position: fixed !important" not in INDEX
-    assert 'data-trend-id="' in INDEX
+    assert 'data-mk="trendselect"' in INDEX
+    assert "trendSelect.onchange" in INDEX
     assert "currentByName.get(name) || seededByName.get(name)" in INDEX
     assert 'data-my-stat="saved"' in INDEX
     assert 'data-my-stat="return"' in INDEX
