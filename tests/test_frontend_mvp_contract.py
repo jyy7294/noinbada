@@ -1107,6 +1107,8 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
     script = f"""
       class Guard {{
         companyLogo() {{ return ''; }}
+        resolveStockUniverseCompany(company) {{ return company; }}
+        normalizedCompanyMarket(company) {{ return company.market || company.exchange || ''; }}
         publicConnectionCopy(company, fallback) {{ return fallback; }}
         {guard_methods}
         {company_description}
@@ -1202,7 +1204,7 @@ def test_popular_portfolios_keep_the_approved_community_seed_examples() -> None:
     assert "등락순" not in INDEX
 
 
-def test_seed_meme_portfolios_use_observed_snapshots_or_an_explicit_unlisted_state() -> None:
+def test_seed_meme_portfolios_do_not_present_unverified_unlisted_companies() -> None:
     seed_block = INDEX.split("buildPresentationPortfolios()", 1)[1].split(
         "portfolioLogoMarkup", 1
     )[0]
@@ -1211,8 +1213,22 @@ def test_seed_meme_portfolios_use_observed_snapshots_or_an_explicit_unlisted_sta
     assert "synthetic: false" in seed_block
     assert "ranking_effect: 'none'" in seed_block
     assert "price_series" in seed_block
-    assert "listing_status: 'unlisted'" in seed_block
-    assert "비상장 기업이라 거래소 시세와 밸류에이션을 표시하지 않습니다." in INDEX
+    assert "listing_status: 'unlisted'" not in seed_block
+    assert "'리브스메드': { stock_code: '491000', market: 'KOSDAQ'" in seed_block
+    assert "company('제나텍'" not in seed_block
+
+
+def test_saved_company_watchlist_migrates_to_canonical_listing_and_logo_snapshot() -> None:
+    assert "trzip_company_watchlist_v2" in INDEX
+    assert "serialized !== null" in INDEX
+    assert "trzip_company_watchlist_v1" in INDEX  # one-way migration input
+    assert "resolveStockUniverseCompany" in INDEX
+    assert "normalizedCompanyMarket" in INDEX
+    assert "current_listed === false" in INDEX
+    assert "companyLogoBackground(record.company, logo)" in INDEX
+    assert "'207760', 'KOSDAQ'" in STOCKS
+    assert "https://www.mrbluecorp.com/theme/basic/image/logo.png" in STOCKS
+    assert "verified_raster_wordmark" in STOCKS
 
 
 def test_maker_and_saved_portfolios_use_current_trends_and_companies() -> None:

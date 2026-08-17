@@ -1303,13 +1303,16 @@ class Component extends DCLogic {
     const sharpRaster = verification === 'verified_raster_min_64px'
       && ['png', 'jpeg', 'gif', 'webp', 'bmp', 'ico'].includes(format)
       && width >= 64 && height >= 64;
+    const sharpWordmark = verification === 'verified_raster_wordmark'
+      && ['png', 'jpeg', 'gif', 'webp', 'bmp'].includes(format)
+      && width >= 64 && height >= 32;
     return /^https:\/\//i.test(url)
       && /^https?:\/\//i.test(sourcePageUrl)
       && /^image\//i.test(mime)
       && /^[0-9a-f]{64}$/.test(sha256)
       && company.logo_asset_source === 'official_page_asset'
       && company.logo_runtime_probe_required === false
-      && (safeSvg || sharpRaster)
+      && (safeSvg || sharpRaster || sharpWordmark)
       && provenance.asset_url === url
       && provenance.source_page_url === sourcePageUrl
       && String(provenance.mime || '').toLowerCase() === mime
@@ -1487,6 +1490,42 @@ class Component extends DCLogic {
       .trim().toLowerCase().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/.*$/, '');
   }
 
+  kosdaqCodes = new Set([
+    '030530', '035760', '035900', '041510', '048910', '053030', '067160',
+    '080160', '095700', '122870', '136480', '195500', '206560', '207760',
+    '253450', '277810', '299900', '419530', '491000'
+  ]);
+
+  normalizedCompanyMarket(company = {}) {
+    const ticker = String(company.stock_code || company.ticker || company.code || '').trim().toUpperCase();
+    const raw = String(company.market || company.exchange || '').trim().toUpperCase();
+    if (/^\d{6}$/.test(ticker) && ['KRX', 'KOSPI', 'KOSDAQ', ''].includes(raw)) {
+      return this.kosdaqCodes.has(ticker) ? 'KOSDAQ' : 'KOSPI';
+    }
+    return raw;
+  }
+
+  resolveStockUniverseCompany(company = {}) {
+    const ticker = String(company.stock_code || company.ticker || company.code || '').trim().toUpperCase();
+    const name = this.companyName(company);
+    const universe = Array.isArray(window.TRZIP_STOCK_UNIVERSE) ? window.TRZIP_STOCK_UNIVERSE : [];
+    const canonical = universe.find((row) => ticker && ticker === String(row.stock_code || row.ticker || '').trim().toUpperCase())
+      || universe.find((row) => name && name === this.companyName(row));
+    const merged = canonical ? { ...canonical, ...company } : { ...company };
+    if (canonical && this.isVerifiedOfficialLogoMetadata(canonical)) {
+      Object.keys(canonical).filter((key) => key.startsWith('logo_')).forEach((key) => { merged[key] = canonical[key]; });
+    }
+    const market = this.normalizedCompanyMarket(merged);
+    if (market) {
+      merged.market = market;
+      merged.exchange = market;
+      if (merged.listing_verification && typeof merged.listing_verification === 'object') {
+        merged.listing_verification = { ...merged.listing_verification, exchange: market };
+      }
+    }
+    return merged;
+  }
+
   logoCandidate(company) {
     const domain = this.companyDomain(company);
     if (this.isSeedMemeLogo(company)) {
@@ -1498,11 +1537,12 @@ class Component extends DCLogic {
   }
 
   companyLogo(company, priority = false) {
-    const name = this.companyName(company);
-    const candidate = this.logoCandidate(company);
+    const resolved = this.resolveStockUniverseCompany(company);
+    const name = this.companyName(resolved);
+    const candidate = this.logoCandidate(resolved);
     if (!candidate) return '';
     if (this.logoFailures.has(name + '|' + candidate)) return '';
-    this.registerLogo(name, candidate, company, priority);
+    this.registerLogo(name, candidate, resolved, priority);
     // 검증된 URL은 즉시 렌더하고, 시작 시 일괄 선로딩해 화면 전환 뒤에
     // 이니셜이 로고로 바뀌는 현상을 없앱니다. 요청 실패만 이니셜로 대체합니다.
     return candidate;
@@ -1648,10 +1688,9 @@ class Component extends DCLogic {
     });
     const profiles = {
       '원익': { stock_code: '030530', market: 'KOSDAQ', company_role_label: '반도체·소재', company_description: '원익홀딩스는 반도체·디스플레이 장비와 소재 관련 사업을 전개하는 코스닥 상장사입니다.', market_snapshot: observedSnapshot('030530.KQ', { currency: 'KRW', last_price: 21000, change_percent: 0.9615, market_cap_krw: 1604043105000, native_market_cap: 1604043105000, fx_rate_to_krw: 1, per: 83.004, per_status: 'observed', pbr: 1.6044, price_series: [19020,18760,17880,16400,16960,18790,17600,16890,18580,16790,15540,16230,17100,18510,16400,16960,14920,14160,13400,15280,19860,20400,20900,19720,19050,21000,20300,20100,20800,21000] }) },
-      '리브스메드': { listing_status: 'unlisted', market: '비상장', company_role_label: '의료기기', company_description: '리브스메드는 복강경 수술기구를 개발하는 의료기기 기업입니다.' },
+      '리브스메드': { stock_code: '491000', market: 'KOSDAQ', company_role_label: '의료기기', company_description: '리브스메드는 다관절 복강경 수술기구를 개발·제조하는 코스닥 상장 의료기기 기업입니다.', listing_verification: { status: 'verified_current', current_listed: true, exchange: 'KOSDAQ', stock_code: '491000', as_of: '2026-08-17', evidence_owner: 'KRX KIND', evidence_type: 'official_current_security_register', evidence_url: 'https://kind.krx.co.kr/corpgeneral/corpList.do?method=download&searchType=13', synthetic: false, estimated: false, ranking_effect: 'none' } },
       '모나미': { stock_code: '005360', market: 'KOSPI', company_role_label: '문구·소비재', company_description: '모나미는 필기구와 사무·미술용품을 제조·유통하는 코스피 상장사입니다.', market_snapshot: observedSnapshot('005360.KS', { currency: 'KRW', last_price: 1680, change_percent: -5.7768, market_cap_krw: 31747475760, native_market_cap: 31747475760, fx_rate_to_krw: 1, per: null, per_status: 'unavailable_loss_making', pbr: 0.4081, price_series: [1324,1318,1310,1369,1707,2145,2040,2650,3445,3730,3730,2615,2090,1977,1755,1718,1590,1445,1453,1517,1508,1615,1647,1610,1602,1618,1929,1863,1783,1680] }) },
       '메이즈 테라퓨틱스': { stock_code: 'MAZE', market: 'NASDAQ', company_role_label: '바이오', company_description: '메이즈 테라퓨틱스는 대사질환 치료제를 개발하는 나스닥 상장 바이오 기업입니다.', market_snapshot: observedSnapshot('MAZE', { currency: 'USD', last_price: 27.18000030517578, change_percent: -1.7531, market_cap_krw: 2140212534931, native_market_cap: 1510937369, fx_rate_to_krw: 1416.47998046875, per: null, per_status: 'unavailable_loss_making', pbr: 4.4218, price_series: [32.349998,32.840000,31.989999,32.419998,30.569999,29.180000,29.879999,29.389999,27.165000,28.120000,28.370000,29.299999,28.489999,27.690000,27.680000,28.690000,27.879999,27.270000,27.629999,26.920000,27.329999,27.610000,27.809999,28.530000,28.649999,27.280000,27.309999,27.530000,27.665000,27.180000] }) },
-      '제나텍': { listing_status: 'unlisted', market: '비상장', company_role_label: '바이오 소재', company_description: '제나텍은 바이오 소재와 헬스케어 분야의 제품을 개발하는 기업입니다.' },
       '두산': { stock_code: '000150', market: 'KOSPI', company_role_label: '산업·지주', company_description: '두산은 산업 장비·에너지·전자 소재 계열사를 보유한 코스피 상장 사업지주회사입니다.', market_snapshot: observedSnapshot('000150.KS', { currency: 'KRW', last_price: 1276000, change_percent: 1.1094, market_cap_krw: 18868327126000, native_market_cap: 18868327126000, fx_rate_to_krw: 1, per: 252.4733, per_status: 'observed', pbr: 8.5499, price_series: [1433000,1410000,1320000,1268000,1203000,1382000,1238000,1217000,1289000,1202000,1119000,1123000,1215000,1276000,1191000,1197000,1046000,999000,900000,1170000,1238000,1274000,1260000,1188000,1191000,1233000,1177000,1254000,1262000,1276000] }) },
       '바이넥스': { stock_code: '053030', market: 'KOSDAQ', company_role_label: '바이오의약품', company_description: '바이넥스는 의약품 생산과 바이오의약품 위탁개발·생산 사업을 하는 코스닥 상장사입니다.', market_snapshot: observedSnapshot('053030.KQ', { currency: 'KRW', last_price: 7220, change_percent: -1.0959, market_cap_krw: 229940220720, native_market_cap: 229940220720, fx_rate_to_krw: 1, per: null, per_status: 'unavailable_loss_making', pbr: 1.2784, price_series: [7430,7200,7170,6950,6900,7150,6890,6700,6890,6740,6560,6370,6350,6600,6600,6710,6480,5950,5940,6400,6420,6850,6990,6880,6940,7530,7660,7500,7300,7220] }) },
       '한국콜마': { stock_code: '161890', market: 'KOSPI', company_role_label: '화장품 ODM', company_description: '한국콜마는 화장품·제약 제품의 연구개발과 위탁생산을 하는 코스피 상장사입니다.', market_snapshot: observedSnapshot('161890.KS', { currency: 'KRW', last_price: 136700, change_percent: 1.1095, market_cap_krw: 3226814025900, native_market_cap: 3226814025900, fx_rate_to_krw: 1, per: 20.5502, per_status: 'observed', pbr: 3.4462, price_series: [117800,116300,115100,112100,102800,106500,115800,106300,107200,107600,99500,101700,98300,102400,100200,102500,98900,97400,93200,95200,96800,101300,102300,106900,106700,105900,107900,132500,135200,136700] }) },
@@ -1668,11 +1707,11 @@ class Component extends DCLogic {
     const seeds = [
       {
         id: 'seed-lisenne', title: '리센느 매매법', emoji: '💖', author: '@lisenne_fan', dateLabel: '07.29',
-        keywords: ['#리센느', '#원이', '#리브', '#미나미', '#메이', '#제나'], likes: 412, avgChange: null,
+        keywords: ['#리센느', '#원이', '#리브', '#미나미', '#메이', '#제일제당'], likes: 412, avgChange: null,
         companies: [
           company('원익', 'wonik.com'), company('리브스메드', 'livsmed.com'),
           company('모나미', 'monami.com'), company('메이즈 테라퓨틱스', 'mazetx.com'),
-          company('제나텍', 'gene.com')
+          company('CJ제일제당', 'cj.co.kr')
         ]
       },
       {
@@ -3532,63 +3571,106 @@ class Component extends DCLogic {
   }
 
   companyWatchKey(sheet) {
-    return [sheet.market || '', sheet.ticker || '', sheet.name || ''].join(':');
+    const company = this.resolveStockUniverseCompany((sheet && sheet.company) || sheet || {});
+    const market = this.normalizedCompanyMarket(company) || String(sheet.market || '');
+    const ticker = String(company.stock_code || company.ticker || sheet.ticker || '').trim().toUpperCase();
+    const name = this.companyName(company) || String(sheet.name || '');
+    return [market, ticker, name].join(':');
   }
 
   companyWatchlist() {
     try {
-      const parsed = JSON.parse(localStorage.getItem('trzip_company_watchlist_v1') || '[]');
-      return Array.isArray(parsed) ? parsed.filter((value) => typeof value === 'string') : [];
+      const serialized = localStorage.getItem('trzip_company_watchlist_v2');
+      if (serialized !== null) {
+        const parsed = JSON.parse(serialized || '[]');
+        return Array.isArray(parsed)
+          ? parsed.filter((value) => value && typeof value === 'object')
+          : [];
+      }
+      const legacy = JSON.parse(localStorage.getItem('trzip_company_watchlist_v1') || '[]');
+      return Array.isArray(legacy) ? legacy.filter((value) => typeof value === 'string').map((key) => {
+        const parts = String(key).split(':');
+        return {
+          legacy_key: key,
+          market: parts.shift() || '',
+          ticker: parts.shift() || '',
+          name: parts.join(':') || ''
+        };
+      }) : [];
     } catch (_) {
       return Array.isArray(this.__companyWatchMemory) ? this.__companyWatchMemory : [];
     }
   }
 
   isCompanyWatched(sheet) {
-    return this.companyWatchlist().includes(this.companyWatchKey(sheet));
+    const key = this.companyWatchKey(sheet);
+    return this.companyWatchlist().some((entry) => this.companyWatchKey(entry) === key);
   }
 
   toggleCompanyWatch(sheet, frame) {
     const key = this.companyWatchKey(sheet);
     const current = this.companyWatchlist();
-    const watched = current.includes(key);
-    const next = watched ? current.filter((value) => value !== key) : [...current, key];
+    const watched = current.some((entry) => this.companyWatchKey(entry) === key);
+    const company = this.resolveStockUniverseCompany(sheet.company || sheet);
+    const snapshot = {
+      key,
+      name: this.companyName(company) || sheet.name,
+      ticker: String(company.stock_code || company.ticker || sheet.ticker || '').trim().toUpperCase(),
+      market: this.normalizedCompanyMarket(company) || sheet.market,
+      company
+    };
+    const next = watched
+      ? current.filter((entry) => this.companyWatchKey(entry) !== key)
+      : [...current, snapshot];
     this.__companyWatchMemory = next;
-    try { localStorage.setItem('trzip_company_watchlist_v1', JSON.stringify(next)); } catch (_) {}
+    try { localStorage.setItem('trzip_company_watchlist_v2', JSON.stringify(next)); } catch (_) {}
     this.track('company_watch_toggle', { company: sheet.name, symbol: sheet.ticker, watched: !watched });
     this.setState({ companyWatchVersion: Date.now() }, () => this.renderCompanyWatchlist());
     this.shareToast(frame, watched ? '관심기업에서 해제했어요' : '관심기업으로 등록했어요');
   }
 
   companyWatchRecords() {
-    const recordsByKey = new Map();
+    const records = [];
     (this.trends || []).forEach((trend) => {
       (trend.stages || []).forEach((stage) => {
         (stage.companies || []).forEach(([initial, name, desc, company], index) => {
-          const sheet = this.buildSheet(initial, name, desc, index, stage.icon || '🏢', company || {});
+          const resolved = this.resolveStockUniverseCompany(company || {});
+          const sheet = this.buildSheet(initial, name, desc, index, stage.icon || '🏢', resolved);
           const key = this.companyWatchKey(sheet);
-          if (!recordsByKey.has(key)) {
-            recordsByKey.set(key, {
-              key, initial, name, desc, company: company || {}, sheet,
+          if (!records.some((record) => record.key === key)) {
+            records.push({
+              key, initial, name, desc, company: resolved, sheet,
               ticker: sheet.ticker, market: sheet.market
             });
           }
         });
       });
     });
-    return this.companyWatchlist().map((key) => {
-      if (recordsByKey.has(key)) return recordsByKey.get(key);
-      const parts = String(key).split(':');
-      const market = parts.shift() || '거래소 확인';
-      const ticker = parts.shift() || '종목코드 확인';
-      const name = parts.join(':') || '관심기업';
-      const company = { company: name, name, market, exchange: market, stock_code: ticker, logo_render_mode: 'initials' };
+    const resolvedRecords = this.companyWatchlist().map((entry) => {
+      const entryCompany = this.resolveStockUniverseCompany(entry.company || entry);
+      const ticker = String(entryCompany.stock_code || entryCompany.ticker || entry.ticker || '').trim().toUpperCase();
+      const name = this.companyName(entryCompany) || String(entry.name || '').trim();
+      const current = records.find((record) => ticker && record.ticker === ticker)
+        || records.find((record) => name && record.name === name);
+      if (current) return current;
+      const market = this.normalizedCompanyMarket(entryCompany);
+      const validTicker = /^\d{6}$/.test(ticker) || /^[A-Z][A-Z0-9.]{0,9}$/.test(ticker);
+      const currentListed = !(entryCompany.listing_status === 'unlisted'
+        || (entryCompany.listing_verification && entryCompany.listing_verification.current_listed === false));
+      if (!name || !validTicker || !market || !currentListed) return null;
+      const sheet = this.buildSheet(name.slice(0, 1), name, '관심기업', 0, '🏢', entryCompany);
       return {
-        key, initial: name.slice(0, 1), name, desc: '관심기업', company,
-        sheet: this.buildSheet(name.slice(0, 1), name, '관심기업', 0, '🏢', company),
-        ticker, market
+        key: this.companyWatchKey(sheet), initial: name.slice(0, 1), name,
+        desc: '관심기업', company: entryCompany, sheet,
+        ticker: sheet.ticker, market: sheet.market
       };
-    });
+    }).filter(Boolean);
+    try {
+      localStorage.setItem('trzip_company_watchlist_v2', JSON.stringify(resolvedRecords.map((record) => ({
+        key: record.key, name: record.name, ticker: record.ticker, market: record.market, company: record.company
+      }))));
+    } catch (_) {}
+    return resolvedRecords;
   }
 
   renderCompanyWatchlist() {
@@ -3609,7 +3691,7 @@ class Component extends DCLogic {
         + '" style="width:100%;min-height:68px;border:1px solid #EEEBF7;border-radius:16px;background:#FFFFFF;padding:11px 13px;display:flex;align-items:center;gap:12px;text-align:left;cursor:pointer;">'
         + '<span role="img" aria-label="' + this.escapeHtml(record.name + ' 로고')
         + '" style="width:44px;height:44px;flex:none;border-radius:999px;background:'
-        + (logo ? '#FFFFFF url(' + this.escapeHtml(logo) + ') center/contain no-repeat' : '#F1EBFF')
+        + (logo ? this.companyLogoBackground(record.company, logo) : '#F1EBFF')
         + ';box-shadow:inset 0 0 0 1px rgba(26,26,34,0.08);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#5B21C0;">'
         + (logo ? '' : initial) + '</span>'
         + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px;">'
@@ -6061,10 +6143,11 @@ class Component extends DCLogic {
   }
 
   buildSheet(initial, name, desc, i, icon, company = {}) {
+    company = this.resolveStockUniverseCompany(company);
     const logo = this.companyLogo(company);
     const isUnlisted = company.listing_status === 'unlisted';
     const ticker = isUnlisted ? '비상장' : (company.stock_code || company.ticker || '종목코드 미제공');
-    const market = isUnlisted ? '비상장' : (company.market || company.exchange || '거래소 미제공');
+    const market = isUnlisted ? '비상장' : (this.normalizedCompanyMarket(company) || '거래소 미제공');
     const reason = this.publicConnectionCopy(company, desc);
     const about = this.companyDescription(company, name);
     const verifiedSnapshot = this.verifiedMarketSnapshot(company);

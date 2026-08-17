@@ -20,7 +20,9 @@
     candidateKind = 'reviewed_official_asset', assetScope = 'same_official_domain', displayMode = 'contain'
   ) => {
     const format = assetFormat(mime);
-    const verification = format === 'svg' ? 'verified_safe_svg' : 'verified_raster_min_64px';
+    const verification = format === 'svg'
+      ? 'verified_safe_svg'
+      : (width >= 64 && height >= 64 ? 'verified_raster_min_64px' : 'verified_raster_wordmark');
     return Object.freeze({
       logo_url: assetUrl,
       logo_render_mode: 'image',
@@ -117,6 +119,17 @@
       'image/svg+xml', 145, 40, '8b640a433cbe377e601cb6c59427b5703afa79b569ff58970f530a4818b8b2c7',
       'explicit_logo_image', 'same_official_domain', 'symbol_crop_left'
     ),
+    'mrbluecorp.com': verifiedMakerLogo(
+      'https://www.mrbluecorp.com/',
+      'https://www.mrbluecorp.com/theme/basic/image/logo.png',
+      'image/png', 94, 60, '61f25430b1971625fbe000e8ec767b929e76965e98d68fc2f94aeb817dd63bd4',
+      'explicit_logo_image'
+    ),
+    'livsmed.com': verifiedMakerLogo(
+      'https://www.livsmed.com/', 'https://www.livsmed.com/img/logo.png',
+      'image/png', 306, 60, 'bc1c0f00dcab40d0879085b98783a999b5661e825e5ec75903182acf1167798d',
+      'explicit_logo_image'
+    ),
     'doosanrobotics.com': verifiedMakerLogo(
       'https://www.doosanrobotics.com/en/', 'https://www.doosanrobotics.com/images/logo.svg',
       'image/svg+xml', 127, 18, '407d6e38ebd40770bed7eb4c6839943ca5871fefaa0e08382688fa8142bc8ec8', 'explicit_logo_image'
@@ -178,10 +191,20 @@
     ),
   });
 
+  const kosdaqCodes = new Set([
+    '030530', '035760', '035900', '041510', '048910', '053030', '067160',
+    '080160', '095700', '122870', '136480', '195500', '206560', '207760',
+    '253450', '277810', '299900', '419530', '491000',
+  ]);
+
   const stock = (id, name, nameEn, ticker, exchange, sector, officialDomain, aliases = []) => {
     const logo = verifiedMakerLogos[officialDomain] || null;
+    const exactExchange = exchange === 'KRX' && /^\d{6}$/.test(ticker)
+      ? (kosdaqCodes.has(ticker) ? 'KOSDAQ' : 'KOSPI')
+      : exchange;
     return {
-      id, name, company: name, name_en: nameEn, ticker, stock_code: ticker, exchange, market: exchange,
+      id, name, company: name, name_en: nameEn, ticker, stock_code: ticker,
+      exchange: exactExchange, market: exactExchange,
       sector, company_role_label: sector, official_domain: officialDomain, aliases,
       logo_url: '', logo_render_mode: 'initials', logo_minimum_dimension: 64,
       ...(logo || {}),
@@ -235,6 +258,8 @@
     stock('kr-035900', 'JYP Ent.', 'JYP Entertainment', '035900', 'KOSDAQ', '엔터테인먼트', 'jype.com', ['제이와이피', 'jyp']),
     stock('kr-122870', '와이지엔터테인먼트', 'YG Entertainment', '122870', 'KOSDAQ', '엔터테인먼트', 'ygfamily.com', ['yg', '와이지']),
     stock('kr-253450', '스튜디오드래곤', 'Studio Dragon', '253450', 'KOSDAQ', '콘텐츠 제작', 'studiodragon.net', ['studio dragon']),
+    stock('kr-207760', '미스터블루', 'Mr. Blue', '207760', 'KOSDAQ', '웹툰·웹소설', 'mrbluecorp.com', ['mr blue', '미스터 블루']),
+    stock('kr-491000', '리브스메드', 'LivsMed', '491000', 'KOSDAQ', '의료기기', 'livsmed.com', ['livsmed']),
     stock('kr-251270', '넷마블', 'Netmarble', '251270', 'KRX', '게임', 'company.netmarble.com', ['netmarble']),
     stock('kr-036570', '엔씨소프트', 'NCSoft', '036570', 'KRX', '게임', 'nc.com', ['nc', 'ncsoft']),
     stock('kr-259960', '크래프톤', 'Krafton', '259960', 'KRX', '게임', 'krafton.com', ['배틀그라운드', 'krafton']),

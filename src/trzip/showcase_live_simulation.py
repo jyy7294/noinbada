@@ -28,6 +28,17 @@ QUALIFIED_ONTOLOGY_RELATION_TIERS = frozenset({"direct", "value_chain"})
 QUALIFIED_ONTOLOGY_EVIDENCE_SCOPE = "ontology_verified_trend_to_company_relation"
 MINIMUM_PUBLISHABLE_COMPANY_COUNT = 10
 MINIMUM_PUBLISHABLE_COMPANY_ROLE_COUNT = 3
+KOSDAQ_STOCK_CODES = frozenset({
+    "030530", "035760", "035900", "041510", "048910", "053030", "067160",
+    "080160", "095700", "122870", "136480", "195500", "206560", "207760",
+    "253450", "277810", "299900", "419530", "491000",
+})
+
+
+def exact_domestic_market(stock_code: str) -> str:
+    """Return the public exchange segment instead of the generic KRX operator name."""
+
+    return "KOSDAQ" if str(stock_code) in KOSDAQ_STOCK_CODES else "KOSPI"
 
 
 def audit_relation_set_for_publication(companies: Iterable[dict]) -> dict:
@@ -252,7 +263,11 @@ def build_showcase_enrichment(
         companies = []
         for entry in COMPANY_CARDS[event_key]:
             company, stock_code, role, homepage, explanation, *market_values = entry
-            market = str(market_values[0] if market_values else "KRX")
+            market = str(
+                market_values[0]
+                if market_values
+                else exact_domestic_market(stock_code)
+            )
             relation_tier = str(market_values[1] if len(market_values) > 1 else "contextual")
             relationship_evidence_url = str(market_values[2] if len(market_values) > 2 else homepage)
             companies.append({

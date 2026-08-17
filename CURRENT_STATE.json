@@ -1,6 +1,6 @@
 {
   "schema_version": "trzip-current-state-v1",
-  "updated_at": "2026-08-16T03:09:16.4059661+00:00",
+  "updated_at": "2026-08-17T04:35:21.6906512+00:00",
   "project": {
     "repository": "jyy7294/noinbada",
     "code_branch": "main",
@@ -8,44 +8,32 @@
   },
   "checkpoint": {
     "describes_commit": "self",
-    "base_remote_main_sha": "6e7e440f4cd988e79b559e409348df1e8a33aae8",
+    "base_remote_main_sha": "b277b9065bddafdce4c955185343ecbe1b5ffd67",
     "validation_target": "staged_tree",
     "changed_paths": [
       "CURRENT_STATE.json",
-      "data/ontology_seed.json",
-      "docs/FRONTEND_BACKEND_CONTRACT_V3.md",
-      "docs/PRODUCT_AND_DATA_FLOW.md",
       "frontend/index.html",
-      "frontend/trendzip-data.js",
-      "schemas/intelligence-v3.schema.json",
-      "src/trzip/presentation_feed.py",
-      "src/trzip/publication_pipeline.py",
-      "src/trzip/result_quality.py",
-      "tests/test_frontend_mvp_contract.py",
-      "tests/test_live_presentation_feed.py",
-      "tests/test_public_contract_schema.py"
+      "frontend/mock-stock-universe.js",
+      "frontend/showcase/manifest.json",
+      "scripts/build-full-period-showcase.py",
+      "src/trzip/showcase_live_simulation.py",
+      "tests/test_frontend_mvp_contract.py"
     ],
     "changed_file_digests": {
-      "data/ontology_seed.json": "1f5ccc995e0567e8f121a39faf37801cf26cb914e05e8e773fa4222f7ac36e20",
-      "docs/FRONTEND_BACKEND_CONTRACT_V3.md": "3656453389c8a2ed5908096f027f2a7b43279c7f9ec92b1b600a4fc4df0659c2",
-      "docs/PRODUCT_AND_DATA_FLOW.md": "ef981f6e8bdb6a121ed31996b4893e116b0a5f1b9695e0623c8642e3b252f2b0",
-      "frontend/index.html": "41a1797408e3a6e37e3c18af66bd15b0d00438cad8d8fc698bfb271dd1ab4fb6",
-      "frontend/trendzip-data.js": "67c26c96b54ae9216c112b220dce52fbb95154a2d257cf91952f23456808fbed",
-      "schemas/intelligence-v3.schema.json": "b6ae17afd2a0927c0da04c003d0e62a1bc5f8b92ab909a93f02307f1bdd01b0b",
-      "src/trzip/presentation_feed.py": "163f62e410efe7b026074a3536a519d372a453031444f9d1c036d3fe62812bed",
-      "src/trzip/publication_pipeline.py": "1122cc77b368d5edb3e7c0fe463fcefa7ce9eabbd0c9f8208734c353bab8b040",
-      "src/trzip/result_quality.py": "b476233f566197bfecb8d4b23d316bb93695739eae0828c5be6b496483eff356",
-      "tests/test_frontend_mvp_contract.py": "f8011ff0b9340680caa4d8f3e065964d51e97005da55f02a909b43171741dcae",
-      "tests/test_live_presentation_feed.py": "ab48005c60f8a89712daa247ea6df7dc5eb6f283f3a505ffb1978c7b07558ed1",
-      "tests/test_public_contract_schema.py": "17c2a0c8763eb05328522c43941e9f5463eb28abf03dfb195e3a8fd7b8f72a8f"
+      "frontend/index.html": "d2ab30e21b05052595b2cb33fb1d78b07dd81f0d7adc20885edcfaba7b5528cb",
+      "frontend/mock-stock-universe.js": "184fa4f82247d63c293ef12819a9219c7e5059d0eca3653d57e8b031644a7464",
+      "frontend/showcase/manifest.json": "6f838812b0986e02339c9235232f021e47b2ba14f5df9ee4d6319f6d650405d7",
+      "scripts/build-full-period-showcase.py": "198f3a1eddd5027b6b9d82ac18dc97422352399aa45bd3a9e137cc1f0a289751",
+      "src/trzip/showcase_live_simulation.py": "b1a859d7c1fa98d281b32ccff596c2de111d60aaf821a500c4e87520250a4d9a",
+      "tests/test_frontend_mvp_contract.py": "f9ce8268883341dbd396845b8e4c6129827ed55171b225e9c5faeb650ccef30a"
     },
-    "commit_message": "feat: add rank-responsive integrated trend display",
+    "commit_message": "fix: repair listed company identity and logo persistence",
     "validation_status": "passed"
   },
   "validation": {
     "pytest": {
       "status": "passed",
-      "count": 565
+      "count": 629
     },
     "compileall": {
       "status": "passed"
@@ -67,22 +55,21 @@
     }
   },
   "handoff": {
-    "objective": "실측 순위에 반응하는 통합 트렌드 표시지수를 제공하되 원본 순위·시장값·출처 감사 계약은 변경하지 않는다.",
+    "objective": "관심기업과 기업 바텀시트에서 현재 상장사, 정확한 시장, 공식 로고를 일관되게 유지한다.",
     "completed": [
-      "순위·순위변화·관측지속성·최종 표시위치를 반영한 결정론적 0~100 표시지수 v2 구현",
-      "공급자명은 사용자 화면에서 통합 트렌드로 숨기고 내부 X·Google provenance 검증은 유지",
-      "백엔드·공개 스키마·프런트 로더가 산식과 원천 series를 독립 재검증하도록 fail-closed 강화",
-      "24시간·1개월·3개월 관측기간 gate와 고정 시간축·결측 무보간·90분 단절 UI 적용"
+      "미스터블루 공식 검정 로고 및 KOSDAQ 207760 정규화",
+      "리브스메드 KOSDAQ 491000 상장 상태와 공식 로고 반영",
+      "관심기업 v2 스냅샷 저장 및 v1 자동 마이그레이션",
+      "비상장·상장 검증 실패 항목의 관심기업 노출 차단",
+      "Windows와 Git/Vercel 간 쇼케이스 해시 불일치 수정",
+      "프런트 계약과 회귀 테스트 보강"
     ],
     "next_actions": [
-      "안정 실행 checkout을 새 main SHA로 복구·검증",
-      "다음 실제 정각 수집에서 rank-responsive v2 publication 생성 및 로컬 preflight 검증",
-      "허용된 게시 시각에만 live-data 승격 후 모바일 positive E2E 수행"
+      "Vercel 운영 배포와 모바일 관심기업 흐름 재검증"
     ],
     "blockers": [],
     "known_limitations": [
-      "현재 원격 live-data의 06시 발행본은 observed_sparse 호환 publication이며 새 v2 실데이터 발행 전이다.",
-      "인수인계 문서와 복구 패치는 로컬 전용 미추적 파일로 유지한다."
+      "리브스메드는 상장 상태와 로고는 공식 확인했지만 검증된 최신 시장 스냅샷이 없으면 수치 대신 미제공 상태를 유지한다."
     ]
   },
   "runtime_contract": {

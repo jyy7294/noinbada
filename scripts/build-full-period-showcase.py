@@ -18,16 +18,12 @@ from trzip.company_adapters import pykrx_stock, yahoo_finance_stock
 from trzip.presentation_feed import _actual_market_snapshot, _live_logo_fields
 from trzip.publication_pipeline import _merge_domestic_market_references
 from trzip.showcase_live_simulation import (
+    KOSDAQ_STOCK_CODES,
     SHOWCASE_SELECTION,
     build_showcase_enrichment,
+    exact_domestic_market,
     validate_showcase_enrichment,
 )
-
-
-KOSDAQ_STOCK_CODES = {
-    "035760", "035900", "041510", "048910", "067160", "080160",
-    "136480", "195500", "206560", "207760", "299900", "419530",
-}
 
 
 def _sha256(path: Path) -> str:
@@ -39,6 +35,7 @@ def _write_json(path: Path, value: dict) -> None:
     path.write_text(
         json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
+        newline="\n",
     )
 
 
@@ -72,11 +69,14 @@ def _official_listing_verification(*, market: str, stock_code: str, observed_at:
 def _attach_observed_market_snapshots(payload: dict, observed_at: datetime) -> int:
     """Attach one fail-closed market snapshot per unique listed security."""
 
-    companies_by_identity = {
-        (str(company.get("market") or "KRX"), str(company["stock_code"])): company
-        for card in payload["cards"]
-        for company in card["companies"]
-    }
+    companies_by_identity = {}
+    for card in payload["cards"]:
+        for company in card["companies"]:
+            market = str(company.get("market") or "KRX")
+            stock_code = str(company["stock_code"])
+            if market in {"KRX", "KOSPI", "KOSDAQ"}:
+                market = exact_domestic_market(stock_code)
+            companies_by_identity[(market, stock_code)] = company
     snapshots: dict[tuple[str, str], tuple[dict, dict]] = {}
     base_date = observed_at.astimezone(UTC).strftime("%Y%m%d")
     for market, stock_code in sorted(companies_by_identity):
@@ -86,6 +86,8 @@ def _attach_observed_market_snapshots(payload: dict, observed_at: datetime) -> i
             yahoo = yahoo_finance_stock(stock_code, yahoo_exchange, as_of=observed_at)
             market_reference = _merge_domestic_market_references(pykrx, yahoo)
             listing_verification = market_reference.get("listing_verification")
+            if listing_verification:
+                listing_verification = {**listing_verification, "exchange": market}
         else:
             market_reference = yahoo_finance_stock(stock_code, market, as_of=observed_at)
             listing_verification = _official_listing_verification(
@@ -111,7 +113,11 @@ def _attach_observed_market_snapshots(payload: dict, observed_at: datetime) -> i
     attached = 0
     for card in payload["cards"]:
         for company in card["companies"]:
-            identity = (str(company.get("market") or "KRX"), str(company["stock_code"]))
+            market = str(company.get("market") or "KRX")
+            if market in {"KRX", "KOSPI", "KOSDAQ"}:
+                market = exact_domestic_market(str(company["stock_code"]))
+                company["market"] = market
+            identity = (market, str(company["stock_code"]))
             listing_verification, snapshot = snapshots[identity]
             company["listing_verification"] = listing_verification
             company["market_snapshot"] = snapshot
