@@ -162,6 +162,15 @@ def test_profile_editor_uses_nickname_bio_and_icon_without_a_redundant_profile_t
     assert "has_badge" not in profile_methods
 
 
+def test_my_page_portfolio_cards_do_not_repeat_portfolio_keywords() -> None:
+    stash_method = INDEX[INDEX.index("  myAddStash(frame) {") : INDEX.index("  shareWire() {")]
+    created_card = INDEX[INDEX.index("      const list = this.dataApi ? null") : INDEX.index("  makerUniverse(trend) {")]
+    saved_cards = INDEX[INDEX.index("  renderSavedPortfolios() {") : INDEX.index("  patchHomeLabels() {")]
+    assert "const tags = q('tags')" not in stash_method
+    assert "#새로만든포트" not in created_card
+    assert "this.escapeHtml(portfolio.keywords.map" not in saved_cards
+
+
 def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> None:
     method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
     assert "home.querySelectorAll('[data-mp-row],[data-portfolio-loading]')" in method

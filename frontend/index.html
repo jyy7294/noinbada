@@ -3403,7 +3403,6 @@ class Component extends DCLogic {
     const emojiEl = q('emoji');
     const emoji = emojiEl ? emojiEl.textContent.trim() : '💜';
     const emojiBg = emojiEl ? getComputedStyle(emojiEl).backgroundColor : '#F3EEFF';
-    const tags = q('tags') ? [...q('tags').querySelectorAll('span')].map((s) => s.textContent.trim()).slice(0, 4).join(' ') : '';
     const avgTxt = q('avg') ? q('avg').textContent.replace('구성 평균', '').trim() : '+0.0%';
     const neg = avgTxt.indexOf('-') === 0;
     const stocks = q('box') ? [...q('box').querySelectorAll('div')].filter((d) => d.children.length && d.children[0].style && d.children[0].style.borderRadius).length : 0;
@@ -3423,7 +3422,7 @@ class Component extends DCLogic {
     card.innerHTML = '<div style="display:flex; align-items:center; gap:10px;">'
       + '<span style="width:38px; height:38px; flex:none; border-radius:12px; background:' + emojiBg + '; display:flex; align-items:center; justify-content:center; font-size:20px;">' + emoji + '</span>'
       + '<div style="flex:1; min-width:0;"><div style="font-weight:800; font-size:14.5px; color:#1A1A22; letter-spacing:-0.03em;">' + title + '</div>'
-      + '<div style="font-weight:500; font-size:11px; color:#8B8D98; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">' + tags + '</div></div>'
+      + '</div>'
       + '<span style="flex:none; font-weight:800; font-size:15px; color:' + (neg ? '#3E7BF0' : '#FF3D8B') + ';">' + avgTxt + '</span></div>'
       + '<div data-my-stash-companies="1" style="display:flex; flex-wrap:wrap; gap:6px; margin-top:11px;">' + companyMarkup + '</div>'
       + '<div style="display:flex; align-items:center; gap:6px; margin-top:11px; font-weight:600; font-size:11.5px; color:#8B8D98;">'
@@ -5046,7 +5045,7 @@ class Component extends DCLogic {
         card.innerHTML = '<div style="display:flex; align-items:center; gap:10px;">'
           + '<span style="width:38px; height:38px; flex:none; border-radius:12px; background:#F3EEFF; display:flex; align-items:center; justify-content:center; font-size:20px;">' + emoji.trim() + '</span>'
           + '<div style="flex:1; min-width:0;"><div style="font-weight:800; font-size:14.5px; color:#1A1A22; letter-spacing:-0.03em;">' + name + '</div>'
-          + '<div style="font-weight:500; font-size:11px; color:#8B8D98; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">' + (tags.length ? tags.join(' ') : '#새로만든포트') + '</div></div>'
+          + '</div>'
           + '<span style="flex:none; font-weight:800; font-size:15px; color:#8B8D98;">–</span></div>'
           + '<div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:11px;">' + stocks.map(chip).join('') + '</div>'
           + '<div style="display:flex; align-items:center; gap:6px; margin-top:11px; font-weight:600; font-size:11.5px; color:#8B8D98;">'
@@ -5383,8 +5382,6 @@ class Component extends DCLogic {
       + '" style="width:100%;border:1px solid #EEEBF7;background:#FFFFFF;border-radius:18px;padding:14px;text-align:left;cursor:pointer;display:flex;gap:11px;align-items:flex-start;">'
       + '<span data-portfolio-avatar="owner" role="img" aria-label="포트 소유자 아바타" style="width:42px;height:42px;flex:none;border-radius:999px;background:#F4EDFF;display:flex;align-items:center;justify-content:center;font-size:21px;">' + this.escapeHtml(portfolio.emoji) + '</span>'
       + '<span style="flex:1;min-width:0;"><span title="' + this.escapeHtml(portfolio.title) + '" style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;font-weight:800;font-size:14.5px;line-height:1.3;color:#1A1A22;">' + this.escapeHtml(portfolio.title) + '</span>'
-      + '<span style="display:block;font-weight:500;font-size:11px;color:#8B8D98;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'
-      + this.escapeHtml(portfolio.keywords.map((keyword) => String(keyword || '').replace(/^#+/, '')).filter(Boolean).join(' ')) + '</span>'
       + '<span style="display:block;font-weight:600;font-size:11px;color:#8B8D98;margin-top:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + portfolio.companies.length + '개 기업 · ' + this.escapeHtml(portfolio.companies.slice(0, 3).map((company) => this.companyName(company)).join(' · ')) + '</span></span></button>';
     }).join('');
     list.innerHTML = (cards || '<div style="border:1.5px dashed #E4DCF8;border-radius:18px;padding:30px 18px;text-align:center;color:#8B8D98;font-size:12px;">저장된 밈트폴리오가 없어요.</div>')
