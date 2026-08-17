@@ -175,7 +175,7 @@ def test_portfolio_origin_trend_is_visually_distinguished_from_secondary_keyword
     origin_method = INDEX[INDEX.index("  portfolioOriginKeyword(portfolio) {") : INDEX.index("  clearLegacyPortfolioSurfaces() {")]
     assert "portfolio.trend && portfolio.trend.name" in origin_method
     assert "matched || keywords[0]" in origin_method
-    assert "트렌드 · " in origin_method
+    assert "트렌드 · " not in origin_method
     assert 'data-portfolio-origin="' in origin_method
     assert "this.portfolioKeywordChips(portfolio);" in INDEX
     assert "this.portfolioKeywordChips(portfolio, true)" in INDEX
@@ -234,9 +234,9 @@ def test_portfolio_component_rows_open_an_in_place_company_sheet() -> None:
 
 
 def test_saved_portfolio_restores_seed_company_metadata_when_reopened() -> None:
-    method = INDEX[INDEX.index("  renderSavedPortfolios() {") : INDEX.index("  patchHomeLabels() {")]
+    method = INDEX[INDEX.index("  buildSavedPortfolioViews(") : INDEX.index("  renderSavedPortfolios() {")]
     assert "const seededByName" in method
-    assert "this.presentationPortfolios || this.buildPresentationPortfolios()" in method
+    assert "seededPortfolios = this.presentationPortfolios || this.buildPresentationPortfolios()" in method
     assert "currentByName.get(name) || seededByName.get(name)" in method
     assert "return reference ? { ...company, ...reference } : company;" in method
 
@@ -327,6 +327,18 @@ def test_home_title_has_a_selection_criteria_help_button() -> None:
     assert "guide.style.display = 'flex'" in INDEX
 
 
+def test_information_icons_use_one_bottom_sheet_pattern_and_relation_cta_leads_with_reason() -> None:
+    assert 'data-info-trigger="freshness"' in INDEX
+    assert 'data-info-trigger="relations"' in INDEX
+    assert "infoTopics()" in INDEX
+    assert "openInfoSheet(topicKey = 'selection')" in INDEX
+    assert "data-info-sheet-root" in INDEX
+    assert "__trzipInfoSheetOpen" in INDEX
+    assert "title: '관심 흐름 척도'" in INDEX
+    assert "왜 이 기업인가" in INDEX
+    assert "트렌드 → 연결 역할 → 기업 정보" in INDEX
+
+
 def test_dial_keeps_korean_trend_titles_in_the_left_readable_zone() -> None:
     dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
     assert 'data-vd-focus-copy="1"' in dial_markup
@@ -395,11 +407,11 @@ def test_home_featured_portfolio_returns_to_the_portfolio_list() -> None:
     assert handler.count("this.pdFrom = 'list';") == 2
 
 
-def test_portfolio_detail_back_always_returns_to_the_portfolio_list() -> None:
+def test_portfolio_detail_back_restores_the_screen_that_opened_it() -> None:
     handler = INDEX[INDEX.index("  pdBack = () => {") : INDEX.index("  goHomePost = (e) => {")]
-    assert "this.pdFrom = 'list';" in handler
-    assert "this.panTo(document.querySelector('#post-list'));" in handler
-    assert "#my-page" not in handler
+    assert "const returnToMyPage = this.pdFrom === 'my';" in handler
+    assert "returnToMyPage ? '#my-page' : '#post-list'" in handler
+    assert "this.panTo(document.querySelector(returnToMyPage ? '#my-page' : '#post-list'));" in handler
 
 
 def test_home_header_prioritizes_the_live_trend_title() -> None:

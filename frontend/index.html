@@ -204,7 +204,7 @@
               </button>
               <div style="white-space:nowrap; font-weight:800; font-size:23px; line-height:1.14; color:#1A1A22; letter-spacing:-0.04em;">실시간 트렌드</div>
               <a data-home-selection-guide="1" href="#home-selection-guide" aria-label="트렌드 선정 기준 보기" style="width:28px; height:28px; flex:none; border:0; border-radius:999px; background:transparent; padding:0; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none;" title="트렌드 선정 기준">
-                <span aria-hidden="true" style="width:15px; height:15px; border:1.5px solid #A9ACB8; border-radius:999px; display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:10px; line-height:1; color:#8B8D98;">!</span>
+                <svg aria-hidden="true" width="17" height="17" viewBox="0 0 18 18" style="display:block;"><circle cx="9" cy="9" r="7.2" fill="none" stroke="#A9ACB8" stroke-width="1.5"></circle><line x1="9" y1="7.4" x2="9" y2="12.2" stroke="#8B8D98" stroke-width="1.7" stroke-linecap="round"></line><circle cx="9" cy="5.2" r="1" fill="#8B8D98"></circle></svg>
               </a>
             </div>
             <sc-if value="{{ showLiveBadge }}" hint-placeholder-val="{{ false }}">
@@ -405,7 +405,7 @@
           <div data-freshness-card="1" style="background:#FAFAFC; border:1px solid #ECE8F3; border-radius:18px; padding:13px 13px 12px;">
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="font-weight:700; font-size:14px; color:#4B4D57; letter-spacing:-0.02em;">트렌드 신선도</span>
-              <button type="button" aria-label="트렌드 신선도 기준 보기" aria-expanded="{{ freshInfoOpen }}" onClick="{{ toggleFreshInfo }}" style="width:28px;height:28px;border:0;background:transparent;padding:7px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#B5B8C2" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#B5B8C2" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#B5B8C2"></circle></svg></button>
+              <button type="button" data-info-trigger="freshness" aria-label="트렌드 신선도 기준 보기" style="width:28px;height:28px;border:0;background:transparent;padding:7px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#B5B8C2" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#B5B8C2" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#B5B8C2"></circle></svg></button>
             </div>
             <sc-if value="{{ freshInfoOpen }}" hint-placeholder-val="{{ false }}">
               <div data-freshness-explanation="1" style="background:#F3EFFC; border-radius:12px; padding:11px 12px 12px; margin-top:9px; color:#4B1EA6;">
@@ -454,22 +454,26 @@
         </div>
 
         <div style="padding:0 16px 16px;">
-          <button type="button" data-related-company-cta="1" aria-label="{{ relatedCompaniesAriaLabel }}" onClick="{{ goCompanies }}" style="width:100%; min-height:88px; border:1px solid #DDCEF9; display:flex; align-items:center; gap:13px; background:linear-gradient(135deg,#FCFAFF 0%,#F1E9FF 100%); border-radius:20px; padding:14px 15px; font-family:inherit; text-align:left; cursor:pointer; box-shadow:0 10px 22px rgba(101,34,220,0.11);">
-            <div aria-hidden="true" style="display:flex; align-items:center; min-width:94px; padding-left:1px;">
-              <sc-for list="{{ relatedCompanyPreview }}" as="company" hint-placeholder-count="3">
-                <span title="{{ company.name }}" data-related-company-logo="{{ company.logoName }}" data-related-company-logo-url="{{ company.logoUrl }}" data-related-company-logo-size="40" style="{{ company.logoStyle }}">{{ company.initial }}</span>
-              </sc-for>
-            </div>
-            <div style="flex:1; min-width:0;">
-              <div style="display:flex; align-items:baseline;">
-                <span style="font-weight:800; font-size:17px; color:#1A1A22; letter-spacing:-0.03em;">관련 기업 보기</span>
+          <div style="position:relative;">
+            <button type="button" data-related-company-cta="1" aria-label="{{ relatedCompaniesAriaLabel }}" onClick="{{ goCompanies }}" style="width:100%; min-height:110px; border:1px solid #DDCEF9; display:flex; align-items:center; gap:13px; background:linear-gradient(135deg,#FCFAFF 0%,#F1E9FF 100%); border-radius:20px; padding:16px 50px 16px 15px; font-family:inherit; text-align:left; cursor:pointer; box-shadow:0 10px 22px rgba(101,34,220,0.11);">
+              <div aria-hidden="true" style="display:flex; align-items:center; min-width:94px; padding-left:1px;">
+                <sc-for list="{{ relatedCompanyPreview }}" as="company" hint-placeholder-count="3">
+                  <span title="{{ company.name }}" data-related-company-logo="{{ company.logoName }}" data-related-company-logo-url="{{ company.logoUrl }}" data-related-company-logo-size="40" style="{{ company.logoStyle }}">{{ company.initial }}</span>
+                </sc-for>
               </div>
-              <div style="font-weight:700; font-size:11.5px; line-height:1.35; color:#7D49E5; margin-top:5px; white-space:nowrap;">연결 역할 · 근거 · 기업 정보</div>
-            </div>
-            <span aria-hidden="true" style="width:30px; height:30px; flex:none; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#FFFFFF; box-shadow:0 4px 10px rgba(91,33,192,0.10);">
-              <svg width="15" height="15" viewBox="0 0 16 16" style="display:block;"><polyline points="6,4 10,8 6,12" fill="none" stroke="#7B3FF2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
-            </span>
-          </button>
+              <div style="flex:1; min-width:0;">
+                <div style="font-weight:800; font-size:10.5px; color:#7B3FF2; letter-spacing:0.02em;">트렌드 → 연결 역할 → 기업 정보</div>
+                <div style="font-weight:800; font-size:18px; line-height:1.2; color:#1A1A22; letter-spacing:-0.04em; margin-top:4px;">왜 이 기업인가</div>
+                <div style="font-weight:600; font-size:11.5px; line-height:1.42; color:#7457AF; margin-top:5px;">역할과 연결 근거를 확인하고 종목 정보로 이어집니다.</div>
+              </div>
+              <span aria-hidden="true" style="position:absolute; right:15px; bottom:17px; width:30px; height:30px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#FFFFFF; box-shadow:0 4px 10px rgba(91,33,192,0.10);">
+                <svg width="15" height="15" viewBox="0 0 16 16" style="display:block;"><polyline points="6,4 10,8 6,12" fill="none" stroke="#7B3FF2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+              </span>
+            </button>
+            <button type="button" data-info-trigger="relations" aria-label="관련기업 연결 기준 보기" style="position:absolute; right:13px; top:12px; width:28px; height:28px; border:0; border-radius:999px; background:rgba(255,255,255,0.82); padding:7px; cursor:pointer; box-shadow:0 3px 10px rgba(91,33,192,0.08);">
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#9177C7" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#7756B4" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#7756B4"></circle></svg>
+            </button>
+          </div>
         </div>
 
         <div style="padding:0 16px 14px;">
@@ -526,9 +530,10 @@
 
         <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none;">
         <div style="padding:18px 16px 12px;">
-          <div style="display:flex; align-items:baseline; gap:7px;">
+          <div style="display:flex; align-items:center; gap:7px;">
             <span style="font-weight:800; font-size:18px; color:#1A1A22; letter-spacing:-0.03em;">관련 기업</span>
-            <span style="font-weight:500; font-size:11.5px; color:#8B8D98;">연결 역할별로 정리했어요</span>
+            <button type="button" data-info-trigger="relations" aria-label="관련기업 연결 기준 보기" style="width:26px;height:26px;border:0;background:transparent;padding:6px;cursor:pointer;"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#B5B8C2" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#B5B8C2" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#B5B8C2"></circle></svg></button>
+            <span style="font-weight:500; font-size:11.5px; color:#8B8D98;">역할과 근거를 따라 보세요</span>
           </div>
 
         </div>
@@ -575,7 +580,7 @@
 
         <div style="padding:14px 16px 18px;">
           <div style="display:flex; align-items:center; justify-content:center; gap:5px; font-weight:500; font-size:10px; color:#A9ACB8;">
-            <span style="width:12px; height:12px; flex:none; border-radius:999px; border:1px solid #C9CCD5; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:8px; color:#A9ACB8;">!</span>
+            <button type="button" data-info-trigger="relations" aria-label="관련기업 연결 기준 보기" style="width:18px; height:18px; flex:none; border:0; background:transparent; padding:3px; cursor:pointer;"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#C9CCD5" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#A9ACB8" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#A9ACB8"></circle></svg></button>
             기업 연결은 참고 정보이며 투자 권유가 아닙니다.
           </div>
         </div>
@@ -1142,6 +1147,7 @@ class Component extends DCLogic {
     this.warmCompanyLogos();
     this.renderPresentationPortfolios();
     this.startStatusClock();
+    this.infoSheetWire();
     setTimeout(() => this.listViewWire(), 200);
     setTimeout(() => this.protoShell(), 40);
     setTimeout(() => this.zipWire(), 120);
@@ -3181,23 +3187,167 @@ class Component extends DCLogic {
     return overlay;
   }
 
-  openSelectionGuide = () => {
-    const overlay = this.homeOverlay('트렌드 선정 기준', 'selection-guide');
-    if (!overlay) return;
-    this.track('selection_guide_open');
-    const body = document.createElement('div');
-    body.style.cssText = 'flex:1;overflow-y:auto;padding:18px 18px 28px;';
-    const step = (number, name, description, last = false) => '<div style="display:flex;gap:12px;padding:15px 0;' + (last ? '' : 'border-bottom:1px solid #F0EDF7;') + '">'
-      + '<span style="width:28px;height:28px;flex:none;border-radius:999px;background:#7B3FF2;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;">' + number + '</span>'
-      + '<div><div style="font-weight:800;font-size:14px;color:#1A1A22;">' + name + '</div><div style="margin-top:4px;font-weight:500;font-size:12px;line-height:1.55;color:#6B6E7B;">' + description + '</div></div></div>';
-    body.innerHTML = '<div style="background:#F7F4FF;border-radius:14px;padding:14px 15px;">'
-      + '<div style="font-weight:800;font-size:14px;color:#3A1D80;">수집 원천 · 매시 정각</div>'
-      + '<div style="margin-top:5px;font-weight:500;font-size:12px;line-height:1.55;color:#6B5A8E;">X 대한민국 실시간 트렌드 1~30위와 Google Trending Now 대한민국 전체를 같은 시각에 확인합니다.</div></div>'
-      + step('1', '같은 사건으로 묶기', '표현이 달라도 같은 제품·콘텐츠·경기라면 하나의 후보로 정리합니다.')
-      + step('2', '공개 제외 기준', '정치·범죄·재난·사생활·혐오, 의미가 불명확하거나 근거가 부족한 후보는 공개하지 않습니다.')
-      + step('3', '하루 공개 절차', '24시간 후보군을 안전 기준으로 검토한 뒤, 사람의 최종 승인을 거친 트렌드만 그날의 화면에 공개합니다.', true);
-    overlay.appendChild(body);
-  };
+  infoTopics() {
+    return {
+      selection: {
+        title: '트렌드 선정 기준',
+        eyebrow: '매시 실제 흐름을 같은 기준으로',
+        description: 'X 대한민국 실시간 트렌드와 Google Trending Now 대한민국을 같은 시점에 확인합니다.',
+        steps: [
+          ['같은 사건으로 묶기', '표현이 달라도 같은 제품·콘텐츠·경기라면 하나의 주제로 정리합니다.'],
+          ['안전하게 걸러내기', '정치·범죄·재난·사생활·혐오와 근거가 부족한 후보는 공개하지 않습니다.'],
+          ['사람이 최종 확인', '자동 검토 뒤 공개해도 되는 트렌드만 오늘의 화면에 올립니다.']
+        ]
+      },
+      freshness: {
+        title: '트렌드 신선도 기준',
+        eyebrow: '최근 관측 흐름을 읽는 법',
+        description: '처음 확인된 시점과 이후 관측이 이어지는 정도를 함께 봅니다.',
+        steps: [
+          ['포착', '처음 확인돼 더 지켜볼 필요가 있는 흐름입니다.'],
+          ['확산', '관측이 이어지며 관심이 커지는 흐름입니다.'],
+          ['대중화', '반복 관측되어 넓게 이어지는 흐름입니다.']
+        ]
+      },
+      attention: {
+        title: '관심 흐름 척도',
+        eyebrow: '선택 기간 안에서 비교한 상대 강도',
+        description: '기간 안의 가장 낮은 관측을 0, 가장 높은 관측을 100으로 놓고 흐름을 그립니다.',
+        steps: [
+          ['점마다 남긴 시각', '각 점을 누르면 해당 관측 시각과 상대 관심도를 확인할 수 있습니다.'],
+          ['같은 기간에서만 비교', '24시간과 1주일은 각각의 기간 안에서 읽는 상대 척도입니다.'],
+          ['투자 판단과는 별개', '절대 언급량이나 매수·매도 신호를 뜻하지 않습니다.']
+        ]
+      },
+      relations: {
+        title: '관련기업 연결 기준',
+        eyebrow: '왜 이 기업인지 먼저',
+        description: '단순 키워드 유사성이 아니라 사업·IP·공급·유통·플랫폼의 연결 경로로 역할을 구분합니다.',
+        steps: [
+          ['연결 역할', '콘텐츠·제조·유통·플랫폼처럼 트렌드 안에서 맡는 역할을 봅니다.'],
+          ['연결 근거', '소유·공식 협업·서비스·유통 경로 등 확인 가능한 관계를 함께 확인합니다.'],
+          ['다음 탐색', '기업을 누르면 주가·차트·재무와 기존 종목 화면으로 이어집니다.']
+        ]
+      }
+    };
+  }
+
+  activeInfoFrame() {
+    const active = document.querySelector('[data-screen-label][data-proto-active]');
+    if (active) {
+      const direct = [...active.children].find((node) => node.style && node.style.width === '393px' && node.style.height === '852px');
+      if (direct) return direct;
+      const nested = active.querySelector('div[style*="width:393px"][style*="height:852px"], div[style*="width: 393px"][style*="height: 852px"]');
+      if (nested) return nested;
+    }
+    return this.homePhoneFrame();
+  }
+
+  openInfoSheet(topicKey = 'selection') {
+    const topic = this.infoTopics()[topicKey] || this.infoTopics().selection;
+    const frame = this.activeInfoFrame();
+    if (!frame) return;
+    frame.querySelectorAll('[data-info-sheet-root]').forEach((node) => node.remove());
+
+    const root = document.createElement('div');
+    root.setAttribute('data-info-sheet-root', '1');
+    root.style.cssText = 'position:absolute;inset:0;z-index:160;display:flex;align-items:flex-end;background:rgba(26,22,38,0.34);';
+
+    const backdrop = document.createElement('button');
+    backdrop.type = 'button';
+    backdrop.setAttribute('aria-label', topic.title + ' 닫기');
+    backdrop.style.cssText = 'position:absolute;inset:0;border:0;padding:0;background:transparent;cursor:pointer;';
+
+    const sheet = document.createElement('section');
+    sheet.setAttribute('role', 'dialog');
+    sheet.setAttribute('aria-modal', 'true');
+    sheet.setAttribute('aria-label', topic.title);
+    sheet.style.cssText = 'position:relative;width:100%;box-sizing:border-box;max-height:72%;overflow-y:auto;border-radius:25px 25px 0 0;background:#FFFFFF;padding:10px 20px calc(22px + env(safe-area-inset-bottom, 0px));box-shadow:0 -12px 34px rgba(37,19,72,0.16);transform:translateY(18px);opacity:0;transition:transform 180ms cubic-bezier(.16,.82,.24,1),opacity 160ms ease;';
+
+    const close = () => {
+      sheet.style.transform = 'translateY(18px)';
+      sheet.style.opacity = '0';
+      window.setTimeout(() => root.remove(), 170);
+    };
+    root.__closeInfoSheet = close;
+    backdrop.onclick = close;
+
+    const grab = document.createElement('div');
+    grab.style.cssText = 'width:42px;height:4px;border-radius:999px;background:#E5E0ED;margin:0 auto 15px;';
+
+    const header = document.createElement('div');
+    header.style.cssText = 'display:flex;align-items:flex-start;gap:10px;';
+    const headingBox = document.createElement('div');
+    headingBox.style.cssText = 'flex:1;min-width:0;';
+    const eyebrow = document.createElement('div');
+    eyebrow.textContent = topic.eyebrow;
+    eyebrow.style.cssText = 'font-weight:800;font-size:11px;letter-spacing:0.015em;color:#7B3FF2;';
+    const heading = document.createElement('h2');
+    heading.textContent = topic.title;
+    heading.style.cssText = 'margin:4px 0 0;font-weight:800;font-size:20px;line-height:1.22;letter-spacing:-0.04em;color:#1A1A22;';
+    headingBox.append(eyebrow, heading);
+    const closeButton = document.createElement('button');
+    closeButton.type = 'button';
+    closeButton.setAttribute('aria-label', topic.title + ' 닫기');
+    closeButton.textContent = '×';
+    closeButton.style.cssText = 'width:36px;height:36px;flex:none;border:0;border-radius:999px;background:#F5F2FB;color:#6E7180;font:600 25px/1 system-ui;cursor:pointer;';
+    closeButton.onclick = close;
+    header.append(headingBox, closeButton);
+
+    const description = document.createElement('p');
+    description.textContent = topic.description;
+    description.style.cssText = 'margin:15px 0 0;padding:12px 13px;border-radius:14px;background:#F5F0FF;color:#5E3AA3;font-weight:600;font-size:12px;line-height:1.55;letter-spacing:-0.015em;';
+
+    const steps = document.createElement('div');
+    steps.style.cssText = 'margin-top:10px;display:flex;flex-direction:column;';
+    topic.steps.forEach(([name, detail], index) => {
+      const row = document.createElement('div');
+      row.style.cssText = 'display:flex;gap:10px;padding:11px 0;' + (index < topic.steps.length - 1 ? 'border-bottom:1px solid #F0EDF7;' : '');
+      const number = document.createElement('span');
+      number.textContent = String(index + 1);
+      number.style.cssText = 'width:22px;height:22px;flex:none;border-radius:999px;background:#7B3FF2;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:10px;';
+      const copy = document.createElement('div');
+      copy.style.cssText = 'min-width:0;padding-top:1px;';
+      const nameEl = document.createElement('div');
+      nameEl.textContent = name;
+      nameEl.style.cssText = 'font-weight:800;font-size:13px;line-height:1.25;color:#1A1A22;letter-spacing:-0.025em;';
+      const detailEl = document.createElement('div');
+      detailEl.textContent = detail;
+      detailEl.style.cssText = 'margin-top:3px;font-weight:500;font-size:11.5px;line-height:1.48;color:#6B6E7B;letter-spacing:-0.015em;';
+      copy.append(nameEl, detailEl);
+      row.append(number, copy);
+      steps.appendChild(row);
+    });
+
+    sheet.append(grab, header, description, steps);
+    root.append(backdrop, sheet);
+    frame.appendChild(root);
+    requestAnimationFrame(() => {
+      sheet.style.transform = 'translateY(0)';
+      sheet.style.opacity = '1';
+      closeButton.focus();
+    });
+  }
+
+  infoSheetWire() {
+    window.__trzipInfoSheetOpen = (topic) => this.openInfoSheet(topic);
+    if (this.__infoSheetWired) return;
+    this.__infoSheetWired = true;
+    document.addEventListener('click', (event) => {
+      const trigger = event.target && event.target.closest && event.target.closest('[data-info-trigger]');
+      if (!trigger) return;
+      event.preventDefault();
+      event.stopPropagation();
+      this.openInfoSheet(trigger.getAttribute('data-info-trigger') || 'selection');
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      const sheet = document.querySelector('[data-info-sheet-root]');
+      if (sheet && typeof sheet.__closeInfoSheet === 'function') sheet.__closeInfoSheet();
+    });
+  }
+
+  openSelectionGuide = () => this.openInfoSheet('selection');
 
   homeSelectionGuideWire() {
     const button = document.querySelector('[data-home-selection-guide]');
@@ -3205,6 +3355,7 @@ class Component extends DCLogic {
     button.__selectionGuideWired = true;
     button.addEventListener('click', (event) => {
       event.preventDefault();
+      event.stopPropagation();
       this.openSelectionGuide();
     });
   }
@@ -5998,7 +6149,7 @@ class Component extends DCLogic {
     }, dur + 1200);
   }
   componentDidUpdate() {
-    this.snsWire(); this.homeSelectionGuideWire(); this.shareWire(); this.applySort(); this.patchTrendSwitcherIcons(); this.patchCompanySheetChart(); this.patchInterestChart();
+    this.snsWire(); this.infoSheetWire(); this.homeSelectionGuideWire(); this.shareWire(); this.applySort(); this.patchTrendSwitcherIcons(); this.patchCompanySheetChart(); this.patchInterestChart();
     // 재렌더 뒤에도 현재 트렌드명과 로고를 일관되게 다시 주입합니다.
     if (this.publishedView) {
       clearTimeout(this.__livePatchT);
@@ -6560,7 +6711,7 @@ class Component extends DCLogic {
     vals.relatedCompanyPreview = relatedCompanyPreview;
     vals.relatedCompanyCount = relatedCompanies.length + '곳';
     vals.relatedCompanyAriaNames = relatedCompanies.slice(0, 3).map((entry) => entry[1]).join(' · ') + (relatedCompanies.length > 3 ? ' 외' : '');
-    vals.relatedCompaniesAriaLabel = '관련 기업 ' + vals.relatedCompanyCount + ' 보기: ' + vals.relatedCompanyAriaNames;
+    vals.relatedCompaniesAriaLabel = '왜 이 기업인지, 연결 역할과 기업 정보를 보기';
     const stageIndex = Math.max(0, Math.min(stages.length - 1, this.state.stage || 0));
     const cur = stages[stageIndex];
     vals.stageTitle = cur.title;
@@ -6723,6 +6874,10 @@ class Component extends DCLogic {
     var open = event.target && event.target.closest && event.target.closest('[data-home-selection-guide]');
     if (open) {
       event.preventDefault();
+      if (typeof window.__trzipInfoSheetOpen === 'function') {
+        window.__trzipInfoSheetOpen('selection');
+        return;
+      }
       var guide = document.getElementById('home-selection-guide');
       if (guide) guide.style.display = 'flex';
       return;
