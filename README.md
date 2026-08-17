@@ -8,6 +8,8 @@ TRZIP 백엔드는 설정된 Windows 수집 노드에서 매시 정각 한국 X 
 - 사용하지 않음: GitHub Actions, Render, Google RSS, Trends MCP 자동호출, X API, 생성·백필 데이터
 - 프런트: 별도 교체 가능. 이 저장소의 JSON 계약만 준수
 
+제품 정의, 현재 구현과 목표 API 아키텍처, 발표 흐름은 [TRZIP 제품·기술·발표 기준안](docs/TRZIP_PRODUCT_TECHNICAL_BLUEPRINT.md)을 기준으로 합니다. 현재 쇼케이스 UI와 실제 운영 publication을 혼동하지 않습니다.
+
 ## 운영 흐름
 
 ```text
