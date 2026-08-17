@@ -171,6 +171,16 @@ def test_my_page_portfolio_cards_do_not_repeat_portfolio_keywords() -> None:
     assert "this.escapeHtml(portfolio.keywords.map" not in saved_cards
 
 
+def test_portfolio_origin_trend_is_visually_distinguished_from_secondary_keywords() -> None:
+    origin_method = INDEX[INDEX.index("  portfolioOriginKeyword(portfolio) {") : INDEX.index("  clearLegacyPortfolioSurfaces() {")]
+    assert "portfolio.trend && portfolio.trend.name" in origin_method
+    assert "matched || keywords[0]" in origin_method
+    assert "트렌드 · " in origin_method
+    assert 'data-portfolio-origin="' in origin_method
+    assert "this.portfolioKeywordChips(portfolio);" in INDEX
+    assert "this.portfolioKeywordChips(portfolio, true)" in INDEX
+
+
 def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> None:
     method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
     assert "home.querySelectorAll('[data-mp-row],[data-portfolio-loading]')" in method
@@ -233,9 +243,8 @@ def test_saved_portfolio_restores_seed_company_metadata_when_reopened() -> None:
 
 def test_portfolio_list_uses_keyword_chips_without_company_name_summary() -> None:
     method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
-    assert "const keywordChips = portfolio.keywords.map" in method
+    assert "const keywordChips = this.portfolioKeywordChips(portfolio);" in method
     assert 'data-portfolio-keywords="1"' in method
-    assert "background:#F3EEFF" in method
     assert "const companyNames" not in method
     assert "portfolio.companies.slice(0, 5)" not in method
 
