@@ -117,7 +117,7 @@
     'hanwha.com': verifiedMakerLogo(
       'https://www.hanwha.com/', 'https://www.hanwha.com/assets/img/common/logo_black.svg',
       'image/svg+xml', 145, 40, '8b640a433cbe377e601cb6c59427b5703afa79b569ff58970f530a4818b8b2c7',
-      'explicit_logo_image', 'same_official_domain', 'symbol_crop_left'
+      'explicit_logo_image', 'same_official_domain', 'contain'
     ),
     'mrbluecorp.com': verifiedMakerLogo(
       'https://www.mrbluecorp.com/',

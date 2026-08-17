@@ -381,12 +381,12 @@
               </div>
             </sc-if>
           </div>
-          <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" onClick="{{ toggleTrend }}" style="margin-top:8px; width:100%; border:0; border-radius:12px; padding:9px 12px; background:#FAF8FF; color:#6B3FE0; display:flex; align-items:center; justify-content:space-between; font-family:inherit; font-weight:700; font-size:11.5px; cursor:pointer;">
+          <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" aria-controls="other-trends-panel" onClick="{{ toggleTrend }}" style="margin-top:8px; width:100%; border:1px solid #E8DFFC; border-radius:14px; padding:10px 12px 10px 14px; background:#FAF8FF; color:#6B3FE0; display:flex; align-items:center; justify-content:space-between; font-family:inherit; font-weight:800; font-size:12px; cursor:pointer;">
             <span>다른 트렌드 보기</span>
-            <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#6B3FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+            <span aria-hidden="true" style="width:26px; height:26px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#FFFFFF; box-shadow:0 2px 7px rgba(91,33,192,0.10);"><svg width="14" height="14" viewBox="0 0 14 14" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#6B3FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></span>
           </button>
           <sc-if value="{{ trendOpen }}" hint-placeholder-val="{{ false }}">
-            <div data-trend-switcher="1" style="margin-top:6px; background:#FFFFFF; border:1px solid #E2D9F8; border-radius:16px; overflow:hidden;">
+            <div id="other-trends-panel" data-trend-switcher="1" style="margin-top:6px; background:#FFFFFF; border:1px solid #E2D9F8; border-radius:16px; overflow:hidden;">
               <sc-for list="{{ trendOptions }}" as="opt" hint-placeholder-count="5">
                 <button type="button" onClick="{{ opt.pick }}" style="{{ opt.row }}; width:100%; border:0; font-family:inherit; text-align:left;">
                   <span style="width:30px; height:30px; flex:none; border-radius:999px; background:#F3F0FB; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.04);">

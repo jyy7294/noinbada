@@ -11,7 +11,7 @@ COMPANY_ROLE_LABELS = {
     "retail_sales": "판매·리테일",
     "brand_marketing": "브랜드·마케팅",
     "platform_service": "플랫폼·서비스",
-    "ownership_investment": "소유·운영",
+    "ownership_investment": "투자·소유",
     "event_sponsorship": "행사 후원·운영",
 }
 

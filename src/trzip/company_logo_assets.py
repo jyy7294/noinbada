@@ -64,6 +64,17 @@ _EXTERNAL_CSS_URL = re.compile(r"url\s*\(\s*(['\"]?)(?!#)(.*?)\1\s*\)", re.I)
 # TLS/markup prevents reliable discovery, without falling back to a search
 # engine favicon or an unrelated third-party logo service.
 _REVIEWED_COMPANY_LOGOS = {
+    ("한화", "000880"): {
+        "accepted_homepage_hosts": {"hanwhacorp.co.kr", "www.hanwhacorp.co.kr"},
+        "source_page_url": "https://www.hanwhacorp.co.kr/hanwha/company/ci.jsp",
+        "asset_url": "https://www.hanwhacorp.co.kr/_resource/hanwha/images/hanwha/ci/ci_logo_b.png",
+        "mime": "image/png",
+        "width": 160,
+        "height": 145,
+        "sha256": "10b7d599a9270e10fc5e3cf65ab3fa657bb820a8d7b7644b5542bd570e921388",
+        "verification": "verified_raster_min_64px",
+        "asset_scope": "same_official_domain",
+    },
     ("CJ ENM", "035760"): {
         "accepted_homepage_hosts": {"cjenm.com", "www.cjenm.com"},
         "source_page_url": "https://www.cjenm.com/",
@@ -77,14 +88,14 @@ _REVIEWED_COMPANY_LOGOS = {
     },
     ("삼성전자", "005930"): {
         "accepted_homepage_hosts": {"samsung.com", "www.samsung.com"},
-        "source_page_url": "https://www.samsung.com/sec/",
-        "asset_url": "https://images.samsung.com/kdp/_pub/icon-footer-dcxi.jpg",
-        "mime": "image/jpeg",
-        "width": 783,
-        "height": 631,
-        "sha256": "c9614e173b7305b050facb7f55518ba6319ac81c41176ab11f2b1b24bb2d5c5a",
+        "source_page_url": "https://www.samsung.com/sec/about-us/brand-identity/logo/",
+        "asset_url": "https://www.samsung.com/etc.clientlibs/samsung/clientlibs/consumer/global/clientlib-common/resources/images/logo-square-letter.png",
+        "mime": "image/png",
+        "width": 500,
+        "height": 500,
+        "sha256": "fab9f883d795fd0d46124e3e6211e9674bc5324b50f69d4af9df2823d49caeb1",
         "verification": "verified_raster_min_64px",
-        "asset_scope": "official_page_declared_cdn",
+        "asset_scope": "same_official_domain",
     },
     ("월트 디즈니 컴퍼니", "DIS"): {
         "accepted_homepage_hosts": {"thewaltdisneycompany.com", "www.thewaltdisneycompany.com"},

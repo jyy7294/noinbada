@@ -164,11 +164,19 @@ KEYWORDS = {
 
 COMPANY_CARDS = {
     "대한민국 광복절": (
-        ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "독립운동가·기념일 검색과 역사 콘텐츠 유통"),
-        ("카카오", "035720", "platform_service", "https://www.kakaocorp.com/", "기념일 뉴스·창작 콘텐츠 유통"),
-        ("CJ ENM", "035760", "content_production", "https://www.cjenm.com/", "역사·기념일 방송 콘텐츠 제작·유통"),
-        ("하나투어", "039130", "event_sponsorship", "https://www.hanatourcompany.com/", "독립유적·기념관 연계 국내여행 상품"),
-        ("모두투어", "080160", "event_sponsorship", "https://www.modetour.com/", "역사문화 명소 중심 국내여행 운영"),
+        # 광복절은 특정 한 기업의 수혜를 단정할 수 없는 기념일입니다. 따라서
+        # 역사 콘텐츠의 제작·상영, 디지털 탐색, 실제 방문 이동처럼 사용자가
+        # 확인하는 접점만 역할별로 분리하고, 일반 산업 유사성은 넣지 않습니다.
+        ("CJ ENM", "035760", "content_production", "https://www.cjenm.com/", "독립운동·근현대사 소재의 영화·방송 콘텐츠를 제작·유통하는 접점"),
+        ("CJ CGV", "079160", "distribution", "https://corp.cgv.co.kr/", "역사 소재 영화의 국내 극장 상영과 관람 접점"),
+        ("콘텐트리중앙", "036420", "content_production", "https://www.jcontentree.com/", "영화·드라마 제작과 배급을 통한 역사 서사 콘텐츠 접점"),
+        ("덱스터", "206560", "content_production", "https://dexterstudios.com/", "영화·드라마의 시각효과 제작을 통한 역사 콘텐츠 제작 생태계 접점"),
+        ("NAVER", "035420", "platform_service", "https://www.navercorp.com/", "독립운동가·기념일 정보와 역사 콘텐츠를 찾아보는 디지털 탐색 접점"),
+        ("카카오", "035720", "platform_service", "https://www.kakaocorp.com/", "뉴스·웹툰·창작 콘텐츠를 통해 기념일 정보를 소비하는 디지털 접점"),
+        ("KT", "030200", "platform_service", "https://corp.kt.com/", "IPTV·온라인 미디어를 통한 역사·기념 콘텐츠 시청 접점"),
+        ("LG유플러스", "032640", "platform_service", "https://www.lguplus.com/", "IPTV·모바일 미디어를 통한 기념 콘텐츠 시청 접점"),
+        ("하나투어", "039130", "event_sponsorship", "https://www.hanatourcompany.com/", "독립유적·기념관을 찾는 국내 역사문화 방문의 여행 접점"),
+        ("모두투어", "080160", "event_sponsorship", "https://www.modetour.com/", "독립유적·기념관을 찾는 국내 역사문화 방문의 여행 접점"),
     ),
     "개기일식": (
         ("삼성전자", "005930", "manufacturing_development", "https://www.samsung.com/sec/", "스마트폰 카메라·천체 촬영 기기"),
