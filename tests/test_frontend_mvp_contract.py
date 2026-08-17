@@ -1309,7 +1309,7 @@ def test_legacy_unvalidated_archive_is_not_exposed_in_the_public_frontend() -> N
 
 
 def test_past_trend_research_cases_are_explorable_without_recommendation_language() -> None:
-    assert 'data-past-trends-open="1"' in INDEX
+    assert 'data-past-trends-open="1"' not in INDEX
     assert "openPastTrends = () =>" in INDEX
     assert "당시 함께 살펴본 기업" in INDEX
     assert "이후 수익이나 투자 성과를 뜻하지 않습니다" in INDEX

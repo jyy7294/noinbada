@@ -293,9 +293,6 @@
               밈트폴리오 보러가기
               <svg width="14" height="14" viewBox="0 0 14 14" style="display:block;"><polyline points="5,3.5 9,7 5,10.5" fill="none" stroke="#7B3FF2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
             </button>
-            <button type="button" data-past-trends-open="1" style="width:100%; display:flex; align-items:center; justify-content:center; gap:6px; margin:2px 0 8px; padding:12px 0; border:1px solid #E8E0F8; border-radius:13px; background:#FAF8FF; font-family:inherit; font-weight:700; font-size:12.5px; color:#5B21C0; cursor:pointer;">
-              <span aria-hidden="true">↺</span> 과거 트렌드 다시 보기
-            </button>
           </div>
 
         </div>
@@ -1160,7 +1157,7 @@ class Component extends DCLogic {
     setTimeout(() => { this.likeWire(); this.stashWire(); this.myTabWire(); this.renderCompanyWatchlist(); this.shareWire(); }, 80);
     setTimeout(() => this.mkWire(), 120);
     setTimeout(() => this.snsWire(), 60);
-    setTimeout(() => { this.homeSelectionGuideWire(); this.pastTrendWire(); }, 80);
+    setTimeout(() => { this.homeSelectionGuideWire(); }, 80);
     setTimeout(() => this.dialWire(), 80);
     setTimeout(() => { this.arcWire(); this.hexWire(); this.viewToggleWire(); this.viewToggleWire2(); this.vdWire(); }, 100);
     setTimeout(() => this.motionWire(), 120);
@@ -3127,14 +3124,6 @@ class Component extends DCLogic {
     overlay.appendChild(body);
   };
 
-  pastTrendWire() {
-    document.querySelectorAll('[data-past-trends-open]').forEach((button) => {
-      if (button.__pastTrendWired) return;
-      button.__pastTrendWired = true;
-      button.addEventListener('click', () => this.openPastTrends());
-    });
-  }
-
   setOwnerMode(on) {
     const page = document.querySelector('#post-detail');
     if (!page) return;
@@ -4120,10 +4109,8 @@ class Component extends DCLogic {
       + '[data-past-trend-case]{animation:omCardLift 420ms cubic-bezier(.22,.75,.28,1) both;}'
       + '[data-past-trend-case]:nth-of-type(2){animation-delay:70ms}[data-past-trend-case]:nth-of-type(3){animation-delay:140ms}[data-past-trend-case]:nth-of-type(4){animation-delay:210ms}'
       + '[data-home-overlay]{animation:omOverlayIn 250ms cubic-bezier(.22,.75,.28,1) both;}'
-      + '[data-past-trends-open] span{animation:omIconFloat 1.8s ease-in-out infinite;}'
-      + '[data-past-trends-open]{transition:transform 180ms ease,background 180ms ease,box-shadow 180ms ease;}[data-past-trends-open]:hover{transform:translateY(-1px);background:#F4EEFF!important;box-shadow:0 7px 16px rgba(103,63,195,.12);}'
       + '[data-folder-card]:active,[data-stock-result]:active{transform:scale(.985);}'
-      + '@media (prefers-reduced-motion:reduce){[data-proto-active],[data-sns="vp"] [data-bar],[data-company-sheet-backdrop],[data-company-dialog],[data-folder-body],[data-folder-company],[data-list-row],[data-past-trend-case],[data-home-overlay],[data-past-trends-open] span{animation:none!important;}*{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}}';
+      + '@media (prefers-reduced-motion:reduce){[data-proto-active],[data-sns="vp"] [data-bar],[data-company-sheet-backdrop],[data-company-dialog],[data-folder-body],[data-folder-company],[data-list-row],[data-past-trend-case],[data-home-overlay]{animation:none!important;}*{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important;}}';
     document.head.appendChild(st);
 
     const tappable = (el) => {
