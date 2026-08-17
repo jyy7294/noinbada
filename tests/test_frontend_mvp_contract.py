@@ -515,12 +515,6 @@ def test_maker_stock_search_uses_only_verified_official_logo_scope() -> None:
       const visible = [...rows.filter((row) => visibleDomesticIds.has(row.id)), ...foreign];
       if (visible.length !== 27) throw new Error('unexpected visible stock set: ' + visible.length);
       visible.forEach((row) => {
-        if (row.id === 'us-MSFT') {
-          if (row.logo_render_mode !== 'initials' || row.logo_url !== '') {
-            throw new Error('Microsoft must remain initials-only');
-          }
-          return;
-        }
         const p = row.logo_provenance || {};
         if (row.logo_asset_scope !== 'maker_stock_search') throw new Error(row.id + ': scope');
         if (row.logo_render_mode !== 'image') throw new Error(row.id + ': image mode');
@@ -529,8 +523,10 @@ def test_maker_stock_search_uses_only_verified_official_logo_scope() -> None:
         if (!/^[0-9a-f]{64}$/.test(row.logo_asset_sha256)) throw new Error(row.id + ': sha');
         if (row.logo_asset_format === 'svg') {
           if (row.logo_asset_verification !== 'verified_safe_svg') throw new Error(row.id + ': svg verification');
-        } else if (!(row.logo_asset_width >= 64 && row.logo_asset_height >= 64
-          && row.logo_asset_verification === 'verified_raster_min_64px')) {
+        } else if (!((row.logo_asset_width >= 64 && row.logo_asset_height >= 64
+          && row.logo_asset_verification === 'verified_raster_min_64px')
+          || (row.logo_asset_width >= 64 && row.logo_asset_height >= 32
+          && row.logo_asset_verification === 'verified_raster_wordmark'))) {
           throw new Error(row.id + ': raster dimensions');
         }
         if (p.asset_url !== row.logo_url || p.source_page_url !== row.logo_source_page_url

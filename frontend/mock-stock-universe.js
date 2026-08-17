@@ -139,8 +139,11 @@
       'https://www.apple.com/newsroom/images/default/apple-logo-og.jpg?202608140503',
       'image/jpeg', 1200, 630, '2172fd3dbe2adb1180222673a64c2ab28f984e443cc11133bf774a33044ce391', 'og_image'
     ),
-    // Microsoft remains an initials fallback: no redistributable official
-    // asset that also passed the runtime availability check is pinned here.
+    'microsoft.com': verifiedMakerLogo(
+      'https://www.microsoft.com/', 'https://uhf.microsoft.com/images/microsoft/RE1Mu3b.png',
+      'image/png', 216, 46, '112fec798b78aa02e102a724b5cb1990c0f909bc1d8b7b1fa256eab41bbc0960',
+      'official_header_wordmark', 'official_page_declared_cdn'
+    ),
     'abc.xyz': verifiedMakerLogo(
       'https://abc.xyz/', 'https://s206.q4cdn.com/479360582/files/design/alphabet_logo.png',
       'image/png', 800, 188, 'de61b1204d6ab077ebef10b5392523a8208dc0276278ce5a9bb5e4c891ef93d8', 'explicit_logo_image', 'official_page_declared_cdn'
