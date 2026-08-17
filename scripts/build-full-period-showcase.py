@@ -167,9 +167,25 @@ def main() -> int:
         ranking["ranking"],
         source_observed_at=str(observed_at),
     )
+    # The source observation time and the market refresh time are intentionally
+    # different fields.  On weekends and exchange holidays the latest valid
+    # market session can precede the current source observation; never rewrite
+    # that session date to make the figures look newer than they are.
+    market_refreshed_at = datetime.now(UTC)
     market_snapshot_count = _attach_observed_market_snapshots(payload, at)
     logo_count = _attach_verified_company_logos(payload)
     validate_showcase_enrichment(payload)
+
+    unique_market_as_of = sorted({
+        str(company["market_snapshot"]["as_of"])
+        for card in payload["cards"]
+        for company in card["companies"]
+    })
+    if len(unique_market_as_of) != 1:
+        raise ValueError(
+            "market snapshot refresh must resolve to one shared latest market session: "
+            + ", ".join(unique_market_as_of)
+        )
 
     target = args.output.resolve()
     stage = target.parent / f".{target.name}.stage"
@@ -197,6 +213,8 @@ def main() -> int:
         "market_data": {
             "status": "observed",
             "provider": "pykrx+yahoo_finance",
+            "refreshed_at": market_refreshed_at.isoformat().replace("+00:00", "Z"),
+            "latest_market_session": unique_market_as_of[0],
             "snapshot_count": market_snapshot_count,
             "unique_security_count": len({
                 (company.get("market") or "KRX", company["stock_code"])

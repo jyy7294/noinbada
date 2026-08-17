@@ -26,7 +26,14 @@ def test_public_showcase_is_hash_pinned_and_has_exact_approved_shape() -> None:
         for card in SHOWCASE["cards"]
         for company in card["companies"]
     }
-    assert SHOWCASE_MANIFEST["market_data"] == {
+    market_data = SHOWCASE_MANIFEST["market_data"]
+    assert {
+        key: market_data[key]
+        for key in (
+            "estimated", "provider", "ranking_effect", "snapshot_count",
+            "status", "synthetic", "unique_security_count",
+        )
+    } == {
         "estimated": False,
         "provider": "pykrx+yahoo_finance",
         "ranking_effect": "none",
@@ -35,6 +42,8 @@ def test_public_showcase_is_hash_pinned_and_has_exact_approved_shape() -> None:
         "synthetic": False,
         "unique_security_count": len(unique_securities),
     }
+    assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", market_data["latest_market_session"])
+    assert market_data["refreshed_at"].endswith("Z")
     assert hashlib.sha256(payload_path.read_bytes()).hexdigest() == SHOWCASE_MANIFEST["showcase"]["sha256"]
     assert SHOWCASE["source_ranking_mode"] == "actual_full_ledger_no_recency"
     assert SHOWCASE["enrichment_mode"] == "reconstructed_demo"
@@ -71,7 +80,8 @@ def test_frontend_defaults_to_validated_showcase_without_touching_live_contract(
 def test_user_ui_hides_raw_provider_names_and_source_links() -> None:
     assert "시장 정보 · {{ sheetProviderLabel }}" not in INDEX
     assert 'href="{{ sheetSourceUrl }}"' not in INDEX
-    assert "실제 시장 데이터 · {{ sheetAsOf }} 기준" in INDEX
+    assert "시장 기준일 · {{ sheetAsOf }}" in INDEX
+    assert "실제 시장 데이터 · {{ sheetAsOf }} 기준" not in INDEX
     assert "시가총액·원화" in INDEX
     assert "vals.sheetProviderLabel" not in INDEX
     assert "vals.sheetSourceUrl" not in INDEX
@@ -232,12 +242,12 @@ def test_interest_range_tabs_remain_selectable_when_a_long_period_is_sparse() ->
     assert "this.setState({ range: i, interestPoint: null }, () => this.animateInterestRange());" in render_vals
 
 
-def test_interest_points_are_tappable_and_freshness_is_not_derived_from_the_selected_range() -> None:
-    assert 'data-interest-point-buttons="1"' in INDEX
-    assert 'data-interest-point-index' in INDEX
-    assert 'observationPointDetails' in INDEX
-    assert 'interestPoint: null' in INDEX
-    assert '상대 관심도 ' in INDEX
+def test_freshness_is_not_derived_from_the_selected_range() -> None:
+    assert 'data-interest-card="1"' not in INDEX
+    assert 'data-interest-point-buttons="1"' not in INDEX
+    assert "day: '진입 ' + (elapsedDays + 1) + '일차'" in INDEX
+    assert "day: '진입 ' + days + '일차'" in INDEX
+    assert "'대한민국 광복절': { observedAt: '2026-08-15T00:00:00+09:00', captureDays: 0, expansionDays: 1 }" in INDEX
     render_vals = INDEX[INDEX.index("  renderVals() {") : INDEX.index("    return vals;")]
     assert 'const freshnessChart = this.buildInterestCurve(curTrend, 0);' in render_vals
     assert 'const relativeInterestValues = (freshnessChart.values || []).filter(Number.isFinite);' in render_vals
@@ -655,9 +665,6 @@ def test_live_logo_candidate_runtime_honors_initials_and_seed_scope() -> None:
 
 
 def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> None:
-    assert "관심 흐름" in INDEX
-    assert "관심 흐름" in INDEX
-    assert 'data-interest-range-caption="1"' in INDEX
     assert "buildInterestCurve(trend, rangeIndex = 0)" in INDEX
     assert "const rangeKey = ['24h', '1w'][Math.max(0, Math.min(1, rangeIndex))]" in INDEX
     assert "const displayRangeLabel = rangeSpec.label;" in INDEX
@@ -688,9 +695,6 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert "segments.filter((segment) => segment.length === 1)" in INDEX
     assert 'data-interest-single-points="1"' not in INDEX
     assert 'data-interest-observation-points="1"' not in INDEX
-    assert 'data-interest-bars="1"' in INDEX
-    assert 'data-interest-scale-explanation="1"' in INDEX
-    assert 'aria-label="관심 흐름 척도 설명 보기"' in INDEX
     assert "interestScaleDescription" in INDEX
     assert "scaleMax" in INDEX
     assert "scaleMid" in INDEX
@@ -706,14 +710,8 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert "Intl.DateTimeFormat('ko-KR'" in INDEX
     assert "else if (activeSegment.length)" in INDEX
     assert "barPoints" in INDEX
-    assert "data-interest-empty=\"1\"" in INDEX
-    assert "rangeAvailability" in INDEX
-    assert "aria-disabled=\"{{ rangeDisabled0 }}\"" in INDEX
     for synthetic_token in ("event_ramp", "lateBreakout", "middleDip", "lateRebound", "periodProfile"):
         assert synthetic_token not in INDEX
-    assert 'data-interest-bars="1"' in INDEX
-    assert 'data-interest-flow-dot="1"' in INDEX
-    assert 'aria-labelledby="interest-chart-title"' in INDEX
     assert "선택한 기간의 관심 흐름을 비교해 볼 수 있습니다." not in INDEX
     assert "0~100 표시지수" not in INDEX
     assert "patchInterestChart()" in INDEX
@@ -725,10 +723,6 @@ def test_interest_chart_uses_published_display_windows_and_preserves_gaps() -> N
     assert "return '0.0%'" not in INDEX
     assert "출처 미확인" not in INDEX
     assert "displayOnly: true" not in INDEX
-    chart_surface = INDEX[INDEX.index("관심 흐름"): INDEX.index("함께 언급된 키워드")]
-    assert "chartPanels" not in chart_surface
-    assert "전체 채널" not in chart_surface
-    assert "채널 추가하기" not in chart_surface
     assert "buildChartPanels(" not in INDEX
     assert "chartRevealWire()" not in INDEX
     chart_builder = INDEX[INDEX.index("  buildInterestCurve(trend, rangeIndex = 0)"):INDEX.index("  rankResponsiveInterestStyle(trend)")]
@@ -1087,6 +1081,7 @@ def test_company_sheet_renders_financial_numbers_only_with_complete_provenance()
     assert "formatKrwMarketCap(marketCapKrw)" in INDEX
     assert "시가총액·원화" in INDEX
     assert "30일 주가 추이 · {{ sheetPriceCurrency }}" in INDEX
+    assert "30일 주가 추이 · {{ sheetPriceCurrency }} · {{ sheetAsOf }} 기준" not in INDEX
     assert "formatMarketCap(snapshot.market_cap)" not in INDEX
     assert "snapshot.market_cap_label" not in INDEX
 
@@ -1131,7 +1126,7 @@ def test_market_snapshot_guard_rejects_unverified_values_and_preserves_real_zero
       if (guard.companyPrice(observed) === '–') process.exit(13);
       const sheet = guard.buildSheet('A', 'Acme', 'desc', 0, '', observed);
       if (!sheet.hasMarketData || sheet.marketUnavailable) process.exit(14);
-      if (sheet.per !== 'N/A' || sheet.pbr !== '—' || sheet.roe !== '0.0%') process.exit(15);
+      if (sheet.per !== '미제공' || sheet.pbr !== '—' || sheet.roe !== '0.0%') process.exit(15);
       if (sheet.priceCurrency !== 'USD' || !sheet.price.includes('$')) process.exit(16);
 
       for (const mutation of [
@@ -1280,7 +1275,8 @@ def test_list_view_uses_previous_publication_rank_movement_not_weekly_percent() 
     assert "rankMovementLabel" in INDEX
     assert "movement.status === 'up'" in INDEX
     assert "movement.status === 'down'" in INDEX
-    assert "이전 공개 대비" in INDEX
+    assert "하루 전 대비" in INDEX
+    assert "이전 공개 대비" not in INDEX
     list_renderer = INDEX[INDEX.index("const list = document.querySelector('[data-list-view2]');"):]
     list_renderer = list_renderer[: list_renderer.index("  dialGo(label)")]
     assert "trend.lift" not in list_renderer
@@ -1387,9 +1383,10 @@ def test_selection_guide_uses_plain_language_and_human_final_approval() -> None:
 def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -> None:
     assert ">트렌드</span>" in INDEX
     assert "통합 트렌드" not in INDEX
-    assert ">관심 흐름</span>" in INDEX
-    assert "판정 기준" in INDEX
-    assert "포착: 처음 확인된 흐름" in INDEX
+    assert 'data-interest-card="1"' not in INDEX
+    assert 'data-related-company-cta="1"' in INDEX
+    assert "단계 읽는 법" in INDEX
+    assert "처음 포착된 시점과 관측이 이어진 정도를 함께 봅니다." in INDEX
     assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
     assert "전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요" in INDEX
     assert "+ ' · 통합 트렌드</span>" not in INDEX
@@ -2082,11 +2079,15 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'data-freshness-knob="1"' in INDEX
     assert 'animateFreshnessGauge()' in INDEX
     assert "cubic-bezier(.16,.82,.24,1)" in INDEX
-    assert '포착: 처음 확인된 흐름' in INDEX
-    assert '확산: 관측이 이어지며 관심이 커지는 흐름' in INDEX
-    assert '대중화: 반복 관측되어 넓게 이어지는 흐름' in INDEX
-    assert 'data-interest-card="1"' in INDEX
-    assert '관심 흐름' in INDEX
+    assert '처음 확인' in INDEX
+    assert '관심 증가' in INDEX
+    assert '넓게 지속' in INDEX
+    assert 'data-interest-card="1"' not in INDEX
+    assert 'data-related-company-cta="1"' in INDEX
+    assert 'relatedCompanyPreview' in INDEX
+    assert 'relatedCompanyAriaNames' in INDEX
+    assert '{{ relatedCompanyNames }}' not in INDEX
+    assert INDEX.index('data-related-company-cta="1"') < INDEX.index('함께 언급된 키워드')
     assert '선택한 기간의 관심 흐름을 비교해 볼 수 있습니다.' not in INDEX
     assert 'data-company-role-folder="1"' in INDEX
     assert 'data-folder-toggle="1"' in INDEX

@@ -2,7 +2,8 @@
   "approval": {
     "approved_by": "이찬희",
     "approved_count": 10,
-    "review_sha256": "11f4e1c1736ee433c1aa849ef1d97c0801e7659460df95ea6ca7c26c69ada273"
+    "path": "approvals/approval-927f7fd20e7a96e2e78c082c.json",
+    "sha256": "5a6c2d23e57370c875ce86bd45298ed740a5aeddc8014251a3fae88485188d75"
   },
   "card_count": 10,
   "company_logos": {
@@ -11,12 +12,20 @@
     "source": "official_page_asset",
     "status": "verified"
   },
+  "display_as_of": "2026-08-17T14:00:00+09:00",
   "display_status": "NOW",
   "display_time_policy": "client_kst_floor_hour",
+  "final_review": {
+    "path": "final-publication-review.json",
+    "review_sha256": "ea9644460c798e3fc320ac01113510c3b1ed8f642ba3631dd4ab2b18ceaa5684",
+    "sha256": "41e1d64941bccac556c548dd8347c47ef8a4b8d2a079b991a419489cbaff1ff9"
+  },
   "market_data": {
     "estimated": false,
+    "latest_market_session": "2026-08-14",
     "provider": "pykrx+yahoo_finance",
     "ranking_effect": "none",
+    "refreshed_at": "2026-08-17T05:44:37.197451Z",
     "snapshot_count": 51,
     "status": "observed",
     "synthetic": false,
@@ -26,13 +35,13 @@
   "ranking_formula_version": "peak25_mean40_persistence20_breadth15_v1",
   "ranking_window": {
     "from": "2026-08-12T13:00:00+00:00",
-    "observed_hour_count": 41,
-    "to": "2026-08-16T00:00:00+00:00"
+    "observed_hour_count": 51,
+    "to": "2026-08-17T05:00:00+00:00"
   },
   "schema_version": "trzip-showcase-delivery-v1",
   "showcase": {
     "path": "showcase.json",
-    "sha256": "18062a729bfcac2b8d14a1d69ef3717236cca61d858f0bb808dee39e6d2c82e3"
+    "sha256": "cced32363acd55b3afa36230990f9e9e5cc185c5f7e820e8967dc978712bb050"
   },
-  "source_observed_at": "2026-08-16T00:00:00+00:00"
+  "source_observed_at": "2026-08-17T05:00:00+00:00"
 }
