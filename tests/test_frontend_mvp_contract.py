@@ -2131,7 +2131,10 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'trend: i, trendOpen: false, trendDescriptionOpen: false' not in INDEX
     assert 'data-trend-icon-src="{{ trendIconUrl }}"' in INDEX
     assert '{{ trendIconFallback }}</span>' in INDEX
-    assert 'background:#F3EFFC; border-radius:22px' in INDEX
+    assert 'data-trend-summary-card="1" style="background:#FFFFFF; border-radius:0; overflow:visible;"' in INDEX
+    assert INDEX.count('data-other-trends-toggle="1"') == 1
+    assert INDEX.index('data-trend-description-toggle="1"') < INDEX.index('data-other-trends-toggle="1"')
+    assert INDEX.index('data-other-trends-toggle="1"') < INDEX.index('data-freshness-card="1"')
     assert '이 트렌드는 무엇인가요?' not in INDEX
     assert '왜 관심을 받나요?' in INDEX
     assert 'trendDetailDefinition(trend = {})' in INDEX
