@@ -142,19 +142,18 @@ def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> No
 
 
 def test_home_list_view_fits_all_top_ten_without_internal_scroll() -> None:
-    assert 'data-list-view2="1" style="display:none; flex-direction:column; margin:6px -16px 0; height:clamp(400px, 55dvh, 430px); overflow:hidden; background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:3px 12px;' in INDEX
+    assert 'data-list-view2="1" style="display:none; flex-direction:column; margin:6px -16px 0; overflow:hidden; background:#FFFFFF; padding:0 20px;' in INDEX
     assert 'data-home-portfolios="1" style="visibility:hidden; margin:16px -16px 0;' in INDEX
     view_toggle = INDEX[INDEX.index("  viewToggleWire2()") : INDEX.index("  goPostList =")]
     assert "scroller.style.overflowY = 'hidden'" in view_toggle
     assert "list.style.display = isList ? 'flex' : 'none'" in view_toggle
     home_list_start = INDEX.rindex("const list = document.querySelector('[data-list-view2]');")
     home_list = INDEX[home_list_start : INDEX.index("  dialGo(label)")]
-    assert "flex:1;min-height:0" in home_list
+    assert "min-height:37px" in home_list
     assert 'data-list-row="1"' in home_list
-    assert "-webkit-line-clamp:2" in home_list
-    assert "border-radius:999px;padding:3px 7px;background:#F0E8FF;color:#6C2FF2" in home_list
-    assert "padding:4px 2px" in home_list
-    assert "-webkit-line-clamp:2" in home_list
+    assert "font-weight:600;font-size:9.5px" in home_list
+    assert "movementMarkup" in home_list
+    assert "padding:5px 2px" in home_list
 
 
 def test_company_sheet_never_uses_an_empty_company_information_fallback() -> None:

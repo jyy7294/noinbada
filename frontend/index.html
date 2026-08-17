@@ -283,7 +283,7 @@
             </div>
           </div>
           <div data-home-hint="1" style="text-align:center; font-weight:500; font-size:11.5px; color:#9A8BC9; margin-top:12px;">키워드를 눌러 자세히 알아보세요</div>
-          <div data-list-view2="1" style="display:none; flex-direction:column; margin:6px -16px 0; height:clamp(400px, 55dvh, 430px); overflow:hidden; background:#FFFFFF; border:1px solid #EEEBF7; border-radius:20px; padding:3px 12px;"></div>
+          <div data-list-view2="1" style="display:none; flex-direction:column; margin:6px -16px 0; overflow:hidden; background:#FFFFFF; padding:0 20px;"></div>
           <div data-home-portfolios="1" style="visibility:hidden; margin:16px -16px 0; padding:22px 18px 2px; border-top:1px solid #EFECF8;">
             <div style="padding:0 2px 4px;">
               <div style="font-weight:800; font-size:16.5px; color:#1A1A22; letter-spacing:-0.03em;">인기 밈트폴리오</div>
@@ -5347,15 +5347,23 @@ class Component extends DCLogic {
         const movementLabel = String(movement.label || trend.rankMovementLabel || 'NEW');
         const movementColor = movement.status === 'up' ? '#E5395F'
           : movement.status === 'down' ? '#2E6BE6'
-            : movement.status === 'new' ? '#7B3FF2' : '#8B8D98';
+            : movement.status === 'new' ? '#FF3D8B' : '#A9ACB8';
+        const delta = Number(movement.delta);
+        const movementMarkup = movement.status === 'up'
+          ? '<span aria-label="이전 공개 대비 상승 ' + escape(Number.isFinite(delta) ? delta : movementLabel) + '" style="flex:none;font-weight:800;font-size:10.5px;color:' + movementColor + ';">▲ ' + escape(String(Number.isFinite(delta) ? Math.abs(delta) : movementLabel)) + '</span>'
+          : movement.status === 'down'
+            ? '<span aria-label="이전 공개 대비 하락 ' + escape(Number.isFinite(delta) ? delta : movementLabel) + '" style="flex:none;font-weight:800;font-size:10.5px;color:' + movementColor + ';">▼ ' + escape(String(Number.isFinite(delta) ? Math.abs(delta) : movementLabel)) + '</span>'
+            : movement.status === 'new'
+              ? '<span aria-label="이전 공개 대비 신규" style="flex:none;border-radius:6px;background:#FFE8F0;padding:3px 6px;font-weight:800;font-size:9.5px;line-height:1;color:' + movementColor + ';">NEW</span>'
+              : '<span aria-label="이전 공개 대비 변동 없음" style="flex:none;font-weight:700;font-size:11px;color:' + movementColor + ';">–</span>';
         const divider = index ? '<div style="height:1px;background:#F1EEF9;"></div>' : '';
         return divider + '<button type="button" data-home-topic="' + escape(trend.name)
-          + '" data-list-row="1" style="width:100%;flex:1;min-height:0;border:0;background:#FFFFFF;display:flex;align-items:stretch;gap:8px;padding:4px 2px;text-align:left;cursor:pointer;animation-delay:' + (index * 45) + 'ms;">'
-          + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:12px;color:#7B3FF2;">' + (index + 1) + '</span>'
-          + '<span style="flex:1;min-width:0;align-self:center;display:flex;align-items:center;gap:6px;overflow:hidden;">'
-          + '<span style="min-width:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-weight:800;font-size:13px;line-height:1.16;color:#1A1A22;letter-spacing:-0.035em;word-break:keep-all;">' + escape(trend.name) + '</span>'
-          + '<span style="flex:none;max-width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:999px;padding:3px 7px;background:#F0E8FF;color:#6C2FF2;font-weight:700;font-size:9.5px;line-height:1.1;">' + escape(trend.cat) + '</span></span>'
-          + '<span aria-label="이전 공개 대비 ' + escape(movementLabel) + '" style="flex:none;font-weight:700;font-size:11px;color:' + movementColor + ';">' + escape(movementLabel) + '</span></button>';
+          + '" data-list-row="1" style="width:100%;min-height:37px;border:0;background:#FFFFFF;display:flex;align-items:center;gap:8px;padding:5px 2px;text-align:left;cursor:pointer;animation-delay:' + (index * 45) + 'ms;">'
+          + '<span style="width:17px;flex:none;text-align:center;font-weight:800;font-size:12px;color:#7B3FF2;">' + (index + 1) + '</span>'
+          + '<span style="flex:1;min-width:0;display:flex;align-items:baseline;gap:5px;overflow:hidden;">'
+          + '<span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:800;font-size:13px;line-height:1.2;color:#1A1A22;letter-spacing:-0.035em;">' + escape(trend.name) + '</span>'
+          + '<span style="flex:none;max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;font-size:9.5px;line-height:1.1;color:#8B8D98;">' + escape(trend.cat) + '</span></span>'
+          + movementMarkup + '</button>';
       }).join('');
       list.querySelectorAll('[data-home-topic]').forEach((row) => {
         row.onclick = () => this.dialGo(row.getAttribute('data-home-topic'));
