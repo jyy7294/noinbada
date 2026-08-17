@@ -242,8 +242,9 @@ def test_home_shows_the_observed_timestamp_only_once() -> None:
 def test_home_header_uses_a_live_title_and_explicit_dial_list_controls() -> None:
     header = INDEX[INDEX.index('data-screen-label="01 홈"') : INDEX.index('data-vd-stage="1"')]
     assert "실시간 트렌드</div>" in header
-    assert 'src="assets/trzip-logo.png"' in header
-    assert 'src="assets/trzip-mark.svg"' not in header
+    assert 'aria-label="키움증권으로 돌아가기"' in header
+    assert 'onClick="{{ openKiwoomHome }}"' in header
+    assert 'src="assets/trzip-logo.png"' not in header
     assert 'data-view-btn2="dial"' in header
     assert 'data-view-btn2="list"' in header
     toggle = INDEX[INDEX.index("  viewToggleWire2() {") : INDEX.index("  goPostList =")]
