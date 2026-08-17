@@ -152,7 +152,7 @@ def test_home_list_view_fits_all_top_ten_without_internal_scroll() -> None:
     assert "flex:1;min-height:0" in home_list
     assert 'data-list-row="1"' in home_list
     assert "-webkit-line-clamp:2" in home_list
-    assert "width:47px;flex:none;display:flex;align-items:center;justify-content:flex-end;text-align:right" in home_list
+    assert "border-radius:999px;padding:3px 7px;background:#F0E8FF;color:#6C2FF2" in home_list
     assert "padding:4px 2px" in home_list
     assert "-webkit-line-clamp:2" in home_list
 

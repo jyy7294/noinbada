@@ -5263,8 +5263,9 @@ class Component extends DCLogic {
         return divider + '<button type="button" data-home-topic="' + escape(trend.name)
           + '" data-list-row="1" style="width:100%;flex:1;min-height:0;border:0;background:#FFFFFF;display:flex;align-items:stretch;gap:8px;padding:4px 2px;text-align:left;cursor:pointer;animation-delay:' + (index * 45) + 'ms;">'
           + '<span style="width:18px;flex:none;text-align:center;font-weight:800;font-size:12px;color:#7B3FF2;">' + (index + 1) + '</span>'
-          + '<span style="flex:1;min-width:0;align-self:center;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-weight:800;font-size:13px;line-height:1.16;color:#1A1A22;letter-spacing:-0.035em;word-break:keep-all;">' + escape(trend.name) + '</span>'
-          + '<span style="width:47px;flex:none;display:flex;align-items:center;justify-content:flex-end;text-align:right;font-weight:600;font-size:10px;line-height:1.15;color:#9295A1;word-break:keep-all;">' + escape(trend.cat) + '</span>'
+          + '<span style="flex:1;min-width:0;align-self:center;display:flex;align-items:center;gap:6px;overflow:hidden;">'
+          + '<span style="min-width:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-weight:800;font-size:13px;line-height:1.16;color:#1A1A22;letter-spacing:-0.035em;word-break:keep-all;">' + escape(trend.name) + '</span>'
+          + '<span style="flex:none;max-width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:999px;padding:3px 7px;background:#F0E8FF;color:#6C2FF2;font-weight:700;font-size:9.5px;line-height:1.1;">' + escape(trend.cat) + '</span></span>'
           + '<span aria-label="이전 공개 대비 ' + escape(movementLabel) + '" style="flex:none;font-weight:700;font-size:11px;color:' + movementColor + ';">' + escape(movementLabel) + '</span></button>';
       }).join('');
       list.querySelectorAll('[data-home-topic]').forEach((row) => {
