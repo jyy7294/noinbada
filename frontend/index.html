@@ -224,7 +224,7 @@
           </div>
 
           <div data-vd-stage="1" data-home-ready="false" style="position:relative; margin:6px -16px 0; height:440px; background:linear-gradient(180deg,#FFFFFF 0%,#F7F2FF 14%,#EFE7FD 58%,#F7F3FE 84%,#FFFFFF 100%); overflow:hidden; touch-action:none; user-select:none; opacity:0; pointer-events:none; transition:opacity 180ms ease;">
-            <div data-vd-focus-copy="1" style="position:absolute; left:38px; top:50%; z-index:20; width:240px; padding:0; box-sizing:border-box; text-align:left; transform:translateY(-50%); pointer-events:none;">
+          <div data-vd-focus-copy="1" style="position:absolute; left:56px; top:50%; z-index:20; width:218px; padding:0; box-sizing:border-box; text-align:left; transform:translateY(-50%); pointer-events:none;">
               <div data-vd-rank="1" style="display:inline-block; border:1.5px solid #B79BF2; border-radius:999px; padding:5px 13px; font-weight:600; font-size:12px; color:#5B21C0; background:rgba(255,255,255,0.6);">통합 1위</div>
               <div data-vd-cat="1" style="font-weight:600; font-size:12.5px; color:#8B7BC4; margin-top:10px;">분류 확인 중</div>
               <div data-vd-blob="1" style="position:absolute; left:50%; top:50%; margin:-70px 0 0 -100px; width:200px; height:140px; border-radius:999px; background:#D3C2F7; filter:blur(30px); opacity:0.5;"></div>
@@ -374,25 +374,25 @@
                 </sc-if>
               </div>
             </sc-if>
+            <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" aria-controls="other-trends-panel" onClick="{{ toggleTrend }}" style="width:100%; border:0; border-top:1px solid rgba(91,33,192,0.10); background:transparent; padding:11px 0 0; color:#6B3FE0; display:flex; align-items:center; justify-content:space-between; font-family:inherit; font-weight:700; font-size:12px; cursor:pointer;">
+              <span>다른 트렌드 보기</span>
+              <svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#6B3FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+            </button>
+            <sc-if value="{{ trendOpen }}" hint-placeholder-val="{{ false }}">
+              <div id="other-trends-panel" data-trend-switcher="1" style="margin-top:8px; background:#FFFFFF; border:1px solid #E2D9F8; border-radius:16px; overflow:hidden;">
+                <sc-for list="{{ trendOptions }}" as="opt" hint-placeholder-count="5">
+                  <button type="button" onClick="{{ opt.pick }}" style="{{ opt.row }}; width:100%; border:0; font-family:inherit; text-align:left;">
+                    <span style="width:30px; height:30px; flex:none; border-radius:999px; background:#F3F0FB; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.04);">
+                      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-trend-icon-src="{{ opt.optIconUrl }}" alt="{{ opt.optIconAlt }}" width="20" height="20" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:20px; height:20px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                      <span role="img" aria-label="{{ opt.optIconAlt }}" style="width:20px; height:20px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:9px; line-height:1;">{{ opt.optIconFallback }}</span>
+                    </span>
+                    <span style="{{ opt.nameStyle }}">{{ opt.optName }}</span>
+                    <span style="flex:none; white-space:nowrap; font-weight:500; font-size:11px; color:#A9ACB8;">{{ opt.optCat }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
           </div>
-          <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" aria-controls="other-trends-panel" onClick="{{ toggleTrend }}" style="margin-top:8px; width:100%; border:1px solid #E8DFFC; border-radius:14px; padding:10px 12px 10px 14px; background:#FAF8FF; color:#6B3FE0; display:flex; align-items:center; justify-content:space-between; font-family:inherit; font-weight:800; font-size:12px; cursor:pointer;">
-            <span>다른 트렌드 보기</span>
-            <span aria-hidden="true" style="width:26px; height:26px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#FFFFFF; box-shadow:0 2px 7px rgba(91,33,192,0.10);"><svg width="14" height="14" viewBox="0 0 14 14" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#6B3FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg></span>
-          </button>
-          <sc-if value="{{ trendOpen }}" hint-placeholder-val="{{ false }}">
-            <div id="other-trends-panel" data-trend-switcher="1" style="margin-top:6px; background:#FFFFFF; border:1px solid #E2D9F8; border-radius:16px; overflow:hidden;">
-              <sc-for list="{{ trendOptions }}" as="opt" hint-placeholder-count="5">
-                <button type="button" onClick="{{ opt.pick }}" style="{{ opt.row }}; width:100%; border:0; font-family:inherit; text-align:left;">
-                  <span style="width:30px; height:30px; flex:none; border-radius:999px; background:#F3F0FB; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.04);">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-trend-icon-src="{{ opt.optIconUrl }}" alt="{{ opt.optIconAlt }}" width="20" height="20" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:20px; height:20px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                    <span role="img" aria-label="{{ opt.optIconAlt }}" style="width:20px; height:20px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:9px; line-height:1;">{{ opt.optIconFallback }}</span>
-                  </span>
-                  <span style="{{ opt.nameStyle }}">{{ opt.optName }}</span>
-                  <span style="flex:none; white-space:nowrap; font-weight:500; font-size:11px; color:#A9ACB8;">{{ opt.optCat }}</span>
-                </button>
-              </sc-for>
-            </div>
-          </sc-if>
         </div>
 
         <div style="padding:0 16px 14px;">
@@ -400,14 +400,14 @@
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="font-weight:700; font-size:14px; color:#4B4D57; letter-spacing:-0.02em;">트렌드 신선도</span>
             </div>
-            <div style="display:flex; gap:10px; align-items:stretch; margin-top:9px;">
-              <div style="flex:none; width:104px; padding:6px 0 7px; display:flex; align-items:center; justify-content:center;">
+            <div style="display:flex; gap:12px; align-items:center; margin-top:9px;">
+              <div style="flex:none; width:102px; padding:3px 0; border-right:1px solid #E5E0ED; display:flex; align-items:center; justify-content:center;">
                 <div style="flex:1; min-width:0;">
                   <div style="font-weight:500; font-size:10.5px; color:#8B8D98; white-space:nowrap; text-align:center;">트ZIP 인기차트</div>
                   <div style="font-weight:700; font-size:13.5px; color:#1A1A22; letter-spacing:-0.02em; white-space:nowrap; text-align:center;">{{ trendDay }}</div>
                 </div>
               </div>
-              <div style="flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center;">
+              <div style="flex:1; min-width:0; display:flex; flex-direction:column; justify-content:center; padding-right:3px;">
                 <div style="display:flex; justify-content:space-between; font-weight:500; font-size:10px; color:#9A9DA9;">
                   <span data-freshness-phase="0" style="{{ phase0 }}">포착</span><span data-freshness-phase="1" style="{{ phase1 }}">확산</span><span data-freshness-phase="2" style="{{ phase2 }}">대중화</span>
                 </div>
@@ -415,19 +415,17 @@
                   <div style="position:absolute; inset:0; border-radius:999px; background:#E5E0ED;"></div>
                   <div data-freshness-fill="1" style="{{ barFill }}"></div><div data-freshness-knob="1" style="{{ barKnob }}"></div>
                 </div>
-                <div style="display:flex; align-items:center; gap:10px; margin-top:11px;">
-                  <div style="flex:1; min-width:0; text-align:center;"><div style="font-weight:500; font-size:10px; color:#8B8D98; white-space:nowrap;">하루 전 대비</div><div style="{{ movementStyle }}">{{ movementLabel }}</div></div>
-                  <span style="flex:none; width:1px; height:30px; background:#E5E0ED;"></span>
-                  <div style="flex:1; min-width:0; text-align:center;"><div style="font-weight:500; font-size:10px; color:#8B8D98; white-space:nowrap;">현재 순위</div><div style="font-weight:700; font-size:14.5px; color:#1A1A22; margin-top:2px;">{{ trendRank }}</div></div>
-                </div>
               </div>
             </div>
           </div>
         </div>
 
         <div style="padding:0 16px 16px;">
-          <button type="button" data-related-company-cta="1" aria-label="{{ relatedCompaniesAriaLabel }}" onClick="{{ goCompanies }}" style="width:100%; min-height:58px; border:1px solid #DDCEF9; display:flex; align-items:center; justify-content:space-between; background:#F8F4FF; border-radius:16px; padding:12px 16px 12px 18px; font-family:inherit; text-align:left; cursor:pointer;">
-            <span style="font-weight:800; font-size:18px; line-height:1.2; color:#1A1A22; letter-spacing:-0.04em;">관련기업 보러가기</span>
+          <button type="button" data-related-company-cta="1" aria-label="{{ relatedCompaniesAriaLabel }}" onClick="{{ goCompanies }}" style="width:100%; min-height:64px; border:1px solid #DDCEF9; display:flex; align-items:center; justify-content:space-between; gap:12px; background:#F8F4FF; border-radius:16px; padding:10px 16px 10px 15px; font-family:inherit; text-align:left; cursor:pointer;">
+            <span style="display:flex; align-items:center; min-width:0;">
+              <sc-for list="{{ relatedCompanyPreview }}" as="company" hint-placeholder-count="3"><span data-related-company-logo="{{ company.logoName }}" data-related-company-logo-url="{{ company.logoUrl }}" data-related-company-logo-size="40" style="{{ company.logoStyle }}">{{ company.initial }}</span></sc-for>
+            </span>
+            <span style="flex:1; min-width:0; font-weight:800; font-size:16px; line-height:1.2; color:#1A1A22; letter-spacing:-0.04em;">관련기업 보러가기</span>
             <svg aria-hidden="true" width="17" height="17" viewBox="0 0 16 16" style="display:block;"><polyline points="6,4 10,8 6,12" fill="none" stroke="#7B3FF2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
           </button>
         </div>
@@ -537,7 +535,6 @@
             <span aria-hidden="true" style="width:38px;height:38px;flex:none;border-radius:13px;background:#7B3FF2;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 5px 11px rgba(123,63,242,.25);">💜</span>
             <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">
               <span style="font-weight:800;font-size:14px;line-height:1.3;color:#2B185B;letter-spacing:-.03em;">{{ relatedPortfolioActionTitle }}</span>
-              <span style="font-weight:600;font-size:11.5px;line-height:1.35;color:#7D709F;">{{ relatedPortfolioActionDescription }}</span>
             </span>
             <span aria-hidden="true" style="flex:none;width:28px;height:28px;border-radius:999px;background:#FFFFFF;color:#7B3FF2;display:flex;align-items:center;justify-content:center;font-size:23px;line-height:1;">›</span>
           </button>
@@ -2745,7 +2742,7 @@ class Component extends DCLogic {
         const requestedIndex = requestedTrend
           ? mapped.findIndex((trend) => trend.id === requestedTrend || trend.name === requestedTrend)
           : -1;
-        this.setState({ trend: requestedIndex >= 0 ? requestedIndex : 0, stage: 0, folder: 0 });
+        this.setState({ trend: requestedIndex >= 0 ? requestedIndex : 0, stage: 0, folder: 0, folders: [0] });
         setTimeout(() => {
           this.patchHomeLabels(); this.renderPresentationPortfolios(); this.hydrateMaker();
           this.mkWire(); this.renderSavedPortfolios(); this.renderCompanyWatchlist();
@@ -2845,7 +2842,7 @@ class Component extends DCLogic {
       this.liveObservedAt = '기준 ' + new Date(view.observedAt).toLocaleString('ko-KR', {
         timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'
       });
-      this.setState({ trend: 0, stage: 0, folder: 0 });
+      this.setState({ trend: 0, stage: 0, folder: 0, folders: [0] });
       setTimeout(() => {
         this.patchHomeLabels();
         this.renderPresentationPortfolios();
@@ -2874,7 +2871,7 @@ class Component extends DCLogic {
       }];
       this.liveStatus = '';
       this.liveObservedAt = '';
-      this.setState({ trend: 0, stage: 0, folder: -1 });
+      this.setState({ trend: 0, stage: 0, folder: -1, folders: [] });
       setTimeout(() => {
         this.patchHomeLabels();
         this.mkWire();
@@ -4557,19 +4554,8 @@ class Component extends DCLogic {
   openRelatedTrendPortfolio = () => {
     const trend = this.trends && this.trends[this.state.trend];
     if (!trend) return;
-    const matches = this.trendPortfolioMatches(trend);
-    if (matches.length) {
-      this.track('trend_portfolio_open', { trend_id: trend.id, portfolio_id: matches[0].id });
-      this.renderPortfolioDetail(matches[0]);
-      this.pdFrom = 'companies';
-      this.setOwnerMode(matches[0].author === '@나');
-      this.panTo(document.getElementById('post-detail'));
-      return;
-    }
-    this.track('trend_portfolio_create_start', { trend_id: trend.id });
-    this.mkFrom = '#related-companies';
-    this.hydrateMaker(trend.id);
-    this.panTo(document.getElementById('make-port'));
+    this.track('trend_portfolio_list_open', { trend_id: trend.id });
+    this.goPostList();
   };
 
   motionWire() {
@@ -5783,7 +5769,7 @@ class Component extends DCLogic {
     const commit = () => {
       this.__trendTransitionPending = false;
       this.track('trend_detail_view', { trend_id: trend && trend.id, presentation_position: trend && trend.rank });
-      this.setState({ trend: next, stage: 0, folder: 0, sheet: null });
+      this.setState({ trend: next, stage: 0, folder: 0, folders: [0], sheet: null });
       const target = document.getElementById('trend-detail');
       if (target) this.panTo(target);
     };
@@ -6710,7 +6696,7 @@ class Component extends DCLogic {
           optName: t.name, optCat: t.cat,
           pick: () => {
             this.track('trend_detail_view', { trend_id: t.id, presentation_position: t.rank });
-            this.setState({ trend: i, trendOpen: false, trendDescriptionOpen: false, stage: 0, folder: 0, sheet: null }, () => {
+            this.setState({ trend: i, trendOpen: false, trendDescriptionOpen: false, stage: 0, folder: 0, folders: [0], sheet: null }, () => {
               this.hydrateMaker();
               this.animateTrendSelection();
             });
@@ -6750,14 +6736,7 @@ class Component extends DCLogic {
     vals.relatedCompanyCount = relatedCompanies.length + '곳';
     vals.relatedCompanyAriaNames = relatedCompanies.slice(0, 3).map((entry) => entry[1]).join(' · ') + (relatedCompanies.length > 3 ? ' 외' : '');
     vals.relatedCompaniesAriaLabel = '왜 이 기업인지, 연결 역할과 기업 정보를 보기';
-    const relatedTrendPortfolios = this.trendPortfolioMatches(curTrend);
-    const hasRelatedTrendPortfolio = relatedTrendPortfolios.length > 0;
-    vals.relatedPortfolioActionTitle = hasRelatedTrendPortfolio
-      ? '이 트렌드로 만든 밈트폴리오 보기'
-      : '이 트렌드로 밈트폴리오 만들기';
-    vals.relatedPortfolioActionDescription = hasRelatedTrendPortfolio
-      ? '같은 트렌드에서 출발한 기업 조합을 살펴보세요'
-      : '방금 확인한 관련 기업을 골라 나만의 포트를 만들어요';
+    vals.relatedPortfolioActionTitle = '관련기업으로 포트폴리오 만들기';
     vals.relatedPortfolioActionAriaLabel = vals.relatedPortfolioActionTitle;
     vals.openRelatedTrendPortfolio = this.openRelatedTrendPortfolio;
     const stageIndex = Math.max(0, Math.min(stages.length - 1, this.state.stage || 0));
@@ -6825,9 +6804,11 @@ class Component extends DCLogic {
     }});
     const stageIcons = ['🌰', '🏭', '🏷️', '🛒'];
     vals.totalCompanies = stages.reduce((n, st) => n + st.companies.length, 0) + '곳';
-    const folderOpen = this.state.folder ?? 0;
+    const openFolders = Array.isArray(this.state.folders)
+      ? this.state.folders
+      : [this.state.folder ?? 0];
     vals.stageFolders = stages.map((st, si) => {
-      const open = folderOpen === si;
+      const open = openFolders.includes(si);
       return {
         wrapStyle: 'position:relative; isolation:isolate;' + (si > 0 ? ' margin-top:14px;' : ''),
         icon: st.icon || stageIcons[si],
@@ -6838,7 +6819,10 @@ class Component extends DCLogic {
         previewNames: st.companies.slice(0, 3).map(([, name]) => name).join(' · ') + (st.companies.length > 3 ? ' 외' : ''),
         toggle: (e) => {
           const card = e && e.currentTarget;
-          this.setState({ folder: open ? -1 : si }, () => {
+          const nextOpenFolders = open
+            ? openFolders.filter((index) => index !== si)
+            : [...new Set([...openFolders, si])];
+          this.setState({ folders: nextOpenFolders }, () => {
             if (open || !card) return;
             const wrap = card.parentElement;
             let sc = wrap;

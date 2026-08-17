@@ -175,16 +175,15 @@ def test_my_page_portfolio_cards_do_not_repeat_portfolio_keywords() -> None:
     assert "this.escapeHtml(portfolio.keywords.map" not in saved_cards
 
 
-def test_related_companies_lead_to_the_matching_meme_portfolio_or_maker() -> None:
+def test_related_companies_lead_to_the_meme_portfolio_list() -> None:
     related_screen = INDEX[INDEX.index('id="related-companies"') : INDEX.index('id="make-port"')]
     routing_method = INDEX[INDEX.index("  trendPortfolioMatches(trend) {") : INDEX.index("  motionWire() {")]
-    detail_back = INDEX[INDEX.index("  pdBack = () => {") : INDEX.index("  goHomePost =")]
     assert 'data-related-portfolio-action="1"' in related_screen
     assert "{{ openRelatedTrendPortfolio }}" in related_screen
-    assert "this.renderPortfolioDetail(matches[0]);" in routing_method
-    assert "this.hydrateMaker(trend.id);" in routing_method
-    assert "this.pdFrom = 'companies';" in routing_method
-    assert "this.pdFrom === 'companies' ? '#related-companies'" in detail_back
+    assert "this.track('trend_portfolio_list_open'" in routing_method
+    assert "this.goPostList();" in routing_method
+    assert "this.renderPortfolioDetail(matches[0]);" not in routing_method
+    assert "this.hydrateMaker(trend.id);" not in routing_method
 
 
 def test_portfolio_origin_trend_is_visually_distinguished_from_secondary_keywords() -> None:
@@ -353,7 +352,7 @@ def test_information_icons_keep_only_the_user_needed_explanations_and_relation_c
 def test_dial_keeps_korean_trend_titles_in_the_left_readable_zone() -> None:
     dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
     assert 'data-vd-focus-copy="1"' in dial_markup
-    assert "left:38px; top:50%; z-index:20; width:240px" in dial_markup
+    assert "left:56px; top:50%; z-index:20; width:218px" in dial_markup
     assert "text-align:left" in dial_markup
     assert "white-space:nowrap" in dial_markup
     assert "text-overflow:ellipsis" in dial_markup
