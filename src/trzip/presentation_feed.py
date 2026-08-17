@@ -37,6 +37,7 @@ LOGO_ASSET_VERIFICATION = "static_allowlist_image_quality_2026_08_15"
 LIVE_LOGO_ASSET_VERIFICATIONS = frozenset({
     "verified_safe_svg",
     "verified_raster_min_64px",
+    "verified_raster_wordmark",
     "initials_fallback",
 })
 ATTENTION_INDEX_FORMULA_VERSION = "observed-rank-response-v2"
@@ -472,6 +473,7 @@ def live_logo_contract_is_valid(company: dict) -> bool:
     if mode != "image" or verification not in {
         "verified_safe_svg",
         "verified_raster_min_64px",
+        "verified_raster_wordmark",
     }:
         return False
     parsed_logo = urlparse(logo_url)
@@ -492,6 +494,13 @@ def live_logo_contract_is_valid(company: dict) -> bool:
             and height >= LOGO_MINIMUM_DIMENSION
             and asset_format in {"png", "jpeg", "gif", "webp", "bmp", "ico"}
         )
+    elif verification == "verified_raster_wordmark":
+        dimensions_are_valid = bool(
+            dimensions_are_valid
+            and width >= LOGO_MINIMUM_DIMENSION
+            and height >= 32
+            and asset_format in {"png", "jpeg", "gif", "webp", "bmp"}
+        )
     else:
         dimensions_are_valid = bool(dimensions_are_valid and asset_format == "svg")
     return bool(
@@ -509,7 +518,7 @@ def live_logo_contract_is_valid(company: dict) -> bool:
         and dimensions_are_valid
         and not str(company.get("logo_rejected_asset_url") or "").strip()
         and str(company.get("logo_asset_quality") or "")
-        in {"verified_vector", "verified_raster_min_64px"}
+        in {"verified_vector", "verified_raster_min_64px", "verified_raster_wordmark"}
     )
 
 
@@ -2024,7 +2033,11 @@ def _live_logo_fields(homepage: str) -> dict:
     )
     verified = bool(
         result.get("status") == "verified"
-        and verification in {"verified_safe_svg", "verified_raster_min_64px"}
+        and verification in {
+            "verified_safe_svg",
+            "verified_raster_min_64px",
+            "verified_raster_wordmark",
+        }
         and asset_url.startswith("https://")
         and source_page_url.startswith(("http://", "https://"))
         and mime.startswith("image/")
@@ -2091,7 +2104,7 @@ def _live_logo_fields(homepage: str) -> dict:
             "logo_asset_quality": (
                 "verified_vector"
                 if verification == "verified_safe_svg"
-                else "verified_raster_min_64px"
+                else verification
             ),
             "logo_rejected_asset_url": "",
             "logo_quality_policy": LOGO_QUALITY_POLICY,
