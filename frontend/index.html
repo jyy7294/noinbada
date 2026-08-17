@@ -5384,14 +5384,14 @@ class Component extends DCLogic {
         const movementLabel = String(movement.label || trend.rankMovementLabel || 'NEW');
         const movementColor = movement.status === 'up' ? '#E5395F'
           : movement.status === 'down' ? '#2E6BE6'
-            : movement.status === 'new' ? '#FF3D8B' : '#A9ACB8';
+            : movement.status === 'new' ? '#6E3BD6' : '#A9ACB8';
         const delta = Number(movement.delta);
         const movementMarkup = movement.status === 'up'
           ? '<span aria-label="이전 공개 대비 상승 ' + escape(Number.isFinite(delta) ? delta : movementLabel) + '" style="flex:none;font-weight:800;font-size:10.5px;color:' + movementColor + ';">▲ ' + escape(String(Number.isFinite(delta) ? Math.abs(delta) : movementLabel)) + '</span>'
           : movement.status === 'down'
             ? '<span aria-label="이전 공개 대비 하락 ' + escape(Number.isFinite(delta) ? delta : movementLabel) + '" style="flex:none;font-weight:800;font-size:10.5px;color:' + movementColor + ';">▼ ' + escape(String(Number.isFinite(delta) ? Math.abs(delta) : movementLabel)) + '</span>'
             : movement.status === 'new'
-              ? '<span aria-label="이전 공개 대비 신규" style="flex:none;border-radius:6px;background:#FFE8F0;padding:3px 6px;font-weight:800;font-size:9.5px;line-height:1;color:' + movementColor + ';">NEW</span>'
+              ? '<span aria-label="이전 공개 대비 신규" style="flex:none;border-radius:6px;background:#EEE7FF;padding:3px 6px;font-weight:800;font-size:9.5px;line-height:1;color:' + movementColor + ';">NEW</span>'
               : '<span aria-label="이전 공개 대비 변동 없음" style="flex:none;font-weight:700;font-size:11px;color:' + movementColor + ';">–</span>';
         const divider = index ? '<div style="height:1px;background:#F1EEF9;"></div>' : '';
         return divider + '<button type="button" data-home-topic="' + escape(trend.name)
