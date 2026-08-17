@@ -2598,6 +2598,30 @@ class Component extends DCLogic {
           screen_content: '콘텐츠', seasonal_food_ritual: '음식·식품',
           music_performance: '음악', place_experience: '여행·공간'
         };
+        // 쇼케이스에서도 신선도는 순위나 그래프의 끝값으로 고정하지 않습니다.
+        // 각 사건의 최초 포착일과 현재 화면 기준일을 대조해 포착→확산→대중화로만 이동합니다.
+        const SHOWCASE_TIMELINE = {
+          '대한민국 광복절': { observedAt: '2026-08-15T00:00:00+09:00', captureDays: 0, expansionDays: 2 },
+          '개기일식': { observedAt: '2026-08-12T00:00:00+09:00', captureDays: 0, expansionDays: 2 },
+          '리센느': { observedAt: '2026-08-16T00:00:00+09:00', captureDays: 0, expansionDays: 2 },
+          '페르세우스 유성우': { observedAt: '2026-08-12T00:00:00+09:00', captureDays: 0, expansionDays: 2 },
+          '한화 vs 삼성': { observedAt: '2026-08-17T00:00:00+09:00', captureDays: 0, expansionDays: 1 },
+          '둠스데이': { observedAt: '2026-08-16T00:00:00+09:00', captureDays: 0, expansionDays: 2 },
+          '말복': { observedAt: '2026-08-09T00:00:00+09:00', captureDays: 0, expansionDays: 2 },
+          '그래미 어워드': { observedAt: '2026-08-16T00:00:00+09:00', captureDays: 0, expansionDays: 2 },
+          'UFC 330': { observedAt: '2026-08-17T00:00:00+09:00', captureDays: 0, expansionDays: 1 },
+          '코믹월드': { observedAt: '2026-08-16T00:00:00+09:00', captureDays: 0, expansionDays: 2 }
+        };
+        const showcaseFreshness = (card) => {
+          const timeline = SHOWCASE_TIMELINE[card.display_name] || SHOWCASE_TIMELINE[card.event_key];
+          if (!timeline) return { stageIdx: 0, phase: '포착', day: '최근 포착' };
+          const observed = new Date(timeline.observedAt);
+          const asOf = new Date(view.displayAsOf);
+          const elapsedDays = Math.max(0, Math.floor((asOf.getTime() - observed.getTime()) / 86400000));
+          const stageIdx = elapsedDays <= timeline.captureDays ? 0 : elapsedDays <= timeline.expansionDays ? 1 : 2;
+          const day = observed.toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul', month: 'numeric', day: 'numeric' }).replace(/\./g, '').replace(/\s+/g, '.');
+          return { stageIdx, phase: ['포착', '확산', '대중화'][stageIdx], day: day + '. 포착' };
+        };
         const mapped = view.cards.map((card) => {
           const groups = new Map();
           const companies = card.companies.map((company) => {
@@ -2622,6 +2646,7 @@ class Component extends DCLogic {
           const keywords = card.related_keywords.map((keyword) => String(keyword.text || '')).filter(Boolean);
           const movement = { status: 'new', label: 'NEW', delta: null };
           const visualizationSeries = this.buildShowcaseVisualization(card, view.displayAsOf);
+          const freshness = showcaseFreshness(card);
           return {
             emoji: String(card.display_name || '트').slice(0, 1),
             icon: this.trendIconMeta(card.display_name, CATEGORY_KO[card.category]),
@@ -2630,10 +2655,11 @@ class Component extends DCLogic {
             cat: CATEGORY_KO[card.category] || '기타',
             core: card.display_name,
             tags: keywords.map((keyword) => '#' + keyword.replace(/\s+/g, '')),
-            day: '최근 1일', phase: '새로 포착',
+            day: freshness.day, phase: freshness.phase,
             lift: Number(card.full_ledger_score).toFixed(2),
             rankMovement: movement, rankMovementLabel: 'NEW',
-            rank: card.presentation_order + '위', progress: 18, stageIdx: 0,
+            rank: card.presentation_order + '위', progress: [18, 55, 100][freshness.stageIdx], stageIdx: freshness.stageIdx,
+            freshStageIdx: freshness.stageIdx,
             definition: card.trend_definition,
             caption: '전체 수집 기간의 흐름과 최종 공개 순위를 함께 반영한 관심지수입니다.',
             channels: ['통합', '—', '—'], attentionWindows: [],
@@ -6223,10 +6249,16 @@ class Component extends DCLogic {
     const freshnessChart = this.buildInterestCurve(curTrend, 0);
     const relativeInterestValues = (freshnessChart.values || []).filter(Number.isFinite);
     const relativePeakIndex = relativeInterestValues.lastIndexOf(100);
-    const relativeStageIdx = relativeInterestValues.length < 2 ? 0
+    const inferredStageIdx = relativeInterestValues.length < 2 ? 0
       : relativeInterestValues.length >= 4
         && (relativeInterestValues.at(-1) >= 95 || relativePeakIndex < relativeInterestValues.length - 1) ? 2
         : relativeInterestValues.at(-1) > relativeInterestValues[0] ? 1 : 0;
+    // 원천 또는 쇼케이스에 사건 시점 기반 판정이 있으면 그래프 모양보다 우선합니다.
+    // 그래프의 0~100 상대 척도는 기간 내 최고값을 100으로 정규화하므로 신선도 근거가 될 수 없습니다.
+    const suppliedStageIdx = Number(curTrend.freshStageIdx ?? curTrend.stageIdx);
+    const relativeStageIdx = Number.isFinite(suppliedStageIdx)
+      ? Math.max(0, Math.min(2, Math.round(suppliedStageIdx)))
+      : inferredStageIdx;
     const relativePhase = ['포착', '확산', '대중화'][relativeStageIdx];
     const rangeAvailability = [0, 1].map((index) => (
       curTrend.showcase && index > 0 ? false :
