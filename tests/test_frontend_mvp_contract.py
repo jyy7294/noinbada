@@ -2099,8 +2099,8 @@ def test_stock_add_flow_has_search_groups_accessibility_and_broad_universe() -> 
 
 
 def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_drift() -> None:
-    assert 'assets/trzip-logo.png' in INDEX
-    assert 'alt="트집"' in INDEX
+    assert 'assets/trzip-logo.png' not in INDEX
+    assert 'data-zip="logo"' in INDEX
     assert 'Trend.Zip' in INDEX
     assert 'data-zip="frame" role="button" tabindex="0"' in INDEX
     assert "frame.addEventListener('wheel'" in INDEX
