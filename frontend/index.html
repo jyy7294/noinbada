@@ -354,12 +354,32 @@
                 <span style="width:28px; height:28px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:12px; line-height:1;">{{ trendIconFallback }}</span>
               </span>
               <div style="flex:1; min-width:0;">
-                <div title="{{ trendName }}" style="font-weight:800; font-size:22px; line-height:1.22; color:#1A1A22; letter-spacing:-0.04em; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;">{{ trendName }}</div>
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                  <div title="{{ trendName }}" style="min-width:0; font-weight:800; font-size:22px; line-height:1.22; color:#1A1A22; letter-spacing:-0.04em; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;">{{ trendName }}</div>
+                  <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" aria-controls="other-trends-panel" onClick="{{ toggleTrend }}" style="flex:none; height:30px; border:1px solid #DCCDF9; border-radius:999px; background:#FFFFFF; padding:0 9px; color:#6B3FE0; display:inline-flex; align-items:center; gap:4px; font-family:inherit; font-weight:700; font-size:10.5px; white-space:nowrap; cursor:pointer;">
+                    <span>다른 트렌드</span>
+                    <svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#6B3FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+                  </button>
+                </div>
                 <div style="display:flex; align-items:center; gap:6px; margin-top:6px;">
                   <span style="background:#E7DDFC; border-radius:999px; padding:3px 9px; font-weight:700; font-size:10.5px; color:#5B21C0; white-space:nowrap;">{{ trendCat }}</span>
                 </div>
               </div>
             </div>
+            <sc-if value="{{ trendOpen }}" hint-placeholder-val="{{ false }}">
+              <div id="other-trends-panel" data-trend-switcher="1" style="margin:0 16px 11px; background:#FFFFFF; border:1px solid #E2D9F8; border-radius:14px; overflow:hidden;">
+                <sc-for list="{{ trendOptions }}" as="opt" hint-placeholder-count="5">
+                  <button type="button" onClick="{{ opt.pick }}" style="{{ opt.row }}; width:100%; border:0; font-family:inherit; text-align:left;">
+                    <span style="width:30px; height:30px; flex:none; border-radius:999px; background:#F3F0FB; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.04);">
+                      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-trend-icon-src="{{ opt.optIconUrl }}" alt="{{ opt.optIconAlt }}" width="20" height="20" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:20px; height:20px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                      <span role="img" aria-label="{{ opt.optIconAlt }}" style="width:20px; height:20px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:9px; line-height:1;">{{ opt.optIconFallback }}</span>
+                    </span>
+                    <span style="{{ opt.nameStyle }}">{{ opt.optName }}</span>
+                    <span style="flex:none; white-space:nowrap; font-weight:500; font-size:11px; color:#A9ACB8;">{{ opt.optCat }}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </sc-if>
             <sc-if value="{{ hasDefinition }}" hint-placeholder-val="{{ false }}">
               <div style="padding:0 16px 14px;">
                 <button type="button" data-trend-description-toggle="1" aria-expanded="{{ trendDescriptionOpen }}" onClick="{{ toggleTrendDescription }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; border:0; border-top:1px solid rgba(91,33,192,0.10); background:transparent; padding:11px 0 0; font-family:inherit; text-align:left; cursor:pointer;">
@@ -874,8 +894,9 @@
           <div style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:4px;">이 밈트폴리오가 시작된 흐름을 선택해요</div>
           <div style="position:relative; display:flex; align-items:center; gap:10px; min-height:52px; margin-top:10px; padding:0 13px; border:1.5px solid #E7DDFB; border-radius:15px; background:#FBF9FF;">
             <span aria-hidden="true" style="width:28px; height:28px; flex:none; display:flex; align-items:center; justify-content:center; border-radius:10px; background:#EEE6FF; color:#6C32DD; font-size:15px;">↗</span>
-            <select data-mk="trendselect" aria-label="연결한 트렌드 선택" style="width:100%; min-width:0; appearance:none; border:0; outline:0; background:transparent; padding:0 26px 0 0; font-family:inherit; font-weight:800; font-size:14px; letter-spacing:-0.02em; color:#2B185B; cursor:pointer;"></select>
+            <button type="button" data-mk="trendselect" aria-expanded="false" aria-controls="maker-trend-picker" style="flex:1; min-width:0; border:0; outline:0; background:transparent; padding:0 26px 0 0; font-family:inherit; font-weight:800; font-size:14px; letter-spacing:-0.02em; color:#2B185B; text-align:left; cursor:pointer;"><span data-mk="trendlabel">트렌드 선택</span></button>
             <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" style="position:absolute; right:14px; pointer-events:none;"><path d="M3.5 6 8 10.5 12.5 6" fill="none" stroke="#6C32DD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            <div id="maker-trend-picker" data-mk="trendpicker" hidden style="position:absolute; top:calc(100% + 6px); left:0; right:0; z-index:30; max-height:198px; overflow-y:auto; border:1px solid #DCCDF9; border-radius:15px; background:#FFFFFF; box-shadow:0 12px 26px rgba(79,35,157,0.18); padding:5px;"></div>
           </div>
 
           <div style="font-weight:600; font-size:13px; color:#1A1A22; margin-top:22px;">해시태그</div>
@@ -1760,8 +1781,10 @@ class Component extends DCLogic {
     }
     const feed = root.querySelector('[data-portfolio-feed]');
     if (feed) feed.innerHTML = '<div style="padding:34px 18px;text-align:center;font-weight:600;font-size:12px;color:#8B8D98;">최신 밈트폴리오를 불러오고 있어요</div>';
-    const trendSelect = root.querySelector('[data-mk="trendselect"]');
-    if (trendSelect) trendSelect.innerHTML = '';
+    const trendLabel = root.querySelector('[data-mk="trendlabel"]');
+    if (trendLabel) trendLabel.textContent = '트렌드 확인 중';
+    const trendPicker = root.querySelector('[data-mk="trendpicker"]');
+    if (trendPicker) trendPicker.innerHTML = '';
     const stocks = root.querySelector('[data-mk="stocklist"]');
     if (stocks) stocks.innerHTML = '';
     root.querySelectorAll('[data-my-list="0"],[data-my-list="1"]').forEach((list) => {
@@ -4178,14 +4201,12 @@ class Component extends DCLogic {
     const hashWrap = mk.querySelector('[data-mk="hashwrap"]');
     if (hashWrap) hashWrap.innerHTML = '';
     tags.forEach((tg) => this.mkAddHash(tg));
-    const trendSelect = mk.querySelector('[data-mk="trendselect"]');
     const norm = (x) => String(x).replace(/[#\s]/g, '');
-    const trendOptions = [...(trendSelect ? trendSelect.options : [])];
-    let trendOption = trendOptions.find((option) => tags.some((tg) => norm(tg) === norm(option.textContent)));
-    if (!trendOption) trendOption = trendOptions.find((option) => norm(name).indexOf(norm(option.textContent)) >= 0);
-    if (trendSelect && trendOption) {
-      trendSelect.value = trendOption.value;
-      this.hydrateMaker(trendOption.value);
+    const availableTrends = this.trends.filter((item) => item && item.live);
+    let trendOption = availableTrends.find((item) => tags.some((tg) => norm(tg) === norm(item.shortName || item.name)));
+    if (!trendOption) trendOption = availableTrends.find((item) => norm(name).indexOf(norm(item.shortName || item.name)) >= 0);
+    if (trendOption) {
+      this.hydrateMaker(trendOption.id);
     }
 
     const sourceCompanies = (this.activePortfolio && this.activePortfolio.companies) || [];
@@ -4249,6 +4270,25 @@ class Component extends DCLogic {
     page.querySelectorAll('[data-mk-hash]').forEach((c) => { c.onclick = () => c.remove(); });
   }
 
+  wireMakerTrendPicker(page) {
+    const trigger = page && page.querySelector('[data-mk="trendselect"]');
+    const picker = page && page.querySelector('[data-mk="trendpicker"]');
+    if (!trigger || !picker) return;
+    trigger.onclick = () => {
+      const willOpen = picker.hidden;
+      picker.hidden = !willOpen;
+      trigger.setAttribute('aria-expanded', String(willOpen));
+    };
+    picker.querySelectorAll('[data-mk-trend-option]').forEach((option) => {
+      option.onclick = () => {
+        const trendId = option.getAttribute('data-mk-trend-option');
+        picker.hidden = true;
+        trigger.setAttribute('aria-expanded', 'false');
+        if (trendId && trendId !== this.makerTrendId) this.hydrateMaker(trendId);
+      };
+    });
+  }
+
   mkRewire() {
     const page = document.querySelector('#make-port');
     if (!page) return;
@@ -4262,13 +4302,7 @@ class Component extends DCLogic {
         submit.style.color = n ? '#FFFFFF' : '#A9ACB8';
       }
     };
-    const trendSelect = page.querySelector('[data-mk="trendselect"]');
-    if (trendSelect) {
-      trendSelect.onchange = () => {
-        const trendId = trendSelect.value;
-        if (trendId && trendId !== this.makerTrendId) this.hydrateMaker(trendId);
-      };
-    }
+    this.wireMakerTrendPicker(page);
     this.mkHashWire();
     page.querySelectorAll('[data-mk-stock]').forEach((row) => {
       row.onclick = () => {
@@ -5064,13 +5098,7 @@ class Component extends DCLogic {
         submit.style.color = n ? '#FFFFFF' : '#A9ACB8';
       }
     };
-    const trendSelect = page.querySelector('[data-mk="trendselect"]');
-    if (trendSelect) {
-      trendSelect.onchange = () => {
-        const trendId = trendSelect.value;
-        if (trendId && trendId !== this.makerTrendId) this.hydrateMaker(trendId);
-      };
-    }
+    this.wireMakerTrendPicker(page);
     this.mkHashWire();
     const stockOpen = page.querySelector('[data-mk="stockopen"]');
     if (stockOpen) stockOpen.onclick = () => this.openStockSearch();
@@ -5226,9 +5254,8 @@ class Component extends DCLogic {
       const emoji = (page.querySelector('[data-mk="emoji"]') || {}).textContent || '💜';
       const stocks = [...page.querySelectorAll('[data-mk-stock][data-on="1"]')].map((s) => s.getAttribute('data-mk-stock') || s.textContent.trim().split('\n')[0].trim());
       const hashes = [...page.querySelectorAll('[data-mk-hash]')].map((s) => s.getAttribute('data-mk-hash'));
-      const selectedTrend = page.querySelector('[data-mk="trendselect"]');
-      const selectedTrendLabel = selectedTrend && selectedTrend.selectedOptions[0]
-        ? selectedTrend.selectedOptions[0].textContent.trim() : '';
+      const currentTrend = (this.trends || []).find((trend) => trend.id === this.makerTrendId);
+      const selectedTrendLabel = currentTrend ? (currentTrend.shortName || currentTrend.name || '').trim() : '';
       const tags = hashes.length ? hashes : (selectedTrendLabel ? ['#' + selectedTrendLabel.replace(/^#/, '')] : []);
       try {
         const api = this.dataApi || window.TRZIP_DATA_API;
@@ -5243,9 +5270,8 @@ class Component extends DCLogic {
       const portfolioApi = this.dataApi || window.TRZIP_DATA_API;
       if (portfolioApi && portfolioApi.savePortfolio) {
         this.dataApi = portfolioApi;
-        const selectedTrendId = selectedTrend && selectedTrend.value;
         const availableTrends = Array.isArray(this.trends) ? this.trends : [];
-        const current = availableTrends.find((trend) => trend.id === selectedTrendId)
+        const current = availableTrends.find((trend) => trend.id === this.makerTrendId)
           || availableTrends[Math.min(this.state.trend || 0, Math.max(availableTrends.length - 1, 0))];
         const companies = [...(this.makerSelectedCompanies || new Map()).values()].slice(0, 10);
         try {
@@ -5552,14 +5578,20 @@ class Component extends DCLogic {
     const escape = (value) => String(value || '').replace(/[&<>"']/g, (char) => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     })[char]);
-    const trendSelect = page.querySelector('[data-mk="trendselect"]');
-    if (trendSelect) {
-      trendSelect.innerHTML = this.trends.filter((item) => item && item.live).map((item) => {
+    const trendLabel = page.querySelector('[data-mk="trendlabel"]');
+    if (trendLabel) trendLabel.textContent = trend.shortName || trend.name;
+    const trendPicker = page.querySelector('[data-mk="trendpicker"]');
+    if (trendPicker) {
+      trendPicker.hidden = true;
+      trendPicker.innerHTML = this.trends.filter((item) => item && item.live).map((item) => {
         const label = item.shortName || item.name;
-        return '<option value="' + escape(item.id) + '"' + (item.id === trend.id ? ' selected' : '') + '>'
-          + escape(label) + '</option>';
+        const selected = item.id === trend.id;
+        return '<button type="button" data-mk-trend-option="' + escape(item.id) + '" style="width:100%;display:flex;align-items:center;gap:8px;border:0;border-radius:10px;background:' + (selected ? '#F0E7FF' : '#FFFFFF') + ';padding:10px 11px;font-family:inherit;text-align:left;color:' + (selected ? '#5B21C0' : '#3F4050') + ';font-weight:' + (selected ? '800' : '600') + ';font-size:13px;cursor:pointer;">'
+          + '<span style="width:7px;height:7px;border-radius:999px;background:' + (selected ? '#7B3FF2' : '#D8D2E7') + ';flex:none;"></span>'
+          + '<span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escape(label) + '</span>'
+          + (selected ? '<span style="font-size:11px;color:#7B3FF2;">선택됨</span>' : '')
+          + '</button>';
       }).join('');
-      trendSelect.value = trend.id;
     }
     const universe = this.makerUniverse(trend);
     if (changedTrend || !(this.makerSelectedCompanies instanceof Map)) {
