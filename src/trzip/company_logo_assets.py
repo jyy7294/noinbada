@@ -78,12 +78,12 @@ _REVIEWED_COMPANY_LOGOS = {
     ("CJ ENM", "035760"): {
         "accepted_homepage_hosts": {"cjenm.com", "www.cjenm.com"},
         "source_page_url": "https://www.cjenm.com/",
-        "asset_url": "https://web2-cf-image.cjenm.com/public/share/systemmng/site/sitemng/Favicon%20(3).ico",
-        "mime": "image/x-icon",
-        "width": 196,
-        "height": 196,
-        "sha256": "563b17e1e18da17c7143eaa2401867fc681105a59197641753d014f677018a7c",
-        "verification": "verified_raster_min_64px",
+        "asset_url": "https://web2-cf-image.cjenm.com/public/share/systemmng/site/headermng/cj_enm_logo.svg",
+        "mime": "image/svg+xml",
+        "width": 84,
+        "height": 48,
+        "sha256": "06a4bb5b376ce3d9b535ace8c216e75219036855b711c5fc066bbc5eb35b5002",
+        "verification": "verified_safe_svg",
         "asset_scope": "official_page_declared_cdn",
     },
     ("삼성전자", "005930"): {
