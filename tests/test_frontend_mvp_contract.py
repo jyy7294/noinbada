@@ -852,6 +852,13 @@ def test_showcase_interest_bars_are_deterministic_rank_specific_and_not_user_lab
       if (signatures.size !== 10) throw new Error('rank-specific bar profiles are duplicated');
       const current = rows.map((row) => row['1w'].points.at(-1).combined);
       if (!(current[0] > current[9])) throw new Error('published rank did not affect demo interest level');
+      const terminalPeaks = rows.filter((row) => {
+        const values = row['1w'].points.map((point) => point.combined);
+        return values.at(-1) === Math.max(...values);
+      });
+      if (terminalPeaks.length === rows.length) {
+        throw new Error('every showcase interest curve ends at its peak');
+      }
     """
     result = subprocess.run(
         ["node", "-e", script], cwd=ROOT, text=True, capture_output=True, check=False
