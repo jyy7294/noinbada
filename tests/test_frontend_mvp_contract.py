@@ -280,7 +280,7 @@ def test_home_dial_keeps_its_center_title_in_sync_without_overlaying_the_selecte
     vd = INDEX[INDEX.index("  vdWire() {") : INDEX.index("  arcWire() {")]
     assert "(window.__omPaints || []).forEach((paint) => paint())" in patch
     assert "dot.style.visibility = isSel ? 'hidden' : 'visible';" in vd
-    assert "const nodeX = Math.max(218, Math.min(278, width - 320));" in vd
+    assert "const nodeX = Math.max(194, Math.min(254, width - 344));" in vd
     assert "const trendIndex = Number(activeWords[best].dataset.trendIndex);" in vd
 
 
