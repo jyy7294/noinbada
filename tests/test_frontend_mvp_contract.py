@@ -2032,7 +2032,7 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'UFC는 종합격투기(MMA) 대회를 여는 글로벌 스포츠 단체입니다.' in INDEX
     assert 'trendDetailContext(trend = {})' in INDEX
     assert '이번 트렌드와 만나는 지점' in INDEX
-    assert '이번 밈트폴리오와 만나는 지점' in INDEX
+    assert '이번 밈트폴리오와 만나는 지점' not in INDEX
     assert 'data-freshness-card="1"' in INDEX
     assert 'background:#FAFAFC; border:1px solid #ECE8F3' in INDEX
     assert 'data-freshness-explanation="1"' in INDEX
