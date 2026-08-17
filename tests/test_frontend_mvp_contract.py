@@ -140,6 +140,17 @@ def test_share_surface_uses_native_share_real_clipboard_and_social_metadata() ->
     assert (ROOT / "frontend" / "assets" / "share" / "trzip-og.png").is_file()
 
 
+def test_each_portfolio_detail_has_an_accessible_share_action_with_its_own_payload() -> None:
+    assert 'data-pd="shareBtn"' in INDEX
+    assert 'aria-label="밈트폴리오 공유하기"' in INDEX
+    share_method = INDEX[INDEX.index("  shareWire() {") : INDEX.index("  openShare(el, sharePayload = null) {")]
+    assert "this.openShare(button, this.portfolioSharePayload());" in share_method
+    assert "if (s.closest('[data-pd=\"shareBtn\"]')) return;" in share_method
+    payload_method = INDEX[INDEX.index("  portfolioSharePayload() {") : INDEX.index("  async copyShareLink(url) {")]
+    assert "portfolio.id" in payload_method
+    assert "TRZIP 밈트폴리오" in payload_method
+
+
 def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> None:
     method = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
     assert "home.querySelectorAll('[data-mp-row],[data-portfolio-loading]')" in method

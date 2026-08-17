@@ -742,7 +742,7 @@
               </div>
               <div data-pd="date" style="font-weight:500; font-size:11px; color:#8B8D98; margin-top:2px;"></div>
             </div>
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style="display:block; flex:none;"><circle cx="14.5" cy="4.5" r="2.4" fill="none" stroke="#4B4D57" stroke-width="1.7"></circle><circle cx="5.5" cy="10" r="2.4" fill="none" stroke="#4B4D57" stroke-width="1.7"></circle><circle cx="14.5" cy="15.5" r="2.4" fill="none" stroke="#4B4D57" stroke-width="1.7"></circle><line x1="7.8" y1="8.8" x2="12.2" y2="6" stroke="#4B4D57" stroke-width="1.7"></line><line x1="7.8" y1="11.2" x2="12.2" y2="14" stroke="#4B4D57" stroke-width="1.7"></line></svg>
+            <button type="button" data-pd="shareBtn" aria-label="밈트폴리오 공유하기" style="width:44px;height:44px;flex:none;margin:-8px;border:0;padding:8px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" style="display:block;"><circle cx="14.5" cy="4.5" r="2.4" fill="none" stroke="#4B4D57" stroke-width="1.7"></circle><circle cx="5.5" cy="10" r="2.4" fill="none" stroke="#4B4D57" stroke-width="1.7"></circle><circle cx="14.5" cy="15.5" r="2.4" fill="none" stroke="#4B4D57" stroke-width="1.7"></circle><line x1="7.8" y1="8.8" x2="12.2" y2="6" stroke="#4B4D57" stroke-width="1.7"></line><line x1="7.8" y1="11.2" x2="12.2" y2="14" stroke="#4B4D57" stroke-width="1.7"></line></svg></button>
           </div>
 
           <div data-pd="title" style="font-weight:800; font-size:20px; color:#1A1A22; letter-spacing:-0.04em; margin-top:16px;">밈트폴리오를 선택해 주세요</div>
@@ -3434,7 +3434,16 @@ class Component extends DCLogic {
 
   shareWire() {
     const root = this.rootEl || document;
+    root.querySelectorAll('[data-pd="shareBtn"]').forEach((button) => {
+      if (button.__share) return;
+      button.__share = true;
+      button.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        this.openShare(button, this.portfolioSharePayload());
+      });
+    });
     root.querySelectorAll('svg').forEach((s) => {
+      if (s.closest('[data-pd="shareBtn"]')) return;
       if (!s.querySelector('circle[cx="14.5"]')) return;
       if (s.__share) return;
       s.__share = true;
@@ -3451,7 +3460,7 @@ class Component extends DCLogic {
     });
   }
 
-  openShare(el) {
+  openShare(el, sharePayload = null) {
     let frame = el.parentElement;
     while (frame && !(frame.offsetWidth >= 340 && frame.offsetHeight >= 800)) frame = frame.parentElement;
     if (!frame) return;
@@ -3491,7 +3500,7 @@ class Component extends DCLogic {
       it.onclick = async () => {
         const key = it.getAttribute('data-share-item');
         if (key === 'cancel') { close(); return; }
-        const payload = this.currentSharePayload();
+        const payload = sharePayload || this.currentSharePayload();
         try {
           if (key === 'link') {
             await this.copyShareLink(payload.url);
@@ -3524,6 +3533,28 @@ class Component extends DCLogic {
       title: name + ' · TRZIP',
       text: name + ' — ' + category + ' 관련 기업을 확인해 보세요.',
       url: base.toString()
+    };
+  }
+
+  portfolioSharePayload() {
+    const portfolio = this.activePortfolio || {};
+    const title = String(portfolio.title || '밈트폴리오');
+    const keywords = Array.isArray(portfolio.keywords) ? portfolio.keywords.slice(0, 3).map((keyword) => String(keyword || '').replace(/^#+/, '')).filter(Boolean) : [];
+    const url = new URL(
+      (window.location.protocol === 'http:' || window.location.protocol === 'https:')
+        ? window.location.pathname
+        : '/',
+      (window.location.protocol === 'http:' || window.location.protocol === 'https:')
+        ? window.location.origin
+        : 'https://trzip-x-google.vercel.app'
+    );
+    if (portfolio.id) url.searchParams.set('portfolio', String(portfolio.id));
+    return {
+      title: title + ' · TRZIP 밈트폴리오',
+      text: (portfolio.author ? String(portfolio.author) + '님의 ' : '') + title
+        + (keywords.length ? ' · ' + keywords.join(' · ') : '')
+        + ' 밈트폴리오를 확인해 보세요.',
+      url: url.toString()
     };
   }
 
