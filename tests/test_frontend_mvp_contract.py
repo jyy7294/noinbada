@@ -229,7 +229,19 @@ def test_interest_range_tabs_remain_selectable_when_a_long_period_is_sparse() ->
     assert "vals['range' + i] = this.rangeStyle(this.state.range === i, true);" in render_vals
     assert "vals['rangeDisabled' + i] = 'false';" in render_vals
     assert "if (!rangeAvailability[i]) return;" not in render_vals
-    assert "this.setState({ range: i }, () => this.animateInterestRange());" in render_vals
+    assert "this.setState({ range: i, interestPoint: null }, () => this.animateInterestRange());" in render_vals
+
+
+def test_interest_points_are_tappable_and_freshness_is_not_derived_from_the_selected_range() -> None:
+    assert 'data-interest-point-buttons="1"' in INDEX
+    assert 'data-interest-point-index' in INDEX
+    assert 'observationPointDetails' in INDEX
+    assert 'interestPoint: null' in INDEX
+    assert '상대 관심도 ' in INDEX
+    render_vals = INDEX[INDEX.index("  renderVals() {") : INDEX.index("    return vals;")]
+    assert 'const freshnessChart = this.buildInterestCurve(curTrend, 0);' in render_vals
+    assert 'const relativeInterestValues = (freshnessChart.values || []).filter(Number.isFinite);' in render_vals
+    assert '대중화 단계는 기간 고점(100)을 찍고 유지하거나 내려오는 흐름까지 함께 봅니다.' not in INDEX
 
 
 def test_home_shows_the_observed_timestamp_only_once() -> None:
@@ -1354,7 +1366,7 @@ def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -
     assert "통합 트렌드" not in INDEX
     assert ">관심 흐름</span>" in INDEX
     assert "판정 기준" in INDEX
-    assert "포착: 비교 관측이 1개 이하이거나 최저점 부근" in INDEX
+    assert "포착: 처음 확인된 흐름" in INDEX
     assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
     assert "전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요" in INDEX
     assert "+ ' · 통합 트렌드</span>" not in INDEX
@@ -2042,9 +2054,9 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'data-freshness-knob="1"' in INDEX
     assert 'animateFreshnessGauge()' in INDEX
     assert "cubic-bezier(.16,.82,.24,1)" in INDEX
-    assert '포착: 비교 관측이 1개 이하이거나 최저점 부근' in INDEX
-    assert '확산: 현재 상대강도가 올라가는 구간' in INDEX
-    assert '대중화: 4개 이상 관측돼 기간 고점(100)을 기록했거나 고점 이후 흐름이 확인될 때' in INDEX
+    assert '포착: 처음 확인된 흐름' in INDEX
+    assert '확산: 관측이 이어지며 관심이 커지는 흐름' in INDEX
+    assert '대중화: 반복 관측되어 넓게 이어지는 흐름' in INDEX
     assert 'data-interest-card="1"' in INDEX
     assert '관심 흐름' in INDEX
     assert '선택한 기간의 관심 흐름을 비교해 볼 수 있습니다.' not in INDEX
