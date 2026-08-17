@@ -347,54 +347,35 @@
 
         <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none;">
         <div style="padding:0 16px 14px;">
-          <div data-trend-summary-card="1" style="background:#F3EFFC; border-radius:22px; overflow:hidden;">
-            <div style="display:flex; align-items:center; gap:13px; padding:18px 16px 10px;">
+          <div data-trend-summary-card="1" style="background:#FFFFFF; border-radius:0; overflow:visible;">
+            <div style="display:flex; align-items:center; gap:13px; padding:8px 14px 12px;">
               <span aria-hidden="true" style="width:44px; height:44px; flex:none; border-radius:15px; background:#FFFFFF; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.10); display:inline-flex; align-items:center; justify-content:center; overflow:hidden;">
                 <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-trend-icon-src="{{ trendIconUrl }}" alt="" width="28" height="28" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:28px; height:28px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                 <span style="width:28px; height:28px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:12px; line-height:1;">{{ trendIconFallback }}</span>
               </span>
               <div style="flex:1; min-width:0;">
-                <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
-                  <div title="{{ trendName }}" style="min-width:0; font-weight:800; font-size:22px; line-height:1.22; color:#1A1A22; letter-spacing:-0.04em; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;">{{ trendName }}</div>
-                  <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" aria-controls="other-trends-panel" onClick="{{ toggleTrend }}" style="flex:none; height:30px; border:1px solid #DCCDF9; border-radius:999px; background:#FFFFFF; padding:0 9px; color:#6B3FE0; display:inline-flex; align-items:center; gap:4px; font-family:inherit; font-weight:700; font-size:10.5px; white-space:nowrap; cursor:pointer;">
-                    <span>다른 트렌드</span>
-                    <svg width="12" height="12" viewBox="0 0 14 14" aria-hidden="true" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#6B3FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
-                  </button>
-                </div>
+                <div title="{{ trendName }}" style="min-width:0; font-weight:800; font-size:22px; line-height:1.22; color:#1A1A22; letter-spacing:-0.04em; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;">{{ trendName }}</div>
                 <div style="display:flex; align-items:center; gap:6px; margin-top:6px;">
                   <span style="background:#E7DDFC; border-radius:999px; padding:3px 9px; font-weight:700; font-size:10.5px; color:#5B21C0; white-space:nowrap;">{{ trendCat }}</span>
                 </div>
               </div>
             </div>
-            <sc-if value="{{ trendOpen }}" hint-placeholder-val="{{ false }}">
-              <div id="other-trends-panel" data-trend-switcher="1" style="margin:0 16px 11px; background:#FFFFFF; border:1px solid #E2D9F8; border-radius:14px; overflow:hidden;">
-                <sc-for list="{{ trendOptions }}" as="opt" hint-placeholder-count="5">
-                  <button type="button" onClick="{{ opt.pick }}" style="{{ opt.row }}; width:100%; border:0; font-family:inherit; text-align:left;">
-                    <span style="width:30px; height:30px; flex:none; border-radius:999px; background:#F3F0FB; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.04);">
-                      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-trend-icon-src="{{ opt.optIconUrl }}" alt="{{ opt.optIconAlt }}" width="20" height="20" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:20px; height:20px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-                      <span role="img" aria-label="{{ opt.optIconAlt }}" style="width:20px; height:20px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:9px; line-height:1;">{{ opt.optIconFallback }}</span>
-                    </span>
-                    <span style="{{ opt.nameStyle }}">{{ opt.optName }}</span>
-                    <span style="flex:none; white-space:nowrap; font-weight:500; font-size:11px; color:#A9ACB8;">{{ opt.optCat }}</span>
-                  </button>
-                </sc-for>
-              </div>
-            </sc-if>
             <sc-if value="{{ hasDefinition }}" hint-placeholder-val="{{ false }}">
-              <div style="padding:0 16px 14px;">
-                <button type="button" data-trend-description-toggle="1" aria-expanded="{{ trendDescriptionOpen }}" onClick="{{ toggleTrendDescription }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; border:0; border-top:1px solid rgba(91,33,192,0.10); background:transparent; padding:11px 0 0; font-family:inherit; text-align:left; cursor:pointer;">
+              <div style="padding:0 14px 12px;">
+                <button type="button" data-trend-description-toggle="1" aria-expanded="{{ trendDescriptionOpen }}" onClick="{{ toggleTrendDescription }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; border:0; border-top:1px solid #EEEAF6; background:transparent; padding:12px 0 0; font-family:inherit; text-align:left; cursor:pointer;">
                   <span style="display:flex; align-items:center; gap:7px; min-width:0; font-weight:700; font-size:12px; color:#5B21C0;">{{ trendDescriptionLabel }}</span>
                   <svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true" style="{{ descriptionCaretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#5B21C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
                 </button>
                 <sc-if value="{{ trendDescriptionOpen }}" hint-placeholder-val="{{ false }}">
                   <div data-trend-description-body="1" style="padding-top:10px;">
                     <div style="font-weight:500; font-size:13px; line-height:1.65; color:#3B3D47; text-wrap:pretty;">{{ trendDefinition }}</div>
-                    <div style="margin-top:9px; padding:9px 10px; border-radius:11px; background:rgba(255,255,255,0.62); font-weight:500; font-size:11.5px; line-height:1.6; color:#666270; text-wrap:pretty;"><b style="font-weight:800; color:#4B4D57;">왜 관심을 받나요?</b><br>{{ trendContext }}</div>
+                    <div style="margin-top:9px; padding:10px 11px; border-radius:12px; background:#F7F4FF; font-weight:500; font-size:11.5px; line-height:1.6; color:#666270; text-wrap:pretty;"><b style="font-weight:800; color:#4B4D57;">왜 관심을 받나요?</b><br>{{ trendContext }}</div>
                   </div>
                 </sc-if>
               </div>
             </sc-if>
-            <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" aria-controls="other-trends-panel" onClick="{{ toggleTrend }}" style="width:100%; border:0; border-top:1px solid rgba(91,33,192,0.10); background:transparent; padding:11px 0 0; color:#6B3FE0; display:flex; align-items:center; justify-content:space-between; font-family:inherit; font-weight:700; font-size:12px; cursor:pointer;">
+            <div style="padding:0 14px 14px;">
+            <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" aria-controls="other-trends-panel" onClick="{{ toggleTrend }}" style="width:100%; border:0; border-top:1px solid #EEEAF6; background:transparent; padding:12px 0 0; color:#6B3FE0; display:flex; align-items:center; justify-content:space-between; font-family:inherit; font-weight:700; font-size:12px; cursor:pointer;">
               <span>다른 트렌드 보기</span>
               <svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#6B3FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
             </button>
@@ -412,6 +393,7 @@
                 </sc-for>
               </div>
             </sc-if>
+            </div>
           </div>
         </div>
 
