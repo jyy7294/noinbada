@@ -366,7 +366,7 @@
             <sc-if value="{{ hasDefinition }}" hint-placeholder-val="{{ false }}">
               <div style="padding:0 16px 14px;">
                 <button type="button" data-trend-description-toggle="1" aria-expanded="{{ trendDescriptionOpen }}" onClick="{{ toggleTrendDescription }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; border:0; border-top:1px solid rgba(91,33,192,0.10); background:transparent; padding:11px 0 0; font-family:inherit; text-align:left; cursor:pointer;">
-                  <span style="display:flex; align-items:center; gap:7px; min-width:0; font-weight:700; font-size:12px; color:#5B21C0;"><span aria-hidden="true" style="font-size:14px;">💡</span>{{ trendDescriptionOpen ? '트렌드 설명 접기' : '트렌드 설명 보기' }}</span>
+                  <span style="display:flex; align-items:center; gap:7px; min-width:0; font-weight:700; font-size:12px; color:#5B21C0;"><span aria-hidden="true" style="font-size:14px;">💡</span>{{ trendDescriptionLabel }}</span>
                   <svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true" style="{{ descriptionCaretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#5B21C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
                 </button>
                 <sc-if value="{{ trendDescriptionOpen }}" hint-placeholder-val="{{ false }}">
@@ -6322,6 +6322,7 @@ class Component extends DCLogic {
       toggleTrend: () => this.setState(s => ({ trendOpen: !s.trendOpen })),
       caretStyle: 'display:block; flex:none; transition:transform 0.2s; transform:rotate(' + (this.state.trendOpen ? 180 : 0) + 'deg);',
       trendDescriptionOpen: !!this.state.trendDescriptionOpen,
+      trendDescriptionLabel: this.state.trendDescriptionOpen ? '트렌드 설명 접기' : '트렌드 설명 보기',
       toggleTrendDescription: () => this.setState(s => ({ trendDescriptionOpen: !s.trendDescriptionOpen })),
       descriptionCaretStyle: 'display:block; flex:none; transition:transform 0.2s; transform:rotate(' + (this.state.trendDescriptionOpen ? 180 : 0) + 'deg);',
       trendOptions: this.trends.map((t, i) => {
