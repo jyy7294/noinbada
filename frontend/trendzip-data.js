@@ -14,7 +14,13 @@ const STATUS_URL = `${LIVE_DATA_BASE}/status.json`;
 const METADATA_URL = `${LIVE_DATA_BASE}/metadata.json`;
 const CACHE_KEY = 'trzip:latest-intelligence:v3';
 const PORTFOLIO_KEY = 'trzip:portfolios:v1';
-const SHOWCASE_MANIFEST_URL = './showcase/manifest.json';
+// A file:// preview cannot read neighbouring JSON with fetch in Chrome.  Keep
+// the HTML handoff usable by reading the same immutable production publication
+// only for that local-preview case; normal and deployed pages stay same-origin.
+const SHOWCASE_BASE = globalThis.location?.protocol === 'file:'
+  ? 'https://trzip-x-google.vercel.app'
+  : '';
+const SHOWCASE_MANIFEST_URL = `${SHOWCASE_BASE}/showcase/manifest.json`;
 // The public home feed is an immutable daily publication created at 06:00 KST,
 // not an hourly endpoint. Keep a successful publication current until the next
 // daily slot, then allow a short delivery grace period before failing closed.
@@ -389,7 +395,7 @@ const LIVE_COMPANY_ROLES = new Set([
   'ownership_investment', 'event_sponsorship',
 ]);
 const LIVE_LOGO_VERIFICATIONS = new Set([
-  'verified_safe_svg', 'verified_raster_min_64px',
+  'verified_safe_svg', 'verified_raster_min_64px', 'verified_raster_wordmark',
 ]);
 const LIVE_LISTING_EVIDENCE_TYPES = new Set([
   'exchange_current_security_universe', 'official_current_security_register',
@@ -498,7 +504,7 @@ function validLiveLogo(company) {
     || (provenance.sha256 || '') !== sha256
     || provenance.verification !== verification
   ) return false;
-  if (mode !== 'image' || !['verified_safe_svg', 'verified_raster_min_64px'].includes(verification)) {
+  if (mode !== 'image' || !['verified_safe_svg', 'verified_raster_min_64px', 'verified_raster_wordmark'].includes(verification)) {
     return false;
   }
   let logo;
@@ -513,7 +519,9 @@ function validLiveLogo(company) {
     && width > 0 && height > 0
     && (verification === 'verified_safe_svg'
       ? format === 'svg'
-      : width >= 64 && height >= 64 && ['png', 'jpeg', 'gif', 'webp', 'bmp', 'ico'].includes(format));
+      : verification === 'verified_raster_wordmark'
+        ? width >= 64 && height >= 32 && ['png', 'jpeg', 'gif', 'webp', 'bmp', 'ico'].includes(format)
+        : width >= 64 && height >= 64 && ['png', 'jpeg', 'gif', 'webp', 'bmp', 'ico'].includes(format));
   return company.logo_asset_source === 'official_page_asset'
     && logo.protocol === 'https:' && Boolean(logo.hostname)
     && ['http:', 'https:'].includes(page.protocol) && Boolean(page.hostname)
@@ -522,7 +530,7 @@ function validLiveLogo(company) {
     && mime.startsWith('image/') && /^[0-9a-f]{64}$/.test(sha256)
     && dimensionsValid
     && !String(company.logo_rejected_asset_url || '').trim()
-    && ['verified_vector', 'verified_raster_min_64px'].includes(company.logo_asset_quality);
+    && ['verified_vector', 'verified_raster_min_64px', 'verified_raster_wordmark'].includes(company.logo_asset_quality);
 }
 
 function finitePublicNumber(value, { positive = false } = {}) {
@@ -1244,7 +1252,7 @@ async function loadShowcase() {
     || !/^[a-f0-9]{64}$/i.test(String(entry.sha256 || ''))) {
     throw new Error('공개 manifest 계약을 확인할 수 없습니다.');
   }
-  const payloadResponse = await fetchWithRetry(`./showcase/${entry.path}?t=${nonce}`, { cache: 'no-store' });
+  const payloadResponse = await fetchWithRetry(`${SHOWCASE_BASE}/showcase/${entry.path}?t=${nonce}`, { cache: 'no-store' });
   if (!payloadResponse.ok) throw new Error(`TRZIP showcase ${payloadResponse.status}`);
   const payloadText = await payloadResponse.text();
   if ((await sha256Hex(payloadText)) !== String(entry.sha256).toLowerCase()) {

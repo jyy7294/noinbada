@@ -64,7 +64,8 @@ def test_public_showcase_is_hash_pinned_and_has_exact_approved_shape() -> None:
 
 def test_frontend_defaults_to_validated_showcase_without_touching_live_contract() -> None:
     assert "api.loadTrends({ mode: 'showcase' })" in INDEX
-    assert "SHOWCASE_MANIFEST_URL = './showcase/manifest.json'" in DATA
+    assert "const SHOWCASE_BASE = globalThis.location?.protocol === 'file:'" in DATA
+    assert "SHOWCASE_MANIFEST_URL = `${SHOWCASE_BASE}/showcase/manifest.json`" in DATA
     assert "async function loadShowcase()" in DATA
     assert "validateShowcasePayload(payload, manifest)" in DATA
     assert "sha256Hex(payloadText)" in DATA
