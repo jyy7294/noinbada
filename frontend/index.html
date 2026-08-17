@@ -825,14 +825,15 @@
         <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none; padding:0 16px 16px;">
 
           <div style="display:flex; align-items:center; gap:13px;">
-            <span style="width:60px; height:60px; flex:none; border-radius:999px; background:linear-gradient(140deg,#EADCFF,#FDE3F1); display:flex; align-items:center; justify-content:center; font-size:29px;">🧢</span>
+            <span data-profile="emoji" style="width:60px; height:60px; flex:none; border-radius:999px; background:linear-gradient(140deg,#EADCFF,#FDE3F1); display:flex; align-items:center; justify-content:center; font-size:29px;">🧢</span>
             <div style="flex:1; min-width:0;">
               <div style="display:flex; align-items:center; gap:6px;">
-                <span style="font-weight:800; font-size:17px; color:#1A1A22; letter-spacing:-0.03em;">@나</span>
-                <span style="flex:none; background:#F3EEFF; border-radius:6px; padding:2px 7px; font-weight:600; font-size:10px; color:#5B21C0; white-space:nowrap;">밈 수집가</span>
+                <span data-profile="name" style="font-weight:800; font-size:17px; color:#1A1A22; letter-spacing:-0.03em;">@나</span>
+                <span data-profile="badge" style="flex:none; background:#F3EEFF; border-radius:6px; padding:2px 7px; font-weight:600; font-size:10px; color:#5B21C0; white-space:nowrap;">밈 수집가</span>
               </div>
-              <div style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:3px;">트렌드에서 기업을 발견하는 사람</div>
+              <div data-profile="bio" style="font-weight:500; font-size:11.5px; color:#8B8D98; margin-top:3px;">트렌드에서 기업을 발견하는 사람</div>
             </div>
+            <button type="button" data-profile-edit="1" aria-label="내 프로필 수정" style="flex:none; border:1px solid #E6DEF7; border-radius:10px; background:#FFFFFF; padding:8px 9px; font-family:inherit; font-weight:700; font-size:11px; color:#6C2FF2; cursor:pointer;">수정</button>
           </div>
 
           <div style="display:flex; align-items:center; border:1px solid #EEEBF7; border-radius:16px; padding:14px 6px; margin-top:16px;">
@@ -1157,7 +1158,7 @@ class Component extends DCLogic {
     setTimeout(() => this.listViewWire(), 200);
     setTimeout(() => this.protoShell(), 40);
     setTimeout(() => this.zipWire(), 120);
-    setTimeout(() => { this.likeWire(); this.stashWire(); this.myTabWire(); this.renderCompanyWatchlist(); this.shareWire(); }, 80);
+    setTimeout(() => { this.likeWire(); this.stashWire(); this.myTabWire(); this.renderMyProfile(); this.renderCompanyWatchlist(); this.shareWire(); }, 80);
     setTimeout(() => this.mkWire(), 120);
     setTimeout(() => this.snsWire(), 60);
     setTimeout(() => { this.homeSelectionGuideWire(); }, 80);
@@ -3643,6 +3644,87 @@ class Component extends DCLogic {
     if (reduced || !root) finish(); else setTimeout(finish, 340);
   };
 
+  profileDefaults() {
+    return { name: '@나', badge: '밈 수집가', bio: '트렌드에서 기업을 발견하는 사람', emoji: '🧢' };
+  }
+
+  profileData() {
+    const defaults = this.profileDefaults();
+    try {
+      const saved = JSON.parse(localStorage.getItem('trzip_my_profile_v1') || '{}');
+      if (!saved || typeof saved !== 'object') return defaults;
+      return {
+        name: String(saved.name || defaults.name).slice(0, 18),
+        badge: String(saved.badge || defaults.badge).slice(0, 12),
+        bio: String(saved.bio || defaults.bio).slice(0, 48),
+        emoji: ['🧢', '💜', '🔎', '📈', '✨', '🎧'].includes(saved.emoji) ? saved.emoji : defaults.emoji
+      };
+    } catch (_) { return defaults; }
+  }
+
+  renderMyProfile() {
+    const page = (this.rootEl || document).querySelector('#my-page');
+    if (!page) return;
+    const profile = this.profileData();
+    page.querySelectorAll('[data-profile]').forEach((el) => {
+      const key = el.getAttribute('data-profile');
+      if (Object.prototype.hasOwnProperty.call(profile, key)) el.textContent = profile[key];
+    });
+  }
+
+  openProfileEditor = () => {
+    const page = (this.rootEl || document).querySelector('#my-page');
+    if (!page || page.querySelector('[data-profile-editor]')) return;
+    const profile = this.profileData();
+    const wrap = document.createElement('div');
+    wrap.setAttribute('data-profile-editor', '1');
+    wrap.style.cssText = 'position:absolute;inset:0;z-index:90;display:flex;align-items:flex-end;background:rgba(20,16,34,.42);';
+    const sheet = document.createElement('form');
+    sheet.style.cssText = 'width:100%;background:#FFFFFF;border-radius:24px 24px 0 0;padding:10px 18px 22px;box-sizing:border-box;box-shadow:0 -12px 30px rgba(26,26,34,.16);transform:translateY(100%);transition:transform 280ms cubic-bezier(.22,.9,.28,1);';
+    const field = (label, key, value, max, hint) => '<label style="display:flex;flex-direction:column;gap:7px;margin-top:14px;font-weight:800;font-size:13px;color:#1A1A22;">'
+      + label + '<input data-profile-field="' + key + '" maxlength="' + max + '" value="' + this.escapeHtml(value) + '" style="height:43px;box-sizing:border-box;border:1px solid #DDD5F0;border-radius:12px;padding:0 12px;font:600 14px inherit;color:#1A1A22;outline-color:#7B3FF2;">'
+      + (hint ? '<span style="font-weight:500;font-size:10.5px;color:#8B8D98;">' + hint + '</span>' : '') + '</label>';
+    sheet.innerHTML = '<div style="width:44px;height:4px;border-radius:999px;background:#E7E4F2;margin:2px auto 12px;"></div>'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;"><strong style="font-size:17px;color:#1A1A22;letter-spacing:-.03em;">내 프로필 수정</strong><button type="button" data-profile-cancel="1" aria-label="프로필 수정 닫기" style="border:0;background:transparent;padding:8px;font:700 14px inherit;color:#8B8D98;cursor:pointer;">닫기</button></div>'
+      + '<div style="margin-top:16px;font-weight:800;font-size:13px;color:#1A1A22;">프로필 아이콘</div><div data-profile-emojis="1" style="display:flex;gap:8px;margin-top:9px;"></div>'
+      + field('닉네임', 'name', profile.name.replace(/^@/, ''), 16, '@는 자동으로 붙습니다.')
+      + field('한 줄 소개', 'bio', profile.bio, 48, '나를 소개하는 문장을 적어주세요.')
+      + field('프로필 태그', 'badge', profile.badge, 12, '예: 밈 수집가, 트렌드 탐험가')
+      + '<button type="submit" style="width:100%;height:48px;margin-top:18px;border:0;border-radius:14px;background:#7B3FF2;color:#FFFFFF;font:800 15px inherit;cursor:pointer;">저장하기</button>';
+    const emojiBox = sheet.querySelector('[data-profile-emojis]');
+    const icons = ['🧢', '💜', '🔎', '📈', '✨', '🎧'];
+    let picked = profile.emoji;
+    const paint = () => emojiBox.querySelectorAll('button').forEach((button) => {
+      const active = button.getAttribute('data-emoji') === picked;
+      button.style.borderColor = active ? '#7B3FF2' : '#E8E3F3';
+      button.style.background = active ? '#F3EEFF' : '#FFFFFF';
+    });
+    emojiBox.innerHTML = icons.map((icon) => '<button type="button" data-emoji="' + icon + '" aria-label="프로필 아이콘 ' + icon + '" style="width:38px;height:38px;border:1.5px solid #E8E3F3;border-radius:12px;background:#FFFFFF;font-size:20px;cursor:pointer;">' + icon + '</button>').join('');
+    emojiBox.querySelectorAll('button').forEach((button) => { button.onclick = () => { picked = button.getAttribute('data-emoji'); paint(); }; });
+    const close = () => { sheet.style.transform = 'translateY(100%)'; setTimeout(() => wrap.remove(), 220); };
+    sheet.querySelector('[data-profile-cancel]').onclick = close;
+    wrap.onclick = (event) => { if (event.target === wrap) close(); };
+    sheet.onsubmit = (event) => {
+      event.preventDefault();
+      const read = (key) => String((sheet.querySelector('[data-profile-field="' + key + '"]') || {}).value || '').trim();
+      const next = { name: read('name').replace(/^@+/, '').slice(0, 16), bio: read('bio').slice(0, 48), badge: read('badge').slice(0, 12), emoji: picked };
+      if (!next.name) { this.shareToast(page, '닉네임을 입력해 주세요'); return; }
+      if (!next.bio) next.bio = this.profileDefaults().bio;
+      if (!next.badge) next.badge = this.profileDefaults().badge;
+      next.name = '@' + next.name;
+      try { localStorage.setItem('trzip_my_profile_v1', JSON.stringify(next)); } catch (_) {}
+      this.renderMyProfile();
+      this.track('profile_update', { has_bio: Boolean(next.bio), has_badge: Boolean(next.badge) });
+      close();
+      this.shareToast(page, '프로필을 저장했어요');
+    };
+    wrap.appendChild(sheet);
+    page.appendChild(wrap);
+    paint();
+    requestAnimationFrame(() => { sheet.style.transform = 'none'; });
+    setTimeout(() => { const input = sheet.querySelector('[data-profile-field="name"]'); if (input) input.focus(); }, 260);
+  };
+
   myStats() {
     const page = (this.rootEl || document).querySelector('#my-page');
     if (!page) return;
@@ -3920,6 +4002,12 @@ class Component extends DCLogic {
       b.addEventListener('click', (ev) => this.goMyPage(ev));
     });
     page.querySelectorAll('[data-my-card]').forEach((c) => { c.onclick = (ev) => this.goMyCard(ev); });
+    const profileEdit = page.querySelector('[data-profile-edit]');
+    if (profileEdit && !profileEdit.__profileEdit) {
+      profileEdit.__profileEdit = true;
+      profileEdit.addEventListener('click', this.openProfileEditor);
+    }
+    this.renderMyProfile();
     this.myHearts();
     this.myStats();
     const tabs = [...page.querySelectorAll('[data-my-tab]')];
