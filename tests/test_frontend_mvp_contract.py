@@ -2047,9 +2047,10 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'data-trend-description-toggle="1"' in INDEX
     assert 'data-trend-description-body="1"' in INDEX
     assert '트렌드 설명 보기' in INDEX
-    assert '{{ trendEmoji }}</span>' in INDEX
+    assert 'data-trend-icon-src="{{ trendIconUrl }}"' in INDEX
+    assert '{{ trendIconFallback }}</span>' in INDEX
     assert 'background:#F3EFFC; border-radius:22px' in INDEX
-    assert '이 트렌드는 무엇인가요?' in INDEX
+    assert '이 트렌드는 무엇인가요?' not in INDEX
     assert '왜 관심을 받나요?' in INDEX
     assert 'trendDetailDefinition(trend = {})' in INDEX
     assert 'UFC는 종합격투기(MMA) 대회를 여는 글로벌 스포츠 단체입니다.' in INDEX

@@ -348,7 +348,10 @@
         <div style="padding:0 16px 14px;">
           <div data-trend-summary-card="1" style="background:#F3EFFC; border-radius:22px; overflow:hidden;">
             <button type="button" aria-expanded="{{ trendOpen }}" onClick="{{ toggleTrend }}" style="width:100%; border:0; display:flex; align-items:center; gap:13px; background:transparent; padding:18px 16px 10px; font-family:inherit; text-align:left; cursor:pointer;">
-              <span aria-hidden="true" style="width:44px; height:44px; flex:none; border-radius:15px; background:#FFFFFF; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.10); display:inline-flex; align-items:center; justify-content:center; font-size:25px; line-height:1;">{{ trendEmoji }}</span>
+              <span aria-hidden="true" style="width:44px; height:44px; flex:none; border-radius:15px; background:#FFFFFF; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.10); display:inline-flex; align-items:center; justify-content:center; overflow:hidden;">
+                <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-trend-icon-src="{{ trendIconUrl }}" alt="" width="28" height="28" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:28px; height:28px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <span style="width:28px; height:28px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:12px; line-height:1;">{{ trendIconFallback }}</span>
+              </span>
               <div style="flex:1; min-width:0;">
                 <div title="{{ trendName }}" style="font-weight:800; font-size:22px; line-height:1.22; color:#1A1A22; letter-spacing:-0.04em; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;">{{ trendName }}</div>
                 <div style="display:flex; align-items:center; gap:6px; margin-top:6px;">
@@ -360,19 +363,13 @@
             <sc-if value="{{ hasDefinition }}" hint-placeholder-val="{{ false }}">
               <div style="padding:0 16px 14px;">
                 <button type="button" data-trend-description-toggle="1" aria-expanded="{{ trendDescriptionOpen }}" onClick="{{ toggleTrendDescription }}" style="width:100%; display:flex; align-items:center; justify-content:space-between; gap:10px; border:0; border-top:1px solid rgba(91,33,192,0.10); background:transparent; padding:11px 0 0; font-family:inherit; text-align:left; cursor:pointer;">
-                  <span style="display:flex; align-items:center; gap:7px; min-width:0; font-weight:700; font-size:12px; color:#5B21C0;"><span aria-hidden="true" style="font-size:14px;">💡</span>{{ trendDescriptionLabel }}</span>
+                  <span style="display:flex; align-items:center; gap:7px; min-width:0; font-weight:700; font-size:12px; color:#5B21C0;">{{ trendDescriptionLabel }}</span>
                   <svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true" style="{{ descriptionCaretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#5B21C0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
                 </button>
                 <sc-if value="{{ trendDescriptionOpen }}" hint-placeholder-val="{{ false }}">
-                  <div data-trend-description-body="1" style="padding-top:11px;">
-                    <div style="display:flex; align-items:flex-start; gap:8px;">
-                      <span aria-hidden="true" style="font-size:14px; line-height:1.55;">💡</span>
-                      <div style="min-width:0;">
-                        <div style="font-weight:800; font-size:11px; color:#5B21C0; letter-spacing:-0.01em;">이 트렌드는 무엇인가요?</div>
-                        <div style="margin-top:3px; font-weight:500; font-size:13px; line-height:1.65; color:#3B3D47; text-wrap:pretty;">{{ trendDefinition }}</div>
-                        <div style="margin-top:9px; padding:9px 10px; border-radius:11px; background:rgba(255,255,255,0.62); font-weight:500; font-size:11.5px; line-height:1.6; color:#666270; text-wrap:pretty;"><b style="font-weight:800; color:#4B4D57;">왜 관심을 받나요?</b><br>{{ trendContext }}</div>
-                      </div>
-                    </div>
+                  <div data-trend-description-body="1" style="padding-top:10px;">
+                    <div style="font-weight:500; font-size:13px; line-height:1.65; color:#3B3D47; text-wrap:pretty;">{{ trendDefinition }}</div>
+                    <div style="margin-top:9px; padding:9px 10px; border-radius:11px; background:rgba(255,255,255,0.62); font-weight:500; font-size:11.5px; line-height:1.6; color:#666270; text-wrap:pretty;"><b style="font-weight:800; color:#4B4D57;">왜 관심을 받나요?</b><br>{{ trendContext }}</div>
                   </div>
                 </sc-if>
               </div>
@@ -6248,6 +6245,8 @@ class Component extends DCLogic {
       liveObservedAt: this.liveObservedAt || '',
       liveBadgeStyle: 'flex:none; white-space:nowrap; font-weight:700; font-size:10px; letter-spacing:0.02em; border-radius:999px; padding:4px 9px;' + (this.liveStatus.includes('LIVE') ? ' background:#E8FBF0; color:#0B8A4B;' : ' background:#F1EEF9; color:#8B8D98;'),
       trendEmoji: curTrend.emoji,
+      trendIconUrl: (curTrend.icon || this.trendIconMeta(curTrend.name, curTrend.cat)).url,
+      trendIconFallback: (curTrend.icon || this.trendIconMeta(curTrend.name, curTrend.cat)).fallback,
       trendName: curTrend.name,
       trendCat: curTrend.cat,
       trendCore: curTrend.core.split('\n').join(' '),
@@ -6318,7 +6317,7 @@ class Component extends DCLogic {
       toggleTrend: () => this.setState(s => ({ trendOpen: !s.trendOpen })),
       caretStyle: 'display:block; flex:none; transition:transform 0.2s; transform:rotate(' + (this.state.trendOpen ? 180 : 0) + 'deg);',
       trendDescriptionOpen: !!this.state.trendDescriptionOpen,
-      trendDescriptionLabel: this.state.trendDescriptionOpen ? '트렌드 설명 접기' : '트렌드 설명 보기',
+      trendDescriptionLabel: this.state.trendDescriptionOpen ? '설명 접기' : '트렌드 설명 보기',
       toggleTrendDescription: () => this.setState(s => ({ trendDescriptionOpen: !s.trendDescriptionOpen })),
       descriptionCaretStyle: 'display:block; flex:none; transition:transform 0.2s; transform:rotate(' + (this.state.trendDescriptionOpen ? 180 : 0) + 'deg);',
       trendOptions: this.trends.map((t, i) => {
