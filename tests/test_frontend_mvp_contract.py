@@ -2037,6 +2037,9 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert "frame.addEventListener('keydown'" in INDEX
     assert "['Enter', ' ', 'ArrowDown', 'PageDown']" in INDEX
     assert 'data-trend-summary-card="1"' in INDEX
+    assert 'data-trend-description-toggle="1"' in INDEX
+    assert 'data-trend-description-body="1"' in INDEX
+    assert '트렌드 설명 보기' in INDEX
     assert '{{ trendEmoji }}</span>' in INDEX
     assert 'background:#F3EFFC; border-radius:22px' in INDEX
     assert '이 트렌드는 무엇인가요?' in INDEX
