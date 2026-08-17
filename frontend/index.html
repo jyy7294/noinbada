@@ -200,9 +200,6 @@
                 <svg width="19" height="19" viewBox="0 0 20 20" aria-hidden="true"><polyline points="12,4 6,10 12,16" fill="none" stroke="#1A1A22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
               </button>
               <div style="white-space:nowrap; font-weight:800; font-size:23px; line-height:1.14; color:#1A1A22; letter-spacing:-0.04em;">실시간 트렌드</div>
-              <a data-home-selection-guide="1" href="#home-selection-guide" aria-label="트렌드 선정 기준 보기" style="width:28px; height:28px; flex:none; border:0; border-radius:999px; background:transparent; padding:0; display:inline-flex; align-items:center; justify-content:center; cursor:pointer; text-decoration:none;" title="트렌드 선정 기준">
-                <svg aria-hidden="true" width="17" height="17" viewBox="0 0 18 18" style="display:block;"><circle cx="9" cy="9" r="7.2" fill="none" stroke="#A9ACB8" stroke-width="1.5"></circle><line x1="9" y1="7.4" x2="9" y2="12.2" stroke="#8B8D98" stroke-width="1.7" stroke-linecap="round"></line><circle cx="9" cy="5.2" r="1" fill="#8B8D98"></circle></svg>
-              </a>
             </div>
             <sc-if value="{{ showLiveBadge }}" hint-placeholder-val="{{ false }}">
               <span style="display:inline-flex; margin-top:10px; {{ liveBadgeStyle }}">{{ liveStatus }}</span>
@@ -402,19 +399,7 @@
           <div data-freshness-card="1" style="background:#FAFAFC; border:1px solid #ECE8F3; border-radius:18px; padding:13px 13px 12px;">
             <div style="display:flex; align-items:center; gap:6px;">
               <span style="font-weight:700; font-size:14px; color:#4B4D57; letter-spacing:-0.02em;">트렌드 신선도</span>
-              <button type="button" data-info-trigger="freshness" aria-label="트렌드 신선도 기준 보기" style="width:28px;height:28px;border:0;background:transparent;padding:7px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#B5B8C2" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#B5B8C2" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#B5B8C2"></circle></svg></button>
             </div>
-            <sc-if value="{{ freshInfoOpen }}" hint-placeholder-val="{{ false }}">
-              <div data-freshness-explanation="1" style="background:#F3EFFC; border-radius:12px; padding:11px 12px 12px; margin-top:9px; color:#4B1EA6;">
-                <div style="font-weight:800; font-size:12px; line-height:1.25;">단계 읽는 법</div>
-                <div style="margin-top:3px; font-weight:500; font-size:10.5px; line-height:1.45; color:#7356AD;">처음 포착된 시점과 관측이 이어진 정도를 함께 봅니다.</div>
-                <div style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; margin-top:9px;">
-                  <div style="min-width:0; padding:7px 6px; border-radius:9px; background:#FFFFFF99; text-align:center;"><strong style="display:block; font-size:11px; line-height:1.2;">포착</strong><span style="display:block; margin-top:2px; font-size:9.5px; line-height:1.25; color:#7356AD; white-space:nowrap;">처음 확인</span></div>
-                  <div style="min-width:0; padding:7px 6px; border-radius:9px; background:#FFFFFF99; text-align:center;"><strong style="display:block; font-size:11px; line-height:1.2;">확산</strong><span style="display:block; margin-top:2px; font-size:9.5px; line-height:1.25; color:#7356AD; white-space:nowrap;">관심 증가</span></div>
-                  <div style="min-width:0; padding:7px 6px; border-radius:9px; background:#FFFFFF99; text-align:center;"><strong style="display:block; font-size:11px; line-height:1.2;">대중화</strong><span style="display:block; margin-top:2px; font-size:9.5px; line-height:1.25; color:#7356AD; white-space:nowrap;">넓게 지속</span></div>
-                </div>
-              </div>
-            </sc-if>
             <div style="display:flex; gap:10px; align-items:stretch; margin-top:9px;">
               <div style="flex:none; width:104px; padding:6px 0 7px; display:flex; align-items:center; justify-content:center;">
                 <div style="flex:1; min-width:0;">
@@ -437,40 +422,14 @@
                 </div>
               </div>
             </div>
-
-            <sc-if value="{{ collectInfoOpen }}" hint-placeholder-val="{{ false }}">
-              <div style="background:#F7F4FF; border-radius:12px; padding:11px 13px; margin-top:9px; font-weight:500; font-size:11px; line-height:1.65; color:#5B21C0;">
-                <b style="font-weight:800;">트렌드 수집 기준</b><br>
-                · 매시 정각 대한민국의 최신 흐름을 실제 수집해요<br>
-                · 서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요<br>
-                · 전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요<br>
-                · 관측되지 않은 데이터를 임의로 채우지 않아요
-              </div>
-            </sc-if>
           </div>
         </div>
 
         <div style="padding:0 16px 16px;">
-          <div style="position:relative;">
-            <button type="button" data-related-company-cta="1" aria-label="{{ relatedCompaniesAriaLabel }}" onClick="{{ goCompanies }}" style="width:100%; min-height:110px; border:1px solid #DDCEF9; display:flex; align-items:center; gap:13px; background:linear-gradient(135deg,#FCFAFF 0%,#F1E9FF 100%); border-radius:20px; padding:16px 50px 16px 15px; font-family:inherit; text-align:left; cursor:pointer; box-shadow:0 10px 22px rgba(101,34,220,0.11);">
-              <div aria-hidden="true" style="display:flex; align-items:center; min-width:94px; padding-left:1px;">
-                <sc-for list="{{ relatedCompanyPreview }}" as="company" hint-placeholder-count="3">
-                  <span title="{{ company.name }}" data-related-company-logo="{{ company.logoName }}" data-related-company-logo-url="{{ company.logoUrl }}" data-related-company-logo-size="40" style="{{ company.logoStyle }}">{{ company.initial }}</span>
-                </sc-for>
-              </div>
-              <div style="flex:1; min-width:0;">
-                <div style="font-weight:800; font-size:10.5px; color:#7B3FF2; letter-spacing:0.02em;">트렌드 → 연결 역할 → 기업 정보</div>
-                <div style="font-weight:800; font-size:18px; line-height:1.2; color:#1A1A22; letter-spacing:-0.04em; margin-top:4px;">왜 이 기업인가</div>
-                <div style="font-weight:600; font-size:11.5px; line-height:1.42; color:#7457AF; margin-top:5px;">역할과 연결 근거를 확인하고 종목 정보로 이어집니다.</div>
-              </div>
-              <span aria-hidden="true" style="position:absolute; right:15px; bottom:17px; width:30px; height:30px; border-radius:999px; display:flex; align-items:center; justify-content:center; background:#FFFFFF; box-shadow:0 4px 10px rgba(91,33,192,0.10);">
-                <svg width="15" height="15" viewBox="0 0 16 16" style="display:block;"><polyline points="6,4 10,8 6,12" fill="none" stroke="#7B3FF2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
-              </span>
-            </button>
-            <button type="button" data-info-trigger="relations" aria-label="관련기업 연결 기준 보기" style="position:absolute; right:13px; top:12px; width:28px; height:28px; border:0; border-radius:999px; background:rgba(255,255,255,0.82); padding:7px; cursor:pointer; box-shadow:0 3px 10px rgba(91,33,192,0.08);">
-              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#9177C7" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#7756B4" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#7756B4"></circle></svg>
-            </button>
-          </div>
+          <button type="button" data-related-company-cta="1" aria-label="{{ relatedCompaniesAriaLabel }}" onClick="{{ goCompanies }}" style="width:100%; min-height:58px; border:1px solid #DDCEF9; display:flex; align-items:center; justify-content:space-between; background:#F8F4FF; border-radius:16px; padding:12px 16px 12px 18px; font-family:inherit; text-align:left; cursor:pointer;">
+            <span style="font-weight:800; font-size:18px; line-height:1.2; color:#1A1A22; letter-spacing:-0.04em;">관련기업 보러가기</span>
+            <svg aria-hidden="true" width="17" height="17" viewBox="0 0 16 16" style="display:block;"><polyline points="6,4 10,8 6,12" fill="none" stroke="#7B3FF2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+          </button>
         </div>
 
         <div style="padding:0 16px 14px;">
@@ -529,8 +488,6 @@
         <div style="padding:18px 16px 12px;">
           <div style="display:flex; align-items:center; gap:7px;">
             <span style="font-weight:800; font-size:18px; color:#1A1A22; letter-spacing:-0.03em;">관련 기업</span>
-            <button type="button" data-info-trigger="relations" aria-label="관련기업 연결 기준 보기" style="width:26px;height:26px;border:0;background:transparent;padding:6px;cursor:pointer;"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#B5B8C2" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#B5B8C2" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#B5B8C2"></circle></svg></button>
-            <span style="font-weight:500; font-size:11.5px; color:#8B8D98;">역할과 근거를 따라 보세요</span>
           </div>
 
         </div>
@@ -575,9 +532,19 @@
           </sc-for>
         </div>
 
+        <div style="padding:18px 16px 4px;">
+          <button type="button" data-related-portfolio-action="1" aria-label="{{ relatedPortfolioActionAriaLabel }}" onClick="{{ openRelatedTrendPortfolio }}" style="width:100%;border:1px solid #DDD0FA;background:linear-gradient(135deg,#FAF7FF 0%,#F0E8FF 100%);border-radius:18px;padding:14px;display:flex;align-items:center;gap:11px;font-family:inherit;text-align:left;cursor:pointer;box-shadow:0 7px 18px rgba(112,68,209,0.10);">
+            <span aria-hidden="true" style="width:38px;height:38px;flex:none;border-radius:13px;background:#7B3FF2;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:19px;box-shadow:0 5px 11px rgba(123,63,242,.25);">💜</span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;">
+              <span style="font-weight:800;font-size:14px;line-height:1.3;color:#2B185B;letter-spacing:-.03em;">{{ relatedPortfolioActionTitle }}</span>
+              <span style="font-weight:600;font-size:11.5px;line-height:1.35;color:#7D709F;">{{ relatedPortfolioActionDescription }}</span>
+            </span>
+            <span aria-hidden="true" style="flex:none;width:28px;height:28px;border-radius:999px;background:#FFFFFF;color:#7B3FF2;display:flex;align-items:center;justify-content:center;font-size:23px;line-height:1;">›</span>
+          </button>
+        </div>
+
         <div style="padding:14px 16px 18px;">
           <div style="display:flex; align-items:center; justify-content:center; gap:5px; font-weight:500; font-size:10px; color:#A9ACB8;">
-            <button type="button" data-info-trigger="relations" aria-label="관련기업 연결 기준 보기" style="width:18px; height:18px; flex:none; border:0; background:transparent; padding:3px; cursor:pointer;"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 14 14" style="display:block;"><circle cx="7" cy="7" r="6" fill="none" stroke="#C9CCD5" stroke-width="1.3"></circle><line x1="7" y1="6" x2="7" y2="10" stroke="#A9ACB8" stroke-width="1.5" stroke-linecap="round"></line><circle cx="7" cy="4.1" r="0.85" fill="#A9ACB8"></circle></svg></button>
             기업 연결은 참고 정보이며 투자 권유가 아닙니다.
           </div>
         </div>
@@ -1138,7 +1105,19 @@ class Component extends DCLogic {
   }
 
   componentDidMount() {
+    // file:// 미리보기에서도 같은 저장소를 사용합니다. 공개 데이터가 늦게
+    // 붙더라도 사용자가 만든 밈트폴리오가 목록에서 사라지면 안 됩니다.
+    this.dataApi = this.dataApi || window.TRZIP_DATA_API || null;
     this.clearLegacyPortfolioSurfaces();
+    this.portfolioStorageKey = this.dataApi && this.dataApi.dataContract
+      ? this.dataApi.dataContract.portfolios : 'trzip:portfolios:v1';
+    this.__portfolioStorageListener = (event) => {
+      if (event.key !== this.portfolioStorageKey) return;
+      // 다른 탭에서 만든 포트도 새로고침 없이 전체 목록과 마이페이지에 반영합니다.
+      this.renderPresentationPortfolios();
+      this.renderSavedPortfolios();
+    };
+    window.addEventListener('storage', this.__portfolioStorageListener);
     // 밈트폴리오는 실시간 트렌드 결과가 아닌 고정 데모 화면입니다.
     // 원천 데이터 로딩 실패와 관계없이 홈에서 바로 보여줘야 합니다.
     this.warmCompanyLogos();
@@ -1162,6 +1141,9 @@ class Component extends DCLogic {
   componentWillUnmount() {
     clearTimeout(this.statusClockBoundaryTimer);
     clearInterval(this.statusClockTimer);
+    if (this.__portfolioStorageListener) {
+      window.removeEventListener('storage', this.__portfolioStorageListener);
+    }
   }
 
   liveStatus = '';
@@ -1688,6 +1670,11 @@ class Component extends DCLogic {
       company: name, name, official_domain: officialDomain,
       logo_asset_scope: 'seed_meme_portfolio', ...(profiles[name] || {})
     });
+    const companiesFromLiveTrend = (trendName, fallback) => {
+      const trend = (this.trends || []).find((item) => item && item.live && item.name === trendName);
+      return trend && Array.isArray(trend.companies) && trend.companies.length
+        ? trend.companies.slice(0, 3) : fallback;
+    };
     const seeds = [
       {
         id: 'seed-lisenne', title: '리센느 매매법', emoji: '💖', author: '@lisenne_fan', dateLabel: '07.29',
@@ -1707,27 +1694,26 @@ class Component extends DCLogic {
         ]
       },
       {
-        id: 'seed-raw-cacao', title: '초콜릿 원재료 쪽으로 파봤습니다', emoji: '🫘', author: '@raw_cacao', dateLabel: '07.28',
-        keywords: ['#카카오원물', '#원재료', '#제과', '#디저트'], likes: 97, avgChange: null,
-        companies: [
-          company('오리온', 'orionworld.com'), company('크라운제과', 'crown.co.kr'),
-          company('해태제과식품', 'ht.co.kr')
-        ]
+        id: 'seed-doomsday', sourceTrend: '둠스데이', title: '둠스데이 개봉 전, 마블 라인업만 담았다', emoji: '🎬', author: '@marvel_note', dateLabel: '08.17',
+        keywords: ['#둠스데이', '#마블', '#개봉예정', '#영화'], likes: 183, avgChange: null,
+        companies: companiesFromLiveTrend('둠스데이', [
+          company('월트 디즈니 컴퍼니', 'thewaltdisneycompany.com'), company('CJ CGV', 'cjcg.com'), company('쇼박스', 'showbox.co.kr')
+        ])
       },
       {
-        id: 'seed-quant-benefit', title: '이름 안 겹쳐도 수혜주는 따로 있다', emoji: '📊', author: '@quant_min', dateLabel: '07.27',
-        keywords: ['#소재수혜', '#제분', '#식품소재', '#퀀트'], likes: 61, avgChange: null,
-        companies: [
-          company('CJ제일제당', 'cj.co.kr'), company('대한제분', 'dhflour.co.kr')
-        ]
+        id: 'seed-malbok', sourceTrend: '말복', title: '말복엔 삼계탕보다 복날 장보기', emoji: '🍲', author: '@boknal_pick', dateLabel: '08.17',
+        keywords: ['#말복', '#삼계탕', '#보양식', '#장보기'], likes: 126, avgChange: null,
+        companies: companiesFromLiveTrend('말복', [
+          company('하림', 'harim.com'), company('CJ제일제당', 'cj.co.kr'), company('롯데웰푸드', 'lottewellfood.com')
+        ])
       }
     ];
     return seeds.map((portfolio, index) => ({
       ...portfolio,
       dataMode: 'seed_portfolio',
       sourceRank: index + 1,
-      trendId: null,
-      trend: null
+      trendId: ((this.trends || []).find((trend) => trend && trend.live && trend.name === portfolio.sourceTrend) || {}).id || null,
+      trend: (this.trends || []).find((trend) => trend && trend.live && trend.name === portfolio.sourceTrend) || null
     }));
   }
 
@@ -1835,9 +1821,9 @@ class Component extends DCLogic {
           + '<span style="width:14px;flex:none;font-weight:800;font-size:15px;color:#C0C3CD;text-align:center;padding-top:2px;">' + (index + 1) + '</span>'
           + '<span data-portfolio-avatar="seed-user" role="img" aria-label="' + this.escapeHtml(portfolio.author + ' 아바타') + '" style="width:42px;height:42px;flex:none;border-radius:999px;background:#F4EDFF;display:flex;align-items:center;justify-content:center;font-size:21px;">' + this.escapeHtml(portfolio.emoji) + '</span>'
           + '<span style="flex:1;min-width:0;display:flex;flex-direction:column;">'
-          + '<span style="display:flex;align-items:flex-start;gap:7px;"><span style="flex:1;min-width:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;font-weight:800;font-size:15.5px;line-height:1.3;color:#1A1A22;letter-spacing:-0.03em;">' + this.escapeHtml(portfolio.title) + '</span>' + originBadge + '</span>'
+          + '<span style="display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere;font-weight:800;font-size:15.5px;line-height:1.3;color:#1A1A22;letter-spacing:-0.03em;">' + this.escapeHtml(portfolio.title) + '</span>'
           + '<span style="display:flex;align-items:center;gap:7px;margin-top:8px;font-weight:600;font-size:12px;color:#4B4D57;">' + this.escapeHtml(portfolio.author) + '<span style="font-weight:500;font-size:11px;color:#A9ACB8;">' + this.escapeHtml(portfolio.dateLabel) + '</span></span>'
-          + (keywordChips ? '<span data-portfolio-keywords="1" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;">' + keywordChips + '</span>' : '')
+          + ((originBadge || keywordChips) ? '<span data-portfolio-keywords="1" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;">' + originBadge + keywordChips + '</span>' : '')
           + '<span style="display:flex;align-items:center;gap:8px;margin-top:10px;font-weight:600;font-size:11.5px;color:#8B8D98;">구성 기업 ' + portfolio.companies.length + '개</span></span></button>';
       }).join('') || '<div style="padding:34px 18px;text-align:center;font-weight:600;font-size:12px;color:#8B8D98;">현재 연결된 밈트폴리오가 없어요</div>';
       feed.querySelectorAll('[data-portfolio-row]').forEach((row) => { row.onclick = (event) => this.goPostDetail(event); });
@@ -3215,16 +3201,6 @@ class Component extends DCLogic {
           ['같은 기간에서만 비교', '24시간과 1주일은 각각의 기간 안에서 읽는 상대 척도입니다.'],
           ['투자 판단과는 별개', '절대 언급량이나 매수·매도 신호를 뜻하지 않습니다.']
         ]
-      },
-      relations: {
-        title: '관련기업 연결 기준',
-        eyebrow: '왜 이 기업인지 먼저',
-        description: '단순 키워드 유사성이 아니라 사업·IP·공급·유통·플랫폼의 연결 경로로 역할을 구분합니다.',
-        steps: [
-          ['연결 역할', '콘텐츠·제조·유통·플랫폼처럼 트렌드 안에서 맡는 역할을 봅니다.'],
-          ['연결 근거', '소유·공식 협업·서비스·유통 경로 등 확인 가능한 관계를 함께 확인합니다.'],
-          ['다음 탐색', '기업을 누르면 주가·차트·재무와 기존 종목 화면으로 이어집니다.']
-        ]
       }
     };
   }
@@ -3620,15 +3596,45 @@ class Component extends DCLogic {
       + '<svg width="13" height="12" viewBox="0 0 15 14" style="display:block;"><path data-my-heart="1" d="M7.5 13 C3 9.6 1 7.2 1 4.6 C1 2.6 2.6 1 4.5 1 C5.7 1 6.8 1.6 7.5 2.6 C8.2 1.6 9.3 1 10.5 1 C12.4 1 14 2.6 14 4.6 C14 7.2 12 9.6 7.5 13 Z" fill="none" stroke="#C0C3CD" stroke-width="1.4"></path></svg>'
       + likes
       + '<span style="margin-left:auto; flex:none; white-space:nowrap; font-weight:600; font-size:11.5px; color:#A9ACB8;">담은 날 오늘</span></div>'
-      + '<span data-my-new="1" style="position:absolute; top:-7px; left:12px; background:#7B3FF2; color:#FFFFFF; border-radius:999px; padding:3px 9px; font-weight:600; font-size:10px; letter-spacing:-0.01em;">방금 담김</span>';
+      + '<span data-my-new="1" style="position:absolute; top:-7px; left:12px; background:#7B3FF2; color:#FFFFFF; border-radius:999px; padding:3px 9px; font-weight:600; font-size:10px; letter-spacing:-0.01em;">방금 담김</span>'
+      + '<button type="button" data-my-unstash="1" aria-label="' + this.escapeHtml(title + ' 담은 목록에서 해제') + '" style="position:absolute; top:10px; right:10px; border:1px solid #E4DCF8; background:#FFFFFF; border-radius:999px; padding:5px 8px; font-family:inherit; font-weight:700; font-size:10.5px; color:#6B46C1; cursor:pointer;">담기 해제</button>';
     const empty = list.querySelector('[data-my-empty]');
     if (empty) empty.remove();
     list.querySelectorAll('[data-my-new]').forEach((b) => b.remove());
     list.insertBefore(card, list.firstChild);
     card.onclick = (ev) => this.goMyCard(ev);
+    const unstash = card.querySelector('[data-my-unstash]');
+    if (unstash) {
+      unstash.onclick = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        this.removeStashedPortfolio(card, title);
+      };
+    }
     requestAnimationFrame(() => { card.style.opacity = '1'; card.style.transform = 'none'; });
     this.myHearts();
     this.myStats();
+  }
+
+  removeStashedPortfolio(card, title) {
+    if (!card || !title) return;
+    if (!window.confirm('“' + title + '”을(를) 담은 밈트폴리오에서 해제할까요?')) return;
+    this.stashed = this.stashed || {};
+    this.stashedSet = this.stashedSet || {};
+    delete this.stashed[title];
+    delete this.stashedSet[title];
+    card.style.pointerEvents = 'none';
+    card.style.opacity = '0';
+    card.style.transform = 'translateX(18px) scale(.97)';
+    setTimeout(() => {
+      const list = card.closest('[data-my-list="0"]');
+      card.remove();
+      if (list && !list.querySelector('[data-my-card]')) {
+        list.innerHTML = '<div data-my-empty="1" style="border:1.5px dashed #E4DCF8; border-radius:18px; padding:30px 18px; text-align:center; color:#8B8D98; font-size:12px;">담은 밈트폴리오가 없어요</div>';
+      }
+      this.myStats();
+      this.pdStashSync();
+    }, 220);
   }
 
   shareWire() {
@@ -4409,8 +4415,9 @@ class Component extends DCLogic {
     // 상세 화면은 "어디에서 들어왔는지"를 보존합니다.
     // 마이페이지에서 내 포트를 열었다면 다시 마이페이지로, 목록/홈에서 열었다면
     // 전체 밈트폴리오 목록으로 돌아가야 탐색 흐름이 끊기지 않습니다.
-    const returnToMyPage = this.pdFrom === 'my';
-    this.panTo(document.querySelector(returnToMyPage ? '#my-page' : '#post-list'));
+    const destination = this.pdFrom === 'my' ? '#my-page'
+      : this.pdFrom === 'companies' ? '#related-companies' : '#post-list';
+    this.panTo(document.querySelector(destination));
   };
 
   goHomePost = (e) => {
@@ -4534,6 +4541,35 @@ class Component extends DCLogic {
     const list = t && t.querySelector('div[style*="overflow-y:auto"]');
     if (list) list.scrollTop = 0;
     this.panTo(t);
+  };
+
+  trendPortfolioMatches(trend) {
+    if (!trend) return [];
+    const normalize = (value) => String(value || '').replace(/^#+/, '').replace(/\s+/g, '').toLowerCase();
+    const trendName = normalize(trend.name);
+    return (this.presentationPortfolios || []).filter((portfolio) => {
+      if (String(portfolio && portfolio.trendId || '') === String(trend.id || '')) return true;
+      if (normalize(portfolio && portfolio.trend && portfolio.trend.name) === trendName) return true;
+      return (portfolio && portfolio.keywords || []).some((keyword) => normalize(keyword) === trendName);
+    });
+  }
+
+  openRelatedTrendPortfolio = () => {
+    const trend = this.trends && this.trends[this.state.trend];
+    if (!trend) return;
+    const matches = this.trendPortfolioMatches(trend);
+    if (matches.length) {
+      this.track('trend_portfolio_open', { trend_id: trend.id, portfolio_id: matches[0].id });
+      this.renderPortfolioDetail(matches[0]);
+      this.pdFrom = 'companies';
+      this.setOwnerMode(matches[0].author === '@나');
+      this.panTo(document.getElementById('post-detail'));
+      return;
+    }
+    this.track('trend_portfolio_create_start', { trend_id: trend.id });
+    this.mkFrom = '#related-companies';
+    this.hydrateMaker(trend.id);
+    this.panTo(document.getElementById('make-port'));
   };
 
   motionWire() {
@@ -5218,14 +5254,18 @@ class Component extends DCLogic {
         this.shareToast(frame, error.message || '사용할 수 없는 표현이 포함되어 있어요');
         return;
       }
-      if (this.dataApi && this.publishedView) {
+      const portfolioApi = this.dataApi || window.TRZIP_DATA_API;
+      if (portfolioApi && portfolioApi.savePortfolio) {
+        this.dataApi = portfolioApi;
         const selectedTrendId = selectedTrend && selectedTrend.value;
-        const current = this.trends.find((trend) => trend.id === selectedTrendId)
-          || this.trends[Math.min(this.state.trend || 0, this.trends.length - 1)];
+        const availableTrends = Array.isArray(this.trends) ? this.trends : [];
+        const current = availableTrends.find((trend) => trend.id === selectedTrendId)
+          || availableTrends[Math.min(this.state.trend || 0, Math.max(availableTrends.length - 1, 0))];
         const companies = [...(this.makerSelectedCompanies || new Map()).values()].slice(0, 10);
         try {
-          this.dataApi.savePortfolio({
-            name, trendTopic: current && current.live ? current.id : null, observedAt: this.publishedView.observedAt,
+          portfolioApi.savePortfolio({
+            name, trendTopic: current && current.live ? current.id : null,
+            observedAt: this.publishedView && this.publishedView.observedAt ? this.publishedView.observedAt : null,
             emoji: String(emoji || '💜').trim(),
             keywords: tags.map((tag) => tag.replace(/^#/, '')), companies
           });
@@ -5237,7 +5277,7 @@ class Component extends DCLogic {
           return;
         }
       }
-      const list = this.dataApi ? null : document.querySelector('[data-my-list="1"]');
+      const list = portfolioApi ? null : document.querySelector('[data-my-list="1"]');
       if (list) {
         const chip = (t) => '<span style="background:#F7F4FF; border-radius:8px; padding:5px 9px; font-weight:600; font-size:11px; color:#5B21C0; white-space:nowrap;">' + t + '</span>';
         const card = document.createElement('div');
@@ -5551,7 +5591,8 @@ class Component extends DCLogic {
 
   buildSavedPortfolioViews(seededPortfolios = this.presentationPortfolios || this.buildPresentationPortfolios()) {
     if (!this.dataApi) return [];
-    const trendsById = new Map(this.trends.filter((trend) => trend && trend.live).map((trend) => [trend.id, trend]));
+    const liveTrends = Array.isArray(this.trends) ? this.trends.filter((trend) => trend && trend.live) : [];
+    const trendsById = new Map(liveTrends.map((trend) => [trend.id, trend]));
     // 저장 당시에는 이름만 남아 있던 포트도 다시 열면 시드 포트의 기업
     // 메타데이터(로고·상장 구분·시장 스냅샷)를 복원합니다.
     const seededByName = new Map(seededPortfolios
@@ -6709,6 +6750,16 @@ class Component extends DCLogic {
     vals.relatedCompanyCount = relatedCompanies.length + '곳';
     vals.relatedCompanyAriaNames = relatedCompanies.slice(0, 3).map((entry) => entry[1]).join(' · ') + (relatedCompanies.length > 3 ? ' 외' : '');
     vals.relatedCompaniesAriaLabel = '왜 이 기업인지, 연결 역할과 기업 정보를 보기';
+    const relatedTrendPortfolios = this.trendPortfolioMatches(curTrend);
+    const hasRelatedTrendPortfolio = relatedTrendPortfolios.length > 0;
+    vals.relatedPortfolioActionTitle = hasRelatedTrendPortfolio
+      ? '이 트렌드로 만든 밈트폴리오 보기'
+      : '이 트렌드로 밈트폴리오 만들기';
+    vals.relatedPortfolioActionDescription = hasRelatedTrendPortfolio
+      ? '같은 트렌드에서 출발한 기업 조합을 살펴보세요'
+      : '방금 확인한 관련 기업을 골라 나만의 포트를 만들어요';
+    vals.relatedPortfolioActionAriaLabel = vals.relatedPortfolioActionTitle;
+    vals.openRelatedTrendPortfolio = this.openRelatedTrendPortfolio;
     const stageIndex = Math.max(0, Math.min(stages.length - 1, this.state.stage || 0));
     const cur = stages[stageIndex];
     vals.stageTitle = cur.title;

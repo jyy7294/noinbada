@@ -1219,7 +1219,15 @@ def _prepare_rows(
         ).strip()
         if not event_key:
             raise ValueError(f"observation {index} has no event identity")
-        stamp = _parse_hour(row.get("observed_at"), field=f"observation {index}.observed_at")
+        # Collection can start a few minutes after the target hour when a
+        # browser session reconnects.  Keep the original observed_at in the
+        # ledger, but group it in the hour it was actually collected for this
+        # period calculation; never rewrite the raw observation timestamp.
+        stamp = _parse_hour(
+            row.get("observed_at"),
+            field=f"observation {index}.observed_at",
+            floor_unaligned_observation=True,
+        )
         if stamp < earliest or stamp > current_at:
             continue
         rank_value = row.get("source_rank")
@@ -1396,7 +1404,12 @@ def _floor_utc_hour(value: datetime) -> datetime:
     return value.astimezone(UTC).replace(minute=0, second=0, microsecond=0)
 
 
-def _parse_hour(value: Any, *, field: str) -> datetime:
+def _parse_hour(
+    value: Any,
+    *,
+    field: str,
+    floor_unaligned_observation: bool = False,
+) -> datetime:
     if isinstance(value, datetime):
         parsed = value
     elif isinstance(value, str):
@@ -1410,6 +1423,8 @@ def _parse_hour(value: Any, *, field: str) -> datetime:
         raise ValueError(f"{field} must be timezone-aware")
     parsed = parsed.astimezone(UTC)
     if parsed.minute or parsed.second or parsed.microsecond:
+        if floor_unaligned_observation:
+            return _floor_utc_hour(parsed)
         raise ValueError(f"{field} must be aligned to an exact hour")
     return parsed
 

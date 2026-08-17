@@ -97,6 +97,28 @@ _REVIEWED_COMPANY_LOGOS = {
         "verification": "verified_raster_min_64px",
         "asset_scope": "same_official_domain",
     },
+    ("LG이노텍", "011070"): {
+        "accepted_homepage_hosts": {"lginnotek.com", "www.lginnotek.com"},
+        "source_page_url": "https://www.lginnotek.com/main/main.do",
+        "asset_url": "https://www.lginnotek.com/resources/img/img-logo-en-gr@3x.png",
+        "mime": "image/png",
+        "width": 372,
+        "height": 72,
+        "sha256": "02bc07065648d962d9686c31021bb1a2a698e5e0eaaa4a8d232c5c6063ca1be3",
+        "verification": "verified_raster_min_64px",
+        "asset_scope": "same_official_domain",
+    },
+    ("노랑풍선", "104620"): {
+        "accepted_homepage_hosts": {"ybtour.co.kr", "www.ybtour.co.kr"},
+        "source_page_url": "https://www.ybtour.co.kr/",
+        "asset_url": "https://cimgcdn.ybtour.co.kr/common/logo/logo_ev.png",
+        "mime": "image/png",
+        "width": 165,
+        "height": 44,
+        "sha256": "da63e7bf2b629491fcb14e5174eb13fbeebf08b333b0be5206a125873a2750f6",
+        "verification": "verified_raster_wordmark",
+        "asset_scope": "official_page_declared_cdn",
+    },
     ("월트 디즈니 컴퍼니", "DIS"): {
         "accepted_homepage_hosts": {"thewaltdisneycompany.com", "www.thewaltdisneycompany.com"},
         "source_page_url": "https://thewaltdisneycompany.com/",
@@ -358,9 +380,17 @@ def _reviewed_catalog_result(requested_url: str) -> dict | None:
             verification == "verified_raster_min_64px"
             and (width < 64 or height < 64)
         )
+        or (
+            verification == "verified_raster_wordmark"
+            and (width < 64 or height < 32)
+        )
         or len(sha256) != 64
         or any(character not in "0123456789abcdef" for character in sha256)
-        or verification not in {"verified_safe_svg", "verified_raster_min_64px"}
+        or verification not in {
+            "verified_safe_svg",
+            "verified_raster_min_64px",
+            "verified_raster_wordmark",
+        }
         or asset_scope not in {"same_official_domain", "official_page_declared_cdn"}
     ):
         return None

@@ -2,46 +2,39 @@
   "approval": {
     "approved_by": "이찬희",
     "approved_count": 10,
-    "path": "approvals/approval-927f7fd20e7a96e2e78c082c.json",
-    "sha256": "7e27c01b1c50e7c46764dbe306621461e08f52c8d73485a667b2062a2ee1ffda"
+    "review_sha256": "d259336d5c74b8f31e1eedac09806423113ed84aa0b3d3c694e5cf840f3473cb"
   },
   "card_count": 10,
   "company_logos": {
     "fallback_count": 0,
-    "image_count": 56,
+    "image_count": 100,
     "source": "official_page_asset",
     "status": "verified"
   },
-  "display_as_of": "2026-08-17T16:00:00+09:00",
   "display_status": "NOW",
   "display_time_policy": "client_kst_floor_hour",
-  "final_review": {
-    "path": "final-publication-review.json",
-    "review_sha256": "ea9644460c798e3fc320ac01113510c3b1ed8f642ba3631dd4ab2b18ceaa5684",
-    "sha256": "41e1d64941bccac556c548dd8347c47ef8a4b8d2a079b991a419489cbaff1ff9"
-  },
   "market_data": {
     "estimated": false,
     "latest_market_session": "2026-08-14",
     "provider": "pykrx+yahoo_finance",
     "ranking_effect": "none",
-    "refreshed_at": "2026-08-17T07:19:35.956400Z",
-    "snapshot_count": 56,
+    "refreshed_at": "2026-08-17T11:59:46.292311Z",
+    "snapshot_count": 100,
     "status": "observed",
     "synthetic": false,
-    "unique_security_count": 30
+    "unique_security_count": 46
   },
   "mode": "showcase_live_simulation",
   "ranking_formula_version": "peak25_mean40_persistence20_breadth15_v1",
   "ranking_window": {
     "from": "2026-08-12T13:00:00+00:00",
-    "observed_hour_count": 51,
-    "to": "2026-08-17T05:00:00+00:00"
+    "observed_hour_count": 53,
+    "to": "2026-08-17T10:00:00+00:00"
   },
   "schema_version": "trzip-showcase-delivery-v1",
   "showcase": {
     "path": "showcase.json",
-    "sha256": "1396b395b51f5f02f8e5826205024253155882b7f4d0be14c1e61e39a03b85dc"
+    "sha256": "cf489c847b902fe23306ba9a52990f24db0f59af24700ca50c30980835189d1d"
   },
-  "source_observed_at": "2026-08-17T05:00:00+00:00"
+  "source_observed_at": "2026-08-17T11:35:16+00:00"
 }

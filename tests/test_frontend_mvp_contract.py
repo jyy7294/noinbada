@@ -51,10 +51,7 @@ def test_public_showcase_is_hash_pinned_and_has_exact_approved_shape() -> None:
     for order, card in enumerate(SHOWCASE["cards"], 1):
         assert card["presentation_order"] == order
         assert len(card["related_keywords"]) == 5
-        direct_only = card["companies"] and all(
-            company.get("relation_tier") == "direct" for company in card["companies"]
-        )
-        assert (3 if direct_only else 5) <= len(card["companies"]) <= 10
+        assert len(card["companies"]) == 10
         assert 3 <= len({company["company_role_category"] for company in card["companies"]}) <= 4
         assert all(company["relationship_status"] == "reconstructed_demo" for company in card["companies"])
         assert all(company["market_snapshot"]["status"] == "observed" for company in card["companies"])
@@ -164,11 +161,29 @@ def test_profile_editor_uses_nickname_bio_and_icon_without_a_redundant_profile_t
 
 def test_my_page_portfolio_cards_do_not_repeat_portfolio_keywords() -> None:
     stash_method = INDEX[INDEX.index("  myAddStash(frame) {") : INDEX.index("  shareWire() {")]
-    created_card = INDEX[INDEX.index("      const list = this.dataApi ? null") : INDEX.index("  makerUniverse(trend) {")]
+    unstash_method = INDEX[INDEX.index("  removeStashedPortfolio(card, title) {") : INDEX.index("  shareWire() {")]
+    created_card = INDEX[INDEX.index("      const list = portfolioApi ? null") : INDEX.index("  makerUniverse(trend) {")]
     saved_cards = INDEX[INDEX.index("  renderSavedPortfolios() {") : INDEX.index("  patchHomeLabels() {")]
     assert "const tags = q('tags')" not in stash_method
+    assert 'data-my-unstash="1"' in stash_method
+    assert "this.removeStashedPortfolio(card, title);" in stash_method
+    assert "window.confirm" in unstash_method
+    assert "delete this.stashed[title];" in unstash_method
+    assert "delete this.stashedSet[title];" in unstash_method
     assert "#새로만든포트" not in created_card
     assert "this.escapeHtml(portfolio.keywords.map" not in saved_cards
+
+
+def test_related_companies_lead_to_the_matching_meme_portfolio_or_maker() -> None:
+    related_screen = INDEX[INDEX.index('id="related-companies"') : INDEX.index('id="make-port"')]
+    routing_method = INDEX[INDEX.index("  trendPortfolioMatches(trend) {") : INDEX.index("  motionWire() {")]
+    detail_back = INDEX[INDEX.index("  pdBack = () => {") : INDEX.index("  goHomePost =")]
+    assert 'data-related-portfolio-action="1"' in related_screen
+    assert "{{ openRelatedTrendPortfolio }}" in related_screen
+    assert "this.renderPortfolioDetail(matches[0]);" in routing_method
+    assert "this.hydrateMaker(trend.id);" in routing_method
+    assert "this.pdFrom = 'companies';" in routing_method
+    assert "this.pdFrom === 'companies' ? '#related-companies'" in detail_back
 
 
 def test_portfolio_origin_trend_is_visually_distinguished_from_secondary_keywords() -> None:
@@ -314,29 +329,24 @@ def test_home_header_uses_a_live_title_and_explicit_dial_list_controls() -> None
     assert "listBtn.addEventListener('click', () => setView(true));" in toggle
 
 
-def test_home_title_has_a_selection_criteria_help_button() -> None:
+def test_home_title_has_no_extra_selection_criteria_help_button() -> None:
     header = INDEX[INDEX.index('data-screen-label="01 홈"') : INDEX.index('data-vd-stage="1"')]
-    assert 'data-home-selection-guide="1"' in header
-    assert 'aria-label="트렌드 선정 기준 보기"' in header
-    assert 'href="#home-selection-guide"' in header
-    assert '#home-selection-guide:target { display:flex !important; }' in INDEX
-    assert 'id="home-selection-guide" role="dialog"' in INDEX
-    assert 'aria-label="트렌드 선정 기준 닫기"' in INDEX
-    assert '트렌드 선정 기준' in INDEX
-    assert "document.addEventListener('click'" in INDEX
-    assert "guide.style.display = 'flex'" in INDEX
+    assert 'data-home-selection-guide="1"' not in header
+    assert 'aria-label="트렌드 선정 기준 보기"' not in header
 
 
-def test_information_icons_use_one_bottom_sheet_pattern_and_relation_cta_leads_with_reason() -> None:
-    assert 'data-info-trigger="freshness"' in INDEX
-    assert 'data-info-trigger="relations"' in INDEX
+def test_information_icons_keep_only_the_user_needed_explanations_and_relation_cta_is_compact() -> None:
+    assert 'data-info-trigger="freshness"' not in INDEX
+    assert 'data-info-trigger="relations"' not in INDEX
     assert "infoTopics()" in INDEX
     assert "openInfoSheet(topicKey = 'selection')" in INDEX
     assert "data-info-sheet-root" in INDEX
     assert "__trzipInfoSheetOpen" in INDEX
-    assert "title: '관심 흐름 척도'" in INDEX
-    assert "왜 이 기업인가" in INDEX
-    assert "트렌드 → 연결 역할 → 기업 정보" in INDEX
+    assert "관련기업 보러가기" in INDEX
+    assert "관련기업 연결 기준" not in INDEX
+    assert "왜 이 기업인가" not in INDEX
+    assert "트렌드 → 연결 역할 → 기업 정보" not in INDEX
+    assert "역할과 연결 근거를 확인하고 종목 정보로 이어집니다." not in INDEX
 
 
 def test_dial_keeps_korean_trend_titles_in_the_left_readable_zone() -> None:
@@ -409,9 +419,9 @@ def test_home_featured_portfolio_returns_to_the_portfolio_list() -> None:
 
 def test_portfolio_detail_back_restores_the_screen_that_opened_it() -> None:
     handler = INDEX[INDEX.index("  pdBack = () => {") : INDEX.index("  goHomePost = (e) => {")]
-    assert "const returnToMyPage = this.pdFrom === 'my';" in handler
-    assert "returnToMyPage ? '#my-page' : '#post-list'" in handler
-    assert "this.panTo(document.querySelector(returnToMyPage ? '#my-page' : '#post-list'));" in handler
+    assert "this.pdFrom === 'my' ? '#my-page'" in handler
+    assert "this.pdFrom === 'companies' ? '#related-companies' : '#post-list'" in handler
+    assert "this.panTo(document.querySelector(destination));" in handler
 
 
 def test_home_header_prioritizes_the_live_trend_title() -> None:
@@ -1233,10 +1243,14 @@ def test_popular_portfolios_keep_the_approved_community_seed_examples() -> None:
     for title in (
         "리센느 매매법",
         "두바이초콜릿 이름값 3종 담았다",
-        "초콜릿 원재료 쪽으로 파봤습니다",
-        "이름 안 겹쳐도 수혜주는 따로 있다",
+        "둠스데이 개봉 전, 마블 라인업만 담았다",
+        "말복엔 삼계탕보다 복날 장보기",
     ):
         assert title in INDEX
+    assert "companiesFromLiveTrend('둠스데이'" in INDEX
+    assert "companiesFromLiveTrend('말복'" in INDEX
+    assert "초콜릿 원재료 쪽으로 파봤습니다" not in INDEX
+    assert "이름 안 겹쳐도 수혜주는 따로 있다" not in INDEX
     for company in ("원익", "리브스메드", "두산", "바이넥스", "한국콜마", "오리온", "CJ제일제당", "대한제분"):
         assert company in INDEX
     assert "dataMode: 'seed_portfolio'" in INDEX
@@ -1434,10 +1448,8 @@ def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -
     assert "통합 트렌드" not in INDEX
     assert 'data-interest-card="1"' not in INDEX
     assert 'data-related-company-cta="1"' in INDEX
-    assert "단계 읽는 법" in INDEX
-    assert "처음 포착된 시점과 관측이 이어진 정도를 함께 봅니다." in INDEX
-    assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
-    assert "전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요" in INDEX
+    assert "단계 읽는 법" not in INDEX
+    assert "처음 포착된 시점과 관측이 이어진 정도를 함께 봅니다." not in INDEX
     assert "+ ' · 통합 트렌드</span>" not in INDEX
     assert "최신 트렌드 수집을 확인했습니다." in DATA
     assert "integratedTrendCopy(value)" in INDEX
@@ -2122,15 +2134,12 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert '이번 밈트폴리오와 만나는 지점' not in INDEX
     assert 'data-freshness-card="1"' in INDEX
     assert 'background:#FAFAFC; border:1px solid #ECE8F3' in INDEX
-    assert 'data-freshness-explanation="1"' in INDEX
+    assert 'data-freshness-explanation="1"' not in INDEX
     assert 'data-freshness-track="1"' in INDEX
     assert 'data-freshness-fill="1"' in INDEX
     assert 'data-freshness-knob="1"' in INDEX
     assert 'animateFreshnessGauge()' in INDEX
     assert "cubic-bezier(.16,.82,.24,1)" in INDEX
-    assert '처음 확인' in INDEX
-    assert '관심 증가' in INDEX
-    assert '넓게 지속' in INDEX
     assert 'data-interest-card="1"' not in INDEX
     assert 'data-related-company-cta="1"' in INDEX
     assert 'relatedCompanyPreview' in INDEX
