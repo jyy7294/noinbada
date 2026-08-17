@@ -398,7 +398,7 @@
             <sc-if value="{{ freshInfoOpen }}" hint-placeholder-val="{{ false }}">
               <div data-freshness-explanation="1" style="background:#F3EFFC; border-radius:12px; padding:11px 13px; margin-top:9px; font-weight:500; font-size:11px; line-height:1.65; color:#5B21C0;">
                 <strong style="font-weight:800;">판정 기준</strong><br>
-                포착: 첫 관측 후 3시간 이내 또는 비교 관측 부족 · 확산: 직전 비교창 대비 관심 위치 12% 이상 상승 · 대중화: 3시간 이상 반복 관측되며 확산 조건은 아닐 때
+                포착: 비교 관측이 1개 이하이거나 최저점 부근 · 확산: 현재 상대강도가 올라가는 구간 · 대중화: 4개 이상 관측돼 기간 고점(100)을 기록했거나 고점 이후 흐름이 확인될 때
               </div>
             </sc-if>
             <div style="display:flex; gap:10px; align-items:stretch; margin-top:9px;">
@@ -2177,16 +2177,28 @@ class Component extends DCLogic {
       formatInterestTimestamp(windowEndMs) || '오늘'
     ];
     const usable = rawValues.filter(Number.isFinite);
-    const peakValue = usable.length ? Math.max(...usable) : null;
-    const currentValue = [...rawValues].reverse().find(Number.isFinite);
+    const sourceMinValue = usable.length ? Math.min(...usable) : null;
+    const sourcePeakValue = usable.length ? Math.max(...usable) : null;
+    // 관심 흐름은 선택 기간 안에서 실제 관측값의 상대 강도를 표현합니다.
+    // 최저점은 0, 최고점은 100으로 표시하되 결측과 시간 간격은 보존합니다.
+    const hasRelativeSpread = Number.isFinite(sourceMinValue)
+      && Number.isFinite(sourcePeakValue) && sourcePeakValue > sourceMinValue;
+    const relativeValues = rawValues.map((value) => {
+      if (!Number.isFinite(value)) return null;
+      if (!hasRelativeSpread) return 0;
+      return Number(((value - sourceMinValue) * 100 / (sourcePeakValue - sourceMinValue)).toFixed(1));
+    });
+    const peakValue = [...relativeValues].filter(Number.isFinite)
+      .reduce((peak, value) => Math.max(peak, value), null);
+    const currentValue = [...relativeValues].reverse().find(Number.isFinite);
     const observationCount = usable.length;
-    const scaleMax = Number.isFinite(peakValue)
-      ? Math.max(10, Math.min(100, Math.ceil(peakValue / 10) * 10)) : 100;
-    const scaleMid = Math.round(scaleMax / 2);
+    const scaleMax = 100;
+    const scaleMid = 50;
     if (usable.length < 2) {
       return {
         available: false,
-        values: rawValues,
+        values: relativeValues,
+        sourceValues: rawValues,
         barPoints: [],
         barWidth: 0,
         linePath: '',
@@ -2217,12 +2229,12 @@ class Component extends DCLogic {
     const lastTimestamp = windowEndMs;
     const useTimestampScale = Number.isFinite(firstTimestamp)
       && Number.isFinite(lastTimestamp) && lastTimestamp > firstTimestamp;
-    const points = rawValues.map((value, index) => {
+    const points = relativeValues.map((value, index) => {
       if (!Number.isFinite(value)) return null;
       const timestamp = timestampValues[index];
       const x = useTimestampScale && Number.isFinite(timestamp)
         ? 30 + (timestamp - firstTimestamp) * 258 / (lastTimestamp - firstTimestamp)
-        : rawValues.length === 1 ? 288 : 30 + index * 258 / (rawValues.length - 1);
+        : relativeValues.length === 1 ? 288 : 30 + index * 258 / (relativeValues.length - 1);
       const y = 88 - value / scaleMax * 76;
       return [Number(x.toFixed(1)), Number(y.toFixed(1))];
     });
@@ -2262,16 +2274,17 @@ class Component extends DCLogic {
     const barWidth = Math.max(4, Math.min(12, Number((220 / Math.max(1, observationPoints.length)).toFixed(1))));
     const barPoints = points.map((point, index) => point ? {
       x: point[0],
-      value: rawValues[index],
-      height: Number(Math.max(6, rawValues[index] * 0.84).toFixed(1)),
+      value: relativeValues[index],
+      height: Number(Math.max(6, relativeValues[index] * 0.84).toFixed(1)),
       timestamp: timestampValues[index]
     } : null).filter(Boolean);
     const lastPoint = [...points].reverse().find(Boolean);
     const lastSegment = segments[segments.length - 1] || [];
-    const lastValue = [...rawValues].reverse().find(Number.isFinite);
+    const lastValue = [...relativeValues].reverse().find(Number.isFinite);
     return {
       available: true,
-      values: rawValues,
+      values: relativeValues,
+      sourceValues: rawValues,
       linePath,
       area,
       singletonPoints,
@@ -2309,8 +2322,8 @@ class Component extends DCLogic {
     return {
       policyVersion: 'rank-responsive-presentation-v2',
       seriesContract: 'backend_rank_responsive_display',
-      frontendValueTransform: 'none',
-      publishedValuesConsumedDirectly: true,
+      frontendValueTransform: 'period_relative_minmax_0_100',
+      publishedValuesConsumedDirectly: false,
       rankStyleAffected: true,
       rankMotionAffected: true,
       gapsPreserved: true,
@@ -6070,6 +6083,13 @@ class Component extends DCLogic {
     const curTrend = this.trends[ti];
     const rangeIndex = Math.max(0, Math.min(1, this.state.range || 0));
     const interestChart = this.buildInterestCurve(curTrend, rangeIndex);
+    const relativeInterestValues = (interestChart.values || []).filter(Number.isFinite);
+    const relativePeakIndex = relativeInterestValues.lastIndexOf(100);
+    const relativeStageIdx = relativeInterestValues.length < 2 ? 0
+      : relativeInterestValues.length >= 4
+        && (relativeInterestValues.at(-1) >= 95 || relativePeakIndex < relativeInterestValues.length - 1) ? 2
+        : relativeInterestValues.at(-1) > relativeInterestValues[0] ? 1 : 0;
+    const relativePhase = ['포착', '확산', '대중화'][relativeStageIdx];
     const rangeAvailability = [0, 1].map((index) => (
       curTrend.showcase && index > 0 ? false :
       index === rangeIndex ? interestChart.available : this.buildInterestCurve(curTrend, index).available
@@ -6098,10 +6118,10 @@ class Component extends DCLogic {
       trendDefinition: this.trendDetailDefinition(curTrend),
       trendContext: this.trendDetailContext(curTrend),
       hasDefinition: !!this.trendDetailDefinition(curTrend),
-      trendPhase: curTrend.phase,
+      trendPhase: relativePhase,
       movementLabel: String(movement.label || 'NEW'),
       movementStyle: 'font-weight:800;font-size:15px;color:' + movementColor + ';margin-top:4px;',
-      currentPhase: curTrend.phase,
+      currentPhase: relativePhase,
       interestIndex: interestChart.index,
       interestPeak: interestChart.peak,
       interestCurrent: interestChart.current,
@@ -6110,8 +6130,7 @@ class Component extends DCLogic {
       interestScaleMid: interestChart.scaleMid,
       interestInfoOpen: !!this.state.interestInfo,
       toggleInterestInfo: () => this.setState((s) => ({ interestInfo: !s.interestInfo })),
-      interestScaleDescription: '선이 높을수록 같은 기간 안에서 관측된 관심 흐름이 상대적으로 큽니다. 0은 해당 척도의 시작점, '
-        + String(interestChart.scaleMax) + '은 이 차트에서 확인된 최고 구간입니다. 절대 언급량이나 투자 판단을 뜻하지 않습니다.',
+      interestScaleDescription: '같은 기간의 실제 관측값을 비교해 최저점은 0, 최고점은 100으로 표시합니다. 대중화 단계는 기간 고점(100)을 찍고 유지하거나 내려오는 흐름까지 함께 봅니다. 절대 언급량이나 투자 판단을 뜻하지 않습니다.',
       rangeLabel0: '24시간',
       interestRangeCaption: interestChart.rangeLabel + ' 관심 흐름',
       interestEmptyLabel: interestChart.rangeLabel + ' 내 비교할 관측값이 부족합니다',
@@ -6131,17 +6150,17 @@ class Component extends DCLogic {
       goCompanies: this.goCompanies,
       trendRank: curTrend.rank,
       trendCaption: curTrend.caption,
-      freshStageTarget: [8, 50, 100][curTrend.stageIdx],
-      barFill: 'position:absolute; left:0; top:0; bottom:0; border-radius:999px; background:#7B3FF2; width:' + [8, 50, 100][curTrend.stageIdx] + '%;',
-      barKnob: 'position:absolute; top:-4px; width:14px; height:14px; margin-left:-7px; border-radius:999px; background:#7B3FF2; border:2.5px solid #FFFFFF; box-shadow:0 1px 4px rgba(91,33,192,0.35); left:' + [8, 50, 100][curTrend.stageIdx] + '%;',
+      freshStageTarget: [8, 50, 100][relativeStageIdx],
+      barFill: 'position:absolute; left:0; top:0; bottom:0; border-radius:999px; background:#7B3FF2; width:' + [8, 50, 100][relativeStageIdx] + '%;',
+      barKnob: 'position:absolute; top:-4px; width:14px; height:14px; margin-left:-7px; border-radius:999px; background:#7B3FF2; border:2.5px solid #FFFFFF; box-shadow:0 1px 4px rgba(91,33,192,0.35); left:' + [8, 50, 100][relativeStageIdx] + '%;',
       scoreMix: '통합 관측 · 현재 순서',
       freshInfoOpen: !!this.state.freshInfo,
       toggleFreshInfo: () => this.setState((s) => ({ freshInfo: !s.freshInfo })),
       collectInfoOpen: !!this.state.collectInfo,
       toggleCollectInfo: () => this.setState((s) => ({ collectInfo: !s.collectInfo })),
-      phase0: 'font-weight:' + (curTrend.stageIdx === 0 ? 800 : 600) + '; color:' + (curTrend.stageIdx === 0 ? '#5B21C0' : '#9A9DA9') + ';',
-      phase1: 'font-weight:' + (curTrend.stageIdx === 1 ? 800 : 600) + '; color:' + (curTrend.stageIdx === 1 ? '#5B21C0' : '#9A9DA9') + ';',
-      phase2: 'font-weight:' + (curTrend.stageIdx === 2 ? 800 : 600) + '; color:' + (curTrend.stageIdx === 2 ? '#5B21C0' : '#9A9DA9') + ';',
+      phase0: 'font-weight:' + (relativeStageIdx === 0 ? 800 : 600) + '; color:' + (relativeStageIdx === 0 ? '#5B21C0' : '#9A9DA9') + ';',
+      phase1: 'font-weight:' + (relativeStageIdx === 1 ? 800 : 600) + '; color:' + (relativeStageIdx === 1 ? '#5B21C0' : '#9A9DA9') + ';',
+      phase2: 'font-weight:' + (relativeStageIdx === 2 ? 800 : 600) + '; color:' + (relativeStageIdx === 2 ? '#5B21C0' : '#9A9DA9') + ';',
       graphNodes: (() => {
         const order = [4, 0, 1, 2, 3];
         const byLen = curTrend.tags.map((t, i) => ({ t, i })).sort((a, b) => b.t.length - a.t.length);

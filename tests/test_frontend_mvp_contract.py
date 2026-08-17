@@ -732,8 +732,8 @@ def test_interest_chart_rank_response_uses_published_values_and_ranked_motion() 
     for token in (
         "rank-responsive-presentation-v2",
         "seriesContract: 'backend_rank_responsive_display'",
-        "frontendValueTransform: 'none'",
-        "publishedValuesConsumedDirectly: true",
+        "frontendValueTransform: 'period_relative_minmax_0_100'",
+        "publishedValuesConsumedDirectly: false",
         "rankStyleAffected: true",
         "rankMotionAffected: true",
         "gapsPreserved: true",
@@ -795,8 +795,8 @@ def test_interest_chart_rank_response_uses_published_values_and_ranked_motion() 
         throw new Error('rendered rank label did not resolve to the same responsive style');
       }
       if (first.rankStyle.seriesContract !== 'backend_rank_responsive_display'
-        || first.rankStyle.frontendValueTransform !== 'none'
-        || !first.rankStyle.publishedValuesConsumedDirectly
+        || first.rankStyle.frontendValueTransform !== 'period_relative_minmax_0_100'
+        || first.rankStyle.publishedValuesConsumedDirectly
         || !first.rankStyle.rankStyleAffected
         || !first.rankStyle.rankMotionAffected
         || !first.rankStyle.gapsPreserved) {
@@ -910,8 +910,8 @@ def test_interest_chart_prefers_rank_responsive_backend_windows_for_available_ra
         series: [{at: new Date(base).toISOString(), value: 99, source: 'x', provenance: 'observed'}]
       };
       const charts = [0, 1].map((range) => component.buildInterestCurve(trend, range));
-      if (charts.map((chart) => chart.current).join(',') !== '80,80') {
-        throw new Error('frontend did not consume each published display window directly');
+          if (charts.map((chart) => chart.current).join(',') !== '100,100') {
+            throw new Error('frontend did not normalize each display window to its relative peak');
       }
       if (charts.map((chart) => chart.observationCount).join(',') !== '2,3') {
         throw new Error('display window point counts were recomputed from raw series');
@@ -922,8 +922,9 @@ def test_interest_chart_prefers_rank_responsive_backend_windows_for_available_ra
       if (charts.some((chart) => chart.displaySeriesMode !== 'rank_responsive_display')) {
         throw new Error('rank-responsive display contract was not retained');
       }
-      if (charts[0].values.join(',') !== '40,80') {
-        throw new Error('24-hour tab did not filter the published 1w observations');
+          if (charts[0].values.join(',') !== '0,100'
+            || charts[0].sourceValues.join(',') !== '40,80') {
+            throw new Error('24-hour tab did not preserve source points before relative scaling');
       }
       if (!(charts[0].observationPoints[0][0] > 8)) {
         throw new Error('24-hour time axis stretched sparse points to the full chart width');
@@ -939,7 +940,8 @@ def test_interest_chart_prefers_rank_responsive_backend_windows_for_available_ra
       const anchoredChart = component.buildInterestCurve({
         rank: 2, rankMovement, visualizationSeries: anchoredSeries
       }, 0);
-      if (!anchoredChart.available || anchoredChart.values.join(',') !== '60,80'
+          if (!anchoredChart.available || anchoredChart.values.join(',') !== '0,100'
+            || anchoredChart.sourceValues.join(',') !== '60,80'
         || !(anchoredChart.lastX < 100)) {
         throw new Error('feed observed_at did not preserve the trailing unobserved gap');
       }
@@ -996,7 +998,7 @@ def test_public_copy_and_observed_timeline_javascript_regression() -> None:
         '1w': windowFor(), '1m': windowFor(), '3m': windowFor()
       };
       const chart = component.buildInterestCurve({visualizationSeries}, 0);
-      if (!chart.available || chart.peak !== 45 || chart.current !== 1
+          if (!chart.available || chart.peak !== 100 || chart.current !== 0
         || chart.observationCount !== 7 || chart.observationPoints.length !== 7) {
         throw new Error('observed timeline summary is incorrect');
       }
@@ -1352,7 +1354,7 @@ def test_user_surfaces_present_one_integrated_trend_instead_of_source_brands() -
     assert "통합 트렌드" not in INDEX
     assert ">관심 흐름</span>" in INDEX
     assert "판정 기준" in INDEX
-    assert "포착: 첫 관측 후 3시간 이내 또는 비교 관측 부족" in INDEX
+    assert "포착: 비교 관측이 1개 이하이거나 최저점 부근" in INDEX
     assert "서로 다른 표현을 같은 사건 단위로 묶어 통합 순위를 계산해요" in INDEX
     assert "전체 수집 기간의 순위 흐름을 분석해 최종 승인된 트렌드만 공개해요" in INDEX
     assert "+ ' · 통합 트렌드</span>" not in INDEX
@@ -2038,9 +2040,9 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert 'data-freshness-knob="1"' in INDEX
     assert 'animateFreshnessGauge()' in INDEX
     assert "cubic-bezier(.16,.82,.24,1)" in INDEX
-    assert '포착: 첫 관측 후 3시간 이내 또는 비교 관측 부족' in INDEX
-    assert '확산: 직전 비교창 대비 관심 위치 12% 이상 상승' in INDEX
-    assert '대중화: 3시간 이상 반복 관측되며 확산 조건은 아닐 때' in INDEX
+    assert '포착: 비교 관측이 1개 이하이거나 최저점 부근' in INDEX
+    assert '확산: 현재 상대강도가 올라가는 구간' in INDEX
+    assert '대중화: 4개 이상 관측돼 기간 고점(100)을 기록했거나 고점 이후 흐름이 확인될 때' in INDEX
     assert 'data-interest-card="1"' in INDEX
     assert '관심 흐름' in INDEX
     assert '선택한 기간의 관심 흐름을 비교해 볼 수 있습니다.' not in INDEX
