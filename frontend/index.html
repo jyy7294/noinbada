@@ -947,7 +947,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script="" data-props="{&quot;momentumScore&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:58,&quot;min&quot;:0,&quot;max&quot;:100,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;모멘텀&quot;}}">
 class Component extends DCLogic {
-  state = { meme: 0, range: 0, compTab: 0, feed: 0, stage: 1, sort: 0, sns: 0, interestPoint: null };
+  state = { meme: 0, range: 0, compTab: 0, feed: 0, stage: 1, sort: 0, sns: 0, interestPoint: null, trendDescriptionOpen: true };
 
   snsCount = 4;
 
@@ -5804,7 +5804,7 @@ class Component extends DCLogic {
     const commit = () => {
       this.__trendTransitionPending = false;
       this.track('trend_detail_view', { trend_id: trend && trend.id, presentation_position: trend && trend.rank });
-      this.setState({ trend: next, stage: 0, folder: 0, folders: [0], sheet: null });
+      this.setState({ trend: next, trendDescriptionOpen: true, stage: 0, folder: 0, folders: [0], sheet: null });
       const target = document.getElementById('trend-detail');
       if (target) this.panTo(target);
     };
@@ -6731,7 +6731,7 @@ class Component extends DCLogic {
           optName: t.name, optCat: t.cat,
           pick: () => {
             this.track('trend_detail_view', { trend_id: t.id, presentation_position: t.rank });
-            this.setState({ trend: i, trendOpen: false, trendDescriptionOpen: false, stage: 0, folder: 0, folders: [0], sheet: null }, () => {
+            this.setState({ trend: i, trendOpen: false, trendDescriptionOpen: true, stage: 0, folder: 0, folders: [0], sheet: null }, () => {
               this.hydrateMaker();
               this.animateTrendSelection();
             });
