@@ -18,6 +18,68 @@ SCHEMA_VERSION = "trzip-showcase-live-simulation-v1"
 MODE = "showcase_live_simulation"
 KST = timezone(timedelta(hours=9))
 
+# A presentation card is not allowed to become a production relation set just
+# because every row names a listed company.  The relation needs a reviewed
+# ontology edge that names the trend-to-company connection, with a source that
+# can be inspected later.  This is intentionally stricter than the legacy
+# showcase contract below: that data is a recorded demonstration, not a source
+# for new public company relationships.
+QUALIFIED_ONTOLOGY_RELATION_TIERS = frozenset({"direct", "value_chain"})
+QUALIFIED_ONTOLOGY_EVIDENCE_SCOPE = "ontology_verified_trend_to_company_relation"
+MINIMUM_PUBLISHABLE_COMPANY_COUNT = 10
+MINIMUM_PUBLISHABLE_COMPANY_ROLE_COUNT = 3
+
+
+def audit_relation_set_for_publication(companies: Iterable[dict]) -> dict:
+    """Return a deterministic admission receipt for one trend's companies.
+
+    This is deliberately a *relation* gate, separate from trend ranking.  It
+    prevents a UI requirement such as "show ten companies" from turning broad
+    sector similarity or an identity homepage into a claimed business link.
+    """
+
+    rows = [dict(company) for company in companies]
+    qualified_rows = [
+        row
+        for row in rows
+        if row.get("relation_tier") in QUALIFIED_ONTOLOGY_RELATION_TIERS
+        and row.get("evidence_scope") == QUALIFIED_ONTOLOGY_EVIDENCE_SCOPE
+        and str(row.get("relationship_evidence_url") or "").strip()
+        and str(row.get("connection_explanation") or "").strip()
+    ]
+    stock_codes = [str(row.get("stock_code") or "").strip() for row in qualified_rows]
+    roles = {
+        str(row.get("company_role_category") or "").strip()
+        for row in qualified_rows
+        if str(row.get("company_role_category") or "").strip()
+    }
+    failures = []
+    if len(qualified_rows) < MINIMUM_PUBLISHABLE_COMPANY_COUNT:
+        failures.append("minimum_ten_ontology_verified_companies")
+    if len(set(stock_codes)) != len(qualified_rows) or not all(stock_codes):
+        failures.append("unique_listed_company_identity")
+    if len(roles) < MINIMUM_PUBLISHABLE_COMPANY_ROLE_COUNT:
+        failures.append("minimum_three_company_role_categories")
+    return {
+        "status": "ready" if not failures else "review_required",
+        "qualified_company_count": len(qualified_rows),
+        "qualified_role_count": len(roles),
+        "qualified_stock_codes": stock_codes,
+        "failures": failures,
+    }
+
+
+def audit_showcase_relation_coverage(payload: dict) -> list[dict]:
+    """Audit each showcase card without changing its display order or rank."""
+
+    return [
+        {
+            "event_key": str(card.get("event_key") or ""),
+            **audit_relation_set_for_publication(card.get("companies") or []),
+        }
+        for card in payload.get("cards") or []
+    ]
+
 SHOWCASE_SELECTION = (
     ("대한민국 광복절", "대한독립만세", "public_event"),
     ("개기일식", "개기일식", "astronomy"),
