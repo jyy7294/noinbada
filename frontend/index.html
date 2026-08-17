@@ -346,7 +346,7 @@
             <span style="font-weight:800; font-size:19px; color:#1A1A22; letter-spacing:-0.03em;">트렌드 상세</span>
           </div>
           <div style="display:flex; align-items:center; gap:14px;">
-            <svg width="21" height="21" viewBox="0 0 20 20"><circle cx="14.5" cy="4.5" r="2.6" fill="none" stroke="#4B4D57" stroke-width="1.8"></circle><circle cx="5.5" cy="10" r="2.6" fill="none" stroke="#4B4D57" stroke-width="1.8"></circle><circle cx="14.5" cy="15.5" r="2.6" fill="none" stroke="#4B4D57" stroke-width="1.8"></circle><line x1="7.9" y1="8.7" x2="12.1" y2="5.9" stroke="#4B4D57" stroke-width="1.8"></line><line x1="7.9" y1="11.3" x2="12.1" y2="14.1" stroke="#4B4D57" stroke-width="1.8"></line></svg>
+            <button type="button" data-trend-share-button="1" aria-label="트렌드 공유하기" style="width:44px;height:44px;flex:none;margin:-11px;border:0;padding:11px;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;"><svg aria-hidden="true" width="21" height="21" viewBox="0 0 20 20" style="display:block;"><circle cx="14.5" cy="4.5" r="2.6" fill="none" stroke="#4B4D57" stroke-width="1.8"></circle><circle cx="5.5" cy="10" r="2.6" fill="none" stroke="#4B4D57" stroke-width="1.8"></circle><circle cx="14.5" cy="15.5" r="2.6" fill="none" stroke="#4B4D57" stroke-width="1.8"></circle><line x1="7.9" y1="8.7" x2="12.1" y2="5.9" stroke="#4B4D57" stroke-width="1.8"></line><line x1="7.9" y1="11.3" x2="12.1" y2="14.1" stroke="#4B4D57" stroke-width="1.8"></line></svg></button>
             <svg width="21" height="21" viewBox="0 0 20 20"><circle cx="10" cy="7" r="3.3" fill="none" stroke="#4B4D57" stroke-width="1.8"></circle><path d="M3.8 17 C3.8 13.7 6.6 11.7 10 11.7 C13.4 11.7 16.2 13.7 16.2 17" fill="none" stroke="#4B4D57" stroke-width="1.8" stroke-linecap="round"></path></svg>
           </div>
         </div>
@@ -3478,6 +3478,14 @@ class Component extends DCLogic {
 
   shareWire() {
     const root = this.rootEl || document;
+    root.querySelectorAll('[data-trend-share-button]').forEach((button) => {
+      if (button.__share) return;
+      button.__share = true;
+      button.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        this.openShare(button, this.currentSharePayload());
+      });
+    });
     root.querySelectorAll('[data-pd="shareBtn"]').forEach((button) => {
       if (button.__share) return;
       button.__share = true;
@@ -3488,6 +3496,7 @@ class Component extends DCLogic {
     });
     root.querySelectorAll('svg').forEach((s) => {
       if (s.closest('[data-pd="shareBtn"]')) return;
+      if (s.closest('[data-trend-share-button]')) return;
       if (!s.querySelector('circle[cx="14.5"]')) return;
       if (s.__share) return;
       s.__share = true;
@@ -5973,7 +5982,7 @@ class Component extends DCLogic {
     }, dur + 1200);
   }
   componentDidUpdate() {
-    this.snsWire(); this.homeSelectionGuideWire(); this.applySort(); this.patchTrendSwitcherIcons(); this.patchCompanySheetChart(); this.patchInterestChart();
+    this.snsWire(); this.homeSelectionGuideWire(); this.shareWire(); this.applySort(); this.patchTrendSwitcherIcons(); this.patchCompanySheetChart(); this.patchInterestChart();
     // 재렌더 뒤에도 현재 트렌드명과 로고를 일관되게 다시 주입합니다.
     if (this.publishedView) {
       clearTimeout(this.__livePatchT);
