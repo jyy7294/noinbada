@@ -1813,7 +1813,17 @@ class Component extends DCLogic {
       feed.querySelectorAll('[data-portfolio-row]').forEach((row) => { row.onclick = (event) => this.goPostDetail(event); });
     }
     this.applySort();
-    if (portfolios[0] && !this.activePortfolio) this.renderPortfolioDetail(portfolios[0]);
+    const sharedPortfolioId = new URLSearchParams(window.location.search).get('portfolio');
+    const sharedPortfolio = sharedPortfolioId && this.portfolioById.get(sharedPortfolioId);
+    if (sharedPortfolio && !this.sharedPortfolioOpened) {
+      this.sharedPortfolioOpened = true;
+      this.setOwnerMode(false);
+      this.pdFrom = 'list';
+      this.renderPortfolioDetail(sharedPortfolio);
+      setTimeout(() => this.panTo(document.getElementById('post-detail')), 0);
+    } else if (portfolios[0] && !this.activePortfolio) {
+      this.renderPortfolioDetail(portfolios[0]);
+    }
     this.mpRotateWire();
   }
 

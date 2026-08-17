@@ -149,6 +149,9 @@ def test_each_portfolio_detail_has_an_accessible_share_action_with_its_own_paylo
     payload_method = INDEX[INDEX.index("  portfolioSharePayload() {") : INDEX.index("  async copyShareLink(url) {")]
     assert "portfolio.id" in payload_method
     assert "TRZIP 밈트폴리오" in payload_method
+    portfolio_render = INDEX[INDEX.index("  renderPresentationPortfolios()") : INDEX.index("  renderPortfolioDetail(portfolio)")]
+    assert "new URLSearchParams(window.location.search).get('portfolio')" in portfolio_render
+    assert "this.renderPortfolioDetail(sharedPortfolio);" in portfolio_render
 
 
 def test_home_portfolio_summary_keeps_cta_without_repeating_company_rows() -> None:
