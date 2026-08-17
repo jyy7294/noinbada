@@ -5428,8 +5428,9 @@ class Component extends DCLogic {
       const width = stage.clientWidth || 393;
       // 모바일에서는 왼쪽 핵심 정보와 오른쪽 키워드 열을 한 화면의
       // 한 덩어리로 읽을 수 있게 둡니다. 제목을 침범하지 않는 범위에서
-      // 다이얼 축을 한 번 더 안쪽으로 당겨 두 영역의 빈 공간을 없앱니다.
-      const nodeX = Math.max(194, Math.min(254, width - 344));
+      // 다이얼 축을 제목 폭보다 조금 오른쪽에 고정해, 긴 중심 키워드와
+      // 선택된 칩이 맞닿지 않도록 합니다.
+      const nodeX = Math.max(218, Math.min(278, width - 320));
       const cx = nodeX - R;
       const cy = (stage.clientHeight || stage.__h || parseFloat(stage.style.height) || 250) / 2;
       let best = 0, bd = Infinity;
