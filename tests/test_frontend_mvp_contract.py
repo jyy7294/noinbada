@@ -335,8 +335,9 @@ def test_home_title_has_no_extra_selection_criteria_help_button() -> None:
     assert 'aria-label="트렌드 선정 기준 보기"' not in header
 
 
-def test_information_icons_keep_only_the_user_needed_explanations_and_relation_cta_is_compact() -> None:
-    assert 'data-info-trigger="freshness"' not in INDEX
+def test_freshness_information_icon_and_relation_cta_keep_a_simple_purpose() -> None:
+    assert 'data-info-trigger="freshness"' in INDEX
+    assert 'aria-label="트렌드 신선도 기준 보기"' in INDEX
     assert 'data-info-trigger="relations"' not in INDEX
     assert "infoTopics()" in INDEX
     assert "openInfoSheet(topicKey = 'selection')" in INDEX
@@ -2115,7 +2116,7 @@ def test_stock_add_flow_has_search_groups_accessibility_and_broad_universe() -> 
 def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_drift() -> None:
     assert 'assets/trzip-logo.png' not in INDEX
     assert 'data-zip="logo"' in INDEX
-    assert 'Trend.Zip' in INDEX
+    assert '>트ZIP<' in INDEX
     assert 'data-zip="frame" role="button" tabindex="0"' in INDEX
     assert "frame.addEventListener('wheel'" in INDEX
     assert "frame.addEventListener('keydown'" in INDEX
@@ -2135,7 +2136,7 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert '이번 트렌드와 만나는 지점' in INDEX
     assert '이번 밈트폴리오와 만나는 지점' not in INDEX
     assert 'data-freshness-card="1"' in INDEX
-    assert 'background:#FAFAFC; border:1px solid #ECE8F3' in INDEX
+    assert 'background:#FAFAFC; border:1px solid #E6DDF3' in INDEX
     assert 'data-freshness-explanation="1"' not in INDEX
     assert 'data-freshness-track="1"' in INDEX
     assert 'data-freshness-fill="1"' in INDEX
