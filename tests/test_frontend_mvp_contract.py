@@ -422,6 +422,11 @@ def test_keyword_graph_uses_mobile_safe_relative_layout() -> None:
     assert 'word-break:keep-all !important' in mobile_rules
 
 
+def test_other_trends_open_directly_below_their_title_control() -> None:
+    detail = INDEX[INDEX.index('data-trend-summary-card="1"') : INDEX.index('data-freshness-card="1"')]
+    assert detail.index('id="other-trends-panel"') < detail.index('data-trend-description-toggle="1"')
+
+
 def test_app_starts_with_zipper_and_uses_a_single_handoff_to_home() -> None:
     shell = INDEX[INDEX.index("  protoShell() {") : INDEX.index("  componentDidMount() {")]
     mount = INDEX[INDEX.index("  componentDidMount() {") : INDEX.index("  componentWillUnmount() {")]
