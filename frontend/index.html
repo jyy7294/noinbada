@@ -90,6 +90,22 @@
       width:42px !important;
       height:42px !important;
     }
+    /* QR로 열어도 360px 안팎의 화면에서 키워드가 카드 밖으로 밀리지 않게,
+       그래프의 중심과 칩을 컨테이너 비율 기준으로 배치합니다. */
+    #trend-detail [data-keyword-graph] {
+      height:280px !important;
+      overflow:hidden !important;
+    }
+    #trend-detail [data-keyword-graph] [data-keyword-chip] {
+      min-height:38px !important;
+      display:flex !important;
+      align-items:center !important;
+      justify-content:center !important;
+      white-space:normal !important;
+      word-break:keep-all !important;
+      overflow-wrap:normal !important;
+      overflow:hidden !important;
+    }
     #related-companies [data-folder-card] { padding:16px 14px !important; border-radius:6px 16px 16px 16px !important; }
     #related-companies [data-folder-body] { gap:6px !important; margin-top:10px !important; }
     #related-companies [data-folder-company] { padding:11px !important; }
@@ -462,16 +478,16 @@
 
         <div style="padding:0 16px 14px;">
           <div style="font-weight:800; font-size:16px; color:#1A1A22; letter-spacing:-0.03em; margin-bottom:10px;">함께 언급된 키워드</div>
-          <div style="position:relative; height:258px; background:#FFFFFF; border:1px solid #F1ECFB; border-radius:22px; overflow:hidden;">
-            <span style="position:absolute; left:180px; top:125px; width:152px; height:152px; margin:-76px 0 0 -76px; box-sizing:border-box; border-radius:999px; border:1.5px solid #D9C9F7; box-shadow:0 0 0 10px rgba(160,120,250,0.07);"></span>
-            <span style="position:absolute; left:135.3px; top:63.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
-            <span style="position:absolute; left:224.7px; top:63.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
-            <span style="position:absolute; left:107.7px; top:148.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
-            <span style="position:absolute; left:252.3px; top:148.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
-            <span style="position:absolute; left:180px; top:201px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
+          <div data-keyword-graph="1" style="position:relative; height:280px; background:#FFFFFF; border:1px solid #F1ECFB; border-radius:22px; overflow:hidden;">
+            <span style="position:absolute; left:50%; top:132px; width:152px; height:152px; margin:-76px 0 0 -76px; box-sizing:border-box; border-radius:999px; border:1.5px solid #D9C9F7; box-shadow:0 0 0 10px rgba(160,120,250,0.07);"></span>
+            <span style="position:absolute; left:calc(50% - 44.7px); top:70.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
+            <span style="position:absolute; left:calc(50% + 44.7px); top:70.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
+            <span style="position:absolute; left:calc(50% - 72.3px); top:155.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
+            <span style="position:absolute; left:calc(50% + 72.3px); top:155.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
+            <span style="position:absolute; left:50%; top:208px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
             <span style="{{ trendCoreStyle }}">{{ trendCore }}</span>
             <sc-for list="{{ graphNodes }}" as="nd" hint-placeholder-count="5">
-              <span style="{{ nd.style }}">{{ nd.label }}</span>
+              <span data-keyword-chip="1" style="{{ nd.style }}">{{ nd.label }}</span>
             </sc-for>
           </div>
         </div>
@@ -6663,9 +6679,9 @@ class Component extends DCLogic {
     // 키워드 칩은 원 중앙과 겹치지 않는 다섯 개의 고정 안전 영역에만 놓습니다.
     // 긴 이름은 중앙 텍스트만 한 단계 줄이고, 칩 자체는 한 줄 말줄임으로 유지합니다.
     const chipPos = [
-      'left:18px; top:46px; width:108px;', 'right:18px; top:46px; width:108px;',
-      'left:10px; top:132px; width:106px;', 'right:10px; top:132px; width:106px;',
-      'left:50%; top:201px; transform:translateX(-50%); width:150px;'
+      'left:4%; top:38px; width:31%;', 'right:4%; top:38px; width:31%;',
+      'left:2%; top:136px; width:31%;', 'right:2%; top:136px; width:31%;',
+      'left:50%; top:222px; transform:translateX(-50%); width:43%;'
     ];
     const coreText = String(curTrend.core || curTrend.name || '').replace(/\s+/g, ' ').trim();
     const coreCompact = coreText.replace(/\s+/g, '').length >= 7;
@@ -6680,7 +6696,7 @@ class Component extends DCLogic {
       trendName: curTrend.name,
       trendCat: curTrend.cat,
       trendCore: coreText,
-      trendCoreStyle: 'position:absolute; left:180px; top:125px; width:' + (coreCompact ? '108px' : '96px') + '; height:' + (coreCompact ? '108px' : '96px') + '; margin:-' + (coreCompact ? '54px' : '48px') + ' 0 0 -' + (coreCompact ? '54px' : '48px') + '; border-radius:999px; background:linear-gradient(140deg,#8A4CF6,#6522DC); color:#FFFFFF; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; box-sizing:border-box; font-weight:700; font-size:' + (coreCompact ? '12px' : '14px') + '; line-height:1.22; letter-spacing:-0.04em; white-space:normal; word-break:keep-all; overflow-wrap:normal; box-shadow:0 12px 26px rgba(101,34,220,0.28);',
+      trendCoreStyle: 'position:absolute; left:50%; top:132px; width:' + (coreCompact ? '108px' : '96px') + '; height:' + (coreCompact ? '108px' : '96px') + '; margin:-' + (coreCompact ? '54px' : '48px') + ' 0 0 -' + (coreCompact ? '54px' : '48px') + '; border-radius:999px; background:linear-gradient(140deg,#8A4CF6,#6522DC); color:#FFFFFF; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; box-sizing:border-box; font-weight:700; font-size:' + (coreCompact ? '12px' : '14px') + '; line-height:1.22; letter-spacing:-0.04em; white-space:normal; word-break:keep-all; overflow-wrap:normal; box-shadow:0 12px 26px rgba(101,34,220,0.28);',
       trendDay: curTrend.day,
       trendDefinition: this.trendDetailDefinition(curTrend),
       openTrendShare: this.openTrendShare,
@@ -6745,7 +6761,7 @@ class Component extends DCLogic {
         byLen.forEach((o, k) => { slot[o.i] = order[k] !== undefined ? order[k] : k; });
         return curTrend.tags.map((t, i) => ({
           label: t,
-          style: 'position:absolute; box-sizing:border-box; ' + chipPos[slot[i] % chipPos.length] + ' background:#FFFFFF; border-radius:999px; padding:9px 11px; font-weight:800; font-size:12px; line-height:1.15; letter-spacing:-0.03em; color:#6B3FE0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; box-shadow:0 5px 16px rgba(90,60,170,0.10);'
+          style: 'position:absolute; box-sizing:border-box; ' + chipPos[slot[i] % chipPos.length] + ' background:#FFFFFF; border-radius:999px; padding:8px 9px; min-height:38px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:12px; line-height:1.15; letter-spacing:-0.03em; color:#6B3FE0; white-space:normal; word-break:keep-all; overflow-wrap:normal; overflow:hidden; text-align:center; box-shadow:0 5px 16px rgba(90,60,170,0.10);'
         }));
       })(),
       trendOpen: !!this.state.trendOpen,

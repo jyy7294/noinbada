@@ -410,6 +410,18 @@ def test_home_dial_keywords_open_their_trend_without_a_rotation_detour() -> None
     assert "if (rows.length < 2 || window.__mpRotate) return;" in INDEX
 
 
+def test_keyword_graph_uses_mobile_safe_relative_layout() -> None:
+    graph = INDEX[INDEX.index('data-keyword-graph="1"') : INDEX.index('<!-- ══════════ 03 관련 기업 ══════════ -->')]
+    assert 'height:280px' in graph
+    assert 'left:50%; top:132px' in graph
+    assert 'left:4%; top:38px; width:31%;' in INDEX
+    assert 'left:50%; top:222px; transform:translateX(-50%); width:43%;' in INDEX
+    assert 'data-keyword-chip' in INDEX
+    mobile_rules = INDEX[INDEX.index('@media (max-width: 600px)') : INDEX.index('</style>', INDEX.index('@media (max-width: 600px)'))]
+    assert '#trend-detail [data-keyword-graph]' in mobile_rules
+    assert 'word-break:keep-all !important' in mobile_rules
+
+
 def test_app_starts_with_zipper_and_uses_a_single_handoff_to_home() -> None:
     shell = INDEX[INDEX.index("  protoShell() {") : INDEX.index("  componentDidMount() {")]
     mount = INDEX[INDEX.index("  componentDidMount() {") : INDEX.index("  componentWillUnmount() {")]
