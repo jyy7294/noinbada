@@ -244,12 +244,12 @@
           </div>
 
           <div data-vd-stage="1" data-home-ready="false" style="position:relative; margin:6px -16px 0; height:440px; background:linear-gradient(180deg,#FFFFFF 0%,#F7F2FF 14%,#EFE7FD 58%,#F7F3FE 84%,#FFFFFF 100%); overflow:hidden; touch-action:none; user-select:none; opacity:0; pointer-events:none; transition:opacity 180ms ease;">
-          <div data-vd-focus-copy="1" style="position:absolute; left:56px; top:50%; z-index:20; width:218px; padding:0; box-sizing:border-box; text-align:left; transform:translateY(-50%); pointer-events:none;">
+          <div data-vd-focus-copy="1" style="position:absolute; left:40px; top:50%; z-index:20; width:202px; padding:0; box-sizing:border-box; text-align:left; transform:translateY(-50%); pointer-events:none;">
               <div data-vd-rank="1" style="display:inline-block; border:1.5px solid #B79BF2; border-radius:999px; padding:5px 13px; font-weight:600; font-size:12px; color:#5B21C0; background:rgba(255,255,255,0.6);">통합 1위</div>
               <div data-vd-cat="1" style="font-weight:600; font-size:12.5px; color:#8B7BC4; margin-top:10px;">분류 확인 중</div>
               <div data-vd-blob="1" style="position:absolute; left:50%; top:50%; margin:-70px 0 0 -100px; width:200px; height:140px; border-radius:999px; background:#D3C2F7; filter:blur(30px); opacity:0.5;"></div>
               <div style="position:relative; margin-top:12px;">
-                <span data-vd-big="1" title="트렌드" style="width:100%; margin:0; font-weight:800; font-size:30px; line-height:1.18; color:#3A1D80; letter-spacing:-0.045em; white-space:nowrap; display:block; overflow:hidden; text-overflow:ellipsis; word-break:keep-all;">트렌드</span>
+                <span data-vd-big="1" title="트렌드" style="width:195px; max-width:195px; margin:0; font-weight:800; font-size:30px; line-height:1.08; color:#3A1D80; letter-spacing:-0.045em; white-space:normal; display:block; overflow:visible; text-overflow:clip; word-break:keep-all; overflow-wrap:normal;">트렌드</span>
               </div>
             </div>
             <button type="button" aria-label="첫 번째 트렌드 선택" data-vd="0" data-label="트렌드" style="position:absolute; left:0; top:0; border:0; padding:0; background:transparent; font-family:inherit; display:flex; align-items:center; white-space:nowrap; cursor:pointer; will-change:transform;">
@@ -374,7 +374,7 @@
                 <span style="width:28px; height:28px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:12px; line-height:1;">{{ trendIconFallback }}</span>
               </span>
               <div style="flex:1; min-width:0;">
-                <div title="{{ trendName }}" style="min-width:0; font-weight:800; font-size:22px; line-height:1.22; color:#1A1A22; letter-spacing:-0.04em; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;">{{ trendName }}</div>
+                <div title="{{ trendName }}" style="min-width:0; font-weight:800; font-size:22px; line-height:1.22; color:#1A1A22; letter-spacing:-0.04em; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; word-break:keep-all; overflow-wrap:normal;">{{ trendName }}</div>
                 <div style="display:flex; align-items:center; gap:6px; margin-top:6px;">
                   <span style="background:#E7DDFC; border-radius:999px; padding:3px 9px; font-weight:700; font-size:10.5px; color:#5B21C0; white-space:nowrap;">{{ trendCat }}</span>
                 </div>
@@ -503,7 +503,7 @@
         <div style="display:flex; align-items:center; justify-content:space-between; padding:16px 18px 6px;">
           <div style="display:flex; align-items:center; gap:10px; min-width:0;">
             <button data-critical-touch-target="1" type="button" aria-label="트렌드 상세로 돌아가기" onClick="{{ backDetail }}" style="width:44px;height:44px;flex:none;margin:-6px;border:0;background:transparent;padding:0;display:inline-flex;align-items:center;justify-content:center;font-family:inherit;font-size:24px;color:#1A1A22;font-weight:600;cursor:pointer;">‹</button>
-            <span title="{{ trendName }}" style="font-weight:800; font-size:19px; line-height:1.25; color:#1A1A22; letter-spacing:-0.03em; min-width:0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere;">{{ trendName }}</span>
+            <span title="{{ trendName }}" style="font-weight:800; font-size:19px; line-height:1.25; color:#1A1A22; letter-spacing:-0.03em; min-width:0; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; word-break:keep-all; overflow-wrap:normal;">{{ trendName }}</span>
           </div>
         </div>
 
@@ -5725,10 +5725,17 @@ class Component extends DCLogic {
     dialParts.forEach((element) => { element.style.visibility = ''; });
     if (homeHint) homeHint.style.display = '';
     if (top) document.querySelectorAll('[data-vd-big]').forEach((el) => {
-      const label = top.shortName || top.name;
+      const label = String(top.shortName || top.name || '').replace(/\s+/g, ' ').trim();
+      const multiWordLabel = /\s/.test(label);
+      const baseFontSize = label.length >= 18 ? 20 : label.length >= 14 ? 22 : label.length >= 10 ? 25 : 30;
       el.textContent = label;
       el.title = top.name;
-      el.style.fontSize = label.length >= 18 ? '20px' : label.length >= 14 ? '22px' : label.length >= 10 ? '25px' : '30px';
+      el.style.fontSize = (multiWordLabel && label.length >= 12 ? Math.min(baseFontSize, 22) : baseFontSize) + 'px';
+      el.style.whiteSpace = multiWordLabel ? 'normal' : 'nowrap';
+      el.style.maxWidth = multiWordLabel ? '195px' : '202px';
+      el.style.overflow = multiWordLabel ? 'visible' : 'hidden';
+      el.style.textOverflow = multiWordLabel ? 'clip' : 'ellipsis';
+      el.style.lineHeight = multiWordLabel ? '1.08' : '1.18';
     });
     groups.forEach((els) => {
       if (els.length < 3) return;
@@ -6655,7 +6662,7 @@ class Component extends DCLogic {
       'left:10px; top:132px; width:106px;', 'right:10px; top:132px; width:106px;',
       'left:50%; top:201px; transform:translateX(-50%); width:150px;'
     ];
-    const coreText = String(curTrend.core || curTrend.name || '');
+    const coreText = String(curTrend.core || curTrend.name || '').replace(/\s+/g, ' ').trim();
     const coreCompact = coreText.replace(/\s+/g, '').length >= 7;
     const vals = {
       liveStatus: this.liveStatus,
@@ -6667,8 +6674,8 @@ class Component extends DCLogic {
       trendIconFallback: (curTrend.icon || this.trendIconMeta(curTrend.name, curTrend.cat)).fallback,
       trendName: curTrend.name,
       trendCat: curTrend.cat,
-      trendCore: coreText.split('\n').join(' '),
-      trendCoreStyle: 'position:absolute; left:180px; top:125px; width:' + (coreCompact ? '108px' : '96px') + '; height:' + (coreCompact ? '108px' : '96px') + '; margin:-' + (coreCompact ? '54px' : '48px') + ' 0 0 -' + (coreCompact ? '54px' : '48px') + '; border-radius:999px; background:linear-gradient(140deg,#8A4CF6,#6522DC); color:#FFFFFF; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; box-sizing:border-box; font-weight:700; font-size:' + (coreCompact ? '12px' : '14px') + '; line-height:1.22; letter-spacing:-0.04em; word-break:keep-all; overflow-wrap:anywhere; box-shadow:0 12px 26px rgba(101,34,220,0.28);',
+      trendCore: coreText,
+      trendCoreStyle: 'position:absolute; left:180px; top:125px; width:' + (coreCompact ? '108px' : '96px') + '; height:' + (coreCompact ? '108px' : '96px') + '; margin:-' + (coreCompact ? '54px' : '48px') + ' 0 0 -' + (coreCompact ? '54px' : '48px') + '; border-radius:999px; background:linear-gradient(140deg,#8A4CF6,#6522DC); color:#FFFFFF; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; box-sizing:border-box; font-weight:700; font-size:' + (coreCompact ? '12px' : '14px') + '; line-height:1.22; letter-spacing:-0.04em; white-space:normal; word-break:keep-all; overflow-wrap:normal; box-shadow:0 12px 26px rgba(101,34,220,0.28);',
       trendDay: curTrend.day,
       trendDefinition: this.trendDetailDefinition(curTrend),
       openTrendShare: this.openTrendShare,

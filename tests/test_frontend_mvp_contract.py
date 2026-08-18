@@ -353,13 +353,16 @@ def test_freshness_information_icon_and_relation_cta_keep_a_simple_purpose() -> 
 def test_dial_keeps_korean_trend_titles_in_the_left_readable_zone() -> None:
     dial_markup = INDEX[INDEX.index('data-vd-stage="1"') : INDEX.index('data-home-empty="1"')]
     assert 'data-vd-focus-copy="1"' in dial_markup
-    assert "left:56px; top:50%; z-index:20; width:218px" in dial_markup
+    assert "left:40px; top:50%; z-index:20; width:202px" in dial_markup
     assert "text-align:left" in dial_markup
-    assert "white-space:nowrap" in dial_markup
-    assert "text-overflow:ellipsis" in dial_markup
+    assert "max-width:195px" in dial_markup
+    assert "white-space:normal" in dial_markup
+    assert "word-break:keep-all" in dial_markup
+    assert "overflow-wrap:normal" in dial_markup
     assert "overflow-wrap:anywhere" not in dial_markup
     home_projection = INDEX[INDEX.index("if (top) document.querySelectorAll('[data-vd-big]')") : INDEX.index("groups.forEach((els) =>")]
-    assert "label.length >= 18 ? '20px'" in home_projection
+    assert "const multiWordLabel = /\\s/.test(label);" in home_projection
+    assert "el.style.whiteSpace = multiWordLabel ? 'normal' : 'nowrap';" in home_projection
 
 
 def test_home_dial_keeps_its_center_title_in_sync_without_overlaying_the_selected_node() -> None:
@@ -1219,7 +1222,8 @@ def test_long_home_names_use_two_line_clamp_and_short_name() -> None:
     assert 'title="{{ sheetName }}"' in INDEX
     assert 'data-vd-big="1" title="트렌드"' in INDEX
     assert "el.title = top.name" in INDEX
-    assert "label.length >= 18 ? '20px'" in INDEX
+    assert "const baseFontSize = label.length >= 18 ? 20" in INDEX
+    assert "el.style.whiteSpace = multiWordLabel ? 'normal' : 'nowrap';" in INDEX
     assert 'title="{{ trendName }}"' in INDEX
     assert "nameStyle: 'flex:1; min-width:0;" in INDEX
 
