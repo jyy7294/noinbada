@@ -3640,44 +3640,14 @@ class Component extends DCLogic {
       + likes
       + '<span style="margin-left:auto; flex:none; white-space:nowrap; font-weight:600; font-size:11.5px; color:#A9ACB8;">담은 날 오늘</span></div>'
       + '<span data-my-new="1" style="position:absolute; top:-7px; left:12px; background:#7B3FF2; color:#FFFFFF; border-radius:999px; padding:3px 9px; font-weight:600; font-size:10px; letter-spacing:-0.01em;">방금 담김</span>'
-      + '<button type="button" data-my-unstash="1" aria-label="' + this.escapeHtml(title + ' 담은 목록에서 해제') + '" style="position:absolute; top:10px; right:10px; border:1px solid #E4DCF8; background:#FFFFFF; border-radius:999px; padding:5px 8px; font-family:inherit; font-weight:700; font-size:10.5px; color:#6B46C1; cursor:pointer;">담기 해제</button>';
     const empty = list.querySelector('[data-my-empty]');
     if (empty) empty.remove();
     list.querySelectorAll('[data-my-new]').forEach((b) => b.remove());
     list.insertBefore(card, list.firstChild);
     card.onclick = (ev) => this.goMyCard(ev);
-    const unstash = card.querySelector('[data-my-unstash]');
-    if (unstash) {
-      unstash.onclick = (ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        this.removeStashedPortfolio(card, title);
-      };
-    }
     requestAnimationFrame(() => { card.style.opacity = '1'; card.style.transform = 'none'; });
     this.myHearts();
     this.myStats();
-  }
-
-  removeStashedPortfolio(card, title) {
-    if (!card || !title) return;
-    if (!window.confirm('“' + title + '”을(를) 담은 밈트폴리오에서 해제할까요?')) return;
-    this.stashed = this.stashed || {};
-    this.stashedSet = this.stashedSet || {};
-    delete this.stashed[title];
-    delete this.stashedSet[title];
-    card.style.pointerEvents = 'none';
-    card.style.opacity = '0';
-    card.style.transform = 'translateX(18px) scale(.97)';
-    setTimeout(() => {
-      const list = card.closest('[data-my-list="0"]');
-      card.remove();
-      if (list && !list.querySelector('[data-my-card]')) {
-        list.innerHTML = '<div data-my-empty="1" style="border:1.5px dashed #E4DCF8; border-radius:18px; padding:30px 18px; text-align:center; color:#8B8D98; font-size:12px;">담은 밈트폴리오가 없어요</div>';
-      }
-      this.myStats();
-      this.pdStashSync();
-    }, 220);
   }
 
   shareWire() {

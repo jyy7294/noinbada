@@ -162,15 +162,12 @@ def test_profile_editor_uses_nickname_bio_and_icon_without_a_redundant_profile_t
 
 def test_my_page_portfolio_cards_do_not_repeat_portfolio_keywords() -> None:
     stash_method = INDEX[INDEX.index("  myAddStash(frame) {") : INDEX.index("  shareWire() {")]
-    unstash_method = INDEX[INDEX.index("  removeStashedPortfolio(card, title) {") : INDEX.index("  shareWire() {")]
     created_card = INDEX[INDEX.index("      const list = portfolioApi ? null") : INDEX.index("  makerUniverse(trend) {")]
     saved_cards = INDEX[INDEX.index("  renderSavedPortfolios() {") : INDEX.index("  patchHomeLabels() {")]
     assert "const tags = q('tags')" not in stash_method
-    assert 'data-my-unstash="1"' in stash_method
-    assert "this.removeStashedPortfolio(card, title);" in stash_method
-    assert "window.confirm" in unstash_method
-    assert "delete this.stashed[title];" in unstash_method
-    assert "delete this.stashedSet[title];" in unstash_method
+    assert 'data-my-unstash="1"' not in stash_method
+    assert "담기 해제" not in stash_method
+    assert "removeStashedPortfolio" not in INDEX
     assert "#새로만든포트" not in created_card
     assert "this.escapeHtml(portfolio.keywords.map" not in saved_cards
 
