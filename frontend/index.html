@@ -464,7 +464,7 @@
             <span style="position:absolute; left:107.7px; top:148.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
             <span style="position:absolute; left:252.3px; top:148.5px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
             <span style="position:absolute; left:180px; top:201px; width:11px; height:11px; margin:-8.5px 0 0 -8.5px; border-radius:999px; background:#7B3FF2; border:3px solid #FFFFFF; box-sizing:content-box; box-shadow:0 2px 6px rgba(101,34,220,0.25); z-index:2;"></span>
-            <span style="position:absolute; left:180px; top:125px; width:96px; height:96px; margin:-48px 0 0 -48px; border-radius:999px; background:linear-gradient(140deg,#8A4CF6,#6522DC); color:#FFFFFF; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; box-sizing:border-box; font-weight:600; font-size:14px; line-height:1.25; letter-spacing:-0.03em; box-shadow:0 12px 26px rgba(101,34,220,0.28);">{{ trendCore }}</span>
+            <span style="{{ trendCoreStyle }}">{{ trendCore }}</span>
             <sc-for list="{{ graphNodes }}" as="nd" hint-placeholder-count="5">
               <span style="{{ nd.style }}">{{ nd.label }}</span>
             </sc-for>
@@ -3662,13 +3662,15 @@ class Component extends DCLogic {
   shareWire() {
     const root = this.rootEl || document;
     root.querySelectorAll('[data-trend-share-button]').forEach((button) => {
-      if (button.getAttribute('data-share-inline') === 'trend') return;
       if (button.__share) return;
       button.__share = true;
+      // 템플릿의 인라인 바인딩이 다시 그려질 때 사라져도, 실제 버튼에는
+      // 항상 이 직접 핸들러가 남아 공유 시트를 엽니다.
       button.addEventListener('click', (ev) => {
+        ev.preventDefault();
         ev.stopPropagation();
         this.openShare(button, this.currentSharePayload());
-      });
+      }, true);
     });
     root.querySelectorAll('[data-pd="shareBtn"]').forEach((button) => {
       if (button.__share) return;
@@ -6646,11 +6648,15 @@ class Component extends DCLogic {
       : movement.status === 'down' ? '#2E6BE6'
         : movement.status === 'new' ? '#7B3FF2' : '#1A1A22';
     const nodePos = [[74, 52], [272, 48], [52, 168], [180, 196], [288, 164]];
+    // 키워드 칩은 원 중앙과 겹치지 않는 다섯 개의 고정 안전 영역에만 놓습니다.
+    // 긴 이름은 중앙 텍스트만 한 단계 줄이고, 칩 자체는 한 줄 말줄임으로 유지합니다.
     const chipPos = [
-      'left:28px; top:46.9px; max-width:118px;', 'right:22px; top:46.9px; max-width:118px;',
-      'left:12px; top:131.9px; max-width:116px;', 'right:12px; top:131.9px; max-width:116px;',
-      'left:50%; top:201px; transform:translateX(-50%); max-width:230px;'
+      'left:18px; top:46px; width:108px;', 'right:18px; top:46px; width:108px;',
+      'left:10px; top:132px; width:106px;', 'right:10px; top:132px; width:106px;',
+      'left:50%; top:201px; transform:translateX(-50%); width:150px;'
     ];
+    const coreText = String(curTrend.core || curTrend.name || '');
+    const coreCompact = coreText.replace(/\s+/g, '').length >= 7;
     const vals = {
       liveStatus: this.liveStatus,
       showLiveBadge: this.liveStatus.includes('LIVE'),
@@ -6661,7 +6667,8 @@ class Component extends DCLogic {
       trendIconFallback: (curTrend.icon || this.trendIconMeta(curTrend.name, curTrend.cat)).fallback,
       trendName: curTrend.name,
       trendCat: curTrend.cat,
-      trendCore: curTrend.core.split('\n').join(' '),
+      trendCore: coreText.split('\n').join(' '),
+      trendCoreStyle: 'position:absolute; left:180px; top:125px; width:' + (coreCompact ? '108px' : '96px') + '; height:' + (coreCompact ? '108px' : '96px') + '; margin:-' + (coreCompact ? '54px' : '48px') + ' 0 0 -' + (coreCompact ? '54px' : '48px') + '; border-radius:999px; background:linear-gradient(140deg,#8A4CF6,#6522DC); color:#FFFFFF; display:flex; align-items:center; justify-content:center; text-align:center; padding:10px; box-sizing:border-box; font-weight:700; font-size:' + (coreCompact ? '12px' : '14px') + '; line-height:1.22; letter-spacing:-0.04em; word-break:keep-all; overflow-wrap:anywhere; box-shadow:0 12px 26px rgba(101,34,220,0.28);',
       trendDay: curTrend.day,
       trendDefinition: this.trendDetailDefinition(curTrend),
       openTrendShare: this.openTrendShare,
@@ -6723,7 +6730,7 @@ class Component extends DCLogic {
         byLen.forEach((o, k) => { slot[o.i] = order[k] !== undefined ? order[k] : k; });
         return curTrend.tags.map((t, i) => ({
           label: t,
-          style: 'position:absolute; box-sizing:border-box; ' + chipPos[slot[i] % chipPos.length] + ' background:#FFFFFF; border-radius:999px; padding:9px 16px; font-weight:800; font-size:12.5px; letter-spacing:-0.02em; color:#6B3FE0; white-space:nowrap; box-shadow:0 5px 16px rgba(90,60,170,0.10);'
+          style: 'position:absolute; box-sizing:border-box; ' + chipPos[slot[i] % chipPos.length] + ' background:#FFFFFF; border-radius:999px; padding:9px 11px; font-weight:800; font-size:12px; line-height:1.15; letter-spacing:-0.03em; color:#6B3FE0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; text-align:center; box-shadow:0 5px 16px rgba(90,60,170,0.10);'
         }));
       })(),
       trendOpen: !!this.state.trendOpen,
