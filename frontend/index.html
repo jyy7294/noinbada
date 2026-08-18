@@ -368,7 +368,7 @@
         <div style="flex:1; min-height:0; overflow-y:auto; scrollbar-width:none;">
         <div style="padding:0 16px 14px;">
           <div data-trend-summary-card="1" style="background:#FFFFFF; border-radius:0; overflow:visible;">
-            <div style="display:flex; align-items:center; gap:13px; padding:8px 14px 12px;">
+            <div style="display:flex; align-items:flex-start; gap:12px; padding:8px 14px 12px;">
               <span aria-hidden="true" style="width:44px; height:44px; flex:none; border-radius:15px; background:#FFFFFF; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.10); display:inline-flex; align-items:center; justify-content:center; overflow:hidden;">
                 <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-trend-icon-src="{{ trendIconUrl }}" alt="" width="28" height="28" loading="eager" decoding="async" referrerpolicy="no-referrer" style="width:28px; height:28px; display:block; object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
                 <span style="width:28px; height:28px; display:none; align-items:center; justify-content:center; border-radius:999px; background:#7B3FF2; color:#FFFFFF; font-weight:800; font-size:12px; line-height:1;">{{ trendIconFallback }}</span>
@@ -379,6 +379,10 @@
                   <span style="background:#E7DDFC; border-radius:999px; padding:3px 9px; font-weight:700; font-size:10.5px; color:#5B21C0; white-space:nowrap;">{{ trendCat }}</span>
                 </div>
               </div>
+              <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" aria-controls="other-trends-panel" onClick="{{ toggleTrend }}" style="height:36px; flex:none; border:1px solid #D8C5FB; border-radius:999px; background:#FFFFFF; padding:0 10px 0 12px; color:#6331CF; display:inline-flex; align-items:center; gap:4px; font-family:inherit; font-weight:700; font-size:11px; white-space:nowrap; cursor:pointer;">
+                <span>다른 트렌드</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#6331CF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
+              </button>
             </div>
             <sc-if value="{{ hasDefinition }}" hint-placeholder-val="{{ false }}">
               <div style="padding:0 14px 12px;">
@@ -394,13 +398,8 @@
                 </sc-if>
               </div>
             </sc-if>
-            <div style="padding:0 14px 14px;">
-            <button type="button" data-other-trends-toggle="1" aria-expanded="{{ trendOpen }}" aria-controls="other-trends-panel" onClick="{{ toggleTrend }}" style="width:100%; border:0; border-top:1px solid #EEEAF6; background:transparent; padding:12px 0 0; color:#6B3FE0; display:flex; align-items:center; justify-content:space-between; font-family:inherit; font-weight:700; font-size:12px; cursor:pointer;">
-              <span>다른 트렌드 보기</span>
-              <svg width="15" height="15" viewBox="0 0 14 14" aria-hidden="true" style="{{ caretStyle }}"><polyline points="3.5,5.5 7,9 10.5,5.5" fill="none" stroke="#6B3FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></polyline></svg>
-            </button>
             <sc-if value="{{ trendOpen }}" hint-placeholder-val="{{ false }}">
-              <div id="other-trends-panel" data-trend-switcher="1" style="margin-top:8px; background:#FFFFFF; border:1px solid #E2D9F8; border-radius:16px; overflow:hidden;">
+              <div id="other-trends-panel" data-trend-switcher="1" style="margin:0 14px 14px; background:#FFFFFF; border:1px solid #E2D9F8; border-radius:16px; overflow:hidden;">
                 <sc-for list="{{ trendOptions }}" as="opt" hint-placeholder-count="5">
                   <button type="button" onClick="{{ opt.pick }}" style="{{ opt.row }}; width:100%; border:0; font-family:inherit; text-align:left;">
                     <span style="width:30px; height:30px; flex:none; border-radius:999px; background:#F3F0FB; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(91,33,192,0.04);">
@@ -413,7 +412,6 @@
                 </sc-for>
               </div>
             </sc-if>
-            </div>
           </div>
         </div>
 
@@ -421,10 +419,17 @@
           <div data-freshness-card="1" style="background:#FAFAFC; border:1px solid #E6DDF3; border-radius:18px; padding:15px 15px 14px; box-shadow:0 8px 20px rgba(77,51,139,0.045);">
             <div style="display:flex; align-items:center; gap:7px;">
               <span style="font-weight:800; font-size:16px; color:#30313A; letter-spacing:-0.035em;">트렌드 신선도</span>
-              <button type="button" data-info-trigger="freshness" aria-label="트렌드 신선도 기준 보기" style="width:23px; height:23px; flex:none; border:0; background:transparent; padding:0; display:inline-flex; align-items:center; justify-content:center; cursor:pointer;">
+              <button type="button" data-freshness-info-toggle="1" onClick="{{ toggleFreshInfo }}" aria-label="트렌드 신선도 기준 보기" aria-expanded="{{ freshInfoOpen }}" style="width:23px; height:23px; flex:none; border:0; background:transparent; padding:0; display:inline-flex; align-items:center; justify-content:center; cursor:pointer;">
                 <svg width="19" height="19" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.2" fill="none" stroke="#A6A8B4" stroke-width="1.7"></circle><path d="M10 8.8v4.35" stroke="#858895" stroke-width="1.8" stroke-linecap="round"></path><circle cx="10" cy="6.25" r="1.05" fill="#858895"></circle></svg>
               </button>
             </div>
+            <sc-if value="{{ freshInfoOpen }}" hint-placeholder-val="{{ false }}">
+              <div data-freshness-explanation="1" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; margin-top:12px;">
+                <div style="{{ freshInfoPhase0 }}"><strong style="display:block; font-size:12px; line-height:1.2;">포착</strong><span style="display:block; margin-top:4px; font-size:10.5px; line-height:1.35;">처음 확인된<br>흐름</span></div>
+                <div style="{{ freshInfoPhase1 }}"><strong style="display:block; font-size:12px; line-height:1.2;">확산</strong><span style="display:block; margin-top:4px; font-size:10.5px; line-height:1.35;">관측이 이어지며<br>관심이 커지는 흐름</span></div>
+                <div style="{{ freshInfoPhase2 }}"><strong style="display:block; font-size:12px; line-height:1.2;">대중화</strong><span style="display:block; margin-top:4px; font-size:10.5px; line-height:1.35;">반복 관측돼<br>넓게 이어지는 흐름</span></div>
+              </div>
+            </sc-if>
             <div style="display:flex; gap:14px; align-items:center; margin-top:11px;">
               <div style="flex:none; width:106px; padding:4px 0; border-right:1px solid #E5E0ED; display:flex; align-items:center; justify-content:center;">
                 <div style="flex:1; min-width:0;">
@@ -6725,6 +6730,9 @@ class Component extends DCLogic {
       scoreMix: '통합 관측 · 현재 순서',
       freshInfoOpen: !!this.state.freshInfo,
       toggleFreshInfo: () => this.setState((s) => ({ freshInfo: !s.freshInfo })),
+      freshInfoPhase0: 'min-width:0; border-radius:12px; padding:9px 8px; color:' + (relativeStageIdx === 0 ? '#5B21C0' : '#626572') + '; background:' + (relativeStageIdx === 0 ? '#F0E8FF' : '#F7F6FA') + '; box-shadow:' + (relativeStageIdx === 0 ? 'inset 0 0 0 1px #CDB7FF' : 'inset 0 0 0 1px #ECE9F2') + ';',
+      freshInfoPhase1: 'min-width:0; border-radius:12px; padding:9px 8px; color:' + (relativeStageIdx === 1 ? '#5B21C0' : '#626572') + '; background:' + (relativeStageIdx === 1 ? '#F0E8FF' : '#F7F6FA') + '; box-shadow:' + (relativeStageIdx === 1 ? 'inset 0 0 0 1px #CDB7FF' : 'inset 0 0 0 1px #ECE9F2') + ';',
+      freshInfoPhase2: 'min-width:0; border-radius:12px; padding:9px 8px; color:' + (relativeStageIdx === 2 ? '#5B21C0' : '#626572') + '; background:' + (relativeStageIdx === 2 ? '#F0E8FF' : '#F7F6FA') + '; box-shadow:' + (relativeStageIdx === 2 ? 'inset 0 0 0 1px #CDB7FF' : 'inset 0 0 0 1px #ECE9F2') + ';',
       collectInfoOpen: !!this.state.collectInfo,
       toggleCollectInfo: () => this.setState((s) => ({ collectInfo: !s.collectInfo })),
       phase0: 'font-weight:' + (relativeStageIdx === 0 ? 800 : 600) + '; color:' + (relativeStageIdx === 0 ? '#5B21C0' : '#9A9DA9') + ';',

@@ -336,8 +336,13 @@ def test_home_title_has_no_extra_selection_criteria_help_button() -> None:
 
 
 def test_freshness_information_icon_and_relation_cta_keep_a_simple_purpose() -> None:
-    assert 'data-info-trigger="freshness"' in INDEX
+    assert 'data-freshness-info-toggle="1"' in INDEX
     assert 'aria-label="트렌드 신선도 기준 보기"' in INDEX
+    assert 'data-freshness-explanation="1"' in INDEX
+    assert 'grid-template-columns:repeat(3,minmax(0,1fr))' in INDEX
+    assert 'freshInfoPhase0:' in INDEX
+    assert 'freshInfoPhase1:' in INDEX
+    assert 'freshInfoPhase2:' in INDEX
     assert 'data-info-trigger="relations"' not in INDEX
     assert "infoTopics()" in INDEX
     assert "openInfoSheet(topicKey = 'selection')" in INDEX
@@ -2138,7 +2143,10 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert '{{ trendIconFallback }}</span>' in INDEX
     assert 'data-trend-summary-card="1" style="background:#FFFFFF; border-radius:0; overflow:visible;"' in INDEX
     assert INDEX.count('data-other-trends-toggle="1"') == 1
-    assert INDEX.index('data-trend-description-toggle="1"') < INDEX.index('data-other-trends-toggle="1"')
+    assert INDEX.index('data-other-trends-toggle="1"') < INDEX.index('data-trend-description-toggle="1"')
+    header_switch = INDEX[INDEX.index('data-trend-summary-card="1"') : INDEX.index('data-trend-description-toggle="1"')]
+    assert 'height:36px; flex:none; border:1px solid #D8C5FB' in header_switch
+    assert '<span>다른 트렌드</span>' in header_switch
     assert INDEX.index('data-other-trends-toggle="1"') < INDEX.index('data-freshness-card="1"')
     assert '이 트렌드는 무엇인가요?' not in INDEX
     assert '왜 관심을 받나요?' in INDEX
@@ -2149,7 +2157,7 @@ def test_latest_motion_v2_visual_contract_is_preserved_without_data_contract_dri
     assert '이번 밈트폴리오와 만나는 지점' not in INDEX
     assert 'data-freshness-card="1"' in INDEX
     assert 'background:#FAFAFC; border:1px solid #E6DDF3' in INDEX
-    assert 'data-freshness-explanation="1"' not in INDEX
+    assert 'data-freshness-explanation="1"' in INDEX
     assert 'data-freshness-track="1"' in INDEX
     assert 'data-freshness-fill="1"' in INDEX
     assert 'data-freshness-knob="1"' in INDEX
