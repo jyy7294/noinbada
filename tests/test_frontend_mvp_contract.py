@@ -1572,7 +1572,7 @@ def test_live_home_accepts_only_v4_validated_non_synthetic_feed_and_allows_zero_
     assert "roles.size <= 4" in DATA
     assert "ontologyPathReachesCompany(company.ontology_path" in DATA
     assert "validLiveListingVerification(company.listing_verification, company, observedAt)" in DATA
-    assert "validLiveMarketSnapshot(company, observedAt)" in DATA
+    assert "validLiveMarketSnapshot(company, marketReferenceAt)" in DATA
     assert "validLiveLogo(company)" in DATA
     assert "logoPolicy.low_resolution_fallback === 'card_excluded'" in DATA
     assert "linkedKeywords.size === 5" in DATA

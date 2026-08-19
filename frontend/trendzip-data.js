@@ -602,7 +602,7 @@ function validObservedMarketSessions(points) {
     && points.every((row) => finitePublicNumber(row?.close, { positive: true }));
 }
 
-function validLiveMarketSnapshot(company, observedAt) {
+function validLiveMarketSnapshot(company, marketReferenceAt) {
   const snapshot = company?.market_snapshot;
   if (!snapshot || typeof snapshot !== 'object') return false;
   const points = snapshot.price_points;
@@ -625,7 +625,7 @@ function validLiveMarketSnapshot(company, observedAt) {
       && publicHttpUrl(row.source_url)
       && row.synthetic === false
       && row.estimated === false
-      && validLiveMarketFieldDate(row.as_of, field, observedAt);
+      && validLiveMarketFieldDate(row.as_of, field, marketReferenceAt);
   });
   const perStatus = String(snapshot.per_status || '').trim();
   const perProvenance = provenance.per;
@@ -637,7 +637,7 @@ function validLiveMarketSnapshot(company, observedAt) {
       && publicHttpUrl(perProvenance.source_url)
       && perProvenance.synthetic === false
       && perProvenance.estimated === false
-      && validLiveMarketFieldDate(perProvenance.as_of, 'per', observedAt)
+      && validLiveMarketFieldDate(perProvenance.as_of, 'per', marketReferenceAt)
     : LIVE_PER_UNAVAILABLE_STATUSES.has(perStatus) && snapshot.per == null;
   return validProvenance
     && validPer
@@ -1178,6 +1178,10 @@ function validateShowcasePayload(payload, manifest) {
     throw new Error('공개 데이터 계약을 확인할 수 없습니다.');
   }
   const cards = Array.isArray(payload.cards) ? payload.cards : [];
+  const marketReferenceAt = String(manifest?.market_data?.latest_market_session || '').trim();
+  if (publicCalendarDayMs(marketReferenceAt) == null) {
+    throw new Error('공개 시장 기준일을 확인할 수 없습니다.');
+  }
   if (cards.length !== 10 || Number(manifest.card_count) !== cards.length) {
     throw new Error('공개 카드 수가 올바르지 않습니다.');
   }
@@ -1208,7 +1212,7 @@ function validateShowcasePayload(payload, manifest) {
         || !String(company.connection_explanation || '').trim()
         || !/^https:\/\//.test(String(company.company_identity_url || ''))
         || !validLiveLogo(company)
-        || !validLiveMarketSnapshot(company, payload.source_observed_at))) {
+        || !validLiveMarketSnapshot(company, marketReferenceAt))) {
       throw new Error(`공개 카드 계약 오류: ${eventKey || index + 1}`);
     }
     totalCompanyCount += companies.length;
