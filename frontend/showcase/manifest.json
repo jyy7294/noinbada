@@ -14,15 +14,20 @@
   "display_status": "NOW",
   "display_time_policy": "client_kst_floor_hour",
   "market_data": {
-    "estimated": false,
-    "latest_market_session": "2026-08-14",
-    "provider": "pykrx+yahoo_finance",
-    "ranking_effect": "none",
-    "refreshed_at": "2026-08-17T11:59:46.292311Z",
-    "snapshot_count": 100,
     "status": "observed",
+    "provider": "pykrx+yahoo_finance",
+    "refreshed_at": "2026-08-19T05:12:33.230358Z",
+    "requested_market_as_of_kst": "2026-08-19T23:59:59+09:00",
+    "latest_market_session": "2026-08-19",
+    "market_sessions": [
+      "2026-08-18",
+      "2026-08-19"
+    ],
+    "snapshot_count": 100,
+    "unique_security_count": 46,
     "synthetic": false,
-    "unique_security_count": 46
+    "estimated": false,
+    "ranking_effect": "none"
   },
   "mode": "showcase_live_simulation",
   "ranking_formula_version": "peak25_mean40_persistence20_breadth15_v1",
@@ -34,7 +39,7 @@
   "schema_version": "trzip-showcase-delivery-v1",
   "showcase": {
     "path": "showcase.json",
-    "sha256": "cf489c847b902fe23306ba9a52990f24db0f59af24700ca50c30980835189d1d"
+    "sha256": "22f16c2683ed27c5a252f0ace226b38891cb3004d030a0a1c55b9c4e22cf1b7a"
   },
   "source_observed_at": "2026-08-17T11:35:16+00:00"
 }
