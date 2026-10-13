@@ -10,3 +10,6 @@ deploy/** text eol=lf
 .github/workflows/** text eol=lf
 web/** text eol=lf
 src/trzip/runtime/** text eol=lf
+
+# Preserve this reviewed dataset's original bytes and manifest checksum.
+data/reconstructed/trzip-final-50-20260814/events.ndjson -text -diff
