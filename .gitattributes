@@ -5,3 +5,8 @@
 *.ps1 text eol=crlf
 *.js text eol=lf
 *.html text eol=lf
+# Keep the Linux runtime and public assets reproducible on Windows checkouts.
+deploy/** text eol=lf
+.github/workflows/** text eol=lf
+web/** text eol=lf
+src/trzip/runtime/** text eol=lf

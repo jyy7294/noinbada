@@ -1,0 +1,19 @@
+[Unit]
+Description=TR ZIP bounded retention and SQLite backup
+[Service]
+LogNamespace=trzip
+Type=oneshot
+User=trzip
+Group=trzip
+WorkingDirectory=/srv/services/trzip/current
+EnvironmentFile=/srv/services/trzip/runtime.env
+ExecStart=/srv/services/trzip/venv/bin/python -m trzip.runtime maintain
+TimeoutStartSec=120
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/services/trzip/state
+MemoryMax=256M
+CPUQuota=25%
+UMask=0027

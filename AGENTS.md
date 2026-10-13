@@ -1,5 +1,25 @@
 # TRZIP repository instructions
 
+## Current authority — 2026-10-14 production recovery
+
+The user's approved production-recovery plan supersedes conflicting historical
+instructions below. Read `docs/PRODUCTION_RECOVERY.md` first. The active runtime
+is `src/trzip/runtime/`, running on Linux with a persistent SQLite WAL database,
+systemd timers, a read-only FastAPI service and the responsive frontend.
+Google public-page discovery and its explicitly limited official RSS fallback
+are permitted. X paid calls are disabled; missing optional sources never block
+publication. Verified company counts and related-term counts have no minimum.
+Safe, observed trends publish automatically; ambiguous relationship claims stay
+pending. No fixture, showcase, client-clock simulation or generated observation
+may enter the production surface. The user's approval includes editing the UI.
+Historical modules and data remain regression/reference material; do not invoke
+their laptop automation, publication approval or company-padding gates.
+Work on a branch; run regression and runtime tests, then use a reviewed normal
+merge/fast-forward without rewriting teammates' history. Production promotion
+requires 72 hours of recorded live operation. Preserve the previous deployment.
+
+## Historical laptop runtime (superseded where conflicting)
+
 이 저장소의 목표는 찬희님 Windows 노트북에서 매시 정각 실제 한국 트렌드를 수집하고, 누적 원장·결정론적 순위·증거 기반 기업 온톨로지를 프런트가 읽을 수 있는 JSON으로 게시하는 것입니다.
 
 ## 변경 불가 원칙

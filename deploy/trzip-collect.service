@@ -1,0 +1,21 @@
+[Unit]
+Description=TR ZIP official trend collection
+After=network-online.target
+[Service]
+LogNamespace=trzip
+Type=oneshot
+User=trzip
+Group=trzip
+WorkingDirectory=/srv/services/trzip/current
+EnvironmentFile=/srv/services/trzip/runtime.env
+ExecStart=/srv/services/trzip/venv/bin/python -m trzip.runtime collect
+TimeoutStartSec=300
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/services/trzip/state
+MemoryMax=768M
+CPUQuota=75%
+TasksMax=128
+UMask=0027
