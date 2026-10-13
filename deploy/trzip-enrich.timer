@@ -1,0 +1,9 @@
+[Unit]
+Description=TR ZIP evidence enrichment after each collection
+[Timer]
+OnCalendar=*-*-* *:05/10:00
+Persistent=true
+AccuracySec=5
+Unit=trzip-enrich.service
+[Install]
+WantedBy=timers.target

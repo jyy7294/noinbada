@@ -5,6 +5,17 @@ from datetime import UTC, datetime, timedelta
 
 import pytest
 
+
+@pytest.fixture
+def configured_naver_gate(monkeypatch):
+    """Exercise configured logic without real credentials or network calls."""
+    from trzip.provider_verification import ProviderCredentials
+    monkeypatch.setattr(
+        "trzip.publication_pipeline.resolve_provider_credentials",
+        lambda: ProviderCredentials(naver_client_id="test-only-id", naver_client_secret="test-only-secret"),
+    )
+    monkeypatch.setenv("TRZIP_AUXILIARY_RESEARCH_ENABLED", "true")
+
 from trzip.publication_pipeline import (
     _attach_provider_context_research,
     _attach_youtube_chart_signals,
@@ -485,7 +496,7 @@ def _public_rows(count=5):
 
 
 def test_hourly_verification_uses_twenty_term_capacity_and_reuses_ledger(
-    tmp_path, monkeypatch
+    tmp_path, monkeypatch, configured_naver_gate
 ):
     from trzip.provider_verification import (
         ProviderCredentials,
@@ -628,7 +639,7 @@ def test_naver_news_defaults_active_with_credentials_but_explicit_zero_disables(
 
 
 def test_hourly_verification_refreshes_public_ten_each_hour(
-    tmp_path, monkeypatch
+    tmp_path, monkeypatch, configured_naver_gate
 ):
     from datetime import timedelta
     from trzip.provider_verification import ProviderCredentials, verify_terms as actual_verify_terms
@@ -661,7 +672,7 @@ def test_hourly_verification_refreshes_public_ten_each_hour(
 
 
 def test_verification_failure_is_separate_and_never_marks_core_partial(
-    tmp_path, monkeypatch
+    tmp_path, monkeypatch, configured_naver_gate
 ):
     at = datetime(2026, 8, 12, 13, tzinfo=UTC)
     intelligence = _public_rows(1)
@@ -1098,7 +1109,7 @@ def test_domestic_market_enrichment_never_fills_missing_values_when_both_provide
 
 
 def test_scheduled_publication_verifies_only_automatic_main_terms_once_per_hour(
-    tmp_path, monkeypatch
+    tmp_path, monkeypatch, configured_naver_gate
 ):
     from trzip.provider_verification import (
         ProviderCredentials,

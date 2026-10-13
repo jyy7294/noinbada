@@ -1,0 +1,10 @@
+[Unit]
+Description=TR ZIP collection every ten minutes
+[Timer]
+OnCalendar=*-*-* *:00/10:00
+Persistent=true
+RandomizedDelaySec=10
+AccuracySec=1
+Unit=trzip-collect.service
+[Install]
+WantedBy=timers.target

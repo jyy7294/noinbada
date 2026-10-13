@@ -5,3 +5,11 @@
 *.ps1 text eol=crlf
 *.js text eol=lf
 *.html text eol=lf
+# Keep the Linux runtime and public assets reproducible on Windows checkouts.
+deploy/** text eol=lf
+.github/workflows/** text eol=lf
+web/** text eol=lf
+src/trzip/runtime/** text eol=lf
+
+# Preserve this reviewed dataset's original bytes and manifest checksum.
+data/reconstructed/trzip-final-50-20260814/events.ndjson -text -diff

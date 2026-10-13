@@ -1,0 +1,25 @@
+[Unit]
+Description=TR ZIP read-only public API
+After=network-online.target
+Wants=network-online.target
+[Service]
+LogNamespace=trzip
+User=trzip
+Group=trzip
+WorkingDirectory=/srv/services/trzip/current
+EnvironmentFile=/srv/services/trzip/runtime.env
+ExecStart=/srv/services/trzip/venv/bin/python -m uvicorn trzip.runtime.api:app --host 127.0.0.1 --port 8448 --no-access-log
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadOnlyPaths=/srv/services/trzip
+ReadWritePaths=/srv/services/trzip/state
+MemoryMax=256M
+CPUQuota=50%
+TasksMax=64
+UMask=0027
+[Install]
+WantedBy=multi-user.target

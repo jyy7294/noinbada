@@ -141,6 +141,7 @@ def collect_google_page(
     timeout_ms: int = 120_000,
     minimum_rows: int = 100,
     pause: Callable[[float], None] = time.sleep,
+    browser_channel: str | None = "chrome",
 ) -> tuple[list[GoogleTrend], dict[str, Any]]:
     """Collect every paginated row from Google Trending Now for Korea.
 
@@ -162,7 +163,7 @@ def collect_google_page(
         with sync_playwright() as playwright:
             context = playwright.chromium.launch_persistent_context(
                 user_data_dir=str(target_profile),
-                channel="chrome",
+                channel=browser_channel,
                 headless=headless,
                 locale="ko-KR",
                 args=["--lang=ko-KR"],

@@ -1,5 +1,32 @@
 # TRZIP — 한국 실시간 트렌드에서 관련 상장기업까지
 
+## 현재 운영 경로 (2026-10-14)
+
+현재 구현은 [운영 복구 계약](docs/PRODUCTION_RECOVERY.md)을 따릅니다.
+새 API·수집기는 `src/trzip/runtime/`, 반응형 화면은 `web/`,
+서버 설치·정기 실행 설정은 `deploy/`에 있습니다.
+기존 `frontend/`와 아래 Windows 운영 문서는 과거 시연·회귀검증 자료입니다.
+
+- 운영 후보: <https://trzip.62-171-141-206.sslip.io/>
+- 상태: <https://trzip.62-171-141-206.sslip.io/api/status>
+- Google 한국 공개 목록을 10분마다 수집하며, 공식 RSS로 복구할 때는 제한된 목록임을 표시합니다.
+- 국내·미국 공식 상장 목록과 관계 근거를 확인한 기업만 연결합니다. 유료 API를 호출하지 않습니다.
+- 72시간 연속 운영 검증 전에는 정식 전환 완료로 간주하지 않습니다.
+
+```powershell
+uv venv .venv --python 3.13
+uv pip install --python .venv/Scripts/python.exe -e ".[production,dev]"
+.venv/Scripts/python.exe -m playwright install chromium --only-shell
+.venv/Scripts/python.exe -m trzip.runtime collect
+.venv/Scripts/python.exe -m trzip.runtime enrich
+.venv/Scripts/python.exe -m uvicorn trzip.runtime.api:app --host 127.0.0.1 --port 8448
+```
+
+브라우저에서 <http://127.0.0.1:8448>을 열면 됩니다. API 키 없이 Google 수집과 공식 상장 확인이 작동합니다.
+선택 입력 `YOUTUBE_API_KEY`는 서버의 접근 제한된 환경 파일에서만 설정합니다.
+
+## 과거 Windows 운영 문서
+
 TRZIP 백엔드는 설정된 Windows 수집 노드에서 매시 정각 한국 X 실시간 트렌드 1~30위와 Google Trending Now 대한민국 전체 목록을 수집합니다. 실제 원천 표현을 누적해 전체 순위를 계산하고, 결정론적 분류와 증거 온톨로지로 관련 상장기업을 연결합니다.
 
 - 저장소: <https://github.com/jyy7294/noinbada>
