@@ -355,7 +355,12 @@ function endDrag(event) {
 $('dial').addEventListener('pointerup',endDrag); $('dial').addEventListener('pointercancel',endDrag);
 $('dial').addEventListener('keydown',event => {
   if (event.target.closest('#dial-focus')) return;
-  if (['ArrowDown','ArrowUp','Home','End'].includes(event.key)) { event.preventDefault(); selectDial(event.key === 'Home' ? 0 : event.key === 'End' ? mainItems().length - 1 : dialIndex + (event.key === 'ArrowDown' ? 1 : -1)); }
+  if (['ArrowDown','ArrowUp','Home','End'].includes(event.key)) {
+    event.preventDefault();
+    selectDial(event.key === 'Home' ? 0 : event.key === 'End' ? mainItems().length - 1 : dialIndex + (event.key === 'ArrowDown' ? 1 : -1));
+    // Follow the visible choice: the old focused chip can rotate out of the stage.
+    $('dial-items').querySelector('.dial-chip.selected')?.focus({preventScroll:true});
+  }
 });
 window.addEventListener('popstate',() => { rememberScroll(); showRoute(parseRoute()); });
 history.replaceState({trzip:true,depth:0},'',routeHash(parseRoute()));

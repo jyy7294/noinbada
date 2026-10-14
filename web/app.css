@@ -92,6 +92,8 @@ main { min-height: inherit; }
 .dial-detail-link { display: block; margin-top: 19px; color: #7656ac; font-size: 11px; line-height: 1.5; }
 .dial-focus:hover .dial-detail-link { color: #4a1fa8; text-decoration: underline; }
 .dial-focus:disabled { opacity: .75; }
+/* Cropped pills must not scroll the headline horizontally when keyboard focus moves. */
+.dial-stage { overflow: clip; }
 .dial-items { position: absolute; inset: 0; pointer-events: none; }
 .dial-chip { position: absolute; z-index: 2; top: 50%; left: calc(100% - 148px); display: flex; align-items: center; gap: 13px; min-height: 44px; width: 188px; padding: 0; border-radius: 25px; text-align: left; white-space: nowrap; pointer-events: auto; transform: translate(var(--dial-x,0px), calc(-50% + var(--dial-y,0px))); opacity: var(--dial-opacity,1); transition: transform 280ms cubic-bezier(.22,.61,.36,1), opacity 240ms ease; }
 .dial-chip-dot { flex: none; width: 7px; height: 7px; padding: 0; border-radius: 50%; background: #c9bce8; }
