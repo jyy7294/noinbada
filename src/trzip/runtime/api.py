@@ -152,6 +152,6 @@ def index():
 @app.get("/{asset}")
 def static_asset(asset: str):
     # Vercel's local link can create .env.local here. Never expose a directory.
-    if asset not in {"index.html","app.js","app.css","icon.svg"}:
+    if asset not in {"index.html","app.js","app.css","icon.svg","wanted-sans.woff2"}:
         raise HTTPException(404)
-    return FileResponse(web/asset)
+    return FileResponse(web/asset,media_type="font/woff2" if asset=="wanted-sans.woff2" else None)
