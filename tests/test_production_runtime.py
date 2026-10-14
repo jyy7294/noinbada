@@ -1,6 +1,7 @@
 from datetime import UTC, datetime, timedelta
 import json
 import socket
+from types import SimpleNamespace
 
 from fastapi.testclient import TestClient
 import pytest
@@ -10,6 +11,14 @@ from trzip.runtime.core import connect, event_id, parse_time, decode
 from trzip.runtime.enrichment import company_links, contains
 from trzip.runtime.media import text_card
 from trzip.runtime.pipeline import run, status
+
+
+@pytest.fixture(autouse=True)
+def isolated_disk_capacity(monkeypatch):
+    # Unit cases must not depend on unrelated apps filling the host volume.
+    # The production reserve guard is exercised explicitly below, unchanged.
+    import shutil
+    monkeypatch.setattr(shutil,'disk_usage',lambda path:SimpleNamespace(total=10*1024**3,used=2*1024**3,free=8*1024**3))
 
 
 def adapter(title="테스트 트렌드",position=1,frame="google_page_test"):
@@ -90,6 +99,34 @@ def test_missing_scheduled_runs_reduce_release_coverage(tmp_path):
     assert result['observation_hours']==72
     assert result['scheduled_slot_coverage']<0.01
     assert result['release_gate']['automatic_checks_pass'] is False
+
+
+def test_font_mime_is_portable_without_exposing_private_files(tmp_path,monkeypatch):
+    import mimetypes
+    from trzip.runtime import api
+    # A Windows MIME registry can report a different type than Linux.
+    monkeypatch.setattr(mimetypes,'guess_type',lambda *args,**kwargs:('application/octet-stream',None))
+    monkeypatch.setattr(api,'web',tmp_path)
+    (tmp_path/'wanted-sans.woff2').write_bytes(b'wOF2-test-font')
+    (tmp_path/'.env.local').write_text('private-test-value')
+    with TestClient(api.app) as client:
+        font=client.get('/wanted-sans.woff2')
+        assert font.status_code==200
+        assert font.headers['content-type']=='font/woff2'
+        assert font.headers['x-content-type-options']=='nosniff'
+        assert "script-src 'self'" in font.headers['content-security-policy']
+        assert client.get('/.env.local').status_code==404
+        assert client.get('/other-font.woff2').status_code==404
+
+
+def test_low_disk_reserve_stops_before_collecting_or_publishing(tmp_path,monkeypatch):
+    import shutil
+    monkeypatch.setattr(shutil,'disk_usage',lambda path:SimpleNamespace(total=10*1024**3,used=6*1024**3,free=4*1024**3))
+    with pytest.raises(RuntimeError,match='disk_reserve_below_5_GiB'):
+        run(tmp_path,at='2026-10-14T00:00:00+00:00',adapters={'google':adapter()},force=True)
+    with connect(tmp_path) as db:
+        assert db.execute('SELECT COUNT(*) FROM observations').fetchone()[0]==0
+        assert db.execute('SELECT COUNT(*) FROM publications').fetchone()[0]==0
 
 
 def test_company_requires_listing_and_relation():

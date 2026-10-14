@@ -3,9 +3,11 @@
 ## 현재 운영 경로 (2026-10-14)
 
 현재 구현은 [운영 복구 계약](docs/PRODUCTION_RECOVERY.md)을 따릅니다.
-새 API·수집기는 `src/trzip/runtime/`, 반응형 화면은 `web/`,
+새 API·수집기는 `src/trzip/runtime/`, 기존 보라색 다이얼을 복원한 모바일 화면은 `web/`,
 서버 설치·정기 실행 설정은 `deploy/`에 있습니다.
-기존 `frontend/`와 아래 Windows 운영 문서는 과거 시연·회귀검증 자료입니다.
+기존 `frontend/`는 화면 디자인 기준이자 과거 시연·회귀검증 자료입니다.
+운영 화면은 이 파일의 시연 엔진을 실행하지 않고 현재 API를 사용합니다.
+모바일 화면과 검증 절차는 [모바일 복원 기록](docs/MOBILE_RESTORE.md)을 따릅니다.
 
 - 운영 후보: <https://trzip.62-171-141-206.sslip.io/>
 - 상태: <https://trzip.62-171-141-206.sslip.io/api/status>

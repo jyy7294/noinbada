@@ -1,30 +1,64 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#6535cd"><meta name="description" content="Google 한국 급상승 목록과 확인된 기업 관계를 출처와 함께 살펴보세요.">
-  <title>TR ZIP · 트렌드에서 기업까지</title>
-  <link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/app.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#7B3FF2">
+  <meta name="description" content="한국 트렌드를 다이얼로 둘러보고 확인된 기업 관계를 근거와 함께 살펴보세요.">
+  <title>TR ZIP · 한국 트렌드</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/app.css">
   <script type="module" src="/app.js"></script>
 </head>
 <body>
-  <a class="skip" href="#explore">트렌드 목록으로 이동</a>
-  <header><a class="brand" href="/" aria-label="TR ZIP 홈">TR <span>ZIP</span><small>트집</small></a><nav aria-label="주요 메뉴"><a href="#explore">트렌드</a><button id="status-open">운영 현황</button></nav><span id="release-badge" class="badge">운영 검증 중</span></header>
-  <main>
-    <section class="intro"><div><p class="eyebrow">TREND TO COMPANY</p><h1>지금 뜨는 이야기,<br>어떤 기업과 이어질까요?</h1><p class="lead">확인한 트렌드와 기업의 연결을, 근거와 함께 모읍니다.</p></div><div class="intro-note"><strong>관심의 시작을<br>맥락의 발견으로.</strong><span>한국 트렌드 · 국내·미국 상장기업</span></div></section>
-    <section class="status-band" aria-label="데이터 수집 상태"><div><span id="signal" class="signal"></span><strong id="freshness">수집 상태 확인 중</strong><p id="scope">실제 수집 시각과 공개 범위를 확인하고 있습니다.</p></div><div class="sync"><time id="observed"></time><button id="refresh">새로 고침</button></div></section>
-    <p id="notice" class="notice">서버의 연속 운영을 검증하고 있습니다. 현재 확인된 데이터를 먼저 제공합니다.</p>
-    <section id="explore" aria-labelledby="explore-title">
-      <div class="section-head"><div><h2 id="explore-title">트렌드 탐색 <span id="count"></span></h2><p id="ranking-note">각 출처가 공개한 목록을 기준으로 정리합니다.</p></div><label class="search"><span class="sr-only">트렌드·기업 검색</span><input id="search" type="search" aria-label="트렌드·기업 검색" placeholder="트렌드·기업 검색" maxlength="100" autocomplete="off"><span aria-hidden="true">⌕</span></label></div>
-      <div class="toolbar"><div class="tabs" role="group" aria-label="목록 필터"><button data-filter="top" aria-pressed="true">주요 10</button><button data-filter="all" aria-pressed="false">전체</button><button data-filter="company" aria-pressed="false">기업 연결</button><button data-filter="issue" aria-pressed="false">사회·이슈</button><button data-filter="saved" aria-pressed="false">저장한 트렌드</button></div><button id="view-toggle" aria-pressed="false">다이얼 보기</button></div>
-      <p class="results-note" id="results-note" aria-live="polite"></p>
-      <div id="error" role="alert" hidden></div><div id="trends" class="trends" aria-busy="true"><p class="empty">트렌드를 불러오고 있습니다.</p></div>
-      <div id="dial" hidden><div class="dial-ring" id="dial-items"></div><p>번호를 선택하면 해당 트렌드의 근거를 볼 수 있습니다. 목록 보기로 언제든 돌아갈 수 있습니다.</p></div>
-    </section>
-    <section class="method"><h2>숫자보다, 확인할 수 있는 연결</h2><div><p><strong>출처가 공개한 만큼</strong>목록의 순서와 수집 시각을 보존합니다. RSS만 수집되면 제한된 공개 목록이라고 표시합니다.</p><p><strong>기업 관계는 근거가 있을 때</strong>현재 상장 여부와 공식 관계를 확인합니다. 같은 업종이라는 이유만으로 연결하지 않습니다.</p><p><strong>이미지도 확인 가능한 방식으로</strong>공식 기업 로고를 우선하고, 없으면 텍스트 카드를 자동 생성합니다. 관련 기업은 투자 추천을 뜻하지 않습니다.</p></div></section>
-  </main>
-  <footer><strong>TR ZIP</strong><p>트렌드에서 기업까지, 근거를 따라.</p><a href="https://trends.google.com/trending?geo=KR&hl=ko" target="_blank" rel="noopener noreferrer">Google 원본 열기 ↗</a><span>저장한 트렌드는 이 브라우저에만 보관됩니다.</span></footer>
-  <dialog id="detail"><div class="dialog-bar"><span>트렌드 자세히</span><button id="detail-close" aria-label="트렌드 상세 닫기">닫기 ×</button></div><div id="detail-body"></div></dialog>
-  <dialog id="status-dialog"><div class="dialog-bar"><strong>운영 현황</strong><button id="status-close" aria-label="운영 현황 닫기">닫기 ×</button></div><div id="status-body" class="status-body"></div></dialog>
-  <div id="toast" role="status" aria-live="polite"></div>
-</body></html>
+  <a class="skip" href="#main-content">현재 화면의 내용으로 이동</a>
+  <div class="app-shell">
+    <main id="main-content" tabindex="-1">
+      <section class="screen" id="screen-home" aria-labelledby="home-title">
+        <header class="app-header home-header">
+          <div class="header-title"><span class="brand-kicker">TR ZIP <span>트집</span></span><h1 id="home-title" tabindex="-1">실시간 트렌드</h1></div>
+          <div class="header-actions">
+            <button id="search-open" class="icon-button" aria-label="전체 트렌드 검색"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg></button>
+            <button id="saved-open" class="icon-button" aria-label="저장한 트렌드"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="7" r="3.3"/><path d="M3.8 17 C3.8 13.7 6.6 11.7 10 11.7 C13.4 11.7 16.2 13.7 16.2 17"/></svg></button>
+          </div>
+        </header>
+        <div class="home-status"><button id="status-open" class="status-pill"><span id="signal" class="signal"></span><span id="freshness">수집 상태 확인 중</span></button><span id="release-badge" class="release-label">운영 검증 중</span></div>
+        <div class="view-bar"><time id="observed">기준 시각 확인 중</time>
+          <!-- Adapted from Lucian UX/UI Prompt #039 · MIT © 2026 Seokwoooo -->
+          <div class="ux u039 view-tabs" role="group" aria-label="트렌드 보기 방식"><span class="tab-indicator" aria-hidden="true"></span><button id="view-dial" data-view="dial" aria-pressed="true">Dial</button><button id="view-list" data-view="list" aria-pressed="false">List</button></div>
+        </div>
+        <p id="home-error" class="error-note" role="alert" hidden></p>
+        <div id="dial" class="dial-stage" aria-label="주요 트렌드 다이얼" tabindex="0" aria-describedby="dial-help" aria-busy="true">
+          <button id="dial-focus" class="dial-focus" disabled><span id="dial-rank" class="dial-rank">주요 트렌드</span><span id="dial-source" class="dial-category">한국 공개 목록</span><strong id="dial-title">트렌드를<br>불러오는 중</strong><span class="dial-detail-link">자세히 보기 <span aria-hidden="true">↗</span></span></button>
+          <div id="dial-items" class="dial-items"></div><p id="dial-empty" class="dial-empty" hidden></p>
+        </div>
+        <p id="dial-help" class="dial-hint">다이얼을 움직여 고르고, 큰 키워드를 눌러 확인하세요</p>
+        <div id="home-list" class="trend-list" hidden></div>
+        <div class="home-footer"><p id="scope">실제 수집 시각과 공개 범위를 확인하고 있습니다.</p><p id="ranking-note">출처의 공개 목록 순서로 정리합니다.</p><div class="home-footer-actions"><button id="explore-open" class="text-button">전체 트렌드 탐색 <span id="count"></span> <span aria-hidden="true">→</span></button><button id="refresh" class="text-button">새로 고침</button></div><p id="notice" class="candidate-note">72시간 연속 운영 검증 중입니다.</p></div>
+      </section>
+      <section class="screen" id="screen-search" aria-labelledby="search-title" hidden>
+        <header class="app-header"><button class="icon-button" data-back aria-label="이전 화면으로"><span aria-hidden="true">‹</span></button><h1 id="search-title" tabindex="-1">전체 트렌드 탐색</h1></header>
+        <!-- Adapted from Lucian UX/UI Prompt #027 · MIT © 2026 Seokwoooo -->
+        <form id="search-form" class="ux u027 search-panel" role="search"><label class="sr-only" for="search">트렌드·기업 검색</label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><input id="search" type="search" placeholder="트렌드·기업 검색" maxlength="100" autocomplete="off"><button id="search-clear" type="button" aria-label="검색어 지우기" hidden>×</button></form>
+        <div class="search-filters" role="group" aria-label="검색 목록 필터"><button data-filter="all" aria-pressed="true">전체</button><button data-filter="company" aria-pressed="false">기업 연결</button><button data-filter="issue" aria-pressed="false">사회·이슈</button></div>
+        <p id="search-results" class="results-note" aria-live="polite"></p><div id="search-list" class="trend-list"></div>
+      </section>
+      <section class="screen" id="screen-saved" aria-labelledby="saved-title" hidden>
+        <header class="app-header"><button class="icon-button" data-back aria-label="이전 화면으로"><span aria-hidden="true">‹</span></button><h1 id="saved-title" tabindex="-1">저장한 트렌드</h1></header>
+        <div class="saved-intro"><strong id="saved-count">저장한 항목</strong><p>이 브라우저에 보관됩니다. 계정 간 동기화는 제공하지 않습니다.</p></div><div id="saved-list" class="trend-list"></div>
+      </section>
+      <section class="screen" id="screen-detail" aria-labelledby="detail-title" hidden>
+        <header class="app-header"><button class="icon-button" data-back aria-label="이전 화면으로"><span aria-hidden="true">‹</span></button><h1 id="detail-title" tabindex="-1">트렌드 상세</h1><button id="detail-save" class="icon-button bookmark-button" aria-label="트렌드 저장" aria-pressed="false" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button></header>
+        <div id="detail-body" class="detail-body"></div>
+      </section>
+      <section class="screen" id="screen-companies" aria-labelledby="companies-title" hidden>
+        <header class="app-header"><button class="icon-button" data-back aria-label="이전 화면으로"><span aria-hidden="true">‹</span></button><h1 id="companies-title" tabindex="-1">관련 기업</h1></header><div id="companies-body" class="companies-body"></div>
+      </section>
+    </main>
+  </div>
+  <dialog id="company-sheet" class="bottom-sheet" aria-labelledby="company-sheet-title"><div class="sheet-handle" aria-hidden="true"></div><div class="dialog-bar"><h2 id="company-sheet-title">기업 관계 근거</h2><button id="company-close" class="icon-button" aria-label="기업 근거 닫기">×</button></div><div id="company-body" class="sheet-body"></div></dialog>
+  <dialog id="status-dialog" class="bottom-sheet" aria-labelledby="status-title"><div class="sheet-handle" aria-hidden="true"></div><div class="dialog-bar"><h2 id="status-title">운영 현황</h2><button id="status-close" class="icon-button" aria-label="운영 현황 닫기">×</button></div><div id="status-body" class="sheet-body"></div></dialog>
+  <!-- Adapted from Lucian UX/UI Prompt #070 · MIT © 2026 Seokwoooo. Only actual storage outcomes are announced. -->
+  <div id="toast-stack" class="ux u070 toast-stack" role="status" aria-live="polite" aria-atomic="false"></div>
+</body>
+</html>

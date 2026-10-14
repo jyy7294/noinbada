@@ -13,3 +13,6 @@ src/trzip/runtime/** text eol=lf
 
 # Preserve this reviewed dataset's original bytes and manifest checksum.
 data/reconstructed/trzip-final-50-20260814/events.ndjson -text -diff
+
+# Fonts are binary even inside the LF-normalized web directory.
+web/*.woff2 -text -diff
