@@ -68,6 +68,30 @@ DB 자체 복원은 두 타이머와 API를 중지한 후, 검증된 백업을 �
 [데스크톱 화면](qa/desktop.png) · [모바일 화면](qa/mobile.png)
 실물 휴대전화, YouTube 인증 연동과 유료 X 연동은 검증하지 않았습니다.
 
+## 기존 모바일 화면 복원 (2026-10-14)
+
+후보는 현재 `/srv/services/trzip/releases/20261014-mobile-r1`의 새 모바일 화면을 제공합니다.
+이전 `20261014-recovery-r4` 릴리스는 되돌리기용으로 보존했고 수집 원장을 유지했습니다.
+기존 보라색 세로 다이얼, Wanted Sans와 상세 → 기업 폴더 → 근거 시트를 현재 API에 연결했습니다.
+[모바일 복원 기록](MOBILE_RESTORE.md)과 [Lucian 적용·라이선스](LUCIAN_COMPONENTS.md)를 참고합니다.
+
+- 최종 로컬 시험: 655 passed, 1 skipped; runtime 16개, JS 구문·Python 컴파일 통과.
+- 코드 CI: https://github.com/jyy7294/noinbada/actions/runs/38528530605 (2d2e4e5).
+- 로컬: 320/360/393/430px 및 PC 1440px, 저장·재접속·검색/스크롤 복귀·오류/지연·기업 없음 확인.
+- 공개 후보: 393px과 PC 1440px, 실제 목록/상세/기업 근거의 게시본 일치, Wanted Sans, 초점 복귀, 콘솔 오류 0 확인.
+- 모든 5개 웹 파일(글꼴 포함)의 로컬·VPS·보호된 Vercel 준비 배포 SHA-256 일치 확인.
+- 실물 휴대전화, 저장 quota 초과/손상 키, 매우 큰 터치 제스처의 정확한 이동량은 별도 미검증입니다.
+
+[현재 모바일 화면](qa/mobile-restored-live.jpg) · [현재 PC 화면](qa/desktop-restored-live.jpg)
+
+서버 여유 공간은 5GiB 기준에 가깝습니다. 이번 배포에서 TR ZIP 브라우저가 재생성할 수 있는
+Cache/Code Cache/GPUCache와 이전 설치용 임시 tar만 정리했습니다. 관측·출처·백업·복구 릴리스는
+보존했습니다. 기준 미달이면 정식 전환을 보류하고 다른 서비스의 파일을 정리하지 않습니다.
+
+Vercel의 Git 연결은 `pollmap/trzip-x-google`이고 이번 운영 코드 저장소는 `jyy7294/noinbada`입니다.
+준비 배포를 CLI로 만들었으며 기존 정식 주소는 계속 복구 안내를 제공합니다. 별도 연결 저장소나
+Git 설정을 이 작업에서 수정하지 않습니다.
+
 기존 테스트 4개는 공급자 설정이 없는 상태에서 설정 완료 경로를 기대하고 있었습니다.
 실제 키 없이 설정 조건을 명시하는 fixture를 추가했고, 기존 검증 주장과 운영 코드는 유지했습니다.
 
@@ -92,7 +116,10 @@ Vercel 프로젝트: trzip-x-google / prj_hMZnKxRcgVYaCKeW9NYZuhcBPqzk
 
 - 기존 시연 원본: dpl_8vJQ2VGKsywNZ9NwvyJPMZojQ5q4 (보존)
 - 현재 복구 안내: dpl_Ap78H9wHverpjSmcgEWSh9DAMS8i
-- 정식 전환 준비 배포: dpl_E6ftE39ua43pzq3ipXsvxb6Zgbtq
+- 이전 목록 화면 준비 배포: dpl_E6ftE39ua43pzq3ipXsvxb6Zgbtq (보존, 현재 승격 대상 아님)
+- 정식 전환 준비 배포: dpl_6CVPYjtXS4epdfY9hGB17fi91tLr
+- 준비 URL: https://trzip-x-google-3sfeyvpy3-mangos-projects-befba726.vercel.app
+- 모바일 복원 PR: https://github.com/jyy7294/noinbada/pull/17
 
 모든 조건을 확인한 다음에만 준비 배포를 promote하고,
 서버 TRZIP_RELEASE_MODE를 production으로 바꾼 후 API를 재시작합니다.
